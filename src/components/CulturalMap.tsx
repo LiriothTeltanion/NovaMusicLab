@@ -170,7 +170,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                   </div>
                   <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
                     style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>
-                    {c.plays.toLocaleString('es-ES')}
+                    {c.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}
                   </span>
                 </div>
                 <p className="text-sm font-bold text-white leading-tight">{c.country}</p>

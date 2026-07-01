@@ -52,7 +52,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const currentEra = eras[selectedIdx];
   const color = ERA_COLORS[currentEra.year] ?? '#00f2fe';
   const maxPlays = Math.max(...eras.map(e => e.plays));
-  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const interpretation = (L ? ERA_INTERPRETATIONS_EN[currentEra.year] : ERA_INTERPRETATIONS[currentEra.year])
     ?? t.eraExplorer.fallbackInterpretation(
       currentEra.year,

@@ -23,7 +23,7 @@ const itemVariants = {
 };
 
 export default function TopHistorico({ data }: TopHistoricoProps) {
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
   const [tab, setTab] = useState<TopTab>('artistas');
   const [search, setSearch] = useState('');
 
@@ -37,7 +37,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     { id: 'anos',      label: t.topHistorico.tabYears,    icon: Trophy },
   ] as const;
 
-  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const q = search.toLowerCase().trim();
 
   /* ── Filtered lists ── */
@@ -77,7 +77,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         )}
         {width > 55 && height > 38 && (
           <text x={x + 8} y={y + 32} fontSize={9} fontFamily="monospace"
-            fill="#9ca3af">{plays.toLocaleString('es-ES')}</text>
+            fill="#9ca3af">{plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</text>
         )}
       </g>
     );
@@ -91,7 +91,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         <p className="text-white font-bold mb-1">{label}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} style={{ color: p.color ?? tc.c1 }}>
-            {p.name}: <span className="text-white">{Number(p.value).toLocaleString('es-ES')}</span>
+            {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
           </p>
         ))}
       </div>

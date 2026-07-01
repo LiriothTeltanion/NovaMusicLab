@@ -9,7 +9,7 @@ interface DataUploaderProps {
 }
 
 export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,8 +67,8 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       const source = parsed.source_summary;
       setSuccessMsg(t.uploader.successMessage(
         files.length,
-        parsed.core_metrics.total_plays.toLocaleString('es-ES'),
-        parsed.core_metrics.unique_artists.toLocaleString('es-ES'),
+        parsed.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+        parsed.core_metrics.unique_artists.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
         source?.spotify_skip_rate_pct ?? 0
       ));
     } catch (err: any) {

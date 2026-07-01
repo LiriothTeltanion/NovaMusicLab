@@ -10,13 +10,13 @@ interface ObsessionDetectorProps {
 export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
   const obsessions = data.obsessions;
   const sessions = data.sessions;
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
 
-  // Format date to local spanish format
+  // Format date to the active language's locale
   const formatDate = (dateStr: string) => {
     try {
       const d = new Date(dateStr);
-      return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
     } catch {
       return dateStr;
     }
@@ -82,7 +82,7 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] font-mono text-gray-500 block">Inicio de sesión:</span>
-                    <span className="text-xs font-bold text-white">{formatDate(sess.start)} {new Date(sess.start).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</span>
+                    <span className="text-xs font-bold text-white">{formatDate(sess.start)} {new Date(sess.start).toLocaleTimeString(lang === 'en' ? 'en-US' : 'es-ES', {hour: '2-digit', minute:'2-digit'})}</span>
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] font-mono text-gray-500 block">Duración est.:</span>

@@ -14,13 +14,14 @@ interface SpotifyVsLastfmProps {
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
+  const { lang } = useApp();
   if (!active || !payload?.length) return null;
   return (
     <div className="bg-[#070e1c] border border-cyberCyan/30 rounded-xl px-4 py-3 text-xs font-mono shadow-cyber">
       <p className="text-white font-bold mb-1">{label}</p>
       {payload.map((p: any, i: number) => (
         <p key={i} style={{ color: p.color }}>
-          {p.name}: <span className="text-white">{Number(p.value).toLocaleString('es-ES')}</span>
+          {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
         </p>
       ))}
     </div>
@@ -29,8 +30,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const [activeInsight, setActiveInsight] = useState(0);
-  const { t } = useApp();
-  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const { t, lang } = useApp();
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const source = deriveSourceSummary(data);
   const lastfmTotal = source.lastfm_plays;
   const spotifyDirectTotal = source.spotify_plays;

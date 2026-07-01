@@ -5,7 +5,7 @@ import { Calendar, Clock, Disc, Music, Trophy, Star, TrendingUp, Flame } from 'l
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
-import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, normalizeGenre } from '../utils/analytics';
+import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames, normalizeGenre } from '../utils/analytics';
 
 interface DashboardProps {
   data: MusicDnaData;
@@ -20,7 +20,7 @@ const cardVariants = {
 };
 
 export default function Dashboard({ data }: DashboardProps) {
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
   const metrics = data.core_metrics;
   const topArtistsData = data.top_artists.slice(0, 10);
   const records = getRecords(data);
@@ -36,10 +36,10 @@ export default function Dashboard({ data }: DashboardProps) {
   const COLORS = ['#00f2fe', '#f72585', '#7209b7', '#4cc9f0', '#10b981',
                   '#fb923c', '#a78bfa', '#34d399', '#f59e0b', '#ec4899'];
 
-  const formatNum = (num: number) => formatNumber(num);
+  const formatNum = (num: number) => formatNumber(num, lang === 'en' ? 'en-US' : 'es-ES');
   const formatRecordDate = (date?: string) => {
     if (!date) return t.dashboard.notAvailable;
-    return new Date(`${date}T00:00:00`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+    return new Date(`${date}T00:00:00`).toLocaleDateString((lang === 'en' ? 'en-US' : 'es-ES'), { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
   /* ── Smart genre aggregation from top_artists ── */
@@ -53,8 +53,8 @@ export default function Dashboard({ data }: DashboardProps) {
     .slice(0, 8)
     .map(([name, plays]) => ({ name, plays }));
 
-  // Convertir matriz de heatmap en lista plana de horas y días para renderizar la cuadrícula tipo GitHub
-  const weekdays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+  // Flatten the heatmap matrix into hours/weekdays for the GitHub-style grid
+  const weekdays = getWeekdayNames(lang === 'en' ? 'en-US' : 'es-ES');
   const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
 
   // Buscar el valor máximo del heatmap para normalizar los colores
@@ -147,7 +147,7 @@ export default function Dashboard({ data }: DashboardProps) {
             { label: t.dashboard.recordLongestStreak,  val: records.longest_streak_days, unit: records.longest_streak_start ? t.dashboard.recordStreakUnit(formatRecordDate(records.longest_streak_start), formatRecordDate(records.longest_streak_end)) : t.dashboard.recordStreakUnitFallback, color: '#fb923c' },
             { label: t.dashboard.recordMaxDay,         val: records.max_day_plays, unit: t.dashboard.recordMaxDayUnit(formatRecordDate(records.max_day_date)), color: tc.c2 },
             { label: t.dashboard.recordLongestSession, val: Math.round(records.longest_session_minutes), unit: t.dashboard.recordSessionUnit(records.longest_session_tracks), color: tc.c1 },
-            { label: t.dashboard.recordBestSession,    val: records.best_session_tracks, unit: t.dashboard.recordBestSessionUnit(records.best_session_start ? new Date(records.best_session_start).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }) : t.dashboard.recordUnknownDate), color: '#a78bfa' },
+            { label: t.dashboard.recordBestSession,    val: records.best_session_tracks, unit: t.dashboard.recordBestSessionUnit(records.best_session_start ? new Date(records.best_session_start).toLocaleDateString((lang === 'en' ? 'en-US' : 'es-ES'), { month: 'short', year: 'numeric' }) : t.dashboard.recordUnknownDate), color: '#a78bfa' },
           ].map(({ label, val, unit, color }) => (
             <div key={label} className="p-3 rounded-xl bg-white/3 border border-white/5 text-center">
               <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wide">{label}</p>
@@ -208,7 +208,7 @@ export default function Dashboard({ data }: DashboardProps) {
                   </Pie>
                   <Tooltip
                     contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c2, borderRadius: '12px' }}
-                    formatter={(val: any) => [`${Number(val).toLocaleString('es-ES')} plays`]}
+                    formatter={(val: any) => [`${Number(val).toLocaleString((lang === 'en' ? 'en-US' : 'es-ES'))} plays`]}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -222,7 +222,7 @@ export default function Dashboard({ data }: DashboardProps) {
                   <span className="text-gray-300 truncate">{genre.name}</span>
                 </div>
                 <span className="font-mono font-bold shrink-0 ml-2" style={{ color: COLORS[idx % COLORS.length] }}>
-                  {genre.plays.toLocaleString('es-ES')}
+                  {genre.plays.toLocaleString((lang === 'en' ? 'en-US' : 'es-ES'))}
                 </span>
               </div>
             ))}

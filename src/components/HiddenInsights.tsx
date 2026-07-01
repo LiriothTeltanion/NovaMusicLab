@@ -16,10 +16,11 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
   const source = deriveSourceSummary(data);
   const records = getRecords(data);
   const nightRatio = getNightRatio(data);
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
 
   const secondArtistName = supportArtists[0]?.name ?? t.hiddenInsights.secondArtistFallback;
-  const secondArtistPlays = supportArtists[0]?.plays?.toLocaleString('es-ES') ?? 0;
+  const secondArtistPlays = supportArtists[0]?.plays?.toLocaleString(locale) ?? 0;
   const anchorTrackTitle = anchorTracks[0]?.title ?? t.hiddenInsights.anchorTrackFallback;
 
   return (
@@ -46,7 +47,7 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
               secondArtistName,
               secondArtistPlays,
               supportArtists[1]?.name,
-              supportArtists[1]?.plays?.toLocaleString('es-ES'),
+              supportArtists[1]?.plays?.toLocaleString(locale),
             )}
           </p>
         </div>
@@ -62,7 +63,7 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           <p className="text-xs text-gray-300 font-sans leading-relaxed font-light">
             {t.hiddenInsights.sourceCrossCheckBody(metrics.match_rate_pct)}
             {' '}{source.source_note}
-            {source.spotify_short_plays > 0 && ' ' + t.hiddenInsights.spotifyShortPlaysNote(source.spotify_short_plays.toLocaleString('es-ES'))}
+            {source.spotify_short_plays > 0 && ' ' + t.hiddenInsights.spotifyShortPlaysNote(source.spotify_short_plays.toLocaleString(locale))}
           </p>
         </div>
 

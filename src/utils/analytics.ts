@@ -7,10 +7,20 @@ import type {
   YearlyEra,
 } from '../types';
 
-export const MONTHS_ES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-export const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-export const WEEKDAYS_ES = ['Lun','Mar','Mie','Jue','Vie','Sab','Dom'];
-export const WEEKDAYS_EN = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+function formatShort(date: Date, locale: string, opts: Intl.DateTimeFormatOptions): string {
+  const raw = new Intl.DateTimeFormat(locale, opts).format(date).replace(/\.$/, '');
+  return raw.charAt(0).toUpperCase() + raw.slice(1);
+}
+
+/** Locale-correct short month names (Jan..Dec / Ene..Dic), in calendar order. */
+export function getMonthNames(locale: string): string[] {
+  return Array.from({ length: 12 }, (_, i) => formatShort(new Date(2024, i, 1), locale, { month: 'short' }));
+}
+
+/** Locale-correct short weekday names, Monday-first (2024-01-01 was a Monday). */
+export function getWeekdayNames(locale: string): string[] {
+  return Array.from({ length: 7 }, (_, i) => formatShort(new Date(2024, 0, 1 + i), locale, { weekday: 'short' }));
+}
 
 export function formatNumber(value: number, locale = 'es-ES') {
   return Math.round(value || 0).toLocaleString(locale);

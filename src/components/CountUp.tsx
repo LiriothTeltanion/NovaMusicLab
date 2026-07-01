@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useApp } from '../context/AppContext';
 
 interface CountUpProps {
   target: number;
@@ -23,6 +24,7 @@ export default function CountUp({
   suffix = '',
   className = '',
 }: CountUpProps) {
+  const { lang } = useApp();
   const [val, setVal] = useState(0);
   const rafRef = useRef<number | null>(null);
 
@@ -49,9 +51,8 @@ export default function CountUp({
     };
   }, [target, duration, delay]);
 
-  const formatted = decimals > 0
-    ? val.toFixed(decimals).replace('.', ',')
-    : Math.round(val).toLocaleString('es-ES');
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const formatted = val.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   return (
     <span className={className}>

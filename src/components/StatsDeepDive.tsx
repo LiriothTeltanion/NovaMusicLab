@@ -11,18 +11,17 @@ import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
 import {
   buildMonthlyActivity,
+  getMonthNames,
   getPeakYear,
+  getWeekdayNames,
   getWeekdayTotals,
-  MONTHS_EN,
-  MONTHS_ES,
   normalizeGenre,
-  WEEKDAYS_EN,
-  WEEKDAYS_ES,
 } from '../utils/analytics';
 
 interface StatsDeepDiveProps { data: MusicDnaData; }
 
 const CustomTooltip = ({ active, payload, label, tc }: any) => {
+  const { lang } = useApp();
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl px-4 py-3 text-xs font-mono shadow-lg"
@@ -30,7 +29,7 @@ const CustomTooltip = ({ active, payload, label, tc }: any) => {
       <p className="text-white font-bold mb-1">{label}</p>
       {payload.map((p: any, i: number) => (
         <p key={i} style={{ color: p.color ?? tc?.c1 }}>
-          {p.name}: <span className="text-white">{Number(p.value).toLocaleString('es-ES')}</span>
+          {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
         </p>
       ))}
     </div>
@@ -46,10 +45,11 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
     if (peakYear?.year) setSelectedYear(peakYear.year);
   }, [peakYear?.year]);
 
-  const MONTHS  = lang === 'en' ? MONTHS_EN  : MONTHS_ES;
-  const WEEKDAYS = lang === 'en' ? WEEKDAYS_EN : WEEKDAYS_ES;
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const MONTHS  = useMemo(() => getMonthNames(locale), [locale]);
+  const WEEKDAYS = useMemo(() => getWeekdayNames(locale), [locale]);
 
-  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
 
   /* ── Monthly matrix ── */
   const monthlyActivity = useMemo(() => buildMonthlyActivity(data), [data]);
@@ -117,7 +117,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
               fill={color} dominantBaseline="auto">{name}</text>
             {height > 40 && (
               <text x={x + 10} y={y + 36} fontSize={9} fontFamily="monospace"
-                fill="#9ca3af">{plays.toLocaleString('es-ES')}</text>
+                fill="#9ca3af">{plays.toLocaleString(locale)}</text>
             )}
           </>
         )}

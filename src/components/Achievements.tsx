@@ -49,7 +49,7 @@ export default function Achievements({ data }: AchievementsProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'bronze' | 'silver' | 'gold' | 'platinum' | 'legendary'>('all');
 
-  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 
   const achievements: Achievement[] = [
     {

@@ -43,7 +43,7 @@ function LoadingPanel() {
       <div className="glass-panel px-6 py-4 rounded-2xl flex items-center gap-3">
         <div className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: `${tc.c1} transparent ${tc.c1} ${tc.c1}` }} />
         <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: tc.c1 }}>
-          {lang === 'en' ? 'Loading module' : 'Cargando modulo'}
+          {lang === 'en' ? 'Loading module' : 'Cargando módulo'}
         </span>
       </div>
     </div>
@@ -79,8 +79,8 @@ function AppInner() {
     { id: 'artist',      label: t.nav.artist,       icon: Sparkles },
     { id: 'insights',    label: t.nav.insights,     icon: AlertCircle },
     { id: 'compare',     label: t.nav.compare,      icon: GitCompare },
-    { id: 'statsdeep',   label: lang === 'en' ? 'Stats Pro'      : 'Stats Pro',      icon: Activity },
-    { id: 'achievements', label: lang === 'en' ? 'Achievements'   : 'Logros',         icon: Award },
+    { id: 'statsdeep',   label: t.nav.statsPro,     icon: Activity },
+    { id: 'achievements', label: t.nav.achievements, icon: Award },
     { id: 'report',      label: t.nav.report,       icon: FileText },
     { id: 'upload',      label: t.nav.upload,       icon: Upload },
   ] as const;
