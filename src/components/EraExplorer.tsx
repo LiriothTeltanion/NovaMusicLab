@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, ChevronRight, ChevronLeft, Disc, Headphones, Sparkles, BarChart2 } from 'lucide-react';
+import { Calendar, ChevronRight, ChevronLeft, Headphones, Sparkles, BarChart2 } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import ArtistAvatar from './ArtistAvatar';
 
 interface EraExplorerProps {
   data: MusicDnaData;
@@ -194,7 +195,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
 
             <div className="space-y-3">
               <div className="flex items-center space-x-3 p-3 bg-white/3 border border-white/5 rounded-xl">
-                <Disc className="w-4 h-4 text-cyberPink shrink-0" />
+                <ArtistAvatar name={currentEra.top_artist} size={32} />
                 <div className="min-w-0">
                   <p className="text-[10px] font-mono text-gray-400 uppercase">
                     {t.eraExplorer.flagshipArtist}

@@ -2,6 +2,7 @@ import React from 'react';
 import { RotateCcw, Clock, Trophy, Flame } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import ArtistAvatar from './ArtistAvatar';
 
 interface ObsessionDetectorProps {
   data: MusicDnaData;
@@ -46,10 +47,13 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
             {obsessions.length > 0 ? (
               obsessions.map((obs, idx) => (
                 <div key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all">
-                  <div className="truncate pr-4">
-                    <p className="text-xs font-bold text-white truncate">{obs.track}</p>
-                    <p className="text-[10px] text-gray-400 truncate">{obs.artist}</p>
-                    <p className="text-[9px] font-mono text-cyberCyan/70 mt-1">{formatDate(obs.date)}</p>
+                  <div className="flex items-center space-x-3 truncate pr-4">
+                    <ArtistAvatar name={obs.artist} size={32} />
+                    <div className="truncate">
+                      <p className="text-xs font-bold text-white truncate">{obs.track}</p>
+                      <p className="text-[10px] text-gray-400 truncate">{obs.artist}</p>
+                      <p className="text-[9px] font-mono text-cyberCyan/70 mt-1">{formatDate(obs.date)}</p>
+                    </div>
                   </div>
                   <div className="flex items-center space-x-1 bg-cyberPink/10 px-2.5 py-1 rounded-full border border-cyberPink/20 font-mono text-xs font-black text-cyberPink shrink-0">
                     <Flame className="w-3.5 h-3.5" />
@@ -100,7 +104,10 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
                   </div>
                   <div>
                     <span className="text-gray-400 block font-mono">{t.obsessionDetector.dominantArtist}</span>
-                    <span className="font-bold text-cyberPink truncate block">{sess.top_artist}</span>
+                    <span className="font-bold text-cyberPink truncate flex items-center gap-1.5 mt-0.5">
+                      <ArtistAvatar name={sess.top_artist} size={20} />
+                      {sess.top_artist}
+                    </span>
                   </div>
                 </div>
               </div>

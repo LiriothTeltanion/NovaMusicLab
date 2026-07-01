@@ -7,6 +7,7 @@ import {
 import { Trophy, Music2, Disc3, MicVocal, BarChart2, Search, X } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import ArtistAvatar from './ArtistAvatar';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -98,7 +99,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     );
   };
 
-  const ListRow = ({ rank, main, sub, plays, color }: { rank: number; main: string; sub?: string; plays: number; color: string }) => (
+  const ListRow = ({ rank, main, sub, plays, color, avatarName }: { rank: number; main: string; sub?: string; plays: number; color: string; avatarName?: string }) => (
     <motion.div variants={itemVariants}
       className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/3 transition-all group"
       style={{ border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -107,6 +108,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           style={{ color, backgroundColor: `${color}18`, border: `1px solid ${color}40` }}>
           {rank}
         </span>
+        {avatarName && <ArtistAvatar name={avatarName} size={32} />}
         <div className="truncate">
           <p className="text-sm font-bold text-white truncate leading-tight">{main}</p>
           {sub && <p className="text-[11px] text-gray-400 truncate">{sub}</p>}
@@ -187,7 +189,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {filteredArtists.slice(0, 50).map((a, idx) => (
                     <ListRow key={a.name} rank={idx + 1} main={a.name}
                       sub={`${a.country} · ${a.genre}`} plays={a.plays}
-                      color={COLORS[idx % COLORS.length]} />
+                      color={COLORS[idx % COLORS.length]} avatarName={a.name} />
                   ))}
                 </motion.div>
               </div>
@@ -232,7 +234,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {filteredTracks.slice(0, 50).map((t, idx) => (
                     <ListRow key={`${t.artist}-${t.title}`} rank={idx + 1} main={t.title}
                       sub={`${t.artist} · ${t.genre}`} plays={t.plays}
-                      color={COLORS[idx % COLORS.length]} />
+                      color={COLORS[idx % COLORS.length]} avatarName={t.artist} />
                   ))}
                 </motion.div>
               </div>
@@ -275,7 +277,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[660px] overflow-y-auto pr-1">
                 {filteredAlbums.slice(0, 50).map((a, idx) => (
                   <ListRow key={`${a.artist}-${a.title}`} rank={idx + 1} main={a.title}
-                    sub={a.artist} plays={a.plays} color={COLORS[idx % COLORS.length]} />
+                    sub={a.artist} plays={a.plays} color={COLORS[idx % COLORS.length]} avatarName={a.artist} />
                 ))}
               </motion.div>
             </div>
