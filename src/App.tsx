@@ -89,7 +89,7 @@ function AppInner() {
   const filteredData = musicData;
 
   return (
-    <div className="min-h-screen relative overflow-hidden text-gray-100 flex flex-col" style={{ backgroundColor: tc.bg }}>
+    <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}>
       <div className="absolute inset-0 cyber-grid pointer-events-none z-0" />
       <AnimatedParticles count={50} intensity="subtle" className="z-0" />
 

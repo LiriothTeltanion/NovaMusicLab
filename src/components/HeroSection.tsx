@@ -55,7 +55,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-cyberCyan/30 bg-cyberCyan/5 text-xs font-mono font-bold text-[#e0fbfc] tracking-wider uppercase animate-pulse-slow"
+          className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-cyberCyan/30 bg-cyberCyan/5 text-xs font-mono font-bold text-[var(--fg)] tracking-wider uppercase animate-pulse-slow"
         >
           <span>{t.heroSection.badge}</span>
           <span className="w-1.5 h-1.5 bg-cyberCyan rounded-full" />
@@ -69,7 +69,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           className="space-y-3"
         >
           <h1 className="text-5xl md:text-8xl font-extrabold tracking-tight leading-none">
-            <span className="bg-gradient-to-r from-white via-cyberCyan to-cyberPink bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[var(--fg)] via-[var(--c1)] to-[var(--c2)] bg-clip-text text-transparent">
               NOVA MUSIC LAB
             </span>
           </h1>
@@ -96,7 +96,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
             <Headphones className="w-24 h-24 text-cyberCyan" />
           </div>
-          <p className="text-sm md:text-base text-[#dbf7ff] font-sans italic leading-relaxed text-left">
+          <p className="text-sm md:text-base text-[var(--fg)] font-sans italic leading-relaxed text-left">
             {(() => {
               const { before, midA, midB, after } = t.heroSection.quote;
               return (

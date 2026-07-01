@@ -129,7 +129,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
             <div className="p-4 bg-cyberCyan/5 border border-cyberCyan/20 rounded-2xl flex items-start space-x-3">
               <Heart className="w-5 h-5 text-cyberCyan shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <span className="text-xs font-mono font-bold text-[#dbf7ff] uppercase">
+                <span className="text-xs font-mono font-bold text-[var(--fg)] uppercase">
                 {t.personalityRadar.tipLabel}</span>
                 <p className="text-xs text-gray-300 font-sans leading-relaxed">{currentTrait.tip}</p>
               </div>

@@ -34,7 +34,7 @@ export default function AnimatedParticles({ count = 40, intensity = 'medium', cl
   const opacityMap = { subtle: 0.15, medium: 0.35, vivid: 0.6 };
   const maxOpacity = opacityMap[intensity];
 
-  const palette = [tc.c1, tc.c2, tc.c3, tc.c4, '#ffffff'];
+  const palette = [tc.c1, tc.c2, tc.c3, tc.c4, tc.mode === 'light' ? '#1e293b' : '#ffffff'];
 
   // Deterministic pseudo-random using index as seed
   const particles = useMemo<Particle[]>(() => {
@@ -55,7 +55,7 @@ export default function AnimatedParticles({ count = 40, intensity = 'medium', cl
       };
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count, intensity, tc.c1, tc.c2, tc.c3, tc.c4]);
+  }, [count, intensity, tc.c1, tc.c2, tc.c3, tc.c4, tc.mode]);
 
   return (
     <div

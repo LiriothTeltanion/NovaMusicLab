@@ -6,10 +6,13 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type Lang  = 'es' | 'en';
-export type Theme = 'cyber' | 'aurora' | 'crimson' | 'nebula' | 'ocean' | 'gold' | 'midnight';
+export type Theme =
+  | 'cyber' | 'aurora' | 'crimson' | 'nebula' | 'ocean' | 'gold' | 'midnight'
+  | 'daylight' | 'linen' | 'mintfresh' | 'blossom' | 'sky' | 'sand' | 'lavender';
 
 export interface ThemeColors {
   c1: string; c2: string; c3: string; c4: string; bg: string; name: string; label: string;
+  mode: 'dark' | 'light';
 }
 
 // ─── Translations ─────────────────────────────────────────────────────────────
@@ -1016,31 +1019,59 @@ export type TranslationKeys = typeof STRINGS.es;
 export const THEMES: Record<Theme, ThemeColors> = {
   cyber: {
     c1: '#00f2fe', c2: '#f72585', c3: '#7209b7', c4: '#4cc9f0',
-    bg: '#050b14', name: 'cyber', label: '⚡ Cyber',
+    bg: '#050b14', name: 'cyber', label: '⚡ Cyber', mode: 'dark',
   },
   aurora: {
     c1: '#10b981', c2: '#34d399', c3: '#059669', c4: '#6ee7b7',
-    bg: '#050f0a', name: 'aurora', label: '🌿 Aurora',
+    bg: '#050f0a', name: 'aurora', label: '🌿 Aurora', mode: 'dark',
   },
   crimson: {
     c1: '#ef4444', c2: '#f97316', c3: '#b91c1c', c4: '#fb923c',
-    bg: '#0f0505', name: 'crimson', label: '🔥 Crimson',
+    bg: '#0f0505', name: 'crimson', label: '🔥 Crimson', mode: 'dark',
   },
   nebula: {
     c1: '#8b5cf6', c2: '#a78bfa', c3: '#7c3aed', c4: '#c4b5fd',
-    bg: '#06050f', name: 'nebula', label: '🔮 Nebula',
+    bg: '#06050f', name: 'nebula', label: '🔮 Nebula', mode: 'dark',
   },
   ocean: {
     c1: '#06b6d4', c2: '#0284c7', c3: '#0e7490', c4: '#67e8f9',
-    bg: '#03080f', name: 'ocean', label: '🌊 Ocean',
+    bg: '#03080f', name: 'ocean', label: '🌊 Ocean', mode: 'dark',
   },
   gold: {
     c1: '#f59e0b', c2: '#f97316', c3: '#d97706', c4: '#fcd34d',
-    bg: '#0a0700', name: 'gold', label: '🌕 Gold',
+    bg: '#0a0700', name: 'gold', label: '🌕 Gold', mode: 'dark',
   },
   midnight: {
     c1: '#60a5fa', c2: '#818cf8', c3: '#3b82f6', c4: '#93c5fd',
-    bg: '#020509', name: 'midnight', label: '🌙 Midnight',
+    bg: '#020509', name: 'midnight', label: '🌙 Midnight', mode: 'dark',
+  },
+  daylight: {
+    c1: '#2563eb', c2: '#db2777', c3: '#7c3aed', c4: '#0891b2',
+    bg: '#f7f8fb', name: 'daylight', label: '☀️ Daylight', mode: 'light',
+  },
+  linen: {
+    c1: '#c2410c', c2: '#b45309', c3: '#9a3412', c4: '#ea580c',
+    bg: '#faf6f0', name: 'linen', label: '🧵 Linen', mode: 'light',
+  },
+  mintfresh: {
+    c1: '#047857', c2: '#0d9488', c3: '#059669', c4: '#0f766e',
+    bg: '#f1fbf6', name: 'mintfresh', label: '🌱 Mint Fresh', mode: 'light',
+  },
+  blossom: {
+    c1: '#be185d', c2: '#a21caf', c3: '#9d174d', c4: '#db2777',
+    bg: '#fdf4f7', name: 'blossom', label: '🌸 Blossom', mode: 'light',
+  },
+  sky: {
+    c1: '#0369a1', c2: '#4338ca', c3: '#0e7490', c4: '#1d4ed8',
+    bg: '#f0f7ff', name: 'sky', label: '🌤️ Sky', mode: 'light',
+  },
+  sand: {
+    c1: '#92400e', c2: '#a16207', c3: '#78350f', c4: '#b45309',
+    bg: '#faf7ee', name: 'sand', label: '🏜️ Sand', mode: 'light',
+  },
+  lavender: {
+    c1: '#6d28d9', c2: '#be185d', c3: '#5b21b6', c4: '#7c3aed',
+    bg: '#f8f5ff', name: 'lavender', label: '💜 Lavender Light', mode: 'light',
   },
 };
 
@@ -1096,11 +1127,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const tc = THEMES[theme];
     const root = document.documentElement;
     root.setAttribute('data-theme', theme);
+    root.setAttribute('data-mode', tc.mode);
     root.style.setProperty('--c1', tc.c1);
     root.style.setProperty('--c2', tc.c2);
     root.style.setProperty('--c3', tc.c3);
     root.style.setProperty('--c4', tc.c4);
     root.style.setProperty('--bg', tc.bg);
+    root.style.setProperty('--fg', tc.mode === 'light' ? '#1e293b' : '#f3f4f6');
+    root.style.setProperty('--glass-bg', tc.mode === 'light' ? 'rgba(255, 255, 255, 0.55)' : 'rgba(10, 25, 47, 0.45)');
   }, [theme]);
 
   return (
