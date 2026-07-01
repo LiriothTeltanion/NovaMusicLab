@@ -5,8 +5,12 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      environment: 'node',
+      environment: 'jsdom',
+      environmentOptions: {
+        jsdom: { url: 'http://localhost:3000/' },
+      },
       globals: false,
+      setupFiles: ['./src/test-setup.ts'],
     },
   })
 )
