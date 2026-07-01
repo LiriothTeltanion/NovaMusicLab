@@ -37,17 +37,10 @@ const TIER_COLORS = {
   legendary:{ glow: '#a020f0', text: '#d070ff', bg: '#120030' },
 };
 
-const TIER_LABELS = {
-  bronze:    { es: 'Bronce',    en: 'Bronze'    },
-  silver:    { es: 'Plata',     en: 'Silver'    },
-  gold:      { es: 'Oro',       en: 'Gold'      },
-  platinum:  { es: 'Platino',   en: 'Platinum'  },
-  legendary: { es: 'Legendario',en: 'Legendary' },
-};
-
 export default function Achievements({ data }: AchievementsProps) {
-  const { lang, tc } = useApp();
+  const { lang, tc, t } = useApp();
   const L = lang === 'en';
+  const tierLabel = (tier: keyof typeof t.achievements.tiers) => t.achievements.tiers[tier];
   const m = data.core_metrics;
   const records = getRecords(data);
   const peakYear = getPeakYear(data);
@@ -170,12 +163,12 @@ export default function Achievements({ data }: AchievementsProps) {
   };
 
   const radarData = [
-    { metric: L ? 'Volume'      : 'Volumen',      val: 95 },
-    { metric: L ? 'Diversity'   : 'Diversidad',   val: 84 },
-    { metric: L ? 'Consistency' : 'Consistencia', val: 78 },
-    { metric: L ? 'Exploration' : 'Exploración',  val: 82 },
-    { metric: L ? 'Dedication'  : 'Dedicación',   val: 96 },
-    { metric: L ? 'Nostalgia'   : 'Nostalgia',    val: 88 },
+    { metric: t.achievements.radarMetrics.volume,      val: 95 },
+    { metric: t.achievements.radarMetrics.diversity,   val: 84 },
+    { metric: t.achievements.radarMetrics.consistency, val: 78 },
+    { metric: t.achievements.radarMetrics.exploration, val: 82 },
+    { metric: t.achievements.radarMetrics.dedication,  val: 96 },
+    { metric: t.achievements.radarMetrics.nostalgia,   val: 88 },
   ];
 
   const containerV = { animate: { transition: { staggerChildren: 0.06 } } };
@@ -191,9 +184,9 @@ export default function Achievements({ data }: AchievementsProps) {
     silver: 100,
     bronze: 50,
   };
-  const tierPointData = tierOrder.slice(0, 4).map(t => ({
-    tier: TIER_LABELS[t as keyof typeof TIER_LABELS][L ? 'en' : 'es'],
-    points: achievements.filter(a => a.tier === t).length * tierPoints[t as Achievement['tier']],
+  const tierPointData = tierOrder.slice(0, 4).map(tier => ({
+    tier: tierLabel(tier as keyof typeof t.achievements.tiers),
+    points: achievements.filter(a => a.tier === tier).length * tierPoints[tier as Achievement['tier']],
   }));
   const totalPoints = achievements.reduce((sum, ach) => sum + tierPoints[ach.tier], 0);
 
@@ -205,21 +198,21 @@ export default function Achievements({ data }: AchievementsProps) {
           <Trophy className="w-7 h-7" style={{ color: '#ffd700', filter: 'drop-shadow(0 0 8px #ffd70060)' }} />
           <div>
             <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-              {L ? 'Achievements & Records' : 'Logros & Récords'}
+              {t.achievements.title}
             </h2>
             <p className="text-xs text-gray-400 font-mono mt-0.5">
-              {L ? '12 unlocked achievements across 11 years' : '12 logros desbloqueados en 11 años'}
+              {t.achievements.subtitle(achievements.length)}
             </p>
           </div>
         </div>
         <div className="flex gap-2 flex-wrap">
-          {(['all', ...tierOrder] as const).map(t => (
-            <button key={t} onClick={() => setFilter(t as any)}
+          {(['all', ...tierOrder] as const).map(tier => (
+            <button key={tier} onClick={() => setFilter(tier as any)}
               className="px-3 py-1.5 rounded-xl font-mono text-[10px] font-bold uppercase transition-all border"
-              style={filter === t
-                ? { borderColor: t === 'all' ? tc.c1 : TIER_COLORS[t as keyof typeof TIER_COLORS]?.glow ?? tc.c1, color: t === 'all' ? tc.c1 : TIER_COLORS[t as keyof typeof TIER_COLORS]?.text ?? '#fff', backgroundColor: `${t === 'all' ? tc.c1 : TIER_COLORS[t as keyof typeof TIER_COLORS]?.glow ?? tc.c1}20` }
+              style={filter === tier
+                ? { borderColor: tier === 'all' ? tc.c1 : TIER_COLORS[tier as keyof typeof TIER_COLORS]?.glow ?? tc.c1, color: tier === 'all' ? tc.c1 : TIER_COLORS[tier as keyof typeof TIER_COLORS]?.text ?? '#fff', backgroundColor: `${tier === 'all' ? tc.c1 : TIER_COLORS[tier as keyof typeof TIER_COLORS]?.glow ?? tc.c1}20` }
                 : { borderColor: 'rgba(255,255,255,0.08)', color: '#6b7280' }}>
-              {t === 'all' ? (L ? 'All' : 'Todos') : TIER_LABELS[t as keyof typeof TIER_LABELS]?.[L ? 'en' : 'es'] ?? t}
+              {tier === 'all' ? t.achievements.filterAll : tierLabel(tier as keyof typeof t.achievements.tiers) ?? tier}
             </button>
           ))}
         </div>
@@ -227,14 +220,14 @@ export default function Achievements({ data }: AchievementsProps) {
 
       {/* Tier summary strip */}
       <div className="grid grid-cols-5 gap-3">
-        {tierOrder.map(t => {
-          const count = stats[t as keyof typeof stats];
-          const colors = TIER_COLORS[t as keyof typeof TIER_COLORS];
+        {tierOrder.map(tier => {
+          const count = stats[tier as keyof typeof stats];
+          const colors = TIER_COLORS[tier as keyof typeof TIER_COLORS];
           return (
-            <div key={t} className="glass-panel p-3 rounded-2xl text-center border-t-2" style={{ borderTopColor: colors.glow }}>
+            <div key={tier} className="glass-panel p-3 rounded-2xl text-center border-t-2" style={{ borderTopColor: colors.glow }}>
               <p className="text-xl font-black font-mono" style={{ color: colors.text }}>{count}</p>
               <p className="text-[9px] font-mono text-gray-400 uppercase tracking-wider mt-0.5">
-                {TIER_LABELS[t as keyof typeof TIER_LABELS][L ? 'en' : 'es']}
+                {tierLabel(tier as keyof typeof t.achievements.tiers)}
               </p>
             </div>
           );
@@ -273,7 +266,7 @@ export default function Achievements({ data }: AchievementsProps) {
                   </div>
                   <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full"
                     style={{ color: colors.text, backgroundColor: `${colors.glow}20`, border: `1px solid ${colors.glow}40` }}>
-                    {TIER_LABELS[ach.tier][L ? 'en' : 'es'].toUpperCase()}
+                    {tierLabel(ach.tier).toUpperCase()}
                   </span>
                 </div>
 
@@ -309,14 +302,14 @@ export default function Achievements({ data }: AchievementsProps) {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         <div className="glass-panel p-6 rounded-3xl">
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest mb-5">
-            {L ? 'Music Profile Radar' : 'Radar del Perfil Musical'}
+            {t.achievements.radarTitle}
           </h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
                 <PolarGrid stroke="#1e293b" />
                 <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <Radar name={L ? 'Your Profile' : 'Tu Perfil'} dataKey="val"
+                <Radar name={t.achievements.yourProfile} dataKey="val"
                   stroke={tc.c1} fill={tc.c1} fillOpacity={0.2} />
               </RadarChart>
             </ResponsiveContainer>
@@ -325,7 +318,7 @@ export default function Achievements({ data }: AchievementsProps) {
 
         <div className="glass-panel p-6 rounded-3xl">
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest mb-5">
-            {L ? 'Achievement Points by Tier' : 'Puntos por Nivel de Logro'}
+            {t.achievements.pointsByTier}
           </h3>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
@@ -334,7 +327,7 @@ export default function Achievements({ data }: AchievementsProps) {
                 <XAxis dataKey="tier" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <YAxis stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <Tooltip contentStyle={{ backgroundColor: '#070e1c', borderColor: `${tc.c1}40`, borderRadius: '12px' }} />
-                <Bar dataKey="points" name={L ? 'Points' : 'Puntos'} radius={[6, 6, 0, 0]}>
+                <Bar dataKey="points" name={t.achievements.pointsLegend} radius={[6, 6, 0, 0]}>
                   {[TIER_COLORS.legendary.glow, TIER_COLORS.platinum.glow, TIER_COLORS.gold.glow, TIER_COLORS.silver.glow].map((color, i) => (
                     <Cell key={i} fill={color} fillOpacity={0.85} />
                   ))}
@@ -343,7 +336,7 @@ export default function Achievements({ data }: AchievementsProps) {
             </ResponsiveContainer>
           </div>
           <p className="text-center text-sm font-mono font-bold mt-3" style={{ color: TIER_COLORS.legendary.text }}>
-            {L ? `Total: ${fmtNum(totalPoints)} pts - Legendary Rank` : `Total: ${fmtNum(totalPoints)} pts - Rango Legendario`}
+            {t.achievements.totalPoints(fmtNum(totalPoints))}
           </p>
         </div>
       </div>
