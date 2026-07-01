@@ -9,6 +9,7 @@ import { Activity, Calendar, Zap, TrendingUp, Award, Target } from 'lucide-react
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
+import GenreArt from './GenreArt';
 import {
   buildMonthlyActivity,
   getMonthNames,
@@ -307,6 +308,11 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
             {t.statsDeepDive.genreTreemapTitle}
           </h3>
+        </div>
+        <div className="flex flex-wrap gap-4 mb-6">
+          {treemapData.children.slice(0, 8).map((g: { name: string; plays: number }) => (
+            <GenreArt key={g.name} genre={g.name} size={52} showLabel />
+          ))}
         </div>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">

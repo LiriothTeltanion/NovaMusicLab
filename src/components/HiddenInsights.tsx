@@ -3,6 +3,7 @@ import { AlertCircle, HelpCircle, HeartHandshake, ShieldAlert } from 'lucide-rea
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getRecords } from '../utils/analytics';
+import ArtistAvatar from './ArtistAvatar';
 
 interface HiddenInsightsProps {
   data: MusicDnaData;
@@ -41,6 +42,11 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
               {t.hiddenInsights.supportWeightTitle}
             </h4>
           </div>
+          <div className="flex items-center -space-x-2">
+            {topArtist?.name && <ArtistAvatar name={topArtist.name} size={36} className="ring-2 ring-black" />}
+            <ArtistAvatar name={secondArtistName} size={36} className="ring-2 ring-black" />
+            {supportArtists[1]?.name && <ArtistAvatar name={supportArtists[1].name} size={36} className="ring-2 ring-black" />}
+          </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed">
             {t.hiddenInsights.supportWeightBody(
               topArtist?.name ?? '',
@@ -74,6 +80,10 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
             <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
               {t.hiddenInsights.timeResistantTracksTitle}
             </h4>
+          </div>
+          <div className="flex items-center -space-x-2">
+            {anchorTracks[0]?.artist && <ArtistAvatar name={anchorTracks[0].artist} size={36} className="ring-2 ring-black" />}
+            {anchorTracks[1]?.artist && <ArtistAvatar name={anchorTracks[1].artist} size={36} className="ring-2 ring-black" />}
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed">
             {t.hiddenInsights.timeResistantTracksBody(
