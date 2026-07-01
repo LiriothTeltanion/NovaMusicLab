@@ -8,9 +8,18 @@ import { GitCompare, CheckCircle2, AlertTriangle, Eye, Music, Users, Disc } from
 import { MusicDnaData } from '../types';
 import { deriveSourceSummary, getNightRatio, getTwoYearPeak } from '../utils/analytics';
 import { useApp } from '../context/AppContext';
+import ArtistAvatar from './ArtistAvatar';
 
 interface SpotifyVsLastfmProps {
   data: MusicDnaData;
+}
+
+interface Insight {
+  icon: string;
+  title: string;
+  body: string;
+  color: string;
+  avatarNames?: string[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -64,7 +73,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
     { metric: t.spotifyVsLastfm.radarContext,  lastfm: 60, spotify: 85 },
   ];
 
-  const insights = [
+  const insights: Insight[] = [
     {
       icon: '🕵️',
       title: t.spotifyVsLastfm.insightDominantArtistsTitle,
@@ -74,6 +83,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
         topConsciousArtist?.name ?? t.spotifyVsLastfm.yourSecondWaveFallback,
       ),
       color: '#00f2fe',
+      avatarNames: [topArtist?.name, topConsciousArtist?.name].filter(Boolean) as string[],
     },
     {
       icon: '🔇',
@@ -321,6 +331,13 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
               <h4 className="font-bold text-white text-base leading-tight">
                 {insights[activeInsight].title}
               </h4>
+              {insights[activeInsight].avatarNames && (
+                <div className="flex items-center -space-x-2">
+                  {insights[activeInsight].avatarNames!.map(name => (
+                    <ArtistAvatar key={name} name={name} size={32} className="ring-2 ring-black" />
+                  ))}
+                </div>
+              )}
               <p className="text-sm text-gray-300 font-sans leading-relaxed">
                 {insights[activeInsight].body}
               </p>

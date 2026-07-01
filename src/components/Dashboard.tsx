@@ -4,6 +4,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pi
 import { Calendar, Clock, Disc, Music, Trophy, Star, TrendingUp, Flame } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
+import ArtistAvatar from './ArtistAvatar';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames, normalizeGenre } from '../utils/analytics';
 
@@ -83,6 +84,15 @@ export default function Dashboard({ data }: DashboardProps) {
       plays: totalHourPlays
     };
   });
+
+  const ArtistTick = ({ x, y, payload }: any) => (
+    <foreignObject x={x - 148} y={y - 12} width={144} height={24}>
+      <div className="flex items-center justify-end gap-1.5 h-full">
+        <span className="text-[11px] text-gray-300 truncate">{payload.value}</span>
+        <ArtistAvatar name={payload.value} size={20} />
+      </div>
+    </foreignObject>
+  );
 
   return (
     <div className="space-y-10 animate-fade-in">
@@ -172,9 +182,9 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={topArtistsData} layout="vertical" margin={{ left: 50, right: 20, top: 0, bottom: 0 }}>
+              <BarChart data={topArtistsData} layout="vertical" margin={{ left: 60, right: 20, top: 0, bottom: 0 }}>
                 <XAxis type="number" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11} width={130} tick={{ fill: '#d1d5db' }} />
+                <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11} width={150} tick={<ArtistTick />} />
                 <Tooltip
                   contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c1, borderRadius: '12px' }}
                   labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
