@@ -7,7 +7,9 @@ import {
 import { Trophy, Music2, Disc3, MicVocal, BarChart2, Search, X } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import { normalizeGenre } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
+import GenreArt from './GenreArt';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -58,7 +60,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const yearlyData = data.yearly_eras.map(e => ({ year: String(e.year), plays: e.plays, artistas: e.unique_artists }));
 
   const genreMap: Record<string, number> = {};
-  data.top_artists.forEach(a => { const g = a.genre || 'Alt'; genreMap[g] = (genreMap[g] || 0) + a.plays; });
+  data.top_artists.forEach(a => { const g = normalizeGenre(a.genre); genreMap[g] = (genreMap[g] || 0) + a.plays; });
   const genreData = Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, plays]) => ({ name, plays }));
 
   /* ── Treemap ── */
@@ -286,6 +288,18 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {/* GÉNEROS */}
           {tab === 'generos' && (
             <div className="space-y-8">
+              <div className="glass-panel p-6 rounded-3xl">
+                <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
+                  style={{ color: tc.c2 }}>
+                  {t.topHistorico.tabGenres}
+                </h3>
+                <div className="flex flex-wrap gap-5">
+                  {genreData.slice(0, 10).map(g => (
+                    <GenreArt key={g.name} genre={g.name} size={68} showLabel />
+                  ))}
+                </div>
+              </div>
+
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c1 }}>
