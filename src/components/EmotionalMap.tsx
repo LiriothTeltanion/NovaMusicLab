@@ -4,6 +4,7 @@ import { Heart } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { inferMoodCoordinates } from '../utils/analytics';
+import ArtistAvatar from './ArtistAvatar';
 
 interface EmotionalMapProps {
   data: MusicDnaData;
@@ -186,9 +187,16 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 {currentEmotion.desc}
               </p>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{t.emotionalMap.keyArtistsLabel}</span>
-                <p className="text-xs text-white font-semibold font-mono">{currentEmotion.artists.join(', ')}</p>
+                <div className="flex flex-wrap gap-2">
+                  {currentEmotion.artists.map(artist => (
+                    <span key={artist} className="flex items-center gap-1.5 pl-1 pr-2.5 py-1 bg-[#0a0f1d] border border-cyan-500/10 rounded-full text-xs text-white font-semibold font-mono">
+                      <ArtistAvatar name={artist} size={20} />
+                      {artist}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div className="space-y-1.5 pt-2">

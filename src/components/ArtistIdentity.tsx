@@ -2,6 +2,7 @@ import React from 'react';
 import { Sparkles, Music, Image as ImageIcon, Disc } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import ArtistAvatar from './ArtistAvatar';
 
 interface ArtistIdentityProps {
   data: MusicDnaData;
@@ -43,7 +44,14 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
               </div>
               <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl">
                 <span className="text-[10px] font-mono text-gray-400 uppercase">{t.artistIdentity.keyInfluences}</span>
-                <p className="text-xs font-bold text-cyberCyan mt-1 truncate">{profile.influences.slice(0, 3).join(', ')}</p>
+                <div className="flex items-center gap-2 mt-1.5">
+                  <div className="flex items-center -space-x-1.5 shrink-0">
+                    {profile.influences.slice(0, 3).map(name => (
+                      <ArtistAvatar key={name} name={name} size={22} className="ring-1 ring-black" />
+                    ))}
+                  </div>
+                  <p className="text-xs font-bold text-cyberCyan truncate">{profile.influences.slice(0, 3).join(', ')}</p>
+                </div>
               </div>
             </div>
 
