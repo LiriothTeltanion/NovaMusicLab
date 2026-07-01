@@ -11,6 +11,7 @@ import {
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
+import ArtistAvatar from './ArtistAvatar';
 import { getNightRatio, getPeakYear, getRecords } from '../utils/analytics';
 
 interface AchievementsProps { data: MusicDnaData; }
@@ -27,6 +28,7 @@ interface Achievement {
   desc_en: string;
   tier: 'bronze' | 'silver' | 'gold' | 'platinum' | 'legendary';
   numericVal?: number;
+  avatarName?: string;
 }
 
 const TIER_COLORS = {
@@ -135,7 +137,7 @@ export default function Achievements({ data }: AchievementsProps) {
       desc_en: `${peakYear?.year ?? 'Your peak year'} contains ${fmtNum(peakYear?.plays ?? 0)} plays and marks the strongest intensity in the current dataset.`,
     },
     {
-      id: 'loyal_fan', icon: Heart, tier: 'gold',
+      id: 'loyal_fan', icon: Heart, tier: 'gold', avatarName: topArtist?.name,
       label_es: 'Fan Incondicional', label_en: 'Unconditional Fan',
       value: fmtNum(topArtist?.plays ?? 0), numericVal: topArtist?.plays ?? 0,
       unit_es: `plays de ${topArtist?.name ?? 'tu artista principal'}`, unit_en: `${topArtist?.name ?? 'your top artist'} plays`,
@@ -282,10 +284,14 @@ export default function Achievements({ data }: AchievementsProps) {
 
               <div className="relative z-10">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: `${colors.glow}20`, border: `1px solid ${colors.glow}40` }}>
-                    <Icon className="w-5 h-5" style={{ color: colors.glow }} />
-                  </div>
+                  {ach.avatarName ? (
+                    <ArtistAvatar name={ach.avatarName} size={40} />
+                  ) : (
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${colors.glow}20`, border: `1px solid ${colors.glow}40` }}>
+                      <Icon className="w-5 h-5" style={{ color: colors.glow }} />
+                    </div>
+                  )}
                   <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full"
                     style={{ color: colors.text, backgroundColor: `${colors.glow}20`, border: `1px solid ${colors.glow}40` }}>
                     {tierLabel(ach.tier).toUpperCase()}
