@@ -12,6 +12,7 @@ import {
   type PlaySource,
 } from '../types';
 import { countryCodeToName, normalizeGenre } from './analytics';
+import artistMetaJson from '../data/artist_meta.json';
 
 type RawSource = Exclude<PlaySource, 'merged' | 'unknown'>;
 
@@ -53,26 +54,12 @@ const FALLBACK_TRACK_MS = 200000;
 const SESSION_GAP_MINUTES = 60;
 const OBSESSION_MIN_PLAYS_PER_DAY = 5;
 
-const KNOWN_ARTIST_META: Record<string, ArtistMeta> = {
-  'bring me the horizon': { genre: 'Metalcore / Alternative', country: 'United Kingdom' },
-  deafheaven: { genre: 'Blackgaze / Post-Metal', country: 'United States' },
-  bilmuri: { genre: 'Emo Groove / Alternative', country: 'United States' },
-  'the midnight': { genre: 'Synthwave / Retrowave', country: 'United States' },
-  'carpenter brut': { genre: 'Darksynth / Cyberpunk', country: 'France' },
-  'nothingnowhere.': { genre: 'Emo Rap / Alternative', country: 'United States' },
-  'h.e.a.t': { genre: 'Hard Rock / AOR', country: 'Sweden' },
-  ghost: { genre: 'Heavy Metal / Occult Rock', country: 'Sweden' },
-  'the word alive': { genre: 'Post-Hardcore / Metalcore', country: 'United States' },
-  slaves: { genre: 'Post-Hardcore', country: 'United States' },
-  normandie: { genre: 'Alternative Rock', country: 'Sweden' },
-  'magnolia park': { genre: 'Pop Punk / Emo Pop', country: 'United States' },
-  alcest: { genre: 'Blackgaze / Shoegaze', country: 'France' },
-  hammock: { genre: 'Ambient / Post-Rock', country: 'United States' },
-  tesseract: { genre: 'Progressive Metal / Djent', country: 'United Kingdom' },
-  'tokio hotel': { genre: 'Pop Rock / Emo Pop', country: 'Germany' },
-  'the kid laroi': { genre: 'Pop Rap / Alternative', country: 'Australia' },
-  'santa cruz': { genre: 'Glam Rock / Hard Rock', country: 'Finland' },
-};
+/**
+ * Bundled offline artist metadata (446 entries): the 100 curated artists from
+ * the app's own dataset plus ~350 well-known artists across genres, authored
+ * once at build time - no runtime API calls, keeping the app fully client-side.
+ */
+const KNOWN_ARTIST_META = artistMetaJson as Record<string, ArtistMeta>;
 
 function metaForArtist(artist: string): ArtistMeta {
   return KNOWN_ARTIST_META[artist.trim().toLowerCase()] ?? {

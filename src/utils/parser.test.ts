@@ -141,6 +141,25 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_short_plays).toBe(1);
   });
 
+  it('enriches uploaded plays with bundled artist metadata (genre + country)', () => {
+    const csv = [
+      'Metallica,Master of Puppets,Battery,01 Jan 2026 10:00',
+      'Bad Bunny,Un Verano Sin Ti,Moscow Mule,01 Jan 2026 11:00',
+      'Totally Unknown Garage Band,Demo,Song,01 Jan 2026 12:00',
+    ].join('\n');
+
+    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const metallica = data.top_artists.find(a => a.name === 'Metallica');
+    const badBunny = data.top_artists.find(a => a.name === 'Bad Bunny');
+    const unknown = data.top_artists.find(a => a.name === 'Totally Unknown Garage Band');
+
+    expect(metallica?.genre).toBe('Thrash Metal / Heavy Metal');
+    expect(metallica?.country).toBe('United States');
+    expect(badBunny?.country).toBe('Puerto Rico');
+    expect(unknown?.genre).toBe('Unclassified');
+    expect(unknown?.country).toBe('Unknown');
+  });
+
   it('normalizes cross-source duplicate tracks despite artist capitalization differences', () => {
     const lastfm = 'shared artist,Album,Shared Track,01 Jan 2026 10:00';
     const spotify = JSON.stringify([

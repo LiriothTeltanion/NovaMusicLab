@@ -1,0 +1,1786 @@
+{
+  "21 savage": {
+    "genre": "Trap / Hip-Hop",
+    "country": "United States"
+  },
+  "24kgoldn": {
+    "genre": "Pop Rap / Melodic Trap",
+    "country": "United States"
+  },
+  "3teeth": {
+    "genre": "Industrial Metal / Darkwave",
+    "country": "United States"
+  },
+  "44phantom": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "5 seconds of summer": {
+    "genre": "Pop Rock / Pop Punk",
+    "country": "Australia"
+  },
+  "50 cent": {
+    "genre": "Hip-Hop / Gangsta Rap",
+    "country": "United States"
+  },
+  "a day to remember": {
+    "genre": "Metalcore / Pop Punk",
+    "country": "United States"
+  },
+  "a$ap rocky": {
+    "genre": "Hip-Hop / Cloud Rap",
+    "country": "United States"
+  },
+  "ac/dc": {
+    "genre": "Hard Rock / Rock and Roll",
+    "country": "Australia"
+  },
+  "acres": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "adele": {
+    "genre": "Pop / Soul",
+    "country": "United Kingdom"
+  },
+  "aerosmith": {
+    "genre": "Hard Rock / Blues Rock",
+    "country": "United States"
+  },
+  "against the current": {
+    "genre": "Pop Rock / Alternative",
+    "country": "United States"
+  },
+  "alcest": {
+    "genre": "Post-Metal / Shoegaze",
+    "country": "France"
+  },
+  "alice in chains": {
+    "genre": "Grunge / Alternative Metal",
+    "country": "United States"
+  },
+  "all time low": {
+    "genre": "Pop Punk / Pop Rock",
+    "country": "United States"
+  },
+  "alt-j": {
+    "genre": "Indie Rock / Art Pop",
+    "country": "United Kingdom"
+  },
+  "amon amarth": {
+    "genre": "Melodic Death Metal / Viking Metal",
+    "country": "Sweden"
+  },
+  "amorphis": {
+    "genre": "Progressive Metal / Melodic Death",
+    "country": "Finland"
+  },
+  "anathema": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "animals as leaders": {
+    "genre": "Progressive Metal / Instrumental",
+    "country": "United States"
+  },
+  "annihilator": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "anuel aa": {
+    "genre": "Latin Trap / Reggaeton",
+    "country": "Puerto Rico"
+  },
+  "aphex twin": {
+    "genre": "IDM / Ambient Techno",
+    "country": "United Kingdom"
+  },
+  "apocalyptica": {
+    "genre": "Symphonic Metal / Cello Rock",
+    "country": "Finland"
+  },
+  "arcángel": {
+    "genre": "Latin Trap / Reggaeton",
+    "country": "Puerto Rico"
+  },
+  "arch enemy": {
+    "genre": "Melodic Death Metal",
+    "country": "Sweden"
+  },
+  "architects": {
+    "genre": "Metalcore / Progressive",
+    "country": "United Kingdom"
+  },
+  "arctic monkeys": {
+    "genre": "Indie Rock / Alternative Rock",
+    "country": "United Kingdom"
+  },
+  "ariana grande": {
+    "genre": "Pop / R&B",
+    "country": "United States"
+  },
+  "arik einstein": {
+    "genre": "Israeli Rock / Folk",
+    "country": "Israel"
+  },
+  "arrows in action": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "asaf avidan": {
+    "genre": "Folk Rock / Blues",
+    "country": "Israel"
+  },
+  "asking alexandria": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "at the gates": {
+    "genre": "Melodic Death Metal",
+    "country": "Sweden"
+  },
+  "atzmus": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "august burns red": {
+    "genre": "Metalcore / Progressive",
+    "country": "United States"
+  },
+  "avenged sevenfold": {
+    "genre": "Heavy Metal / Hard Rock",
+    "country": "United States"
+  },
+  "avicii": {
+    "genre": "Progressive House / EDM",
+    "country": "Sweden"
+  },
+  "aviv geffen": {
+    "genre": "Israeli Rock / Alternative",
+    "country": "Israel"
+  },
+  "babymetal": {
+    "genre": "Kawaii Metal / J-Pop",
+    "country": "Japan"
+  },
+  "bad bunny": {
+    "genre": "Reggaeton / Latin Trap",
+    "country": "Puerto Rico"
+  },
+  "bad omens": {
+    "genre": "Metalcore / Alternative",
+    "country": "United States"
+  },
+  "beach house": {
+    "genre": "Dream Pop / Shoegaze",
+    "country": "United States"
+  },
+  "beartooth": {
+    "genre": "Metalcore / Hardcore Punk",
+    "country": "United States"
+  },
+  "being as an ocean": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "berry sakharof": {
+    "genre": "Israeli Rock / Alternative",
+    "country": "Israel"
+  },
+  "beyoncé": {
+    "genre": "R&B / Pop",
+    "country": "United States"
+  },
+  "biffy clyro": {
+    "genre": "Alternative Rock / Post-Hardcore",
+    "country": "United Kingdom"
+  },
+  "billie eilish": {
+    "genre": "Alternative Pop / Electropop",
+    "country": "United States"
+  },
+  "bilmuri": {
+    "genre": "Emo Groove / Alt-Metal",
+    "country": "United States"
+  },
+  "black sabbath": {
+    "genre": "Heavy Metal / Doom Metal",
+    "country": "United Kingdom"
+  },
+  "blackfield": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "blackpink": {
+    "genre": "K-Pop / Dance Pop",
+    "country": "South Korea"
+  },
+  "blessthefall": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "blink-182": {
+    "genre": "Pop Punk / Skate Punk",
+    "country": "United States"
+  },
+  "blur": {
+    "genre": "Britpop / Alternative Rock",
+    "country": "United Kingdom"
+  },
+  "blut aus nord": {
+    "genre": "Atmospheric Black Metal",
+    "country": "France"
+  },
+  "boards of canada": {
+    "genre": "IDM / Downtempo",
+    "country": "United Kingdom"
+  },
+  "bon iver": {
+    "genre": "Indie Folk / Experimental",
+    "country": "United States"
+  },
+  "bon jovi": {
+    "genre": "Hard Rock / Arena Rock",
+    "country": "United States"
+  },
+  "bones": {
+    "genre": "Cloud Rap / Emo Rap",
+    "country": "United States"
+  },
+  "bonobo": {
+    "genre": "Downtempo / Trip Hop",
+    "country": "United Kingdom"
+  },
+  "boy pablo": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "brand new": {
+    "genre": "Emo / Alternative Rock",
+    "country": "United States"
+  },
+  "breaking benjamin": {
+    "genre": "Alternative Metal / Post-Grunge",
+    "country": "United States"
+  },
+  "bring me the horizon": {
+    "genre": "Metalcore / Alternative",
+    "country": "United Kingdom"
+  },
+  "bruno mars": {
+    "genre": "Pop / Funk",
+    "country": "United States"
+  },
+  "bts": {
+    "genre": "K-Pop / Pop",
+    "country": "South Korea"
+  },
+  "bury tomorrow": {
+    "genre": "Metalcore / Melodic Metal",
+    "country": "United Kingdom"
+  },
+  "café tacvba": {
+    "genre": "Rock en Español / Alternative",
+    "country": "Mexico"
+  },
+  "cage the elephant": {
+    "genre": "Indie Rock / Garage Rock",
+    "country": "United States"
+  },
+  "calvin harris": {
+    "genre": "EDM / Dance Pop",
+    "country": "United Kingdom"
+  },
+  "caramelos de cianuro": {
+    "genre": "Rock Venezolano / Alternative",
+    "country": "Venezuela"
+  },
+  "cardi b": {
+    "genre": "Hip-Hop / Trap",
+    "country": "United States"
+  },
+  "carpenter brut": {
+    "genre": "Darksynth / Cyberpunk",
+    "country": "France"
+  },
+  "charlie puth": {
+    "genre": "Pop / R&B",
+    "country": "United States"
+  },
+  "childish gambino": {
+    "genre": "Hip-Hop / Funk",
+    "country": "United States"
+  },
+  "children of bodom": {
+    "genre": "Melodic Death Metal / Power Metal",
+    "country": "Finland"
+  },
+  "cigarettes after sex": {
+    "genre": "Dream Pop / Slowcore",
+    "country": "United States"
+  },
+  "city morgue": {
+    "genre": "Trap Metal / Punk Rap",
+    "country": "United States"
+  },
+  "clairo": {
+    "genre": "Bedroom Pop / Indie Pop",
+    "country": "United States"
+  },
+  "coldplay": {
+    "genre": "Pop Rock / Alternative Rock",
+    "country": "United Kingdom"
+  },
+  "coldrain": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "Japan"
+  },
+  "colony house": {
+    "genre": "Indie Rock / Alternative",
+    "country": "United States"
+  },
+  "com truise": {
+    "genre": "Synthwave / Chillwave",
+    "country": "United States"
+  },
+  "corbin karasu": {
+    "genre": "Lo-Fi / R&B",
+    "country": "United States"
+  },
+  "crazy lixx": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "crossfaith": {
+    "genre": "Electronicore / Metalcore",
+    "country": "Japan"
+  },
+  "crown the empire": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "crystal lake": {
+    "genre": "Metalcore / Hardcore",
+    "country": "Japan"
+  },
+  "daddy yankee": {
+    "genre": "Reggaeton / Latin Hip-Hop",
+    "country": "Puerto Rico"
+  },
+  "daft punk": {
+    "genre": "House / Electronic",
+    "country": "France"
+  },
+  "dan terminus": {
+    "genre": "Darksynth / Cyberpunk",
+    "country": "France"
+  },
+  "dance with the dead": {
+    "genre": "Darksynth / Cyberpunk",
+    "country": "United States"
+  },
+  "danny ocean": {
+    "genre": "Latin Pop / Reggaeton",
+    "country": "Venezuela"
+  },
+  "dark tranquillity": {
+    "genre": "Melodic Death Metal",
+    "country": "Sweden"
+  },
+  "dashboard confessional": {
+    "genre": "Emo / Acoustic Rock",
+    "country": "United States"
+  },
+  "david guetta": {
+    "genre": "EDM / Dance Pop",
+    "country": "France"
+  },
+  "dayglow": {
+    "genre": "Indie Pop / Bedroom Pop",
+    "country": "United States"
+  },
+  "dayseeker": {
+    "genre": "Post-Hardcore / Synth-Metal",
+    "country": "United States"
+  },
+  "deadmau5": {
+    "genre": "Progressive House / Electro",
+    "country": "Canada"
+  },
+  "deafheaven": {
+    "genre": "Blackgaze / Post-Metal",
+    "country": "United States"
+  },
+  "deep purple": {
+    "genre": "Hard Rock / Heavy Metal",
+    "country": "United Kingdom"
+  },
+  "def leppard": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "deftones": {
+    "genre": "Alternative Metal / Shoegaze",
+    "country": "United States"
+  },
+  "demi lovato": {
+    "genre": "Pop / Pop Rock",
+    "country": "United States"
+  },
+  "dennis lloyd": {
+    "genre": "Alt-Pop / Israeli Pop",
+    "country": "Israel"
+  },
+  "depeche mode": {
+    "genre": "Synth-Pop / New Wave",
+    "country": "United Kingdom"
+  },
+  "desorden público": {
+    "genre": "Ska / Rock Venezolano",
+    "country": "Venezuela"
+  },
+  "dir en grey": {
+    "genre": "Visual Kei / Experimental Metal",
+    "country": "Japan"
+  },
+  "disclosure": {
+    "genre": "UK Garage / House",
+    "country": "United Kingdom"
+  },
+  "disturbed": {
+    "genre": "Alternative Metal / Nu Metal",
+    "country": "United States"
+  },
+  "diversify": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "doja cat": {
+    "genre": "Pop Rap / R&B",
+    "country": "United States"
+  },
+  "don vedda": {
+    "genre": "Alternative Rock / Indie",
+    "country": "United States"
+  },
+  "dr. dre": {
+    "genre": "Hip-Hop / G-Funk",
+    "country": "United States"
+  },
+  "drake": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "dream theater": {
+    "genre": "Progressive Metal / Progressive Rock",
+    "country": "United States"
+  },
+  "dua lipa": {
+    "genre": "Pop / Dance Pop",
+    "country": "United Kingdom"
+  },
+  "eclipse": {
+    "genre": "Melodic Rock / Hard Rock",
+    "country": "Sweden"
+  },
+  "ed sheeran": {
+    "genre": "Pop / Folk Pop",
+    "country": "United Kingdom"
+  },
+  "emarosa": {
+    "genre": "Pop Rock / Post-Hardcore",
+    "country": "United States"
+  },
+  "eminem": {
+    "genre": "Hip-Hop / Rap",
+    "country": "United States"
+  },
+  "entwine": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "epica": {
+    "genre": "Symphonic Metal / Death Metal",
+    "country": "Netherlands"
+  },
+  "erra": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "europe": {
+    "genre": "Hard Rock / Glam Metal",
+    "country": "Sweden"
+  },
+  "evanescence": {
+    "genre": "Alternative Metal / Gothic Rock",
+    "country": "United States"
+  },
+  "explosions in the sky": {
+    "genre": "Post-Rock / Instrumental",
+    "country": "United States"
+  },
+  "fall out boy": {
+    "genre": "Pop Punk / Emo Pop",
+    "country": "United States"
+  },
+  "feid": {
+    "genre": "Reggaeton / Latin Pop",
+    "country": "Colombia"
+  },
+  "firehouse": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "flume": {
+    "genre": "Future Bass / Electronic",
+    "country": "Australia"
+  },
+  "fm-84": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "foo fighters": {
+    "genre": "Alternative Rock / Post-Grunge",
+    "country": "United States"
+  },
+  "foster the people": {
+    "genre": "Indie Pop / Alternative Rock",
+    "country": "United States"
+  },
+  "frank ocean": {
+    "genre": "R&B / Neo Soul",
+    "country": "United States"
+  },
+  "future": {
+    "genre": "Trap / Hip-Hop",
+    "country": "United States"
+  },
+  "gesaffelstein": {
+    "genre": "Techno / Darkwave",
+    "country": "France"
+  },
+  "ghost": {
+    "genre": "Occult Rock / Heavy Metal",
+    "country": "Sweden"
+  },
+  "ghost bath": {
+    "genre": "Blackgaze / Post-Metal",
+    "country": "United States"
+  },
+  "ghostemane": {
+    "genre": "Trap Metal / Industrial Rap",
+    "country": "United States"
+  },
+  "girl in red": {
+    "genre": "Bedroom Pop / Indie Pop",
+    "country": "Norway"
+  },
+  "glass animals": {
+    "genre": "Indie Pop / Psychedelic Pop",
+    "country": "United Kingdom"
+  },
+  "god is an astronaut": {
+    "genre": "Post-Rock / Instrumental",
+    "country": "Ireland"
+  },
+  "godsmack": {
+    "genre": "Alternative Metal / Post-Grunge",
+    "country": "United States"
+  },
+  "gojira": {
+    "genre": "Progressive Metal / Death Metal",
+    "country": "France"
+  },
+  "good charlotte": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "United States"
+  },
+  "gorillaz": {
+    "genre": "Alternative Rock / Trip Hop",
+    "country": "United Kingdom"
+  },
+  "grandson": {
+    "genre": "Alternative Rock / Electronic Rock",
+    "country": "Canada"
+  },
+  "green day": {
+    "genre": "Pop Punk / Punk Rock",
+    "country": "United States"
+  },
+  "guccihighwaters": {
+    "genre": "Emo Rap / Sad Rap",
+    "country": "United States"
+  },
+  "gunna": {
+    "genre": "Trap / Melodic Rap",
+    "country": "United States"
+  },
+  "guns n' roses": {
+    "genre": "Hard Rock / Glam Metal",
+    "country": "United States"
+  },
+  "gunship": {
+    "genre": "Synthwave / Retrowave",
+    "country": "United Kingdom"
+  },
+  "gustavo cerati": {
+    "genre": "Rock en Español / Alternative",
+    "country": "Argentina"
+  },
+  "h.e.a.t": {
+    "genre": "Hard Rock / AOR",
+    "country": "Sweden"
+  },
+  "hadag nahash": {
+    "genre": "Israeli Hip-Hop / Funk",
+    "country": "Israel"
+  },
+  "hammock": {
+    "genre": "Ambient / Contemplative",
+    "country": "United States"
+  },
+  "harry styles": {
+    "genre": "Pop Rock / Soft Rock",
+    "country": "United Kingdom"
+  },
+  "hayd": {
+    "genre": "Pop / Bedroom Pop",
+    "country": "United States"
+  },
+  "health": {
+    "genre": "Industrial / Noise Rock",
+    "country": "United States"
+  },
+  "highly suspect": {
+    "genre": "Alternative Rock / Blues Rock",
+    "country": "United States"
+  },
+  "him": {
+    "genre": "Gothic Rock / Love Metal",
+    "country": "Finland"
+  },
+  "hippo campus": {
+    "genre": "Indie Rock / Indie Pop",
+    "country": "United States"
+  },
+  "holding absence": {
+    "genre": "Post-Hardcore / Emo",
+    "country": "United Kingdom"
+  },
+  "hurtwave": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "i prevail": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "United States"
+  },
+  "iann dior": {
+    "genre": "Melodic Rap / Pop Punk",
+    "country": "United States"
+  },
+  "idan raichel": {
+    "genre": "Israeli Folk / World Music",
+    "country": "Israel"
+  },
+  "imagine dragons": {
+    "genre": "Pop Rock / Arena Pop",
+    "country": "United States"
+  },
+  "in flames": {
+    "genre": "Melodic Death Metal / Alternative Metal",
+    "country": "Sweden"
+  },
+  "indighxst": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "infected mushroom": {
+    "genre": "Psytrance / Electronic",
+    "country": "Israel"
+  },
+  "insomnium": {
+    "genre": "Melodic Death Metal / Doom Metal",
+    "country": "Finland"
+  },
+  "interpol": {
+    "genre": "Post-Punk Revival / Indie Rock",
+    "country": "United States"
+  },
+  "iron maiden": {
+    "genre": "Heavy Metal / NWOBHM",
+    "country": "United Kingdom"
+  },
+  "issues": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "j balvin": {
+    "genre": "Reggaeton / Latin Pop",
+    "country": "Colombia"
+  },
+  "j. cole": {
+    "genre": "Hip-Hop / Conscious Rap",
+    "country": "United States"
+  },
+  "jay-z": {
+    "genre": "Hip-Hop / East Coast Rap",
+    "country": "United States"
+  },
+  "jimmy eat world": {
+    "genre": "Emo / Alternative Rock",
+    "country": "United States"
+  },
+  "jonny craig": {
+    "genre": "Post-Hardcore / Soul",
+    "country": "United States"
+  },
+  "jordyne": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "joy division": {
+    "genre": "Post-Punk / Gothic Rock",
+    "country": "United Kingdom"
+  },
+  "judas priest": {
+    "genre": "Heavy Metal / Speed Metal",
+    "country": "United Kingdom"
+  },
+  "juice wrld": {
+    "genre": "Emo Rap / Melodic Trap",
+    "country": "United States"
+  },
+  "justice": {
+    "genre": "Electro House / French House",
+    "country": "France"
+  },
+  "justin bieber": {
+    "genre": "Pop / R&B",
+    "country": "Canada"
+  },
+  "kanye west": {
+    "genre": "Hip-Hop / Experimental Rap",
+    "country": "United States"
+  },
+  "karol g": {
+    "genre": "Reggaeton / Latin Pop",
+    "country": "Colombia"
+  },
+  "katatonia": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "katy perry": {
+    "genre": "Pop / Dance Pop",
+    "country": "United States"
+  },
+  "kaveret": {
+    "genre": "Israeli Rock / Progressive Folk",
+    "country": "Israel"
+  },
+  "kavinsky": {
+    "genre": "Synthwave / Electro House",
+    "country": "France"
+  },
+  "kellin quinn": {
+    "genre": "Post-Hardcore / Pop Punk",
+    "country": "United States"
+  },
+  "kendrick lamar": {
+    "genre": "Hip-Hop / Conscious Rap",
+    "country": "United States"
+  },
+  "killswitch engage": {
+    "genre": "Metalcore / Melodic Metal",
+    "country": "United States"
+  },
+  "kings of leon": {
+    "genre": "Alternative Rock / Southern Rock",
+    "country": "United States"
+  },
+  "kiremi": {
+    "genre": "Lo-Fi / Dream Pop",
+    "country": "United States"
+  },
+  "kiss": {
+    "genre": "Hard Rock / Glam Rock",
+    "country": "United States"
+  },
+  "knox": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "knuckle puck": {
+    "genre": "Pop Punk / Emo",
+    "country": "United States"
+  },
+  "korn": {
+    "genre": "Nu Metal / Alternative Metal",
+    "country": "United States"
+  },
+  "lacuna coil": {
+    "genre": "Gothic Metal / Alternative Metal",
+    "country": "Italy"
+  },
+  "lady gaga": {
+    "genre": "Pop / Dance Pop",
+    "country": "United States"
+  },
+  "lamb of god": {
+    "genre": "Groove Metal / Metalcore",
+    "country": "United States"
+  },
+  "lana del rey": {
+    "genre": "Baroque Pop / Dream Pop",
+    "country": "United States"
+  },
+  "landon tewers": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "lantlôs": {
+    "genre": "Blackgaze / Post-Metal",
+    "country": "Germany"
+  },
+  "lasso": {
+    "genre": "Pop Venezolano / Latin Pop",
+    "country": "Venezuela"
+  },
+  "lazerhawk": {
+    "genre": "Synthwave / Retrowave",
+    "country": "United States"
+  },
+  "led zeppelin": {
+    "genre": "Hard Rock / Blues Rock",
+    "country": "United Kingdom"
+  },
+  "lil aaron": {
+    "genre": "Emo Rap / Pop Punk",
+    "country": "United States"
+  },
+  "lil baby": {
+    "genre": "Trap / Hip-Hop",
+    "country": "United States"
+  },
+  "lil peep": {
+    "genre": "Emo Rap / Trap",
+    "country": "United States"
+  },
+  "lil uzi vert": {
+    "genre": "Trap / Emo Rap",
+    "country": "United States"
+  },
+  "limp bizkit": {
+    "genre": "Nu Metal / Rap Rock",
+    "country": "United States"
+  },
+  "linkin park": {
+    "genre": "Nu Metal / Alternative Rock",
+    "country": "United States"
+  },
+  "loathe": {
+    "genre": "Metalcore / Shoegaze",
+    "country": "United Kingdom"
+  },
+  "lorde": {
+    "genre": "Art Pop / Electropop",
+    "country": "New Zealand"
+  },
+  "los amigos invisibles": {
+    "genre": "Funk Latino / Disco",
+    "country": "Venezuela"
+  },
+  "los enanitos verdes": {
+    "genre": "Rock en Español / Pop Rock",
+    "country": "Argentina"
+  },
+  "lost society": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "louta": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "mac demarco": {
+    "genre": "Indie Rock / Slacker Rock",
+    "country": "Canada"
+  },
+  "mac miller": {
+    "genre": "Hip-Hop / Neo Soul",
+    "country": "United States"
+  },
+  "machine gun kelly": {
+    "genre": "Pop Punk / Emo Rap",
+    "country": "United States"
+  },
+  "madeon": {
+    "genre": "Electro Pop / French House",
+    "country": "France"
+  },
+  "magnolia park": {
+    "genre": "Pop Punk / Emo Pop",
+    "country": "United States"
+  },
+  "maluma": {
+    "genre": "Reggaeton / Latin Pop",
+    "country": "Colombia"
+  },
+  "maná": {
+    "genre": "Rock en Español / Pop Rock",
+    "country": "Mexico"
+  },
+  "maroon 5": {
+    "genre": "Pop Rock / Funk Pop",
+    "country": "United States"
+  },
+  "marshmello": {
+    "genre": "EDM / Future Bass",
+    "country": "United States"
+  },
+  "martin garrix": {
+    "genre": "Progressive House / EDM",
+    "country": "Netherlands"
+  },
+  "mashina": {
+    "genre": "Israeli Rock / New Wave",
+    "country": "Israel"
+  },
+  "massive attack": {
+    "genre": "Trip Hop / Electronic",
+    "country": "United Kingdom"
+  },
+  "mayday parade": {
+    "genre": "Pop Punk / Emo Pop",
+    "country": "United States"
+  },
+  "mega drive": {
+    "genre": "Darksynth / Cyberpunk",
+    "country": "United States"
+  },
+  "megadeth": {
+    "genre": "Thrash Metal / Heavy Metal",
+    "country": "United States"
+  },
+  "megan thee stallion": {
+    "genre": "Hip-Hop / Trap",
+    "country": "United States"
+  },
+  "meshuggah": {
+    "genre": "Progressive Metal / Djent",
+    "country": "Sweden"
+  },
+  "metallica": {
+    "genre": "Thrash Metal / Heavy Metal",
+    "country": "United States"
+  },
+  "mgmt": {
+    "genre": "Indie Pop / Psychedelic Pop",
+    "country": "United States"
+  },
+  "miley cyrus": {
+    "genre": "Pop / Pop Rock",
+    "country": "United States"
+  },
+  "mitski": {
+    "genre": "Indie Rock / Art Pop",
+    "country": "United States"
+  },
+  "modern baseball": {
+    "genre": "Emo / Indie Rock",
+    "country": "United States"
+  },
+  "mono": {
+    "genre": "Post-Rock / Instrumental",
+    "country": "Japan"
+  },
+  "mooki": {
+    "genre": "Israeli Pop",
+    "country": "Israel"
+  },
+  "motionless in white": {
+    "genre": "Metalcore / Gothic Metal",
+    "country": "United States"
+  },
+  "mötley crüe": {
+    "genre": "Glam Metal / Hard Rock",
+    "country": "United States"
+  },
+  "muse": {
+    "genre": "Alternative Rock / Space Rock",
+    "country": "United Kingdom"
+  },
+  "my bloody valentine": {
+    "genre": "Shoegaze / Noise Pop",
+    "country": "Ireland"
+  },
+  "my chemical romance": {
+    "genre": "Emo / Alternative Rock",
+    "country": "United States"
+  },
+  "myrath": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "naits": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "nas": {
+    "genre": "Hip-Hop / East Coast Rap",
+    "country": "United States"
+  },
+  "neck deep": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "nestor": {
+    "genre": "AOR / Melodic Rock",
+    "country": "Sweden"
+  },
+  "netta": {
+    "genre": "Israeli Pop / Electropop",
+    "country": "Israel"
+  },
+  "nevertel": {
+    "genre": "Alternative Rock / Rap Rock",
+    "country": "United States"
+  },
+  "new order": {
+    "genre": "New Wave / Synth-Pop",
+    "country": "United Kingdom"
+  },
+  "newjeans": {
+    "genre": "K-Pop / R&B",
+    "country": "South Korea"
+  },
+  "nicki minaj": {
+    "genre": "Hip-Hop / Pop Rap",
+    "country": "United States"
+  },
+  "night club": {
+    "genre": "Dark Synth-Pop / Industrial Pop",
+    "country": "United States"
+  },
+  "night lovell": {
+    "genre": "Dark Trap / Cloud Rap",
+    "country": "Canada"
+  },
+  "nightbreakers": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "nightlife": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "nightwish": {
+    "genre": "Symphonic Metal / Power Metal",
+    "country": "Finland"
+  },
+  "nine inch nails": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "nirvana": {
+    "genre": "Grunge / Alternative Rock",
+    "country": "United States"
+  },
+  "noa kirel": {
+    "genre": "Israeli Pop / Dance Pop",
+    "country": "Israel"
+  },
+  "normandie": {
+    "genre": "Alternative Rock / Post-Hardcore",
+    "country": "Sweden"
+  },
+  "nothing": {
+    "genre": "Shoegaze / Alternative Rock",
+    "country": "United States"
+  },
+  "nothing but thieves": {
+    "genre": "Alternative Rock / Indie Rock",
+    "country": "United Kingdom"
+  },
+  "nothing,nowhere.": {
+    "genre": "Emo Rap / Alternative",
+    "country": "United States"
+  },
+  "nothingnowhere.": {
+    "genre": "Emo Rap / Alternative Pop",
+    "country": "United States"
+  },
+  "oasis": {
+    "genre": "Britpop / Rock",
+    "country": "United Kingdom"
+  },
+  "odeon": {
+    "genre": "Post-Hardcore / Electronic",
+    "country": "Sweden"
+  },
+  "odesza": {
+    "genre": "Chillwave / Future Bass",
+    "country": "United States"
+  },
+  "of mice & men": {
+    "genre": "Metalcore / Alternative Metal",
+    "country": "United States"
+  },
+  "olivia rodrigo": {
+    "genre": "Pop / Pop Rock",
+    "country": "United States"
+  },
+  "omer adam": {
+    "genre": "Israeli Pop / Mizrahi Pop",
+    "country": "Israel"
+  },
+  "omnium gatherum": {
+    "genre": "Melodic Death Metal",
+    "country": "Finland"
+  },
+  "one direction": {
+    "genre": "Pop / Pop Rock",
+    "country": "United Kingdom"
+  },
+  "one ok rock": {
+    "genre": "J-Rock / Alternative Rock",
+    "country": "Japan"
+  },
+  "onerepublic": {
+    "genre": "Pop Rock / Arena Pop",
+    "country": "United States"
+  },
+  "opeth": {
+    "genre": "Progressive Metal / Death Metal",
+    "country": "Sweden"
+  },
+  "ozuna": {
+    "genre": "Reggaeton / Latin Trap",
+    "country": "Puerto Rico"
+  },
+  "paloma": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "panic! at the disco": {
+    "genre": "Pop Rock / Baroque Pop",
+    "country": "United States"
+  },
+  "pantera": {
+    "genre": "Groove Metal / Thrash Metal",
+    "country": "United States"
+  },
+  "papa roach": {
+    "genre": "Nu Metal / Alternative Rock",
+    "country": "United States"
+  },
+  "paramore": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "United States"
+  },
+  "parkway drive": {
+    "genre": "Metalcore / Heavy Metal",
+    "country": "Australia"
+  },
+  "pearl jam": {
+    "genre": "Grunge / Alternative Rock",
+    "country": "United States"
+  },
+  "periphery": {
+    "genre": "Progressive Metal / Djent",
+    "country": "United States"
+  },
+  "perturbator": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "peso pluma": {
+    "genre": "Corridos Tumbados / Regional Mexican",
+    "country": "Mexico"
+  },
+  "phoebe bridgers": {
+    "genre": "Indie Folk / Indie Rock",
+    "country": "United States"
+  },
+  "phoenix": {
+    "genre": "Indie Pop / Synth-Pop",
+    "country": "France"
+  },
+  "pierce the veil": {
+    "genre": "Post-Hardcore / Pop Punk",
+    "country": "United States"
+  },
+  "pink floyd": {
+    "genre": "Progressive Rock / Psychedelic Rock",
+    "country": "United Kingdom"
+  },
+  "placebo": {
+    "genre": "Alternative Rock / Glam Rock",
+    "country": "United Kingdom"
+  },
+  "playboi carti": {
+    "genre": "Trap / Rage Rap",
+    "country": "United States"
+  },
+  "polyphia": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "poorstacy": {
+    "genre": "Pop Punk / Emo Rap",
+    "country": "United States"
+  },
+  "porter robinson": {
+    "genre": "Electronic / Future Bass",
+    "country": "United States"
+  },
+  "portishead": {
+    "genre": "Trip Hop / Experimental",
+    "country": "United Kingdom"
+  },
+  "post malone": {
+    "genre": "Pop Rap / Melodic Trap",
+    "country": "United States"
+  },
+  "power glove": {
+    "genre": "Darksynth / Synthwave",
+    "country": "Australia"
+  },
+  "powerwolf": {
+    "genre": "Power Metal / Heavy Metal",
+    "country": "Germany"
+  },
+  "powfu": {
+    "genre": "Lo-Fi Hip-Hop / Bedroom Pop",
+    "country": "Canada"
+  },
+  "primal fear": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "queen": {
+    "genre": "Rock / Glam Rock",
+    "country": "United Kingdom"
+  },
+  "radiohead": {
+    "genre": "Alternative Rock / Art Rock",
+    "country": "United Kingdom"
+  },
+  "rain city drive": {
+    "genre": "Alternative Rock / Post-Hardcore",
+    "country": "United States"
+  },
+  "rami kleinstein": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "rammstein": {
+    "genre": "Industrial Metal / Neue Deutsche Härte",
+    "country": "Germany"
+  },
+  "rauw alejandro": {
+    "genre": "Reggaeton / Latin R&B",
+    "country": "Puerto Rico"
+  },
+  "ravid plotnik": {
+    "genre": "Israeli Hip-Hop / Soul",
+    "country": "Israel"
+  },
+  "rawayana": {
+    "genre": "Reggae Fusión / Pop Venezolano",
+    "country": "Venezuela"
+  },
+  "real friends": {
+    "genre": "Pop Punk / Emo",
+    "country": "United States"
+  },
+  "reckless love": {
+    "genre": "Glam Rock / Hard Rock",
+    "country": "Finland"
+  },
+  "red hot chili peppers": {
+    "genre": "Funk Rock / Alternative Rock",
+    "country": "United States"
+  },
+  "ride": {
+    "genre": "Shoegaze / Indie Rock",
+    "country": "United Kingdom"
+  },
+  "rihanna": {
+    "genre": "Pop / R&B",
+    "country": "Barbados"
+  },
+  "roosevelt": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "rosalía": {
+    "genre": "Flamenco Pop / Experimental Pop",
+    "country": "Spain"
+  },
+  "royal blood": {
+    "genre": "Rock / Garage Rock",
+    "country": "United Kingdom"
+  },
+  "ryan caraveo": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "sabaton": {
+    "genre": "Power Metal / Heavy Metal",
+    "country": "Sweden"
+  },
+  "santa cruz": {
+    "genre": "Hard Rock / Glam Metal",
+    "country": "Finland"
+  },
+  "scar symmetry": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "scarlxrd": {
+    "genre": "Trap Metal / Rage Rap",
+    "country": "United Kingdom"
+  },
+  "scorpions": {
+    "genre": "Hard Rock / Heavy Metal",
+    "country": "Germany"
+  },
+  "sebastian gampl": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "seether": {
+    "genre": "Post-Grunge / Alternative Metal",
+    "country": "South Africa"
+  },
+  "selena gomez": {
+    "genre": "Pop / Dance Pop",
+    "country": "United States"
+  },
+  "shakira": {
+    "genre": "Latin Pop / Pop Rock",
+    "country": "Colombia"
+  },
+  "shawn mendes": {
+    "genre": "Pop / Pop Rock",
+    "country": "Canada"
+  },
+  "shinedown": {
+    "genre": "Hard Rock / Alternative Metal",
+    "country": "United States"
+  },
+  "shlomo artzi": {
+    "genre": "Israeli Rock / Folk Rock",
+    "country": "Israel"
+  },
+  "sia": {
+    "genre": "Pop / Electropop",
+    "country": "Australia"
+  },
+  "sigur rós": {
+    "genre": "Post-Rock / Ambient",
+    "country": "Iceland"
+  },
+  "silverstein": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "simple plan": {
+    "genre": "Pop Punk / Pop Rock",
+    "country": "Canada"
+  },
+  "skid row": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "skrillex": {
+    "genre": "Dubstep / EDM",
+    "country": "United States"
+  },
+  "skyharbor": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "slaves": {
+    "genre": "Post-Hardcore / R&B",
+    "country": "United States"
+  },
+  "sleep token": {
+    "genre": "Alternative Metal / Art Rock",
+    "country": "United Kingdom"
+  },
+  "sleeping with sirens": {
+    "genre": "Post-Hardcore / Pop Punk",
+    "country": "United States"
+  },
+  "slipknot": {
+    "genre": "Nu Metal / Alternative Metal",
+    "country": "United States"
+  },
+  "slowdive": {
+    "genre": "Shoegaze / Dream Pop",
+    "country": "United Kingdom"
+  },
+  "smashing pumpkins": {
+    "genre": "Alternative Rock / Grunge",
+    "country": "United States"
+  },
+  "smbdy else": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "snoop dogg": {
+    "genre": "Hip-Hop / G-Funk",
+    "country": "United States"
+  },
+  "soda stereo": {
+    "genre": "Rock en Español / New Wave",
+    "country": "Argentina"
+  },
+  "som": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "sonata arctica": {
+    "genre": "Power Metal / Symphonic Metal",
+    "country": "Finland"
+  },
+  "soundgarden": {
+    "genre": "Grunge / Alternative Metal",
+    "country": "United States"
+  },
+  "spiritbox": {
+    "genre": "Metalcore / Progressive",
+    "country": "Canada"
+  },
+  "stand atlantic": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "Australia"
+  },
+  "starset": {
+    "genre": "Cinematic Rock / Electronic Rock",
+    "country": "United States"
+  },
+  "state champs": {
+    "genre": "Pop Punk / Easycore",
+    "country": "United States"
+  },
+  "static & ben el": {
+    "genre": "Israeli Pop / Dance Pop",
+    "country": "Israel"
+  },
+  "static-x": {
+    "genre": "Industrial Metal / Nu Metal",
+    "country": "United States"
+  },
+  "steel panther": {
+    "genre": "Glam Metal / Comedy Rock",
+    "country": "United States"
+  },
+  "stray kids": {
+    "genre": "K-Pop / Hip-Hop",
+    "country": "South Korea"
+  },
+  "sufjan stevens": {
+    "genre": "Indie Folk / Chamber Pop",
+    "country": "United States"
+  },
+  "sum 41": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "Canada"
+  },
+  "swallow the sun": {
+    "genre": "Melodic Doom Metal / Death Metal",
+    "country": "Finland"
+  },
+  "swedish house mafia": {
+    "genre": "Progressive House / EDM",
+    "country": "Sweden"
+  },
+  "sweezy": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "system of a down": {
+    "genre": "Alternative Metal / Nu Metal",
+    "country": "United States"
+  },
+  "sza": {
+    "genre": "R&B / Neo Soul",
+    "country": "United States"
+  },
+  "taking back sunday": {
+    "genre": "Emo / Alternative Rock",
+    "country": "United States"
+  },
+  "tame impala": {
+    "genre": "Psychedelic Pop / Indie Rock",
+    "country": "Australia"
+  },
+  "taylor swift": {
+    "genre": "Pop / Country Pop",
+    "country": "United States"
+  },
+  "teenage wrist": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "tesseract": {
+    "genre": "Progressive Metal / Djent",
+    "country": "United Kingdom"
+  },
+  "the 1975": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "the amity affliction": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "Australia"
+  },
+  "the beatles": {
+    "genre": "Rock / Pop Rock",
+    "country": "United Kingdom"
+  },
+  "the black keys": {
+    "genre": "Garage Rock / Blues Rock",
+    "country": "United States"
+  },
+  "the chainsmokers": {
+    "genre": "EDM / Pop",
+    "country": "United States"
+  },
+  "the cult": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "the cure": {
+    "genre": "Gothic Rock / New Wave",
+    "country": "United Kingdom"
+  },
+  "the damned": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "the devil wears prada": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "United States"
+  },
+  "the gazette": {
+    "genre": "Visual Kei / Alternative Metal",
+    "country": "Japan"
+  },
+  "the kid laroi": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "the killers": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "the maine": {
+    "genre": "Pop Rock / Alternative Rock",
+    "country": "United States"
+  },
+  "the midnight": {
+    "genre": "Synthwave / Dreampop",
+    "country": "United States"
+  },
+  "the rasmus": {
+    "genre": "Alternative Rock / Gothic Rock",
+    "country": "Finland"
+  },
+  "the rolling stones": {
+    "genre": "Rock / Blues Rock",
+    "country": "United Kingdom"
+  },
+  "the smiths": {
+    "genre": "Indie Pop / Post-Punk",
+    "country": "United Kingdom"
+  },
+  "the story so far": {
+    "genre": "Pop Punk / Emo",
+    "country": "United States"
+  },
+  "the strokes": {
+    "genre": "Indie Rock / Garage Rock",
+    "country": "United States"
+  },
+  "the weeknd": {
+    "genre": "R&B / Synth-Pop",
+    "country": "Canada"
+  },
+  "the wonder years": {
+    "genre": "Pop Punk / Emo",
+    "country": "United States"
+  },
+  "the word alive": {
+    "genre": "Metalcore / Alternative",
+    "country": "United States"
+  },
+  "the xx": {
+    "genre": "Indie Pop / Dream Pop",
+    "country": "United Kingdom"
+  },
+  "thekidszn": {
+    "genre": "Melodic Trap / Emo Rap",
+    "country": "United States"
+  },
+  "thirty seconds to mars": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "thornhill": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "three days grace": {
+    "genre": "Alternative Metal / Post-Grunge",
+    "country": "Canada"
+  },
+  "tokio hotel": {
+    "genre": "Pop Rock / Nostalgia",
+    "country": "Germany"
+  },
+  "tonight alive": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "Australia"
+  },
+  "tool": {
+    "genre": "Progressive Metal / Alternative Metal",
+    "country": "United States"
+  },
+  "travis scott": {
+    "genre": "Trap / Psychedelic Rap",
+    "country": "United States"
+  },
+  "treat": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "trevor something": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "trippie redd": {
+    "genre": "Emo Rap / Trap",
+    "country": "United States"
+  },
+  "trivium": {
+    "genre": "Metalcore / Thrash Metal",
+    "country": "United States"
+  },
+  "tuna": {
+    "genre": "Israeli Hip-Hop / Rap",
+    "country": "Israel"
+  },
+  "twenty one pilots": {
+    "genre": "Alternative Pop / Rap Rock",
+    "country": "United States"
+  },
+  "twice": {
+    "genre": "K-Pop / Dance Pop",
+    "country": "South Korea"
+  },
+  "twin shadow": {
+    "genre": "Indie Pop / Synth-Pop",
+    "country": "United States"
+  },
+  "two door cinema club": {
+    "genre": "Indie Rock / Indie Pop",
+    "country": "United Kingdom"
+  },
+  "tycho": {
+    "genre": "Chillwave / Ambient",
+    "country": "United States"
+  },
+  "tyler, the creator": {
+    "genre": "Hip-Hop / Neo Soul",
+    "country": "United States"
+  },
+  "type o negative": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "u2": {
+    "genre": "Rock / Post-Punk",
+    "country": "Ireland"
+  },
+  "underoath": {
+    "genre": "Post-Hardcore / Metalcore",
+    "country": "United States"
+  },
+  "unprocessed": {
+    "genre": "Progressive Metal / Math Rock",
+    "country": "Germany"
+  },
+  "vampire weekend": {
+    "genre": "Indie Pop / Indie Rock",
+    "country": "United States"
+  },
+  "volumes": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "wage war": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "United States"
+  },
+  "wallows": {
+    "genre": "Indie Rock / Alternative Pop",
+    "country": "United States"
+  },
+  "waterparks": {
+    "genre": "Pop Punk / Electronic Rock",
+    "country": "United States"
+  },
+  "we came as romans": {
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "United States"
+  },
+  "while she sleeps": {
+    "genre": "Metalcore / Alternative",
+    "country": "United Kingdom"
+  },
+  "whirr": {
+    "genre": "Shoegaze / Noise Rock",
+    "country": "United States"
+  },
+  "whitesnake": {
+    "genre": "Hard Rock / Blues Rock",
+    "country": "United Kingdom"
+  },
+  "within temptation": {
+    "genre": "Symphonic Metal / Gothic Metal",
+    "country": "Netherlands"
+  },
+  "xxxtentacion": {
+    "genre": "Emo Rap / Alternative Hip-Hop",
+    "country": "United States"
+  },
+  "yellowcard": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "United States"
+  },
+  "young thug": {
+    "genre": "Trap / Mumble Rap",
+    "country": "United States"
+  },
+  "yungblud": {
+    "genre": "Alternative Rock / Pop Punk",
+    "country": "United Kingdom"
+  },
+  "zedd": {
+    "genre": "EDM / Electro House",
+    "country": "Germany"
+  },
+  "ג'ירפות": {
+    "genre": "Alternative",
+    "country": "United States"
+  },
+  "היהודים": {
+    "genre": "Israeli Rock / Metal",
+    "country": "Israel"
+  }
+}
