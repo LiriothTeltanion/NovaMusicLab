@@ -503,6 +503,10 @@ const STRINGS = {
       footerName: '✧ LIRIOTH TELTANION ✧',
       footerSubtitle: 'Nova Music Lab · Museo Personal · 2026',
     },
+    errorBoundary: {
+      title: 'Algo salió mal en esta sección',
+      message: 'Ocurrió un error inesperado al mostrar esta sección. Prueba cambiar de pestaña o recargar la página.',
+    },
   },
   en: {
     appTitle: 'NOVA MUSIC LAB',
@@ -992,6 +996,10 @@ const STRINGS = {
       s5Post: (topArtist: string, topTrack: string) => `is evidence that music has been language, therapy, identity and future all at once. ${topArtist} and "${topTrack}" will always be there.`,
       footerName: '✧ LIRIOTH TELTANION ✧',
       footerSubtitle: 'Nova Music Lab · Personal Museum · 2026',
+    },
+    errorBoundary: {
+      title: 'Something went wrong in this section',
+      message: 'An unexpected error occurred while rendering this section. Try switching tabs or reloading the page.',
     },
   },
 } as const;

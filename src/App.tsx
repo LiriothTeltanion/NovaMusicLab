@@ -11,6 +11,7 @@ import { MusicDnaData } from './types';
 import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import AnimatedParticles from './components/AnimatedParticles';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -224,31 +225,33 @@ function AppInner() {
                 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }} transition={pageTransition}
                 className="min-h-full">
-                <Suspense fallback={<LoadingPanel />}>
-                  {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
-                  {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
-                  {activeTab === 'top'         && <TopHistorico data={filteredData} />}
-                  {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
-                  {activeTab === 'statsdeep'   && <StatsDeepDive data={filteredData} />}
-                  {activeTab === 'achievements' && <Achievements data={filteredData} />}
-                  {activeTab === 'personality' && <PersonalityRadar data={filteredData} />}
-                  {activeTab === 'emotions'    && <EmotionalMap data={filteredData} />}
-                  {activeTab === 'obsessions'  && <ObsessionDetector data={filteredData} />}
-                  {activeTab === 'cultural'    && <CulturalMap data={filteredData} />}
-                  {activeTab === 'inner'       && <InnerWorld data={filteredData} />}
-                  {activeTab === 'artist'      && <ArtistIdentity data={filteredData} />}
-                  {activeTab === 'insights'    && <HiddenInsights data={filteredData} />}
-                  {activeTab === 'report'      && <FinalReport data={filteredData} />}
-                  {activeTab === 'upload' && (
-                    <div className="space-y-6 animate-fade-in">
-                      <div className="flex items-center gap-3 mb-6">
-                        <Upload className="w-6 h-6" style={{ color: tc.c1 }} />
-                        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
+                <ErrorBoundary key={activeTab}>
+                  <Suspense fallback={<LoadingPanel />}>
+                    {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
+                    {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
+                    {activeTab === 'top'         && <TopHistorico data={filteredData} />}
+                    {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
+                    {activeTab === 'statsdeep'   && <StatsDeepDive data={filteredData} />}
+                    {activeTab === 'achievements' && <Achievements data={filteredData} />}
+                    {activeTab === 'personality' && <PersonalityRadar data={filteredData} />}
+                    {activeTab === 'emotions'    && <EmotionalMap data={filteredData} />}
+                    {activeTab === 'obsessions'  && <ObsessionDetector data={filteredData} />}
+                    {activeTab === 'cultural'    && <CulturalMap data={filteredData} />}
+                    {activeTab === 'inner'       && <InnerWorld data={filteredData} />}
+                    {activeTab === 'artist'      && <ArtistIdentity data={filteredData} />}
+                    {activeTab === 'insights'    && <HiddenInsights data={filteredData} />}
+                    {activeTab === 'report'      && <FinalReport data={filteredData} />}
+                    {activeTab === 'upload' && (
+                      <div className="space-y-6 animate-fade-in">
+                        <div className="flex items-center gap-3 mb-6">
+                          <Upload className="w-6 h-6" style={{ color: tc.c1 }} />
+                          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
+                        </div>
+                        <DataUploader onDataLoaded={handleDataLoaded} />
                       </div>
-                      <DataUploader onDataLoaded={handleDataLoaded} />
-                    </div>
-                  )}
-                </Suspense>
+                    )}
+                  </Suspense>
+                </ErrorBoundary>
               </motion.div>
             </AnimatePresence>
           </main>
