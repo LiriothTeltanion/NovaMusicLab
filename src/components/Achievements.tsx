@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar,
@@ -37,21 +37,39 @@ const TIER_COLORS = {
   legendary:{ glow: '#a020f0', text: '#d070ff', bg: '#120030' },
 };
 
+const TIER_ORDER = ['legendary', 'platinum', 'gold', 'silver', 'bronze'] as const;
+
+const TIER_POINTS: Record<Achievement['tier'], number> = {
+  legendary: 500,
+  platinum: 300,
+  gold: 200,
+  silver: 100,
+  bronze: 50,
+};
+
 export default function Achievements({ data }: AchievementsProps) {
   const { lang, tc, t } = useApp();
   const L = lang === 'en';
-  const tierLabel = (tier: keyof typeof t.achievements.tiers) => t.achievements.tiers[tier];
-  const m = data.core_metrics;
-  const records = getRecords(data);
-  const peakYear = getPeakYear(data);
-  const nightRatio = getNightRatio(data);
-  const topArtist = data.top_artists[0];
+  const tierLabel = useCallback(
+    (tier: keyof typeof t.achievements.tiers) => t.achievements.tiers[tier],
+    [t]
+  );
   const [selected, setSelected] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'bronze' | 'silver' | 'gold' | 'platinum' | 'legendary'>('all');
 
-  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const fmtNum = useCallback(
+    (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+    [lang]
+  );
 
-  const achievements: Achievement[] = [
+  const achievements: Achievement[] = useMemo(() => {
+    const m = data.core_metrics;
+    const records = getRecords(data);
+    const peakYear = getPeakYear(data);
+    const nightRatio = getNightRatio(data);
+    const topArtist = data.top_artists[0];
+
+    return [
     {
       id: 'scrobble_master', icon: Headphones, tier: 'legendary',
       label_es: 'Maestro del Scrobble', label_en: 'Scrobble Master',
@@ -148,28 +166,36 @@ export default function Achievements({ data }: AchievementsProps) {
       desc_es: '2015 a 2026: una década y un año de datos continuos. Una autobiografía sonora única en el mundo.',
       desc_en: '2015 to 2026: a decade and a year of continuous data. A unique sonic autobiography in the world.',
     },
-  ];
+    ];
+  }, [data, fmtNum]);
 
-  const filtered = filter === 'all' ? achievements : achievements.filter(a => a.tier === filter);
-  const tierOrder = ['legendary', 'platinum', 'gold', 'silver', 'bronze'];
-  const sorted = [...filtered].sort((a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier));
+  const tierOrder = TIER_ORDER;
 
-  const stats = {
+  const filtered = useMemo(
+    () => (filter === 'all' ? achievements : achievements.filter(a => a.tier === filter)),
+    [achievements, filter]
+  );
+  const sorted = useMemo(
+    () => [...filtered].sort((a, b) => TIER_ORDER.indexOf(a.tier) - TIER_ORDER.indexOf(b.tier)),
+    [filtered]
+  );
+
+  const stats = useMemo(() => ({
     legendary: achievements.filter(a => a.tier === 'legendary').length,
     platinum:  achievements.filter(a => a.tier === 'platinum').length,
     gold:      achievements.filter(a => a.tier === 'gold').length,
     silver:    achievements.filter(a => a.tier === 'silver').length,
     bronze:    achievements.filter(a => a.tier === 'bronze').length,
-  };
+  }), [achievements]);
 
-  const radarData = [
+  const radarData = useMemo(() => [
     { metric: t.achievements.radarMetrics.volume,      val: 95 },
     { metric: t.achievements.radarMetrics.diversity,   val: 84 },
     { metric: t.achievements.radarMetrics.consistency, val: 78 },
     { metric: t.achievements.radarMetrics.exploration, val: 82 },
     { metric: t.achievements.radarMetrics.dedication,  val: 96 },
     { metric: t.achievements.radarMetrics.nostalgia,   val: 88 },
-  ];
+  ], [t]);
 
   const containerV = { animate: { transition: { staggerChildren: 0.06 } } };
   const cardV = {
@@ -177,18 +203,14 @@ export default function Achievements({ data }: AchievementsProps) {
     animate: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: [0.4, 0, 0.2, 1] as [number, number, number, number] } },
   };
 
-  const tierPoints: Record<Achievement['tier'], number> = {
-    legendary: 500,
-    platinum: 300,
-    gold: 200,
-    silver: 100,
-    bronze: 50,
-  };
-  const tierPointData = tierOrder.slice(0, 4).map(tier => ({
+  const tierPointData = useMemo(() => TIER_ORDER.slice(0, 4).map(tier => ({
     tier: tierLabel(tier as keyof typeof t.achievements.tiers),
-    points: achievements.filter(a => a.tier === tier).length * tierPoints[tier as Achievement['tier']],
-  }));
-  const totalPoints = achievements.reduce((sum, ach) => sum + tierPoints[ach.tier], 0);
+    points: achievements.filter(a => a.tier === tier).length * TIER_POINTS[tier as Achievement['tier']],
+  })), [achievements, tierLabel]);
+  const totalPoints = useMemo(
+    () => achievements.reduce((sum, ach) => sum + TIER_POINTS[ach.tier], 0),
+    [achievements]
+  );
 
   return (
     <div className="space-y-10 animate-fade-in">

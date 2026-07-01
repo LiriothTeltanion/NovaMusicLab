@@ -55,52 +55,66 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
   const monthlyActivity = useMemo(() => buildMonthlyActivity(data), [data]);
   const monthlyMatrix = monthlyActivity.rows;
 
-  const years = data.yearly_eras.map(e => e.year);
-  const maxMonthlyPlays = Math.max(1, ...monthlyMatrix.map(d => d.plays));
+  const years = useMemo(() => data.yearly_eras.map(e => e.year), [data.yearly_eras]);
+  const maxMonthlyPlays = useMemo(() => Math.max(1, ...monthlyMatrix.map(d => d.plays)), [monthlyMatrix]);
 
   /* ── Weekday data ── */
   const wdTotals = useMemo(() => getWeekdayTotals(data.heatmap), [data.heatmap]);
-  const maxWd = Math.max(1, ...wdTotals);
-  const radarData = WEEKDAYS.map((day, i) => ({ day, plays: wdTotals[i] }));
+  const maxWd = useMemo(() => Math.max(1, ...wdTotals), [wdTotals]);
+  const radarData = useMemo(
+    () => WEEKDAYS.map((day, i) => ({ day, plays: wdTotals[i] })),
+    [WEEKDAYS, wdTotals]
+  );
 
   /* ── Monthly bar chart for selected year ── */
-  const selectedYearMonths = MONTHS.map((month, i) => ({
-    month,
-    plays: monthlyMatrix.find(d => d.year === selectedYear && d.month === i)?.plays ?? 0,
-  }));
-  const peakMonth = selectedYearMonths.reduce((a, b) => b.plays > a.plays ? b : a, selectedYearMonths[0]);
+  const selectedYearMonths = useMemo(
+    () => MONTHS.map((month, i) => ({
+      month,
+      plays: monthlyMatrix.find(d => d.year === selectedYear && d.month === i)?.plays ?? 0,
+    })),
+    [MONTHS, monthlyMatrix, selectedYear]
+  );
+  const peakMonth = useMemo(
+    () => selectedYearMonths.reduce((a, b) => b.plays > a.plays ? b : a, selectedYearMonths[0]),
+    [selectedYearMonths]
+  );
 
   /* ── Genre Treemap ── */
-  const genreMap: Record<string, number> = {};
-  data.top_artists.forEach(a => {
-    const g = normalizeGenre(a.genre ?? '');
-    genreMap[g] = (genreMap[g] || 0) + a.plays;
-  });
-  const treemapData = {
-    name: 'root',
-    children: Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([name, plays]) => ({
-      name, plays, size: plays,
-    })),
-  };
+  const treemapData = useMemo(() => {
+    const genreMap: Record<string, number> = {};
+    data.top_artists.forEach(a => {
+      const g = normalizeGenre(a.genre ?? '');
+      genreMap[g] = (genreMap[g] || 0) + a.plays;
+    });
+    return {
+      name: 'root',
+      children: Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([name, plays]) => ({
+        name, plays, size: plays,
+      })),
+    };
+  }, [data.top_artists]);
 
   /* ── Genre evolution area data ── */
-  const genreEvolution = data.yearly_eras.map(era => ({
-    year: String(era.year),
-    plays: era.plays,
-    artistas: era.unique_artists,
-    diversidad: era.diversity_index,
-  }));
+  const genreEvolution = useMemo(
+    () => data.yearly_eras.map(era => ({
+      year: String(era.year),
+      plays: era.plays,
+      artistas: era.unique_artists,
+      diversidad: era.diversity_index,
+    })),
+    [data.yearly_eras]
+  );
 
   /* ── Advanced metrics ── */
-  const consistencyScore = Math.round(
+  const consistencyScore = useMemo(() => Math.round(
     Math.min(100, (data.core_metrics.active_days / Math.max(1, data.yearly_eras.length * 365)) * 100)
-  );
-  const explorationScore = Math.round(
+  ), [data.core_metrics.active_days, data.yearly_eras.length]);
+  const explorationScore = useMemo(() => Math.round(
     (data.core_metrics.unique_artists / data.core_metrics.total_plays) * 1000
-  );
-  const obsessionScore = Math.round(
+  ), [data.core_metrics.unique_artists, data.core_metrics.total_plays]);
+  const obsessionScore = useMemo(() => Math.round(
     Math.max(0, (1 - data.core_metrics.unique_tracks / Math.max(1, data.core_metrics.total_plays)) * 100)
-  );
+  ), [data.core_metrics.unique_tracks, data.core_metrics.total_plays]);
 
   const TREEMAP_COLORS = [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#34d399', '#a78bfa', '#f59e0b', '#ec4899', '#6ee7b7'];
 
