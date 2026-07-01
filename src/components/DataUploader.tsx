@@ -9,8 +9,7 @@ interface DataUploaderProps {
 }
 
 export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
-  const { lang, tc } = useApp();
-  const L = lang === 'en';
+  const { tc, t } = useApp();
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,9 +53,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
       
       if (csvFiles.length === 0 && jsonFiles.length === 0) {
-        throw new Error(L
-          ? 'Please upload a Last.fm CSV or Spotify Extended Streaming History JSON files.'
-          : 'Por favor, sube un CSV de Last.fm o archivos JSON de Spotify Extended Streaming History.');
+        throw new Error(t.uploader.noFilesError);
       }
 
       const [lastfmCsvTexts, spotifyJsonTexts] = await Promise.all([
@@ -68,14 +65,15 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       onDataLoaded(parsed);
 
       const source = parsed.source_summary;
-      setSuccessMsg(L
-        ? `Loaded ${files.length} file(s): ${parsed.core_metrics.total_plays.toLocaleString('es-ES')} plays, ${parsed.core_metrics.unique_artists.toLocaleString('es-ES')} artists, ${source?.spotify_skip_rate_pct ?? 0}% Spotify skip rate.`
-        : `Se cargaron ${files.length} archivo(s): ${parsed.core_metrics.total_plays.toLocaleString('es-ES')} plays, ${parsed.core_metrics.unique_artists.toLocaleString('es-ES')} artistas, ${source?.spotify_skip_rate_pct ?? 0}% de skips en Spotify.`);
+      setSuccessMsg(t.uploader.successMessage(
+        files.length,
+        parsed.core_metrics.total_plays.toLocaleString('es-ES'),
+        parsed.core_metrics.unique_artists.toLocaleString('es-ES'),
+        source?.spotify_skip_rate_pct ?? 0
+      ));
     } catch (err: any) {
       console.error(err);
-      setError(err.message || (L
-        ? 'Error processing the files. Please check the export format.'
-        : 'Error al procesar los archivos. Revisa el formato.'));
+      setError(err.message || t.uploader.processingError);
     } finally {
       setLoading(false);
     }
@@ -100,7 +98,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         onClick={() => fileInputRef.current?.click()}
         role="button"
         tabIndex={0}
-        aria-label={L ? 'Upload music history files' : 'Subir archivos de historial musical'}
+        aria-label={t.uploader.dropZoneAriaLabel}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') fileInputRef.current?.click();
         }}
@@ -126,19 +124,19 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
           
           <div className="space-y-1">
             <h3 className="text-xl font-bold font-mono text-white tracking-wide">
-              {L ? 'Upload your real music data' : 'Sube tus datos reales'}
+              {t.uploader.title}
             </h3>
             <p className="text-sm text-gray-400 max-w-sm mx-auto">
-              {L ? 'Drop your ' : 'Arrastra tu '}
+              {t.uploader.dropHintBefore}
               <span className="font-bold" style={{ color: tc.c1 }}>Last.fm CSV</span>
-              {L ? ' and/or ' : ' y/o '}
+              {t.uploader.dropHintMiddle}
               <span className="font-bold" style={{ color: tc.c2 }}>Spotify JSON</span>
-              {L ? ' files here.' : ' aquí.'}
+              {t.uploader.dropHintAfter}
             </p>
           </div>
-          
+
           <button className="px-6 py-2 bg-gradient-to-r from-cyberCyan/20 to-cyberPurple/20 border border-cyberCyan/40 hover:border-cyberCyan hover:shadow-cyber text-cyberCyan font-semibold rounded-full text-sm font-mono transition-all">
-            {L ? 'Browse local files' : 'Examinar archivos localmente'}
+            {t.uploader.browseButton}
           </button>
         </div>
       </div>
@@ -147,17 +145,13 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         <div className="flex items-start gap-3 p-4 rounded-2xl border bg-white/3" style={{ borderColor: `${tc.c1}20` }}>
           <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c1 }} />
           <p className="text-xs text-gray-400 leading-relaxed">
-            {L
-              ? 'Files are parsed locally in your browser. Sensitive Spotify fields such as IP address are ignored.'
-              : 'Los archivos se procesan localmente en tu navegador. Campos sensibles de Spotify como IP se ignoran.'}
+            {t.uploader.privacyNote}
           </p>
         </div>
         <div className="flex items-start gap-3 p-4 rounded-2xl border bg-white/3" style={{ borderColor: `${tc.c2}20` }}>
           <Files className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c2 }} />
           <p className="text-xs text-gray-400 leading-relaxed">
-            {L
-              ? 'You can upload Last.fm and Spotify together for merged stats, overlap, skips, platforms and countries.'
-              : 'Puedes subir Last.fm y Spotify juntos para ver estadisticas fusionadas, overlap, skips, plataformas y paises.'}
+            {t.uploader.mergeNote}
           </p>
         </div>
       </div>
@@ -166,7 +160,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         <div className="mt-6 flex items-center justify-center space-x-3 p-4 glass-panel border border-cyan-500/20 rounded-2xl">
           <div className="w-5 h-5 border-2 border-cyberCyan border-t-transparent rounded-full animate-spin"></div>
           <span className="text-sm text-gray-300 font-mono">
-            {L ? 'Processing and analyzing your history...' : 'Procesando y analizando tu historia...'}
+            {t.uploader.processingStatus}
           </span>
         </div>
       )}

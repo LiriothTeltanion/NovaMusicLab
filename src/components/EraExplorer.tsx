@@ -46,7 +46,7 @@ const ERA_INTERPRETATIONS_EN: Record<number, string> = {
 
 export default function EraExplorer({ data }: EraExplorerProps) {
   const [selectedIdx, setSelectedIdx] = useState(data.yearly_eras.length - 1);
-  const { lang, tc } = useApp();
+  const { lang, tc, t } = useApp();
   const L = lang === 'en';
   const eras = data.yearly_eras;
   const currentEra = eras[selectedIdx];
@@ -54,9 +54,13 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const maxPlays = Math.max(...eras.map(e => e.plays));
   const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
   const interpretation = (L ? ERA_INTERPRETATIONS_EN[currentEra.year] : ERA_INTERPRETATIONS[currentEra.year])
-    ?? (L
-      ? `${currentEra.year} is led by ${currentEra.top_artist}, with ${fmtNum(currentEra.plays)} plays and ${currentEra.unique_artists} artists. The data points to a chapter shaped by repetition, discovery and the ${currentEra.dominant_daypart.toLowerCase()} listening window.`
-      : `${currentEra.year} está liderado por ${currentEra.top_artist}, con ${fmtNum(currentEra.plays)} plays y ${currentEra.unique_artists} artistas. Los datos apuntan a un capítulo marcado por repetición, descubrimiento y la ventana de escucha ${currentEra.dominant_daypart.toLowerCase()}.`);
+    ?? t.eraExplorer.fallbackInterpretation(
+      currentEra.year,
+      currentEra.top_artist,
+      fmtNum(currentEra.plays),
+      currentEra.unique_artists,
+      currentEra.dominant_daypart.toLowerCase(),
+    );
 
   const daypartEmoji: Record<string, string> = {
     'Mañana 06-11': '🌅', 'Tarde 12-17': '🌞', 'Noche 18-23': '🌙', 'Madrugada 00-05': '🌌',
@@ -68,7 +72,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
         <div className="flex items-center space-x-3">
           <Calendar className="w-6 h-6" style={{ color: tc.c1 }} />
           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {L ? 'Musical Timeline' : 'Línea de Tiempo Musical'}</h2>
+            {t.eraExplorer.title}</h2>
         </div>
         <div className="flex space-x-2">
           <button onClick={() => setSelectedIdx(i => Math.max(0, i - 1))} disabled={selectedIdx === 0}
@@ -144,8 +148,8 @@ export default function EraExplorer({ data }: EraExplorerProps) {
             {/* Plays bar */}
             <div className="space-y-1">
               <div className="flex justify-between text-xs font-mono text-gray-400">
-                <span>Actividad del año</span>
-                <span style={{ color }}>{fmtNum(currentEra.plays)} plays</span>
+                <span>{t.eraExplorer.yearActivity}</span>
+                <span style={{ color }}>{t.eraExplorer.playsCount(fmtNum(currentEra.plays))}</span>
               </div>
               <div className="h-2 rounded-full bg-white/5">
                 <motion.div className="h-full rounded-full"
@@ -160,7 +164,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
             <div className="p-5 rounded-2xl" style={{ backgroundColor: `${color}08`, border: `1px solid ${color}25` }}>
               <h4 className="text-sm font-mono font-bold uppercase tracking-wider mb-2 flex items-center gap-2" style={{ color }}>
                 <Sparkles className="w-4 h-4" />
-            {L ? 'Interpretive Reading' : 'Lectura Interpretativa'}
+            {t.eraExplorer.interpretiveReading}
               </h4>
               <p className="text-sm text-gray-300 font-sans italic leading-relaxed">
                 "{interpretation}"
@@ -171,15 +175,15 @@ export default function EraExplorer({ data }: EraExplorerProps) {
           {/* Right: Stats */}
           <div className="glass-panel p-6 rounded-3xl space-y-5">
             <h4 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest">
-              {L ? `Stats for ${currentEra.year}` : `Datos de ${currentEra.year}`}
+              {t.eraExplorer.statsFor(currentEra.year)}
             </h4>
 
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: L ? 'Plays'    : 'Plays',    val: fmtNum(currentEra.plays),           color: color },
-                { label: L ? 'Artists'  : 'Artistas', val: String(currentEra.unique_artists),   color: '#f72585' },
-                { label: L ? 'Tracks'   : 'Canciones',val: String(currentEra.unique_tracks),   color: '#7209b7' },
-                { label: L ? 'Diversity': 'Diversidad',val: `${currentEra.diversity_index}%`,  color: '#10b981' },
+                { label: t.eraExplorer.statPlays,     val: fmtNum(currentEra.plays),           color: color },
+                { label: t.eraExplorer.statArtists,   val: String(currentEra.unique_artists),   color: '#f72585' },
+                { label: t.eraExplorer.statTracks,    val: String(currentEra.unique_tracks),   color: '#7209b7' },
+                { label: t.eraExplorer.statDiversity, val: `${currentEra.diversity_index}%`,  color: '#10b981' },
               ].map(({ label, val, color: c }) => (
                 <div key={label} className="p-3 bg-white/3 border border-white/5 rounded-xl">
                   <p className="text-[10px] font-mono text-gray-400 uppercase">{label}</p>
@@ -193,7 +197,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                 <Disc className="w-4 h-4 text-cyberPink shrink-0" />
                 <div className="min-w-0">
                   <p className="text-[10px] font-mono text-gray-400 uppercase">
-                    {L ? 'Flagship Artist' : 'Artista Insignia'}
+                    {t.eraExplorer.flagshipArtist}
                   </p>
                   <p className="text-sm font-bold text-white truncate">{currentEra.top_artist}</p>
                 </div>
@@ -202,7 +206,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                 <Headphones className="w-4 h-4 text-cyberBlue shrink-0" />
                 <div className="min-w-0">
                   <p className="text-[10px] font-mono text-gray-400 uppercase">
-                    {L ? 'Anthem of the Year' : 'Himno del Año'}
+                    {t.eraExplorer.anthemOfYear}
                   </p>
                   <p className="text-sm font-bold text-white truncate">{currentEra.top_track}</p>
                 </div>
@@ -212,7 +216,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
             {/* Era position in overall journey */}
             <div className="pt-3 border-t border-white/5">
               <p className="text-[10px] font-mono text-gray-500 text-center">
-                {L ? `Chapter ${selectedIdx + 1} of ${eras.length} ✧ ${currentEra.year}` : `Capítulo ${selectedIdx + 1} de ${eras.length} ✧ ${currentEra.year}`}
+                {t.eraExplorer.chapterOf(selectedIdx + 1, eras.length, currentEra.year)}
               </p>
             </div>
           </div>
@@ -223,7 +227,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
       <div>
         <div className="flex items-center space-x-2 mb-4">
           <BarChart2 className="w-4 h-4 text-gray-400" />
-          <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">Todas las Eras</span>
+          <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">{t.eraExplorer.allEras}</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {eras.map((era, idx) => {
@@ -238,7 +242,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
               >
                 <p className="font-mono text-sm font-black" style={{ color: eraColor }}>{era.year}</p>
                 <p className="text-[10px] text-gray-300 font-bold leading-tight mt-0.5 line-clamp-2">{era.era_label}</p>
-                <p className="text-[9px] text-gray-500 font-mono mt-1">{fmtNum(era.plays)} plays</p>
+                <p className="text-[9px] text-gray-500 font-mono mt-1">{t.eraExplorer.playsCount(fmtNum(era.plays))}</p>
               </button>
             );
           })}

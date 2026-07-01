@@ -16,15 +16,18 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
   const source = deriveSourceSummary(data);
   const records = getRecords(data);
   const nightRatio = getNightRatio(data);
-  const { lang, tc } = useApp();
-  const L = lang === 'en';
+  const { tc, t } = useApp();
+
+  const secondArtistName = supportArtists[0]?.name ?? t.hiddenInsights.secondArtistFallback;
+  const secondArtistPlays = supportArtists[0]?.plays?.toLocaleString('es-ES') ?? 0;
+  const anchorTrackTitle = anchorTracks[0]?.title ?? t.hiddenInsights.anchorTrackFallback;
 
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex items-center space-x-3 mb-6">
         <AlertCircle className="w-6 h-6" style={{ color: tc.c1 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {L ? 'What Your Data Reveals That You May Not Have Noticed' : 'Lo que Revelan tus Datos y Quizás No Notabas'}
+          {t.hiddenInsights.title}
         </h2>
       </div>
 
@@ -34,17 +37,17 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           <div className="flex items-center space-x-2 text-cyberCyan">
             <HeartHandshake className="w-5 h-5" />
             <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
-              {L ? 'The Secret Weight of Support Artists' : 'La Importancia Secreta de Artistas de Apoyo'}
+              {t.hiddenInsights.supportWeightTitle}
             </h4>
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed">
-            {L ? 'Although ' : 'Aunque '}
-            <strong className="text-white">{topArtist?.name}</strong>
-            {L ? ' leads the archive, artists like ' : ' domina la cima, artistas como '}
-            <strong className="text-white">{supportArtists[0]?.name ?? 'tu segundo artista'}</strong>
-            {' '}({supportArtists[0]?.plays?.toLocaleString('es-ES') ?? 0} plays)
-            {supportArtists[1] && <> {L ? 'and ' : 'y '}<strong className="text-white">{supportArtists[1].name}</strong> ({supportArtists[1].plays.toLocaleString('es-ES')} plays)</>}
-            {L ? ' reveal the stable support layer of your listening.' : ' revelan la capa estable de apoyo de tu escucha cotidiana.'}
+            {t.hiddenInsights.supportWeightBody(
+              topArtist?.name ?? '',
+              secondArtistName,
+              secondArtistPlays,
+              supportArtists[1]?.name,
+              supportArtists[1]?.plays?.toLocaleString('es-ES'),
+            )}
           </p>
         </div>
 
@@ -53,14 +56,13 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           <div className="flex items-center space-x-2 text-cyberPink">
             <ShieldAlert className="w-5 h-5 animate-pulse" />
             <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
-              {L ? 'Source Cross-Check' : 'Cruce de Datos'}
+              {t.hiddenInsights.sourceCrossCheckTitle}
             </h4>
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed font-light">
-            {L ? 'The current match/coverage rate is ' : 'La tasa actual de coincidencia/cobertura es '}
-            <strong className="text-cyberCyan font-bold">{metrics.match_rate_pct}%</strong>.
+            {t.hiddenInsights.sourceCrossCheckBody(metrics.match_rate_pct)}
             {' '}{source.source_note}
-            {source.spotify_short_plays > 0 && <> {L ? 'Spotify also shows ' : 'Spotify también muestra '}<strong className="text-white">{source.spotify_short_plays.toLocaleString('es-ES')}</strong>{L ? ' short plays under 30 seconds.' : ' plays cortos bajo 30 segundos.'}</>}
+            {source.spotify_short_plays > 0 && ' ' + t.hiddenInsights.spotifyShortPlaysNote(source.spotify_short_plays.toLocaleString('es-ES'))}
           </p>
         </div>
 
@@ -69,15 +71,15 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           <div className="flex items-center space-x-2 text-cyberPurple">
             <RotateCcwIcon className="w-5 h-5" />
             <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
-              {L ? 'Tracks That Resist Time' : 'Canciones que Resisten el Paso de los Años'}
+              {t.hiddenInsights.timeResistantTracksTitle}
             </h4>
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed">
-            {L ? 'Tracks like ' : 'Pistas como '}
-            <strong className="text-white">{anchorTracks[0]?.title ?? 'tu cancion principal'}</strong>
-            {anchorTracks[0] && <> {L ? ' by ' : ' de '}<strong className="text-white">{anchorTracks[0].artist}</strong></>}
-            {anchorTracks[1] && <> {L ? ' and ' : ' y '}<strong className="text-white">{anchorTracks[1].title}</strong></>}
-            {L ? ' behave as emotional anchors because they survive the ranking pressure across the whole archive.' : ' funcionan como anclas emocionales porque sobreviven la presión del ranking a lo largo de todo el archivo.'}
+            {t.hiddenInsights.timeResistantTracksBody(
+              anchorTrackTitle,
+              anchorTracks[0]?.artist,
+              anchorTracks[1]?.title,
+            )}
           </p>
         </div>
 
@@ -86,15 +88,11 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           <div className="flex items-center space-x-2 text-green-400">
             <HelpCircle className="w-5 h-5" />
             <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
-              {L ? 'Nocturnal Emotional Regulation' : 'La Regulación Emocional Nocturna'}
+              {t.hiddenInsights.nocturnalRegulationTitle}
             </h4>
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed">
-            {L ? 'Your late-night pattern represents ' : 'Tu patrón de escucha nocturna representa '}
-            <strong className="text-white">{nightRatio}%</strong>
-            {L ? ' of total plays between 00:00 and 05:59. Your strongest detected streak is ' : ' de plays entre 00:00 y 05:59. Tu racha más larga detectada es de '}
-            <strong className="text-white">{records.longest_streak_days}</strong>
-            {L ? ' days, which suggests music is a stabilizing habit, not only entertainment.' : ' días, lo que sugiere que la música funciona como hábito estabilizador, no solo entretenimiento.'}
+            {t.hiddenInsights.nocturnalRegulationBody(nightRatio, records.longest_streak_days)}
           </p>
         </div>
       </div>

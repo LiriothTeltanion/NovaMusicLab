@@ -38,7 +38,7 @@ const CustomTooltip = ({ active, payload, label, tc }: any) => {
 };
 
 export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
-  const { tc, lang } = useApp();
+  const { tc, lang, t } = useApp();
   const peakYear = useMemo(() => getPeakYear(data), [data]);
   const [selectedYear, setSelectedYear] = useState<number>(() => peakYear?.year ?? data.yearly_eras[0]?.year ?? new Date().getFullYear());
 
@@ -130,17 +130,17 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
       <div className="flex items-center space-x-3">
         <Activity className="w-6 h-6" style={{ color: tc.c1 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {lang === 'en' ? 'Pro Statistics' : 'Estadísticas Profundas'}
+          {t.statsDeepDive.title}
         </h2>
       </div>
 
       {/* ── KPI Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {[
-          { label: lang === 'en' ? 'Consistency' : 'Consistencia',  val: consistencyScore,  suffix: '%', icon: Target,   color: tc.c1, desc: lang === 'en' ? 'Active days / total days' : 'Días activos / días totales' },
-          { label: lang === 'en' ? 'Exploration' : 'Exploración',    val: explorationScore,  suffix: '/1k', icon: TrendingUp, color: tc.c2, desc: lang === 'en' ? 'Artists per 1000 plays' : 'Artistas por 1000 plays' },
-          { label: lang === 'en' ? 'Obsession'   : 'Obsesión',       val: obsessionScore,    suffix: '%', icon: Zap,     color: tc.c3, desc: lang === 'en' ? 'Repetition rate' : 'Tasa de repetición' },
-          { label: lang === 'en' ? 'Peak Year'   : 'Año Cumbre',    val: peakYear?.year ?? 0, numOnly: true, icon: Award,   color: tc.c4, desc: `${fmtNum(peakYear?.plays ?? 0)} plays` },
+          { label: t.statsDeepDive.kpiConsistency,  val: consistencyScore,  suffix: '%', icon: Target,   color: tc.c1, desc: t.statsDeepDive.kpiConsistencyDesc },
+          { label: t.statsDeepDive.kpiExploration,    val: explorationScore,  suffix: '/1k', icon: TrendingUp, color: tc.c2, desc: t.statsDeepDive.kpiExplorationDesc },
+          { label: t.statsDeepDive.kpiObsession,       val: obsessionScore,    suffix: '%', icon: Zap,     color: tc.c3, desc: t.statsDeepDive.kpiObsessionDesc },
+          { label: t.statsDeepDive.kpiPeakYear,    val: peakYear?.year ?? 0, numOnly: true, icon: Award,   color: tc.c4, desc: t.statsDeepDive.kpiPeakYearDesc(fmtNum(peakYear?.plays ?? 0)) },
         ].map(({ label, val, suffix, icon: Icon, color, desc, numOnly }) => (
           <div key={label} className="glass-panel p-5 rounded-2xl border-l-4 relative overflow-hidden"
             style={{ borderLeftColor: color }}>
@@ -160,20 +160,20 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         <div className="flex items-center gap-3 mb-5">
           <Calendar className="w-5 h-5" style={{ color: tc.c1 }} />
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-            {lang === 'en' ? '11-Year Activity Heatmap' : 'Mapa de Actividad 11 Años'} (2015–2026)
+            {t.statsDeepDive.heatmapTitle} (2015–2026)
           </h3>
           {monthlyActivity.estimated && (
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
               style={{ color: tc.c2, borderColor: `${tc.c2}40`, backgroundColor: `${tc.c2}10` }}>
-              {lang === 'en' ? 'estimated months' : 'meses estimados'}
+              {t.statsDeepDive.estimatedMonths}
             </span>
           )}
           <div className="ml-auto flex items-center gap-1.5 text-xs font-mono text-gray-500">
-            <span>{lang === 'en' ? 'Less' : 'Menos'}</span>
+            <span>{t.statsDeepDive.less}</span>
             {[0.1, 0.3, 0.55, 0.8, 1.0].map(o => (
               <div key={o} className="w-3 h-3 rounded-sm" style={{ backgroundColor: tc.c1, opacity: o }} />
             ))}
-            <span>{lang === 'en' ? 'More' : 'Más'}</span>
+            <span>{t.statsDeepDive.more}</span>
           </div>
         </div>
 
@@ -198,7 +198,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
                         className="flex-1 h-5 rounded-sm cursor-pointer"
                         style={{ backgroundColor: tc.c1, opacity }}
                         whileHover={{ scale: 1.2, opacity: 1 }}
-                        title={`${year} ${MONTHS[m]}: ~${fmtNum(plays)} plays`}
+                        title={t.statsDeepDive.monthCellTitle(year, MONTHS[m], fmtNum(plays))}
                         onClick={() => setSelectedYear(year)}
                       />
                     );
@@ -209,7 +209,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           </div>
         </div>
         <p className="text-[10px] text-gray-500 font-mono mt-2 text-center">
-          {lang === 'en' ? 'Click a year row to see monthly breakdown below' : 'Haz clic en una fila para ver el desglose mensual'}
+          {t.statsDeepDive.clickYearHint}
         </p>
       </div>
 
@@ -219,7 +219,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         <div className="glass-panel p-6 rounded-3xl">
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {lang === 'en' ? 'Monthly Breakdown' : 'Desglose Mensual'} {selectedYear}
+              {t.statsDeepDive.monthlyBreakdown} {selectedYear}
             </h3>
             <div className="flex gap-1">
               {years.map(y => (
@@ -232,8 +232,8 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             </div>
           </div>
           <div className="mb-2 text-xs text-gray-400 font-mono">
-            {lang === 'en' ? 'Peak: ' : 'Pico: '}<span style={{ color: tc.c2 }}>{peakMonth.month}</span>
-            {' — '}{fmtNum(peakMonth.plays)} plays
+            {t.statsDeepDive.peakLabel}<span style={{ color: tc.c2 }}>{peakMonth.month}</span>
+            {' — '}{t.statsDeepDive.playsCount(fmtNum(peakMonth.plays))}
           </div>
           <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
@@ -242,7 +242,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
                 <XAxis dataKey="month" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <YAxis stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <Tooltip content={<CustomTooltip tc={tc} />} />
-                <Bar dataKey="plays" name={lang === 'en' ? 'Plays' : 'Plays'} radius={[4, 4, 0, 0]}>
+                <Bar dataKey="plays" name={t.statsDeepDive.plays} radius={[4, 4, 0, 0]}>
                   {selectedYearMonths.map((d, i) => (
                     <Cell key={i} fill={d.plays === peakMonth.plays ? tc.c2 : tc.c1} fillOpacity={d.plays === peakMonth.plays ? 1 : 0.65} />
                   ))}
@@ -255,14 +255,14 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         {/* Weekday Radar */}
         <div className="glass-panel p-6 rounded-3xl">
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest mb-5">
-            {lang === 'en' ? 'Day-of-Week Pattern' : 'Patrón por Día de la Semana'}
+            {t.statsDeepDive.weekdayPatternTitle}
           </h3>
           <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
                 <PolarGrid stroke="#1e293b" />
                 <PolarAngleAxis dataKey="day" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <Radar name={lang === 'en' ? 'Plays' : 'Plays'} dataKey="plays"
+                <Radar name={t.statsDeepDive.plays} dataKey="plays"
                   stroke={tc.c1} fill={tc.c1} fillOpacity={0.2} />
               </RadarChart>
             </ResponsiveContainer>
@@ -291,7 +291,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         <div className="flex items-center gap-3 mb-5">
           <Zap className="w-5 h-5" style={{ color: tc.c2 }} />
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-            {lang === 'en' ? 'Genre Treemap (by plays)' : 'Treemap de Géneros (por plays)'}
+            {t.statsDeepDive.genreTreemapTitle}
           </h3>
         </div>
         <div className="h-72">
@@ -307,7 +307,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         <div className="flex items-center gap-3 mb-5">
           <TrendingUp className="w-5 h-5" style={{ color: tc.c4 }} />
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-            {lang === 'en' ? 'Plays & Artist Discovery 2015–2026' : 'Evolución de Plays & Descubrimiento 2015–2026'}
+            {t.statsDeepDive.genreEvolutionTitle}
           </h3>
         </div>
         <div className="h-64">
@@ -331,13 +331,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
               <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
               <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
               <Tooltip content={<CustomTooltip tc={tc} />} />
-              <Area type="monotone" dataKey="plays" name={lang === 'en' ? 'Plays' : 'Plays'}
+              <Area type="monotone" dataKey="plays" name={t.statsDeepDive.plays}
                 stroke={tc.c1} strokeWidth={2.5} fill="url(#gPlays)"
                 dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-              <Area type="monotone" dataKey="artistas" name={lang === 'en' ? 'Unique Artists' : 'Artistas únicos'}
+              <Area type="monotone" dataKey="artistas" name={t.statsDeepDive.uniqueArtists}
                 stroke={tc.c3} strokeWidth={2} fill="url(#gArtistas)"
                 dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
-              <Area type="monotone" dataKey="diversidad" name={lang === 'en' ? 'Diversity %' : 'Diversidad %'}
+              <Area type="monotone" dataKey="diversidad" name={t.statsDeepDive.diversityPct}
                 stroke={tc.c4} strokeWidth={1.5} fill="url(#gDiversity)"
                 dot={false} activeDot={{ r: 5 }} />
             </AreaChart>

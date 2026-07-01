@@ -23,18 +23,18 @@ const itemVariants = {
 };
 
 export default function TopHistorico({ data }: TopHistoricoProps) {
-  const { tc, lang } = useApp();
+  const { tc, t } = useApp();
   const [tab, setTab] = useState<TopTab>('artistas');
   const [search, setSearch] = useState('');
 
   const COLORS = [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#a78bfa', '#34d399', '#f59e0b', '#ec4899', '#6ee7b7'];
 
   const tabs = [
-    { id: 'artistas',  label: lang === 'en' ? 'Artists'  : 'Artistas',  icon: MicVocal },
-    { id: 'canciones', label: lang === 'en' ? 'Tracks'   : 'Canciones', icon: Music2 },
-    { id: 'albums',    label: lang === 'en' ? 'Albums'   : 'Álbumes',   icon: Disc3 },
-    { id: 'generos',   label: lang === 'en' ? 'Genres'   : 'Géneros',   icon: BarChart2 },
-    { id: 'anos',      label: lang === 'en' ? 'Years'    : 'Años',      icon: Trophy },
+    { id: 'artistas',  label: t.topHistorico.tabArtists,  icon: MicVocal },
+    { id: 'canciones', label: t.topHistorico.tabTracks,   icon: Music2 },
+    { id: 'albums',    label: t.topHistorico.tabAlbums,   icon: Disc3 },
+    { id: 'generos',   label: t.topHistorico.tabGenres,   icon: BarChart2 },
+    { id: 'anos',      label: t.topHistorico.tabYears,    icon: Trophy },
   ] as const;
 
   const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
@@ -125,7 +125,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         <div className="flex items-center space-x-3">
           <Trophy className="w-6 h-6" style={{ color: tc.c1 }} />
           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {lang === 'en' ? 'All-Time Top' : 'Top Histórico'}
+            {t.topHistorico.title}
           </h2>
         </div>
 
@@ -136,7 +136,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder={lang === 'en' ? 'Search…' : 'Buscar…'}
+            placeholder={t.topHistorico.searchPlaceholder}
             className="bg-white/5 border rounded-xl pl-9 pr-8 py-2 text-sm font-mono text-white placeholder-gray-500 focus:outline-none transition-all w-52"
             style={{ borderColor: search ? tc.c1 : 'rgba(255,255,255,0.1)' }}
           />
@@ -179,8 +179,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c1 }}>
-                  {lang === 'en' ? 'Top 50 Artists' : 'Top 50 Artistas'}
-                  {search && <span className="text-gray-400 ml-2">({filteredArtists.length} {lang === 'en' ? 'results' : 'resultados'})</span>}
+                  {t.topHistorico.top50Artists}
+                  {search && <span className="text-gray-400 ml-2">({t.topHistorico.resultsCount(filteredArtists.length)})</span>}
                 </h3>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
                   className="space-y-2 max-h-[620px] overflow-y-auto pr-1">
@@ -195,7 +195,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c2 }}>
-                  {lang === 'en' ? 'Top 20 — Chart' : 'Top 20 — Gráfico'}
+                  {t.topHistorico.top20Chart}
                 </h3>
                 <div className="h-[550px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -206,7 +206,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11}
                         width={145} tick={{ fill: '#d1d5db' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="plays" name={lang === 'en' ? 'Plays' : 'Plays'} radius={[0, 6, 6, 0]}>
+                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]}>
                         {data.top_artists.slice(0, 20).map((_, i) => (
                           <Cell key={i} fill={i < 3 ? tc.c1 : tc.c3} fillOpacity={i < 3 ? 1 : 0.7} />
                         ))}
@@ -224,7 +224,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c1 }}>
-                  {lang === 'en' ? 'Top 50 Tracks' : 'Top 50 Canciones'}
+                  {t.topHistorico.top50Tracks}
                   {search && <span className="text-gray-400 ml-2">({filteredTracks.length})</span>}
                 </h3>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
@@ -240,7 +240,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c2 }}>
-                  {lang === 'en' ? 'Top 20 — Chart' : 'Top 20 — Gráfico'}
+                  {t.topHistorico.top20Chart}
                 </h3>
                 <div className="h-[550px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -268,7 +268,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             <div className="glass-panel p-6 rounded-3xl">
               <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                 style={{ color: tc.c3 }}>
-                {lang === 'en' ? 'Top 50 Albums' : 'Top 50 Álbumes'}
+                {t.topHistorico.top50Albums}
                 {search && <span className="text-gray-400 ml-2">({filteredAlbums.length})</span>}
               </h3>
               <motion.div variants={listVariants} initial="initial" animate="animate"
@@ -287,7 +287,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c1 }}>
-                  {lang === 'en' ? 'Genre Treemap' : 'Treemap de Géneros'}
+                  {t.topHistorico.genreTreemap}
                 </h3>
                 <div className="h-72">
                   <ResponsiveContainer width="100%" height="100%">
@@ -300,7 +300,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
                   style={{ color: tc.c4 }}>
-                  {lang === 'en' ? 'Genre Breakdown Bar' : 'Desglose por Géneros'}
+                  {t.topHistorico.genreBreakdown}
                 </h3>
                 <div className="h-[420px]">
                   <ResponsiveContainer width="100%" height="100%">
@@ -311,7 +311,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={10}
                         width={160} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="plays" name={lang === 'en' ? 'Plays' : 'Plays'} radius={[0, 6, 6, 0]}>
+                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]}>
                         {genreData.map((_, i) => (
                           <Cell key={i} fill={COLORS[i % COLORS.length]} />
                         ))}
@@ -329,7 +329,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="glass-panel p-6 rounded-3xl">
                 <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-6"
                   style={{ color: tc.c1 }}>
-                  {lang === 'en' ? 'Plays by Year (2015–2026)' : 'Reproducciones por Año (2015–2026)'}
+                  {t.topHistorico.playsByYear}
                 </h3>
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
@@ -348,10 +348,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
                       <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Area type="monotone" dataKey="plays" name={lang === 'en' ? 'Plays' : 'Plays'}
+                      <Area type="monotone" dataKey="plays" name={t.topHistorico.playsLegend}
                         stroke={tc.c1} strokeWidth={2.5} fill="url(#topGradYear)"
                         dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-                      <Area type="monotone" dataKey="artistas" name={lang === 'en' ? 'Unique Artists' : 'Artistas únicos'}
+                      <Area type="monotone" dataKey="artistas" name={t.topHistorico.uniqueArtistsLegend}
                         stroke={tc.c3} strokeWidth={2} fill="url(#topGradArt)"
                         dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
                     </AreaChart>
@@ -374,7 +374,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     <p className="text-[11px] font-bold text-gray-200 leading-tight">{era.era_label}</p>
                     <p className="text-[10px] text-gray-500 font-mono">♪ {era.top_artist}</p>
                     <div className="pt-1 border-t border-white/5 text-[9px] text-gray-600 font-mono">
-                      {lang === 'en' ? 'Diversity' : 'Diversidad'} {era.diversity_index}% · {era.unique_artists} {lang === 'en' ? 'artists' : 'artistas'}
+                      {t.topHistorico.eraDiversityLine(era.diversity_index, era.unique_artists)}
                     </div>
                   </motion.div>
                 ))}

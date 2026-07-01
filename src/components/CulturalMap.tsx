@@ -8,19 +8,72 @@ interface CulturalMapProps {
   data: MusicDnaData;
 }
 
-const COUNTRY_META: Record<string, { flag: string; lang: string; scene: string; color: string }> = {
-  'United States': { flag: '🇺🇸 US', lang: 'Inglés', scene: 'Post-Hardcore · Metalcore · Emo Rap', color: '#3b82f6' },
-  'United Kingdom': { flag: '🇬🇧 UK', lang: 'Inglés', scene: 'Metalcore · Alt-Rock · Shoegaze',    color: '#ef4444' },
-  'Sweden':         { flag: '🇸🇪 SE', lang: 'Inglés/Sueco', scene: 'Hard Rock · AOR · Melodic Death', color: '#facc15' },
-  'Finland':        { flag: '🇫🇮 FI', lang: 'Finés/Inglés', scene: 'Glam Rock · Melodic Death Metal', color: '#06b6d4' },
-  'Germany':        { flag: '🇩🇪 DE', lang: 'Alemán/Inglés', scene: 'Power Metal · Synth-Pop · Industrial', color: '#f97316' },
-  'France':         { flag: '🇫🇷 FR', lang: 'Francés/Inglés', scene: 'Darksynth · Shoegaze · Ambient', color: '#8b5cf6' },
-  'Israel':         { flag: '🇮🇱 IL', lang: 'Hebreo/Inglés', scene: 'Israeli Rock · Hip-Hop · Punk',  color: '#10b981' },
-  'Norway':         { flag: '🇳🇴 NO', lang: 'Noruego/Inglés', scene: 'EDM · Metal · Black Metal',      color: '#a78bfa' },
-  'New Zealand':    { flag: '🇳🇿 NZ', lang: 'Inglés', scene: 'Indie · Phonk · Internet Pop',           color: '#34d399' },
-  'Puerto Rico':    { flag: '🇵🇷 PR', lang: 'Español', scene: 'Trap Latino · Reggaeton',               color: '#fb923c' },
-  'Venezuela':      { flag: '🇻🇪 VE', lang: 'Español', scene: 'Rock Venezolano · Pop Latino',          color: '#f43f5e' },
-  'Dominican Republic': { flag: '🇩🇴 DO', lang: 'Español', scene: 'Ritmos Caribeños',                  color: '#ec4899' },
+interface CountryMetaLocale {
+  lang: string;
+  scene: string;
+}
+
+const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMetaLocale; en: CountryMetaLocale }> = {
+  'United States': {
+    flag: '🇺🇸 US', color: '#3b82f6',
+    es: { lang: 'Inglés', scene: 'Post-Hardcore · Metalcore · Emo Rap' },
+    en: { lang: 'English', scene: 'Post-Hardcore · Metalcore · Emo Rap' },
+  },
+  'United Kingdom': {
+    flag: '🇬🇧 UK', color: '#ef4444',
+    es: { lang: 'Inglés', scene: 'Metalcore · Alt-Rock · Shoegaze' },
+    en: { lang: 'English', scene: 'Metalcore · Alt-Rock · Shoegaze' },
+  },
+  'Sweden': {
+    flag: '🇸🇪 SE', color: '#facc15',
+    es: { lang: 'Inglés/Sueco', scene: 'Hard Rock · AOR · Melodic Death' },
+    en: { lang: 'English/Swedish', scene: 'Hard Rock · AOR · Melodic Death' },
+  },
+  'Finland': {
+    flag: '🇫🇮 FI', color: '#06b6d4',
+    es: { lang: 'Finés/Inglés', scene: 'Glam Rock · Melodic Death Metal' },
+    en: { lang: 'Finnish/English', scene: 'Glam Rock · Melodic Death Metal' },
+  },
+  'Germany': {
+    flag: '🇩🇪 DE', color: '#f97316',
+    es: { lang: 'Alemán/Inglés', scene: 'Power Metal · Synth-Pop · Industrial' },
+    en: { lang: 'German/English', scene: 'Power Metal · Synth-Pop · Industrial' },
+  },
+  'France': {
+    flag: '🇫🇷 FR', color: '#8b5cf6',
+    es: { lang: 'Francés/Inglés', scene: 'Darksynth · Shoegaze · Ambient' },
+    en: { lang: 'French/English', scene: 'Darksynth · Shoegaze · Ambient' },
+  },
+  'Israel': {
+    flag: '🇮🇱 IL', color: '#10b981',
+    es: { lang: 'Hebreo/Inglés', scene: 'Israeli Rock · Hip-Hop · Punk' },
+    en: { lang: 'Hebrew/English', scene: 'Israeli Rock · Hip-Hop · Punk' },
+  },
+  'Norway': {
+    flag: '🇳🇴 NO', color: '#a78bfa',
+    es: { lang: 'Noruego/Inglés', scene: 'EDM · Metal · Black Metal' },
+    en: { lang: 'Norwegian/English', scene: 'EDM · Metal · Black Metal' },
+  },
+  'New Zealand': {
+    flag: '🇳🇿 NZ', color: '#34d399',
+    es: { lang: 'Inglés', scene: 'Indie · Phonk · Internet Pop' },
+    en: { lang: 'English', scene: 'Indie · Phonk · Internet Pop' },
+  },
+  'Puerto Rico': {
+    flag: '🇵🇷 PR', color: '#fb923c',
+    es: { lang: 'Español', scene: 'Trap Latino · Reggaeton' },
+    en: { lang: 'Spanish', scene: 'Latin Trap · Reggaeton' },
+  },
+  'Venezuela': {
+    flag: '🇻🇪 VE', color: '#f43f5e',
+    es: { lang: 'Español', scene: 'Rock Venezolano · Pop Latino' },
+    en: { lang: 'Spanish', scene: 'Venezuelan Rock · Latin Pop' },
+  },
+  'Dominican Republic': {
+    flag: '🇩🇴 DO', color: '#ec4899',
+    es: { lang: 'Español', scene: 'Ritmos Caribeños' },
+    en: { lang: 'Spanish', scene: 'Caribbean Rhythms' },
+  },
 };
 
 const LANG_DATA = [
@@ -44,7 +97,7 @@ const SCENE_TAGS = [
 
 export default function CulturalMap({ data }: CulturalMapProps) {
   const [selected, setSelected] = useState<string | null>(null);
-  const { lang } = useApp();
+  const { lang, t } = useApp();
   const countries = data.countries;
   const maxPlays = Math.max(...countries.map(c => c.plays));
 
@@ -57,7 +110,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
     <div className="space-y-10 animate-fade-in">
       <div className="flex items-center space-x-3">
         <Globe className="w-6 h-6 text-cyberCyan" />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">ADN Cultural & Geográfico</h2>
+        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.cultural.title}</h2>
       </div>
 
       {/* Hero narrative */}
@@ -65,12 +118,10 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         <div className="absolute top-0 right-0 w-48 h-48 bg-cyberCyan/5 blur-[60px] rounded-full pointer-events-none" />
         <div className="relative z-10 space-y-3">
           <h3 className="text-xl font-bold text-white">
-            {lang === 'en' ? 'Your Migrant Sonic Footprint' : 'Tu Huella Sonora Migrante'}
+            {t.cultural.heroTitle}
           </h3>
           <p className="text-sm text-gray-300 leading-relaxed">
-            {lang === 'en'
-              ? `Your music reflects a uniquely globalized identity: Venezuelan roots, the Israeli experience and digital English-speaking culture coexist in perfect creative tension. You listen in 4+ languages from ${countries.length}+ countries.`
-              : `Tu música refleja una identidad globalizada y única: la raíz venezolana, la experiencia israelí y la cultura digital angloparlante conviven en perfecta tensión creativa. Escuchas en 4+ idiomas desde ${countries.length}+ países.`}
+            {t.cultural.heroDesc(countries.length)}
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             {SCENE_TAGS.map(({ tag, color }) => (
@@ -88,12 +139,17 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         <div className="flex items-center gap-2 mb-4">
           <Map className="w-4 h-4 text-gray-400" />
           <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">
-            {lang === 'en' ? 'Your Artists by Country' : 'Países de tus Artistas'}
+            {t.cultural.artistsByCountry}
           </span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {countries.map((c, idx) => {
-            const meta = COUNTRY_META[c.country] ?? { flag: '🌐', lang: 'Varios', scene: 'Variado', color: '#6b7280' };
+            const meta = COUNTRY_META[c.country] ?? {
+              flag: '🌐', color: '#6b7280',
+              es: { lang: 'Varios', scene: 'Variado' },
+              en: { lang: 'Various', scene: 'Varied' },
+            };
+            const localeMeta = meta[lang];
             const pct = Math.round((c.plays / maxPlays) * 100);
             const isSelected = selected === c.country;
             return (
@@ -118,7 +174,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                   </span>
                 </div>
                 <p className="text-sm font-bold text-white leading-tight">{c.country}</p>
-                <p className="text-[10px] text-gray-500 font-mono mt-0.5">{meta.lang}</p>
+                <p className="text-[10px] text-gray-500 font-mono mt-0.5">{localeMeta.lang}</p>
                 <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
                   <motion.div className="h-full rounded-full"
                     style={{ backgroundColor: meta.color }}
@@ -129,7 +185,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                 </div>
                 {isSelected && (
                   <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                    className="text-[10px] text-gray-300 mt-2.5 leading-relaxed">{meta.scene}</motion.p>
+                    className="text-[10px] text-gray-300 mt-2.5 leading-relaxed">{localeMeta.scene}</motion.p>
                 )}
               </motion.button>
             );
@@ -141,7 +197,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
       <div className="glass-panel p-6 rounded-3xl">
         <div className="flex items-center gap-2 mb-5">
           <Languages className="w-5 h-5 text-cyberPink" />
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">Distribución de Idiomas</h3>
+          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
         </div>
         <div className="space-y-3">
           {LANG_DATA.map(({ lang, pct, color }, i) => (
@@ -164,11 +220,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
       <div className="glass-panel p-6 rounded-3xl border border-cyberCyan/15 flex items-start gap-4">
         <Award className="w-5 h-5 text-cyberCyan shrink-0 mt-0.5" />
         <div className="space-y-1.5">
-          <p className="text-xs font-mono font-bold text-cyberCyan uppercase tracking-wider">{lang === 'en' ? 'Cultural DNA Conclusion' : 'Conclusión del ADN Cultural'}</p>
+          <p className="text-xs font-mono font-bold text-cyberCyan uppercase tracking-wider">{t.cultural.conclusionTitle}</p>
           <p className="text-sm text-gray-300 leading-relaxed">
-            {lang === 'en'
-              ? "Your musical profile refuses to be boxed into a single border. It's a liquid blend where Nordic melancholic guitars, Hebrew rock, cyberpunk synthwave and English-speaking alternative groove coexist. This diversity is your greatest creative strength."
-              : 'Tu perfil musical se niega a ser encasillado. Es una mezcla líquida donde conviven guitarras nórdicas, rock en hebreo, synthwave cyberpunk y groove alternativo angloparlante. Esta diversidad es tu mayor fortaleza creativa.'}
+            {t.cultural.conclusionDesc}
           </p>
         </div>
       </div>

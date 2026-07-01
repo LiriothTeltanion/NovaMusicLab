@@ -20,10 +20,9 @@ const cardVariants = {
 };
 
 export default function Dashboard({ data }: DashboardProps) {
-  const { lang, tc } = useApp();
+  const { tc, t } = useApp();
   const metrics = data.core_metrics;
   const topArtistsData = data.top_artists.slice(0, 10);
-  const L = lang === 'en';
   const records = getRecords(data);
 
   /* ── Advanced KPIs ── */
@@ -39,7 +38,7 @@ export default function Dashboard({ data }: DashboardProps) {
 
   const formatNum = (num: number) => formatNumber(num);
   const formatRecordDate = (date?: string) => {
-    if (!date) return L ? 'not available' : 'no disponible';
+    if (!date) return t.dashboard.notAvailable;
     return new Date(`${date}T00:00:00`).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
   };
 
@@ -90,10 +89,10 @@ export default function Dashboard({ data }: DashboardProps) {
       {/* 1. Main KPIs — animated stagger */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
-          { icon: Music,    label: L ? 'Total Plays'     : 'Plays Totales',       val: metrics.total_plays,     delay: 0,   color: tc.c1, sub: L ? 'Unique records in Last.fm + Spotify' : 'Registros únicos en Last.fm + Spotify' },
-          { icon: Clock,    label: L ? 'Hours Listened'  : 'Horas Escuchadas',    val: metrics.listening_hours, delay: 0.1, color: tc.c2, sub: `${L ? 'Approx.' : 'Aprox.'} ${formatNum(metrics.listening_days)} ${L ? 'days of continuous music' : 'días de música continua'}` },
-          { icon: Disc,     label: L ? 'Unique Artists'  : 'Artistas Únicos',     val: metrics.unique_artists,  delay: 0.2, color: tc.c3, sub: L ? 'Artists across 11 years of history' : 'Artistas en 11 años de historial' },
-          { icon: Calendar, label: L ? 'Active Days'     : 'Días Activos',        val: metrics.active_days,     delay: 0.3, color: '#10b981', sub: L ? 'Days with at least 1 registered play' : 'Días con al menos 1 reproducción' },
+          { icon: Music,    label: t.dashboard.kpiTotalPlays,    val: metrics.total_plays,     delay: 0,   color: tc.c1, sub: t.dashboard.kpiTotalPlaysSub },
+          { icon: Clock,    label: t.dashboard.kpiHoursListened, val: metrics.listening_hours, delay: 0.1, color: tc.c2, sub: t.dashboard.kpiHoursListenedSub(formatNum(metrics.listening_days)) },
+          { icon: Disc,     label: t.dashboard.kpiUniqueArtists, val: metrics.unique_artists,  delay: 0.2, color: tc.c3, sub: t.dashboard.kpiUniqueArtistsSub },
+          { icon: Calendar, label: t.dashboard.kpiActiveDays,    val: metrics.active_days,     delay: 0.3, color: '#10b981', sub: t.dashboard.kpiActiveDaysSub },
         ].map(({ icon: Icon, label, val, delay, color, sub }, i) => (
           <motion.div key={label} custom={i} variants={cardVariants} initial="initial" animate="animate"
             className="glass-panel p-6 rounded-3xl relative overflow-hidden group border-b-2"
@@ -114,10 +113,10 @@ export default function Dashboard({ data }: DashboardProps) {
       {/* 1b. Advanced KPIs row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: L ? 'Best Year'       : 'Mejor Año',         val: String(bestYear?.year ?? '—'),  sub: `${formatNum(bestYear?.plays ?? 0)} plays · ${bestYear?.era_label ?? ''}`, color: tc.c1,    numeric: false },
-          { label: L ? 'Avg / Day'       : 'Promedio / Día',    val: null, numericTarget: avgPerActiveDay, sub: `${L ? 'over' : 'sobre'} ${formatNum(metrics.active_days)} ${L ? 'active days' : 'días activos'}`, color: tc.c2, numeric: true },
-          { label: L ? 'Night Listening' : 'Escucha Nocturna',  val: null, numericTarget: nightRatio, suffix: '%', sub: L ? 'midnight 00–05 hrs' : 'madrugada 00–05 hrs',       color: tc.c3,    numeric: true },
-          { label: L ? 'Peak Hour'       : 'Hora Pico',         val: peakHour,                        sub: L ? 'hour with most historical plays' : 'hora con más reproducciones', color: '#10b981', numeric: false },
+          { label: t.dashboard.kpiBestYear,       val: String(bestYear?.year ?? '—'),  sub: `${formatNum(bestYear?.plays ?? 0)} plays · ${bestYear?.era_label ?? ''}`, color: tc.c1,    numeric: false },
+          { label: t.dashboard.kpiAvgPerDay,      val: null, numericTarget: avgPerActiveDay, sub: t.dashboard.kpiAvgPerDaySub(formatNum(metrics.active_days)), color: tc.c2, numeric: true },
+          { label: t.dashboard.kpiNightListening, val: null, numericTarget: nightRatio, suffix: '%', sub: t.dashboard.kpiNightListeningSub, color: tc.c3,    numeric: true },
+          { label: t.dashboard.kpiPeakHour,       val: peakHour,                        sub: t.dashboard.kpiPeakHourSub, color: '#10b981', numeric: false },
         ].map(({ label, val, numericTarget, suffix, sub, color, numeric }, i) => (
           <motion.div key={label} custom={i + 4} variants={cardVariants} initial="initial" animate="animate"
             className="glass-panel p-4 rounded-2xl relative overflow-hidden border-b-2"
@@ -140,15 +139,15 @@ export default function Dashboard({ data }: DashboardProps) {
         <div className="flex items-center gap-2 mb-4">
           <Flame className="w-4 h-4" style={{ color: tc.c2 }} />
           <span className="text-xs font-mono font-bold text-white uppercase tracking-widest">
-            {L ? 'Personal Records' : 'Récords Personales'}
+            {t.dashboard.personalRecords}
           </span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[ 
-            { label: L ? 'Longest streak'    : 'Racha más larga',  val: records.longest_streak_days, unit: records.longest_streak_start ? `${L ? 'days' : 'días'} · ${formatRecordDate(records.longest_streak_start)} – ${formatRecordDate(records.longest_streak_end)}` : (L ? 'days · needs daily source' : 'días · requiere historial diario'), color: '#fb923c' },
-            { label: L ? 'Max in one day'    : 'Máx. en un día',   val: records.max_day_plays, unit: `${L ? 'plays' : 'plays'} · ${formatRecordDate(records.max_day_date)}`, color: tc.c2 },
-            { label: L ? 'Longest session'   : 'Sesión más larga', val: Math.round(records.longest_session_minutes), unit: `${L ? 'minutes' : 'minutos'} · ${records.longest_session_tracks} ${L ? 'songs' : 'canciones'}`, color: tc.c1 },
-            { label: L ? 'Best session'      : 'Mejor sesión',     val: records.best_session_tracks, unit: `${L ? 'songs' : 'canciones'} · ${records.best_session_start ? new Date(records.best_session_start).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }) : (L ? 'unknown date' : 'fecha desconocida')}`, color: '#a78bfa' },
+          {[
+            { label: t.dashboard.recordLongestStreak,  val: records.longest_streak_days, unit: records.longest_streak_start ? t.dashboard.recordStreakUnit(formatRecordDate(records.longest_streak_start), formatRecordDate(records.longest_streak_end)) : t.dashboard.recordStreakUnitFallback, color: '#fb923c' },
+            { label: t.dashboard.recordMaxDay,         val: records.max_day_plays, unit: t.dashboard.recordMaxDayUnit(formatRecordDate(records.max_day_date)), color: tc.c2 },
+            { label: t.dashboard.recordLongestSession, val: Math.round(records.longest_session_minutes), unit: t.dashboard.recordSessionUnit(records.longest_session_tracks), color: tc.c1 },
+            { label: t.dashboard.recordBestSession,    val: records.best_session_tracks, unit: t.dashboard.recordBestSessionUnit(records.best_session_start ? new Date(records.best_session_start).toLocaleDateString('es-ES', { month: 'short', year: 'numeric' }) : t.dashboard.recordUnknownDate), color: '#a78bfa' },
           ].map(({ label, val, unit, color }) => (
             <div key={label} className="p-3 rounded-xl bg-white/3 border border-white/5 text-center">
               <p className="text-[10px] font-mono text-gray-400 uppercase tracking-wide">{label}</p>
@@ -168,7 +167,7 @@ export default function Dashboard({ data }: DashboardProps) {
           <div className="flex items-center space-x-3 mb-6">
             <Trophy className="w-6 h-6" style={{ color: tc.c1 }} />
             <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-              {L ? 'Top 10 All-Time Artists' : 'Top 10 Artistas Históricos'}
+              {t.dashboard.topArtistsTitle}
             </h3>
           </div>
           <div className="h-80 w-full">
@@ -180,7 +179,7 @@ export default function Dashboard({ data }: DashboardProps) {
                   contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c1, borderRadius: '12px' }}
                   labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
                 />
-                <Bar dataKey="plays" name={L ? 'Plays' : 'Plays'} radius={[0, 4, 4, 0]}>
+                <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[0, 4, 4, 0]}>
                   {topArtistsData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={index === 0 ? tc.c1 : tc.c3} fillOpacity={index === 0 ? 1 : 0.7} />
                   ))}
@@ -196,7 +195,7 @@ export default function Dashboard({ data }: DashboardProps) {
             <div className="flex items-center space-x-3 mb-6">
               <Star className="w-6 h-6" style={{ color: tc.c2 }} />
               <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-                {L ? 'Genre DNA' : 'ADN de Géneros'}
+                {t.dashboard.genreDnaTitle}
               </h3>
             </div>
             <div className="h-60 w-full">
@@ -237,17 +236,17 @@ export default function Dashboard({ data }: DashboardProps) {
           <div className="flex items-center space-x-3">
             <Clock className="w-6 h-6" style={{ color: tc.c1 }} />
             <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-              {L ? 'Hourly Density Map' : 'Mapa de Densidad Horaria'}
+              {t.dashboard.heatmapTitle}
             </h3>
           </div>
           <div className="flex items-center gap-3 text-xs font-mono text-gray-400">
-            <span>{L ? 'Less' : 'Menos'}</span>
+            <span>{t.dashboard.heatmapLess}</span>
             <div className="flex space-x-1">
               {[0.08, 0.2, 0.4, 0.7, 1].map(o => (
                 <div key={o} className="w-3 h-3 rounded" style={{ backgroundColor: tc.c1, opacity: o }} />
               ))}
             </div>
-            <span>{L ? 'More' : 'Más'}</span>
+            <span>{t.dashboard.heatmapMore}</span>
           </div>
         </div>
         <div className="overflow-x-auto w-full pb-4">
@@ -281,7 +280,7 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
         </div>
         <p className="text-xs text-gray-400 mt-2 text-center font-mono">
-          {L ? 'Horizontal: 24 hours · Vertical: days of the week' : 'Horizontal: 24 horas · Vertical: días de la semana'}
+          {t.dashboard.heatmapFooter}
         </p>
       </div>
 
@@ -290,7 +289,7 @@ export default function Dashboard({ data }: DashboardProps) {
         <div className="flex items-center space-x-3 mb-6">
           <Clock className="w-6 h-6" style={{ color: tc.c4 }} />
           <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-            {L ? 'Listening Rhythm by Hour' : 'Ritmo de Escucha por Hora del Día'}
+            {t.dashboard.hourlyRhythmTitle}
           </h3>
         </div>
         <div className="h-64 w-full">
@@ -302,7 +301,7 @@ export default function Dashboard({ data }: DashboardProps) {
                 contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c4, borderRadius: '12px' }}
                 labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
               />
-              <Bar dataKey="plays" name={L ? 'Plays' : 'Plays'} fill={tc.c4} radius={[4, 4, 0, 0]} fillOpacity={0.8} />
+              <Bar dataKey="plays" name={t.dashboard.playsLegend} fill={tc.c4} radius={[4, 4, 0, 0]} fillOpacity={0.8} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -313,7 +312,7 @@ export default function Dashboard({ data }: DashboardProps) {
         <div className="flex items-center space-x-3 mb-6">
           <TrendingUp className="w-6 h-6" style={{ color: tc.c1 }} />
           <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-            {L ? 'Musical Evolution 2015–2026' : 'Evolución Musical 2015–2026'}
+            {t.dashboard.evolutionTitle}
           </h3>
         </div>
         <div className="h-72 w-full">
@@ -336,10 +335,10 @@ export default function Dashboard({ data }: DashboardProps) {
                 contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c1, borderRadius: '12px' }}
                 labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
               />
-              <Area type="monotone" dataKey="plays" name={L ? 'Plays' : 'Plays'}
+              <Area type="monotone" dataKey="plays" name={t.dashboard.playsLegend}
                 stroke={tc.c1} strokeWidth={2.5} fill="url(#dashGradPlays)"
                 dot={{ fill: tc.c1, r: 4, strokeWidth: 0 }} activeDot={{ r: 7, stroke: '#fff', strokeWidth: 2 }} />
-              <Area type="monotone" dataKey="artistas" name={L ? 'Unique Artists' : 'Artistas únicos'}
+              <Area type="monotone" dataKey="artistas" name={t.dashboard.uniqueArtistsLegend}
                 stroke={tc.c3} strokeWidth={2} fill="url(#dashGradArt)"
                 dot={{ fill: tc.c3, r: 3, strokeWidth: 0 }} activeDot={{ r: 6, stroke: '#fff', strokeWidth: 2 }} />
             </AreaChart>

@@ -10,8 +10,7 @@ interface ObsessionDetectorProps {
 export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
   const obsessions = data.obsessions;
   const sessions = data.sessions;
-  const { lang, tc } = useApp();
-  const L = lang === 'en';
+  const { tc, t } = useApp();
 
   // Format date to local spanish format
   const formatDate = (dateStr: string) => {
@@ -28,7 +27,7 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
       <div className="flex items-center space-x-3 mb-2">
         <RotateCcw className="w-6 h-6" style={{ color: tc.c1 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {L ? 'Musical Obsessions & Loops' : 'Obsesiones Musicales & Loops'}</h2>
+          {t.obsessionDetector.title}</h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -37,12 +36,10 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
           <div className="flex items-center space-x-3 mb-6">
             <Flame className="w-5 h-5 text-cyberPink animate-pulse" />
             <h3 className="text-base font-bold font-mono uppercase tracking-wider text-white">
-              {L ? 'Music Hyperfixations' : 'Hiperfijaciones Musicales'}</h3>
+              {t.obsessionDetector.hyperfixationsTitle}</h3>
           </div>
           <p className="text-xs text-gray-400 mb-4 leading-relaxed font-sans">
-            {L
-              ? 'Songs played repeatedly on loop during a single day. Reveals moments of emotional obsession or intensive focus.'
-              : 'Canciones reproducidas repetidamente en bucle durante un mismo día. Revela momentos de obsesión emocional o foco intensivo.'}
+            {t.obsessionDetector.hyperfixationsDesc}
           </p>
 
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
@@ -73,12 +70,10 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
           <div className="flex items-center space-x-3 mb-6">
             <Trophy className="w-5 h-5 text-cyberCyan" />
             <h3 className="text-base font-bold font-mono uppercase tracking-wider text-white">
-              {L ? 'Listening Marathons (Sessions)' : 'Maratones de Escucha (Sesiones)'}</h3>
+              {t.obsessionDetector.marathonsTitle}</h3>
           </div>
           <p className="text-xs text-gray-400 mb-4 leading-relaxed font-sans">
-            {L
-              ? 'Groups of songs played sequentially with silence gaps under 60 minutes. Reveals study marathons, trips, or late-night sessions.'
-              : 'Grupos de canciones reproducidas secuencialmente con intervalos de silencio menores a 60 minutos. Revela maratones de estudio, viajes o noches en vela.'}
+            {t.obsessionDetector.marathonsDesc}
           </p>
 
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">

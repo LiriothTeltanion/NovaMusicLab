@@ -29,8 +29,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const [activeInsight, setActiveInsight] = useState(0);
-  const { lang } = useApp();
-  const L = lang === 'en';
+  const { t } = useApp();
   const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
   const source = deriveSourceSummary(data);
   const lastfmTotal = source.lastfm_plays;
@@ -67,42 +66,36 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const insights = [
     {
       icon: '🕵️',
-      title: L ? 'Artists that dominate the data' : 'Artistas que dominan en datos',
-      body: L
-        ? `${topArtist?.name ?? 'Your top artist'} leads with ${fmtNum(topArtist?.plays ?? 0)} plays. The contrast with artists like ${topConsciousArtist?.name ?? 'your second wave'} helps separate everyday background loyalty from more conscious emotional listening.`
-        : `${topArtist?.name ?? 'Tu artista principal'} lidera con ${fmtNum(topArtist?.plays ?? 0)} plays. Compararlo con artistas como ${topConsciousArtist?.name ?? 'tu segunda ola'} ayuda a separar lealtad cotidiana de escucha emocional consciente.`,
+      title: t.spotifyVsLastfm.insightDominantArtistsTitle,
+      body: t.spotifyVsLastfm.insightDominantArtistsBody(
+        topArtist?.name ?? t.spotifyVsLastfm.yourTopArtistFallback,
+        fmtNum(topArtist?.plays ?? 0),
+        topConsciousArtist?.name ?? t.spotifyVsLastfm.yourSecondWaveFallback,
+      ),
       color: '#00f2fe',
     },
     {
       icon: '🔇',
-      title: L ? 'Short plays and skips reveal exploration' : 'Skips y plays cortos revelan exploración',
-      body: L
-        ? `Spotify contributes ${fmtNum(spotifyOnlyApprox)} short or Spotify-only plays in this view. That is the exploratory layer: previews, skips and searches before the right track lands.`
-        : `Spotify aporta ${fmtNum(spotifyOnlyApprox)} reproducciones cortas o solo-Spotify en esta vista. Esa es la capa exploratoria: previews, skips y busquedas antes de que caiga la cancion correcta.`,
+      title: t.spotifyVsLastfm.insightSkipsTitle,
+      body: t.spotifyVsLastfm.insightSkipsBody(fmtNum(spotifyOnlyApprox)),
       color: '#f72585',
     },
     {
       icon: '📅',
-      title: L ? `${twoYearPeak.label}: strongest two-year arc` : `${twoYearPeak.label}: el arco de dos años más fuerte`,
-      body: L
-        ? `The strongest two-year period contains ${fmtNum(twoYearPeak.plays)} plays. This is the most statistically dense chapter in the current dataset.`
-        : `El periodo de dos años más fuerte contiene ${fmtNum(twoYearPeak.plays)} plays. Es el capitulo mas denso estadisticamente del dataset actual.`,
+      title: t.spotifyVsLastfm.insightTwoYearArcTitle(twoYearPeak.label),
+      body: t.spotifyVsLastfm.insightTwoYearArcBody(fmtNum(twoYearPeak.plays)),
       color: '#7209b7',
     },
     {
       icon: '🌙',
-      title: L ? 'Night listening is a distinct mode' : 'La madrugada es un modo distinto',
-      body: L
-        ? `${night}% of plays happen between 00:00 and 05:59. That gives the app a measurable nocturnal axis instead of treating all plays as equal.`
-        : `${night}% de los plays ocurren entre 00:00 y 05:59. Eso le da a la app un eje nocturno medible en vez de tratar todos los plays como iguales.`,
+      title: t.spotifyVsLastfm.insightNightModeTitle,
+      body: t.spotifyVsLastfm.insightNightModeBody(night),
       color: '#10b981',
     },
     {
       icon: '🎵',
-      title: L ? 'Overlap should be treated as confidence' : 'El overlap debe leerse como confianza',
-      body: L
-        ? `${source.overlap_unique_tracks} normalized tracks appear in both sources when both are uploaded. The rest are not errors; they are evidence of platform-specific behavior.`
-        : `${source.overlap_unique_tracks} canciones normalizadas aparecen en ambas fuentes cuando subes ambas. El resto no son errores: son evidencia de comportamiento especifico por plataforma.`,
+      title: t.spotifyVsLastfm.insightOverlapTitle,
+      body: t.spotifyVsLastfm.insightOverlapBody(source.overlap_unique_tracks),
       color: '#fb923c',
     },
   ];
@@ -111,28 +104,28 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
     {
       label: 'Last.fm Scrobbles',
       value: fmtNum(lastfmTotal),
-      sub: L ? 'Primary scrobble source' : 'Fuente primaria de scrobbles',
+      sub: t.spotifyVsLastfm.primaryScrobbleSource,
       color: '#e8334a',
       icon: '◉',
     },
     {
       label: spotifyDirectTotal ? 'Spotify Plays' : 'Spotify Plays (est.)',
       value: fmtNum(spotifyEstimatedTotal),
-      sub: spotifyDirectTotal ? (L ? 'Measured from export' : 'Medido desde export') : (L ? 'Estimated from match rate' : 'Estimado por match rate'),
+      sub: spotifyDirectTotal ? t.spotifyVsLastfm.measuredFromExport : t.spotifyVsLastfm.estimatedFromMatchRate,
       color: '#1DB954',
       icon: '▶',
     },
     {
-      label: L ? 'Match Rate' : 'Tasa de Coincidencia',
+      label: t.spotifyVsLastfm.matchRateLabel,
       value: `${matchRate}%`,
-      sub: L ? 'Normalized source overlap' : 'Overlap normalizado entre fuentes',
+      sub: t.spotifyVsLastfm.normalizedSourceOverlap,
       color: '#00f2fe',
       icon: '⌥',
     },
     {
-      label: L ? 'Short / Extra Plays' : 'Plays cortos / extra',
+      label: t.spotifyVsLastfm.shortExtraPlaysLabel,
       value: fmtNum(spotifyOnlyApprox),
-      sub: L ? 'Skips, previews or Spotify-only plays' : 'Skips, previews o plays solo-Spotify',
+      sub: t.spotifyVsLastfm.shortExtraPlaysSub,
       color: '#a78bfa',
       icon: '◈',
     },
@@ -151,7 +144,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
       <div className="flex items-center space-x-3">
         <GitCompare className="w-6 h-6 text-cyberCyan" />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          Spotify vs Last.fm
+          {t.spotifyVsLastfm.pageTitle}
         </h2>
       </div>
 
@@ -169,7 +162,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
               <span className="text-[#e8334a] font-mono text-xs font-bold">◉ LAST.FM</span>
             </div>
             <p className="text-4xl font-black text-white font-mono">{fmtNum(lastfmTotal)}</p>
-            <p className="text-xs text-gray-400 font-mono">{L ? 'Verified scrobbles' : 'Scrobbles verificados'}</p>
+            <p className="text-xs text-gray-400 font-mono">{t.spotifyVsLastfm.verifiedScrobbles}</p>
             <div className="space-y-1 text-xs text-gray-300">
               <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Timestamps exactos</p>
               <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Registro de álbum completo</p>
@@ -186,11 +179,11 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
                 <div className="w-28 h-28 rounded-full border-4 border-[#1DB954]/60 bg-[#1DB954]/5 absolute -right-3" />
                 <div className="z-10 text-center">
                   <p className="text-xl font-black text-white font-mono">{matchRate}%</p>
-                  <p className="text-[10px] text-gray-400 font-mono">{L ? 'match' : 'coincidencia'}</p>
+                  <p className="text-[10px] text-gray-400 font-mono">{t.spotifyVsLastfm.matchWord}</p>
                 </div>
               </div>
             </div>
-            <p className="text-xs text-gray-400 font-mono text-center">Overlap de artistas y tracks</p>
+            <p className="text-xs text-gray-400 font-mono text-center">{t.spotifyVsLastfm.artistsAndTracksOverlap}</p>
           </div>
 
           {/* Spotify side */}
@@ -200,7 +193,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
             </div>
             <p className="text-4xl font-black text-white font-mono">{fmtNum(spotifyEstimatedTotal)}</p>
             <p className="text-xs text-gray-400 font-mono">
-              {spotifyDirectTotal ? (L ? 'Measured plays · includes skips' : 'Plays medidos · incluye skips') : (L ? 'Estimated plays' : 'Plays estimados')}
+              {spotifyDirectTotal ? t.spotifyVsLastfm.measuredPlaysIncludesSkips : t.spotifyVsLastfm.estimatedPlays}
             </p>
             <div className="space-y-1 text-xs text-gray-300 flex flex-col md:items-end">
               <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Datos de skip incluidos</p>
@@ -246,7 +239,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
           <div className="flex items-center space-x-2 mb-5">
             <Disc className="w-5 h-5 text-cyberCyan" />
             <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {L ? `Plays by Year - Last.fm vs ${comparisonLabel}` : `Plays por Año - Last.fm vs ${comparisonLabel}`}
+              {t.spotifyVsLastfm.playsByYearTitle(comparisonLabel)}
             </h3>
           </div>
           <div className="h-72">
@@ -270,7 +263,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
           <div className="flex items-center space-x-2 mb-5">
             <Users className="w-5 h-5 text-cyberPink" />
             <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              Comparación de Capacidades
+              {t.spotifyVsLastfm.capabilitiesComparisonTitle}
             </h3>
           </div>
           <div className="h-72">
@@ -292,7 +285,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
         <div className="flex items-center space-x-2">
           <Eye className="w-5 h-5 text-cyberCyan" />
           <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
-            Lo que el cruce de datos revela
+            {t.spotifyVsLastfm.hiddenInsightsTitle}
           </h3>
         </div>
 
@@ -341,12 +334,12 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
           <Music className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider">
-              {L ? 'Data quality note' : 'Nota sobre la calidad de datos'}
+              {t.spotifyVsLastfm.dataQualityNoteTitle}
             </p>
             <p className="text-xs text-gray-300 font-sans leading-relaxed">
               {source.source_note}
               {!spotifyDirectTotal && spotifyEstimatedTotal > 0 && (
-                <span> {L ? 'Spotify values marked as estimated are interpretive, not verified export counts.' : 'Los valores de Spotify marcados como estimados son interpretativos, no conteos verificados del export.'}</span>
+                <span> {t.spotifyVsLastfm.estimatedValuesDisclaimer}</span>
               )}
             </p>
           </div>

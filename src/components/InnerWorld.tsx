@@ -12,27 +12,25 @@ const cardVariants = {
 };
 
 export default function InnerWorld({ data: _ }: InnerWorldProps) {
-  const { lang, tc } = useApp();
+  const { lang, tc, t } = useApp();
   const L = lang === 'en';
 
   const CARDS = [
     {
       icon: Eye, color: '#00f2fe',
-      title: L ? 'Internal Color Palette' : 'Paleta de Colores Interna',
+      title: t.innerWorld.colorPaletteTitle,
       body: () => (
         <div className="space-y-3">
           <p className="text-xs text-gray-300 leading-relaxed">
-            {L
-              ? 'Your visual spectrum is nocturnal and hybrid, built on Darksynth, Blackgaze and Synthwave:'
-              : 'Tu espectro visual es nocturno e híbrido, construido sobre Darksynth, Blackgaze y Synthwave:'}
+            {t.innerWorld.colorPaletteIntro}
           </p>
           <div className="flex items-center space-x-3">
             {[
-              { color: '#00f2fe', label: L ? 'Neon Cyan'      : 'Cian Neón',      glow: 'rgba(0,242,254,0.5)' },
-              { color: '#f72585', label: L ? 'Cyber Pink'     : 'Rosa Cyber',     glow: 'rgba(247,37,133,0.5)' },
-              { color: '#7209b7', label: L ? 'Mystic Purple'  : 'Morado',         glow: 'rgba(114,9,183,0.5)' },
-              { color: '#030712', label: L ? 'Abyss Black'    : 'Negro Abismo',   border: true },
-              { color: '#4cc9f0', label: L ? 'Electric Blue'  : 'Azul Eléctrico', glow: 'rgba(76,201,240,0.5)' },
+              { color: '#00f2fe', label: t.innerWorld.colorNeonCyan,     glow: 'rgba(0,242,254,0.5)' },
+              { color: '#f72585', label: t.innerWorld.colorCyberPink,    glow: 'rgba(247,37,133,0.5)' },
+              { color: '#7209b7', label: t.innerWorld.colorMysticPurple, glow: 'rgba(114,9,183,0.5)' },
+              { color: '#030712', label: t.innerWorld.colorAbyssBlack,   border: true },
+              { color: '#4cc9f0', label: t.innerWorld.colorElectricBlue, glow: 'rgba(76,201,240,0.5)' },
             ].map(({ color, label, glow, border }) => (
               <div key={label} className="flex flex-col items-center group cursor-default">
                 <div className="w-8 h-8 rounded-full transition-transform group-hover:scale-125"
@@ -45,24 +43,22 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
     },
     {
       icon: Moon, color: '#7209b7',
-      title: L ? 'Emotional Landscape' : 'Paisaje Emocional',
+      title: t.innerWorld.emotionalLandscapeTitle,
       body: () => (
         <p className="text-xs text-gray-300 leading-relaxed">
-          {L
-            ? 'An endless highway surrounded by black skyscrapers with neon cyan holograms. It rains constantly, but on the horizon a luminous dawn appears. Catharsis in motion: intensity advancing toward the light.'
-            : 'Una autopista interminable bajo rascacielos negros con hologramas de neón cian. Llueve de forma constante, pero en el horizonte se asoma un amanecer luminoso y difuso. Catarsis en movimiento.'}
+          {t.innerWorld.emotionalLandscapeBody}
         </p>
       ),
     },
     {
       icon: Film, color: '#f72585',
-      title: L ? 'Soundtrack of Your Versions' : 'Banda Sonora de tus Versiones',
+      title: t.innerWorld.soundtrackTitle,
       body: () => (
         <div className="space-y-2 text-xs text-gray-300">
           {[
-            { v: L ? 'Past Version' : 'Versión Pasada',    s: 'Love Who Loves You Back', a: 'Tokio Hotel',    c: '#4cc9f0', d: L ? 'Melodic search for connection' : 'Búsqueda melódica de conexión' },
-            { v: L ? 'Present Version':'Versión Presente', s: 'In Blur',                  a: 'Deafheaven',     c: '#00f2fe', d: L ? 'Maturity and glowing melancholy' : 'Madurez y melancolía que brilla' },
-            { v: L ? 'Future Version' :'Versión Futura',   s: 'Aperol Spritz',            a: 'The Kid LAROI',  c: '#34d399', d: L ? 'Energy, lightness and movement' : 'Energía, ligereza y movimiento' },
+            { v: t.innerWorld.versionPast,    s: 'Love Who Loves You Back', a: 'Tokio Hotel',    c: '#4cc9f0', d: t.innerWorld.versionPastDesc },
+            { v: t.innerWorld.versionPresent, s: 'In Blur',                  a: 'Deafheaven',     c: '#00f2fe', d: t.innerWorld.versionPresentDesc },
+            { v: t.innerWorld.versionFuture,  s: 'Aperol Spritz',            a: 'The Kid LAROI',  c: '#34d399', d: t.innerWorld.versionFutureDesc },
           ].map(({ v, s, a, c, d }) => (
             <div key={v} className="p-2 rounded-xl border border-white/5 bg-white/3">
               <span className="text-[10px] font-mono font-bold uppercase" style={{ color: c }}>{v}</span>
@@ -75,31 +71,24 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
     },
     {
       icon: Landmark, color: '#34d399',
-      title: L ? 'Imaginary City' : 'Ciudad Imaginaria',
+      title: t.innerWorld.imaginaryCityTitle,
       body: () => (
         <p className="text-xs text-gray-300 leading-relaxed">
-          <strong className="text-white">{L ? '"Neópolis Lirioth"' : '"Neópolis Lirioth"'}</strong>:{' '}
-          {L
-            ? 'A fortress suspended in space, digital gothic architecture with glassmorphism. Silent in its streets but full of experimental radio frequencies in its neon reactor core.'
-            : 'Un bastión suspendido en el espacio, arquitectura gótica digital con glassmorphism. Silencioso en sus calles pero rebosante de frecuencias experimentales en su núcleo reactor de neón.'}
+          <strong className="text-white">{t.innerWorld.imaginaryCityName}</strong>:{' '}
+          {t.innerWorld.imaginaryCityBody}
         </p>
       ),
     },
     {
       icon: Gamepad2, color: '#fb923c',
-      title: L ? 'Gamer & Fantasy DNA' : 'ADN Gamer & Fantasía',
+      title: t.innerWorld.gamerDnaTitle,
       body: () => (
         <div className="space-y-2">
           <p className="text-xs text-gray-300 leading-relaxed">
-            {L
-              ? 'Your music connects with futuristic RPG worlds (Cyberpunk 2077, Hades, NieR) and dark epic fantasy. Synthesizers are your "final boss music".'
-              : 'Tu música conecta con mundos de rol futuristas (Cyberpunk 2077, Hades, NieR) y oscuridad fantasy épica. Los sintetizadores son tu "música de fondo de misión final".'}
+            {t.innerWorld.gamerDnaBody}
           </p>
           <div className="flex flex-wrap gap-1 pt-1">
-            {(L
-              ? ['🎮 Cyberpunk', '⚔️ Dark Fantasy', '🌌 Sci-Fi', '🤖 Retrowave', '🎸 Emo Culture']
-              : ['🎮 Cyberpunk', '⚔️ Dark Fantasy', '🌌 Sci-Fi', '🤖 Retrowave', '🎸 Emo Culture']
-            ).map(tag => (
+            {['🎮 Cyberpunk', '⚔️ Dark Fantasy', '🌌 Sci-Fi', '🤖 Retrowave', '🎸 Emo Culture'].map(tag => (
               <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-orange-950/30 border border-orange-500/20 text-orange-300 font-mono">{tag}</span>
             ))}
           </div>
@@ -108,14 +97,14 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
     },
     {
       icon: Star, color: '#a78bfa',
-      title: L ? 'Identity Archetypes' : 'Arquetipos de tu Identidad',
+      title: t.innerWorld.archetypesTitle,
       body: () => (
         <div className="space-y-1.5">
           {[
-            { name: L ? 'The Melancholic Explorer'  : 'El Explorador Melancólico',  desc: L ? 'Seeks beauty in darkness'          : 'Busca belleza en la oscuridad',       color: '#00f2fe' },
-            { name: L ? 'The Emotional Warrior'     : 'El Guerrero Emocional',      desc: L ? 'Catharsis as fuel'                 : 'Catarsis como combustible',           color: '#f72585' },
-            { name: L ? 'The Sonic Architect'       : 'El Arquitecto Sonoro',       desc: L ? 'Builds worlds with frequencies'    : 'Construye mundos con frecuencias',    color: '#a78bfa' },
-            { name: L ? 'The Nostalgic Futurist'    : 'El Futurista Nostálgico',    desc: L ? 'Looks forward from the past'       : 'Mira hacia adelante desde el pasado', color: '#34d399' },
+            { name: t.innerWorld.archetypeExplorerName, desc: t.innerWorld.archetypeExplorerDesc, color: '#00f2fe' },
+            { name: t.innerWorld.archetypeWarriorName,  desc: t.innerWorld.archetypeWarriorDesc,  color: '#f72585' },
+            { name: t.innerWorld.archetypeArchitectName,desc: t.innerWorld.archetypeArchitectDesc,color: '#a78bfa' },
+            { name: t.innerWorld.archetypeFuturistName, desc: t.innerWorld.archetypeFuturistDesc, color: '#34d399' },
           ].map(({ name, desc, color }) => (
             <div key={name} className="flex items-center space-x-2">
               <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
@@ -127,7 +116,7 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
     },
     {
       icon: Music, color: '#06b6d4',
-      title: L ? 'Recurring Lyrical Themes' : 'Temas Líricos Recurrentes',
+      title: t.innerWorld.lyricalThemesTitle,
       body: () => (
         <div className="flex flex-wrap gap-1.5">
           {(L ? [
@@ -151,10 +140,10 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
     },
     {
       icon: Zap, color: '#facc15',
-      title: L ? 'Creative Identity → Art' : 'Identidad Creativa → Arte',
+      title: t.innerWorld.creativeIdentityTitle,
       body: () => (
         <div className="space-y-2 text-xs text-gray-300">
-          <p>{L ? 'Your music can become:' : 'Tu música puede convertirse en:'}</p>
+          <p>{t.innerWorld.creativeIdentityIntro}</p>
           <ul className="space-y-1">
             {(L ? [
               '🎵 Own music production with metalcore and synthwave roots',
@@ -188,7 +177,7 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
       <div className="flex items-center space-x-3">
         <Palette className="w-6 h-6" style={{ color: tc.c2 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {L ? 'Your Inner Universe' : 'Tu Universo Interior'}
+          {t.innerWorld.pageTitle}
         </h2>
       </div>
 
@@ -209,12 +198,10 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
         </div>
         <div className="relative z-10 text-center space-y-3">
           <h3 className="text-xl font-bold text-white font-mono">
-            {L ? '"Neópolis Lirioth" ✧ Your Sonic Universe' : '"Neópolis Lirioth" ✧ Tu Universo Sonoro'}
+            {t.innerWorld.bannerTitle}
           </h3>
           <p className="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            {L
-              ? 'A personal space where melodic metalcore becomes architecture, synthwave becomes lighting, and blackgaze becomes the night sky. This universe is yours: dark, beautiful, constantly evolving.'
-              : 'Un espacio personal donde el metalcore melódico se convierte en arquitectura, el synthwave en iluminación y el blackgaze en el cielo nocturno. Este universo es tuyo: oscuro, hermoso, en constante evolución.'}
+            {t.innerWorld.bannerBody}
           </p>
           <div className="flex justify-center flex-wrap gap-2 pt-2">
             {moodTags.map(tag => (

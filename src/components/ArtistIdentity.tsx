@@ -10,15 +10,14 @@ interface ArtistIdentityProps {
 export default function ArtistIdentity({ data }: ArtistIdentityProps) {
   const profile = data.artist_profile;
   const ep = profile.ep_concept;
-  const { lang, tc } = useApp();
-  const L = lang === 'en';
+  const { tc, t } = useApp();
 
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex items-center space-x-3 mb-6">
         <Sparkles className="w-6 h-6 animate-pulse" style={{ color: tc.c1 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {L ? 'Your Artist Profile: If You Were an Artist' : 'Tu Perfil Artístico: Si Fueras Artista'}</h2>
+          {t.artistIdentity.title}</h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -26,43 +25,39 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
         <div className="glass-panel p-8 rounded-3xl lg:col-span-7 space-y-6">
           <div className="space-y-1">
             <span className="text-xs font-mono font-bold text-cyberCyan uppercase tracking-widest block">
-              {L ? 'Suggested Artist Alias' : 'Alias Artístico Sugerido'}</span>
+              {t.artistIdentity.suggestedAlias}</span>
             <h3 className="text-3xl font-black text-white text-neon-glow">{profile.alias}</h3>
           </div>
 
           <div className="space-y-4">
             <div className="space-y-1">
               <span className="text-xs font-mono font-bold text-cyberPink uppercase tracking-wider block">
-                {L ? 'Your Possible Sound' : 'Tu Posible Sonido'}</span>
+                {t.artistIdentity.possibleSound}</span>
               <p className="text-sm text-gray-300 font-sans leading-relaxed">{profile.sound}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-2">
               <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl">
-                <span className="text-[10px] font-mono text-gray-400 uppercase">{L ? 'Ideal Tempo' : 'Tempo Ideal'}</span>
+                <span className="text-[10px] font-mono text-gray-400 uppercase">{t.artistIdentity.idealTempo}</span>
                 <p className="text-sm font-bold text-white mt-1">{profile.tempo}</p>
               </div>
               <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl">
-                <span className="text-[10px] font-mono text-gray-400 uppercase">{L ? 'Key Influences' : 'Influencias Clave'}</span>
+                <span className="text-[10px] font-mono text-gray-400 uppercase">{t.artistIdentity.keyInfluences}</span>
                 <p className="text-xs font-bold text-cyberCyan mt-1 truncate">{profile.influences.slice(0, 3).join(', ')}</p>
               </div>
             </div>
 
             <div className="space-y-2 pt-2">
               <span className="text-xs font-mono font-bold text-cyberPurple uppercase tracking-wider block">
-                {L ? 'Visual Aesthetic & Stage Concept' : 'Estética Visual & Escenarios'}
+                {t.artistIdentity.visualAesthetic}
               </span>
               <p className="text-xs text-gray-400 font-sans leading-relaxed">
-                <strong className="text-white">{L ? 'Outfit & Lights:' : 'Vestuario & Luces:'}</strong>{' '}
-                {L
-                  ? 'Matte black cyberpunk clothing with interactive LEDs that react to bass frequencies. Cyan and violet gradient lighting.'
-                  : 'Ropa cyberpunk en negro mate, detalles con LEDs interactivos que reaccionan a las frecuencias del bajo. Luz degradada cian y violeta.'}
+                <strong className="text-white">{t.artistIdentity.outfitAndLights}</strong>{' '}
+                {t.artistIdentity.outfitAndLightsDesc}
               </p>
               <p className="text-xs text-gray-400 font-sans leading-relaxed">
-                <strong className="text-white">{L ? 'Concert Concept:' : 'Concepto de Concierto:'}</strong>{' '}
-                {L
-                  ? `${profile.live_show} Reactive 3D visuals drawing geometric mountains and neon rain in real time.`
-                  : `${profile.live_show} reactivos que dibujan montañas geométricas y lluvia de código de neón en tiempo real detrás tuyo.`}
+                <strong className="text-white">{t.artistIdentity.concertConcept}</strong>{' '}
+                {t.artistIdentity.concertConceptDesc(profile.live_show)}
               </p>
             </div>
           </div>
@@ -74,14 +69,14 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
             <div className="flex items-center space-x-2 mb-4" style={{ color: tc.c2 }}>
               <Disc className="w-5 h-5" />
               <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
-                {L ? 'Your First EP Concept' : 'Concepto de tu Primer EP'}
+                {t.artistIdentity.firstEpConcept}
               </h4>
             </div>
             <h4 className="text-xl font-bold text-white font-mono tracking-wide mb-1">"{ep.title}"</h4>
             <p className="text-xs text-gray-400 mb-4">{ep.description}</p>
             <div className="space-y-2">
               <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">
-                {L ? 'Tracklist' : 'Lista de Canciones (Tracklist)'}
+                {t.artistIdentity.tracklist}
               </span>
               <div className="space-y-1.5">
                 {ep.tracklist.map((track, i) => (
@@ -104,7 +99,7 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
               </div>
               <p className="text-xs font-mono font-bold text-white tracking-widest uppercase">{ep.title}</p>
               <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}>LIRIOTH TELTANION</p>
-              <p className="text-[9px] text-gray-600 font-mono">{L ? 'Album Art (Concept)' : 'Arte de Portada (Concepto)'}</p>
+              <p className="text-[9px] text-gray-600 font-mono">{t.artistIdentity.albumArtConcept}</p>
             </div>
           </div>
         </div>

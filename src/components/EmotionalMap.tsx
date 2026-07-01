@@ -11,8 +11,7 @@ interface EmotionalMapProps {
 
 export default function EmotionalMap({ data }: EmotionalMapProps) {
   const [selectedEmotion, setSelectedEmotion] = useState<'melancolia' | 'energia' | 'dopamina' | 'calma'>('melancolia');
-  const { lang, tc } = useApp();
-  const L = lang === 'en';
+  const { tc, t } = useApp();
 
   const galaxyArtists = data.top_artists.slice(0, 14).map(artist => ({
     name: artist.name,
@@ -62,15 +61,15 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
       <div className="flex items-center space-x-3 mb-6">
         <Heart className="w-6 h-6" style={{ color: tc.c2 }} />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {L ? 'Galactic Emotional Map' : 'Mapa Emocional Galáctico'}</h2>
+          {t.sections.emotionalMap}</h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scatter Chart "Galaxia Emocional" */}
         <div className="glass-panel p-6 rounded-3xl lg:col-span-7 flex flex-col items-center">
           <div className="w-full flex items-center justify-between mb-4">
-            <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest">Coordenadas de Artistas</h3>
-            <span className="text-[10px] font-mono text-gray-500">{L ? 'Axes: Energy vs Positivity' : 'Ejes: Energía vs Positividad'}</span>
+            <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest">{t.emotionalMap.artistCoordinates}</h3>
+            <span className="text-[10px] font-mono text-gray-500">{t.emotionalMap.axesLabel}</span>
           </div>
 
           <div className="h-80 w-full">

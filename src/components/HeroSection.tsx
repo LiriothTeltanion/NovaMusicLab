@@ -21,8 +21,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
   const metrics = data.core_metrics;
   const topArtist = data.top_artists[0];
   const topTrack = data.top_tracks[0];
-  const { lang } = useApp();
-  const L = lang === 'en';
+  const { t } = useApp();
 
   const handleEnter = () => {
     confetti({
@@ -58,7 +57,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full border border-cyberCyan/30 bg-cyberCyan/5 text-xs font-mono font-bold text-[#e0fbfc] tracking-wider uppercase animate-pulse-slow"
         >
-          <span>{L ? '✨ 11 Years of Musical Biography' : '✨ 11 Años de Biografía Sonora'}</span>
+          <span>{t.heroSection.badge}</span>
           <span className="w-1.5 h-1.5 bg-cyberCyan rounded-full" />
           <span>Spotify + Last.fm</span>
         </motion.div>
@@ -75,7 +74,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
             </span>
           </h1>
           <h2 className="text-2xl md:text-3xl font-bold font-mono text-cyberBlue/90 tracking-wide text-neon-glow">
-            {L ? '✧ Musical Universe of Lirioth ✧' : '✧ El Universo Musical de Lirioth ✧'}
+            {t.heroSection.subtitle}
           </h2>
         </motion.div>
 
@@ -85,9 +84,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           transition={{ delay: 0.5, duration: 0.6 }}
           className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto font-sans font-light leading-relaxed"
         >
-          {L
-            ? 'An ornamental, emotional and statistical space that explores your identity, your life stages and your transformative bands. Your music is not just a playlist — it is the soundtrack of your own evolution.'
-            : 'Un espacio ornamental, emocional y estadístico que explora tu identidad, tus etapas de vida y tus bandas de transformación. Tu música no es solo una lista de reproducción; es la banda sonora de tu propia evolución.'}
+          {t.heroSection.description}
         </motion.p>
 
         <motion.div
@@ -100,19 +97,20 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
             <Headphones className="w-24 h-24 text-cyberCyan" />
           </div>
           <p className="text-sm md:text-base text-[#dbf7ff] font-sans italic leading-relaxed text-left">
-            {L ? (
-              <>"Your musical core is built with layers of catharsis, neon nights, luminous shoegaze and melodic post-hardcore. Data suggests you recurrently return to your emotional anchors like{' '}
-                <span className="text-cyberCyan font-semibold not-italic">{topArtist?.name}</span> to recharge your strength,
-                and to refuge songs like{' '}
-                <span className="text-cyberPink font-semibold not-italic">'{topTrack?.title}'</span> by{' '}
-                <span className="text-cyberPink font-semibold not-italic">{topTrack?.artist}</span> to heal and build imaginary worlds."</>
-            ) : (
-              <>"Tu núcleo musical está construido con capas de catarsis, noches de neón, shoegaze luminoso y post-hardcore melódico. Los datos sugieren que vuelves recurrentemente a tus anclas emocionales como{' '}
-                <span className="text-cyberCyan font-semibold not-italic">{topArtist?.name}</span> para recargar tu fuerza
-                y a canciones refugio como{' '}
-                <span className="text-cyberPink font-semibold not-italic">'{topTrack?.title}'</span> de{' '}
-                <span className="text-cyberPink font-semibold not-italic">{topTrack?.artist}</span> para sanar y crear mundos imaginarios."</>
-            )}
+            {(() => {
+              const { before, midA, midB, after } = t.heroSection.quote;
+              return (
+                <>
+                  {before}
+                  <span className="text-cyberCyan font-semibold not-italic">{topArtist?.name}</span>
+                  {midA}
+                  <span className="text-cyberPink font-semibold not-italic">'{topTrack?.title}'</span>
+                  {midB}
+                  <span className="text-cyberPink font-semibold not-italic">{topTrack?.artist}</span>
+                  {after}
+                </>
+              );
+            })()}
           </p>
         </motion.div>
 
@@ -123,11 +121,11 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-3xl mx-auto pt-4"
         >
           {[
-            { icon: Headphones, color: 'text-cyberCyan',   label: L ? 'Scrobbles'       : 'Scrobbles',       val: metrics.total_plays,     d: 0.8 },
-            { icon: Clock,      color: 'text-cyberPink',   label: L ? 'Hours'           : 'Horas',            val: metrics.listening_hours, d: 0.9 },
-            { icon: Disc,       color: 'text-cyberPurple', label: L ? 'Artists'         : 'Artistas',         val: metrics.unique_artists,  d: 1.0 },
-            { icon: Play,       color: 'text-cyberBlue',   label: L ? 'Tracks'          : 'Canciones',        val: metrics.unique_tracks,   d: 1.1 },
-            { icon: Calendar,   color: 'text-green-400',   label: L ? 'Listening Days'  : 'Días Escuchados',  val: metrics.listening_days,  d: 1.2, span: true },
+            { icon: Headphones, color: 'text-cyberCyan',   label: t.hero.scrobbles, val: metrics.total_plays,     d: 0.8 },
+            { icon: Clock,      color: 'text-cyberPink',   label: t.hero.hours,     val: metrics.listening_hours, d: 0.9 },
+            { icon: Disc,       color: 'text-cyberPurple', label: t.hero.artists,   val: metrics.unique_artists,  d: 1.0 },
+            { icon: Play,       color: 'text-cyberBlue',   label: t.hero.tracks,    val: metrics.unique_tracks,   d: 1.1 },
+            { icon: Calendar,   color: 'text-green-400',   label: t.hero.days,      val: metrics.listening_days,  d: 1.2, span: true },
           ].map(({ icon: Icon, color, label, val, d, span }) => (
             <motion.div
               key={label}
@@ -168,7 +166,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
             onClick={handleEnter}
             className="group px-8 py-3.5 bg-gradient-to-r from-cyberCyan to-cyberPurple text-white font-mono font-bold rounded-full text-base tracking-wider hover:shadow-cyber hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center space-x-3 mx-auto"
           >
-            <span>{L ? 'ENTER THE SOUND MUSEUM' : 'ENTRAR AL MUSEO SONORO'}</span>
+            <span>{t.hero.enter}</span>
             <Play className="w-4 h-4 fill-white group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
