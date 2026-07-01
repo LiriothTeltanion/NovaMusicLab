@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FileText, Headphones, Heart, Printer, Music, Star, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
+import { useApp } from '../context/AppContext';
 import { getNightRatio, getRecords, getTwoYearPeak } from '../utils/analytics';
 
 interface FinalReportProps { data: MusicDnaData; }
@@ -44,6 +45,9 @@ function InlineStat({ label, value, color = '#00f2fe' }: { label: string; value:
 }
 
 export default function FinalReport({ data }: FinalReportProps) {
+  const { t, lang } = useApp();
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const tr = t.finalReport;
   const m = data.core_metrics;
   const topArtist = data.top_artists[0]?.name ?? 'Bring Me the Horizon';
   const topTrack  = data.top_tracks[0]?.title  ?? 'In Blur';
@@ -56,11 +60,11 @@ export default function FinalReport({ data }: FinalReportProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <FileText className="w-6 h-6 text-cyberCyan" />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">Tu Vida en Canciones</h2>
+          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{tr.pageTitle}</h2>
         </div>
         <button onClick={() => window.print()}
           className="flex items-center gap-2 px-4 py-2 bg-cyberCyan/10 border border-cyberCyan/30 hover:border-cyberCyan text-cyberCyan font-mono text-xs font-bold rounded-xl transition-all print:hidden">
-          <Printer className="w-3.5 h-3.5" />Imprimir / PDF
+          <Printer className="w-3.5 h-3.5" />{tr.printButton}
         </button>
       </div>
 
@@ -74,20 +78,20 @@ export default function FinalReport({ data }: FinalReportProps) {
           </div>
           <div className="relative z-10 space-y-3">
             <div className="flex items-center justify-center gap-2 text-xs font-mono text-cyberCyan/60 tracking-widest uppercase">
-              <Headphones className="w-3 h-3" /><span>Nova Music Lab · Informe Personal 2026</span><Headphones className="w-3 h-3" />
+              <Headphones className="w-3 h-3" /><span>{tr.coverBadge}</span><Headphones className="w-3 h-3" />
             </div>
             <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
-              Lo que <span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">11 años de música</span><br/>revelan sobre mí
+              {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight}</span><br/>{tr.coverHeadlinePost}
             </h1>
-            <p className="text-sm text-gray-300 font-light">Un ensayo para <span className="text-cyberCyan font-semibold">Kevin Cusnir / Lirioth Teltanion</span></p>
+            <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<span className="text-cyberCyan font-semibold">{tr.coverSubtitleName}</span></p>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x divide-white/5 bg-white/2">
           {[
-            { icon: Music,      label: 'Scrobbles', val: m.total_plays },
-            { icon: Headphones, label: 'Horas',     val: m.listening_hours },
-            { icon: Star,       label: 'Artistas',  val: m.unique_artists },
-            { icon: Zap,        label: 'Canciones', val: m.unique_tracks },
+            { icon: Music,      label: tr.statScrobbles, val: m.total_plays },
+            { icon: Headphones, label: tr.statHours,     val: m.listening_hours },
+            { icon: Star,       label: tr.statArtists,   val: m.unique_artists },
+            { icon: Zap,        label: tr.statTracks,    val: m.unique_tracks },
           ].map(({ icon: Icon, label, val }, i) => (
             <div key={label} className="p-4 flex flex-col items-center text-center">
               <Icon className="w-4 h-4 text-cyberCyan mb-1 opacity-50" />
@@ -105,71 +109,67 @@ export default function FinalReport({ data }: FinalReportProps) {
         className="glass-panel p-8 md:p-12 rounded-3xl space-y-10 font-sans font-light text-gray-200 leading-relaxed">
 
         <motion.section variants={paraVariants} className="space-y-4">
-          <SectionHeading roman="I" title="El Valor de una Huella Sonora" color="#00f2fe" />
+          <SectionHeading roman={tr.s1Roman} title={tr.s1Title} color="#00f2fe" />
           <p className="text-sm md:text-base">
-            Kevin, la música que escuchamos es el registro sísmico de nuestro mundo interior. Al analizar tus
-            <InlineStat label="scrobbles" value={m.total_plays.toLocaleString('es-ES')} color="#00f2fe" />
-            registrados desde 2015, no estamos leyendo estadísticas — estamos leyendo un diario emocional íntimo.
-            Tus <InlineStat label="horas escuchadas" value={Math.round(m.listening_hours).toLocaleString('es-ES')} color="#f72585" />
-            hablan de mudanzas, noches de hiperfijación y mañanas de energía pura.
+            {tr.s1Pre}
+            <InlineStat label={tr.s1ScrobblesLabel} value={m.total_plays.toLocaleString(locale)} color="#00f2fe" />
+            {tr.s1Mid}{' '}
+            <InlineStat label={tr.s1HoursLabel} value={Math.round(m.listening_hours).toLocaleString(locale)} color="#f72585" />
+            {tr.s1Post}
           </p>
-          <PullQuote text="Tu música no es un playlist. Es el mapa de todos los mundos que has habitado." color="#00f2fe" />
+          <PullQuote text={tr.s1Quote} color="#00f2fe" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-cyberCyan/20 to-transparent" />
 
         <motion.section variants={paraVariants} className="space-y-4">
-          <SectionHeading roman="II" title="Las Eras: Capítulos de una Vida" color="#f72585" />
+          <SectionHeading roman={tr.s2Roman} title={tr.s2Title} color="#f72585" />
           <p className="text-sm md:text-base">
-            En 2015, <strong className="text-white">Carpenter Brut</strong> abrió los primeros capítulos. En 2018, tu racha activa de{' '}
-            <InlineStat label="días consecutivos" value={records.longest_streak_days || 'N/D'} color="#fb923c" /> refleja intensidad de vida sin precedentes.
-            El arco {peakPair.label} es tu cumbre musical con
-            <InlineStat label="scrobbles combinados" value={peakPair.plays.toLocaleString('es-ES')} color="#f72585" />.
+            {tr.s2Pre} <strong className="text-white">{tr.s2ArtistName}</strong> {tr.s2ArtistIntro}{' '}
+            <InlineStat label={tr.s2StreakLabel} value={records.longest_streak_days || 'N/D'} color="#fb923c" /> {tr.s2Mid(peakPair.label)}
+            <InlineStat label={tr.s2CombinedLabel} value={peakPair.plays.toLocaleString(locale)} color="#f72585" />.
           </p>
-          <PullQuote text="'In Blur' no es solo una canción. Es el himno de una versión tuya que aprendió a brillar desde la oscuridad." color="#f72585" />
+          <PullQuote text={tr.s2Quote} color="#f72585" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-cyberPink/20 to-transparent" />
 
         <motion.section variants={paraVariants} className="space-y-4">
-          <SectionHeading roman="III" title="El ADN: Quién Eres según tu Música" color="#7209b7" />
+          <SectionHeading roman={tr.s3Roman} title={tr.s3Title} color="#7209b7" />
           <p className="text-sm md:text-base">
-            Con <InlineStat label="artistas únicos" value={m.unique_artists.toLocaleString('es-ES')} color="#7209b7" />
-            y <InlineStat label="canciones únicas" value={m.unique_tracks.toLocaleString('es-ES')} color="#a78bfa" />
-            eres un <strong className="text-white">Explorador de Alta Intensidad</strong>. Tu <strong className="text-white">{nr}% de escucha nocturna</strong>{' '}
-            revela que la música es también regulación emocional: silencio habitado con frecuencias.
+            {tr.s3Pre} <InlineStat label={tr.s3ArtistsLabel} value={m.unique_artists.toLocaleString(locale)} color="#7209b7" />
+            {tr.s3Mid} <InlineStat label={tr.s3TracksLabel} value={m.unique_tracks.toLocaleString(locale)} color="#a78bfa" />
+            {tr.s3ArchetypeIntro} <strong className="text-white">{tr.s3Archetype}</strong>. {tr.s3NightIntro} <strong className="text-white">{tr.s3NightLabel(nr)}</strong>{' '}
+            {tr.s3Post}
           </p>
-          <PullQuote text="No escuchas música de fondo. Escuchas como si cada canción mereciera ser recordada." color="#7209b7" />
+          <PullQuote text={tr.s3Quote} color="#7209b7" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-cyberPurple/20 to-transparent" />
 
         <motion.section variants={paraVariants} className="space-y-4">
-          <SectionHeading roman="IV" title="Lirioth: La Proyección Creativa" color="#10b981" />
+          <SectionHeading roman={tr.s4Roman} title={tr.s4Title} color="#10b981" />
           <p className="text-sm md:text-base">
-            Tu alias <strong className="text-white">Lirioth Teltanion</strong> es la síntesis de todo lo que tu música ha construido.
-            El sonido que te define — guitarras de post-hardcore, sintetizadores cyberpunk y groove alternativo —
-            es una propuesta artística lista para producción musical, videojuegos, arte digital o storytelling.
+            {tr.s4Pre} <strong className="text-white">{tr.s4AliasLabel}</strong> {tr.s4Post}
           </p>
-          <PullQuote text="Tu próxima era no será de consumo. Será de creación." color="#10b981" />
+          <PullQuote text={tr.s4Quote} color="#10b981" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
 
         <motion.section variants={paraVariants} className="space-y-4">
-          <SectionHeading roman="V" title="Seguir Escuchando para Seguir Siendo" color="#facc15" />
+          <SectionHeading roman={tr.s5Roman} title={tr.s5Title} color="#facc15" />
           <p className="text-sm md:text-base">
-            Kevin, tu historia demuestra sensibilidad emocional extraordinaria y resiliencia que sabe resurgir. Cada uno de tus{' '}
-            <InlineStat label="días activos" value={m.active_days.toLocaleString('es-ES')} color="#facc15" />{' '}
-            es evidencia de que la música ha sido lenguaje, terapia, identidad y futuro a la vez.{' '}
-            <strong className="text-white">{topArtist}</strong> y <em>"{topTrack}"</em> siempre estarán ahí.
+            {tr.s5Pre}{' '}
+            <InlineStat label={tr.s5DaysLabel} value={m.active_days.toLocaleString(locale)} color="#facc15" />{' '}
+            {tr.s5Post(topArtist, topTrack)}
           </p>
         </motion.section>
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">
           <Heart className="w-6 h-6 text-cyberPink fill-cyberPink animate-pulse-slow" />
-          <p className="font-mono text-sm font-bold text-white tracking-widest">✧ LIRIOTH TELTANION ✧</p>
-          <p className="text-xs text-gray-500 font-mono">Nova Music Lab · Museo Personal · 2026</p>
+          <p className="font-mono text-sm font-bold text-white tracking-widest">{tr.footerName}</p>
+          <p className="text-xs text-gray-500 font-mono">{tr.footerSubtitle}</p>
           <div className="flex flex-wrap justify-center gap-2 pt-2">
             {[topArtist, 'Deafheaven', 'Bilmuri', 'The Midnight', 'nothingnowhere.'].map(a => (
               <span key={a} className="text-[10px] px-2 py-0.5 rounded-full bg-cyberCyan/5 border border-cyberCyan/15 text-gray-400 font-mono">{a}</span>
