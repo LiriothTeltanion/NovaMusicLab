@@ -1,0 +1,357 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip,
+  RadarChart, PolarGrid, PolarAngleAxis, Radar, Legend,
+} from 'recharts';
+import { GitCompare, CheckCircle2, AlertTriangle, Eye, Music, Users, Disc } from 'lucide-react';
+import { MusicDnaData } from '../types';
+import { deriveSourceSummary, getNightRatio, getTwoYearPeak } from '../utils/analytics';
+import { useApp } from '../context/AppContext';
+
+interface SpotifyVsLastfmProps {
+  data: MusicDnaData;
+}
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-[#070e1c] border border-cyberCyan/30 rounded-xl px-4 py-3 text-xs font-mono shadow-cyber">
+      <p className="text-white font-bold mb-1">{label}</p>
+      {payload.map((p: any, i: number) => (
+        <p key={i} style={{ color: p.color }}>
+          {p.name}: <span className="text-white">{Number(p.value).toLocaleString('es-ES')}</span>
+        </p>
+      ))}
+    </div>
+  );
+};
+
+export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
+  const [activeInsight, setActiveInsight] = useState(0);
+  const { lang } = useApp();
+  const L = lang === 'en';
+  const fmtNum = (n: number) => Math.round(n).toLocaleString('es-ES');
+  const source = deriveSourceSummary(data);
+  const lastfmTotal = source.lastfm_plays;
+  const spotifyDirectTotal = source.spotify_plays;
+  const matchRate = data.core_metrics.match_rate_pct;
+  const spotifyEstimatedTotal = spotifyDirectTotal || (lastfmTotal && matchRate > 0 && matchRate < 100
+    ? Math.round(lastfmTotal / (matchRate / 100))
+    : 0);
+  const spotifyOnlyApprox = source.spotify_short_plays || Math.max(0, spotifyEstimatedTotal - lastfmTotal);
+  const topArtist = data.top_artists[0];
+  const topConsciousArtist = data.top_artists.find(artist => artist.name !== topArtist?.name) ?? data.top_artists[1];
+  const twoYearPeak = getTwoYearPeak(data.yearly_eras);
+  const night = getNightRatio(data);
+  const spotifyScale = lastfmTotal > 0 && spotifyEstimatedTotal > 0 ? spotifyEstimatedTotal / lastfmTotal : (spotifyDirectTotal ? 1 : 0);
+  const comparisonLabel = spotifyDirectTotal ? 'Spotify' : 'Spotify (est.)';
+
+  /* ── Overlap bar data using yearly eras ── */
+  const yearlyComparison = data.yearly_eras.map(e => ({
+    year: String(e.year),
+    lastfm: source.source_type === 'spotify' ? 0 : e.plays,
+    spotify: spotifyScale ? Math.round(e.plays * spotifyScale) : 0,
+  }));
+
+  /* ── Radar comparison ── */
+  const radarData = [
+    { metric: 'Historial',    lastfm: 95, spotify: 88 },
+    { metric: 'Precisión',    lastfm: 92, spotify: 78 },
+    { metric: 'Cobertura',    lastfm: 88, spotify: 96 },
+    { metric: 'Metadatos',    lastfm: 72, spotify: 90 },
+    { metric: 'Skips',        lastfm: 40, spotify: 82 },
+    { metric: 'Context',      lastfm: 60, spotify: 85 },
+  ];
+
+  const insights = [
+    {
+      icon: '🕵️',
+      title: L ? 'Artists that dominate the data' : 'Artistas que dominan en datos',
+      body: L
+        ? `${topArtist?.name ?? 'Your top artist'} leads with ${fmtNum(topArtist?.plays ?? 0)} plays. The contrast with artists like ${topConsciousArtist?.name ?? 'your second wave'} helps separate everyday background loyalty from more conscious emotional listening.`
+        : `${topArtist?.name ?? 'Tu artista principal'} lidera con ${fmtNum(topArtist?.plays ?? 0)} plays. Compararlo con artistas como ${topConsciousArtist?.name ?? 'tu segunda ola'} ayuda a separar lealtad cotidiana de escucha emocional consciente.`,
+      color: '#00f2fe',
+    },
+    {
+      icon: '🔇',
+      title: L ? 'Short plays and skips reveal exploration' : 'Skips y plays cortos revelan exploración',
+      body: L
+        ? `Spotify contributes ${fmtNum(spotifyOnlyApprox)} short or Spotify-only plays in this view. That is the exploratory layer: previews, skips and searches before the right track lands.`
+        : `Spotify aporta ${fmtNum(spotifyOnlyApprox)} reproducciones cortas o solo-Spotify en esta vista. Esa es la capa exploratoria: previews, skips y busquedas antes de que caiga la cancion correcta.`,
+      color: '#f72585',
+    },
+    {
+      icon: '📅',
+      title: L ? `${twoYearPeak.label}: strongest two-year arc` : `${twoYearPeak.label}: el arco de dos años más fuerte`,
+      body: L
+        ? `The strongest two-year period contains ${fmtNum(twoYearPeak.plays)} plays. This is the most statistically dense chapter in the current dataset.`
+        : `El periodo de dos años más fuerte contiene ${fmtNum(twoYearPeak.plays)} plays. Es el capitulo mas denso estadisticamente del dataset actual.`,
+      color: '#7209b7',
+    },
+    {
+      icon: '🌙',
+      title: L ? 'Night listening is a distinct mode' : 'La madrugada es un modo distinto',
+      body: L
+        ? `${night}% of plays happen between 00:00 and 05:59. That gives the app a measurable nocturnal axis instead of treating all plays as equal.`
+        : `${night}% de los plays ocurren entre 00:00 y 05:59. Eso le da a la app un eje nocturno medible en vez de tratar todos los plays como iguales.`,
+      color: '#10b981',
+    },
+    {
+      icon: '🎵',
+      title: L ? 'Overlap should be treated as confidence' : 'El overlap debe leerse como confianza',
+      body: L
+        ? `${source.overlap_unique_tracks} normalized tracks appear in both sources when both are uploaded. The rest are not errors; they are evidence of platform-specific behavior.`
+        : `${source.overlap_unique_tracks} canciones normalizadas aparecen en ambas fuentes cuando subes ambas. El resto no son errores: son evidencia de comportamiento especifico por plataforma.`,
+      color: '#fb923c',
+    },
+  ];
+
+  const statCards = [
+    {
+      label: 'Last.fm Scrobbles',
+      value: fmtNum(lastfmTotal),
+      sub: L ? 'Primary scrobble source' : 'Fuente primaria de scrobbles',
+      color: '#e8334a',
+      icon: '◉',
+    },
+    {
+      label: spotifyDirectTotal ? 'Spotify Plays' : 'Spotify Plays (est.)',
+      value: fmtNum(spotifyEstimatedTotal),
+      sub: spotifyDirectTotal ? (L ? 'Measured from export' : 'Medido desde export') : (L ? 'Estimated from match rate' : 'Estimado por match rate'),
+      color: '#1DB954',
+      icon: '▶',
+    },
+    {
+      label: L ? 'Match Rate' : 'Tasa de Coincidencia',
+      value: `${matchRate}%`,
+      sub: L ? 'Normalized source overlap' : 'Overlap normalizado entre fuentes',
+      color: '#00f2fe',
+      icon: '⌥',
+    },
+    {
+      label: L ? 'Short / Extra Plays' : 'Plays cortos / extra',
+      value: fmtNum(spotifyOnlyApprox),
+      sub: L ? 'Skips, previews or Spotify-only plays' : 'Skips, previews o plays solo-Spotify',
+      color: '#a78bfa',
+      icon: '◈',
+    },
+  ];
+
+  const containerVariants = {
+    animate: { transition: { staggerChildren: 0.08 } },
+  };
+  const cardVariants = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  };
+
+  return (
+    <div className="space-y-10 animate-fade-in">
+      <div className="flex items-center space-x-3">
+        <GitCompare className="w-6 h-6 text-cyberCyan" />
+        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
+          Spotify vs Last.fm
+        </h2>
+      </div>
+
+      {/* Hero comparison banner */}
+      <div className="glass-panel p-6 md:p-8 rounded-3xl border border-cyan-500/20 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-[#e8334a]/5 to-transparent" />
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#1DB954]/5 to-transparent" />
+        </div>
+
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+          {/* Last.fm side */}
+          <div className="text-center md:text-left space-y-3">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#e8334a]/10 border border-[#e8334a]/30">
+              <span className="text-[#e8334a] font-mono text-xs font-bold">◉ LAST.FM</span>
+            </div>
+            <p className="text-4xl font-black text-white font-mono">{fmtNum(lastfmTotal)}</p>
+            <p className="text-xs text-gray-400 font-mono">{L ? 'Verified scrobbles' : 'Scrobbles verificados'}</p>
+            <div className="space-y-1 text-xs text-gray-300">
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Timestamps exactos</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Registro de álbum completo</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Sin datos de skip</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Sin contexto de playlist</p>
+            </div>
+          </div>
+
+          {/* Center overlap */}
+          <div className="flex flex-col items-center justify-center space-y-3">
+            <div className="relative w-36 h-36">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-28 h-28 rounded-full border-4 border-[#e8334a]/60 bg-[#e8334a]/5 absolute -left-3" />
+                <div className="w-28 h-28 rounded-full border-4 border-[#1DB954]/60 bg-[#1DB954]/5 absolute -right-3" />
+                <div className="z-10 text-center">
+                  <p className="text-xl font-black text-white font-mono">{matchRate}%</p>
+                  <p className="text-[10px] text-gray-400 font-mono">{L ? 'match' : 'coincidencia'}</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-gray-400 font-mono text-center">Overlap de artistas y tracks</p>
+          </div>
+
+          {/* Spotify side */}
+          <div className="text-center md:text-right space-y-3">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#1DB954]/10 border border-[#1DB954]/30">
+              <span className="text-[#1DB954] font-mono text-xs font-bold">▶ SPOTIFY</span>
+            </div>
+            <p className="text-4xl font-black text-white font-mono">{fmtNum(spotifyEstimatedTotal)}</p>
+            <p className="text-xs text-gray-400 font-mono">
+              {spotifyDirectTotal ? (L ? 'Measured plays · includes skips' : 'Plays medidos · incluye skips') : (L ? 'Estimated plays' : 'Plays estimados')}
+            </p>
+            <div className="space-y-1 text-xs text-gray-300 flex flex-col md:items-end">
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Datos de skip incluidos</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Contexto de playlist</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Offline / dispositivo</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Historial pre-2015 vacío</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* KPI Cards */}
+      <motion.div
+        variants={containerVariants}
+        initial="initial"
+        animate="animate"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-5"
+      >
+        {statCards.map(c => (
+          <motion.div
+            key={c.label}
+            variants={cardVariants}
+            className="glass-panel p-5 rounded-2xl relative overflow-hidden group"
+          >
+            <div
+              className="absolute top-0 left-0 w-full h-1 rounded-t-2xl"
+              style={{ backgroundColor: c.color }}
+            />
+            <p className="text-3xl font-black font-mono mt-2" style={{ color: c.color }}>
+              {c.icon}
+            </p>
+            <p className="text-xl font-black text-white mt-2 font-mono">{c.value}</p>
+            <p className="text-xs font-bold text-gray-300 mt-1">{c.label}</p>
+            <p className="text-[10px] text-gray-500 mt-1 font-mono">{c.sub}</p>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Charts row */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        {/* Yearly comparison */}
+        <div className="glass-panel p-6 rounded-3xl">
+          <div className="flex items-center space-x-2 mb-5">
+            <Disc className="w-5 h-5 text-cyberCyan" />
+            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+              {L ? `Plays by Year - Last.fm vs ${comparisonLabel}` : `Plays por Año - Last.fm vs ${comparisonLabel}`}
+            </h3>
+          </div>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={yearlyComparison} margin={{ left: 0, right: 8, top: 4, bottom: 0 }}>
+                <XAxis dataKey="year" stroke="#4b5563" fontSize={10} tick={{ fill: '#9ca3af' }} />
+                <YAxis stroke="#4b5563" fontSize={10} tick={{ fill: '#9ca3af' }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  wrapperStyle={{ fontSize: 11, color: '#9ca3af', fontFamily: 'monospace' }}
+                />
+                <Bar dataKey="lastfm" name="Last.fm" fill="#e8334a" radius={[4, 4, 0, 0]} opacity={0.85} />
+                <Bar dataKey="spotify" name="Spotify" fill="#1DB954" radius={[4, 4, 0, 0]} opacity={0.7} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Radar comparison */}
+        <div className="glass-panel p-6 rounded-3xl">
+          <div className="flex items-center space-x-2 mb-5">
+            <Users className="w-5 h-5 text-cyberPink" />
+            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+              Comparación de Capacidades
+            </h3>
+          </div>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={radarData}>
+                <PolarGrid stroke="#1e293b" />
+                <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
+                <Radar name="Last.fm" dataKey="lastfm" stroke="#e8334a" fill="#e8334a" fillOpacity={0.2} />
+                <Radar name="Spotify" dataKey="spotify" stroke="#1DB954" fill="#1DB954" fillOpacity={0.2} />
+                <Legend wrapperStyle={{ fontSize: 11, color: '#9ca3af', fontFamily: 'monospace' }} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      </div>
+
+      {/* Hidden insights section */}
+      <div className="space-y-4">
+        <div className="flex items-center space-x-2">
+          <Eye className="w-5 h-5 text-cyberCyan" />
+          <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
+            Lo que el cruce de datos revela
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+          {insights.map((ins, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveInsight(idx)}
+              className={`p-3 rounded-xl font-mono text-xs font-bold text-center transition-all border ${
+                activeInsight === idx
+                  ? 'border-cyberCyan bg-cyberCyan/10 text-cyberCyan'
+                  : 'border-cyan-500/10 bg-cyan-950/10 text-gray-400 hover:text-white hover:border-cyan-500/30'
+              }`}
+            >
+              <span className="block text-lg mb-1">{ins.icon}</span>
+              <span className="line-clamp-2 leading-tight">{ins.title.split(':')[0]}</span>
+            </button>
+          ))}
+        </div>
+
+        <motion.div
+          key={activeInsight}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="glass-panel p-7 rounded-3xl border-l-4"
+          style={{ borderLeftColor: insights[activeInsight].color }}
+        >
+          <div className="flex items-start space-x-4">
+            <span className="text-3xl shrink-0">{insights[activeInsight].icon}</span>
+            <div className="space-y-3">
+              <h4 className="font-bold text-white text-base leading-tight">
+                {insights[activeInsight].title}
+              </h4>
+              <p className="text-sm text-gray-300 font-sans leading-relaxed">
+                {insights[activeInsight].body}
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Source quality notice */}
+      <div className="glass-panel p-5 rounded-2xl border border-amber-500/20 bg-amber-950/5">
+        <div className="flex items-start space-x-3">
+          <Music className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider">
+              {L ? 'Data quality note' : 'Nota sobre la calidad de datos'}
+            </p>
+            <p className="text-xs text-gray-300 font-sans leading-relaxed">
+              {source.source_note}
+              {!spotifyDirectTotal && spotifyEstimatedTotal > 0 && (
+                <span> {L ? 'Spotify values marked as estimated are interpretive, not verified export counts.' : 'Los valores de Spotify marcados como estimados son interpretativos, no conteos verificados del export.'}</span>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

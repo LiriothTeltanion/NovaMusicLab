@@ -1,0 +1,181 @@
+export interface CoreMetrics {
+  total_plays: number;
+  unique_artists: number;
+  unique_tracks: number;
+  unique_albums: number;
+  listening_minutes: number;
+  listening_hours: number;
+  listening_days: number;
+  active_days: number;
+  max_year: number | string;
+  match_rate_pct: number;
+}
+
+export type PlaySource = 'lastfm' | 'spotify' | 'merged' | 'unknown';
+
+export interface MonthlyActivity {
+  year: number;
+  month: number; // 0-11
+  plays: number;
+}
+
+export interface PlatformPlay {
+  platform: string;
+  plays: number;
+}
+
+export interface SourceSummary {
+  source_type: PlaySource;
+  lastfm_plays: number;
+  spotify_plays: number;
+  merged_plays: number;
+  spotify_skips: number;
+  spotify_skip_rate_pct: number;
+  spotify_short_plays: number;
+  spotify_short_play_rate_pct: number;
+  overlap_unique_tracks: number;
+  source_note: string;
+}
+
+export interface RecordsSummary {
+  longest_streak_days: number;
+  longest_streak_start?: string;
+  longest_streak_end?: string;
+  max_day_plays: number;
+  max_day_date?: string;
+  longest_session_minutes: number;
+  longest_session_tracks: number;
+  longest_session_start?: string;
+  best_session_tracks: number;
+  best_session_start?: string;
+}
+
+export interface TopArtist {
+  name: string;
+  plays: number;
+  genre: string;
+  country: string;
+}
+
+export interface TopTrack {
+  artist: string;
+  title: string;
+  plays: number;
+  genre: string;
+}
+
+export interface TopAlbum {
+  artist: string;
+  title: string;
+  plays: number;
+}
+
+export interface TopGenre {
+  name: string;
+  plays: number;
+}
+
+export interface YearlyEra {
+  year: number;
+  plays: number;
+  unique_artists: number;
+  unique_tracks: number;
+  top_artist: string;
+  top_track: string;
+  dominant_daypart: string;
+  era_label: string;
+  era_desc: string;
+  diversity_index: number;
+}
+
+export interface Session {
+  id: number;
+  start: string;
+  end: string;
+  tracks_count: number;
+  duration_min: number;
+  top_artist: string;
+  top_track: string;
+  unique_artists: number;
+}
+
+export interface Obsession {
+  artist: string;
+  track: string;
+  date: string;
+  count: number;
+}
+
+export interface CountryPlay {
+  country: string;
+  plays: number;
+}
+
+export interface PersonalityTrait {
+  score: number;
+  evidence: string;
+  artists: string[];
+  positive: string;
+  shadow: string;
+  tip: string;
+}
+
+export interface PersonalityMatrix {
+  sensibilidad_emocional: PersonalityTrait;
+  nostalgia: PersonalityTrait;
+  energia: PersonalityTrait;
+  oscuridad_estetica: PersonalityTrait;
+  creatividad: PersonalityTrait;
+  rebeldia: PersonalityTrait;
+  futurismo: PersonalityTrait;
+}
+
+export interface Archetype {
+  name: string;
+  desc: string;
+  artists: string[];
+  tracks: string[];
+  color: string;
+  aesthetic: string;
+  strength: string;
+  wound: string;
+  advice: string;
+}
+
+export interface EpConcept {
+  title: string;
+  description: string;
+  tracklist: string[];
+}
+
+export interface ArtistProfile {
+  alias: string;
+  sound: string;
+  tempo: string;
+  influences: string[];
+  aesthetic: string;
+  ep_concept: EpConcept;
+  live_show: string;
+}
+
+export interface MusicDnaData {
+  project: string;
+  generated_at: string;
+  core_metrics: CoreMetrics;
+  top_artists: TopArtist[];
+  top_tracks: TopTrack[];
+  top_albums: TopAlbum[];
+  top_genres: TopGenre[];
+  yearly_eras: YearlyEra[];
+  sessions: Session[];
+  obsessions: Obsession[];
+  countries: CountryPlay[];
+  heatmap: number[][]; // 24x7 matrix
+  monthly_activity?: MonthlyActivity[];
+  platform_breakdown?: PlatformPlay[];
+  source_summary?: SourceSummary;
+  records?: RecordsSummary;
+  personality_matrix: PersonalityMatrix;
+  archetypes: Archetype[];
+  artist_profile: ArtistProfile;
+}

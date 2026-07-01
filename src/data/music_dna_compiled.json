@@ -1,0 +1,3051 @@
+{
+  "project": "Nova Music Lab - Kevin Cusnir / Lirioth Teltanion",
+  "generated_at": "2026-06-30T17:36:35.619501",
+  "core_metrics": {
+    "total_plays": 50476,
+    "unique_artists": 4174,
+    "unique_tracks": 12063,
+    "unique_albums": 7638,
+    "listening_minutes": 160887.7,
+    "listening_hours": 2681.5,
+    "listening_days": 111.7,
+    "active_days": 2722,
+    "max_year": 2021,
+    "match_rate_pct": 75.32
+  },
+  "source_summary": {
+    "source_type": "lastfm",
+    "lastfm_plays": 50476,
+    "spotify_plays": 67016,
+    "merged_plays": 50476,
+    "spotify_skips": 0,
+    "spotify_skip_rate_pct": 0,
+    "spotify_short_plays": 12000,
+    "spotify_short_play_rate_pct": 17.9,
+    "overlap_unique_tracks": 0,
+    "source_note": "Bundled Kevin analysis: Last.fm is the primary verified timeline; Spotify values are report-level estimates unless a fresh Spotify export is uploaded."
+  },
+  "records": {
+    "longest_streak_days": 68,
+    "longest_streak_start": "2018-06-18",
+    "longest_streak_end": "2018-08-24",
+    "max_day_plays": 217,
+    "max_day_date": "2025-12-02",
+    "longest_session_minutes": 791.5,
+    "longest_session_tracks": 253,
+    "longest_session_start": "2025-09-29T17:55:00Z",
+    "best_session_tracks": 253,
+    "best_session_start": "2025-09-29T17:55:00Z"
+  },
+  "top_artists": [
+    {
+      "name": "Bring Me the Horizon",
+      "plays": 1892,
+      "genre": "Metalcore / Alternative",
+      "country": "United Kingdom"
+    },
+    {
+      "name": "Deafheaven",
+      "plays": 1194,
+      "genre": "Blackgaze / Post-Metal",
+      "country": "United States"
+    },
+    {
+      "name": "Bilmuri",
+      "plays": 1096,
+      "genre": "Emo Groove / Alt-Metal",
+      "country": "United States"
+    },
+    {
+      "name": "Nevertel",
+      "plays": 798,
+      "genre": "Alternative Rock / Rap Rock",
+      "country": "United States"
+    },
+    {
+      "name": "Slaves",
+      "plays": 780,
+      "genre": "Post-Hardcore / R&B",
+      "country": "United States"
+    },
+    {
+      "name": "Jonny Craig",
+      "plays": 776,
+      "genre": "Post-Hardcore / Soul",
+      "country": "United States"
+    },
+    {
+      "name": "TesseracT",
+      "plays": 695,
+      "genre": "Progressive Metal / Djent",
+      "country": "United Kingdom"
+    },
+    {
+      "name": "Santa Cruz",
+      "plays": 631,
+      "genre": "Hard Rock / Glam Metal",
+      "country": "Finland"
+    },
+    {
+      "name": "Normandie",
+      "plays": 629,
+      "genre": "Alternative Rock / Post-Hardcore",
+      "country": "Sweden"
+    },
+    {
+      "name": "Odeon",
+      "plays": 621,
+      "genre": "Post-Hardcore / Electronic",
+      "country": "Sweden"
+    },
+    {
+      "name": "The Midnight",
+      "plays": 601,
+      "genre": "Synthwave / Dreampop",
+      "country": "United States"
+    },
+    {
+      "name": "Emarosa",
+      "plays": 595,
+      "genre": "Pop Rock / Post-Hardcore",
+      "country": "United States"
+    },
+    {
+      "name": "The Word Alive",
+      "plays": 557,
+      "genre": "Metalcore / Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Holding Absence",
+      "plays": 540,
+      "genre": "Post-Hardcore / Emo",
+      "country": "United Kingdom"
+    },
+    {
+      "name": "Magnolia Park",
+      "plays": 525,
+      "genre": "Pop Punk / Emo Pop",
+      "country": "United States"
+    },
+    {
+      "name": "Machine Gun Kelly",
+      "plays": 511,
+      "genre": "Pop Punk / Emo Rap",
+      "country": "United States"
+    },
+    {
+      "name": "nothingnowhere.",
+      "plays": 450,
+      "genre": "Emo Rap / Alternative Pop",
+      "country": "United States"
+    },
+    {
+      "name": "Dance With the Dead",
+      "plays": 446,
+      "genre": "Darksynth / Cyberpunk",
+      "country": "United States"
+    },
+    {
+      "name": "Omnium Gatherum",
+      "plays": 427,
+      "genre": "Melodic Death Metal",
+      "country": "Finland"
+    },
+    {
+      "name": "Alcest",
+      "plays": 421,
+      "genre": "Post-Metal / Shoegaze",
+      "country": "France"
+    },
+    {
+      "name": "Don Vedda",
+      "plays": 416,
+      "genre": "Alternative Rock / Indie",
+      "country": "United States"
+    },
+    {
+      "name": "Hammock",
+      "plays": 414,
+      "genre": "Ambient / Contemplative",
+      "country": "United States"
+    },
+    {
+      "name": "Tokio Hotel",
+      "plays": 397,
+      "genre": "Pop Rock / Nostalgia",
+      "country": "Germany"
+    },
+    {
+      "name": "Rain City Drive",
+      "plays": 384,
+      "genre": "Alternative Rock / Post-Hardcore",
+      "country": "United States"
+    },
+    {
+      "name": "H.E.A.T",
+      "plays": 382,
+      "genre": "Hard Rock / AOR",
+      "country": "Sweden"
+    },
+    {
+      "name": "Ghost",
+      "plays": 371,
+      "genre": "Occult Rock / Heavy Metal",
+      "country": "Sweden"
+    },
+    {
+      "name": "היהודים",
+      "plays": 350,
+      "genre": "Israeli Rock / Metal",
+      "country": "Israel"
+    },
+    {
+      "name": "Carpenter Brut",
+      "plays": 347,
+      "genre": "Darksynth / Cyberpunk",
+      "country": "France"
+    },
+    {
+      "name": "The Story So Far",
+      "plays": 318,
+      "genre": "Pop Punk / Emo",
+      "country": "United States"
+    },
+    {
+      "name": "Jordyne",
+      "plays": 314,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Myrath",
+      "plays": 299,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Blessthefall",
+      "plays": 259,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Dayseeker",
+      "plays": 255,
+      "genre": "Post-Hardcore / Synth-Metal",
+      "country": "United States"
+    },
+    {
+      "name": "Roosevelt",
+      "plays": 252,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Kiremi",
+      "plays": 252,
+      "genre": "Lo-Fi / Dream Pop",
+      "country": "United States"
+    },
+    {
+      "name": "Crazy Lixx",
+      "plays": 243,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Primal Fear",
+      "plays": 238,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Diversify",
+      "plays": 228,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Type O Negative",
+      "plays": 223,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Drake",
+      "plays": 223,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Sweezy",
+      "plays": 221,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Crown the Empire",
+      "plays": 216,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Perturbator",
+      "plays": 214,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Teenage Wrist",
+      "plays": 210,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Def Leppard",
+      "plays": 209,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Annihilator",
+      "plays": 205,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "thekidszn",
+      "plays": 205,
+      "genre": "Melodic Trap / Emo Rap",
+      "country": "United States"
+    },
+    {
+      "name": "Mooki",
+      "plays": 201,
+      "genre": "Israeli Pop",
+      "country": "Israel"
+    },
+    {
+      "name": "Nightlife",
+      "plays": 199,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Silverstein",
+      "plays": 196,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Landon Tewers",
+      "plays": 196,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Skid Row",
+      "plays": 195,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Anathema",
+      "plays": 181,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "The Kid LAROI",
+      "plays": 170,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Neck Deep",
+      "plays": 169,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Entwine",
+      "plays": 167,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "ג'ירפות",
+      "plays": 167,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Trevor Something",
+      "plays": 157,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Naits",
+      "plays": 152,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Blackfield",
+      "plays": 151,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Arrows in Action",
+      "plays": 148,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Som",
+      "plays": 148,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Katatonia",
+      "plays": 146,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "FM-84",
+      "plays": 146,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Ryan Caraveo",
+      "plays": 144,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Being as an Ocean",
+      "plays": 141,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "44phantom",
+      "plays": 140,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Indighxst",
+      "plays": 138,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "boy pablo",
+      "plays": 136,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Paloma",
+      "plays": 136,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Louta",
+      "plays": 136,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Asking Alexandria",
+      "plays": 134,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Issues",
+      "plays": 129,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Sebastian Gampl",
+      "plays": 128,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Treat",
+      "plays": 123,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Thirty Seconds to Mars",
+      "plays": 122,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Twin Shadow",
+      "plays": 121,
+      "genre": "Indie Pop / Synth-Pop",
+      "country": "United States"
+    },
+    {
+      "name": "Scar Symmetry",
+      "plays": 119,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Polyphia",
+      "plays": 117,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Atzmus",
+      "plays": 116,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "SMBDY ELSE",
+      "plays": 116,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "ERRA",
+      "plays": 115,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Nine Inch Nails",
+      "plays": 114,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Lost Society",
+      "plays": 114,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Rami Kleinstein",
+      "plays": 114,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Corbin Karasu",
+      "plays": 114,
+      "genre": "Lo-Fi / R&B",
+      "country": "United States"
+    },
+    {
+      "name": "The Killers",
+      "plays": 112,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Acres",
+      "plays": 112,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Unprocessed",
+      "plays": 111,
+      "genre": "Progressive Metal / Math Rock",
+      "country": "Germany"
+    },
+    {
+      "name": "Blut aus Nord",
+      "plays": 109,
+      "genre": "Atmospheric Black Metal",
+      "country": "France"
+    },
+    {
+      "name": "Knox",
+      "plays": 107,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Firehouse",
+      "plays": 106,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "The Damned",
+      "plays": 105,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Volumes",
+      "plays": 103,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "The 1975",
+      "plays": 101,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Hurtwave",
+      "plays": 100,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "The Cult",
+      "plays": 96,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Skyharbor",
+      "plays": 94,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Thornhill",
+      "plays": 92,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "NIGHTBREAKERS",
+      "plays": 92,
+      "genre": "Alternative",
+      "country": "United States"
+    }
+  ],
+  "top_tracks": [
+    {
+      "artist": "Deafheaven",
+      "title": "In Blur",
+      "plays": 296,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Tokio Hotel",
+      "title": "Love Who Loves You Back",
+      "plays": 179,
+      "genre": "Pop Rock / Nostalgia"
+    },
+    {
+      "artist": "Jordyne",
+      "title": "Some Way",
+      "plays": 171,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "The Midnight",
+      "title": "Vampires",
+      "plays": 160,
+      "genre": "Synthwave / Dreampop"
+    },
+    {
+      "artist": "Nightlife",
+      "title": "all i know",
+      "plays": 158,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "2016 CAVALIERS (Ohio)",
+      "plays": 158,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "GOOSEBUMPS",
+      "plays": 143,
+      "genre": "Post-Hardcore / Soul"
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Tokyo",
+      "plays": 136,
+      "genre": "Pop Punk / Emo Pop"
+    },
+    {
+      "artist": "Holding Absence",
+      "title": "In Circles",
+      "plays": 135,
+      "genre": "Post-Hardcore / Emo"
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Honeycomb",
+      "plays": 134,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Drake",
+      "title": "First Person Shooter",
+      "plays": 129,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Emarosa",
+      "title": "Givin' Up",
+      "plays": 128,
+      "genre": "Pop Rock / Post-Hardcore"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "MANTRA",
+      "plays": 121,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Shellstar",
+      "plays": 119,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Twin Shadow",
+      "title": "Old Love / New Love",
+      "plays": 119,
+      "genre": "Indie Pop / Synth-Pop"
+    },
+    {
+      "artist": "Slaves",
+      "title": "Prayers",
+      "plays": 116,
+      "genre": "Post-Hardcore / R&B"
+    },
+    {
+      "artist": "Odeon",
+      "title": "loop",
+      "plays": 116,
+      "genre": "Post-Hardcore / Electronic"
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Breathing",
+      "plays": 116,
+      "genre": "Pop Punk / Emo Pop"
+    },
+    {
+      "artist": "Diversify",
+      "title": "All My Life",
+      "plays": 114,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Corbin Karasu",
+      "title": "The Journey",
+      "plays": 114,
+      "genre": "Lo-Fi / R&B"
+    },
+    {
+      "artist": "Slaves",
+      "title": "To Better Days",
+      "plays": 111,
+      "genre": "Post-Hardcore / R&B"
+    },
+    {
+      "artist": "Naits",
+      "title": "lonely road",
+      "plays": 110,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Follow You",
+      "plays": 109,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "H.E.A.T",
+      "title": "In And Out of Trouble",
+      "plays": 109,
+      "genre": "Hard Rock / AOR"
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Great Mass of Color",
+      "plays": 109,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Sweezy",
+      "title": "Falling In Love",
+      "plays": 109,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Nevertel",
+      "title": "Stuck Inside",
+      "plays": 108,
+      "genre": "Alternative Rock / Rap Rock"
+    },
+    {
+      "artist": "Normandie",
+      "title": "Ritual",
+      "plays": 108,
+      "genre": "Alternative Rock / Post-Hardcore"
+    },
+    {
+      "artist": "Indighxst",
+      "title": "Lace",
+      "plays": 107,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "Going Under",
+      "plays": 105,
+      "genre": "Post-Hardcore / Soul"
+    },
+    {
+      "artist": "Acres",
+      "title": "Into Flames",
+      "plays": 101,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Can You Feel My Heart",
+      "plays": 92,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Odeon",
+      "title": "swipe up",
+      "plays": 92,
+      "genre": "Post-Hardcore / Electronic"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "medicine",
+      "plays": 91,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Ollie Joseph",
+      "title": "Sweatshirt",
+      "plays": 89,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Landon Tewers",
+      "title": "Sink With Me",
+      "plays": 88,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "ON God.",
+      "plays": 87,
+      "genre": "Post-Hardcore / Soul"
+    },
+    {
+      "artist": "thekidszn",
+      "title": "PROUD OF ME",
+      "plays": 87,
+      "genre": "Melodic Trap / Emo Rap"
+    },
+    {
+      "artist": "Perturbator",
+      "title": "Venger",
+      "plays": 86,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Rain City Drive",
+      "title": "Cutting It Close",
+      "plays": 86,
+      "genre": "Alternative Rock / Post-Hardcore"
+    },
+    {
+      "artist": "Holding Absence",
+      "title": "Gravity",
+      "plays": 85,
+      "genre": "Post-Hardcore / Emo"
+    },
+    {
+      "artist": "Santa Cruz",
+      "title": "Drag Me Out of the Darkness",
+      "plays": 84,
+      "genre": "Hard Rock / Glam Metal"
+    },
+    {
+      "artist": "44phantom",
+      "title": "hurricane",
+      "plays": 83,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "The Midnight",
+      "title": "Endless Summer",
+      "plays": 82,
+      "genre": "Synthwave / Dreampop"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "BETTER HELL (Thicc boi)",
+      "plays": 78,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Drake",
+      "title": "Circadian Rhythm",
+      "plays": 78,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Throne",
+      "plays": 77,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "in the dark",
+      "plays": 77,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Hot Milk",
+      "title": "Breathing Underwater",
+      "plays": 77,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Graham",
+      "title": "Silhouettes",
+      "plays": 76,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Trevor Something",
+      "title": "Summer Love",
+      "plays": 75,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "i apologise if you feel something",
+      "plays": 75,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "Sadness",
+      "plays": 75,
+      "genre": "Post-Hardcore / Soul"
+    },
+    {
+      "artist": "FM-84",
+      "title": "Running in the Night",
+      "plays": 74,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Neck Deep",
+      "title": "In Bloom",
+      "plays": 74,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Jack Harlow",
+      "title": "Lovin on Me",
+      "plays": 73,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Neptune Raining Diamonds",
+      "plays": 72,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Nevertel",
+      "title": "back on me",
+      "plays": 72,
+      "genre": "Alternative Rock / Rap Rock"
+    },
+    {
+      "artist": "Nevertel",
+      "title": "MODIFIED",
+      "plays": 72,
+      "genre": "Alternative Rock / Rap Rock"
+    },
+    {
+      "artist": "Santa Cruz",
+      "title": "Breathe",
+      "plays": 71,
+      "genre": "Hard Rock / Glam Metal"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "THICC THICCLY",
+      "plays": 71,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "Memories",
+      "plays": 71,
+      "genre": "Post-Hardcore / Soul"
+    },
+    {
+      "artist": "The Chainsmokers",
+      "title": "White Wine & Adderall",
+      "plays": 71,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Carpenter Brut",
+      "title": "Le Perv",
+      "plays": 70,
+      "genre": "Darksynth / Cyberpunk"
+    },
+    {
+      "artist": "The Word Alive",
+      "title": "Red Clouds",
+      "plays": 70,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Ryan Caraveo",
+      "title": "Hate Me Now",
+      "plays": 70,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Asking Alexandria",
+      "title": "Alone in a Room",
+      "plays": 69,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "mother tongue",
+      "plays": 69,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "SOURDOUGHSTARTER",
+      "plays": 69,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Rain City Drive",
+      "title": "Dreams",
+      "plays": 69,
+      "genre": "Alternative Rock / Post-Hardcore"
+    },
+    {
+      "artist": "Jordyne",
+      "title": "Like A Drug",
+      "plays": 68,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Dance With the Dead",
+      "title": "Waves",
+      "plays": 67,
+      "genre": "Darksynth / Cyberpunk"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "nihilist blues",
+      "plays": 67,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "nothingnowhere.",
+      "title": "lights (4444)",
+      "plays": 67,
+      "genre": "Emo Rap / Alternative Pop"
+    },
+    {
+      "artist": "Slaves",
+      "title": "Talk to a friend",
+      "plays": 66,
+      "genre": "Post-Hardcore / R&B"
+    },
+    {
+      "artist": "The Story So Far",
+      "title": "Upside Down",
+      "plays": 66,
+      "genre": "Pop Punk / Emo"
+    },
+    {
+      "artist": "Nevertel",
+      "title": "Holding On",
+      "plays": 66,
+      "genre": "Alternative Rock / Rap Rock"
+    },
+    {
+      "artist": "Normandie",
+      "title": "White Flag",
+      "plays": 65,
+      "genre": "Alternative Rock / Post-Hardcore"
+    },
+    {
+      "artist": "Steve Aoki",
+      "title": "Kong 2.0",
+      "plays": 65,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "ERRA",
+      "title": "Alpha Seed",
+      "plays": 64,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Dayseeker",
+      "title": "Without Me",
+      "plays": 63,
+      "genre": "Post-Hardcore / Synth-Metal"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "BLINDSIDED",
+      "plays": 63,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Kiremi",
+      "title": "I NEVER COULD",
+      "plays": 62,
+      "genre": "Lo-Fi / Dream Pop"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Oh No",
+      "plays": 61,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Mooki",
+      "title": "תאונה בסלואו מושן",
+      "plays": 61,
+      "genre": "Israeli Pop"
+    },
+    {
+      "artist": "Kiremi",
+      "title": "OBLIVION",
+      "plays": 61,
+      "genre": "Lo-Fi / Dream Pop"
+    },
+    {
+      "artist": "Slaves",
+      "title": "Witch Hunt",
+      "plays": 60,
+      "genre": "Post-Hardcore / R&B"
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Radio Reject",
+      "plays": 60,
+      "genre": "Pop Punk / Emo Pop"
+    },
+    {
+      "artist": "CVLTE",
+      "title": "needed you.",
+      "plays": 59,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Don Vedda",
+      "title": "Talking Body",
+      "plays": 58,
+      "genre": "Alternative Rock / Indie"
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "LIVIN' LAUGHIN' LOVIN'",
+      "plays": 58,
+      "genre": "Emo Groove / Alt-Metal"
+    },
+    {
+      "artist": "Machine Gun Kelly",
+      "title": "Candy",
+      "plays": 57,
+      "genre": "Pop Punk / Emo Rap"
+    },
+    {
+      "artist": "Odeon",
+      "title": "dream",
+      "plays": 57,
+      "genre": "Post-Hardcore / Electronic"
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Misfits",
+      "plays": 57,
+      "genre": "Pop Punk / Emo Pop"
+    },
+    {
+      "artist": "Juice WRLD",
+      "title": "Misfit",
+      "plays": 57,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Myrath",
+      "title": "Believer",
+      "plays": 56,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Lament for Wasps",
+      "plays": 56,
+      "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "OddKidOut",
+      "title": "HOLLYWOOD HEARTBREAK",
+      "plays": 56,
+      "genre": "Alternative"
+    },
+    {
+      "artist": "H.E.A.T",
+      "title": "A Shot At Redemption",
+      "plays": 55,
+      "genre": "Hard Rock / AOR"
+    },
+    {
+      "artist": "The Word Alive",
+      "title": "Why Am I Like This?",
+      "plays": 54,
+      "genre": "Metalcore / Alternative"
+    }
+  ],
+  "top_albums": [
+    {
+      "artist": "Deafheaven",
+      "title": "Infinite Granite",
+      "plays": 728
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "amo",
+      "plays": 687
+    },
+    {
+      "artist": "Slaves",
+      "title": "To Better Days",
+      "plays": 594
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "That's the Spirit",
+      "plays": 444
+    },
+    {
+      "artist": "Nevertel",
+      "title": "everything in my mind",
+      "plays": 408
+    },
+    {
+      "artist": "The Word Alive",
+      "title": "Violent Noise",
+      "plays": 395
+    },
+    {
+      "artist": "Santa Cruz",
+      "title": "Bad Blood Rising",
+      "plays": 354
+    },
+    {
+      "artist": "Odeon",
+      "title": "game",
+      "plays": 331
+    },
+    {
+      "artist": "Carpenter Brut",
+      "title": "Trilogy",
+      "plays": 329
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "Rich Sips",
+      "plays": 329
+    },
+    {
+      "artist": "Emarosa",
+      "title": "Peach Club",
+      "plays": 318
+    },
+    {
+      "artist": "Holding Absence",
+      "title": "The Greatest Mistake of My Life",
+      "plays": 293
+    },
+    {
+      "artist": "The Story So Far",
+      "title": "Proper Dose",
+      "plays": 276
+    },
+    {
+      "artist": "The Midnight",
+      "title": "Endless Summer",
+      "plays": 270
+    },
+    {
+      "artist": "TesseracT",
+      "title": "Altered State",
+      "plays": 265
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "Ordinary Corrupt Human Love",
+      "plays": 262
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "AMERICAN MOTOR SPORTS (420CC EDITION)",
+      "plays": 235
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "The Places We'll Never Be",
+      "plays": 229
+    },
+    {
+      "artist": "היהודים",
+      "title": "Unplugged (Live)",
+      "plays": 222
+    },
+    {
+      "artist": "Omnium Gatherum",
+      "title": "The Burning Cold",
+      "plays": 216
+    },
+    {
+      "artist": "TesseracT",
+      "title": "Polaris",
+      "plays": 211
+    },
+    {
+      "artist": "Normandie",
+      "title": "Dark & Beautiful Secrets",
+      "plays": 210
+    },
+    {
+      "artist": "H.E.A.T",
+      "title": "Address The Nation",
+      "plays": 209
+    },
+    {
+      "artist": "Tokio Hotel",
+      "title": "Kings of Suburbia (Deluxe)",
+      "plays": 197
+    },
+    {
+      "artist": "Mooki",
+      "title": "מוקי ויוסלס איי.די",
+      "plays": 194
+    },
+    {
+      "artist": "Don Vedda",
+      "title": "Hell of a Night",
+      "plays": 186
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "Still Searching",
+      "plays": 185
+    },
+    {
+      "artist": "Blessthefall",
+      "title": "Hard Feelings",
+      "plays": 184
+    },
+    {
+      "artist": "Roosevelt",
+      "title": "Young Romance",
+      "plays": 173
+    },
+    {
+      "artist": "Jordyne",
+      "title": "Some Way",
+      "plays": 171
+    },
+    {
+      "artist": "Nightlife",
+      "title": "new low",
+      "plays": 166
+    },
+    {
+      "artist": "Dance With the Dead",
+      "title": "Near Dark",
+      "plays": 160
+    },
+    {
+      "artist": "Myrath",
+      "title": "Legacy",
+      "plays": 160
+    },
+    {
+      "artist": "Machine Gun Kelly",
+      "title": "Hotel Diablo",
+      "plays": 158
+    },
+    {
+      "artist": "Hammock",
+      "title": "Raising Your Voice... Trying to Stop an Echo (Deluxe Edition)",
+      "plays": 156
+    },
+    {
+      "artist": "Omnium Gatherum",
+      "title": "Beyond",
+      "plays": 154
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "American Motor Sports",
+      "plays": 153
+    },
+    {
+      "artist": "Hammock",
+      "title": "Everything and Nothing",
+      "plays": 151
+    },
+    {
+      "artist": "Teenage Wrist",
+      "title": "Earth Is A Black Hole",
+      "plays": 148
+    },
+    {
+      "artist": "ג'ירפות",
+      "title": "גג",
+      "plays": 147
+    },
+    {
+      "artist": "Entwine",
+      "title": "Chaotic Nation",
+      "plays": 146
+    },
+    {
+      "artist": "Jonny Craig",
+      "title": "Find Your Home",
+      "plays": 143
+    },
+    {
+      "artist": "Crazy Lixx",
+      "title": "New Religion",
+      "plays": 141
+    },
+    {
+      "artist": "Rain City Drive",
+      "title": "To Better Days",
+      "plays": 137
+    },
+    {
+      "artist": "Santa Cruz",
+      "title": "Santa Cruz",
+      "plays": 131
+    },
+    {
+      "artist": "nothingnowhere.",
+      "title": "Trauma Factory",
+      "plays": 131
+    },
+    {
+      "artist": "Louta",
+      "title": "UN INSTANTE",
+      "plays": 131
+    },
+    {
+      "artist": "Emarosa",
+      "title": "131",
+      "plays": 130
+    },
+    {
+      "artist": "Annihilator",
+      "title": "Feast",
+      "plays": 130
+    },
+    {
+      "artist": "Crown the Empire",
+      "title": "07102010",
+      "plays": 128
+    },
+    {
+      "artist": "Drake",
+      "title": "For All the Dogs",
+      "plays": 127
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Tokyo",
+      "plays": 125
+    },
+    {
+      "artist": "Dance With the Dead",
+      "title": "B-Sides: Vol. 1",
+      "plays": 124
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Baku's Revenge",
+      "plays": 121
+    },
+    {
+      "artist": "Thirty Seconds to Mars",
+      "title": "America",
+      "plays": 120
+    },
+    {
+      "artist": "FM-84",
+      "title": "Atlas",
+      "plays": 119
+    },
+    {
+      "artist": "Treat",
+      "title": "Ghost of Graceland",
+      "plays": 116
+    },
+    {
+      "artist": "Perturbator",
+      "title": "The Uncanny Valley",
+      "plays": 115
+    },
+    {
+      "artist": "Tokio Hotel",
+      "title": "Kings of Suburbia",
+      "plays": 115
+    },
+    {
+      "artist": "Corbin Karasu",
+      "title": "The Journey",
+      "plays": 114
+    },
+    {
+      "artist": "Magnolia Park",
+      "title": "Halloween Mixtape II",
+      "plays": 113
+    },
+    {
+      "artist": "Issues",
+      "title": "Beautiful Oblivion",
+      "plays": 112
+    },
+    {
+      "artist": "Slaves",
+      "title": "Revision",
+      "plays": 112
+    },
+    {
+      "artist": "Acres",
+      "title": "Burning Throne",
+      "plays": 112
+    },
+    {
+      "artist": "Som",
+      "title": "The Shape of Everything",
+      "plays": 111
+    },
+    {
+      "artist": "Naits",
+      "title": "lonely road",
+      "plays": 110
+    },
+    {
+      "artist": "Machine Gun Kelly",
+      "title": "Tickets to My Downfall",
+      "plays": 109
+    },
+    {
+      "artist": "Myrath",
+      "title": "Tales of the Sands",
+      "plays": 108
+    },
+    {
+      "artist": "Sweezy",
+      "title": "Falling In Love",
+      "plays": 108
+    },
+    {
+      "artist": "Indighxst",
+      "title": "Lace",
+      "plays": 107
+    },
+    {
+      "artist": "Neck Deep",
+      "title": "The Peace and the Panic",
+      "plays": 106
+    },
+    {
+      "artist": "ERRA",
+      "title": "Augment",
+      "plays": 105
+    },
+    {
+      "artist": "Rami Kleinstein",
+      "title": "אהביני",
+      "plays": 100
+    },
+    {
+      "artist": "Blackfield",
+      "title": "Blackfield",
+      "plays": 98
+    },
+    {
+      "artist": "Dayseeker",
+      "title": "Dark Sun",
+      "plays": 97
+    },
+    {
+      "artist": "Nevertel",
+      "title": "Reimagined",
+      "plays": 97
+    },
+    {
+      "artist": "Def Leppard",
+      "title": "Def Leppard",
+      "plays": 96
+    },
+    {
+      "artist": "The Word Alive",
+      "title": "MONOMANIA",
+      "plays": 96
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Sempiternal (Deluxe)",
+      "plays": 94
+    },
+    {
+      "artist": "Skid Row",
+      "title": "Slave to the Grind",
+      "plays": 93
+    },
+    {
+      "artist": "Volumes",
+      "title": "Happier?",
+      "plays": 91
+    },
+    {
+      "artist": "Scar Symmetry",
+      "title": "The Singularity (Phase I - Neohumanity)",
+      "plays": 89
+    },
+    {
+      "artist": "Ollie Joseph",
+      "title": "Sweatshirt",
+      "plays": 89
+    },
+    {
+      "artist": "H.E.A.T",
+      "title": "Tearing Down the Walls",
+      "plays": 88
+    },
+    {
+      "artist": "boy pablo",
+      "title": "Soy Pablo",
+      "plays": 88
+    },
+    {
+      "artist": "Landon Tewers",
+      "title": "Sink With Me",
+      "plays": 88
+    },
+    {
+      "artist": "Hot Milk",
+      "title": "A Call To The Void",
+      "plays": 88
+    },
+    {
+      "artist": "thekidszn",
+      "title": "PROUD OF ME",
+      "plays": 87
+    },
+    {
+      "artist": "TesseracT",
+      "title": "Sonder",
+      "plays": 86
+    },
+    {
+      "artist": "Atzmus",
+      "title": "No Hay Mundo Sin Amor",
+      "plays": 85
+    },
+    {
+      "artist": "Holding Absence",
+      "title": "Gravity",
+      "plays": 85
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Live At The Royal Albert Hall",
+      "plays": 85
+    },
+    {
+      "artist": "Deafheaven",
+      "title": "In Blur",
+      "plays": 85
+    },
+    {
+      "artist": "Unprocessed",
+      "title": "Gold",
+      "plays": 84
+    },
+    {
+      "artist": "Alcest",
+      "title": "Kodama (Deluxe edition)",
+      "plays": 83
+    },
+    {
+      "artist": "44phantom",
+      "title": "hurricane",
+      "plays": 83
+    },
+    {
+      "artist": "Silverstein",
+      "title": "Dead Reflection",
+      "plays": 82
+    },
+    {
+      "artist": "Normandie",
+      "title": "White Flag",
+      "plays": 82
+    },
+    {
+      "artist": "Machine Gun Kelly",
+      "title": "mainstream sellout",
+      "plays": 82
+    },
+    {
+      "artist": "Bilmuri",
+      "title": "2016 CAVALIERS (Ohio) (feat. Knox)",
+      "plays": 81
+    }
+  ],
+  "top_genres": [
+    {
+      "name": "Alternative / Miscellaneous",
+      "plays": 30915
+    },
+    {
+      "name": "Metalcore / Alternative",
+      "plays": 2449
+    },
+    {
+      "name": "Blackgaze / Post-Metal",
+      "plays": 1194
+    },
+    {
+      "name": "Emo Groove / Alt-Metal",
+      "plays": 1096
+    },
+    {
+      "name": "Alternative Rock / Post-Hardcore",
+      "plays": 1013
+    },
+    {
+      "name": "Alternative Rock / Rap Rock",
+      "plays": 798
+    },
+    {
+      "name": "Darksynth / Cyberpunk",
+      "plays": 793
+    },
+    {
+      "name": "Post-Hardcore / R&B",
+      "plays": 780
+    },
+    {
+      "name": "Post-Hardcore / Soul",
+      "plays": 776
+    },
+    {
+      "name": "Progressive Metal / Djent",
+      "plays": 695
+    },
+    {
+      "name": "Hard Rock / Glam Metal",
+      "plays": 631
+    },
+    {
+      "name": "Post-Hardcore / Electronic",
+      "plays": 621
+    },
+    {
+      "name": "Synthwave / Dreampop",
+      "plays": 601
+    },
+    {
+      "name": "Pop Rock / Post-Hardcore",
+      "plays": 595
+    },
+    {
+      "name": "Post-Hardcore / Emo",
+      "plays": 540
+    },
+    {
+      "name": "Pop Punk / Emo Pop",
+      "plays": 525
+    },
+    {
+      "name": "Pop Punk / Emo Rap",
+      "plays": 511
+    },
+    {
+      "name": "Emo Rap / Alternative Pop",
+      "plays": 450
+    },
+    {
+      "name": "Melodic Death Metal",
+      "plays": 427
+    },
+    {
+      "name": "Post-Metal / Shoegaze",
+      "plays": 421
+    },
+    {
+      "name": "Alternative Rock / Indie",
+      "plays": 416
+    },
+    {
+      "name": "Ambient / Contemplative",
+      "plays": 414
+    },
+    {
+      "name": "Pop Rock / Nostalgia",
+      "plays": 397
+    },
+    {
+      "name": "Hard Rock / AOR",
+      "plays": 382
+    },
+    {
+      "name": "Occult Rock / Heavy Metal",
+      "plays": 371
+    },
+    {
+      "name": "Israeli Rock / Metal",
+      "plays": 350
+    },
+    {
+      "name": "Pop Punk / Emo",
+      "plays": 318
+    },
+    {
+      "name": "Post-Hardcore / Synth-Metal",
+      "plays": 255
+    },
+    {
+      "name": "Lo-Fi / Dream Pop",
+      "plays": 252
+    },
+    {
+      "name": "Melodic Trap / Emo Rap",
+      "plays": 205
+    },
+    {
+      "name": "Israeli Pop",
+      "plays": 201
+    },
+    {
+      "name": "Indie Pop / Synth-Pop",
+      "plays": 121
+    },
+    {
+      "name": "Lo-Fi / R&B",
+      "plays": 114
+    },
+    {
+      "name": "Progressive Metal / Math Rock",
+      "plays": 111
+    },
+    {
+      "name": "Atmospheric Black Metal",
+      "plays": 109
+    },
+    {
+      "name": "Alternative Metal / Synthcore",
+      "plays": 75
+    },
+    {
+      "name": "Dream Pop / Shoegaze",
+      "plays": 63
+    },
+    {
+      "name": "Alternative Hip Hop / Indie Pop",
+      "plays": 61
+    },
+    {
+      "name": "Future Bass / Melodic EDM",
+      "plays": 50
+    },
+    {
+      "name": "Alternative Pop / R&B",
+      "plays": 49
+    },
+    {
+      "name": "Indie Pop / Dance-Punk",
+      "plays": 49
+    },
+    {
+      "name": "Pop Punk / Alternative Pop",
+      "plays": 44
+    },
+    {
+      "name": "Alternative Hip Hop / Rap",
+      "plays": 38
+    },
+    {
+      "name": "Alternative Metal / Nu-Metalcore",
+      "plays": 38
+    },
+    {
+      "name": "Pop Rap / Melodic Rap",
+      "plays": 33
+    },
+    {
+      "name": "Latin Trap / Reggaeton",
+      "plays": 29
+    },
+    {
+      "name": "Indie Pop / Cinematic",
+      "plays": 26
+    },
+    {
+      "name": "Pop Rap",
+      "plays": 25
+    },
+    {
+      "name": "Indie Pop / Psych-Pop",
+      "plays": 13
+    },
+    {
+      "name": "Phonk / Melodic Trap",
+      "plays": 9
+    }
+  ],
+  "yearly_eras": [
+    {
+      "year": 2015,
+      "plays": 2838,
+      "unique_artists": 393,
+      "unique_tracks": 1166,
+      "top_artist": "Carpenter Brut",
+      "top_track": "Le Perv",
+      "dominant_daypart": "Noche 18-23",
+      "era_label": "Era Darksynth & Metal Prog",
+      "era_desc": "Synthwave oscuro, metal técnico, Carpenter Brut y descubrimientos progresivos.",
+      "diversity_index": 41.1
+    },
+    {
+      "year": 2016,
+      "plays": 3935,
+      "unique_artists": 552,
+      "unique_tracks": 1528,
+      "top_artist": "H.E.A.T",
+      "top_track": "Love Who Loves You Back",
+      "dominant_daypart": "Tarde 12-17",
+      "era_label": "Era Neon Glam & Melodías",
+      "era_desc": "H.E.A.T, Tokio Hotel, vibras synthwave nocturnas y estéticas melódicas.",
+      "diversity_index": 38.8
+    },
+    {
+      "year": 2017,
+      "plays": 2896,
+      "unique_artists": 476,
+      "unique_tracks": 1266,
+      "top_artist": "Ghost",
+      "top_track": "Vampires",
+      "dominant_daypart": "Tarde 12-17",
+      "era_label": "Era Atmósferas Ocultas",
+      "era_desc": "Ghost, The Midnight, mística rock, misterio y sonidos cinematográficos.",
+      "diversity_index": 43.7
+    },
+    {
+      "year": 2018,
+      "plays": 5327,
+      "unique_artists": 676,
+      "unique_tracks": 2169,
+      "top_artist": "Santa Cruz",
+      "top_track": "Drag Me Out of the Darkness",
+      "dominant_daypart": "Tarde 12-17",
+      "era_label": "Era Rock Israelí & Hard Rock",
+      "era_desc": "Santa Cruz, rock local e integración en nuevas escenas vitales.",
+      "diversity_index": 40.7
+    },
+    {
+      "year": 2019,
+      "plays": 2426,
+      "unique_artists": 424,
+      "unique_tracks": 1097,
+      "top_artist": "The Word Alive",
+      "top_track": "Red Clouds",
+      "dominant_daypart": "Tarde 12-17",
+      "era_label": "Era Catarsis Post-Hardcore",
+      "era_desc": "The Word Alive, Emarosa, voz vulnerable y búsquedas emocionales profundas.",
+      "diversity_index": 45.2
+    },
+    {
+      "year": 2020,
+      "plays": 3164,
+      "unique_artists": 328,
+      "unique_tracks": 844,
+      "top_artist": "Bring Me the Horizon",
+      "top_track": "THICC THICCLY",
+      "dominant_daypart": "Noche 18-23",
+      "era_label": "Era Caos Divertido & BMTH",
+      "era_desc": "Bring Me the Horizon, Bilmuri, mezcla de pop, metal y catarsis en pandemia.",
+      "diversity_index": 26.7
+    },
+    {
+      "year": 2021,
+      "plays": 7275,
+      "unique_artists": 610,
+      "unique_tracks": 1755,
+      "top_artist": "Slaves",
+      "top_track": "In Blur",
+      "dominant_daypart": "Tarde 12-17",
+      "era_label": "Era Blackgaze Luminoso",
+      "era_desc": "Slaves, Deafheaven, Alcest, fusión gigante de post-hardcore y guitarras celestiales.",
+      "diversity_index": 24.1
+    },
+    {
+      "year": 2022,
+      "plays": 6958,
+      "unique_artists": 804,
+      "unique_tracks": 1799,
+      "top_artist": "Deafheaven",
+      "top_track": "In Blur",
+      "dominant_daypart": "Mañana 06-11",
+      "era_label": "Era Deafheaven & Emo-Pop",
+      "era_desc": "Deafheaven (In Blur), melancolía intensa y nostalgia activa en las mañanas.",
+      "diversity_index": 25.9
+    },
+    {
+      "year": 2023,
+      "plays": 5461,
+      "unique_artists": 787,
+      "unique_tracks": 1238,
+      "top_artist": "Magnolia Park",
+      "top_track": "Tokyo",
+      "dominant_daypart": "Mañana 06-11",
+      "era_label": "Era Alt-Moderno & Pop-Punk",
+      "era_desc": "Nevertel, Magnolia Park, pop-punk digital y rap-rock enérgico.",
+      "diversity_index": 22.7
+    },
+    {
+      "year": 2024,
+      "plays": 2510,
+      "unique_artists": 279,
+      "unique_tracks": 460,
+      "top_artist": "Bilmuri",
+      "top_track": "The Journey",
+      "dominant_daypart": "Mañana 06-11",
+      "era_label": "Era Groove Emocional",
+      "era_desc": "Bilmuri, Corbin Karasu, groove reconstructivo y madurez musical.",
+      "diversity_index": 18.3
+    },
+    {
+      "year": 2025,
+      "plays": 4544,
+      "unique_artists": 607,
+      "unique_tracks": 1439,
+      "top_artist": "nothingnowhere.",
+      "top_track": "Old Love / New Love",
+      "dominant_daypart": "Mañana 06-11",
+      "era_label": "Era Emo Rap & Recuperación",
+      "era_desc": "nothingnowhere., introspección lírica profunda y reconstrucción artística.",
+      "diversity_index": 31.7
+    },
+    {
+      "year": 2026,
+      "plays": 3142,
+      "unique_artists": 469,
+      "unique_tracks": 1024,
+      "top_artist": "The Kid LAROI",
+      "top_track": "Glimmer",
+      "dominant_daypart": "Mañana 06-11",
+      "era_label": "Era Energía & Dopamina Moderna",
+      "era_desc": "The Kid LAROI, rap-pop alternativo, sonidos modernos de alta energía.",
+      "diversity_index": 32.6
+    }
+  ],
+  "sessions": [
+    {
+      "id": 5440,
+      "start": "2025-09-29T17:55:00Z",
+      "end": "2025-09-30T07:03:00Z",
+      "tracks_count": 253,
+      "duration_min": 791.5,
+      "top_artist": "nothingnowhere.",
+      "top_track": "fake friend",
+      "unique_artists": 17
+    },
+    {
+      "id": 5512,
+      "start": "2025-12-02T05:03:00Z",
+      "end": "2025-12-02T14:56:00Z",
+      "tracks_count": 217,
+      "duration_min": 596.5,
+      "top_artist": "Aries",
+      "top_track": "EASY",
+      "unique_artists": 49
+    },
+    {
+      "id": 5731,
+      "start": "2026-04-30T04:02:00Z",
+      "end": "2026-04-30T13:33:00Z",
+      "tracks_count": 179,
+      "duration_min": 574.5,
+      "top_artist": "Dayseeker",
+      "top_track": "Old Love / New Love",
+      "unique_artists": 122
+    },
+    {
+      "id": 5737,
+      "start": "2026-05-04T04:01:00Z",
+      "end": "2026-05-04T11:54:00Z",
+      "tracks_count": 136,
+      "duration_min": 476.5,
+      "top_artist": "Bilmuri",
+      "top_track": "Stay",
+      "unique_artists": 36
+    },
+    {
+      "id": 3905,
+      "start": "2022-08-29T05:18:00Z",
+      "end": "2022-08-29T16:29:00Z",
+      "tracks_count": 135,
+      "duration_min": 674.5,
+      "top_artist": "Odeon",
+      "top_track": "loop",
+      "unique_artists": 32
+    },
+    {
+      "id": 5727,
+      "start": "2026-04-26T04:02:00Z",
+      "end": "2026-04-26T10:30:00Z",
+      "tracks_count": 120,
+      "duration_min": 391.5,
+      "top_artist": "Kiremi",
+      "top_track": "twisted",
+      "unique_artists": 53
+    },
+    {
+      "id": 4042,
+      "start": "2022-11-13T21:05:00Z",
+      "end": "2022-11-14T03:40:00Z",
+      "tracks_count": 119,
+      "duration_min": 398.5,
+      "top_artist": "Hammock",
+      "top_track": "Closure 432 hz",
+      "unique_artists": 100
+    },
+    {
+      "id": 5499,
+      "start": "2025-11-20T05:01:00Z",
+      "end": "2025-11-20T10:50:00Z",
+      "tracks_count": 115,
+      "duration_min": 352.5,
+      "top_artist": "Diversify",
+      "top_track": "I LIED",
+      "unique_artists": 77
+    },
+    {
+      "id": 4439,
+      "start": "2023-03-30T04:06:00Z",
+      "end": "2023-03-30T11:07:00Z",
+      "tracks_count": 114,
+      "duration_min": 424.5,
+      "top_artist": "All Time Low",
+      "top_track": "Sleepwalking",
+      "unique_artists": 56
+    },
+    {
+      "id": 3885,
+      "start": "2022-08-18T20:07:00Z",
+      "end": "2022-08-19T03:18:00Z",
+      "tracks_count": 106,
+      "duration_min": 434.5,
+      "top_artist": "Machine Gun Kelly",
+      "top_track": "maybe",
+      "unique_artists": 26
+    },
+    {
+      "id": 4567,
+      "start": "2023-05-24T03:00:00Z",
+      "end": "2023-05-24T05:39:00Z",
+      "tracks_count": 98,
+      "duration_min": 162.5,
+      "top_artist": "Magnolia Park",
+      "top_track": "love or chemistry",
+      "unique_artists": 37
+    },
+    {
+      "id": 2254,
+      "start": "2020-01-29T20:22:00Z",
+      "end": "2020-01-29T21:26:00Z",
+      "tracks_count": 91,
+      "duration_min": 67.5,
+      "top_artist": "TesseracT",
+      "top_track": "Orbital",
+      "unique_artists": 11
+    },
+    {
+      "id": 3282,
+      "start": "2021-10-18T05:57:00Z",
+      "end": "2021-10-18T13:35:00Z",
+      "tracks_count": 91,
+      "duration_min": 461.5,
+      "top_artist": "Normandie",
+      "top_track": "White Flag",
+      "unique_artists": 6
+    },
+    {
+      "id": 5509,
+      "start": "2025-11-30T19:35:00Z",
+      "end": "2025-11-30T23:50:00Z",
+      "tracks_count": 89,
+      "duration_min": 258.5,
+      "top_artist": "SMBDY ELSE",
+      "top_track": "outta my dms",
+      "unique_artists": 44
+    },
+    {
+      "id": 4160,
+      "start": "2022-12-19T13:17:00Z",
+      "end": "2022-12-19T18:14:00Z",
+      "tracks_count": 85,
+      "duration_min": 300.5,
+      "top_artist": "Unprocessed",
+      "top_track": "Dancing Demons",
+      "unique_artists": 42
+    },
+    {
+      "id": 3953,
+      "start": "2022-09-18T05:57:00Z",
+      "end": "2022-09-18T14:01:00Z",
+      "tracks_count": 81,
+      "duration_min": 487.5,
+      "top_artist": "Odeon",
+      "top_track": "loop",
+      "unique_artists": 17
+    },
+    {
+      "id": 2729,
+      "start": "2021-02-05T16:53:00Z",
+      "end": "2021-02-06T01:12:00Z",
+      "tracks_count": 80,
+      "duration_min": 502.5,
+      "top_artist": "Blut aus Nord",
+      "top_track": "Anthosmos",
+      "unique_artists": 8
+    },
+    {
+      "id": 3883,
+      "start": "2022-08-18T09:56:00Z",
+      "end": "2022-08-18T15:24:00Z",
+      "tracks_count": 80,
+      "duration_min": 331.5,
+      "top_artist": "Machine Gun Kelly",
+      "top_track": "Candy",
+      "unique_artists": 18
+    },
+    {
+      "id": 5823,
+      "start": "2026-06-10T04:00:00Z",
+      "end": "2026-06-10T08:06:00Z",
+      "tracks_count": 79,
+      "duration_min": 249.5,
+      "top_artist": "The Kid LAROI",
+      "top_track": "Comedown",
+      "unique_artists": 42
+    },
+    {
+      "id": 4068,
+      "start": "2022-11-24T06:42:00Z",
+      "end": "2022-11-24T12:37:00Z",
+      "tracks_count": 77,
+      "duration_min": 358.5,
+      "top_artist": "Bad Bunny",
+      "top_track": "DÁKITI",
+      "unique_artists": 45
+    }
+  ],
+  "obsessions": [
+    {
+      "artist": "TesseracT",
+      "track": "Tender - RADAR O.S.T",
+      "date": "2025-10-30",
+      "count": 21
+    },
+    {
+      "artist": "Steve Aoki",
+      "track": "Kong 2.0",
+      "date": "2022-11-30",
+      "count": 17
+    },
+    {
+      "artist": "Indighxst",
+      "track": "Lace",
+      "date": "2023-04-06",
+      "count": 17
+    },
+    {
+      "artist": "Magnolia Park",
+      "track": "Tokyo",
+      "date": "2023-02-16",
+      "count": 16
+    },
+    {
+      "artist": "Jonny Craig",
+      "track": "Going Under",
+      "date": "2021-06-10",
+      "count": 15
+    },
+    {
+      "artist": "Loyals",
+      "track": "Hold On",
+      "date": "2021-07-22",
+      "count": 15
+    },
+    {
+      "artist": "Dance Gavin Dance",
+      "track": "Calentamiento Global",
+      "date": "2020-07-03",
+      "count": 14
+    },
+    {
+      "artist": "Sebastian Gampl",
+      "track": "Under Control",
+      "date": "2017-01-03",
+      "count": 13
+    },
+    {
+      "artist": "Santa Cruz",
+      "track": "Drag Me Out of the Darkness",
+      "date": "2018-04-27",
+      "count": 13
+    },
+    {
+      "artist": "Jonny Craig",
+      "track": "ON God.",
+      "date": "2021-05-10",
+      "count": 13
+    },
+    {
+      "artist": "Jonny Craig",
+      "track": "Sadness",
+      "date": "2021-06-10",
+      "count": 13
+    },
+    {
+      "artist": "Slaves",
+      "track": "Cutting It Close",
+      "date": "2021-11-16",
+      "count": 13
+    },
+    {
+      "artist": "Odeon",
+      "track": "dream",
+      "date": "2022-08-31",
+      "count": 13
+    },
+    {
+      "artist": "Emarosa",
+      "track": "Porcelain",
+      "date": "2016-11-26",
+      "count": 12
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "track": "MANTRA",
+      "date": "2018-08-23",
+      "count": 12
+    },
+    {
+      "artist": "Too Close to Touch",
+      "track": "F.I.N.E.",
+      "date": "2021-02-23",
+      "count": 12
+    },
+    {
+      "artist": "Landon Tewers",
+      "track": "Say It Ain't So",
+      "date": "2021-04-06",
+      "count": 12
+    },
+    {
+      "artist": "Heavy eyes",
+      "track": "Bad",
+      "date": "2021-07-20",
+      "count": 12
+    },
+    {
+      "artist": "All Time Low",
+      "track": "Sleepwalking",
+      "date": "2023-03-30",
+      "count": 12
+    },
+    {
+      "artist": "Odeon",
+      "track": "loop",
+      "date": "2022-09-18",
+      "count": 11
+    },
+    {
+      "artist": "44phantom",
+      "track": "hurricane",
+      "date": "2023-02-28",
+      "count": 11
+    },
+    {
+      "artist": "Acres",
+      "track": "Into Flames",
+      "date": "2023-03-28",
+      "count": 11
+    },
+    {
+      "artist": "Tokio Hotel",
+      "track": "Love Who Loves You Back",
+      "date": "2016-11-25",
+      "count": 10
+    },
+    {
+      "artist": "Tokio Hotel",
+      "track": "Love Who Loves You Back",
+      "date": "2016-12-07",
+      "count": 10
+    },
+    {
+      "artist": "Sebastian Gampl",
+      "track": "One On One",
+      "date": "2017-01-03",
+      "count": 10
+    },
+    {
+      "artist": "Santa Cruz",
+      "track": "Breathe",
+      "date": "2018-04-27",
+      "count": 10
+    },
+    {
+      "artist": "Bilmuri",
+      "track": "SOURDOUGHSTARTER",
+      "date": "2020-05-07",
+      "count": 10
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "track": "Parasite Eve",
+      "date": "2020-06-26",
+      "count": 10
+    },
+    {
+      "artist": "Crown the Empire",
+      "track": "blurry (out of place)",
+      "date": "2021-03-17",
+      "count": 10
+    },
+    {
+      "artist": "Jonny Craig",
+      "track": "ON God.",
+      "date": "2021-06-10",
+      "count": 10
+    },
+    {
+      "artist": "Deafheaven",
+      "track": "In Blur",
+      "date": "2021-11-25",
+      "count": 10
+    },
+    {
+      "artist": "The Story So Far",
+      "track": "If I Fall",
+      "date": "2022-04-15",
+      "count": 10
+    },
+    {
+      "artist": "Magnolia Park",
+      "track": "Tokyo",
+      "date": "2023-02-28",
+      "count": 10
+    },
+    {
+      "artist": "Bad Omens",
+      "track": "Impose",
+      "date": "2026-05-06",
+      "count": 10
+    },
+    {
+      "artist": "Helloween",
+      "track": "I Want Out",
+      "date": "2016-05-14",
+      "count": 9
+    },
+    {
+      "artist": "Abel Korzeniowski",
+      "track": "Table For Two",
+      "date": "2016-12-20",
+      "count": 9
+    },
+    {
+      "artist": "Asking Alexandria",
+      "track": "Alone In A Room",
+      "date": "2018-11-09",
+      "count": 9
+    },
+    {
+      "artist": "Emarosa",
+      "track": "Ready To Love",
+      "date": "2020-09-29",
+      "count": 9
+    },
+    {
+      "artist": "Slaves",
+      "track": "Prayers",
+      "date": "2021-02-13",
+      "count": 9
+    },
+    {
+      "artist": "Jonny Craig",
+      "track": "Going Under",
+      "date": "2021-06-09",
+      "count": 9
+    },
+    {
+      "artist": "Hurtwave",
+      "track": "New Year's Eve",
+      "date": "2021-06-27",
+      "count": 9
+    },
+    {
+      "artist": "Normandie",
+      "track": "Chemicals (Acoustic Version)",
+      "date": "2021-10-18",
+      "count": 9
+    },
+    {
+      "artist": "Halocene",
+      "track": "Devil Inside Me",
+      "date": "2021-11-14",
+      "count": 9
+    },
+    {
+      "artist": "Slaves",
+      "track": "Cutting It Close",
+      "date": "2021-11-21",
+      "count": 9
+    },
+    {
+      "artist": "Deafheaven",
+      "track": "In Blur",
+      "date": "2021-11-30",
+      "count": 9
+    },
+    {
+      "artist": "Deafheaven",
+      "track": "In Blur",
+      "date": "2021-12-15",
+      "count": 9
+    },
+    {
+      "artist": "The Story So Far",
+      "track": "Need to Know",
+      "date": "2022-04-15",
+      "count": 9
+    },
+    {
+      "artist": "French Montana",
+      "track": "Unforgettable",
+      "date": "2022-11-14",
+      "count": 9
+    },
+    {
+      "artist": "Chicocurlyhead",
+      "track": "Modelo",
+      "date": "2022-11-30",
+      "count": 9
+    },
+    {
+      "artist": "Magnolia Park",
+      "track": "Radio Reject",
+      "date": "2023-02-28",
+      "count": 9
+    }
+  ],
+  "countries": [
+    {
+      "country": "United States",
+      "plays": 42221
+    },
+    {
+      "country": "United Kingdom",
+      "plays": 3143
+    },
+    {
+      "country": "Sweden",
+      "plays": 2005
+    },
+    {
+      "country": "Finland",
+      "plays": 1058
+    },
+    {
+      "country": "France",
+      "plays": 943
+    },
+    {
+      "country": "Israel",
+      "plays": 555
+    },
+    {
+      "country": "Germany",
+      "plays": 509
+    },
+    {
+      "country": "Puerto Rico",
+      "plays": 29
+    },
+    {
+      "country": "New Zealand",
+      "plays": 9
+    },
+    {
+      "country": "Norway",
+      "plays": 2
+    },
+    {
+      "country": "Canada",
+      "plays": 2
+    }
+  ],
+  "heatmap": [
+    [
+      94,
+      136,
+      94,
+      109,
+      80,
+      55,
+      101
+    ],
+    [
+      98,
+      82,
+      56,
+      122,
+      64,
+      87,
+      59
+    ],
+    [
+      98,
+      80,
+      58,
+      88,
+      56,
+      72,
+      48
+    ],
+    [
+      110,
+      219,
+      169,
+      148,
+      111,
+      124,
+      83
+    ],
+    [
+      282,
+      362,
+      417,
+      336,
+      208,
+      108,
+      377
+    ],
+    [
+      368,
+      450,
+      567,
+      464,
+      273,
+      138,
+      612
+    ],
+    [
+      443,
+      408,
+      453,
+      433,
+      343,
+      135,
+      545
+    ],
+    [
+      355,
+      266,
+      375,
+      426,
+      208,
+      151,
+      375
+    ],
+    [
+      527,
+      420,
+      465,
+      438,
+      287,
+      229,
+      394
+    ],
+    [
+      511,
+      489,
+      397,
+      479,
+      300,
+      257,
+      444
+    ],
+    [
+      424,
+      492,
+      504,
+      533,
+      286,
+      265,
+      574
+    ],
+    [
+      507,
+      493,
+      453,
+      590,
+      375,
+      231,
+      615
+    ],
+    [
+      647,
+      728,
+      558,
+      474,
+      421,
+      290,
+      488
+    ],
+    [
+      483,
+      504,
+      490,
+      411,
+      468,
+      278,
+      341
+    ],
+    [
+      403,
+      400,
+      380,
+      446,
+      466,
+      429,
+      414
+    ],
+    [
+      369,
+      367,
+      355,
+      392,
+      363,
+      379,
+      383
+    ],
+    [
+      305,
+      229,
+      404,
+      198,
+      499,
+      406,
+      321
+    ],
+    [
+      314,
+      252,
+      369,
+      241,
+      355,
+      309,
+      420
+    ],
+    [
+      293,
+      283,
+      367,
+      272,
+      320,
+      330,
+      280
+    ],
+    [
+      321,
+      228,
+      263,
+      258,
+      224,
+      371,
+      198
+    ],
+    [
+      207,
+      176,
+      320,
+      237,
+      245,
+      313,
+      233
+    ],
+    [
+      151,
+      111,
+      193,
+      231,
+      195,
+      217,
+      245
+    ],
+    [
+      197,
+      143,
+      92,
+      208,
+      171,
+      161,
+      171
+    ],
+    [
+      136,
+      148,
+      123,
+      134,
+      129,
+      145,
+      129
+    ]
+  ],
+  "personality_matrix": {
+    "sensibilidad_emocional": {
+      "score": 92,
+      "evidence": "Gran presencia de Deafheaven (In Blur, Honeycomb) y Alcest. Letras nostálgicas.",
+      "artists": [
+        "Deafheaven",
+        "Alcest",
+        "Holding Absence"
+      ],
+      "positive": "Alta empatía, conexión artística profunda y riqueza emocional.",
+      "shadow": "Tendencia a rumiar sobre emociones tristes o melancólicas.",
+      "tip": "Usa la música melancólica de forma activa como catalizador creativo (escribir, pintar) en lugar de bucle pasivo."
+    },
+    "nostalgia": {
+      "score": 85,
+      "evidence": "Frecuencia de clásicos de Tokio Hotel, The Midnight (Vampires) y synthwave retro.",
+      "artists": [
+        "Tokio Hotel",
+        "The Midnight",
+        "Odeon"
+      ],
+      "positive": "Aprecio por la memoria histórica, las raíces y el valor estético del pasado.",
+      "shadow": "Quedarse anclado en épocas pasadas evitando la vivencia del presente.",
+      "tip": "Crea playlists de 'combustible futurista' que te impulsen hacia adelante."
+    },
+    "energia": {
+      "score": 78,
+      "evidence": "Mucha presencia de Hard Rock, Pop Punk y Emo Punk.",
+      "artists": [
+        "Santa Cruz",
+        "H.E.A.T",
+        "Magnolia Park"
+      ],
+      "positive": "Determinación, fuerza física y capacidad de motivación instantánea.",
+      "shadow": "Inquietud y sobreestimulación si se abusa del tempo rápido.",
+      "tip": "Utiliza el glam y pop-punk como cargador de dopamina en tus rutinas de ejercicio o mañana laboral."
+    },
+    "oscuridad_estetica": {
+      "score": 88,
+      "evidence": "Consumo de Carpenter Brut, Deafheaven y bandas góticas o de atmospheric black metal.",
+      "artists": [
+        "Carpenter Brut",
+        "Deafheaven",
+        "Ghost"
+      ],
+      "positive": "Atracción por lo dramático, lo épico y la belleza en lo no convencional.",
+      "shadow": "Aislamiento emocional o propensión a estados de melancolía severa.",
+      "tip": "Equilibra la música oscura con géneros de 'groove' y 'chill' como Bilmuri y Lo-Fi."
+    },
+    "creatividad": {
+      "score": 95,
+      "evidence": "Altísimo ratio de variedad (4,208 artistas únicos) combinado con géneros experimentales y prog.",
+      "artists": [
+        "Bilmuri",
+        "TesseracT",
+        "Unprocessed"
+      ],
+      "positive": "Mentalidad abierta, amor por la innovación sonora e inventiva técnica.",
+      "shadow": "Dificultad para mantener el enfoque en una sola cosa por hiperfijaciones cambiantes.",
+      "tip": "Crea música propia fusionando géneros contrastantes: el blackgaze con el synthwave nocturno."
+    },
+    "rebeldia": {
+      "score": 82,
+      "evidence": "Presencia de bandas de Post-Hardcore y Metalcore enojado.",
+      "artists": [
+        "Bring Me the Horizon",
+        "Slaves",
+        "The Word Alive"
+      ],
+      "positive": "Cuestionamiento del statu quo, empoderamiento personal y fuerza combativa.",
+      "shadow": "Irritabilidad o tensiones internas contenidas.",
+      "tip": "Usa la música ruidosa (BMTH) como catarsis controlada para liberar tensiones laborales o vitales."
+    },
+    "futurismo": {
+      "score": 90,
+      "evidence": "Presencia masiva de Synthwave, Darksynth y sonidos Cyberpunk.",
+      "artists": [
+        "The Midnight",
+        "Carpenter Brut",
+        "Dance With the Dead"
+      ],
+      "positive": "Pasión por la tecnología, el futuro, el diseño limpio y el escapismo de neón.",
+      "shadow": "Desconexión de la naturaleza y exceso de tiempo frente a pantallas.",
+      "tip": "Escucha Synthwave mientras programas o diseñas interfaces cyberpunk para tus proyectos."
+    }
+  },
+  "archetypes": [
+    {
+      "name": "El Explorador Melancólico",
+      "desc": "Buscador incansable de belleza en la tristeza, utiliza guitarras celestiales y atmósferas envolventes para viajar internamente.",
+      "artists": [
+        "Deafheaven",
+        "Alcest",
+        "Hammock"
+      ],
+      "tracks": [
+        "In Blur",
+        "Shellstar",
+        "Great Mass of Color"
+      ],
+      "color": "cyan",
+      "aesthetic": "Montañas brumosas iluminadas por una luna de neón azul.",
+      "strength": "Introspección profunda, resiliencia y empatía artística.",
+      "wound": "Miedo a la superficialidad, soledad recurrente.",
+      "advice": "Transforma esta introspección en narrativa de videojuegos o en diseño visual de interfaces."
+    },
+    {
+      "name": "El Guerrero Emocional",
+      "desc": "Usa el metalcore y el post-hardcore enérgico como escudo protector y canalizador de fuerza interna ante crisis vitales.",
+      "artists": [
+        "Bring Me the Horizon",
+        "The Word Alive",
+        "Slaves"
+      ],
+      "tracks": [
+        "MANTRA",
+        "Prayers",
+        "Red Clouds"
+      ],
+      "color": "pink",
+      "aesthetic": "Una ciudad futurista en llamas bajo una lluvia digital rosa.",
+      "strength": "Capacidad de renacimiento, catarsis emocional y poder de motivación.",
+      "wound": "Ansiedad reprimida, rabia acumulada.",
+      "advice": "Usa estas canciones al inicio del día laboral o en rutinas deportivas pesadas."
+    },
+    {
+      "name": "El Arquitecto Sonoro",
+      "desc": "Aprecia la complejidad matemática, los patrones rítmicos técnicos y las producciones progresivas limpias.",
+      "artists": [
+        "TesseracT",
+        "Unprocessed",
+        "Bilmuri"
+      ],
+      "tracks": [
+        "Of Matter - Proxy",
+        "Candyland",
+        "2016 CAVALIERS (Ohio)"
+      ],
+      "color": "violet",
+      "aesthetic": "Estructuras de cristal flotando en el vacío del espacio.",
+      "strength": "Atención al detalle, lógica estructural avanzada y curiosidad intelectual.",
+      "wound": "Sobrepensamiento crónico y perfeccionismo paralizante.",
+      "advice": "Escucha metal progresivo instrumental sin voces para programar con hiperenfoque."
+    },
+    {
+      "name": "El Romántico Oscuro",
+      "desc": "Conecta con la nostalgia retro, la estética nocturna de los 80s y las melodías de pop oscuro y sintetizadores.",
+      "artists": [
+        "The Midnight",
+        "Tokio Hotel",
+        "Emarosa"
+      ],
+      "tracks": [
+        "Vampires",
+        "Love Who Loves You Back",
+        "Givin' Up"
+      ],
+      "color": "purple",
+      "aesthetic": "Conducir un deportivo clásico por una autopista costera a medianoche.",
+      "strength": "Sensibilidad estética, pasión, conexión con el niño interior.",
+      "wound": "Melancolía por tiempos pasados o relaciones idealizadas.",
+      "advice": "Ideal para momentos creativos nocturnos o para relajarte antes de dormir."
+    }
+  ],
+  "artist_profile": {
+    "alias": "Lirioth Teltanion",
+    "sound": "Fusión de Blackgaze (guitarras shoegaze con batería rápida de metal), Synthwave Cyberpunk y voces limpias de Post-Hardcore con tintes de R&B. Un groove enérgico e introspectivo.",
+    "tempo": "110 - 140 BPM",
+    "influences": [
+      "Deafheaven",
+      "The Midnight",
+      "Bilmuri",
+      "Bring Me the Horizon"
+    ],
+    "aesthetic": "Glassmorphism futurista, ropa negra con detalles cian y rosa neón, interfaces holográficas, simbología de runas tecnológicas.",
+    "ep_concept": {
+      "title": "Neon Catarsis",
+      "description": "Un EP de 6 temas que narra una transición vital desde el aislamiento geográfico hasta la reconstrucción digital y emocional.",
+      "tracklist": [
+        "1. Autopista del Olvido (Intro Synth)",
+        "2. In Blur / Out Loud (feat. Deafheaven & Bilmuri)",
+        "3. Ruinas en Tel Aviv (Metalcore / Blackgaze)",
+        "4. Vampiros de Caracas (Synthwave Retro)",
+        "5. Loop Infinito (Post-Hardcore Emocional)",
+        "6. Renacer de Lirioth (Instrumental Outro)"
+      ]
+    },
+    "live_show": "Visuales reactivos en 3D (pantalla holográfica), luces en degradado azul y rosa, batería en vivo superpuesta a sintetizadores analógicos retro."
+  }
+}
