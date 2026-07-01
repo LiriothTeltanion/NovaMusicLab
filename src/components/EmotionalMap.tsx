@@ -9,9 +9,72 @@ interface EmotionalMapProps {
   data: MusicDnaData;
 }
 
+const EMOTION_DETAILS = {
+  melancolia: {
+    es: {
+      title: "Melancolía / Introspección",
+      desc: "Vibras shoegaze, post-metal atmosférico y trap emocional. La música sirve como un catalizador reflexivo para procesar heridas o transiciones de vida silenciosas.",
+      time: "Madrugada 00-05 y Noche 18-23",
+    },
+    en: {
+      title: "Melancholy / Introspection",
+      desc: "Shoegaze vibes, atmospheric post-metal, and emotional trap. Music works as a reflective catalyst for processing wounds or quiet life transitions.",
+      time: "Late night 00-05 and Evening 18-23",
+    },
+    artists: ["Deafheaven", "Alcest", "nothingnowhere.", "Hammock"],
+    tracks: ["In Blur", "Shellstar", "Great Mass of Color", "Love Who Loves You Back"],
+    color: "#00f2fe",
+  },
+  energia: {
+    es: {
+      title: "Fuerza / Catarsis Metalcore",
+      desc: "Metalcore agresivo y post-hardcore rápido. El enojo y la intensidad instrumental funcionan como escudo y combustible energético.",
+      time: "Mañana 06-11 y Tarde 12-17",
+    },
+    en: {
+      title: "Force / Metalcore Catharsis",
+      desc: "Aggressive metalcore and fast post-hardcore. Anger and instrumental intensity work as both shield and fuel.",
+      time: "Morning 06-11 and Afternoon 12-17",
+    },
+    artists: ["Bring Me the Horizon", "The Word Alive", "Slaves", "Odeon"],
+    tracks: ["MANTRA", "Prayers", "Red Clouds", "Ritual"],
+    color: "#f72585",
+  },
+  dopamina: {
+    es: {
+      title: "Dopamina / Diversión Emo-Groove",
+      desc: "Riffs alegres de guitarra, mezcla de pop de los 2000s, sintetizadores y percusiones rápidas. Sonidos optimistas ideales para motivarte.",
+      time: "Mañana 06-11",
+    },
+    en: {
+      title: "Dopamine / Emo-Groove Fun",
+      desc: "Cheerful guitar riffs, a blend of 2000s pop, synths and fast percussion. Upbeat sounds built to motivate you.",
+      time: "Morning 06-11",
+    },
+    artists: ["Bilmuri", "Magnolia Park", "All Time Low", "Aries"],
+    tracks: ["2016 CAVALIERS (Ohio)", "Tokyo", "THICC THICCLY", "Aperol Spritz"],
+    color: "#ffb703",
+  },
+  calma: {
+    es: {
+      title: "Calma / Enfoque Técnico",
+      desc: "Ambient, lo-fi suave y metal progresivo intrincado de ritmos lentos. Utilizado como canalizador del hiperenfoque al diseñar o programar.",
+      time: "Tarde 12-17 y Noche 18-23",
+    },
+    en: {
+      title: "Calm / Technical Focus",
+      desc: "Ambient, soft lo-fi, and intricate slow-tempo progressive metal. Used as a channel for hyperfocus while designing or coding.",
+      time: "Afternoon 12-17 and Evening 18-23",
+    },
+    artists: ["TesseracT", "Hammock", "Corbin Karasu", "Astral Wonder"],
+    tracks: ["Of Matter - Proxy", "The Journey", "Midnight Relief", "Candyland"],
+    color: "#10b981",
+  },
+};
+
 export default function EmotionalMap({ data }: EmotionalMapProps) {
   const [selectedEmotion, setSelectedEmotion] = useState<'melancolia' | 'energia' | 'dopamina' | 'calma'>('melancolia');
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
 
   const galaxyArtists = data.top_artists.slice(0, 14).map(artist => ({
     name: artist.name,
@@ -20,38 +83,10 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   }));
 
   const emotionDetails = {
-    melancolia: {
-      title: "Melancolía / Introspección",
-      desc: "Vibras shoegaze, post-metal atmosférico y trap emocional. La música sirve como un catalizador reflexivo para procesar heridas o transiciones de vida silenciosas.",
-      artists: ["Deafheaven", "Alcest", "nothingnowhere.", "Hammock"],
-      tracks: ["In Blur", "Shellstar", "Great Mass of Color", "Love Who Loves You Back"],
-      time: "Madrugada 00-05 y Noche 18-23",
-      color: "#00f2fe"
-    },
-    energia: {
-      title: "Fuerza / Catarsis Metalcore",
-      desc: "Metalcore agresivo y post-hardcore rápido. El enojo y la intensidad instrumental funcionan como escudo y combustible energético.",
-      artists: ["Bring Me the Horizon", "The Word Alive", "Slaves", "Odeon"],
-      tracks: ["MANTRA", "Prayers", "Red Clouds", "Ritual"],
-      time: "Mañana 06-11 y Tarde 12-17",
-      color: "#f72585"
-    },
-    dopamina: {
-      title: "Dopamina / Diversión Emo-Groove",
-      desc: "Riffs alegres de guitarra, mezcla de pop de los 2000s, sintetizadores y percusiones rápidas. Sonidos optimistas ideales para motivarte.",
-      artists: ["Bilmuri", "Magnolia Park", "All Time Low", "Aries"],
-      tracks: ["2016 CAVALIERS (Ohio)", "Tokyo", "THICC THICCLY", "Aperol Spritz"],
-      time: "Mañana 06-11",
-      color: "#ffb703"
-    },
-    calma: {
-      title: "Calma / Enfoque Técnico",
-      desc: "Ambient, lo-fi suave y metal progresivo intrincado de ritmos lentos. Utilizado como canalizador del hiperenfoque al diseñar o programar.",
-      artists: ["TesseracT", "Hammock", "Corbin Karasu", "Astral Wonder"],
-      tracks: ["Of Matter - Proxy", "The Journey", "Midnight Relief", "Candyland"],
-      time: "Tarde 12-17 y Noche 18-23",
-      color: "#10b981"
-    }
+    melancolia: { ...EMOTION_DETAILS.melancolia[lang], artists: EMOTION_DETAILS.melancolia.artists, tracks: EMOTION_DETAILS.melancolia.tracks, color: EMOTION_DETAILS.melancolia.color },
+    energia: { ...EMOTION_DETAILS.energia[lang], artists: EMOTION_DETAILS.energia.artists, tracks: EMOTION_DETAILS.energia.tracks, color: EMOTION_DETAILS.energia.color },
+    dopamina: { ...EMOTION_DETAILS.dopamina[lang], artists: EMOTION_DETAILS.dopamina.artists, tracks: EMOTION_DETAILS.dopamina.tracks, color: EMOTION_DETAILS.dopamina.color },
+    calma: { ...EMOTION_DETAILS.calma[lang], artists: EMOTION_DETAILS.calma.artists, tracks: EMOTION_DETAILS.calma.tracks, color: EMOTION_DETAILS.calma.color },
   };
 
   const currentEmotion = emotionDetails[selectedEmotion];
@@ -75,33 +110,33 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 10 }}>
-                <XAxis 
-                  type="number" 
-                  dataKey="valence" 
-                  name="Positividad" 
-                  domain={[0, 1]} 
+                <XAxis
+                  type="number"
+                  dataKey="valence"
+                  name={t.emotionalMap.positivityName}
+                  domain={[0, 1]}
                   stroke="#4b5563"
-                  label={{ value: 'Positividad (Valence)', position: 'insideBottom', offset: -10, fill: '#9ca3af', fontSize: 10 }}
+                  label={{ value: t.emotionalMap.positivityAxis, position: 'insideBottom', offset: -10, fill: '#9ca3af', fontSize: 10 }}
                 />
-                <YAxis 
-                  type="number" 
-                  dataKey="energy" 
-                  name="Energía" 
-                  domain={[0, 1]} 
+                <YAxis
+                  type="number"
+                  dataKey="energy"
+                  name={t.emotionalMap.energyAxis}
+                  domain={[0, 1]}
                   stroke="#4b5563"
-                  label={{ value: 'Energía', angle: -90, position: 'insideLeft', fill: '#9ca3af', fontSize: 10 }}
+                  label={{ value: t.emotionalMap.energyAxis, angle: -90, position: 'insideLeft', fill: '#9ca3af', fontSize: 10 }}
                 />
                 <ZAxis type="number" dataKey="plays" range={[50, 450]} />
-                <Tooltip 
+                <Tooltip
                   cursor={{ strokeDasharray: '3 3' }}
                   contentStyle={{ backgroundColor: 'rgba(10, 25, 47, 0.95)', borderColor: '#00f2fe', borderRadius: '12px' }}
                   itemStyle={{ color: '#fff' }}
                   formatter={(value, name) => {
-                    if (name === "plays") return [`${value} plays`, "Frecuencia"];
+                    if (name === "plays") return [`${value} plays`, t.emotionalMap.frequencyLabel];
                     return [value, name];
                   }}
                 />
-                <Scatter name="Artistas" data={galaxyArtists} fill="#00f2fe">
+                <Scatter name={t.emotionalMap.artistsLegend} data={galaxyArtists} fill="#00f2fe">
                   {galaxyArtists.map((entry, index) => (
                     <Cell 
                       key={`cell-${index}`} 
@@ -116,8 +151,8 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
           </div>
           
           <div className="w-full flex justify-between text-xs font-mono text-gray-500 mt-2 px-6">
-            <span>← Melancólico / Oscuro</span>
-            <span>Optimista / Brillante →</span>
+            <span>{t.emotionalMap.darkSide}</span>
+            <span>{t.emotionalMap.brightSide}</span>
           </div>
         </div>
 
@@ -136,7 +171,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                       : 'bg-[#0a0f1d] border-cyan-500/10 text-gray-400 hover:text-white'
                   }`}
                 >
-                  {key === 'melancolia' ? 'Lamento' : key === 'energia' ? 'Catarsis' : key === 'dopamina' ? 'Dosis' : 'Foco'}
+                  {key === 'melancolia' ? t.emotionalMap.tabLament : key === 'energia' ? t.emotionalMap.tabCatharsis : key === 'dopamina' ? t.emotionalMap.tabDose : t.emotionalMap.tabFocus}
                 </button>
               ))}
             </div>
@@ -152,16 +187,16 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
               </p>
 
               <div className="space-y-1">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">Artistas clave:</span>
+                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{t.emotionalMap.keyArtistsLabel}</span>
                 <p className="text-xs text-white font-semibold font-mono">{currentEmotion.artists.join(', ')}</p>
               </div>
 
               <div className="space-y-1.5 pt-2">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">Canciones del refugio:</span>
+                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{t.emotionalMap.refugeTracksLabel}</span>
                 <div className="space-y-1">
-                  {currentEmotion.tracks.map(t => (
-                    <div key={t} className="px-3 py-1 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs truncate">
-                      {t}
+                  {currentEmotion.tracks.map(track => (
+                    <div key={track} className="px-3 py-1 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs truncate">
+                      {track}
                     </div>
                   ))}
                 </div>
@@ -171,7 +206,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
 
           <div className="pt-6 border-t border-cyan-500/10 space-y-1 mt-6 text-xs">
             <div className="flex justify-between">
-              <span className="text-gray-400">Horario dominante:</span>
+              <span className="text-gray-400">{t.emotionalMap.dominantTimeLabel}</span>
               <span className="font-mono text-white">{currentEmotion.time}</span>
             </div>
           </div>

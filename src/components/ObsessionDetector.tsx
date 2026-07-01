@@ -59,7 +59,7 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
               ))
             ) : (
               <div className="text-center p-8 text-xs text-gray-500 font-mono">
-                No se detectaron hiperfijaciones extremas en tus datos.
+                {t.obsessionDetector.noHyperfixations}
               </div>
             )}
           </div>
@@ -81,11 +81,11 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
               <div key={sess.id} className="p-4 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberPink/40 transition-all space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] font-mono text-gray-500 block">Inicio de sesión:</span>
+                    <span className="text-[10px] font-mono text-gray-500 block">{t.obsessionDetector.sessionStart}</span>
                     <span className="text-xs font-bold text-white">{formatDate(sess.start)} {new Date(sess.start).toLocaleTimeString(lang === 'en' ? 'en-US' : 'es-ES', {hour: '2-digit', minute:'2-digit'})}</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-[10px] font-mono text-gray-500 block">Duración est.:</span>
+                    <span className="text-[10px] font-mono text-gray-500 block">{t.obsessionDetector.estDuration}</span>
                     <span className="text-xs font-mono font-bold text-cyberCyan flex items-center justify-end gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       {sess.duration_min >= 60 ? `${Math.round(sess.duration_min / 60)}h` : `${Math.round(sess.duration_min)}min`}
@@ -95,11 +95,11 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
 
                 <div className="grid grid-cols-2 gap-2 text-[10px] pt-2 border-t border-cyan-500/10">
                   <div>
-                    <span className="text-gray-400 block font-mono">Volumen:</span>
-                    <span className="font-bold text-white">{sess.tracks_count} canciones</span>
+                    <span className="text-gray-400 block font-mono">{t.obsessionDetector.volume}</span>
+                    <span className="font-bold text-white">{sess.tracks_count} {t.obsessionDetector.volumeUnit}</span>
                   </div>
                   <div>
-                    <span className="text-gray-400 block font-mono">Artista dominante:</span>
+                    <span className="text-gray-400 block font-mono">{t.obsessionDetector.dominantArtist}</span>
                     <span className="font-bold text-cyberPink truncate block">{sess.top_artist}</span>
                   </div>
                 </div>

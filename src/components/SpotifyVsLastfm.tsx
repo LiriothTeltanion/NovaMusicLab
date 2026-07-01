@@ -56,12 +56,12 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
 
   /* ── Radar comparison ── */
   const radarData = [
-    { metric: 'Historial',    lastfm: 95, spotify: 88 },
-    { metric: 'Precisión',    lastfm: 92, spotify: 78 },
-    { metric: 'Cobertura',    lastfm: 88, spotify: 96 },
-    { metric: 'Metadatos',    lastfm: 72, spotify: 90 },
-    { metric: 'Skips',        lastfm: 40, spotify: 82 },
-    { metric: 'Context',      lastfm: 60, spotify: 85 },
+    { metric: t.spotifyVsLastfm.radarHistory,  lastfm: 95, spotify: 88 },
+    { metric: t.spotifyVsLastfm.radarAccuracy, lastfm: 92, spotify: 78 },
+    { metric: t.spotifyVsLastfm.radarCoverage, lastfm: 88, spotify: 96 },
+    { metric: t.spotifyVsLastfm.radarMetadata, lastfm: 72, spotify: 90 },
+    { metric: t.spotifyVsLastfm.radarSkips,    lastfm: 40, spotify: 82 },
+    { metric: t.spotifyVsLastfm.radarContext,  lastfm: 60, spotify: 85 },
   ];
 
   const insights = [
@@ -165,10 +165,10 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
             <p className="text-4xl font-black text-white font-mono">{fmtNum(lastfmTotal)}</p>
             <p className="text-xs text-gray-400 font-mono">{t.spotifyVsLastfm.verifiedScrobbles}</p>
             <div className="space-y-1 text-xs text-gray-300">
-              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Timestamps exactos</p>
-              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Registro de álbum completo</p>
-              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Sin datos de skip</p>
-              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Sin contexto de playlist</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.lastfmExactTimestamps}</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.lastfmFullAlbumData}</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />{t.spotifyVsLastfm.lastfmNoSkipData}</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />{t.spotifyVsLastfm.lastfmNoPlaylistContext}</p>
             </div>
           </div>
 
@@ -197,10 +197,10 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
               {spotifyDirectTotal ? t.spotifyVsLastfm.measuredPlaysIncludesSkips : t.spotifyVsLastfm.estimatedPlays}
             </p>
             <div className="space-y-1 text-xs text-gray-300 flex flex-col md:items-end">
-              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Datos de skip incluidos</p>
-              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Contexto de playlist</p>
-              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />Offline / dispositivo</p>
-              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />Historial pre-2015 vacío</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.spotifySkipDataIncluded}</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.spotifyPlaylistContext}</p>
+              <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.spotifyOfflineDevice}</p>
+              <p className="flex items-center gap-2"><AlertTriangle className="w-3.5 h-3.5 text-amber-400" />{t.spotifyVsLastfm.spotifyEmptyPre2015}</p>
             </div>
           </div>
         </div>
