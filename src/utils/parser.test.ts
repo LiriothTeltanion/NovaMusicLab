@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseLastfmCsvRows, parseMusicSources } from './parser';
+import { ParseError, parseLastfmCsvRows, parseMusicSources } from './parser';
 
 describe('music data parser', () => {
   it('parses Last.fm CSV rows with quoted commas', () => {
@@ -96,5 +96,63 @@ describe('music data parser', () => {
       date: '2026-01-01',
       count: 5,
     });
+  });
+
+  it('throws a ParseError with code INVALID_JSON for malformed Spotify JSON', () => {
+    expect(() => parseMusicSources({ spotifyJsonTexts: ['{not valid json'] }))
+      .toThrow(ParseError);
+    try {
+      parseMusicSources({ spotifyJsonTexts: ['{not valid json'] });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ParseError);
+      expect((err as ParseError).code).toBe('INVALID_JSON');
+    }
+  });
+
+  it('throws a ParseError with code NO_VALID_ROWS for empty input', () => {
+    expect(() => parseMusicSources({ lastfmCsvTexts: [''], spotifyJsonTexts: [] }))
+      .toThrow(ParseError);
+    try {
+      parseMusicSources({ lastfmCsvTexts: [''], spotifyJsonTexts: [] });
+    } catch (err) {
+      expect(err).toBeInstanceOf(ParseError);
+      expect((err as ParseError).code).toBe('NO_VALID_ROWS');
+    }
+  });
+
+  it('ignores Spotify JSON rows missing required fields instead of throwing', () => {
+    const spotify = JSON.stringify([
+      { ts: '2026-01-01T05:09:35Z' }, // missing artist/track
+      { master_metadata_track_name: 'No Timestamp', master_metadata_album_artist_name: 'Artist' }, // missing ts
+    ]);
+    expect(() => parseMusicSources({ spotifyJsonTexts: [spotify] })).toThrow(ParseError);
+  });
+
+  it('classifies sub-30-second Spotify plays as short plays', () => {
+    const spotify = JSON.stringify([
+      {
+        ts: '2026-01-01T05:09:35Z',
+        ms_played: 15000,
+        master_metadata_track_name: 'Quick Skip',
+        master_metadata_album_artist_name: 'Artist',
+      },
+    ]);
+    const data = parseMusicSources({ spotifyJsonTexts: [spotify] });
+    expect(data.source_summary?.spotify_short_plays).toBe(1);
+  });
+
+  it('normalizes cross-source duplicate tracks despite artist capitalization differences', () => {
+    const lastfm = 'shared artist,Album,Shared Track,01 Jan 2026 10:00';
+    const spotify = JSON.stringify([
+      {
+        ts: '2026-01-01T10:01:00Z',
+        ms_played: 120000,
+        master_metadata_track_name: 'Shared Track',
+        master_metadata_album_artist_name: 'SHARED ARTIST',
+        master_metadata_album_album_name: 'Album',
+      },
+    ]);
+    const data = parseMusicSources({ lastfmCsvTexts: [lastfm], spotifyJsonTexts: [spotify] });
+    expect(data.source_summary?.overlap_unique_tracks).toBe(1);
   });
 });

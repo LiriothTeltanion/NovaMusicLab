@@ -15,6 +15,18 @@ import { countryCodeToName, normalizeGenre } from './analytics';
 
 type RawSource = Exclude<PlaySource, 'merged' | 'unknown'>;
 
+export type ParseErrorCode = 'INVALID_JSON' | 'NO_VALID_ROWS';
+
+/** Thrown with a stable, translatable `code` instead of a hardcoded-language message. */
+export class ParseError extends Error {
+  code: ParseErrorCode;
+  constructor(code: ParseErrorCode, message: string) {
+    super(message);
+    this.code = code;
+    this.name = 'ParseError';
+  }
+}
+
 interface ParsedPlay {
   artist: string;
   track: string;
@@ -120,7 +132,12 @@ function parseSpotifyRows(jsonTexts: string[]): ParsedPlay[] {
   const plays: ParsedPlay[] = [];
 
   jsonTexts.forEach(text => {
-    const parsed = JSON.parse(text);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new ParseError('INVALID_JSON', 'One of the uploaded files is not valid JSON.');
+    }
     if (!Array.isArray(parsed)) return;
 
     parsed.forEach(item => {
@@ -157,7 +174,7 @@ function parseSpotifyRows(jsonTexts: string[]): ParsedPlay[] {
 export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDnaData {
   const sortedItems = [...items].sort((a, b) => a.ts.getTime() - b.ts.getTime());
   if (sortedItems.length === 0) {
-    throw new Error('No se encontraron registros validos.');
+    throw new ParseError('NO_VALID_ROWS', 'No valid rows were found in the uploaded files.');
   }
 
   const artistCounts: Record<string, number> = {};
@@ -254,7 +271,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
       max_year: yearlyEras.length ? [...yearlyEras].sort((a, b) => b.plays - a.plays)[0].year : 'N/A',
       match_rate_pct: sourceSummary.source_type === 'merged'
         ? sourceSummary.spotify_plays || sourceSummary.lastfm_plays
-          ? round2(sourceSummary.overlap_unique_tracks / Math.max(1, new Set(sortedItems.map(item => makeTrackKey(item.artist, item.track))).size) * 100)
+          ? round2(sourceSummary.overlap_unique_tracks / Math.max(1, new Set(sortedItems.map(item => normalizedTrackKey(item.artist, item.track))).size) * 100)
           : 0
         : 100,
     },
@@ -280,8 +297,8 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
 function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
   const lastfmItems = items.filter(item => item.source === 'lastfm');
   const spotifyItems = items.filter(item => item.source === 'spotify');
-  const lastfmTracks = new Set(lastfmItems.map(item => makeTrackKey(item.artist, item.track)));
-  const spotifyTracks = new Set(spotifyItems.map(item => makeTrackKey(item.artist, item.track)));
+  const lastfmTracks = new Set(lastfmItems.map(item => normalizedTrackKey(item.artist, item.track)));
+  const spotifyTracks = new Set(spotifyItems.map(item => normalizedTrackKey(item.artist, item.track)));
   const overlap = [...lastfmTracks].filter(key => spotifyTracks.has(key)).length;
   const spotifySkips = spotifyItems.filter(item => item.skipped).length;
   const spotifyShortPlays = spotifyItems.filter(item => (item.ms_played ?? 0) > 0 && (item.ms_played ?? 0) < 30000).length;
@@ -534,6 +551,14 @@ function entriesByCount<T extends Record<string, number>>(record: T, limit: numb
 
 function makeTrackKey(artist: string, track: string) {
   return `${artist.trim()}|||${track.trim()}`;
+}
+
+/**
+ * Case-insensitive variant of makeTrackKey, used for cross-source overlap detection
+ * where Last.fm and Spotify often differ only in artist/track capitalization.
+ */
+function normalizedTrackKey(artist: string, track: string) {
+  return makeTrackKey(artist, track).toLowerCase();
 }
 
 function splitTrackKey(key: string) {

@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Upload, CheckCircle2, AlertCircle, ShieldCheck, Files } from 'lucide-react';
-import { parseMusicSources } from '../utils/parser';
+import { Upload, CheckCircle2, AlertCircle, AlertTriangle, ShieldCheck, Files } from 'lucide-react';
+import { parseMusicSources, ParseError } from '../utils/parser';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+
+const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 
 interface DataUploaderProps {
   onDataLoaded: (data: MusicDnaData) => void;
@@ -13,6 +15,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -46,14 +49,20 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
   const processFiles = async (files: File[]) => {
     setLoading(true);
     setError(null);
+    setWarning(null);
     setSuccessMsg(null);
-    
+
     try {
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
       const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
-      
+
       if (csvFiles.length === 0 && jsonFiles.length === 0) {
         throw new Error(t.uploader.noFilesError);
+      }
+
+      const largestFile = files.reduce((max, f) => Math.max(max, f.size), 0);
+      if (largestFile > LARGE_FILE_WARNING_BYTES) {
+        setWarning(t.uploader.largeFileWarning((largestFile / (1024 * 1024)).toFixed(0)));
       }
 
       const [lastfmCsvTexts, spotifyJsonTexts] = await Promise.all([
@@ -73,7 +82,11 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       ));
     } catch (err: any) {
       console.error(err);
-      setError(err.message || t.uploader.processingError);
+      if (err instanceof ParseError) {
+        setError(err.code === 'INVALID_JSON' ? t.uploader.invalidJsonError : t.uploader.noValidRowsError);
+      } else {
+        setError(err.message || t.uploader.processingError);
+      }
     } finally {
       setLoading(false);
     }
@@ -83,7 +96,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target?.result as string);
-      reader.onerror = () => reject(new Error("Error al leer el archivo."));
+      reader.onerror = () => reject(new Error(t.uploader.processingError));
       reader.readAsText(file);
     });
   };
@@ -162,6 +175,13 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
           <span className="text-sm text-gray-300 font-mono">
             {t.uploader.processingStatus}
           </span>
+        </div>
+      )}
+
+      {warning && (
+        <div className="mt-6 flex items-start space-x-3 p-4 bg-amber-950/20 border border-amber-500/30 text-amber-300 rounded-2xl animate-fade-in">
+          <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5 text-amber-500" />
+          <span className="text-sm">{warning}</span>
         </div>
       )}
 

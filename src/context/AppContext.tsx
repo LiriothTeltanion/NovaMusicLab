@@ -403,6 +403,9 @@ const STRINGS = {
       processingStatus: 'Procesando y analizando tu historia...',
       noFilesError: 'Por favor, sube un CSV de Last.fm o archivos JSON de Spotify Extended Streaming History.',
       processingError: 'Error al procesar los archivos. Revisa el formato.',
+      invalidJsonError: 'Uno de los archivos JSON subidos no tiene un formato válido. Verifica que sea un export real de Spotify.',
+      noValidRowsError: 'No se encontraron registros válidos en los archivos subidos.',
+      largeFileWarning: (sizeMb: string) => `Uno de los archivos pesa ${sizeMb} MB. El procesamiento puede tardar unos segundos.`,
       successMessage: (fileCount: number, totalPlays: string, uniqueArtists: string, skipRate: number) =>
         `Se cargaron ${fileCount} archivo(s): ${totalPlays} plays, ${uniqueArtists} artistas, ${skipRate}% de skips en Spotify.`,
     },
@@ -897,6 +900,9 @@ const STRINGS = {
       processingStatus: 'Processing and analyzing your history...',
       noFilesError: 'Please upload a Last.fm CSV or Spotify Extended Streaming History JSON files.',
       processingError: 'Error processing the files. Please check the export format.',
+      invalidJsonError: 'One of the uploaded JSON files is not valid. Make sure it is a real Spotify export.',
+      noValidRowsError: 'No valid rows were found in the uploaded files.',
+      largeFileWarning: (sizeMb: string) => `One of the files is ${sizeMb} MB. Processing may take a few seconds.`,
       successMessage: (fileCount: number, totalPlays: string, uniqueArtists: string, skipRate: number) =>
         `Loaded ${fileCount} file(s): ${totalPlays} plays, ${uniqueArtists} artists, ${skipRate}% Spotify skip rate.`,
     },
