@@ -6,6 +6,9 @@ import { Share2, Sparkles, Mic2, Music2, Clock, Download, Loader2 } from 'lucide
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import MethodologyPanel from './MethodologyPanel';
+import SectionNarrative from './SectionNarrative';
+import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
 
 interface WrappedCardProps {
   data: MusicDnaData;
@@ -32,6 +35,9 @@ export default function WrappedCard({ data }: WrappedCardProps) {
   const era = eras.find((e) => e.year === selectedYear) ?? eras[0];
 
   if (!era) return null;
+
+  const localizedEraLabel = localizeEraLabel(era.era_label, lang);
+  const localizedDaypart = localizeDaypart(era.dominant_daypart, lang);
 
   const handleSelectYear = (year: number) => {
     if (year === selectedYear) return;
@@ -113,6 +119,8 @@ export default function WrappedCard({ data }: WrappedCardProps) {
         <p className="text-sm text-gray-400 font-sans max-w-2xl">{t.wrapped.subtitle}</p>
       </motion.div>
 
+      <SectionNarrative content={t.deepNarratives.wrapped} accent="c1" />
+
       {/* Year selector pills */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -138,6 +146,44 @@ export default function WrappedCard({ data }: WrappedCardProps) {
           );
         })}
       </motion.div>
+
+      <MethodologyPanel
+        eyebrow={t.wrapped.methodEyebrow}
+        title={t.wrapped.methodTitle}
+        subtitle={t.wrapped.methodSubtitle}
+        accent="c1"
+        stats={[
+          {
+            label: t.wrapped.methodStats.selectedYear,
+            value: String(era.year),
+          },
+          {
+            label: t.wrapped.methodStats.selectionRule,
+            value: t.wrapped.methodStats.selectionRuleValue,
+          },
+          {
+            label: t.wrapped.methodStats.source,
+            value: t.wrapped.methodStats.sourceValue,
+          },
+          {
+            label: t.wrapped.methodStats.export,
+            value: t.wrapped.methodStats.exportValue,
+          },
+        ]}
+        points={t.wrapped.methodPoints}
+      />
+
+      <div className="glass-panel p-5 rounded-3xl border-l-4" style={{ borderLeftColor: tc.c2 }}>
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkles className="w-4 h-4" style={{ color: tc.c2 }} />
+          <h3 className="text-sm font-mono font-black uppercase tracking-wider text-white">
+            {t.wrapped.selectedInsightTitle}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-300 leading-relaxed">
+          {t.wrapped.selectedInsightBody(era.year, fmtNum(era.plays), era.top_artist, era.top_track)}
+        </p>
+      </div>
 
       {/* The shareable card */}
       <motion.div
@@ -202,7 +248,7 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                   style={{ backgroundColor: `${tc.c2}1a`, border: `1px solid ${tc.c2}59`, color: tc.c2 }}
                 >
                   <Sparkles className="w-3 h-3" />
-                  <span>{era.era_label}</span>
+                  <span>{localizedEraLabel}</span>
                 </div>
               </motion.div>
 
@@ -281,7 +327,7 @@ export default function WrappedCard({ data }: WrappedCardProps) {
               >
                 <Clock className="w-4 h-4" style={{ color: tc.c4 }} />
                 <span style={{ color: '#9ca3af' }}>{t.wrapped.daypartLabel}</span>
-                <span style={{ color: tc.c4 }}>{era.dominant_daypart}</span>
+                <span style={{ color: tc.c4 }}>{localizedDaypart}</span>
               </motion.div>
 
               {/* Footer */}

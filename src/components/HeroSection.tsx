@@ -1,12 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
-import { Play, Disc, Headphones, Clock, Calendar } from 'lucide-react';
+import {
+  Calendar,
+  Clock,
+  Database,
+  Disc,
+  Headphones,
+  LibraryBig,
+  Play,
+  Radio,
+  ShieldCheck,
+  Sparkles,
+  Trophy,
+} from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUpCmp from './CountUp';
 import { useApp } from '../context/AppContext';
 import AnimatedParticles from './AnimatedParticles';
 import SectionNarrative from './SectionNarrative';
+import { deriveSourceSummary, formatNumber, getPeakYear } from '../utils/analytics';
 
 interface HeroSectionProps {
   data: MusicDnaData;
@@ -22,7 +35,57 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
   const metrics = data.core_metrics;
   const topArtist = data.top_artists[0];
   const topTrack = data.top_tracks[0];
-  const { t } = useApp();
+  const peakYear = getPeakYear(data);
+  const sourceSummary = deriveSourceSummary(data);
+  const { t, lang } = useApp();
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const fmtNum = (num: number) => formatNumber(num, locale);
+  const sourceLabel = t.heroSection.sourceLabels[sourceSummary.source_type] ?? t.heroSection.sourceLabels.unknown;
+
+  const archiveCards = [
+    {
+      icon: Headphones,
+      color: 'text-cyberCyan',
+      label: t.heroSection.archiveSnapshot.topArtist,
+      value: topArtist?.name ?? t.heroSection.archiveSnapshot.unknown,
+      detail: topArtist
+        ? t.heroSection.archiveSnapshot.topArtistDetail(fmtNum(topArtist.plays))
+        : t.heroSection.archiveSnapshot.pending,
+    },
+    {
+      icon: Disc,
+      color: 'text-cyberPink',
+      label: t.heroSection.archiveSnapshot.topTrack,
+      value: topTrack?.title ?? t.heroSection.archiveSnapshot.unknown,
+      detail: topTrack
+        ? t.heroSection.archiveSnapshot.topTrackDetail(topTrack.artist)
+        : t.heroSection.archiveSnapshot.pending,
+    },
+    {
+      icon: Trophy,
+      color: 'text-cyberPurple',
+      label: t.heroSection.archiveSnapshot.peakEra,
+      value: peakYear ? String(peakYear.year) : t.heroSection.archiveSnapshot.unknown,
+      detail: peakYear
+        ? t.heroSection.archiveSnapshot.peakEraDetail(fmtNum(peakYear.plays))
+        : t.heroSection.archiveSnapshot.pending,
+    },
+    {
+      icon: ShieldCheck,
+      color: 'text-cyberBlue',
+      label: t.heroSection.archiveSnapshot.dataTrust,
+      value: sourceLabel,
+      detail: t.heroSection.archiveSnapshot.dataTrustDetail(sourceLabel),
+    },
+  ];
+
+  const coreStatCards = [
+    { icon: Headphones, color: 'text-cyberCyan',   label: t.hero.scrobbles, val: metrics.total_plays,     d: 0.8 },
+    { icon: Clock,      color: 'text-cyberPink',   label: t.hero.hours,     val: metrics.listening_hours, d: 0.9 },
+    { icon: Disc,       color: 'text-cyberPurple', label: t.hero.artists,   val: metrics.unique_artists,  d: 1.0 },
+    { icon: Play,       color: 'text-cyberBlue',   label: t.hero.tracks,    val: metrics.unique_tracks,   d: 1.1 },
+    { icon: Calendar,   color: 'text-green-400',   label: t.hero.days,      val: metrics.listening_days,  d: 1.2 },
+  ];
 
   const handleEnter = () => {
     confetti({
@@ -38,7 +101,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex flex-col justify-center items-center px-6 py-12 md:py-20 text-center select-none overflow-hidden">
+    <section className="relative min-h-screen flex flex-col justify-start items-center px-4 sm:px-6 py-8 md:py-10 text-center select-none overflow-hidden">
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-cyberCyan/10 blur-[120px] animate-cloud-1 pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 rounded-full bg-cyberPink/10 blur-[120px] animate-cloud-2 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-cyberPurple/5 blur-[80px] pointer-events-none" />
@@ -50,7 +113,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
         initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
-        className="z-10 max-w-4xl space-y-8"
+        className="z-10 w-full max-w-6xl space-y-5 md:space-y-6"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -83,90 +146,22 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto font-sans font-light leading-relaxed"
+          className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto font-sans font-light leading-relaxed"
         >
           {t.heroSection.description}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55, duration: 0.5 }}
+          className="flex flex-col items-center justify-center gap-3 pt-1"
         >
-          <SectionNarrative
-            content={t.deepNarratives.hero}
-            accent="c1"
-            compact
-            className="text-left max-w-3xl mx-auto"
-          />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="glass-panel p-6 md:p-8 rounded-3xl max-w-3xl mx-auto border-l-4 border-l-cyberCyan/80 relative overflow-hidden group"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Headphones className="w-24 h-24 text-cyberCyan" />
-          </div>
-          <p className="text-sm md:text-base text-[var(--fg)] font-sans italic leading-relaxed text-left">
-            {(() => {
-              const { before, midA, midB, after } = t.heroSection.quote;
-              return (
-                <>
-                  {before}
-                  <span className="text-cyberCyan font-semibold not-italic">{topArtist?.name}</span>
-                  {midA}
-                  <span className="text-cyberPink font-semibold not-italic">'{topTrack?.title}'</span>
-                  {midB}
-                  <span className="text-cyberPink font-semibold not-italic">{topTrack?.artist}</span>
-                  {after}
-                </>
-              );
-            })()}
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.5 }}
-          className="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-3xl mx-auto pt-4"
-        >
-          {[
-            { icon: Headphones, color: 'text-cyberCyan',   label: t.hero.scrobbles, val: metrics.total_plays,     d: 0.8 },
-            { icon: Clock,      color: 'text-cyberPink',   label: t.hero.hours,     val: metrics.listening_hours, d: 0.9 },
-            { icon: Disc,       color: 'text-cyberPurple', label: t.hero.artists,   val: metrics.unique_artists,  d: 1.0 },
-            { icon: Play,       color: 'text-cyberBlue',   label: t.hero.tracks,    val: metrics.unique_tracks,   d: 1.1 },
-            { icon: Calendar,   color: 'text-green-400',   label: t.hero.days,      val: metrics.listening_days,  d: 1.2, span: true },
-          ].map(({ icon: Icon, color, label, val, d, span }) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: d, duration: 0.4 }}
-              className={`glass-panel p-4 rounded-2xl flex flex-col justify-center items-center text-center ${span ? 'col-span-2 md:col-span-1' : ''}`}
-            >
-              <Icon className={`w-5 h-5 ${color} mb-1`} />
-              <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">{label}</span>
-              <span className="text-xl md:text-2xl font-black text-white mt-1">
-                <CountUp target={val} duration={1.6} delay={d - 0.7} />
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.3, duration: 0.5 }}
-          className="pt-6"
-        >
-          {/* Animated waveform above button */}
-          <div className="flex items-end justify-center gap-1 mb-4 h-8">
-            {[0.3, 0.7, 1.0, 0.6, 0.9, 0.4, 0.8, 1.0, 0.5, 0.7, 0.3, 0.6, 0.9, 0.4, 0.7].map((h, i) => (
-              <div key={i} className="waveform-bar"
+          <div className="flex items-end justify-center gap-1 h-7" aria-hidden="true">
+            {[0.3, 0.7, 1.0, 0.6, 0.9, 0.4, 0.8, 1.0, 0.5, 0.7, 0.3].map((h, i) => (
+              <div
+                key={i}
+                className="waveform-bar"
                 style={{
                   height: `${h * 100}%`,
                   backgroundColor: i % 3 === 0 ? 'var(--c1)' : i % 3 === 1 ? 'var(--c2)' : 'var(--c3)',
@@ -176,13 +171,144 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
               />
             ))}
           </div>
-          <button
-            onClick={handleEnter}
-            className="group px-8 py-3.5 bg-gradient-to-r from-cyberCyan to-cyberPurple text-white font-mono font-bold rounded-full text-base tracking-wider hover:shadow-cyber hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center space-x-3 mx-auto"
-          >
-            <span>{t.hero.enter}</span>
-            <Play className="w-4 h-4 fill-white group-hover:translate-x-1 transition-transform" />
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={handleEnter}
+              className="group px-8 py-3.5 bg-gradient-to-r from-cyberCyan to-cyberPurple text-white font-mono font-bold rounded-full text-sm md:text-base tracking-wider hover:shadow-cyber hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center space-x-3 mx-auto"
+            >
+              <span>{t.hero.enter}</span>
+              <Play className="w-4 h-4 fill-white group-hover:translate-x-1 transition-transform" />
+            </button>
+            <p className="max-w-sm text-xs md:text-sm text-gray-400 leading-relaxed sm:text-left">
+              {t.heroSection.ctaSupport}
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.65, duration: 0.5 }}
+          className="space-y-4 text-left"
+        >
+          <div className="max-w-3xl mx-auto text-center space-y-2">
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.22em] text-cyberCyan">
+              <Database className="w-4 h-4" />
+              <span>{t.heroSection.archiveTitle}</span>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              {t.heroSection.archiveSubtitle}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {archiveCards.map(({ icon: Icon, color, label, value, detail }) => (
+              <div key={label} className="glass-panel rounded-2xl p-4 min-w-0 border border-white/10">
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon className={`w-4 h-4 shrink-0 ${color}`} />
+                  <p className="text-[10px] font-mono font-black uppercase tracking-[0.18em] text-gray-400">
+                    {label}
+                  </p>
+                </div>
+                <p className="text-base md:text-lg font-black text-white leading-tight break-words">
+                  {value}
+                </p>
+                <p className="mt-2 text-xs text-gray-400 leading-relaxed">
+                  {detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75, duration: 0.5 }}
+          className="space-y-4 text-left"
+        >
+          <div className="max-w-3xl mx-auto text-center space-y-2">
+            <div className="inline-flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.22em] text-cyberPink">
+              <LibraryBig className="w-4 h-4" />
+              <span>{t.heroSection.museumMapTitle}</span>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              {t.heroSection.museumMapSubtitle}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            {t.heroSection.museumMapItems.map((item, index) => {
+              const colors = ['text-cyberCyan', 'text-cyberPink', 'text-cyberPurple', 'text-cyberBlue'];
+              return (
+                <div key={item.title} className="glass-panel rounded-2xl p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Sparkles className={`w-4 h-4 shrink-0 ${colors[index % colors.length]}`} />
+                    <p className="text-xs font-mono font-black uppercase tracking-wider text-white">
+                      {item.title}
+                    </p>
+                  </div>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    {item.body}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.85, duration: 0.5 }}
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)] gap-5 items-start text-left"
+        >
+          <SectionNarrative
+            content={t.deepNarratives.hero}
+            accent="c1"
+            compact
+            className="max-w-none"
+          />
+
+          <div className="space-y-5">
+            <div className="glass-panel p-5 md:p-6 rounded-3xl border-l-4 border-l-cyberCyan/80 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Radio className="w-24 h-24 text-cyberCyan" />
+              </div>
+              <p className="text-sm md:text-base text-[var(--fg)] font-sans italic leading-relaxed">
+                {(() => {
+                  const { before, midA, midB, after } = t.heroSection.quote;
+                  return (
+                    <>
+                      {before}
+                      <span className="text-cyberCyan font-semibold not-italic">{topArtist?.name}</span>
+                      {midA}
+                      <span className="text-cyberPink font-semibold not-italic">'{topTrack?.title}'</span>
+                      {midB}
+                      <span className="text-cyberPink font-semibold not-italic">{topTrack?.artist}</span>
+                      {after}
+                    </>
+                  );
+                })()}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {coreStatCards.map(({ icon: Icon, color, label, val, d }, index) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, scale: 0.85 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: d, duration: 0.4 }}
+                  className={`glass-panel p-4 rounded-2xl flex flex-col justify-center items-center text-center min-h-[116px] ${index === coreStatCards.length - 1 ? 'col-span-2' : ''}`}
+                >
+                  <Icon className={`w-5 h-5 ${color} mb-1`} />
+                  <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">{label}</span>
+                  <span className="text-xl md:text-2xl font-black text-white mt-1">
+                    <CountUp target={val} duration={1.6} delay={d - 0.7} />
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </motion.div>
     </section>

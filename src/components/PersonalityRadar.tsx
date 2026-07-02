@@ -4,6 +4,7 @@ import { BrainCircuit, AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import { localizeArchetype, localizePersonalityTrait, localizeTraitAxis } from '../utils/localizedDatasetText';
 
 interface PersonalityRadarProps {
   data: MusicDnaData;
@@ -12,19 +13,20 @@ interface PersonalityRadarProps {
 export default function PersonalityRadar({ data }: PersonalityRadarProps) {
   const matrix = data.personality_matrix;
   const [selectedKey, setSelectedKey] = useState<keyof typeof matrix>('sensibilidad_emocional');
-  const { tc, t } = useApp();
+  const { tc, t, lang } = useApp();
 
   const chartData = [
-    { subject: 'Sensibilidad', value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
-    { subject: 'Nostalgia', value: matrix.nostalgia.score, key: 'nostalgia' },
-    { subject: 'Energía', value: matrix.energia.score, key: 'energia' },
-    { subject: 'Oscuridad', value: matrix.oscuridad_estetica.score, key: 'oscuridad_estetica' },
-    { subject: 'Creatividad', value: matrix.creatividad.score, key: 'creatividad' },
-    { subject: 'Rebeldía', value: matrix.rebeldia.score, key: 'rebeldia' },
-    { subject: 'Futurismo', value: matrix.futurismo.score, key: 'futurismo' }
+    { subject: localizeTraitAxis('sensibilidad_emocional', lang), value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
+    { subject: localizeTraitAxis('nostalgia', lang), value: matrix.nostalgia.score, key: 'nostalgia' },
+    { subject: localizeTraitAxis('energia', lang), value: matrix.energia.score, key: 'energia' },
+    { subject: localizeTraitAxis('oscuridad_estetica', lang), value: matrix.oscuridad_estetica.score, key: 'oscuridad_estetica' },
+    { subject: localizeTraitAxis('creatividad', lang), value: matrix.creatividad.score, key: 'creatividad' },
+    { subject: localizeTraitAxis('rebeldia', lang), value: matrix.rebeldia.score, key: 'rebeldia' },
+    { subject: localizeTraitAxis('futurismo', lang), value: matrix.futurismo.score, key: 'futurismo' }
   ];
 
-  const currentTrait = matrix[selectedKey];
+  const currentTrait = localizePersonalityTrait(selectedKey, matrix[selectedKey], lang);
+  const localizedArchetypes = data.archetypes.map(arch => localizeArchetype(arch, lang));
 
   const traitLabels = t.personalityRadar.traitLabels;
 
@@ -147,7 +149,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
           {t.personalityRadar.archetypesTitle}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {data.archetypes.map((arch) => (
+          {localizedArchetypes.map((arch) => (
             <div 
               key={arch.name} 
               className={`glass-panel p-6 rounded-3xl border-t-4 transition-all duration-300 ${

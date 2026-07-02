@@ -5,6 +5,7 @@ import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getRecords } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
 import SectionNarrative from './SectionNarrative';
+import { localizeSourceNote } from '../utils/localizedDatasetText';
 
 interface HiddenInsightsProps {
   data: MusicDnaData;
@@ -20,6 +21,7 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
   const nightRatio = getNightRatio(data);
   const { tc, t, lang } = useApp();
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const sourceNote = localizeSourceNote(source, lang);
 
   const secondArtistName = supportArtists[0]?.name ?? t.hiddenInsights.secondArtistFallback;
   const secondArtistPlays = supportArtists[0]?.plays?.toLocaleString(locale) ?? 0;
@@ -71,7 +73,7 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           </div>
           <p className="text-xs text-gray-300 font-sans leading-relaxed font-light">
             {t.hiddenInsights.sourceCrossCheckBody(metrics.match_rate_pct)}
-            {' '}{source.source_note}
+            {' '}{sourceNote}
             {source.spotify_short_plays > 0 && ' ' + t.hiddenInsights.spotifyShortPlaysNote(source.spotify_short_plays.toLocaleString(locale))}
           </p>
         </div>

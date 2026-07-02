@@ -4,6 +4,8 @@ import { Radio, Crown, Sparkles, Repeat, History, Zap, Music } from 'lucide-reac
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import MethodologyPanel from './MethodologyPanel';
+import SectionNarrative from './SectionNarrative';
 import pulseData from '../data/recent_pulse.json';
 
 interface RecentPulseProps {
@@ -120,6 +122,15 @@ export default function RecentPulse({ data }: RecentPulseProps) {
     return { ...artist, archived };
   });
   const newBloodCount = verdicts.filter(v => !v.archived).length;
+  const matchedCount = verdicts.length - newBloodCount;
+  const matchPct = verdicts.length > 0 ? Math.round((matchedCount / verdicts.length) * 100) : 0;
+  const snapshotAgeDays = (() => {
+    const synced = new Date(`${pulse.synced_at}T00:00:00`);
+    if (isNaN(synced.getTime())) return 0;
+    const today = new Date();
+    const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    return Math.max(0, Math.floor((todayMidnight.getTime() - synced.getTime()) / 86_400_000));
+  })();
 
   return (
     <div className="space-y-10 animate-fade-in">
@@ -147,6 +158,34 @@ export default function RecentPulse({ data }: RecentPulseProps) {
       <p className="text-sm text-gray-400 leading-relaxed font-sans -mt-6 max-w-2xl">
         {t.pulse.subtitle}
       </p>
+
+      <SectionNarrative content={t.deepNarratives.pulse} accent="c3" />
+
+      <MethodologyPanel
+        eyebrow={t.pulse.methodEyebrow}
+        title={t.pulse.methodTitle}
+        subtitle={t.pulse.methodSubtitle}
+        accent="c3"
+        stats={[
+          {
+            label: t.dataQuality.sourceTypeLabel,
+            value: t.pulse.sourceValue,
+          },
+          {
+            label: t.pulse.snapshotAgeLabel,
+            value: t.pulse.snapshotAgeValue(snapshotAgeDays),
+          },
+          {
+            label: t.pulse.archiveMatchLabel,
+            value: t.pulse.archiveMatchValue(matchedCount, verdicts.length, matchPct),
+          },
+          {
+            label: t.pulse.confidenceLabel,
+            value: t.pulse.confidenceValue,
+          },
+        ]}
+        points={t.pulse.methodPoints}
+      />
 
       {/* ── Section 1: Top artists now ── */}
       <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-40px' }}>

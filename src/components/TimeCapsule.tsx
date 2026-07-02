@@ -4,6 +4,9 @@ import { Hourglass, Music, Disc3, BarChart2, Sun, ExternalLink, Ghost, Crown } f
 import { MusicDnaData, YearlyEra } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import MethodologyPanel from './MethodologyPanel';
+import SectionNarrative from './SectionNarrative';
+import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
 
 interface TimeCapsuleProps {
   data: MusicDnaData;
@@ -41,6 +44,8 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
 
   const fadedCount = capsules.filter(c => c.faded).length;
   const stillCount = capsules.length - fadedCount;
+  const recentStart = recentYears.length > 0 ? Math.min(...recentYears) : currentMaxYear;
+  const recentEnd = recentYears.length > 0 ? Math.max(...recentYears) : currentMaxYear;
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -53,6 +58,8 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
       <p className="text-sm text-gray-400 leading-relaxed font-sans max-w-3xl">
         {t.timeCapsule.subtitle}
       </p>
+
+      <SectionNarrative content={t.deepNarratives.timeCapsule} accent="c2" />
 
       {capsules.length === 0 ? (
         <div className="glass-panel p-10 rounded-3xl text-center">
@@ -90,6 +97,38 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
               </div>
             </div>
           </motion.div>
+
+          <div className="text-sm text-gray-300 leading-relaxed">
+            {t.timeCapsule.statusLine(fadedCount, stillCount, capsules.length)}
+          </div>
+
+          <MethodologyPanel
+            eyebrow={t.timeCapsule.methodEyebrow}
+            title={t.timeCapsule.methodTitle}
+            subtitle={t.timeCapsule.methodSubtitle}
+            accent="c2"
+            stats={[
+              {
+                label: t.timeCapsule.methodStats.closedEras,
+                value: fmtNum(capsules.length),
+                note: t.timeCapsule.methodStats.closedErasNote,
+              },
+              {
+                label: t.timeCapsule.methodStats.recentWindow,
+                value: t.timeCapsule.methodStats.recentWindowValue(recentStart, recentEnd),
+                note: t.timeCapsule.methodStats.recentWindowNote,
+              },
+              {
+                label: t.timeCapsule.methodStats.matchRule,
+                value: t.timeCapsule.methodStats.matchRuleValue,
+              },
+              {
+                label: t.timeCapsule.methodStats.confidence,
+                value: t.timeCapsule.methodStats.confidenceValue,
+              },
+            ]}
+            points={t.timeCapsule.methodPoints}
+          />
 
           {/* Vertical timeline */}
           <div className="relative pl-8 md:pl-10">
@@ -141,7 +180,7 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                         <div className="flex-1 min-w-0">
                           <div className="flex flex-wrap items-center gap-2 mb-1">
                             <h3 className="text-base font-bold font-mono uppercase tracking-wider text-white truncate">
-                              {cap.era.era_label}
+                              {localizeEraLabel(cap.era.era_label, lang)}
                             </h3>
                             <span
                               className="px-2.5 py-0.5 rounded-full border text-[10px] font-mono font-bold uppercase tracking-wider shrink-0"
@@ -206,7 +245,7 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                               {t.timeCapsule.daypartLabel}
                             </span>
                             <span className="text-sm font-mono font-bold text-white truncate block">
-                              {cap.era.dominant_daypart}
+                              {localizeDaypart(cap.era.dominant_daypart, lang)}
                             </span>
                           </div>
                         </div>

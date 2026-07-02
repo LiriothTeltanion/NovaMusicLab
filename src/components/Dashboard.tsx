@@ -8,6 +8,7 @@ import ArtistAvatar from './ArtistAvatar';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames, normalizeGenre } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
+import { localizeEraLabel } from '../utils/localeText';
 
 interface DashboardProps {
   data: MusicDnaData;
@@ -126,7 +127,7 @@ export default function Dashboard({ data }: DashboardProps) {
       {/* 1b. Advanced KPIs row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t.dashboard.kpiBestYear,       val: String(bestYear?.year ?? '—'),  sub: `${formatNum(bestYear?.plays ?? 0)} plays · ${bestYear?.era_label ?? ''}`, color: tc.c1,    numeric: false },
+          { label: t.dashboard.kpiBestYear,       val: String(bestYear?.year ?? '—'),  sub: `${formatNum(bestYear?.plays ?? 0)} plays · ${bestYear ? localizeEraLabel(bestYear.era_label, lang) : ''}`, color: tc.c1,    numeric: false },
           { label: t.dashboard.kpiAvgPerDay,      val: null, numericTarget: avgPerActiveDay, sub: t.dashboard.kpiAvgPerDaySub(formatNum(metrics.active_days)), color: tc.c2, numeric: true },
           { label: t.dashboard.kpiNightListening, val: null, numericTarget: nightRatio, suffix: '%', sub: t.dashboard.kpiNightListeningSub, color: tc.c3,    numeric: true },
           { label: t.dashboard.kpiPeakHour,       val: peakHour,                        sub: t.dashboard.kpiPeakHourSub, color: '#10b981', numeric: false },

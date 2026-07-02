@@ -5,6 +5,8 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import SectionNarrative from './SectionNarrative';
+import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
+import { localizeEraDescription } from '../utils/localizedDatasetText';
 
 interface EraExplorerProps {
   data: MusicDnaData;
@@ -55,13 +57,16 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const color = ERA_COLORS[currentEra.year] ?? '#00f2fe';
   const maxPlays = Math.max(...eras.map(e => e.plays));
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const currentEraLabel = localizeEraLabel(currentEra.era_label, lang);
+  const currentDaypartLabel = localizeDaypart(currentEra.dominant_daypart, lang);
+  const currentEraDescription = localizeEraDescription(currentEra, lang, L ? 'en-US' : 'es-ES');
   const interpretation = (L ? ERA_INTERPRETATIONS_EN[currentEra.year] : ERA_INTERPRETATIONS[currentEra.year])
     ?? t.eraExplorer.fallbackInterpretation(
       currentEra.year,
       currentEra.top_artist,
       fmtNum(currentEra.plays),
       currentEra.unique_artists,
-      currentEra.dominant_daypart.toLowerCase(),
+      currentDaypartLabel.toLowerCase(),
     );
 
   const daypartEmoji: Record<string, string> = {
@@ -142,11 +147,11 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                   {currentEra.year}
                 </span>
                 <span className="text-xs text-gray-400 font-mono">
-                  {daypartEmoji[currentEra.dominant_daypart] ?? '🎧'} {currentEra.dominant_daypart}
+                  {daypartEmoji[currentEra.dominant_daypart] ?? '🎧'} {currentDaypartLabel}
                 </span>
               </div>
-              <h3 className="text-3xl font-extrabold text-white">{currentEra.era_label}</h3>
-              <p className="text-sm text-gray-400 font-mono">{currentEra.era_desc}</p>
+              <h3 className="text-3xl font-extrabold text-white">{currentEraLabel}</h3>
+              <p className="text-sm text-gray-400 font-mono">{currentEraDescription}</p>
             </div>
 
             {/* Plays bar */}
@@ -245,7 +250,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                 style={active ? { borderColor: eraColor } : { borderColor: 'transparent' }}
               >
                 <p className="font-mono text-sm font-black" style={{ color: eraColor }}>{era.year}</p>
-                <p className="text-[10px] text-gray-300 font-bold leading-tight mt-0.5 line-clamp-2">{era.era_label}</p>
+                <p className="text-[10px] text-gray-300 font-bold leading-tight mt-0.5 line-clamp-2">{localizeEraLabel(era.era_label, lang)}</p>
                 <p className="text-[9px] text-gray-500 font-mono mt-1">{t.eraExplorer.playsCount(fmtNum(era.plays))}</p>
               </button>
             );

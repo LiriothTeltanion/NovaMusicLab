@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import FlagArt from './FlagArt';
+import { getCulturalLanguageData, getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -28,12 +29,12 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
   },
   'Sweden': {
     flag: '🇸🇪 SE', color: '#facc15',
-    es: { lang: 'Inglés/Sueco', scene: 'Hard Rock · AOR · Melodic Death' },
+    es: { lang: 'Inglés/Sueco', scene: 'Hard Rock · AOR · Death Melódico' },
     en: { lang: 'English/Swedish', scene: 'Hard Rock · AOR · Melodic Death' },
   },
   'Finland': {
     flag: '🇫🇮 FI', color: '#06b6d4',
-    es: { lang: 'Finés/Inglés', scene: 'Glam Rock · Melodic Death Metal' },
+    es: { lang: 'Finés/Inglés', scene: 'Glam Rock · Death Metal Melódico' },
     en: { lang: 'Finnish/English', scene: 'Glam Rock · Melodic Death Metal' },
   },
   'Germany': {
@@ -48,7 +49,7 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
   },
   'Israel': {
     flag: '🇮🇱 IL', color: '#10b981',
-    es: { lang: 'Hebreo/Inglés', scene: 'Israeli Rock · Hip-Hop · Punk' },
+    es: { lang: 'Hebreo/Inglés', scene: 'Rock Israelí · Hip-Hop · Punk' },
     en: { lang: 'Hebrew/English', scene: 'Israeli Rock · Hip-Hop · Punk' },
   },
   'Norway': {
@@ -58,7 +59,7 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
   },
   'New Zealand': {
     flag: '🇳🇿 NZ', color: '#34d399',
-    es: { lang: 'Inglés', scene: 'Indie · Phonk · Internet Pop' },
+    es: { lang: 'Inglés', scene: 'Indie · Phonk · Pop de Internet' },
     en: { lang: 'English', scene: 'Indie · Phonk · Internet Pop' },
   },
   'Puerto Rico': {
@@ -78,30 +79,13 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
   },
 };
 
-const LANG_DATA = [
-  { lang: 'Inglés',          pct: 78, color: '#00f2fe' },
-  { lang: 'Español',         pct: 9,  color: '#fb923c' },
-  { lang: 'Hebreo',          pct: 7,  color: '#34d399' },
-  { lang: 'Alemán/Sueco',    pct: 4,  color: '#f72585' },
-  { lang: 'Otros',           pct: 2,  color: '#a78bfa' },
-];
-
-const SCENE_TAGS = [
-  { tag: '🤘 Post-Hardcore USA',     color: '#3b82f6' },
-  { tag: '⚡ Synthwave Francia/USA', color: '#8b5cf6' },
-  { tag: '🎸 Glam Rock Escandinavia',color: '#facc15' },
-  { tag: '🌌 Blackgaze Global',      color: '#00f2fe' },
-  { tag: '🎮 Internet Culture',      color: '#10b981' },
-  { tag: '🇮🇱 Israeli Rock',         color: '#34d399' },
-  { tag: '🔥 Metalcore UK/USA',      color: '#ef4444' },
-  { tag: '🌙 Darksynth Cyberpunk',   color: '#f72585' },
-];
-
 export default function CulturalMap({ data }: CulturalMapProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const { lang, t } = useApp();
   const countries = data.countries;
   const maxPlays = Math.max(...countries.map(c => c.plays));
+  const sceneTags = getCulturalSceneTags(lang);
+  const languageData = getCulturalLanguageData(lang);
 
   const cardVariants = {
     initial: { opacity: 0, scale: 0.9 },
@@ -128,7 +112,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
             {t.cultural.heroDesc(countries.length)}
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
-            {SCENE_TAGS.map(({ tag, color }) => (
+            {sceneTags.map(({ tag, color }) => (
               <span key={tag} className="text-[11px] px-2.5 py-1 rounded-full font-mono font-bold"
                 style={{ color, backgroundColor: `${color}15`, border: `1px solid ${color}30` }}>
                 {tag}
@@ -170,14 +154,14 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                 <div className="flex items-center justify-between mb-3">
                   <div className="h-10 px-2 rounded-xl flex items-center justify-center"
                     style={{ backgroundColor: `${meta.color}20`, border: `1px solid ${meta.color}40` }}>
-                    <FlagArt country={c.country} size={30} />
+                    <FlagArt country={c.country} size={30} title={localizeCountryName(c.country, lang)} />
                   </div>
                   <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
                     style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>
                     {c.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}
                   </span>
                 </div>
-                <p className="text-sm font-bold text-white leading-tight">{c.country}</p>
+                <p className="text-sm font-bold text-white leading-tight">{localizeCountryName(c.country, lang)}</p>
                 <p className="text-[10px] text-gray-500 font-mono mt-0.5">{localeMeta.lang}</p>
                 <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
                   <motion.div className="h-full rounded-full"
@@ -204,10 +188,10 @@ export default function CulturalMap({ data }: CulturalMapProps) {
           <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
         </div>
         <div className="space-y-3">
-          {LANG_DATA.map(({ lang, pct, color }, i) => (
-            <div key={lang} className="space-y-1">
+          {languageData.map(({ label, pct, color }, i) => (
+            <div key={label} className="space-y-1">
               <div className="flex justify-between text-xs font-mono">
-                <span className="text-gray-300 font-bold">{lang}</span>
+                <span className="text-gray-300 font-bold">{label}</span>
                 <span style={{ color }}>{pct}%</span>
               </div>
               <div className="h-2.5 rounded-full bg-white/5">

@@ -1,0 +1,3201 @@
+[
+  {
+    "name": "Bring Me the Horizon",
+    "aliases": ["BMTH"],
+    "origin": {
+      "es": "Sheffield, Inglaterra",
+      "en": "Sheffield, England"
+    },
+    "country": {
+      "es": "Reino Unido",
+      "en": "United Kingdom"
+    },
+    "start_year": 2004,
+    "status": {
+      "es": "Banda británica activa; eje entre metalcore, rock alternativo, pop oscuro y electrónica.",
+      "en": "Active British band; a bridge between metalcore, alternative rock, dark pop and electronics."
+    },
+    "bio": {
+      "es": "Bring Me the Horizon funciona como una columna vertebral del archivo: una banda que empezó en territorios deathcore/metalcore y luego abrió su lenguaje hacia coros enormes, producción electrónica, pop experimental y estética digital. En tu historial aparece como fuerza de transformación, no solo como artista favorito.",
+      "en": "Bring Me the Horizon works like a backbone in the archive: a band that began in deathcore/metalcore territory and later opened its language toward huge hooks, electronic production, experimental pop and digital aesthetics. In your history it reads as transformation energy, not just a favorite artist."
+    },
+    "archive_role": {
+      "es": "Representa la parte del museo que une agresividad, melodía, reinvención y ambición visual. Cuando BMTH aparece arriba, el archivo suele moverse hacia una identidad más grande, moderna y cinematográfica.",
+      "en": "Represents the part of the museum where aggression, melody, reinvention and visual ambition meet. When BMTH rises, the archive usually moves toward a bigger, more modern and cinematic identity."
+    },
+    "sound_evolution": {
+      "es": "Su arco va de la violencia juvenil al metalcore emocional, después al rock alternativo de estadio, pop experimental y cyber-rock. Esa evolución encaja con una escucha que no quiere quedarse en un solo género.",
+      "en": "Their arc moves from youthful heaviness into emotional metalcore, then arena-sized alternative rock, experimental pop and cyber-rock. That evolution fits a listener who does not want to stay inside one genre."
+    },
+    "why_it_matters": {
+      "es": "En Nova Music Lab, BMTH es el laboratorio principal de cambio: una prueba de que una identidad pesada también puede volverse melódica, futurista y masiva sin perder tensión.",
+      "en": "Inside Nova Music Lab, BMTH is the main laboratory of change: proof that a heavy identity can become melodic, futuristic and massive without losing tension."
+    },
+    "signature_moods": {
+      "es": ["catarsis", "renacimiento", "tensión moderna", "estadio oscuro"],
+      "en": ["catharsis", "rebirth", "modern tension", "dark arena"]
+    },
+    "key_albums": [
+      {
+        "title": "Sempiternal",
+        "year": 2013,
+        "description": {
+          "es": "Punto de giro donde la banda afina la mezcla de metalcore, electrónica y coros monumentales.",
+          "en": "Turning point where the band sharpened the mix of metalcore, electronics and monumental hooks."
+        }
+      },
+      {
+        "title": "That's the Spirit",
+        "year": 2015,
+        "description": {
+          "es": "La etapa de rock alternativo grande, emocional y más accesible; una puerta directa a la melodía masiva.",
+          "en": "The era of bigger, emotional and more accessible alternative rock; a direct gate into massive melody."
+        }
+      },
+      {
+        "title": "amo",
+        "year": 2019,
+        "description": {
+          "es": "El disco donde la banda cruza pop, electrónica, vulnerabilidad y experimentación sin abandonar su sombra pesada.",
+          "en": "The record where the band crosses pop, electronics, vulnerability and experimentation without losing its heavy shadow."
+        }
+      },
+      {
+        "title": "Post Human: Survival Horror",
+        "year": 2020,
+        "description": {
+          "es": "Regreso más agresivo y digital, con energía pandémica, metal moderno y estética de crisis.",
+          "en": "A more aggressive and digital return, carrying pandemic-era pressure, modern metal and crisis aesthetics."
+        }
+      },
+      {
+        "title": "Post Human: Nex Gen",
+        "year": 2024,
+        "description": {
+          "es": "Expansión futurista de la saga Post Human: hiperactiva, cyber, emocional y caótica.",
+          "en": "A futuristic expansion of the Post Human arc: hyperactive, cyber, emotional and chaotic."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Deafheaven",
+    "aliases": [],
+    "origin": {
+      "es": "San Francisco, California",
+      "en": "San Francisco, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2010,
+    "status": {
+      "es": "Banda activa de blackgaze/post-metal; famosa por unir black metal, shoegaze y post-rock.",
+      "en": "Active blackgaze/post-metal band, known for blending black metal, shoegaze and post-rock."
+    },
+    "bio": {
+      "es": "Deafheaven es la zona más luminosa y dolorosa del archivo: guitarras inmensas, belleza abrasiva y una forma de tristeza que no se queda quieta. En tu escucha, su peso no parece solo extremo; parece contemplativo, como una tormenta que también ilumina.",
+      "en": "Deafheaven is the archive's most luminous and painful zone: immense guitars, abrasive beauty and a sadness that refuses to stay still. In your listening, their weight does not read only as extreme; it reads as contemplative, like a storm that also gives light."
+    },
+    "archive_role": {
+      "es": "Actúa como artista de paisaje: cuando aparece Deafheaven, la app entra en modo panorámico, largo, emocional y casi cinematográfico.",
+      "en": "Acts as a landscape artist: when Deafheaven appears, the app enters a panoramic, long-form, emotional and almost cinematic mode."
+    },
+    "sound_evolution": {
+      "es": "Del blackgaze explosivo a una etapa más shoegaze y limpia en Infinite Granite, su evolución muestra cómo la intensidad puede cambiar de forma sin desaparecer.",
+      "en": "From explosive blackgaze to a cleaner shoegaze-forward phase on Infinite Granite, their evolution shows how intensity can change shape without disappearing."
+    },
+    "why_it_matters": {
+      "es": "Es el artista que convierte ruido en arquitectura emocional. Sirve para leer el lado más expansivo, melancólico y atmosférico de tu ADN musical.",
+      "en": "They turn noise into emotional architecture. They help read the most expansive, melancholic and atmospheric side of your musical DNA."
+    },
+    "signature_moods": {
+      "es": ["blackgaze luminoso", "contemplación", "catarsis lenta", "belleza abrasiva"],
+      "en": ["luminous blackgaze", "contemplation", "slow catharsis", "abrasive beauty"]
+    },
+    "key_albums": [
+      {
+        "title": "Sunbather",
+        "year": 2013,
+        "description": {
+          "es": "La explosión blackgaze que hizo del contraste entre belleza y violencia una marca moderna.",
+          "en": "The blackgaze breakthrough that made the contrast between beauty and violence feel modern."
+        }
+      },
+      {
+        "title": "New Bermuda",
+        "year": 2015,
+        "description": {
+          "es": "Más pesado, compacto y oscuro; el lado más afilado de su lenguaje.",
+          "en": "Heavier, tighter and darker; the sharper side of their language."
+        }
+      },
+      {
+        "title": "Ordinary Corrupt Human Love",
+        "year": 2018,
+        "description": {
+          "es": "Un disco más abierto y emocional, con estructuras largas y una luz menos agresiva.",
+          "en": "A more open and emotional record, with long structures and a less aggressive light."
+        }
+      },
+      {
+        "title": "Infinite Granite",
+        "year": 2021,
+        "description": {
+          "es": "La etapa shoegaze limpia y luminosa: menos grito, más niebla, melodía y espacio.",
+          "en": "The clean, luminous shoegaze phase: fewer screams, more haze, melody and space."
+        }
+      },
+      {
+        "title": "Lonely People With Power",
+        "year": 2025,
+        "description": {
+          "es": "Regreso hacia una fuerza más agresiva, manteniendo la escala emocional de su etapa madura.",
+          "en": "A return toward a more aggressive force while keeping the emotional scale of their mature era."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Bilmuri",
+    "aliases": ["Johnny Franck"],
+    "origin": {
+      "es": "Columbus, Ohio",
+      "en": "Columbus, Ohio"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2016,
+    "status": {
+      "es": "Proyecto de Johnny Franck; mezcla post-hardcore, pop, country, electrónica y humor surreal.",
+      "en": "Johnny Franck project; blends post-hardcore, pop, country, electronics and surreal humor."
+    },
+    "bio": {
+      "es": "Bilmuri aporta el lado más elástico y alegre del archivo: riffs, grooves, coros pegajosos, títulos absurdos y producción muy personal. Es pesado sin sentirse rígido, emocional sin perder juego.",
+      "en": "Bilmuri brings the archive's most elastic and joyful side: riffs, grooves, sticky hooks, absurd titles and very personal production. It is heavy without feeling stiff, emotional without losing play."
+    },
+    "archive_role": {
+      "es": "Funciona como energía de reconstrucción: música para recuperar movimiento, volver al cuerpo y convertir intensidad en impulso.",
+      "en": "Works as reconstruction energy: music for getting movement back, returning to the body and turning intensity into momentum."
+    },
+    "sound_evolution": {
+      "es": "El proyecto empezó como laboratorio DIY hiperproductivo y fue abriéndose hacia un sonido más grande, brillante y con guiños country-pop en American Motor Sports.",
+      "en": "The project began as a hyper-productive DIY lab and opened toward a bigger, brighter sound with country-pop flashes on American Motor Sports."
+    },
+    "why_it_matters": {
+      "es": "En tu mapa, Bilmuri es dopamina con guitarras: prueba de que el post-hardcore también puede ser colorido, deportivo, absurdo y profundamente pegajoso.",
+      "en": "In your map, Bilmuri is dopamine with guitars: proof that post-hardcore can also be colorful, athletic, absurd and deeply catchy."
+    },
+    "signature_moods": {
+      "es": ["groove emocional", "dopamina", "humor raro", "energía de verano"],
+      "en": ["emotional groove", "dopamine", "weird humor", "summer energy"]
+    },
+    "key_albums": [
+      {
+        "title": "Rich Sips",
+        "year": 2019,
+        "description": {
+          "es": "Una cápsula central del sonido Bilmuri: grooves pegajosos, melodía emo y producción juguetona.",
+          "en": "A central capsule of the Bilmuri sound: sticky grooves, emo melody and playful production."
+        }
+      },
+      {
+        "title": "Eggy Pocket",
+        "year": 2020,
+        "description": {
+          "es": "Más colaborativo y melódico, con una mezcla muy directa entre pop, post-hardcore y humor de internet.",
+          "en": "More collaborative and melodic, with a direct mix of pop, post-hardcore and internet humor."
+        }
+      },
+      {
+        "title": "Goblin Hours",
+        "year": 2022,
+        "description": {
+          "es": "Etapa de consolidación del caos controlado: energía, títulos raros y ganchos enormes.",
+          "en": "A consolidation of controlled chaos: energy, strange titles and huge hooks."
+        }
+      },
+      {
+        "title": "American Motor Sports",
+        "year": 2024,
+        "description": {
+          "es": "El salto grande: guitarras, brillo country-pop, estribillos enormes y identidad más expansiva.",
+          "en": "The bigger leap: guitars, country-pop shine, huge choruses and a more expansive identity."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Nevertel",
+    "aliases": [],
+    "origin": {
+      "es": "Tampa, Florida",
+      "en": "Tampa, Florida"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": "2010s",
+    "status": {
+      "es": "Banda alternativa moderna entre rock, rap melódico, post-hardcore y producción digital.",
+      "en": "Modern alternative band between rock, melodic rap, post-hardcore and digital production."
+    },
+    "bio": {
+      "es": "Nevertel ocupa una zona muy 2020s del archivo: riffs claros, vocales melódicas, rap-rock emocional y producción compacta. Su presencia habla de canciones directas que funcionan como descarga rápida.",
+      "en": "Nevertel occupies a very 2020s zone of the archive: clear riffs, melodic vocals, emotional rap-rock and compact production. Their presence points to direct songs that work as fast release valves."
+    },
+    "archive_role": {
+      "es": "Es una antena de rock alternativo moderno: menos monumental que BMTH, más inmediato, urbano y centrado en hooks.",
+      "en": "It is a modern alternative-rock antenna: less monumental than BMTH, more immediate, urban and hook-centered."
+    },
+    "sound_evolution": {
+      "es": "Su lenguaje mezcla guitarras limpias, tensión post-hardcore y cadencias rap/pop; en el archivo aparece como puente entre emoción y velocidad.",
+      "en": "Their language mixes clean guitars, post-hardcore tension and rap/pop cadences; in the archive it appears as a bridge between emotion and speed."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a leer tu gusto por el alt-rock digital: canciones que no necesitan largos mundos conceptuales para dejar marca.",
+      "en": "Helps read your taste for digital alt-rock: songs that do not need long conceptual worlds to leave a mark."
+    },
+    "signature_moods": {
+      "es": ["rap-rock emocional", "presión moderna", "hook directo", "velocidad urbana"],
+      "en": ["emotional rap-rock", "modern pressure", "direct hook", "urban speed"]
+    },
+    "key_albums": [
+      {
+        "title": "everything in my mind",
+        "year": 2021,
+        "description": {
+          "es": "El lanzamiento que concentra la huella principal de Nevertel en tu archivo: rock alternativo moderno, ansiedad y melodía directa.",
+          "en": "The release that concentrates Nevertel's main footprint in your archive: modern alternative rock, anxiety and direct melody."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Slaves",
+    "aliases": ["Rain City Drive"],
+    "origin": {
+      "es": "Sacramento, California",
+      "en": "Sacramento, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2014,
+    "status": {
+      "es": "Banda post-hardcore que más tarde continuó como Rain City Drive.",
+      "en": "Post-hardcore band that later continued as Rain City Drive."
+    },
+    "bio": {
+      "es": "Slaves/Rain City Drive representa el lado melódico, R&B y emocional del post-hardcore moderno. En tu archivo, su papel es menos brutal y más vocal: canciones de tensión limpia, estribillos grandes y vulnerabilidad directa.",
+      "en": "Slaves/Rain City Drive represents the melodic, R&B-tinted and emotional side of modern post-hardcore. In your archive, their role is less brutal and more vocal: clean tension, big choruses and direct vulnerability."
+    },
+    "archive_role": {
+      "es": "Funciona como melodrama eléctrico: una zona donde la voz lleva el peso emocional y las guitarras sostienen la intensidad.",
+      "en": "Works as electric melodrama: a zone where the voice carries the emotional weight and guitars hold the intensity."
+    },
+    "sound_evolution": {
+      "es": "Del post-hardcore con soul de sus primeras etapas a un alt-rock más pulido bajo Rain City Drive, el proyecto fue moviéndose hacia melodías más claras.",
+      "en": "From the soul-leaning post-hardcore of the early era toward a cleaner alt-rock shape as Rain City Drive, the project moved toward clearer melody."
+    },
+    "why_it_matters": {
+      "es": "Sirve para entender por qué tu archivo no es solo pesado: también busca voces que parezcan confesión.",
+      "en": "It explains why your archive is not only heavy: it also searches for voices that feel like confession."
+    },
+    "signature_moods": {
+      "es": ["vulnerabilidad", "post-hardcore melódico", "drama vocal", "limpieza emocional"],
+      "en": ["vulnerability", "melodic post-hardcore", "vocal drama", "emotional clarity"]
+    },
+    "key_albums": [
+      {
+        "title": "Through Art We Are All Equals",
+        "year": 2014,
+        "description": {
+          "es": "Debut con identidad post-hardcore emocional y una fuerte presencia vocal.",
+          "en": "Debut with an emotional post-hardcore identity and a strong vocal center."
+        }
+      },
+      {
+        "title": "Beautiful Death",
+        "year": 2018,
+        "description": {
+          "es": "Una etapa más pulida, dramática y centrada en melodías largas.",
+          "en": "A more polished, dramatic phase centered on long melodic lines."
+        }
+      },
+      {
+        "title": "To Better Days",
+        "year": 2020,
+        "description": {
+          "es": "El gran álbum en tu archivo: final de la etapa Slaves y puente hacia Rain City Drive.",
+          "en": "The major album in your archive: the final Slaves-era album and bridge toward Rain City Drive."
+        }
+      },
+      {
+        "title": "Rain City Drive",
+        "year": 2022,
+        "description": {
+          "es": "Nuevo nombre, sonido más alternativo y continuación de la línea melódica.",
+          "en": "New name, more alternative sound and continuation of the melodic line."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Jonny Craig",
+    "aliases": [],
+    "origin": {
+      "es": "Abbotsford, Columbia Británica",
+      "en": "Abbotsford, British Columbia"
+    },
+    "country": {
+      "es": "Canadá / Estados Unidos",
+      "en": "Canada / United States"
+    },
+    "start_year": 2000,
+    "status": {
+      "es": "Vocalista asociado a post-hardcore, soul y R&B alternativo.",
+      "en": "Vocalist associated with post-hardcore, soul and alternative R&B."
+    },
+    "bio": {
+      "es": "Jonny Craig aparece como una firma vocal más que como una escena: melismas, soul, fragilidad y dramatismo. Su presencia en tu top confirma que el timbre humano importa tanto como los riffs.",
+      "en": "Jonny Craig appears more as a vocal signature than a scene: melisma, soul, fragility and drama. His presence in your top confirms that human tone matters as much as riffs."
+    },
+    "archive_role": {
+      "es": "Es la línea soul del archivo post-hardcore: canciones donde la voz se vuelve el instrumento principal de tensión.",
+      "en": "He is the soul line inside the post-hardcore archive: songs where the voice becomes the main instrument of tension."
+    },
+    "sound_evolution": {
+      "es": "Su trayectoria conecta Dance Gavin Dance, Emarosa, Slaves y trabajo solista, moviéndose entre post-hardcore, R&B y balada alternativa.",
+      "en": "His path connects Dance Gavin Dance, Emarosa, Slaves and solo work, moving between post-hardcore, R&B and alternative balladry."
+    },
+    "why_it_matters": {
+      "es": "Permite separar una verdad importante del proyecto: a veces lo que más engancha no es el género, sino una voz específica.",
+      "en": "It separates an important truth in the project: sometimes the strongest attachment is not to a genre, but to a specific voice."
+    },
+    "signature_moods": {
+      "es": ["soul post-hardcore", "vulnerabilidad vocal", "drama íntimo", "R&B alternativo"],
+      "en": ["post-hardcore soul", "vocal vulnerability", "intimate drama", "alternative R&B"]
+    },
+    "key_albums": [
+      {
+        "title": "A Dream Is a Question You Don't Know How to Answer",
+        "year": 2009,
+        "description": {
+          "es": "Primer álbum solista; una versión más desnuda y R&B de su identidad vocal.",
+          "en": "First solo album; a more stripped and R&B-leaning version of his vocal identity."
+        }
+      },
+      {
+        "title": "Find What You Love and Let It Kill You",
+        "year": 2013,
+        "description": {
+          "es": "EP que continúa la mezcla de confesión, soul y melodía alternativa.",
+          "en": "EP that continues the mix of confession, soul and alternative melody."
+        }
+      },
+      {
+        "title": "The Places We'll Never Be",
+        "year": 2022,
+        "description": {
+          "es": "Uno de los títulos más visibles dentro de tu archivo reciente de Jonny Craig.",
+          "en": "One of the most visible titles inside your recent Jonny Craig archive."
+        }
+      }
+    ]
+  },
+  {
+    "name": "TesseracT",
+    "aliases": ["Tesseract"],
+    "origin": {
+      "es": "Milton Keynes, Inglaterra",
+      "en": "Milton Keynes, England"
+    },
+    "country": {
+      "es": "Reino Unido",
+      "en": "United Kingdom"
+    },
+    "start_year": 2003,
+    "status": {
+      "es": "Banda británica activa de metal progresivo/djent.",
+      "en": "Active British progressive metal/djent band."
+    },
+    "bio": {
+      "es": "TesseracT es precisión emocional: riffs geométricos, voces limpias, tensión progresiva y atmósferas espaciales. En tu archivo funciona como la parte matemática y elegante del metal moderno.",
+      "en": "TesseracT is emotional precision: geometric riffs, clean vocals, progressive tension and spatial atmospheres. In your archive it works as the mathematical and elegant side of modern metal."
+    },
+    "archive_role": {
+      "es": "Representa técnica sin frialdad: música compleja que todavía busca flotación, trance y belleza.",
+      "en": "Represents technique without coldness: complex music that still searches for levitation, trance and beauty."
+    },
+    "sound_evolution": {
+      "es": "Del djent de One a los arcos más conceptuales y maduros de Altered State, Polaris, Sonder y War of Being.",
+      "en": "From the djent foundation of One into the more conceptual and mature arcs of Altered State, Polaris, Sonder and War of Being."
+    },
+    "why_it_matters": {
+      "es": "Añade arquitectura al mapa: demuestra que tu gusto por intensidad también incluye diseño, paciencia y espacio.",
+      "en": "Adds architecture to the map: it shows that your taste for intensity also includes design, patience and space."
+    },
+    "signature_moods": {
+      "es": ["djent atmosférico", "precisión", "trance progresivo", "espacio"],
+      "en": ["atmospheric djent", "precision", "progressive trance", "space"]
+    },
+    "key_albums": [
+      {
+        "title": "One",
+        "year": 2011,
+        "description": {
+          "es": "Base del lenguaje TesseracT: riffs polirrítmicos, peso y atmósfera.",
+          "en": "The foundation of TesseracT's language: polyrhythmic riffs, weight and atmosphere."
+        }
+      },
+      {
+        "title": "Altered State",
+        "year": 2013,
+        "description": {
+          "es": "Un viaje progresivo fluido, limpio y emocional; uno de los discos clave del djent melódico.",
+          "en": "A fluid, clean and emotional progressive journey; one of melodic djent's key records."
+        }
+      },
+      {
+        "title": "Polaris",
+        "year": 2015,
+        "description": {
+          "es": "Más directo y atmosférico, con una identidad vocal muy clara.",
+          "en": "More direct and atmospheric, with a very clear vocal identity."
+        }
+      },
+      {
+        "title": "Sonder",
+        "year": 2018,
+        "description": {
+          "es": "Compacto, oscuro y técnico; una lectura más contenida del mismo universo.",
+          "en": "Compact, dark and technical; a more contained reading of the same universe."
+        }
+      },
+      {
+        "title": "War of Being",
+        "year": 2023,
+        "description": {
+          "es": "Etapa madura de escala conceptual, riffs pesados y producción amplia.",
+          "en": "A mature conceptual-scale phase with heavy riffs and wide production."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Santa Cruz",
+    "aliases": [],
+    "origin": {
+      "es": "Helsinki, Finlandia",
+      "en": "Helsinki, Finland"
+    },
+    "country": {
+      "es": "Finlandia",
+      "en": "Finland"
+    },
+    "start_year": 2007,
+    "status": {
+      "es": "Banda finlandesa de hard rock/glam metal moderno.",
+      "en": "Finnish modern hard rock/glam metal band."
+    },
+    "bio": {
+      "es": "Santa Cruz introduce brillo de guitarras, actitud glam y hard rock de alto voltaje. En el archivo aparece como una cápsula de energía física, juventud, exceso y melodía inmediata.",
+      "en": "Santa Cruz brings guitar shine, glam attitude and high-voltage hard rock. In the archive it appears as a capsule of physical energy, youth, excess and immediate melody."
+    },
+    "archive_role": {
+      "es": "Es el neón glam del museo: menos introspectivo, más adrenalina, escenario y movimiento.",
+      "en": "It is the glam neon of the museum: less introspective, more adrenaline, stage and movement."
+    },
+    "sound_evolution": {
+      "es": "Su primera etapa mezcla sleaze, glam metal y hard rock moderno; Bad Blood Rising concentra el lado más directo de esa fórmula.",
+      "en": "Their early phase mixes sleaze, glam metal and modern hard rock; Bad Blood Rising concentrates the direct side of that formula."
+    },
+    "why_it_matters": {
+      "es": "Equilibra la melancolía del archivo con una capa de fiesta, riff y confianza escénica.",
+      "en": "Balances the archive's melancholy with a layer of party, riff and stage confidence."
+    },
+    "signature_moods": {
+      "es": ["hard rock glam", "adrenalina", "neón", "escenario"],
+      "en": ["glam hard rock", "adrenaline", "neon", "stage"]
+    },
+    "key_albums": [
+      {
+        "title": "Screaming for Adrenaline",
+        "year": 2013,
+        "description": {
+          "es": "Debut que define la mezcla entre hard rock moderno y energía glam.",
+          "en": "Debut that defines the mix between modern hard rock and glam energy."
+        }
+      },
+      {
+        "title": "Santa Cruz",
+        "year": 2015,
+        "description": {
+          "es": "Etapa más consolidada, con riffs grandes y actitud de banda de escenario.",
+          "en": "A more consolidated phase, with big riffs and stage-band attitude."
+        }
+      },
+      {
+        "title": "Bad Blood Rising",
+        "year": 2017,
+        "description": {
+          "es": "El álbum que más aparece en tu archivo: glam metal moderno, energía directa y alto volumen.",
+          "en": "The album most visible in your archive: modern glam metal, direct energy and high volume."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Normandie",
+    "aliases": [],
+    "origin": {
+      "es": "Örebro, Suecia",
+      "en": "Orebro, Sweden"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": 2013,
+    "status": {
+      "es": "Banda sueca de rock alternativo/post-hardcore melódico.",
+      "en": "Swedish melodic alternative rock/post-hardcore band."
+    },
+    "bio": {
+      "es": "Normandie aparece como una versión pulida, escandinava y emocional del rock alternativo moderno. Su sonido une limpieza pop, guitarras tensas y dramatismo sin volverse caótico.",
+      "en": "Normandie appears as a polished, Scandinavian and emotional version of modern alternative rock. Their sound joins pop clarity, tense guitars and drama without becoming chaotic."
+    },
+    "archive_role": {
+      "es": "Aporta elegancia al lado post-hardcore: melodía amplia, producción limpia y emoción controlada.",
+      "en": "Adds elegance to the post-hardcore side: wide melody, clean production and controlled emotion."
+    },
+    "sound_evolution": {
+      "es": "De Inguz a Dark & Beautiful Secrets y Dopamine, la banda se mueve hacia un rock alternativo más luminoso, moderno y directo.",
+      "en": "From Inguz to Dark & Beautiful Secrets and Dopamine, the band moves toward brighter, modern and direct alternative rock."
+    },
+    "why_it_matters": {
+      "es": "En el mapa de Lirioth, Normandie limpia la niebla: mantiene intensidad, pero la ordena en canciones grandes y claras.",
+      "en": "In Lirioth's map, Normandie clears the haze: it keeps intensity, but organizes it into big, clear songs."
+    },
+    "signature_moods": {
+      "es": ["rock alternativo sueco", "claridad", "drama pulido", "luz fría"],
+      "en": ["Swedish alternative rock", "clarity", "polished drama", "cold light"]
+    },
+    "key_albums": [
+      {
+        "title": "Inguz",
+        "year": 2016,
+        "description": {
+          "es": "Debut de energía post-hardcore melódica y guitarras modernas.",
+          "en": "Debut with melodic post-hardcore energy and modern guitars."
+        }
+      },
+      {
+        "title": "White Flag",
+        "year": 2018,
+        "description": {
+          "es": "Más grande y accesible, con vocación de rock alternativo de escenario.",
+          "en": "Bigger and more accessible, aiming toward stage-ready alternative rock."
+        }
+      },
+      {
+        "title": "Dark & Beautiful Secrets",
+        "year": 2021,
+        "description": {
+          "es": "El disco más visible en tu archivo: oscuro, pulido y emocionalmente directo.",
+          "en": "The most visible Normandie record in your archive: dark, polished and emotionally direct."
+        }
+      },
+      {
+        "title": "Dopamine",
+        "year": 2024,
+        "description": {
+          "es": "Etapa más brillante y pop, con foco en hooks y energía moderna.",
+          "en": "A brighter, more pop-facing phase focused on hooks and modern energy."
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Midnight",
+    "aliases": [],
+    "origin": {
+      "es": "Los Angeles, California",
+      "en": "Los Angeles, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2012,
+    "status": {
+      "es": "Dúo de synthwave/futuresynth con foco en nostalgia, ciudad nocturna y melodía pop.",
+      "en": "Synthwave/futuresynth duo focused on nostalgia, night cities and pop melody."
+    },
+    "bio": {
+      "es": "The Midnight es la parte más retro-futurista y sentimental del archivo. Sus saxos, sintetizadores y letras de memoria convierten la nostalgia en una autopista nocturna.",
+      "en": "The Midnight is the archive's most retro-futurist and sentimental part. Their saxophones, synths and memory-centered lyrics turn nostalgia into a night highway."
+    },
+    "archive_role": {
+      "es": "Funciona como ciudad emocional: luces, viaje, recuerdos, verano, neón y una melancolía que no pesa demasiado.",
+      "en": "Works as an emotional city: lights, travel, memory, summer, neon and a melancholy that never becomes too heavy."
+    },
+    "sound_evolution": {
+      "es": "Desde Days of Thunder y Endless Summer hasta Kids, Monsters y Heroes, el dúo ha expandido su nostalgia synth hacia historias más amplias.",
+      "en": "From Days of Thunder and Endless Summer through Kids, Monsters and Heroes, the duo has expanded synth nostalgia into wider stories."
+    },
+    "why_it_matters": {
+      "es": "Da al proyecto su dimensión cinematográfica suave: música para manejar de noche dentro de una memoria inventada.",
+      "en": "Gives the project its soft cinematic dimension: music for driving at night inside an invented memory."
+    },
+    "signature_moods": {
+      "es": ["synthwave", "nostalgia", "neón nocturno", "verano perdido"],
+      "en": ["synthwave", "nostalgia", "night neon", "lost summer"]
+    },
+    "key_albums": [
+      {
+        "title": "Days of Thunder",
+        "year": 2014,
+        "description": {
+          "es": "Primer gran manifiesto: nostalgia, ciudad, saxos y synthwave emocional.",
+          "en": "First major statement: nostalgia, city lights, saxophone and emotional synthwave."
+        }
+      },
+      {
+        "title": "Endless Summer",
+        "year": 2016,
+        "description": {
+          "es": "La cápsula clásica de verano eterno, memoria juvenil y brillo nocturno.",
+          "en": "The classic capsule of endless summer, young memory and nocturnal shine."
+        }
+      },
+      {
+        "title": "Nocturnal",
+        "year": 2017,
+        "description": {
+          "es": "Más nocturno y urbano, con una energía de persecución elegante.",
+          "en": "More nocturnal and urban, with sleek chase-scene energy."
+        }
+      },
+      {
+        "title": "Monsters",
+        "year": 2020,
+        "description": {
+          "es": "Más introspectivo y emocional, mirando la adolescencia como territorio fantasma.",
+          "en": "More introspective and emotional, looking at adolescence as ghost territory."
+        }
+      },
+      {
+        "title": "Heroes",
+        "year": 2022,
+        "description": {
+          "es": "Cierre de una trilogía temática con una escala más grande y esperanzadora.",
+          "en": "Closure of a thematic trilogy with a larger and more hopeful scale."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Emarosa",
+    "aliases": [],
+    "origin": {
+      "es": "Lexington, Kentucky",
+      "en": "Lexington, Kentucky"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2006,
+    "status": {
+      "es": "Banda de rock alternativo que pasó de post-hardcore a pop rock/R&B brillante.",
+      "en": "Alternative rock band that moved from post-hardcore toward bright pop rock/R&B."
+    },
+    "bio": {
+      "es": "Emarosa es transición: del dramatismo post-hardcore vocal a un pop rock pulido, nocturno y lleno de groove. En tu archivo conecta la intensidad de escena con una sensibilidad más elegante.",
+      "en": "Emarosa is transition: from vocal post-hardcore drama into polished, nocturnal and groovy pop rock. In your archive it connects scene intensity with a more elegant sensitivity."
+    },
+    "archive_role": {
+      "es": "Aporta glamour, voz y groove; una salida menos pesada para la misma necesidad de drama.",
+      "en": "Adds glamour, voice and groove; a less heavy outlet for the same need for drama."
+    },
+    "sound_evolution": {
+      "es": "De Relativity y Emarosa hacia 131 y Peach Club, la banda se reinventó como pop rock de neón con memoria post-hardcore.",
+      "en": "From Relativity and Emarosa toward 131 and Peach Club, the band reinvented itself as neon pop rock with post-hardcore memory."
+    },
+    "why_it_matters": {
+      "es": "Enriquece el archivo con una versión más sensual, bailable y pulida de la emoción alternativa.",
+      "en": "Enriches the archive with a more sensual, danceable and polished version of alternative emotion."
+    },
+    "signature_moods": {
+      "es": ["pop rock nocturno", "R&B alternativo", "glamour", "drama limpio"],
+      "en": ["night pop rock", "alternative R&B", "glamour", "clean drama"]
+    },
+    "key_albums": [
+      {
+        "title": "Relativity",
+        "year": 2008,
+        "description": {
+          "es": "Etapa post-hardcore vocal, dramática y muy asociada al sonido de escena.",
+          "en": "Vocal, dramatic post-hardcore phase closely tied to the scene sound."
+        }
+      },
+      {
+        "title": "131",
+        "year": 2016,
+        "description": {
+          "es": "Puente hacia un sonido más melódico, pulido y amplio.",
+          "en": "Bridge toward a more melodic, polished and spacious sound."
+        }
+      },
+      {
+        "title": "Peach Club",
+        "year": 2019,
+        "description": {
+          "es": "La reinvención pop rock/R&B; brillante, seductora y muy distinta a sus inicios.",
+          "en": "The pop rock/R&B reinvention; bright, seductive and very different from their beginnings."
+        }
+      },
+      {
+        "title": "Sting",
+        "year": 2023,
+        "description": {
+          "es": "Continuación del giro pop con una producción más minimalista y elegante.",
+          "en": "Continuation of the pop turn with a more minimal and elegant production."
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Word Alive",
+    "aliases": [],
+    "origin": {
+      "es": "Phoenix, Arizona",
+      "en": "Phoenix, Arizona"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2008,
+    "status": {
+      "es": "Banda estadounidense de metalcore/rock alternativo moderno.",
+      "en": "American metalcore/modern alternative rock band."
+    },
+    "bio": {
+      "es": "The Word Alive sostiene una zona de metalcore emocional, riffs modernos y letras de resistencia. En tu archivo aparece como energía de pelea interna: melodía, peso y autocrítica.",
+      "en": "The Word Alive holds a zone of emotional metalcore, modern riffs and resilience lyrics. In your archive it appears as inner-fight energy: melody, weight and self-questioning."
+    },
+    "archive_role": {
+      "es": "Es una fuente de catarsis directa: canciones que empujan hacia adelante sin perder vulnerabilidad.",
+      "en": "A source of direct catharsis: songs that push forward without losing vulnerability."
+    },
+    "sound_evolution": {
+      "es": "Del metalcore de Deceiver y Life Cycles a la etapa más alternativa de Violent Noise, Monomania y Hard Reset.",
+      "en": "From the metalcore of Deceiver and Life Cycles toward the more alternative phase of Violent Noise, Monomania and Hard Reset."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a explicar el lado de tu escucha que usa energía pesada como forma de autocorrección y movimiento.",
+      "en": "Helps explain the side of your listening that uses heavy energy as self-correction and movement."
+    },
+    "signature_moods": {
+      "es": ["metalcore emocional", "resistencia", "catarsis directa", "autoexamen"],
+      "en": ["emotional metalcore", "resilience", "direct catharsis", "self-examination"]
+    },
+    "key_albums": [
+      {
+        "title": "Deceiver",
+        "year": 2010,
+        "description": {
+          "es": "Base metalcore de la banda: energía de escena, gritos y melodía.",
+          "en": "The band's metalcore foundation: scene energy, screams and melody."
+        }
+      },
+      {
+        "title": "Life Cycles",
+        "year": 2012,
+        "description": {
+          "es": "Consolidación con riffs más grandes y un enfoque más directo.",
+          "en": "A consolidation with bigger riffs and a more direct approach."
+        }
+      },
+      {
+        "title": "Violent Noise",
+        "year": 2018,
+        "description": {
+          "es": "El álbum más presente en tu archivo: moderno, melódico y orientado a hooks.",
+          "en": "The album most present in your archive: modern, melodic and hook-oriented."
+        }
+      },
+      {
+        "title": "Hard Reset",
+        "year": 2023,
+        "description": {
+          "es": "Etapa reciente de reinicio, con metalcore moderno y lectura de supervivencia.",
+          "en": "Recent reset phase, with modern metalcore and a survival reading."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Holding Absence",
+    "aliases": [],
+    "origin": {
+      "es": "Cardiff, Gales",
+      "en": "Cardiff, Wales"
+    },
+    "country": {
+      "es": "Reino Unido",
+      "en": "United Kingdom"
+    },
+    "start_year": 2015,
+    "status": {
+      "es": "Banda galesa de post-hardcore/emo alternativo.",
+      "en": "Welsh post-hardcore/alternative emo band."
+    },
+    "bio": {
+      "es": "Holding Absence es una de las zonas más confesionales del archivo: voces enormes, letras de pérdida, guitarras brillantes y dramatismo de corazón abierto.",
+      "en": "Holding Absence is one of the archive's most confessional zones: huge vocals, lyrics of loss, bright guitars and open-hearted drama."
+    },
+    "archive_role": {
+      "es": "Funciona como terapia de estadio pequeño: canciones intensas, directas y hechas para gritar sentimientos con belleza.",
+      "en": "Works like small-arena therapy: intense, direct songs made to shout feelings beautifully."
+    },
+    "sound_evolution": {
+      "es": "De su debut homónimo al salto de The Greatest Mistake of My Life y The Noble Art of Self Destruction, la banda refina su épica emocional.",
+      "en": "From their self-titled debut to The Greatest Mistake of My Life and The Noble Art of Self Destruction, the band refines its emotional epic."
+    },
+    "why_it_matters": {
+      "es": "Da lenguaje a la parte de tu archivo que busca belleza directa en la tristeza, no solo oscuridad.",
+      "en": "Gives language to the part of your archive that searches for direct beauty in sadness, not just darkness."
+    },
+    "signature_moods": {
+      "es": ["emo épico", "pérdida", "corazón abierto", "catarsis melódica"],
+      "en": ["epic emo", "loss", "open heart", "melodic catharsis"]
+    },
+    "key_albums": [
+      {
+        "title": "Holding Absence",
+        "year": 2019,
+        "description": {
+          "es": "Debut emocional y atmosférico, con base post-hardcore y mucha melodía.",
+          "en": "Emotional and atmospheric debut, with post-hardcore roots and a lot of melody."
+        }
+      },
+      {
+        "title": "The Greatest Mistake of My Life",
+        "year": 2021,
+        "description": {
+          "es": "La pieza clave en tu archivo: drama, pérdida, coros grandes y belleza directa.",
+          "en": "The key piece in your archive: drama, loss, big choruses and direct beauty."
+        }
+      },
+      {
+        "title": "The Noble Art of Self Destruction",
+        "year": 2023,
+        "description": {
+          "es": "Etapa más madura, con energía más amplia y emoción todavía más explícita.",
+          "en": "A more mature phase, with wider energy and even more explicit emotion."
+        }
+      }
+    ]
+  },
+  {
+    "name": "nothingnowhere.",
+    "aliases": ["nothing,nowhere.", "Nothing,Nowhere"],
+    "origin": {
+      "es": "Vermont, Estados Unidos",
+      "en": "Vermont, United States"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2015,
+    "status": {
+      "es": "Proyecto de Joe Mulherin entre emo rap, rock alternativo y post-hardcore.",
+      "en": "Joe Mulherin project between emo rap, alternative rock and post-hardcore."
+    },
+    "bio": {
+      "es": "nothingnowhere. trae una intimidad más solitaria: ansiedad, guitarras emo, rap contenido y una voz que parece grabada en una habitación oscura. En tu archivo marca recuperación, vulnerabilidad y una era más reciente.",
+      "en": "nothingnowhere. brings a more solitary intimacy: anxiety, emo guitars, restrained rap and a voice that feels recorded inside a dark room. In your archive it marks recovery, vulnerability and a more recent era."
+    },
+    "archive_role": {
+      "es": "Es la entrada emo rap del museo: menos épica que BMTH, más privada, nocturna y confesional.",
+      "en": "It is the museum's emo rap entry: less epic than BMTH, more private, nocturnal and confessional."
+    },
+    "sound_evolution": {
+      "es": "De Reaper y Ruiner a Trauma Factory y Void Eternal, el proyecto alterna rap emo, pop punk y peso alternativo.",
+      "en": "From Reaper and Ruiner to Trauma Factory and Void Eternal, the project alternates emo rap, pop punk and alternative heaviness."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a leer una etapa donde la intensidad no siempre explota: a veces se queda baja, tensa y honesta.",
+      "en": "Helps read a stage where intensity does not always explode: sometimes it stays low, tense and honest."
+    },
+    "signature_moods": {
+      "es": ["emo rap", "recuperación", "ansiedad", "noche privada"],
+      "en": ["emo rap", "recovery", "anxiety", "private night"]
+    },
+    "key_albums": [
+      {
+        "title": "Reaper",
+        "year": 2017,
+        "description": {
+          "es": "Primera señal fuerte: emo rap oscuro, minimalista y confesional.",
+          "en": "First strong signal: dark, minimal and confessional emo rap."
+        }
+      },
+      {
+        "title": "Ruiner",
+        "year": 2018,
+        "description": {
+          "es": "Continúa el lenguaje introspectivo, con guitarras y heridas más frontales.",
+          "en": "Continues the introspective language, with guitars and more direct wounds."
+        }
+      },
+      {
+        "title": "Trauma Factory",
+        "year": 2021,
+        "description": {
+          "es": "Álbum clave de recuperación pop-punk/emo rap, muy conectado con tu archivo.",
+          "en": "Key recovery album blending pop-punk and emo rap, strongly connected to your archive."
+        }
+      },
+      {
+        "title": "Void Eternal",
+        "year": 2023,
+        "description": {
+          "es": "Giro más pesado y alternativo, con colaboraciones del mundo hardcore/metal.",
+          "en": "A heavier alternative turn, with collaborations from the hardcore/metal world."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Tokio Hotel",
+    "aliases": [],
+    "origin": {
+      "es": "Magdeburg, Alemania",
+      "en": "Magdeburg, Germany"
+    },
+    "country": {
+      "es": "Alemania",
+      "en": "Germany"
+    },
+    "start_year": 2001,
+    "status": {
+      "es": "Banda alemana de pop rock/rock alternativo con evolución hacia electrónica y pop adulto.",
+      "en": "German pop rock/alternative rock band that evolved toward electronics and adult pop."
+    },
+    "bio": {
+      "es": "Tokio Hotel aporta una memoria más adolescente y europea: pop rock dramático, estética visual fuerte y una transición posterior hacia sonidos electrónicos.",
+      "en": "Tokio Hotel brings a more adolescent and European memory: dramatic pop rock, strong visual identity and a later transition toward electronic sounds."
+    },
+    "archive_role": {
+      "es": "Es nostalgia pop-rock: un recuerdo emocional que no pertenece al metal, pero sí a la construcción de identidad musical.",
+      "en": "It is pop-rock nostalgia: an emotional memory that does not belong to metal, but does belong to musical identity-building."
+    },
+    "sound_evolution": {
+      "es": "De Schrei y Zimmer 483 al giro electrónico de Kings of Suburbia, Dream Machine y 2001.",
+      "en": "From Schrei and Zimmer 483 to the electronic turn of Kings of Suburbia, Dream Machine and 2001."
+    },
+    "why_it_matters": {
+      "es": "Recuerda que el archivo también está hecho de primeras imágenes, épocas de descubrimiento y canciones que sobreviven por memoria.",
+      "en": "Reminds us that the archive is also made of first images, discovery eras and songs that survive through memory."
+    },
+    "signature_moods": {
+      "es": ["nostalgia europea", "pop rock", "drama visual", "memoria adolescente"],
+      "en": ["European nostalgia", "pop rock", "visual drama", "teen memory"]
+    },
+    "key_albums": [
+      {
+        "title": "Schrei",
+        "year": 2005,
+        "description": {
+          "es": "Debut alemán que convierte el drama juvenil en himnos pop rock.",
+          "en": "German debut that turns youthful drama into pop-rock anthems."
+        }
+      },
+      {
+        "title": "Zimmer 483",
+        "year": 2007,
+        "description": {
+          "es": "Consolidación del sonido pop rock europeo de la banda.",
+          "en": "Consolidation of the band's European pop-rock sound."
+        }
+      },
+      {
+        "title": "Humanoid",
+        "year": 2009,
+        "description": {
+          "es": "Primer gran puente hacia una estética más futurista y electrónica.",
+          "en": "First major bridge toward a more futuristic and electronic aesthetic."
+        }
+      },
+      {
+        "title": "Kings of Suburbia",
+        "year": 2014,
+        "description": {
+          "es": "El álbum más presente en tu archivo: más electrónico, adulto y nocturno.",
+          "en": "The album most present in your archive: more electronic, adult and nocturnal."
+        }
+      },
+      {
+        "title": "Dream Machine",
+        "year": 2017,
+        "description": {
+          "es": "Pop electrónico más pulido, introspectivo y de carretera nocturna.",
+          "en": "More polished electronic pop, introspective and night-drive oriented."
+        }
+      },
+      {
+        "title": "2001",
+        "year": 2022,
+        "description": {
+          "es": "Regreso que mira hacia su origen desde una estética adulta.",
+          "en": "A return that looks back at their origin from an adult aesthetic."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Carpenter Brut",
+    "aliases": ["Franck Hueso"],
+    "origin": {
+      "es": "Poitiers, Francia",
+      "en": "Poitiers, France"
+    },
+    "country": {
+      "es": "Francia",
+      "en": "France"
+    },
+    "start_year": 2012,
+    "status": {
+      "es": "Proyecto francés de darksynth/synthwave con imaginario de cine ochentero y metal.",
+      "en": "French darksynth/synthwave project with 1980s cinema and metal imagery."
+    },
+    "bio": {
+      "es": "Carpenter Brut es el motor nocturno del archivo: sintetizadores violentos, estética VHS, velocidad y una teatralidad casi de película de terror futurista.",
+      "en": "Carpenter Brut is the archive's night engine: violent synths, VHS aesthetics, speed and an almost futuristic horror-film theatricality."
+    },
+    "archive_role": {
+      "es": "Abre la puerta cyberpunk: cuando aparece, el proyecto se siente más visual, más arcade y más cinematográfico.",
+      "en": "Opens the cyberpunk door: when it appears, the project feels more visual, more arcade and more cinematic."
+    },
+    "sound_evolution": {
+      "es": "De los EPs reunidos en Trilogy a Leather Teeth, Leather Terror y Leather Temple, el proyecto desarrolla una saga darksynth con narrativa propia.",
+      "en": "From the EPs collected on Trilogy to Leather Teeth, Leather Terror and Leather Temple, the project builds a darksynth saga with its own narrative."
+    },
+    "why_it_matters": {
+      "es": "Da a Nova Music Lab su lado más de videojuego nocturno: velocidad, neón, peligro y diseño visual.",
+      "en": "Gives Nova Music Lab its most night-video-game side: speed, neon, danger and visual design."
+    },
+    "signature_moods": {
+      "es": ["darksynth", "cyberpunk", "cine ochentero", "adrenalina nocturna"],
+      "en": ["darksynth", "cyberpunk", "1980s cinema", "night adrenaline"]
+    },
+    "key_albums": [
+      {
+        "title": "Trilogy",
+        "year": 2015,
+        "description": {
+          "es": "Compilación de los tres EPs fundacionales; la base del sonido Carpenter Brut.",
+          "en": "Compilation of the three foundational EPs; the base of the Carpenter Brut sound."
+        }
+      },
+      {
+        "title": "Leather Teeth",
+        "year": 2018,
+        "description": {
+          "es": "Primer capítulo largo de una saga conceptual con estética glam metal y terror adolescente.",
+          "en": "First full-length chapter of a concept saga with glam-metal and teen-horror aesthetics."
+        }
+      },
+      {
+        "title": "Leather Terror",
+        "year": 2022,
+        "description": {
+          "es": "Más oscuro, pesado y agresivo, expandiendo el universo Leather.",
+          "en": "Darker, heavier and more aggressive, expanding the Leather universe."
+        }
+      },
+      {
+        "title": "Leather Temple",
+        "year": 2026,
+        "description": {
+          "es": "Cierre de la trilogía Leather con una lectura más sci-fi y electrónica.",
+          "en": "Closure of the Leather trilogy with a more sci-fi and electronic reading."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Magnolia Park",
+    "aliases": [],
+    "origin": {
+      "es": "Orlando, Florida",
+      "en": "Orlando, Florida"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2014,
+    "status": {
+      "es": "Banda activa de pop punk/emo pop con energía moderna, visual colorido y actitud de escena digital.",
+      "en": "Active pop-punk/emo-pop band with modern energy, colorful visuals and digital-scene attitude."
+    },
+    "bio": {
+      "es": "Magnolia Park es la parte más juvenil, veloz y fluorescente del archivo: pop punk con hooks inmediatos, ansiedad moderna, energía de anime/mixtape y una estética muy de internet.",
+      "en": "Magnolia Park is the archive's most youthful, fast and fluorescent side: pop punk with immediate hooks, modern anxiety, anime/mixtape energy and a very internet-native aesthetic."
+    },
+    "archive_role": {
+      "es": "Funciona como combustible de presente: canciones cortas, directas y llenas de movimiento cuando el archivo necesita color y velocidad.",
+      "en": "Works as present-tense fuel: short, direct and kinetic songs when the archive needs color and speed."
+    },
+    "sound_evolution": {
+      "es": "Su recorrido va de EPs de pop punk moderno a álbumes/mixtapes más ambiciosos donde conviven emo, rap, punk, hiperpop y rock alternativo.",
+      "en": "Their path moves from modern pop-punk EPs into more ambitious albums/mixtapes where emo, rap, punk, hyperpop and alternative rock coexist."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a leer el lado más actual del archivo: no todo es nostalgia o peso; también hay urgencia, humor, color y cultura online.",
+      "en": "Helps read the archive's most current side: not everything is nostalgia or weight; there is also urgency, humor, color and online culture."
+    },
+    "signature_moods": {
+      "es": ["pop punk moderno", "dopamina", "emo colorido", "velocidad"],
+      "en": ["modern pop punk", "dopamine", "colorful emo", "speed"]
+    },
+    "key_albums": [
+      {
+        "title": "Halloween Mixtape",
+        "year": 2021,
+        "description": {
+          "es": "Primera cápsula larga de su identidad: pop punk, estética spooky y energía de mixtape.",
+          "en": "First long capsule of their identity: pop punk, spooky aesthetics and mixtape energy."
+        }
+      },
+      {
+        "title": "Baku's Revenge",
+        "year": 2022,
+        "description": {
+          "es": "Debut oficial con hooks grandes, temas sociales y un sonido mucho más consolidado.",
+          "en": "Official debut with big hooks, social themes and a much more consolidated sound."
+        }
+      },
+      {
+        "title": "Halloween Mixtape II",
+        "year": 2023,
+        "description": {
+          "es": "Expande el universo mixtape con más caos pop, colaboraciones y estética de temporada oscura.",
+          "en": "Expands the mixtape universe with more pop chaos, collaborations and dark-season aesthetics."
+        }
+      },
+      {
+        "title": "VAMP",
+        "year": 2025,
+        "description": {
+          "es": "Etapa más reciente, reforzando su identidad como banda de pop punk hiperconectada y visual.",
+          "en": "Recent phase, reinforcing their identity as a hyper-connected and visual pop-punk band."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Machine Gun Kelly",
+    "aliases": ["mgk", "Colson Baker"],
+    "origin": {
+      "es": "Cleveland, Ohio",
+      "en": "Cleveland, Ohio"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2006,
+    "status": {
+      "es": "Artista estadounidense que cruzó rap, pop punk, emo pop y rock de estadio.",
+      "en": "American artist who crossed rap, pop punk, emo pop and arena rock."
+    },
+    "bio": {
+      "es": "Machine Gun Kelly aparece en el archivo como cambio de piel: de rap confesional y caótico a una etapa pop punk enorme, polémica y muy conectada con la ola Barker de los 2020s.",
+      "en": "Machine Gun Kelly appears in the archive as a skin-change: from confessional, chaotic rap into a huge, polarizing pop-punk phase tied to the Barker-driven 2020s wave."
+    },
+    "archive_role": {
+      "es": "Representa el puente entre emo rap, pop punk mainstream y drama de celebridad. No es la zona más pesada, pero sí una de las más visibles y directas.",
+      "en": "Represents the bridge between emo rap, mainstream pop punk and celebrity drama. Not the heaviest zone, but one of the most visible and direct."
+    },
+    "sound_evolution": {
+      "es": "Su trayectoria va del rap de Lace Up/General Admission al giro rock de Hotel Diablo y el salto pop punk de Tickets to My Downfall.",
+      "en": "His path moves from the rap of Lace Up/General Admission to the rock turn of Hotel Diablo and the pop-punk leap of Tickets to My Downfall."
+    },
+    "why_it_matters": {
+      "es": "En Nova Music Lab explica la zona donde la música alternativa se cruza con cultura pop, vulnerabilidad pública y hits de guitarra.",
+      "en": "Inside Nova Music Lab, he explains the zone where alternative music crosses pop culture, public vulnerability and guitar-driven hits."
+    },
+    "signature_moods": {
+      "es": ["pop punk mainstream", "emo rap", "fama", "drama moderno"],
+      "en": ["mainstream pop punk", "emo rap", "fame", "modern drama"]
+    },
+    "key_albums": [
+      {
+        "title": "Lace Up",
+        "year": 2012,
+        "description": {
+          "es": "Debut de rap de alto voltaje, con identidad de outsider y energía de Cleveland.",
+          "en": "High-voltage rap debut, with outsider identity and Cleveland energy."
+        }
+      },
+      {
+        "title": "Hotel Diablo",
+        "year": 2019,
+        "description": {
+          "es": "Álbum bisagra: más oscuro, personal y cercano al rock alternativo.",
+          "en": "A hinge album: darker, more personal and closer to alternative rock."
+        }
+      },
+      {
+        "title": "Tickets to My Downfall",
+        "year": 2020,
+        "description": {
+          "es": "El giro pop punk decisivo, producido con Travis Barker y lleno de hooks de guitarra.",
+          "en": "The decisive pop-punk turn, made with Travis Barker and packed with guitar hooks."
+        }
+      },
+      {
+        "title": "Mainstream Sellout",
+        "year": 2022,
+        "description": {
+          "es": "Continuación más grande y mediática de su etapa pop punk.",
+          "en": "A bigger and more media-facing continuation of his pop-punk era."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Dance With the Dead",
+    "aliases": ["Dance with the Dead"],
+    "origin": {
+      "es": "Orange County, California",
+      "en": "Orange County, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2013,
+    "status": {
+      "es": "Dúo/proyecto de darksynth con guitarras metaleras, terror ochentero y energía arcade.",
+      "en": "Darksynth duo/project with metal guitars, 1980s horror and arcade energy."
+    },
+    "bio": {
+      "es": "Dance With the Dead aporta persecución nocturna: sintetizadores agresivos, riffs de metal, batería programada y una estética de película VHS con luces rojas.",
+      "en": "Dance With the Dead brings night-chase energy: aggressive synths, metal riffs, programmed drums and a red-lit VHS film aesthetic."
+    },
+    "archive_role": {
+      "es": "Es el primo más guitarrero de Carpenter Brut dentro del archivo: menos glam conceptual, más acción directa y velocidad.",
+      "en": "It is Carpenter Brut's more guitar-driven cousin inside the archive: less conceptual glam, more direct action and speed."
+    },
+    "sound_evolution": {
+      "es": "Su sonido se mantiene fiel al darksynth pesado, refinando producción y mezcla de riffs con synthwave cinematográfico.",
+      "en": "Their sound stays loyal to heavy darksynth, refining production and the blend of riffs with cinematic synthwave."
+    },
+    "why_it_matters": {
+      "es": "Refuerza la identidad cyberpunk del proyecto: música que parece fondo de jefe final, autopista y neón peligroso.",
+      "en": "Strengthens the project's cyberpunk identity: music that feels like a boss fight, highway and dangerous neon."
+    },
+    "signature_moods": {
+      "es": ["darksynth", "horror", "arcade", "riff nocturno"],
+      "en": ["darksynth", "horror", "arcade", "night riff"]
+    },
+    "key_albums": [
+      {
+        "title": "Out of Body",
+        "year": 2013,
+        "description": {
+          "es": "Primera señal de su mezcla entre sintetizadores oscuros y energía de guitarra.",
+          "en": "First signal of their blend between dark synths and guitar energy."
+        }
+      },
+      {
+        "title": "Near Dark",
+        "year": 2014,
+        "description": {
+          "es": "Una de sus cápsulas clásicas: terror synth, riffs y velocidad nocturna.",
+          "en": "One of their classic capsules: synth horror, riffs and nocturnal speed."
+        }
+      },
+      {
+        "title": "The Shape",
+        "year": 2016,
+        "description": {
+          "es": "Consolida el lenguaje de darksynth pesado y cinematográfico.",
+          "en": "Consolidates the heavy and cinematic darksynth language."
+        }
+      },
+      {
+        "title": "Driven to Madness",
+        "year": 2022,
+        "description": {
+          "es": "Etapa más reciente del archivo: más pulida, pesada y directa.",
+          "en": "Recent archive phase: more polished, heavy and direct."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Omnium Gatherum",
+    "aliases": [],
+    "origin": {
+      "es": "Karhula, Finlandia",
+      "en": "Karhula, Finland"
+    },
+    "country": {
+      "es": "Finlandia",
+      "en": "Finland"
+    },
+    "start_year": 1996,
+    "status": {
+      "es": "Banda finlandesa activa de melodic death metal con un enfoque melódico y expansivo.",
+      "en": "Active Finnish melodic death metal band with an expansive melodic approach."
+    },
+    "bio": {
+      "es": "Omnium Gatherum es la zona melodeath del archivo: riffs largos, melodía nórdica, peso técnico y una sensación de viaje frío pero heroico.",
+      "en": "Omnium Gatherum is the archive's melodeath zone: long riffs, Nordic melody, technical weight and a cold but heroic travel feeling."
+    },
+    "archive_role": {
+      "es": "Aporta épica finlandesa y una forma de agresividad menos urbana: más paisaje, más horizonte, más resistencia.",
+      "en": "Adds Finnish epic scale and a less urban form of aggression: more landscape, more horizon, more endurance."
+    },
+    "sound_evolution": {
+      "es": "Desde sus raíces melodeath hasta discos como Beyond y The Burning Cold, la banda refina melodía, velocidad y atmósfera.",
+      "en": "From their melodeath roots to records like Beyond and The Burning Cold, the band refines melody, speed and atmosphere."
+    },
+    "why_it_matters": {
+      "es": "Expande el archivo más allá del post-hardcore y synthwave: aquí la intensidad se vuelve metal europeo de largo aliento.",
+      "en": "Expands the archive beyond post-hardcore and synthwave: here intensity becomes long-breathing European metal."
+    },
+    "signature_moods": {
+      "es": ["melodeath", "épica nórdica", "frío", "resistencia"],
+      "en": ["melodeath", "Nordic epic", "cold", "endurance"]
+    },
+    "key_albums": [
+      {
+        "title": "New World Shadows",
+        "year": 2011,
+        "description": {
+          "es": "Etapa de consolidación moderna con melodías amplias y peso melodeath.",
+          "en": "Modern consolidation phase with wide melodies and melodeath weight."
+        }
+      },
+      {
+        "title": "Beyond",
+        "year": 2013,
+        "description": {
+          "es": "Uno de sus discos más celebrados: épico, melódico y expansivo.",
+          "en": "One of their most celebrated records: epic, melodic and expansive."
+        }
+      },
+      {
+        "title": "The Burning Cold",
+        "year": 2018,
+        "description": {
+          "es": "El título más visible en tu archivo: fuerza melódica, producción clara y peso finlandés.",
+          "en": "The most visible title in your archive: melodic force, clear production and Finnish weight."
+        }
+      },
+      {
+        "title": "Origin",
+        "year": 2021,
+        "description": {
+          "es": "Continuación moderna de su fórmula de melodía, velocidad y atmósfera.",
+          "en": "Modern continuation of their melody, speed and atmosphere formula."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Alcest",
+    "aliases": [],
+    "origin": {
+      "es": "Bagnols-sur-Cèze, Francia",
+      "en": "Bagnols-sur-Ceze, France"
+    },
+    "country": {
+      "es": "Francia",
+      "en": "France"
+    },
+    "start_year": 2000,
+    "status": {
+      "es": "Proyecto/banda francesa de blackgaze y shoegaze metal, liderada por Neige.",
+      "en": "French blackgaze and shoegaze-metal project/band led by Neige."
+    },
+    "bio": {
+      "es": "Alcest es el lado espiritual del blackgaze: menos urbano que Deafheaven, más onírico, luminoso y conectado con la idea de recuerdos de otro mundo.",
+      "en": "Alcest is the spiritual side of blackgaze: less urban than Deafheaven, more dreamlike, luminous and connected to the idea of memories from another world."
+    },
+    "archive_role": {
+      "es": "Funciona como niebla sagrada dentro del archivo: belleza, distancia, infancia imaginada y guitarras que brillan desde lejos.",
+      "en": "Works as sacred fog inside the archive: beauty, distance, imagined childhood and guitars shining from far away."
+    },
+    "sound_evolution": {
+      "es": "Su evolución viaja entre black metal, shoegaze puro, post-rock y una luminosidad cada vez más clara.",
+      "en": "Their evolution travels between black metal, pure shoegaze, post-rock and an increasingly clear luminosity."
+    },
+    "why_it_matters": {
+      "es": "Completa la lectura blackgaze del proyecto: si Deafheaven es ciudad y tormenta, Alcest es bosque, cielo y memoria.",
+      "en": "Completes the project's blackgaze reading: if Deafheaven is city and storm, Alcest is forest, sky and memory."
+    },
+    "signature_moods": {
+      "es": ["blackgaze espiritual", "sueño", "luz", "memoria"],
+      "en": ["spiritual blackgaze", "dream", "light", "memory"]
+    },
+    "key_albums": [
+      {
+        "title": "Souvenirs d'un autre monde",
+        "year": 2007,
+        "description": {
+          "es": "El manifiesto de belleza shoegaze/metal que define el mito Alcest.",
+          "en": "The shoegaze/metal beauty statement that defines the Alcest myth."
+        }
+      },
+      {
+        "title": "Écailles de lune",
+        "year": 2010,
+        "description": {
+          "es": "Más oscuro y oceánico, con más presencia black metal.",
+          "en": "Darker and oceanic, with a stronger black metal presence."
+        }
+      },
+      {
+        "title": "Kodama",
+        "year": 2016,
+        "description": {
+          "es": "Regreso fuerte a guitarras amplias, fantasía natural y energía post-metal.",
+          "en": "Strong return to wide guitars, natural fantasy and post-metal energy."
+        }
+      },
+      {
+        "title": "Spiritual Instinct",
+        "year": 2019,
+        "description": {
+          "es": "Más pesado y nocturno, con tensión espiritual y oscuridad melódica.",
+          "en": "Heavier and nocturnal, with spiritual tension and melodic darkness."
+        }
+      },
+      {
+        "title": "Les Chants de l'Aurore",
+        "year": 2024,
+        "description": {
+          "es": "Una etapa más cálida y luminosa, mirando hacia el amanecer.",
+          "en": "A warmer and more luminous phase, looking toward dawn."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Hammock",
+    "aliases": [],
+    "origin": {
+      "es": "Nashville, Tennessee",
+      "en": "Nashville, Tennessee"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2003,
+    "status": {
+      "es": "Dúo ambient/post-rock centrado en guitarras atmosféricas, texturas y emoción lenta.",
+      "en": "Ambient/post-rock duo centered on atmospheric guitars, textures and slow emotion."
+    },
+    "bio": {
+      "es": "Hammock es el cuarto silencioso del archivo: guitarras flotantes, drones, crescendos suaves y una tristeza que respira despacio.",
+      "en": "Hammock is the archive's quiet room: floating guitars, drones, soft crescendos and sadness breathing slowly."
+    },
+    "archive_role": {
+      "es": "Funciona como descanso y suspensión: música para bajar intensidad sin perder profundidad emocional.",
+      "en": "Works as rest and suspension: music for lowering intensity without losing emotional depth."
+    },
+    "sound_evolution": {
+      "es": "Su lenguaje ha alternado ambient, shoegaze, post-rock y composiciones más orquestales o cinematográficas.",
+      "en": "Their language has alternated ambient, shoegaze, post-rock and more orchestral or cinematic compositions."
+    },
+    "why_it_matters": {
+      "es": "Da balance al museo: no toda emoción necesita golpe; algunas partes necesitan espacio, eco y aire.",
+      "en": "Balances the museum: not every emotion needs impact; some parts need space, echo and air."
+    },
+    "signature_moods": {
+      "es": ["ambient", "post-rock", "suspensión", "duelo suave"],
+      "en": ["ambient", "post-rock", "suspension", "soft grief"]
+    },
+    "key_albums": [
+      {
+        "title": "Raising Your Voice... Trying to Stop an Echo",
+        "year": 2006,
+        "description": {
+          "es": "Una de sus primeras grandes cápsulas: guitarras abiertas, eco y emoción suspendida.",
+          "en": "One of their early major capsules: open guitars, echo and suspended emotion."
+        }
+      },
+      {
+        "title": "Departure Songs",
+        "year": 2012,
+        "description": {
+          "es": "Obra extensa y cinematográfica, marcada por pérdida, viaje y amplitud.",
+          "en": "A long cinematic work marked by loss, travel and vastness."
+        }
+      },
+      {
+        "title": "Everything and Nothing",
+        "year": 2016,
+        "description": {
+          "es": "El disco más visible en tu archivo: regreso a guitarras, claridad y post-rock emocional.",
+          "en": "The most visible Hammock record in your archive: return to guitars, clarity and emotional post-rock."
+        }
+      },
+      {
+        "title": "Love in the Void",
+        "year": 2023,
+        "description": {
+          "es": "Etapa reciente con una mezcla de expansión ambiental y energía más directa.",
+          "en": "Recent phase with a blend of ambient expansion and more direct energy."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Dayseeker",
+    "aliases": [],
+    "origin": {
+      "es": "Orange County, California",
+      "en": "Orange County, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2012,
+    "status": {
+      "es": "Banda activa de post-hardcore/metal alternativo con una evolución cada vez más atmosférica.",
+      "en": "Active post-hardcore/alternative metal band with an increasingly atmospheric evolution."
+    },
+    "bio": {
+      "es": "Dayseeker representa post-hardcore convertido en dolor elegante: voces enormes, sintetizadores, duelo, melodía y una producción cada vez más limpia.",
+      "en": "Dayseeker represents post-hardcore turned into elegant pain: huge vocals, synths, grief, melody and increasingly clean production."
+    },
+    "archive_role": {
+      "es": "Aporta una catarsis menos caótica y más emocional, donde la voz lleva casi todo el peso narrativo.",
+      "en": "Adds a less chaotic and more emotional catharsis, where the voice carries almost all narrative weight."
+    },
+    "sound_evolution": {
+      "es": "De post-hardcore más pesado a la etapa synth/post-hardcore de Sleeptalk y Dark Sun, con Replica como lectura acústica.",
+      "en": "From heavier post-hardcore toward the synth/post-hardcore phase of Sleeptalk and Dark Sun, with Replica as an acoustic reading."
+    },
+    "why_it_matters": {
+      "es": "Conecta con Holding Absence y Normandie: emoción grande, producción moderna y melodía como centro.",
+      "en": "Connects with Holding Absence and Normandie: big emotion, modern production and melody as the center."
+    },
+    "signature_moods": {
+      "es": ["duelo", "synth post-hardcore", "voz enorme", "catarsis limpia"],
+      "en": ["grief", "synth post-hardcore", "huge voice", "clean catharsis"]
+    },
+    "key_albums": [
+      {
+        "title": "Origin",
+        "year": 2015,
+        "description": {
+          "es": "Etapa más pesada y post-hardcore, con intensidad directa.",
+          "en": "Heavier post-hardcore phase with direct intensity."
+        }
+      },
+      {
+        "title": "Dreaming Is Sinking /// Waking Is Rising",
+        "year": 2017,
+        "description": {
+          "es": "Expande drama, peso y atmósfera antes del giro más melódico.",
+          "en": "Expands drama, weight and atmosphere before the more melodic turn."
+        }
+      },
+      {
+        "title": "Sleeptalk",
+        "year": 2019,
+        "description": {
+          "es": "Punto de salto hacia una identidad más melódica, moderna y emocional.",
+          "en": "Leap point toward a more melodic, modern and emotional identity."
+        }
+      },
+      {
+        "title": "Dark Sun",
+        "year": 2022,
+        "description": {
+          "es": "Álbum de duelo y atmósfera synth, con una lectura emocional muy directa.",
+          "en": "Album of grief and synth atmosphere, with a very direct emotional reading."
+        }
+      },
+      {
+        "title": "Replica",
+        "year": 2024,
+        "description": {
+          "es": "Relectura acústica/desnuda que enfatiza voz, letras y vulnerabilidad.",
+          "en": "Acoustic/stripped reinterpretation emphasizing voice, lyrics and vulnerability."
+        }
+      }
+    ]
+  },
+  {
+    "name": "H.E.A.T",
+    "aliases": ["H.e.a.t", "HEAT"],
+    "origin": {
+      "es": "Upplands Väsby, Suecia",
+      "en": "Upplands Vasby, Sweden"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": 2007,
+    "status": {
+      "es": "Banda sueca de hard rock/AOR melódico con espíritu de arena rock ochentero.",
+      "en": "Swedish melodic hard rock/AOR band with an 1980s arena-rock spirit."
+    },
+    "bio": {
+      "es": "H.E.A.T trae el lado más AOR del archivo: coros gigantes, guitarras limpias, adrenalina positiva y una sensación de rock de estadio clásico.",
+      "en": "H.E.A.T brings the archive's AOR side: giant choruses, clean guitars, positive adrenaline and classic arena-rock feeling."
+    },
+    "archive_role": {
+      "es": "Funciona como energía de victoria: menos sombra, más impulso, más carretera y estribillos diseñados para gritar.",
+      "en": "Works as victory energy: less shadow, more momentum, more highway and choruses built to shout."
+    },
+    "sound_evolution": {
+      "es": "Su carrera mantiene una base de hard rock melódico, alternando vocalistas y etapas con distintos grados de brillo moderno.",
+      "en": "Their career keeps a melodic hard-rock base, alternating vocalists and phases with different degrees of modern shine."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a equilibrar el archivo con una energía más optimista, heredera del glam/hard rock escandinavo.",
+      "en": "Helps balance the archive with a more optimistic energy inherited from Scandinavian glam/hard rock."
+    },
+    "signature_moods": {
+      "es": ["AOR", "arena rock", "adrenalina", "melodía sueca"],
+      "en": ["AOR", "arena rock", "adrenaline", "Swedish melody"]
+    },
+    "key_albums": [
+      {
+        "title": "Address the Nation",
+        "year": 2012,
+        "description": {
+          "es": "Uno de sus discos clave y el más presente en tu archivo: hard rock melódico de alto brillo.",
+          "en": "One of their key records and the most present in your archive: high-shine melodic hard rock."
+        }
+      },
+      {
+        "title": "Tearing Down the Walls",
+        "year": 2014,
+        "description": {
+          "es": "Etapa de gran energía escénica, coros grandes y producción pulida.",
+          "en": "Stage-energy phase with big choruses and polished production."
+        }
+      },
+      {
+        "title": "Into the Great Unknown",
+        "year": 2017,
+        "description": {
+          "es": "Más experimental y moderno, ampliando la fórmula AOR.",
+          "en": "More experimental and modern, widening the AOR formula."
+        }
+      },
+      {
+        "title": "H.E.A.T II",
+        "year": 2020,
+        "description": {
+          "es": "Regreso a una versión más directa, rockera y energética.",
+          "en": "Return to a more direct, rocking and energetic version."
+        }
+      },
+      {
+        "title": "Force Majeure",
+        "year": 2022,
+        "description": {
+          "es": "Nueva etapa con Kenny Leckremo de vuelta, manteniendo fuerza y melodía.",
+          "en": "New phase with Kenny Leckremo back, keeping force and melody."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Ghost",
+    "aliases": [],
+    "origin": {
+      "es": "Linköping, Suecia",
+      "en": "Linkoping, Sweden"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": 2006,
+    "status": {
+      "es": "Banda sueca activa de rock/metal teatral con mitología, personajes y estética ocultista.",
+      "en": "Active Swedish theatrical rock/metal band with mythology, characters and occult aesthetics."
+    },
+    "bio": {
+      "es": "Ghost es teatro oscuro: riffs accesibles, melodías pop, estética satánica de escenario y una narrativa de personajes que convierte cada era en capítulo visual.",
+      "en": "Ghost is dark theater: accessible riffs, pop melodies, satanic stage aesthetics and a character-driven narrative that turns each era into a visual chapter."
+    },
+    "archive_role": {
+      "es": "Dentro del archivo aporta ceremonia: una forma de rock que no solo se escucha, también se mira y se interpreta.",
+      "en": "Inside the archive it brings ceremony: a form of rock that is not only heard, but watched and performed."
+    },
+    "sound_evolution": {
+      "es": "De occult rock más crudo a arena rock teatral, pop oscuro y producción cada vez más grande.",
+      "en": "From rawer occult rock to theatrical arena rock, dark pop and increasingly bigger production."
+    },
+    "why_it_matters": {
+      "es": "Conecta directamente con la parte visual de Nova Music Lab: máscaras, eras, símbolos y narrativa escénica.",
+      "en": "Connects directly with Nova Music Lab's visual side: masks, eras, symbols and stage narrative."
+    },
+    "signature_moods": {
+      "es": ["teatro oculto", "arena rock", "mitología", "melodía oscura"],
+      "en": ["occult theater", "arena rock", "mythology", "dark melody"]
+    },
+    "key_albums": [
+      {
+        "title": "Opus Eponymous",
+        "year": 2010,
+        "description": {
+          "es": "Debut de occult rock con identidad ritual y melodía retro.",
+          "en": "Occult-rock debut with ritual identity and retro melody."
+        }
+      },
+      {
+        "title": "Meliora",
+        "year": 2015,
+        "description": {
+          "es": "Una de sus eras más icónicas: riffs, himnos y estética Papa III.",
+          "en": "One of their most iconic eras: riffs, anthems and Papa III aesthetics."
+        }
+      },
+      {
+        "title": "Prequelle",
+        "year": 2018,
+        "description": {
+          "es": "Giro más arena rock, con melodía grande y dramatismo apocalíptico.",
+          "en": "More arena-rock turn, with big melody and apocalyptic drama."
+        }
+      },
+      {
+        "title": "Impera",
+        "year": 2022,
+        "description": {
+          "es": "Disco de imperios, poder y rock de estadio muy producido.",
+          "en": "Album of empires, power and highly produced stadium rock."
+        }
+      },
+      {
+        "title": "Skeleta",
+        "year": 2025,
+        "description": {
+          "es": "Etapa reciente más introspectiva, manteniendo el espectáculo de Ghost.",
+          "en": "Recent more introspective phase while keeping Ghost's spectacle."
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Story So Far",
+    "aliases": ["TSSF"],
+    "origin": {
+      "es": "Walnut Creek, California",
+      "en": "Walnut Creek, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2007,
+    "status": {
+      "es": "Banda estadounidense de pop punk/emo con energía directa y letras de tensión personal.",
+      "en": "American pop-punk/emo band with direct energy and lyrics of personal tension."
+    },
+    "bio": {
+      "es": "The Story So Far aporta una rabia más seca y clásica del pop punk moderno: guitarras tensas, voz frontal y canciones que parecen empujar desde el pecho.",
+      "en": "The Story So Far brings a drier, classic rage of modern pop punk: tense guitars, frontal vocals and songs that seem to push from the chest."
+    },
+    "archive_role": {
+      "es": "Es el núcleo pop punk más serio del archivo: menos color que Magnolia Park, más presión emocional y madurez amarga.",
+      "en": "It is the archive's more serious pop-punk core: less color than Magnolia Park, more emotional pressure and bitter maturity."
+    },
+    "sound_evolution": {
+      "es": "De la energía rápida de Under Soil and Dirt a la introspección de Proper Dose y el duelo de I Want to Disappear.",
+      "en": "From the fast energy of Under Soil and Dirt to the introspection of Proper Dose and the grief of I Want to Disappear."
+    },
+    "why_it_matters": {
+      "es": "Conecta la parte pop punk del museo con una emoción más adulta, menos brillante y más de proceso interno.",
+      "en": "Connects the museum's pop-punk side with a more adult, less shiny and more internally processed emotion."
+    },
+    "signature_moods": {
+      "es": ["pop punk", "presión", "duelo", "madurez amarga"],
+      "en": ["pop punk", "pressure", "grief", "bitter maturity"]
+    },
+    "key_albums": [
+      {
+        "title": "Under Soil and Dirt",
+        "year": 2011,
+        "description": {
+          "es": "Debut esencial de pop punk moderno, rápido y emocionalmente frontal.",
+          "en": "Essential modern pop-punk debut, fast and emotionally frontal."
+        }
+      },
+      {
+        "title": "What You Don't See",
+        "year": 2013,
+        "description": {
+          "es": "Consolidación de su fórmula: tensión, riffs compactos y voz urgente.",
+          "en": "Consolidation of their formula: tension, compact riffs and urgent voice."
+        }
+      },
+      {
+        "title": "The Story So Far",
+        "year": 2015,
+        "description": {
+          "es": "Etapa más pulida, aún directa pero con mayor peso melódico.",
+          "en": "More polished phase, still direct but with greater melodic weight."
+        }
+      },
+      {
+        "title": "Proper Dose",
+        "year": 2018,
+        "description": {
+          "es": "El disco visible en tu archivo: más maduro, introspectivo y menos explosivo.",
+          "en": "The record visible in your archive: more mature, introspective and less explosive."
+        }
+      },
+      {
+        "title": "I Want to Disappear",
+        "year": 2024,
+        "description": {
+          "es": "Regreso marcado por pérdida, sobriedad emocional y energía concentrada.",
+          "en": "Return marked by loss, emotional sobriety and concentrated energy."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Roosevelt",
+    "aliases": ["Marius Lauber"],
+    "origin": {
+      "es": "Colonia, Alemania",
+      "en": "Cologne, Germany"
+    },
+    "country": {
+      "es": "Alemania",
+      "en": "Germany"
+    },
+    "start_year": 2011,
+    "status": {
+      "es": "Productor y cantante alemán de synth-pop/dance pop con brillo nostálgico.",
+      "en": "German producer and singer of synth-pop/dance pop with nostalgic shine."
+    },
+    "bio": {
+      "es": "Roosevelt es la zona dance suave del archivo: bajo elástico, sintetizadores cálidos, melancolía de verano y un pulso elegante sin agresividad.",
+      "en": "Roosevelt is the archive's soft dance zone: elastic bass, warm synths, summer melancholy and an elegant pulse without aggression."
+    },
+    "archive_role": {
+      "es": "Funciona como respiro luminoso: música para mover el cuerpo sin salir de la nostalgia.",
+      "en": "Works as a luminous breather: music for moving the body without leaving nostalgia."
+    },
+    "sound_evolution": {
+      "es": "De Roosevelt y Young Romance hacia Polydans y Embrace, su sonido refina disco, synth-pop y electrónica emocional.",
+      "en": "From Roosevelt and Young Romance toward Polydans and Embrace, his sound refines disco, synth-pop and emotional electronics."
+    },
+    "why_it_matters": {
+      "es": "Da al proyecto una alternativa a la catarsis pesada: groove, suavidad y memoria bailable.",
+      "en": "Gives the project an alternative to heavy catharsis: groove, softness and danceable memory."
+    },
+    "signature_moods": {
+      "es": ["synth-pop", "dance suave", "verano", "nostalgia elegante"],
+      "en": ["synth-pop", "soft dance", "summer", "elegant nostalgia"]
+    },
+    "key_albums": [
+      {
+        "title": "Roosevelt",
+        "year": 2016,
+        "description": {
+          "es": "Debut de synth-pop cálido, con pulso de club y brillo melancólico.",
+          "en": "Warm synth-pop debut with club pulse and melancholic shine."
+        }
+      },
+      {
+        "title": "Young Romance",
+        "year": 2018,
+        "description": {
+          "es": "El disco presente en tu archivo: romance, verano y dance pop elegante.",
+          "en": "The record present in your archive: romance, summer and elegant dance pop."
+        }
+      },
+      {
+        "title": "Polydans",
+        "year": 2021,
+        "description": {
+          "es": "Más orientado al baile, con nostalgia disco y energía de pista.",
+          "en": "More dance-facing, with disco nostalgia and dancefloor energy."
+        }
+      },
+      {
+        "title": "Embrace",
+        "year": 2023,
+        "description": {
+          "es": "Etapa más reflexiva, manteniendo el brillo electrónico.",
+          "en": "More reflective phase while keeping electronic shine."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Don Vedda",
+    "aliases": [],
+    "origin": {
+      "es": "San Diego, California",
+      "en": "San Diego, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2014,
+    "status": {
+      "es": "Artista de pop rock/rock alternativo con voces soul, hooks pop y guitarras directas.",
+      "en": "Pop-rock/alternative-rock artist with soul vocals, pop hooks and direct guitars."
+    },
+    "bio": {
+      "es": "Don Vedda ocupa una zona más independiente y melódica del archivo: rock alternativo con voz cálida, hooks claros y una emoción menos pesada pero muy directa.",
+      "en": "Don Vedda occupies a more independent and melodic zone of the archive: alternative rock with warm voice, clear hooks and emotion that is less heavy but very direct."
+    },
+    "archive_role": {
+      "es": "Funciona como puente entre pop rock, R&B suave y energía alternativa de carretera.",
+      "en": "Works as a bridge between pop rock, soft R&B and alternative road energy."
+    },
+    "sound_evolution": {
+      "es": "Su catálogo visible pasa por EPs y álbumes de rock/pop alternativo, con Hell of a Night como punto fuerte dentro de tu archivo.",
+      "en": "His visible catalog moves through EPs and alternative rock/pop albums, with Hell of a Night as the strong point inside your archive."
+    },
+    "why_it_matters": {
+      "es": "Muestra que tu archivo también responde a artistas más pequeños cuando tienen voz, melodía y una vibra nocturna clara.",
+      "en": "Shows that your archive also responds to smaller artists when they have voice, melody and a clear nocturnal vibe."
+    },
+    "signature_moods": {
+      "es": ["pop rock", "vibra nocturna", "voz soul", "indie alternativo"],
+      "en": ["pop rock", "night vibe", "soul voice", "alternative indie"]
+    },
+    "key_albums": [
+      {
+        "title": "Don Vedda",
+        "year": 2014,
+        "description": {
+          "es": "Primera presentación de su identidad pop rock/alternativa.",
+          "en": "First presentation of his pop-rock/alternative identity."
+        }
+      },
+      {
+        "title": "Talking Body",
+        "year": 2016,
+        "description": {
+          "es": "Álbum temprano con orientación pop, voz al frente y melodías accesibles.",
+          "en": "Early album with pop direction, voice up front and accessible melodies."
+        }
+      },
+      {
+        "title": "Hell of a Night",
+        "year": 2018,
+        "description": {
+          "es": "El disco más fuerte en tu archivo: rock pop nocturno, hooks y energía directa.",
+          "en": "The strongest record in your archive: nocturnal pop rock, hooks and direct energy."
+        }
+      },
+      {
+        "title": "Someone Else",
+        "year": 2019,
+        "description": {
+          "es": "Continuación más emocional y melódica de su línea alternativa.",
+          "en": "More emotional and melodic continuation of his alternative line."
+        }
+      },
+      {
+        "title": "A Thousand Miles",
+        "year": 2021,
+        "description": {
+          "es": "Etapa posterior con enfoque pop rock y sensibilidad más abierta.",
+          "en": "Later phase with pop-rock focus and a more open sensitivity."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Myrath",
+    "aliases": ["X-Tazy", "Xtazy"],
+    "origin": {
+      "es": "Túnez; con base internacional en Francia",
+      "en": "Tunisia; internationally based around France"
+    },
+    "country": {
+      "es": "Túnez",
+      "en": "Tunisia"
+    },
+    "start_year": 2001,
+    "status": {
+      "es": "Banda tunecina de metal progresivo/power metal con instrumentación árabe y estética de desert metal.",
+      "en": "Tunisian progressive/power metal band with Arabic instrumentation and a desert-metal identity."
+    },
+    "bio": {
+      "es": "Myrath amplía el mapa del archivo hacia un metal más cinematográfico y transcontinental: riffs progresivos, coros enormes, escalas orientales y una sensación de viaje épico.",
+      "en": "Myrath expands the archive toward a more cinematic and transcontinental metal language: progressive riffs, huge choruses, Middle Eastern scales and an epic travel feeling."
+    },
+    "archive_role": {
+      "es": "Funciona como puente entre metal técnico, power metal melódico y una identidad cultural poco común dentro del ranking.",
+      "en": "Works as a bridge between technical metal, melodic power metal and a cultural identity that is uncommon inside the ranking."
+    },
+    "sound_evolution": {
+      "es": "Su carrera pasa de una base prog-metal más clásica a un sonido cada vez más teatral, coral y ornamentado, con Legacy y Shehili como puntos de expansión.",
+      "en": "Their career moves from a more classic prog-metal base into an increasingly theatrical, choral and ornamented sound, with Legacy and Shehili as expansion points."
+    },
+    "why_it_matters": {
+      "es": "Añade una dimensión global al archivo: no solo intensidad, sino metal con geografía, idioma, percusión y sentido de aventura.",
+      "en": "Adds a global dimension to the archive: not just intensity, but metal with geography, language, percussion and a sense of adventure."
+    },
+    "signature_moods": {
+      "es": ["desert metal", "épico", "progresivo", "oriental"],
+      "en": ["desert metal", "epic", "progressive", "oriental"]
+    },
+    "key_albums": [
+      {
+        "title": "Hope",
+        "year": 2007,
+        "description": {
+          "es": "Debut que presenta la base de metal progresivo antes de que la identidad oriental se volviera más central.",
+          "en": "Debut presenting the progressive-metal base before the oriental identity became more central."
+        }
+      },
+      {
+        "title": "Desert Call",
+        "year": 2010,
+        "description": {
+          "es": "Primer gran paso hacia una personalidad más amplia, con melodía, poder y dramatismo.",
+          "en": "First major step toward a wider personality, with melody, power and drama."
+        }
+      },
+      {
+        "title": "Tales of the Sands",
+        "year": 2011,
+        "description": {
+          "es": "Consolida el cruce entre metal progresivo, arreglos árabes y narrativa de viaje.",
+          "en": "Consolidates the crossover between progressive metal, Arabic arrangements and travel-like storytelling."
+        }
+      },
+      {
+        "title": "Legacy",
+        "year": 2016,
+        "description": {
+          "es": "El punto donde la banda suena más grande, accesible y cinematográfica.",
+          "en": "The point where the band sounds bigger, more accessible and more cinematic."
+        }
+      },
+      {
+        "title": "Shehili",
+        "year": 2019,
+        "description": {
+          "es": "Etapa pulida y muy melódica, con una mezcla más clara de metal moderno y color regional.",
+          "en": "Polished and highly melodic phase, with a clearer blend of modern metal and regional color."
+        }
+      },
+      {
+        "title": "Karma",
+        "year": 2024,
+        "description": {
+          "es": "Capítulo reciente que mantiene la escala épica y actualiza la producción del proyecto.",
+          "en": "Recent chapter that keeps the epic scale while updating the project production."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Blessthefall",
+    "aliases": ["blessthefall"],
+    "origin": {
+      "es": "Phoenix, Arizona",
+      "en": "Phoenix, Arizona"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2004,
+    "status": {
+      "es": "Banda de metalcore/post-hardcore de la escena Warped Tour, conocida por alternar gritos, voces limpias y coros enormes.",
+      "en": "Metalcore/post-hardcore band from the Warped Tour scene, known for alternating screams, clean vocals and huge choruses."
+    },
+    "bio": {
+      "es": "Blessthefall representa la parte más dramática y de alto contraste del post-hardcore estadounidense: breakdowns, emoción juvenil, melodía pop y tensión escénica.",
+      "en": "Blessthefall represents the dramatic, high-contrast side of American post-hardcore: breakdowns, youthful emotion, pop melody and stage tension."
+    },
+    "archive_role": {
+      "es": "Conecta tu archivo con la línea 2000s/2010s de metalcore melódico y energía de festival alternativo.",
+      "en": "Connects your archive with the 2000s/2010s line of melodic metalcore and alternative festival energy."
+    },
+    "sound_evolution": {
+      "es": "El grupo pasa de un sonido más crudo de escena a discos cada vez más producidos, técnicos y enfocados en hooks.",
+      "en": "The group moves from a rawer scene sound into increasingly produced, technical and hook-focused records."
+    },
+    "why_it_matters": {
+      "es": "Su presencia ayuda a explicar por qué el archivo responde tanto a contrastes: voces limpias contra gritos, brillo melódico contra peso.",
+      "en": "Their presence helps explain why the archive responds so much to contrast: clean vocals against screams, melodic shine against weight."
+    },
+    "signature_moods": {
+      "es": ["metalcore melódico", "drama juvenil", "coros grandes", "post-hardcore"],
+      "en": ["melodic metalcore", "youth drama", "huge choruses", "post-hardcore"]
+    },
+    "key_albums": [
+      {
+        "title": "His Last Walk",
+        "year": 2007,
+        "description": {
+          "es": "Debut que captura la primera identidad de escena, más cruda y urgente.",
+          "en": "Debut capturing the early scene identity, rawer and more urgent."
+        }
+      },
+      {
+        "title": "Witness",
+        "year": 2009,
+        "description": {
+          "es": "Etapa clave con una fórmula más clara de metalcore melódico y voces limpias.",
+          "en": "Key phase with a clearer formula of melodic metalcore and clean vocals."
+        }
+      },
+      {
+        "title": "Awakening",
+        "year": 2011,
+        "description": {
+          "es": "Disco de consolidación que aumenta el tamaño de los coros y la producción.",
+          "en": "Consolidation record that increases the size of the choruses and production."
+        }
+      },
+      {
+        "title": "Hollow Bodies",
+        "year": 2013,
+        "description": {
+          "es": "Uno de sus puntos más reconocidos: metalcore directo, fuerte y muy recordable.",
+          "en": "One of their most recognized points: direct, heavy and highly memorable metalcore."
+        }
+      },
+      {
+        "title": "To Those Left Behind",
+        "year": 2015,
+        "description": {
+          "es": "Mantiene la energía de escena mientras pule el lado melódico.",
+          "en": "Keeps the scene energy while polishing the melodic side."
+        }
+      },
+      {
+        "title": "Hard Feelings",
+        "year": 2018,
+        "description": {
+          "es": "Capítulo más moderno, con producción brillante y enfoque emocional más directo.",
+          "en": "More modern chapter, with glossy production and a more direct emotional focus."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Crazy Lixx",
+    "aliases": [],
+    "origin": {
+      "es": "Malmö, Suecia",
+      "en": "Malmö, Sweden"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": 2002,
+    "status": {
+      "es": "Banda sueca de hard rock/glam metal moderno, asociada al revival sleaze escandinavo.",
+      "en": "Swedish modern hard rock/glam metal band associated with the Scandinavian sleaze revival."
+    },
+    "bio": {
+      "es": "Crazy Lixx aporta al archivo una línea de rock de estadio sin ironía: riffs ochenteros, coros enormes, solos brillantes y una energía de película de acción.",
+      "en": "Crazy Lixx adds an arena-rock line to the archive without irony: eighties riffs, huge choruses, bright solos and action-movie energy."
+    },
+    "archive_role": {
+      "es": "Sirve como zona de adrenalina luminosa entre metal, hard rock melódico y nostalgia glam.",
+      "en": "Serves as a bright adrenaline zone between metal, melodic hard rock and glam nostalgia."
+    },
+    "sound_evolution": {
+      "es": "Su catálogo mantiene una devoción clara por el hard rock clásico, pero cada etapa gana producción, tamaño y precisión de hook.",
+      "en": "Their catalog keeps a clear devotion to classic hard rock, while each phase gains production size and hook precision."
+    },
+    "why_it_matters": {
+      "es": "Equilibra la oscuridad de otros artistas del archivo con diversión, velocidad, guitarras y coros de escapismo total.",
+      "en": "Balances the darkness of other archive artists with fun, speed, guitars and full-escape choruses."
+    },
+    "signature_moods": {
+      "es": ["glam metal", "hard rock sueco", "coros de estadio", "nostalgia 80s"],
+      "en": ["glam metal", "Swedish hard rock", "arena choruses", "80s nostalgia"]
+    },
+    "key_albums": [
+      {
+        "title": "Loud Minority",
+        "year": 2007,
+        "description": {
+          "es": "Debut que marca el compromiso con el hard rock de alto voltaje.",
+          "en": "Debut that marks the commitment to high-voltage hard rock."
+        }
+      },
+      {
+        "title": "New Religion",
+        "year": 2010,
+        "description": {
+          "es": "Etapa donde el sonido gana definición glam y melodías más grandes.",
+          "en": "Phase where the sound gains glam definition and bigger melodies."
+        }
+      },
+      {
+        "title": "Riot Avenue",
+        "year": 2012,
+        "description": {
+          "es": "Disco con energía callejera y riffs más directos.",
+          "en": "Record with street energy and more direct riffs."
+        }
+      },
+      {
+        "title": "Ruff Justice",
+        "year": 2017,
+        "description": {
+          "es": "Uno de sus capítulos más afilados y cinematográficos.",
+          "en": "One of their sharpest and most cinematic chapters."
+        }
+      },
+      {
+        "title": "Forever Wild",
+        "year": 2019,
+        "description": {
+          "es": "Etapa muy pulida, cargada de hooks y sensibilidad de soundtrack retro.",
+          "en": "Highly polished phase loaded with hooks and retro-soundtrack sensitivity."
+        }
+      },
+      {
+        "title": "Street Lethal",
+        "year": 2021,
+        "description": {
+          "es": "Continúa la fórmula con producción moderna y riffs de acción.",
+          "en": "Continues the formula with modern production and action-ready riffs."
+        }
+      },
+      {
+        "title": "Two Shots at Glory",
+        "year": 2024,
+        "description": {
+          "es": "Relectura celebratoria que resume parte de su identidad de grandes coros.",
+          "en": "Celebratory rereading that summarizes part of their big-chorus identity."
+        }
+      },
+      {
+        "title": "Thrill of the Bite",
+        "year": 2025,
+        "description": {
+          "es": "Capítulo reciente que mantiene viva la línea de hard rock retro-moderno.",
+          "en": "Recent chapter keeping the retro-modern hard-rock line alive."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Type O Negative",
+    "aliases": [],
+    "origin": {
+      "es": "Brooklyn, Nueva York",
+      "en": "Brooklyn, New York"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 1989,
+    "status": {
+      "es": "Banda de gothic/doom metal activa hasta 2010, marcada por la voz grave de Peter Steele, humor oscuro y romanticismo pesado.",
+      "en": "Gothic/doom metal band active until 2010, marked by Peter Steele's deep voice, dark humor and heavy romanticism."
+    },
+    "bio": {
+      "es": "Type O Negative abre una zona de metal gótico lento, sensual y sarcástico: bajo profundo, teclados oscuros, guitarras densas y canciones que mezclan drama con humor negro.",
+      "en": "Type O Negative opens a zone of slow, sensual and sarcastic gothic metal: deep bass, dark keyboards, dense guitars and songs that mix drama with black humor."
+    },
+    "archive_role": {
+      "es": "Aporta una forma de oscuridad distinta: menos explosiva, más vampírica, lenta y atmosférica.",
+      "en": "Adds a different form of darkness: less explosive, more vampiric, slow and atmospheric."
+    },
+    "sound_evolution": {
+      "es": "Del ruido hardcore/doom inicial pasan a un gothic metal más melódico en Bloody Kisses y October Rust, antes de volver a tonos más pesados y existenciales.",
+      "en": "They move from early hardcore/doom noise into more melodic gothic metal on Bloody Kisses and October Rust, before returning to heavier existential tones."
+    },
+    "why_it_matters": {
+      "es": "Explica el gusto del archivo por artistas que pueden ser pesados y vulnerables al mismo tiempo.",
+      "en": "Explains the archive's taste for artists that can be heavy and vulnerable at the same time."
+    },
+    "signature_moods": {
+      "es": ["gótico", "doom", "romanticismo oscuro", "barítono"],
+      "en": ["gothic", "doom", "dark romance", "baritone"]
+    },
+    "key_albums": [
+      {
+        "title": "Slow, Deep and Hard",
+        "year": 1991,
+        "description": {
+          "es": "Debut abrasivo que todavía conserva mucha rabia hardcore y doom primitivo.",
+          "en": "Abrasive debut that still carries a lot of hardcore anger and primitive doom."
+        }
+      },
+      {
+        "title": "Bloody Kisses",
+        "year": 1993,
+        "description": {
+          "es": "Disco decisivo donde el grupo encuentra su identidad gótica y melódica.",
+          "en": "Decisive record where the band finds its gothic and melodic identity."
+        }
+      },
+      {
+        "title": "October Rust",
+        "year": 1996,
+        "description": {
+          "es": "Su capítulo más sensual y atmosférico, lleno de teclados, melodías largas y romanticismo oscuro.",
+          "en": "Their most sensual and atmospheric chapter, full of keyboards, long melodies and dark romance."
+        }
+      },
+      {
+        "title": "World Coming Down",
+        "year": 1999,
+        "description": {
+          "es": "Etapa más pesada, lenta y funeraria, con una tristeza mucho más frontal.",
+          "en": "Heavier, slower and more funereal phase, with much more frontal sadness."
+        }
+      },
+      {
+        "title": "Life Is Killing Me",
+        "year": 2003,
+        "description": {
+          "es": "Alterna sátira, melodía y riffs densos en una fase más variada.",
+          "en": "Alternates satire, melody and dense riffs in a more varied phase."
+        }
+      },
+      {
+        "title": "Dead Again",
+        "year": 2007,
+        "description": {
+          "es": "Último álbum de estudio, más directo y con sensación de cierre accidental.",
+          "en": "Final studio album, more direct and carrying the feeling of an accidental farewell."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Crown the Empire",
+    "aliases": ["Crown The Empire"],
+    "origin": {
+      "es": "Dallas, Texas",
+      "en": "Dallas, Texas"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2010,
+    "status": {
+      "es": "Banda de metalcore/post-hardcore con coros teatrales, electrónica ligera y ambición conceptual.",
+      "en": "Metalcore/post-hardcore band with theatrical choruses, light electronics and conceptual ambition."
+    },
+    "bio": {
+      "es": "Crown the Empire conecta el archivo con una versión muy narrativa del metalcore: canciones diseñadas como escenas, voces limpias enormes y tensión casi cinematográfica.",
+      "en": "Crown the Empire connects the archive with a very narrative version of metalcore: songs built like scenes, huge clean vocals and almost cinematic tension."
+    },
+    "archive_role": {
+      "es": "Representa el metalcore de gran producción que mezcla teatralidad, emoción adolescente y arquitectura de álbum.",
+      "en": "Represents big-production metalcore that mixes theatricality, adolescent emotion and album architecture."
+    },
+    "sound_evolution": {
+      "es": "Del dramatismo conceptual de The Fallout y The Resistance avanzan hacia un metalcore más moderno, compacto y melódico.",
+      "en": "From the conceptual drama of The Fallout and The Resistance they move toward more modern, compact and melodic metalcore."
+    },
+    "why_it_matters": {
+      "es": "Ayuda a explicar la atracción del archivo por artistas que no solo hacen canciones, sino universos emocionales con estética propia.",
+      "en": "Helps explain the archive's attraction to artists that make not just songs, but emotional worlds with their own aesthetic."
+    },
+    "signature_moods": {
+      "es": ["metalcore teatral", "coros limpios", "drama conceptual", "post-hardcore"],
+      "en": ["theatrical metalcore", "clean choruses", "concept drama", "post-hardcore"]
+    },
+    "key_albums": [
+      {
+        "title": "The Fallout",
+        "year": 2012,
+        "description": {
+          "es": "Debut que fija el sonido teatral y melódico que los hizo reconocibles.",
+          "en": "Debut that fixes the theatrical and melodic sound that made them recognizable."
+        }
+      },
+      {
+        "title": "The Resistance: Rise of the Runaways",
+        "year": 2014,
+        "description": {
+          "es": "Capítulo conceptual con narrativa de resistencia, coros grandes y metalcore cinematográfico.",
+          "en": "Conceptual chapter with resistance narrative, big choruses and cinematic metalcore."
+        }
+      },
+      {
+        "title": "Retrograde",
+        "year": 2016,
+        "description": {
+          "es": "Etapa de transición hacia un sonido más moderno y menos puramente de escena.",
+          "en": "Transition phase toward a more modern sound, less purely scene-based."
+        }
+      },
+      {
+        "title": "Sudden Sky",
+        "year": 2019,
+        "description": {
+          "es": "Disco más pulido, con electrónica y una lectura más actual del metalcore melódico.",
+          "en": "More polished record, with electronics and a more current reading of melodic metalcore."
+        }
+      },
+      {
+        "title": "Dogma",
+        "year": 2023,
+        "description": {
+          "es": "Capítulo reciente que compacta su sonido alrededor de riffs, hooks y producción moderna.",
+          "en": "Recent chapter that compacts their sound around riffs, hooks and modern production."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Perturbator",
+    "aliases": ["James Kent"],
+    "origin": {
+      "es": "París, Francia",
+      "en": "Paris, France"
+    },
+    "country": {
+      "es": "Francia",
+      "en": "France"
+    },
+    "start_year": 2012,
+    "status": {
+      "es": "Proyecto francés de darksynth/synthwave que lleva la electrónica retro hacia territorio industrial, cyberpunk y oscuro.",
+      "en": "French darksynth/synthwave project pushing retro electronics into industrial, cyberpunk and dark territory."
+    },
+    "bio": {
+      "es": "Perturbator es una de las columnas más oscuras del lado electrónico del archivo: sintetizadores densos, baterías programadas violentas, estética cyberpunk y sensación nocturna.",
+      "en": "Perturbator is one of the darkest columns of the archive's electronic side: dense synths, violent programmed drums, cyberpunk aesthetics and nocturnal feeling."
+    },
+    "archive_role": {
+      "es": "Une synthwave, metal imaginario y música de persecución futurista dentro de una misma identidad.",
+      "en": "Unites synthwave, imaginary metal and futuristic chase music inside one identity."
+    },
+    "sound_evolution": {
+      "es": "El proyecto pasa del outrun más directo a discos más densos, industriales y sombríos, especialmente desde New Model y Lustful Sacraments.",
+      "en": "The project moves from more direct outrun into denser, more industrial and shadowed records, especially from New Model and Lustful Sacraments."
+    },
+    "why_it_matters": {
+      "es": "Amplía el archivo más allá de bandas: demuestra que la intensidad también puede venir de texturas, pulsos y arquitectura electrónica.",
+      "en": "Expands the archive beyond bands: it shows intensity can also come from textures, pulses and electronic architecture."
+    },
+    "signature_moods": {
+      "es": ["darksynth", "cyberpunk", "industrial", "nocturno"],
+      "en": ["darksynth", "cyberpunk", "industrial", "nocturnal"]
+    },
+    "key_albums": [
+      {
+        "title": "Terror 404",
+        "year": 2012,
+        "description": {
+          "es": "Primer capítulo de estética retrofuturista y persecución digital.",
+          "en": "Early chapter of retrofuturist aesthetics and digital chase energy."
+        }
+      },
+      {
+        "title": "I Am the Night",
+        "year": 2012,
+        "description": {
+          "es": "Consolida su lenguaje de noche, neón y peligro electrónico.",
+          "en": "Consolidates his language of night, neon and electronic danger."
+        }
+      },
+      {
+        "title": "Dangerous Days",
+        "year": 2014,
+        "description": {
+          "es": "Punto esencial del darksynth moderno, con melodía, velocidad y narrativa cyberpunk.",
+          "en": "Essential point of modern darksynth, with melody, speed and cyberpunk storytelling."
+        }
+      },
+      {
+        "title": "The Uncanny Valley",
+        "year": 2016,
+        "description": {
+          "es": "Expande el mundo con más detalle cinematográfico y tensión futurista.",
+          "en": "Expands the world with more cinematic detail and futuristic tension."
+        }
+      },
+      {
+        "title": "New Model",
+        "year": 2017,
+        "description": {
+          "es": "Giro más frío, agresivo e industrial que anticipa una etapa más oscura.",
+          "en": "Colder, more aggressive and industrial turn that anticipates a darker phase."
+        }
+      },
+      {
+        "title": "Lustful Sacraments",
+        "year": 2021,
+        "description": {
+          "es": "Capítulo sombrío y post-industrial, menos nostálgico y más físico.",
+          "en": "Shadowed post-industrial chapter, less nostalgic and more physical."
+        }
+      },
+      {
+        "title": "Age of Aquarius",
+        "year": 2025,
+        "description": {
+          "es": "Etapa reciente que continúa la mutación hacia una electrónica más amplia y oscura.",
+          "en": "Recent phase continuing the mutation toward wider and darker electronics."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Teenage Wrist",
+    "aliases": [],
+    "origin": {
+      "es": "Los Ángeles, California",
+      "en": "Los Angeles, California"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 2014,
+    "status": {
+      "es": "Banda de rock alternativo/shoegaze con afinidad por grunge, power pop y emo de los 90.",
+      "en": "Alternative rock/shoegaze band with a fondness for grunge, power pop and early-90s emo."
+    },
+    "bio": {
+      "es": "Teenage Wrist ocupa una zona más vaporosa del archivo: guitarras densas pero melódicas, voz melancólica y una mezcla de nostalgia noventera con producción moderna.",
+      "en": "Teenage Wrist occupies a more vaporous zone of the archive: dense but melodic guitars, melancholic voice and a blend of nineties nostalgia with modern production."
+    },
+    "archive_role": {
+      "es": "Funciona como descanso emocional entre metal/post-hardcore y dream rock de guitarras.",
+      "en": "Works as an emotional rest point between metal/post-hardcore and guitar-driven dream rock."
+    },
+    "sound_evolution": {
+      "es": "Desde el debut más grunge/shoegaze avanzan hacia una escritura más abierta, luminosa y emocionalmente adulta.",
+      "en": "From the more grunge/shoegaze debut they move toward more open, brighter and emotionally adult songwriting."
+    },
+    "why_it_matters": {
+      "es": "Refuerza que el archivo no busca solo potencia: también vuelve a texturas de guitarra, nostalgia y tristeza suave.",
+      "en": "Reinforces that the archive does not only seek power: it also returns to guitar texture, nostalgia and soft sadness."
+    },
+    "signature_moods": {
+      "es": ["shoegaze", "alt rock", "melancolía", "grunge pop"],
+      "en": ["shoegaze", "alt rock", "melancholy", "grunge pop"]
+    },
+    "key_albums": [
+      {
+        "title": "Dazed",
+        "year": 2015,
+        "description": {
+          "es": "EP temprano que muestra la base de guitarras borrosas y melodía nostálgica.",
+          "en": "Early EP showing the base of fuzzy guitars and nostalgic melody."
+        }
+      },
+      {
+        "title": "Chrome Neon Jesus",
+        "year": 2018,
+        "description": {
+          "es": "Debut de larga duración con neogrunge, shoegaze y emoción directa.",
+          "en": "Full-length debut with neo-grunge, shoegaze and direct emotion."
+        }
+      },
+      {
+        "title": "Earth Is a Black Hole",
+        "year": 2021,
+        "description": {
+          "es": "Transición importante hacia canciones más esperanzadas dentro de una atmósfera ansiosa.",
+          "en": "Important transition toward more hopeful songs inside an anxious atmosphere."
+        }
+      },
+      {
+        "title": "Still Love",
+        "year": 2023,
+        "description": {
+          "es": "Capítulo más cálido y expansivo, con escritura más segura y luminosa.",
+          "en": "Warmer and more expansive chapter, with more confident and luminous writing."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Neck Deep",
+    "aliases": [],
+    "origin": {
+      "es": "Wrexham, Gales",
+      "en": "Wrexham, Wales"
+    },
+    "country": {
+      "es": "Gales",
+      "en": "Wales"
+    },
+    "start_year": 2012,
+    "status": {
+      "es": "Banda galesa de pop punk moderno, conocida por energía juvenil, hooks rápidos y melodía emocional.",
+      "en": "Welsh modern pop-punk band known for youthful energy, fast hooks and emotional melody."
+    },
+    "bio": {
+      "es": "Neck Deep introduce el lado más pop-punk del archivo: velocidad, nostalgia, angustia clara y coros que parecen hechos para gritar en vivo.",
+      "en": "Neck Deep introduces the archive's most pop-punk side: speed, nostalgia, clear angst and choruses built to be shouted live."
+    },
+    "archive_role": {
+      "es": "Equilibra artistas más pesados con una tradición de punk melódico directo y catártico.",
+      "en": "Balances heavier artists with a tradition of direct, cathartic melodic punk."
+    },
+    "sound_evolution": {
+      "es": "Pasan de EPs rápidos y juveniles a discos más ambiciosos, manteniendo el corazón pop punk incluso cuando sube la producción.",
+      "en": "They move from fast youthful EPs into more ambitious records, keeping the pop-punk heart even as production grows."
+    },
+    "why_it_matters": {
+      "es": "Muestra la parte del archivo que busca alivio, movimiento y emoción simple pero potente.",
+      "en": "Shows the part of the archive that seeks relief, movement and simple but powerful emotion."
+    },
+    "signature_moods": {
+      "es": ["pop punk", "catarsis", "nostalgia", "coros rápidos"],
+      "en": ["pop punk", "catharsis", "nostalgia", "fast choruses"]
+    },
+    "key_albums": [
+      {
+        "title": "Rain in July",
+        "year": 2012,
+        "description": {
+          "es": "EP inicial con la velocidad y urgencia que define su punto de partida.",
+          "en": "Initial EP with the speed and urgency that defines their starting point."
+        }
+      },
+      {
+        "title": "Wishful Thinking",
+        "year": 2014,
+        "description": {
+          "es": "Primer álbum que lleva la energía de EP a formato completo.",
+          "en": "First album carrying the EP energy into full-length form."
+        }
+      },
+      {
+        "title": "Life's Not Out to Get You",
+        "year": 2015,
+        "description": {
+          "es": "Punto clásico de su catálogo: pop punk luminoso, rápido y emocional.",
+          "en": "Classic point in their catalog: bright, fast and emotional pop punk."
+        }
+      },
+      {
+        "title": "The Peace and the Panic",
+        "year": 2017,
+        "description": {
+          "es": "Disco más grande y producido, con tensión entre ansiedad y melodía.",
+          "en": "Bigger and more produced record, with tension between anxiety and melody."
+        }
+      },
+      {
+        "title": "All Distortions Are Intentional",
+        "year": 2020,
+        "description": {
+          "es": "Capítulo conceptual que intenta expandir el lenguaje de la banda.",
+          "en": "Conceptual chapter trying to expand the band's language."
+        }
+      },
+      {
+        "title": "Neck Deep",
+        "year": 2024,
+        "description": {
+          "es": "Regreso a una identidad más directa, rápida y autocontenida.",
+          "en": "Return to a more direct, fast and self-contained identity."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Silverstein",
+    "aliases": [],
+    "origin": {
+      "es": "Burlington, Ontario",
+      "en": "Burlington, Ontario"
+    },
+    "country": {
+      "es": "Canadá",
+      "en": "Canada"
+    },
+    "start_year": 2000,
+    "status": {
+      "es": "Banda canadiense de post-hardcore/emo que ha mantenido una carrera larga entre melodía, gritos y riffs densos.",
+      "en": "Canadian post-hardcore/emo band with a long-running career between melody, screams and dense riffs."
+    },
+    "bio": {
+      "es": "Silverstein es una columna de continuidad para el archivo: la misma tensión entre vulnerabilidad, grito y melodía ha sobrevivido varias generaciones de post-hardcore.",
+      "en": "Silverstein is a continuity pillar for the archive: the same tension between vulnerability, scream and melody has survived several generations of post-hardcore."
+    },
+    "archive_role": {
+      "es": "Aporta historia y resistencia de escena: no solo nostalgia, sino evolución sostenida.",
+      "en": "Adds scene history and resilience: not just nostalgia, but sustained evolution."
+    },
+    "sound_evolution": {
+      "es": "Del emo/post-hardcore de principios de los 2000 pasan a producciones modernas con más peso, concepto y agresividad controlada.",
+      "en": "From early-2000s emo/post-hardcore they move into modern productions with more weight, concept and controlled aggression."
+    },
+    "why_it_matters": {
+      "es": "Conecta muchas zonas del archivo: emoción confesional, riffs pesados, punk melódico y memoria de escena.",
+      "en": "Connects many archive zones: confessional emotion, heavy riffs, melodic punk and scene memory."
+    },
+    "signature_moods": {
+      "es": ["post-hardcore", "emo", "catarsis", "larga trayectoria"],
+      "en": ["post-hardcore", "emo", "catharsis", "long-running"]
+    },
+    "key_albums": [
+      {
+        "title": "When Broken Is Easily Fixed",
+        "year": 2003,
+        "description": {
+          "es": "Debut que define su mezcla temprana de melodía emo y gritos post-hardcore.",
+          "en": "Debut defining their early mix of emo melody and post-hardcore screams."
+        }
+      },
+      {
+        "title": "Discovering the Waterfront",
+        "year": 2005,
+        "description": {
+          "es": "Uno de sus discos esenciales, con hooks más fuertes y sonido de escena clásico.",
+          "en": "One of their essential records, with stronger hooks and classic scene sound."
+        }
+      },
+      {
+        "title": "A Shipwreck in the Sand",
+        "year": 2009,
+        "description": {
+          "es": "Álbum conceptual que expande su escritura narrativa.",
+          "en": "Concept album expanding their narrative writing."
+        }
+      },
+      {
+        "title": "This Is How the Wind Shifts",
+        "year": 2013,
+        "description": {
+          "es": "Capítulo estructuralmente ambicioso con más juego de perspectivas.",
+          "en": "Structurally ambitious chapter with more perspective play."
+        }
+      },
+      {
+        "title": "Dead Reflection",
+        "year": 2017,
+        "description": {
+          "es": "Etapa madura, oscura y muy enfocada en ansiedad emocional.",
+          "en": "Mature, dark phase strongly focused on emotional anxiety."
+        }
+      },
+      {
+        "title": "A Beautiful Place to Drown",
+        "year": 2020,
+        "description": {
+          "es": "Disco moderno con colaboraciones y una lectura más amplia del post-hardcore.",
+          "en": "Modern record with collaborations and a wider reading of post-hardcore."
+        }
+      },
+      {
+        "title": "Misery Made Me",
+        "year": 2022,
+        "description": {
+          "es": "Capítulo más pesado y sombrío, centrado en desgaste emocional.",
+          "en": "Heavier and shadowed chapter centered on emotional wear."
+        }
+      },
+      {
+        "title": "Antibloom",
+        "year": 2025,
+        "description": {
+          "es": "Parte reciente de una etapa doble, más agresiva y de producción actual.",
+          "en": "Recent part of a double phase, more aggressive and currently produced."
+        }
+      },
+      {
+        "title": "Pink Moon",
+        "year": 2025,
+        "description": {
+          "es": "Complementa Antibloom con otro ángulo de su madurez tardía.",
+          "en": "Complements Antibloom with another angle of their late-career maturity."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Anathema",
+    "aliases": ["Pagan Angel"],
+    "origin": {
+      "es": "Liverpool, Inglaterra",
+      "en": "Liverpool, England"
+    },
+    "country": {
+      "es": "Inglaterra",
+      "en": "England"
+    },
+    "start_year": 1990,
+    "status": {
+      "es": "Banda inglesa activa hasta 2020, conocida por pasar del death-doom al rock progresivo emocional.",
+      "en": "English band active until 2020, known for moving from death-doom into emotional progressive rock."
+    },
+    "bio": {
+      "es": "Anathema aporta una de las transformaciones más profundas del archivo: del metal lento y oscuro hacia canciones expansivas, melancólicas y casi espirituales.",
+      "en": "Anathema brings one of the archive's deepest transformations: from slow dark metal toward expansive, melancholic and almost spiritual songs."
+    },
+    "archive_role": {
+      "es": "Representa la evolución como tema: no quedarse en un género, sino convertir la tristeza en arquitectura sonora.",
+      "en": "Represents evolution as a theme: not staying inside one genre, but turning sadness into sound architecture."
+    },
+    "sound_evolution": {
+      "es": "Pasan del doom/death inicial a rock alternativo y progresivo, con cada década más luz, espacio y dinámica emocional.",
+      "en": "They move from early doom/death into alternative and progressive rock, with each decade adding more light, space and emotional dynamics."
+    },
+    "why_it_matters": {
+      "es": "Encaja con la parte contemplativa del archivo: música que no solo golpea, sino que acompaña procesos largos.",
+      "en": "Fits the contemplative part of the archive: music that does not only hit, but accompanies long processes."
+    },
+    "signature_moods": {
+      "es": ["melancolía", "progresivo", "doom temprano", "catarsis lenta"],
+      "en": ["melancholy", "progressive", "early doom", "slow catharsis"]
+    },
+    "key_albums": [
+      {
+        "title": "Serenades",
+        "year": 1993,
+        "description": {
+          "es": "Debut ligado al death-doom británico, pesado y sombrío.",
+          "en": "Debut tied to British death-doom, heavy and somber."
+        }
+      },
+      {
+        "title": "The Silent Enigma",
+        "year": 1995,
+        "description": {
+          "es": "Primer gran giro hacia una identidad más atmosférica y emocional.",
+          "en": "First major turn toward a more atmospheric and emotional identity."
+        }
+      },
+      {
+        "title": "Alternative 4",
+        "year": 1998,
+        "description": {
+          "es": "Disco clave de transición, más psicológico y menos metal extremo.",
+          "en": "Key transition record, more psychological and less extreme-metal."
+        }
+      },
+      {
+        "title": "Judgement",
+        "year": 1999,
+        "description": {
+          "es": "Capítulo emocional y melódico que consolida su nueva dirección.",
+          "en": "Emotional and melodic chapter consolidating their new direction."
+        }
+      },
+      {
+        "title": "A Natural Disaster",
+        "year": 2003,
+        "description": {
+          "es": "Etapa íntima, triste y espaciosa, con menos peso metálico.",
+          "en": "Intimate, sad and spacious phase, with less metallic weight."
+        }
+      },
+      {
+        "title": "We're Here Because We're Here",
+        "year": 2010,
+        "description": {
+          "es": "Renacimiento luminoso que acerca la banda al rock progresivo moderno.",
+          "en": "Luminous rebirth bringing the band closer to modern progressive rock."
+        }
+      },
+      {
+        "title": "Weather Systems",
+        "year": 2012,
+        "description": {
+          "es": "Uno de sus puntos más emotivos y expansivos, con grandes crescendos.",
+          "en": "One of their most emotional and expansive points, with huge crescendos."
+        }
+      },
+      {
+        "title": "Distant Satellites",
+        "year": 2014,
+        "description": {
+          "es": "Añade texturas electrónicas y distancia cósmica al lenguaje emocional.",
+          "en": "Adds electronic textures and cosmic distance to the emotional language."
+        }
+      },
+      {
+        "title": "The Optimist",
+        "year": 2017,
+        "description": {
+          "es": "Último álbum de estudio, narrativo y cinematográfico.",
+          "en": "Final studio album, narrative and cinematic."
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Kid LAROI",
+    "aliases": ["The Kid Laroi", "Kid Laroi", "Charlton Howard"],
+    "origin": {
+      "es": "Waterloo, Sídney",
+      "en": "Waterloo, Sydney"
+    },
+    "country": {
+      "es": "Australia",
+      "en": "Australia"
+    },
+    "start_year": 2016,
+    "status": {
+      "es": "Cantante y rapero australiano que cruza emo rap, pop, R&B y melodía de internet global.",
+      "en": "Australian singer and rapper crossing emo rap, pop, R&B and global internet melody."
+    },
+    "bio": {
+      "es": "The Kid LAROI representa el polo más pop/rap del archivo: melodías vulnerables, producción digital, influencia emo y canciones hechas para circular rápido.",
+      "en": "The Kid LAROI represents the archive's more pop/rap pole: vulnerable melodies, digital production, emo influence and songs built to travel fast."
+    },
+    "archive_role": {
+      "es": "Conecta la sensibilidad alternativa con el pop global, el trap melódico y la herencia emocional de Juice WRLD.",
+      "en": "Connects alternative sensitivity with global pop, melodic trap and the emotional lineage of Juice WRLD."
+    },
+    "sound_evolution": {
+      "es": "Desde el impacto de F*CK LOVE avanza hacia álbumes más pop, colaborativos y después más introspectivos.",
+      "en": "From the impact of F*CK LOVE he moves toward more pop-oriented, collaborative and later more introspective albums."
+    },
+    "why_it_matters": {
+      "es": "Demuestra que tu archivo también lee intensidad en voces suaves, hooks virales y heridas emocionales de formato pop.",
+      "en": "Shows that your archive also reads intensity in soft voices, viral hooks and pop-format emotional wounds."
+    },
+    "signature_moods": {
+      "es": ["emo rap", "pop global", "vulnerabilidad", "hooks digitales"],
+      "en": ["emo rap", "global pop", "vulnerability", "digital hooks"]
+    },
+    "key_albums": [
+      {
+        "title": "14 With A Dream",
+        "year": 2018,
+        "description": {
+          "es": "EP inicial que muestra al artista antes del salto internacional.",
+          "en": "Early EP showing the artist before the international jump."
+        }
+      },
+      {
+        "title": "F*CK LOVE",
+        "year": 2020,
+        "description": {
+          "es": "Mixtape decisivo que convierte dolor juvenil y melodía trap en identidad global.",
+          "en": "Decisive mixtape turning youthful pain and trap melody into a global identity."
+        }
+      },
+      {
+        "title": "F*CK LOVE 3+: OVER YOU",
+        "year": 2021,
+        "description": {
+          "es": "Expansión del universo F*CK LOVE y etapa del impacto masivo de Stay.",
+          "en": "Expansion of the F*CK LOVE universe and the phase of Stay's massive impact."
+        }
+      },
+      {
+        "title": "THE FIRST TIME",
+        "year": 2023,
+        "description": {
+          "es": "Debut de estudio más amplio, con más pop, colaboraciones y narrativa de crecimiento.",
+          "en": "Broader studio debut, with more pop, collaborations and a coming-of-age narrative."
+        }
+      },
+      {
+        "title": "BEFORE I FORGET",
+        "year": 2026,
+        "description": {
+          "es": "Capítulo reciente más vulnerable, orientado a pop/R&B y memoria de ruptura.",
+          "en": "Recent, more vulnerable chapter oriented toward pop/R&B and breakup memory."
+        }
+      }
+    ]
+  },
+  {
+    "name": "HaYehudim",
+    "aliases": ["היהודים", "I.U.D.M", "Hayehudim", "The Jews"],
+    "origin": {
+      "es": "Tel Aviv, Israel",
+      "en": "Tel Aviv, Israel"
+    },
+    "country": {
+      "es": "Israel",
+      "en": "Israel"
+    },
+    "start_year": 1992,
+    "status": {
+      "es": "Banda israelí de hard rock, conocida por voces intensas, temas oscuros y canciones mayormente en hebreo.",
+      "en": "Israeli hard rock band known for intense vocals, dark themes and songs mostly in Hebrew."
+    },
+    "bio": {
+      "es": "HaYehudim vuelve más local el mapa del archivo: hard rock hebreo, voces teatrales, guitarras pesadas y una conexión fuerte con el rock israelí de los 90 en adelante.",
+      "en": "HaYehudim makes the archive map more local: Hebrew hard rock, theatrical vocals, heavy guitars and a strong connection with Israeli rock from the 90s onward."
+    },
+    "archive_role": {
+      "es": "Aporta idioma, memoria local y una forma de intensidad que no depende del eje angloamericano.",
+      "en": "Adds language, local memory and a form of intensity that does not depend on the Anglo-American axis."
+    },
+    "sound_evolution": {
+      "es": "Su recorrido mantiene el centro en hard rock oscuro, ampliando producción y escala en discos posteriores como Forte y Yoter Lo.",
+      "en": "Their path keeps dark hard rock at the center, expanding production and scale on later records like Forte and Yoter Lo."
+    },
+    "why_it_matters": {
+      "es": "Es una pieza cultural importante porque conecta tu archivo global con una escena cercana, hebrea y emocionalmente directa.",
+      "en": "It is culturally important because it connects your global archive with a nearby, Hebrew and emotionally direct scene."
+    },
+    "signature_moods": {
+      "es": ["hard rock israelí", "hebreo", "oscuro", "voz teatral"],
+      "en": ["Israeli hard rock", "Hebrew", "dark", "theatrical voice"]
+    },
+    "key_albums": [
+      {
+        "title": "Metziut Nifredet",
+        "year": 1995,
+        "description": {
+          "es": "Debut de culto que presenta su mezcla de hard rock, oscuridad y energía vocal.",
+          "en": "Cult debut presenting their mix of hard rock, darkness and vocal energy."
+        }
+      },
+      {
+        "title": "HaYehudim",
+        "year": 1998,
+        "description": {
+          "es": "Consolida la identidad de banda y su lugar en el rock israelí.",
+          "en": "Consolidates the band identity and their place in Israeli rock."
+        }
+      },
+      {
+        "title": "Pakhad Mavet",
+        "year": 2002,
+        "description": {
+          "es": "Capítulo más tenso, conectado a una época social y emocionalmente cargada.",
+          "en": "More tense chapter, connected to a socially and emotionally loaded period."
+        }
+      },
+      {
+        "title": "Forte",
+        "year": 2007,
+        "description": {
+          "es": "Disco posterior que amplía el tamaño de la producción y el peso de guitarras.",
+          "en": "Later record expanding production size and guitar weight."
+        }
+      },
+      {
+        "title": "Yoter Lo",
+        "year": 2015,
+        "description": {
+          "es": "Capítulo reciente que mantiene la intensidad del proyecto dentro de una etapa más madura.",
+          "en": "Recent chapter keeping the project intensity inside a more mature phase."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Mooki",
+    "aliases": ["מוקי", "Muki", "Danny Niv", "Daniel Niv", "Daniel Neyburger"],
+    "origin": {
+      "es": "Rishon LeZion, Israel",
+      "en": "Rishon LeZion, Israel"
+    },
+    "country": {
+      "es": "Israel",
+      "en": "Israel"
+    },
+    "start_year": 1992,
+    "status": {
+      "es": "Cantante y rapero israelí, ex figura de Shabak Samech, con carrera solista entre hip hop, reggae, rock alternativo y pop hebreo.",
+      "en": "Israeli singer and rapper, former Shabak Samech figure, with a solo career across hip hop, reggae, alternative rock and Hebrew pop."
+    },
+    "bio": {
+      "es": "Mooki añade una rama israelí más urbana al archivo: rap hebreo, conciencia social, reggae, pop emocional y cruces con punk/rock.",
+      "en": "Mooki adds a more urban Israeli branch to the archive: Hebrew rap, social awareness, reggae, emotional pop and punk/rock crossovers."
+    },
+    "archive_role": {
+      "es": "Conecta el rock israelí con hip hop local y una sensibilidad popular más directa.",
+      "en": "Connects Israeli rock with local hip hop and a more direct popular sensitivity."
+    },
+    "sound_evolution": {
+      "es": "Tras Shabak Samech, su carrera solista se mueve entre rap consciente, canciones pop-rock y colaboraciones más acústicas o punk.",
+      "en": "After Shabak Samech, his solo career moves between conscious rap, pop-rock songs and more acoustic or punk collaborations."
+    },
+    "why_it_matters": {
+      "es": "Sirve para que el archivo no lea Israel solo desde hard rock: también desde lenguaje callejero, melodía y memoria cultural.",
+      "en": "Helps the archive read Israel not only through hard rock, but also through street language, melody and cultural memory."
+    },
+    "signature_moods": {
+      "es": ["hip hop israelí", "reggae", "pop hebreo", "conciencia social"],
+      "en": ["Israeli hip hop", "reggae", "Hebrew pop", "social awareness"]
+    },
+    "key_albums": [
+      {
+        "title": "Shma Israel",
+        "year": 2001,
+        "description": {
+          "es": "Primer álbum solista, con rap hebreo y temas sociales muy presentes.",
+          "en": "First solo album, with Hebrew rap and very present social themes."
+        }
+      },
+      {
+        "title": "Okef Mi'Lemala",
+        "year": 2005,
+        "description": {
+          "es": "Continúa la colaboración con Piloni y pule su lenguaje solista.",
+          "en": "Continues the collaboration with Piloni and polishes his solo language."
+        }
+      },
+      {
+        "title": "Be'emet ve Mikarov",
+        "year": 2008,
+        "description": {
+          "es": "Etapa más acústica e íntima, revisando canciones desde otra cercanía.",
+          "en": "More acoustic and intimate phase, revisiting songs from another closeness."
+        }
+      },
+      {
+        "title": "Mooki & Useless ID",
+        "year": 2010,
+        "description": {
+          "es": "Cruce con punk rock israelí que endurece su energía.",
+          "en": "Crossover with Israeli punk rock that hardens his energy."
+        }
+      },
+      {
+        "title": "Lev Hofshi",
+        "year": 2014,
+        "description": {
+          "es": "Capítulo popular y emocional, con mayor alcance radial.",
+          "en": "Popular and emotional chapter, with wider radio reach."
+        }
+      },
+      {
+        "title": "Holech Al Mayim",
+        "year": 2017,
+        "description": {
+          "es": "Etapa posterior que mantiene la mezcla entre pop hebreo y sensibilidad urbana.",
+          "en": "Later phase keeping the mix between Hebrew pop and urban sensitivity."
+        }
+      }
+    ]
+  }
+]

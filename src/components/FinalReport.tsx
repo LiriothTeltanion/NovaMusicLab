@@ -4,7 +4,7 @@ import { FileText, Headphones, Heart, Printer, Music, Star, Zap } from 'lucide-r
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
-import { getNightRatio, getRecords, getTwoYearPeak } from '../utils/analytics';
+import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYearPeak } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
 
 interface FinalReportProps { data: MusicDnaData; }
@@ -55,6 +55,22 @@ export default function FinalReport({ data }: FinalReportProps) {
   const nr = getNightRatio(data);
   const records = getRecords(data);
   const peakPair = getTwoYearPeak(data.yearly_eras);
+  const peakYear = getPeakYear(data);
+  const source = deriveSourceSummary(data);
+  const recentYears = [...data.yearly_eras]
+    .sort((a, b) => b.year - a.year)
+    .slice(0, 2)
+    .map(era => era.year);
+  const currentTopTen = data.top_artists.slice(0, 10).map(artist => artist.name.toLowerCase());
+  const closedCapsules = data.yearly_eras.filter(era => !recentYears.includes(era.year));
+  const fadedCapsules = closedCapsules.filter(era => !currentTopTen.includes(era.top_artist.toLowerCase())).length;
+  const reportConfidence = source.source_type === 'merged'
+    ? 90
+    : source.source_type === 'spotify'
+      ? 78
+      : source.source_type === 'lastfm'
+        ? 74
+        : 62;
 
   return (
     <div className="space-y-8 animate-fade-in max-w-3xl mx-auto">
@@ -167,6 +183,20 @@ export default function FinalReport({ data }: FinalReportProps) {
             <InlineStat label={tr.s5DaysLabel} value={m.active_days.toLocaleString(locale)} color="#facc15" />{' '}
             {tr.s5Post(topArtist, topTrack)}
           </p>
+        </motion.section>
+
+        <div className="h-px bg-gradient-to-r from-transparent via-yellow-400/20 to-transparent" />
+
+        <motion.section variants={paraVariants} className="space-y-4">
+          <SectionHeading roman={tr.s6Roman} title={tr.s6Title} color="#4cc9f0" />
+          <p className="text-sm md:text-base">
+            {tr.s6Pre}{' '}
+            <InlineStat label={tr.s6CapsulesLabel} value={closedCapsules.length.toLocaleString(locale)} color="#4cc9f0" />
+            <InlineStat label={tr.s6WrappedLabel} value={peakYear?.year ?? 'N/D'} color="#f72585" />
+            <InlineStat label={tr.s6ConfidenceLabel} value={`${reportConfidence}%`} color="#10b981" />{' '}
+            {tr.s6Mid(fadedCapsules)} {tr.s6Post}
+          </p>
+          <PullQuote text={tr.s6Quote} color="#4cc9f0" />
         </motion.section>
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">

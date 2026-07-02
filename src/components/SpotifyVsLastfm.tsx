@@ -10,6 +10,7 @@ import { deriveSourceSummary, getNightRatio, getTwoYearPeak } from '../utils/ana
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import SectionNarrative from './SectionNarrative';
+import { localizeSourceNote } from '../utils/localizedDatasetText';
 
 interface SpotifyVsLastfmProps {
   data: MusicDnaData;
@@ -43,6 +44,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const { t, lang } = useApp();
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const source = deriveSourceSummary(data);
+  const sourceNote = localizeSourceNote(source, lang);
   const lastfmTotal = source.lastfm_plays;
   const spotifyDirectTotal = source.spotify_plays;
   const matchRate = data.core_metrics.match_rate_pct;
@@ -358,7 +360,7 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
               {t.spotifyVsLastfm.dataQualityNoteTitle}
             </p>
             <p className="text-xs text-gray-300 font-sans leading-relaxed">
-              {source.source_note}
+              {sourceNote}
               {!spotifyDirectTotal && spotifyEstimatedTotal > 0 && (
                 <span> {t.spotifyVsLastfm.estimatedValuesDisclaimer}</span>
               )}

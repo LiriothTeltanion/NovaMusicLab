@@ -194,7 +194,7 @@ function AppInner() {
       ) : (
         <div className="flex-1 flex flex-col md:flex-row z-10">
           {/* Sidebar */}
-          <aside className="w-full md:w-60 shrink-0 border-r p-3 md:p-4"
+          <aside className="w-full md:w-60 shrink-0 border-r p-3 md:p-4 md:sticky md:top-[68px] md:self-start md:max-h-[calc(100vh-68px)] md:overflow-y-auto"
             style={{ backgroundColor: `${tc.bg}60`, borderRightColor: `${tc.c1}10` }}>
             <nav className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-1 pb-2 md:pb-0">
               {menuItems.map((item, idx) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Activity,
   CheckCircle2,
+  BookOpenText,
   Database,
   FileJson,
   Gauge,
@@ -20,6 +21,7 @@ import {
 } from '../utils/analytics';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
 
 type ConfidenceKind = 'exact' | 'mixed' | 'estimated' | 'inferred' | 'curated' | 'unavailable';
 
@@ -79,6 +81,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
   const { t, tc, lang } = useApp();
   const source = deriveSourceSummary(data);
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const sourceNote = localizeSourceNote(source, lang);
   const peakYear = getPeakYear(data);
   const night = getNightRatio(data);
   const confidence = overallConfidence(data);
@@ -106,14 +109,16 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       icon: Database,
       label: t.dataQuality.sourceTypeLabel,
       value: sourceKindCopy(source.source_type, t.dataQuality.sourceTypes),
-      sub: data.project,
+      sub: localizeProjectLabel(data.project, lang),
       color: tc.c1,
     },
     {
       icon: Activity,
       label: t.dataQuality.eventCountLabel,
       value: formatNumber(source.merged_plays || data.core_metrics.total_plays, locale),
-      sub: `${formatNumber(data.core_metrics.unique_artists, locale)} artists · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`,
+      sub: lang === 'en'
+        ? `${formatNumber(data.core_metrics.unique_artists, locale)} artists · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`
+        : `${formatNumber(data.core_metrics.unique_artists, locale)} artistas · ${formatNumber(data.core_metrics.unique_tracks, locale)} canciones`,
       color: tc.c2,
     },
     {
@@ -189,7 +194,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
         </div>
 
         <div className="glass-panel p-5 rounded-2xl">
-          <p className="text-xs text-gray-300 leading-relaxed">{source.source_note}</p>
+          <p className="text-xs text-gray-300 leading-relaxed">{sourceNote}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 mt-5">
             {sourceCards.map(card => {
               const color = confidenceColor(card.kind, tc);
@@ -283,6 +288,38 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
                 </p>
                 <h4 className="text-base font-black text-white">{method.title}</h4>
                 <p className="text-xs text-gray-400 leading-relaxed mt-2">{method.body}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <BookOpenText className="w-5 h-5" style={{ color: tc.c1 }} />
+          <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
+            {t.dataQuality.glossaryTitle}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-400 leading-relaxed max-w-4xl">
+          {t.dataQuality.glossaryIntro}
+        </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {t.dataQuality.glossary.map((group, groupIndex) => {
+            const color = [tc.c1, tc.c2, tc.c3, tc.c4][groupIndex % 4];
+            return (
+              <div key={group.group} className="glass-panel p-5 rounded-2xl border" style={{ borderColor: `${color}25` }}>
+                <h4 className="text-xs font-mono font-black uppercase tracking-widest mb-4" style={{ color }}>
+                  {group.group}
+                </h4>
+                <div className="space-y-3">
+                  {group.terms.map(term => (
+                    <div key={term.term} className="rounded-xl border border-white/5 bg-white/3 p-3">
+                      <p className="text-sm font-bold text-white">{term.term}</p>
+                      <p className="text-xs text-gray-400 leading-relaxed mt-1">{term.definition}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })}
