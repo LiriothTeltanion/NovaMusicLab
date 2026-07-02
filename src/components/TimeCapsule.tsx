@@ -4,6 +4,7 @@ import { Hourglass, Music, Disc3, BarChart2, Sun, ExternalLink, Ghost, Crown } f
 import { MusicDnaData, YearlyEra } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
 import MethodologyPanel from './MethodologyPanel';
 import SectionNarrative from './SectionNarrative';
 import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
@@ -197,8 +198,9 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                               <span className="font-mono text-gray-500 uppercase text-[10px] mr-1.5">{t.timeCapsule.flagshipLabel}</span>
                               <span className="font-bold text-white">{cap.era.top_artist}</span>
                             </span>
-                            <span className="text-gray-400 truncate max-w-full">
-                              <span className="font-mono text-gray-500 uppercase text-[10px] mr-1.5">{t.timeCapsule.anthemLabel}</span>
+                            <span className="text-gray-400 truncate max-w-full inline-flex items-center gap-1.5">
+                              <span className="font-mono text-gray-500 uppercase text-[10px] mr-0.5">{t.timeCapsule.anthemLabel}</span>
+                              <CoverArt artist={cap.era.top_artist} title={cap.era.top_track} kind="track" size={20} />
                               <span className="font-bold" style={{ color: accent }}>{cap.era.top_track}</span>
                             </span>
                           </div>

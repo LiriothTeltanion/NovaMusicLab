@@ -23,6 +23,7 @@ import {
   summarizeArtistEvidence,
 } from '../utils/artistEnrichment';
 import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
 import GenreArt from './GenreArt';
 import FlagArt from './FlagArt';
 import MediaEmbedHub from './MediaEmbedHub';
@@ -559,7 +560,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const ListRow = ({
-    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false,
+    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind,
   }: {
     rank: number;
     main: string;
@@ -570,6 +571,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     flagCountry?: string;
     onClick?: () => void;
     active?: boolean;
+    /** When set (with coverKind), show album/track artwork instead of the artist photo. */
+    coverTitle?: string;
+    coverKind?: 'album' | 'track';
   }) => {
     const rowBody = (
       <>
@@ -578,7 +582,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             style={{ color, backgroundColor: `${color}18`, border: `1px solid ${color}40` }}>
             {rank}
           </span>
-          {avatarName && <ArtistAvatar name={avatarName} size={32} />}
+          {coverTitle && coverKind && avatarName
+            ? <CoverArt artist={avatarName} title={coverTitle} kind={coverKind} size={36} />
+            : avatarName && <ArtistAvatar name={avatarName} size={32} />}
           <div className="truncate">
             <p className="text-sm font-bold text-white truncate leading-tight">{main}</p>
             {sub && (
@@ -701,7 +707,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         </div>
 
         <div className="flex items-start gap-4">
-          <ArtistAvatar name={selectedTrack.artist} size={72} />
+          <CoverArt artist={selectedTrack.artist} title={selectedTrack.title} kind="track" size={72} />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
@@ -1249,7 +1255,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         </div>
 
         <div className="flex items-start gap-4">
-          <ArtistAvatar name={selectedAlbum.artist} size={72} />
+          <CoverArt artist={selectedAlbum.artist} title={selectedAlbum.title} kind="album" size={72} />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
@@ -1543,6 +1549,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     <ListRow key={`${track.artist}-${track.title}`} rank={idx + 1} main={track.title}
                       sub={`${track.artist} · ${track.genre}`} plays={track.plays}
                       color={COLORS[idx % COLORS.length]} avatarName={track.artist}
+                      coverTitle={track.title} coverKind="track"
                       onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
                       active={selectedTrack ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title) : false} />
                   ))}
@@ -1610,6 +1617,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <ListRow key={`${a.artist}-${a.title}`} rank={idx + 1} main={a.title}
                         sub={releaseYear ? `${a.artist} · ${artistCopy.released} ${releaseYear}` : a.artist}
                         plays={a.plays} color={COLORS[idx % COLORS.length]} avatarName={a.artist}
+                        coverTitle={a.title} coverKind="album"
                         onClick={() => setSelectedAlbumKey(albumKey(a.artist, a.title))}
                         active={selectedAlbum ? albumKey(a.artist, a.title) === albumKey(selectedAlbum.artist, selectedAlbum.title) : false} />
                     );

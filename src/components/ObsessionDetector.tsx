@@ -3,6 +3,7 @@ import { RotateCcw, Clock, Trophy, Flame } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
 import SectionNarrative from './SectionNarrative';
 
 interface ObsessionDetectorProps {
@@ -51,7 +52,7 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
               obsessions.map((obs, idx) => (
                 <div key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all">
                   <div className="flex items-center space-x-3 truncate pr-4">
-                    <ArtistAvatar name={obs.artist} size={32} />
+                    <CoverArt artist={obs.artist} title={obs.track} kind="track" size={36} />
                     <div className="truncate">
                       <p className="text-xs font-bold text-white truncate">{obs.track}</p>
                       <p className="text-[10px] text-gray-400 truncate">{obs.artist}</p>

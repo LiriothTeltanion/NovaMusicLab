@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { inferMoodCoordinates } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
@@ -580,9 +581,12 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{copy.labels.tracks}</span>
                 <div className="space-y-1">
                   {currentEmotion.tracks.map((track, index) => (
-                    <div key={track} className="px-3 py-2 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs">
-                      <p className="font-mono text-gray-200 truncate">{track}</p>
-                      <p className="text-[10px] text-gray-500 leading-relaxed mt-1">{currentEmotion.trackNotes[index]}</p>
+                    <div key={track} className="px-3 py-2 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs flex items-start gap-2.5">
+                      <CoverArt artist={currentEmotion.artists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
+                      <div className="min-w-0">
+                        <p className="font-mono text-gray-200 truncate">{track}</p>
+                        <p className="text-[10px] text-gray-500 leading-relaxed mt-1">{currentEmotion.trackNotes[index]}</p>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -6,6 +6,7 @@ import { Share2, Sparkles, Mic2, Music2, Clock, Download, Loader2 } from 'lucide
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
 import MethodologyPanel from './MethodologyPanel';
 import SectionNarrative from './SectionNarrative';
 import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
@@ -293,9 +294,15 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                   <Music2 className="w-3.5 h-3.5" style={{ color: tc.c2 }} />
                   <span>{t.wrapped.anthemLabel}</span>
                 </div>
-                <p className="text-lg font-bold leading-snug break-words" style={{ color: '#ffffff' }}>
-                  {era.top_track}
-                </p>
+                <div className="flex items-center gap-3">
+                  {/* Cross-origin cover: excluded from PNG export via data-no-export */}
+                  <div data-no-export className="shrink-0">
+                    <CoverArt artist={era.top_artist} title={era.top_track} kind="track" size={44} />
+                  </div>
+                  <p className="text-lg font-bold leading-snug break-words" style={{ color: '#ffffff' }}>
+                    {era.top_track}
+                  </p>
+                </div>
               </motion.div>
 
               {/* 4-stat grid */}
