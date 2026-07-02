@@ -4,6 +4,7 @@ import { Globe, Award, Languages, Map } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import FlagArt from './FlagArt';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -167,9 +168,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                 style={{ borderColor: isSelected ? meta.color : 'transparent' }}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black font-mono"
-                    style={{ backgroundColor: `${meta.color}20`, color: meta.color, border: `1px solid ${meta.color}40` }}>
-                    {meta.flag}
+                  <div className="h-10 px-2 rounded-xl flex items-center justify-center"
+                    style={{ backgroundColor: `${meta.color}20`, border: `1px solid ${meta.color}40` }}>
+                    <FlagArt country={c.country} size={30} />
                   </div>
                   <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
                     style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>

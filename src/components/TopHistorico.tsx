@@ -10,6 +10,7 @@ import { useApp } from '../context/AppContext';
 import { normalizeGenre } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
 import GenreArt from './GenreArt';
+import FlagArt from './FlagArt';
 import SectionNarrative from './SectionNarrative';
 
 interface TopHistoricoProps {
@@ -102,7 +103,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     );
   };
 
-  const ListRow = ({ rank, main, sub, plays, color, avatarName }: { rank: number; main: string; sub?: string; plays: number; color: string; avatarName?: string }) => (
+  const ListRow = ({ rank, main, sub, plays, color, avatarName, flagCountry }: { rank: number; main: string; sub?: string; plays: number; color: string; avatarName?: string; flagCountry?: string }) => (
     <motion.div variants={itemVariants}
       className="flex items-center justify-between p-3 rounded-2xl hover:bg-white/3 transition-all group"
       style={{ border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -114,7 +115,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         {avatarName && <ArtistAvatar name={avatarName} size={32} />}
         <div className="truncate">
           <p className="text-sm font-bold text-white truncate leading-tight">{main}</p>
-          {sub && <p className="text-[11px] text-gray-400 truncate">{sub}</p>}
+          {sub && (
+            <p className="text-[11px] text-gray-400 truncate flex items-center gap-1.5">
+              {flagCountry && <FlagArt country={flagCountry} size={15} />}
+              {sub}
+            </p>
+          )}
         </div>
       </div>
       <span className="text-xs font-mono font-bold px-3 py-1 rounded-full shrink-0 ml-3"
@@ -194,7 +200,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {filteredArtists.slice(0, 50).map((a, idx) => (
                     <ListRow key={a.name} rank={idx + 1} main={a.name}
                       sub={`${a.country} · ${a.genre}`} plays={a.plays}
-                      color={COLORS[idx % COLORS.length]} avatarName={a.name} />
+                      color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country} />
                   ))}
                 </motion.div>
               </div>
