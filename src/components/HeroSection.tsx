@@ -6,6 +6,7 @@ import { MusicDnaData } from '../types';
 import CountUpCmp from './CountUp';
 import { useApp } from '../context/AppContext';
 import AnimatedParticles from './AnimatedParticles';
+import SectionNarrative from './SectionNarrative';
 
 interface HeroSectionProps {
   data: MusicDnaData;
@@ -86,6 +87,19 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
         >
           {t.heroSection.description}
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.55, duration: 0.5 }}
+        >
+          <SectionNarrative
+            content={t.deepNarratives.hero}
+            accent="c1"
+            compact
+            className="text-left max-w-3xl mx-auto"
+          />
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}

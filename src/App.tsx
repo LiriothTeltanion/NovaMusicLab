@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { 
   Headphones, LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart, 
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award
+  Sun, Activity, Award, ShieldCheck
 } from 'lucide-react';
 
 import defaultMusicData from './data/music_dna_compiled.json';
@@ -12,12 +12,14 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import AnimatedParticles from './components/AnimatedParticles';
 import ErrorBoundary from './components/ErrorBoundary';
+import SectionNarrative from './components/SectionNarrative';
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const DataUploader = lazy(() => import('./components/DataUploader'));
 const TopHistorico = lazy(() => import('./components/TopHistorico'));
 const SpotifyVsLastfm = lazy(() => import('./components/SpotifyVsLastfm'));
+const DataQualityCenter = lazy(() => import('./components/DataQualityCenter'));
 const EraExplorer = lazy(() => import('./components/EraExplorer'));
 const PersonalityRadar = lazy(() => import('./components/PersonalityRadar'));
 const EmotionalMap = lazy(() => import('./components/EmotionalMap'));
@@ -33,7 +35,7 @@ const Achievements = lazy(() => import('./components/Achievements'));
 type Tab = 
   | 'hero' | 'dashboard' | 'eras' | 'top' | 'personality' | 'emotions'
   | 'obsessions' | 'cultural' | 'inner' | 'artist' | 'insights'
-  | 'compare' | 'statsdeep' | 'achievements' | 'report' | 'upload';
+  | 'compare' | 'quality' | 'statsdeep' | 'achievements' | 'report' | 'upload';
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
 
@@ -80,6 +82,7 @@ function AppInner() {
     { id: 'artist',      label: t.nav.artist,       icon: Sparkles },
     { id: 'insights',    label: t.nav.insights,     icon: AlertCircle },
     { id: 'compare',     label: t.nav.compare,      icon: GitCompare },
+    { id: 'quality',     label: t.nav.dataQuality,  icon: ShieldCheck },
     { id: 'statsdeep',   label: t.nav.statsPro,     icon: Activity },
     { id: 'achievements', label: t.nav.achievements, icon: Award },
     { id: 'report',      label: t.nav.report,       icon: FileText },
@@ -231,6 +234,7 @@ function AppInner() {
                     {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
                     {activeTab === 'top'         && <TopHistorico data={filteredData} />}
                     {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
+                    {activeTab === 'quality'     && <DataQualityCenter data={filteredData} />}
                     {activeTab === 'statsdeep'   && <StatsDeepDive data={filteredData} />}
                     {activeTab === 'achievements' && <Achievements data={filteredData} />}
                     {activeTab === 'personality' && <PersonalityRadar data={filteredData} />}
@@ -247,6 +251,7 @@ function AppInner() {
                           <Upload className="w-6 h-6" style={{ color: tc.c1 }} />
                           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
                         </div>
+                        <SectionNarrative content={t.deepNarratives.upload} accent="c2" />
                         <DataUploader onDataLoaded={handleDataLoaded} />
                       </div>
                     )}

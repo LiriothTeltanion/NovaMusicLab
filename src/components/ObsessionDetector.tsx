@@ -3,6 +3,7 @@ import { RotateCcw, Clock, Trophy, Flame } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import SectionNarrative from './SectionNarrative';
 
 interface ObsessionDetectorProps {
   data: MusicDnaData;
@@ -30,6 +31,8 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
           {t.obsessionDetector.title}</h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.obsessions} accent="c2" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Obsessions list (1 Day loops) */}

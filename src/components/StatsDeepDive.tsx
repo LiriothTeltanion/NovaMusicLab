@@ -18,6 +18,7 @@ import {
   getWeekdayTotals,
   normalizeGenre,
 } from '../utils/analytics';
+import SectionNarrative from './SectionNarrative';
 
 interface StatsDeepDiveProps { data: MusicDnaData; }
 
@@ -148,6 +149,8 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           {t.statsDeepDive.title}
         </h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.statsdeep} accent="c1" />
 
       {/* ── KPI Cards ── */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">

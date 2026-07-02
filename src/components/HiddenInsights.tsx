@@ -4,6 +4,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getRecords } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
+import SectionNarrative from './SectionNarrative';
 
 interface HiddenInsightsProps {
   data: MusicDnaData;
@@ -32,6 +33,8 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
           {t.hiddenInsights.title}
         </h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.insights} accent="c1" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Insight 1: Silent Dominance */}

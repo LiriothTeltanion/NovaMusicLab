@@ -9,6 +9,7 @@ import { MusicDnaData } from '../types';
 import { deriveSourceSummary, getNightRatio, getTwoYearPeak } from '../utils/analytics';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import SectionNarrative from './SectionNarrative';
 
 interface SpotifyVsLastfmProps {
   data: MusicDnaData;
@@ -158,6 +159,8 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
           {t.spotifyVsLastfm.pageTitle}
         </h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.compare} accent="c4" />
 
       {/* Hero comparison banner */}
       <div className="glass-panel p-6 md:p-8 rounded-3xl border border-cyan-500/20 relative overflow-hidden">

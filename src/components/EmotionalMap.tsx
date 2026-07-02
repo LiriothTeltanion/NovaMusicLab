@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { inferMoodCoordinates } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
+import SectionNarrative from './SectionNarrative';
 
 interface EmotionalMapProps {
   data: MusicDnaData;
@@ -99,6 +100,8 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
           {t.sections.emotionalMap}</h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.emotions} accent="c2" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scatter Chart "Galaxia Emocional" */}

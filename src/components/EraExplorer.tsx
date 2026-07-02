@@ -4,6 +4,7 @@ import { Calendar, ChevronRight, ChevronLeft, Headphones, Sparkles, BarChart2 } 
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
+import SectionNarrative from './SectionNarrative';
 
 interface EraExplorerProps {
   data: MusicDnaData;
@@ -86,6 +87,8 @@ export default function EraExplorer({ data }: EraExplorerProps) {
           </button>
         </div>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.eras} accent="c1" />
 
       {/* Visual timeline with relative play bars */}
       <div className="glass-panel p-4 rounded-2xl overflow-x-auto">

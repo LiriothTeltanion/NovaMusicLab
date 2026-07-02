@@ -3,6 +3,7 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } fro
 import { BrainCircuit, AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import SectionNarrative from './SectionNarrative';
 
 interface PersonalityRadarProps {
   data: MusicDnaData;
@@ -34,6 +35,8 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
           {t.personalityRadar.profileTitle}</h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.personality} accent="c3" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Radar Chart */}

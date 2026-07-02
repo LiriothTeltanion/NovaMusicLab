@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Globe, Award, Languages, Map } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import SectionNarrative from './SectionNarrative';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -112,6 +113,8 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         <Globe className="w-6 h-6 text-cyberCyan" />
         <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.cultural.title}</h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.cultural} accent="c4" />
 
       {/* Hero narrative */}
       <div className="glass-panel p-7 rounded-3xl border-l-4 border-l-cyberCyan relative overflow-hidden">

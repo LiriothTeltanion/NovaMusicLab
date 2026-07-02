@@ -13,6 +13,7 @@ import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
 import ArtistAvatar from './ArtistAvatar';
 import { getNightRatio, getPeakYear, getRecords } from '../utils/analytics';
+import SectionNarrative from './SectionNarrative';
 
 interface AchievementsProps { data: MusicDnaData; }
 
@@ -241,6 +242,8 @@ export default function Achievements({ data }: AchievementsProps) {
           ))}
         </div>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.achievements} accent="c2" />
 
       {/* Tier summary strip */}
       <div className="grid grid-cols-5 gap-3">

@@ -10,6 +10,7 @@ import { useApp } from '../context/AppContext';
 import { normalizeGenre } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
 import GenreArt from './GenreArt';
+import SectionNarrative from './SectionNarrative';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -151,6 +152,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           )}
         </div>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.top} accent="c2" />
 
       {/* Tabs */}
       <div className="flex overflow-x-auto space-x-2 pb-1">

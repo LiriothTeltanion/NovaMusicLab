@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Palette, Eye, Moon, Film, Gamepad2, Landmark, Music, Zap, Star } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import SectionNarrative from './SectionNarrative';
 
 interface InnerWorldProps { data: MusicDnaData; }
 
@@ -180,6 +181,8 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
           {t.innerWorld.pageTitle}
         </h2>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.inner} accent="c3" />
 
       {/* Universe banner */}
       <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden border border-cyberPurple/20">

@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
 import { getNightRatio, getRecords, getTwoYearPeak } from '../utils/analytics';
+import SectionNarrative from './SectionNarrative';
 
 interface FinalReportProps { data: MusicDnaData; }
 
@@ -67,6 +68,8 @@ export default function FinalReport({ data }: FinalReportProps) {
           <Printer className="w-3.5 h-3.5" />{tr.printButton}
         </button>
       </div>
+
+      <SectionNarrative content={t.deepNarratives.report} accent="c1" />
 
       {/* Magazine cover */}
       <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}

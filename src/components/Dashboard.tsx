@@ -7,6 +7,7 @@ import CountUp from './CountUp';
 import ArtistAvatar from './ArtistAvatar';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames, normalizeGenre } from '../utils/analytics';
+import SectionNarrative from './SectionNarrative';
 
 interface DashboardProps {
   data: MusicDnaData;
@@ -96,6 +97,8 @@ export default function Dashboard({ data }: DashboardProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
+      <SectionNarrative content={t.deepNarratives.dashboard} accent="c1" />
+
       {/* 1. Main KPIs — animated stagger */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {[
