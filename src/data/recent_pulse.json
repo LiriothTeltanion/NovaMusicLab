@@ -1,0 +1,22 @@
+{
+  "synced_at": "2026-07-02",
+  "source": "Spotify connector (one-time dev sync)",
+  "top_artists": [
+    { "name": "Oliver Tree", "image": "https://i.scdn.co/image/ab6761610000517416af3b79aa9582f36f3c04d4" },
+    { "name": "The Kid LAROI", "image": "https://i.scdn.co/image/ab67616100005174ec28585ddac052aece0faae5" },
+    { "name": "Bad Omens", "image": "https://i.scdn.co/image/ab676161000051743dc0577ed61ec73b498a56ee" },
+    { "name": "SMBDY ELSE", "image": "https://i.scdn.co/image/ab676161000051743cf38ed0b0968ef4f6ca4b24" },
+    { "name": "Thekidszn", "image": "https://i.scdn.co/image/ab676161000051742c184076937bba9739f8bd51" }
+  ],
+  "top_tracks": [
+    { "title": "Glimmer", "artist": "LIONE, Heather Sommer", "image": "https://i.scdn.co/image/ab67616d00001e021064e4c095b3ef50dff62595" },
+    { "title": "999!", "artist": "Danny Aro, 7evin7ins, Lonny", "image": "https://i.scdn.co/image/ab67616d00001e028a4ca637ccd3aac12b99a486" },
+    { "title": "Warning Sign", "artist": "44phantom", "image": "https://i.scdn.co/image/ab67616d00001e0289f9f58c4c4d8d47f5a28ecc" },
+    { "title": "hoax", "artist": "Oshua", "image": "https://i.scdn.co/image/ab67616d00001e02e28426ede2828cd0a9ff2147" }
+  ],
+  "recent_tracks": [
+    { "title": "hot girl bummer", "artist": "blackbear", "image": "https://i.scdn.co/image/ab67616d00001e02e9b6f26ff354f4d70847f02d" },
+    { "title": "Miss You", "artist": "Oliver Tree, Robin Schulz", "image": "https://i.scdn.co/image/ab67616d00001e0297aa7586b7633e103aceb8ba" },
+    { "title": "2 Gone", "artist": "Sean Jacobs", "image": "https://i.scdn.co/image/ab67616d00001e022deed44b49d33a1eafed3472" }
+  ]
+}

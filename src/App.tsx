@@ -1,9 +1,9 @@
 import React, { Suspense, lazy, useCallback, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { 
-  Headphones, LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart, 
+import {
+  Headphones, LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award, ShieldCheck
+  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio
 } from 'lucide-react';
 
 import defaultMusicData from './data/music_dna_compiled.json';
@@ -31,11 +31,15 @@ const HiddenInsights = lazy(() => import('./components/HiddenInsights'));
 const FinalReport = lazy(() => import('./components/FinalReport'));
 const StatsDeepDive = lazy(() => import('./components/StatsDeepDive'));
 const Achievements = lazy(() => import('./components/Achievements'));
+const TimeCapsule = lazy(() => import('./components/TimeCapsule'));
+const WrappedCard = lazy(() => import('./components/WrappedCard'));
+const RecentPulse = lazy(() => import('./components/RecentPulse'));
 
-type Tab = 
+type Tab =
   | 'hero' | 'dashboard' | 'eras' | 'top' | 'personality' | 'emotions'
   | 'obsessions' | 'cultural' | 'inner' | 'artist' | 'insights'
-  | 'compare' | 'quality' | 'statsdeep' | 'achievements' | 'report' | 'upload';
+  | 'compare' | 'quality' | 'statsdeep' | 'achievements'
+  | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload';
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
 
@@ -85,6 +89,9 @@ function AppInner() {
     { id: 'quality',     label: t.nav.dataQuality,  icon: ShieldCheck },
     { id: 'statsdeep',   label: t.nav.statsPro,     icon: Activity },
     { id: 'achievements', label: t.nav.achievements, icon: Award },
+    { id: 'timecapsule', label: t.nav.timeCapsule,  icon: Hourglass },
+    { id: 'wrapped',     label: t.nav.wrapped,      icon: Gift },
+    { id: 'pulse',       label: t.nav.pulse,        icon: Radio },
     { id: 'report',      label: t.nav.report,       icon: FileText },
     { id: 'upload',      label: t.nav.upload,       icon: Upload },
   ] as const;
@@ -244,6 +251,9 @@ function AppInner() {
                     {activeTab === 'inner'       && <InnerWorld data={filteredData} />}
                     {activeTab === 'artist'      && <ArtistIdentity data={filteredData} />}
                     {activeTab === 'insights'    && <HiddenInsights data={filteredData} />}
+                    {activeTab === 'timecapsule' && <TimeCapsule data={filteredData} />}
+                    {activeTab === 'wrapped'     && <WrappedCard data={filteredData} />}
+                    {activeTab === 'pulse'       && <RecentPulse data={filteredData} />}
                     {activeTab === 'report'      && <FinalReport data={filteredData} />}
                     {activeTab === 'upload' && (
                       <div className="space-y-6 animate-fade-in">
