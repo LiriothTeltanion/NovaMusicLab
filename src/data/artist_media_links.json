@@ -1,60 +1,136 @@
 [
   {
     "artist": "Bring Me the Horizon",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAayZDDj3uom0QpSJiwLoUw",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=VAXg78MKJcM",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official YouTube channel and MANTRA official video."
   },
   {
     "artist": "Deafheaven",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4XpPveeg7RuYS3CgLo75t9"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4XpPveeg7RuYS3CgLo75t9",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC97UMkZzchbn0uO-KFyq8ww",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=fXTBQQU191Y",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official YouTube channel and In Blur official video."
   },
   {
     "artist": "Bilmuri",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/5Rc75vGFBWZPgL7EXb4k89"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5Rc75vGFBWZPgL7EXb4k89",
+    "youtubeChannelUrl": "https://www.youtube.com/@Bilmuriband",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=7NCtXJPcxOk",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Bilmuri channel and 2016 CAVALIERS official music video."
   },
   {
     "artist": "Nevertel",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0uTkKGuqdf7CtKlZLt9N0Y"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0uTkKGuqdf7CtKlZLt9N0Y",
+    "youtubeChannelUrl": "https://www.youtube.com/nevertel",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=waXmudP9n88",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Nevertel channel and Stuck Inside official music video."
   },
   {
     "artist": "Slaves",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0QF3SelvOph6yRhKH8jRxU"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0QF3SelvOph6yRhKH8jRxU",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=F-9QalFBz0U",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official YouTube audio for Prayers provided by TuneCore."
   },
   {
     "artist": "Jonny Craig",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/46MmlFKM8ivDsUnGOejvSM"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/46MmlFKM8ivDsUnGOejvSM",
+    "youtubeChannelUrl": "https://www.youtube.com/iamjonnycraig",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=M4RKfwymZo0",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Jonny Craig channel and GOOSEBUMPS video."
   },
   {
     "artist": "TesseracT",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/23ytwhG1pzX6DIVWRWvW1r"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/23ytwhG1pzX6DIVWRWvW1r",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCzvBMFhS0gqjx1rA0bswiHg",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=UnkpPIupQxM",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official TesseracT channel and War Of Being official music video."
   },
   {
     "artist": "Santa Cruz",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1ZP10xzJoQljzTHiaU2Gri"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1ZP10xzJoQljzTHiaU2Gri",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=FrW6BPJ9zz4",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official YouTube audio for Drag Me out of the Darkness provided by The Orchard Enterprises."
   },
   {
     "artist": "Normandie",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1zsOttiR3VjZRnw4Iq8Zg6"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1zsOttiR3VjZRnw4Iq8Zg6",
+    "youtubeChannelUrl": "https://www.youtube.com/c/NormandieOfficial",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9dnlWNOtJkU",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Normandie channel and Ritual official music video."
+  },
+  {
+    "artist": "Odeon",
+    "youtubeChannelUrl": "https://www.youtube.com/c/Odeonmusic",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=t70_Zh3Pbqc",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Odeon channel and loop official lyric video."
   },
   {
     "artist": "The Midnight",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2NFrAuh8RQdQoS7iYFbckw"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2NFrAuh8RQdQoS7iYFbckw",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC-sM_PLqzgktdUcW2LEKKkQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9LD3NKlS55g",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official The Midnight channel and Vampires official video."
   },
   {
     "artist": "Emarosa",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/68tKVjVvcqUfKFFLr2j0Ek"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/68tKVjVvcqUfKFFLr2j0Ek",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCw6OWvA_vTE1xl0mLN9ke9w",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=Shmt5YnF40A",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Emarosa channel and Givin' Up official music video."
   },
   {
     "artist": "The Word Alive",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1CF8aEN939swnuIZGFI7Hk"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1CF8aEN939swnuIZGFI7Hk",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCoi1iAjO1KEpLOtlbtqIp_Q",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=T9sjPryO160",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official YouTube channel and Red Clouds video."
   },
   {
     "artist": "Holding Absence",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2tl280wIokrLjabzrSKTgU"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2tl280wIokrLjabzrSKTgU",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCc0o7N0dIYQHMrL9vl2WHIA",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=MqiasiqEgPY",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Holding Absence channel and In Circles official music video."
   },
   {
     "artist": "nothingnowhere.",
     "aliases": ["nothing,nowhere."],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7FngGIEGgN3Iwauw1MvO4P"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7FngGIEGgN3Iwauw1MvO4P",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCBEWNR_x89cYolTNhuV7-Fw",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=NGKdYF3STsk",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official nothing,nowhere. channel and lights (4444) official video."
   },
   {
     "artist": "Tokio Hotel",
@@ -70,24 +146,49 @@
   },
   {
     "artist": "Magnolia Park",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7B76SsfzG0wWk1WEvGzCmY"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7B76SsfzG0wWk1WEvGzCmY",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCJq-RYYVxDJWrReqfGjwjdQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=rejdfxutez0",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Magnolia Park channel and Tokyo video."
   },
   {
     "artist": "Machine Gun Kelly",
     "aliases": ["mgk"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/6TIYQ3jFPwQSRmorSezPxX"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6TIYQ3jFPwQSRmorSezPxX",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCUs8sGiP4avNaYNVO22INhQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=z7kYa5GQYKg",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official mgk channel and Candy official music video."
   },
   {
     "artist": "Dance With the Dead",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2KtnZQwMQJN3uyI8eHZRvm"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2KtnZQwMQJN3uyI8eHZRvm",
+    "youtubeChannelUrl": "https://www.youtube.com/c/dancewiththedead",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=_eHMCbR_s_Y",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Dance With the Dead channel and Waves video."
   },
   {
     "artist": "Omnium Gatherum",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/52xuvlUvnxqH0xzxGPKXSu"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/52xuvlUvnxqH0xzxGPKXSu",
+    "youtubeChannelUrl": "https://www.youtube.com/user/omniumgatherumband",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=BK8eDu-tuSA",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Omnium Gatherum channel and The Darkest City official video."
   },
   {
     "artist": "Alcest",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0d5ZwMtCer8dQdOPAgWhe7"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0d5ZwMtCer8dQdOPAgWhe7",
+    "youtubeChannelUrl": "https://www.youtube.com/@alcestofficial",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=haQ_zgn9ck4",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Alcest channel and L'Envol official music video."
   },
   {
     "artist": "Hammock",

@@ -48,12 +48,18 @@ export default function CoverArt({ artist, title, kind, size = 44, className = '
         src={entry.thumb}
         alt={`${title} — ${artist}`}
         loading="lazy"
+        decoding="async"
         width={size}
         height={size}
         onLoad={() => setLoaded(true)}
         onError={() => setImgFailed(true)}
         className={`object-cover shrink-0 rounded-lg transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-        style={{ width: size, height: size, border: '1px solid rgba(128,128,128,0.25)' }}
+        style={{
+          width: size,
+          height: size,
+          border: '1px solid rgba(255,255,255,0.18)',
+          boxShadow: '0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)',
+        }}
       />
     );
   }
@@ -69,7 +75,8 @@ export default function CoverArt({ artist, title, kind, size = 44, className = '
         width: size,
         height: size,
         background: `linear-gradient(135deg, hsl(${hue}, 70%, 22%), hsl(${(hue + 40) % 360}, 65%, 38%))`,
-        border: '1px solid rgba(128,128,128,0.25)',
+        border: '1px solid rgba(255,255,255,0.18)',
+        boxShadow: '0 10px 24px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}
     >
       <Icon className="text-white/70" style={{ width: size * 0.45, height: size * 0.45 }} />

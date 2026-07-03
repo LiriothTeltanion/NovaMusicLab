@@ -134,6 +134,8 @@ const ARTIST_ATLAS_COPY = {
     relatedHint: 'La conexión se calcula por géneros compartidos, país y peso dentro de tu ranking histórico.',
     catalogFootprint: 'Huella de catálogo',
     catalogRange: 'Rango curado',
+    archiveCovers: 'Portadas del archivo',
+    visualSignal: 'señal visual',
     knownAlbums: 'álbumes con contexto',
     yearsShort: 'años',
     sameCountry: 'mismo país',
@@ -235,6 +237,8 @@ const ARTIST_ATLAS_COPY = {
     relatedHint: 'Connections are calculated from shared genre language, country and weight inside your historical ranking.',
     catalogFootprint: 'Catalog footprint',
     catalogRange: 'Curated range',
+    archiveCovers: 'Archive covers',
+    visualSignal: 'visual signal',
     knownAlbums: 'albums with context',
     yearsShort: 'yrs',
     sameCountry: 'same country',
@@ -657,28 +661,47 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const TimelineAlbum = ({ album, index }: { album: NonNullable<typeof selectedProfile>['key_albums'][number]; index: number }) => {
     const archivedAlbum = selectedArtistAlbums.find(a => getAlbumEnrichment(selectedProfile, a.title)?.title === album.title);
+    const color = COLORS[index % COLORS.length];
+    const albumArtist = archivedAlbum?.artist ?? selectedArtist?.name ?? selectedProfile?.name ?? '';
+    const content = (
+      <div className="flex items-start gap-4">
+        <div className="relative shrink-0">
+          <CoverArt artist={albumArtist} title={album.title} kind="album" size={58} className="rounded-2xl" />
+          <span className="absolute -right-2 -top-2 rounded-lg px-1.5 py-0.5 text-[9px] font-mono font-black"
+            style={{ color: '#020617', backgroundColor: color }}>
+            {album.year}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h4 className="text-sm font-bold text-white">{album.title}</h4>
+            {archivedAlbum && (
+              <span className="text-[9px] font-mono font-black uppercase tracking-widest rounded-full px-2 py-0.5"
+                style={{ color: tc.c1, backgroundColor: `${tc.c1}15`, border: `1px solid ${tc.c1}30` }}>
+                {fmtNum(archivedAlbum.plays)} {artistCopy.archivePlays}
+              </span>
+            )}
+          </div>
+          <p className="text-xs text-gray-400 leading-relaxed mt-2">{album.description[lang]}</p>
+          {archivedAlbum && (
+            <p className="mt-3 text-[10px] font-mono font-black uppercase tracking-widest" style={{ color }}>
+              {artistCopy.openAlbumDossier}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+
     return (
       <div className="relative pl-6 pb-5 last:pb-0">
         <div className="absolute left-[5px] top-2 bottom-0 w-px bg-white/10" />
         <div className="absolute left-0 top-1.5 w-3 h-3 rounded-full border-2"
-          style={{ borderColor: COLORS[index % COLORS.length], backgroundColor: '#07101f' }} />
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] font-mono font-black px-2 py-1 rounded-lg"
-                style={{ color: COLORS[index % COLORS.length], backgroundColor: `${COLORS[index % COLORS.length]}18` }}>
-                {album.year}
-              </span>
-              <h4 className="text-sm font-bold text-white">{album.title}</h4>
-            </div>
-            <p className="text-xs text-gray-400 leading-relaxed mt-2">{album.description[lang]}</p>
-          </div>
-          {archivedAlbum && (
-            <span className="text-[10px] font-mono font-bold rounded-full px-2.5 py-1 shrink-0"
-              style={{ color: tc.c1, backgroundColor: `${tc.c1}15`, border: `1px solid ${tc.c1}30` }}>
-              {fmtNum(archivedAlbum.plays)} {artistCopy.archivePlays}
-            </span>
-          )}
+          style={{ borderColor: color, backgroundColor: '#07101f', boxShadow: `0 0 14px ${color}55` }} />
+        <div
+          className={`rounded-2xl border border-white/8 p-3 ${archivedAlbum ? 'bg-white/[0.035]' : 'bg-white/[0.025]'}`}
+          style={{ boxShadow: archivedAlbum ? `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px ${color}12` : undefined }}
+        >
+          {content}
         </div>
       </div>
     );
@@ -919,33 +942,100 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       </div>
       {selectedArtist ? (
         <>
-          <div className="flex items-start gap-4">
-            <ArtistAvatar name={selectedArtist.name} size={72} />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2 flex-wrap mb-2">
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
-                  style={{ color: tc.c1, backgroundColor: `${tc.c1}18`, border: `1px solid ${tc.c1}35` }}>
-                  {artistCopy.curatedBadge}
-                </span>
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full text-gray-400 border border-white/10 bg-white/5">
-                  {artistCopy.sourceBadge}
-                </span>
-              </div>
-              <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                {selectedProfile?.name ?? selectedArtist.name}
-              </h3>
-              <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
-                {selectedFlagCountry && <FlagArt country={selectedFlagCountry} size={17} />}
-                {selectedDisplayCountry && (
-                  <>
-                    <span>{selectedDisplayCountry}</span>
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/20 p-5 md:p-6">
+            <div className="absolute inset-0 pointer-events-none opacity-80"
+              style={{
+                background: `radial-gradient(circle at 12% 12%, ${tc.c1}24, transparent 34%), radial-gradient(circle at 88% 20%, ${tc.c3}20, transparent 32%), linear-gradient(135deg, ${tc.c1}08, ${tc.c2}05 45%, transparent)`,
+              }} />
+            <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+              style={{ background: `linear-gradient(0deg, ${tc.c1}10, transparent)` }} />
+
+            <div className="relative z-10 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_280px] gap-6 items-center">
+              <div className="flex items-start gap-4 md:gap-5">
+                <div className="relative shrink-0">
+                  <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-45"
+                    style={{ background: `linear-gradient(135deg, ${tc.c1}, ${tc.c3})` }} />
+                  <div className="relative rounded-[1.65rem] border border-white/15 bg-black/35 p-2">
+                    <ArtistAvatar name={selectedArtist.name} size={88} />
+                  </div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap mb-3">
+                    <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                      style={{ color: tc.c1, backgroundColor: `${tc.c1}18`, border: `1px solid ${tc.c1}35` }}>
+                      {artistCopy.curatedBadge}
+                    </span>
+                    <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full text-gray-400 border border-white/10 bg-white/5">
+                      {artistCopy.sourceBadge}
+                    </span>
+                    {selectedProfile && (
+                      <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                        style={{ color: tc.c4, backgroundColor: `${tc.c4}14`, border: `1px solid ${tc.c4}35` }}>
+                        {artistCopy.visualSignal}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-black text-white leading-tight text-neon-glow">
+                    {selectedProfile?.name ?? selectedArtist.name}
+                  </h3>
+                  <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
+                    {selectedFlagCountry && <FlagArt country={selectedFlagCountry} size={17} />}
+                    {selectedDisplayCountry && (
+                      <>
+                        <span>{selectedDisplayCountry}</span>
+                        <span className="text-gray-600">/</span>
+                      </>
+                    )}
+                    <span>{selectedArtist.genre}</span>
                     <span className="text-gray-600">/</span>
-                  </>
+                    <span>{fmtNum(selectedArtist.plays)} {t.topHistorico.playsLegend.toLowerCase()}</span>
+                  </p>
+
+                  {selectedProfile && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {selectedProfile.signature_moods[lang].slice(0, 4).map((mood, idx) => (
+                        <span key={mood} className="text-[10px] font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full border"
+                          style={{
+                            color: COLORS[idx % COLORS.length],
+                            backgroundColor: `${COLORS[idx % COLORS.length]}14`,
+                            borderColor: `${COLORS[idx % COLORS.length]}35`,
+                          }}>
+                          {mood}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="rounded-3xl border border-white/10 bg-black/25 p-4">
+                <div className="flex items-center justify-between gap-3 mb-3">
+                  <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                    {artistCopy.archiveCovers}
+                  </p>
+                  <Disc3 className="w-4 h-4" style={{ color: tc.c1 }} />
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {selectedArtistAlbums.slice(0, 4).map((album, idx) => {
+                    const albumMeta = getAlbumEnrichment(selectedProfile, album.title);
+                    return (
+                      <div
+                        key={`${album.artist}-${album.title}`}
+                        className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5"
+                        title={`${album.title} · ${fmtNum(album.plays)} ${artistCopy.archivePlays}`}
+                      >
+                        <CoverArt artist={album.artist} title={album.title} kind="album" size={56} className="rounded-2xl" />
+                        <span className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-1 text-center text-[9px] font-mono font-black text-white backdrop-blur-sm">
+                          {albumMeta?.year ? `’${String(albumMeta.year).slice(-2)}` : `#${idx + 1}`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                {!selectedArtistAlbums.length && (
+                  <p className="text-xs text-gray-500 leading-relaxed">{artistCopy.noAlbums}</p>
                 )}
-                <span>{selectedArtist.genre}</span>
-                <span className="text-gray-600">/</span>
-                <span>{fmtNum(selectedArtist.plays)} {t.topHistorico.playsLegend.toLowerCase()}</span>
-              </p>
+              </div>
             </div>
           </div>
 
@@ -1254,36 +1344,75 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           </h3>
         </div>
 
-        <div className="flex items-start gap-4">
-          <CoverArt artist={selectedAlbum.artist} title={selectedAlbum.title} kind="album" size={72} />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap mb-2">
-              <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
-                style={{ color: tc.c3, backgroundColor: `${tc.c3}18`, border: `1px solid ${tc.c3}35` }}>
-                {artistCopy.albumAtlas}
-              </span>
-              {selectedAlbumMeta && (
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
-                  style={{ color: tc.c1, backgroundColor: `${tc.c1}18`, border: `1px solid ${tc.c1}35` }}>
-                  {selectedAlbumMeta.year}
-                </span>
-              )}
-            </div>
-            <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-              {selectedAlbum.title}
-            </h3>
-            <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
-              {albumFlagCountry && <FlagArt country={albumFlagCountry} size={17} />}
-              <span>{albumArtistName}</span>
-              {albumDisplayCountry && (
-                <>
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/20 p-5 md:p-6">
+          <div className="absolute inset-0 pointer-events-none opacity-80"
+            style={{
+              background: `radial-gradient(circle at 14% 18%, ${tc.c3}28, transparent 34%), radial-gradient(circle at 88% 10%, ${tc.c1}18, transparent 30%), linear-gradient(135deg, ${tc.c3}08, ${tc.c1}06 45%, transparent)`,
+            }} />
+          <div className="relative z-10 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_220px] gap-6 items-center">
+            <div className="flex items-start gap-4 md:gap-5">
+              <div className="relative shrink-0">
+                <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-50"
+                  style={{ background: `linear-gradient(135deg, ${tc.c3}, ${tc.c1})` }} />
+                <div className="relative rounded-[1.75rem] border border-white/15 bg-black/35 p-2">
+                  <CoverArt artist={selectedAlbum.artist} title={selectedAlbum.title} kind="album" size={96} className="rounded-3xl" />
+                </div>
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 flex-wrap mb-3">
+                  <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                    style={{ color: tc.c3, backgroundColor: `${tc.c3}18`, border: `1px solid ${tc.c3}35` }}>
+                    {artistCopy.albumAtlas}
+                  </span>
+                  {selectedAlbumMeta && (
+                    <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                      style={{ color: tc.c1, backgroundColor: `${tc.c1}18`, border: `1px solid ${tc.c1}35` }}>
+                      {selectedAlbumMeta.year}
+                    </span>
+                  )}
+                  <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                    style={{ color: '#fb923c', backgroundColor: '#fb923c18', border: '1px solid #fb923c35' }}>
+                    {catalogChapter}
+                  </span>
+                </div>
+                <h3 className="text-3xl md:text-4xl font-black text-white leading-tight">
+                  {selectedAlbum.title}
+                </h3>
+                <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
+                  {albumFlagCountry && <FlagArt country={albumFlagCountry} size={17} />}
+                  <span>{albumArtistName}</span>
+                  {albumDisplayCountry && (
+                    <>
+                      <span className="text-gray-600">/</span>
+                      <span>{albumDisplayCountry}</span>
+                    </>
+                  )}
                   <span className="text-gray-600">/</span>
-                  <span>{albumDisplayCountry}</span>
-                </>
-              )}
-              <span className="text-gray-600">/</span>
-              <span>{fmtNum(selectedAlbum.plays)} {artistCopy.archivePlays}</span>
-            </p>
+                  <span>{fmtNum(selectedAlbum.plays)} {artistCopy.archivePlays}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-black/25 p-4">
+              <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500 mb-3">
+                {artistCopy.artistAlbumsNearby}
+              </p>
+              <div className="flex -space-x-3">
+                {[selectedAlbum, ...selectedAlbumSiblingAlbums].slice(0, 4).map(album => (
+                  <CoverArt
+                    key={`${album.artist}-${album.title}`}
+                    artist={album.artist}
+                    title={album.title}
+                    kind="album"
+                    size={54}
+                    className="rounded-2xl ring-2 ring-black/60"
+                  />
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] text-gray-500 leading-relaxed">
+                {selectedAlbumCatalogRole}
+              </p>
+            </div>
           </div>
         </div>
 

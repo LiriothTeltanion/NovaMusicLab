@@ -623,6 +623,69 @@
     ]
   },
   {
+    "name": "Odeon",
+    "aliases": ["Odeon Music"],
+    "origin": {
+      "es": "Escandinavia / escena digital europea",
+      "en": "Scandinavia / European digital scene"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": "c. 2020",
+    "status": {
+      "es": "Proyecto alternativo/electrónico de perfil independiente, con presencia pública más concentrada en singles y videos oficiales que en una discografía tradicional amplia.",
+      "en": "Independent alternative/electronic project with a public footprint centered more on singles and official videos than on a broad traditional album discography."
+    },
+    "bio": {
+      "es": "Odeon funciona en el archivo como una cápsula moderna: melodía post-hardcore, textura electrónica y una sensación de internet nocturno. No tiene el peso histórico documentado de bandas grandes como BMTH o The Midnight, pero precisamente por eso aparece como una señal de descubrimiento más íntima y específica.",
+      "en": "Odeon works inside the archive like a modern capsule: post-hardcore melody, electronic texture and a feeling of nocturnal internet culture. It does not have the documented historical weight of larger bands like BMTH or The Midnight, but that is exactly why it reads as a more intimate and specific discovery signal."
+    },
+    "archive_role": {
+      "es": "Completa el top 10 como puente entre escena alternativa, electrónica emocional y escucha de nicho. En el museo representa la parte menos obvia del gusto: aquello que no viene de una gran mitología de banda, sino de una conexión directa con una canción.",
+      "en": "Completes the top 10 as a bridge between alternative scene energy, emotional electronics and niche listening. In the museum it represents the less obvious side of taste: the part that does not come from a huge band mythology, but from direct connection with a song."
+    },
+    "sound_evolution": {
+      "es": "La huella pública disponible apunta a singles de producción digital, voz melódica y estética de lyric/video oficial. El arco dentro de Nova Music Lab se lee más por repetición y atmósfera que por una cronología extensa de álbumes.",
+      "en": "The available public footprint points toward digitally produced singles, melodic vocals and an official lyric/video aesthetic. Inside Nova Music Lab, the arc reads more through repetition and atmosphere than through an extensive album chronology."
+    },
+    "why_it_matters": {
+      "es": "Odeon importa porque demuestra que el archivo no está construido solo por nombres gigantes. También hay artistas pequeños o difíciles de catalogar que pueden ocupar un lugar emocional enorme si una canción cae en el momento correcto.",
+      "en": "Odeon matters because it proves the archive is not built only from giant names. Smaller or harder-to-catalog artists can still occupy a huge emotional space if one song lands at the right moment."
+    },
+    "signature_moods": {
+      "es": ["electrónica emocional", "post-hardcore digital", "descubrimiento de nicho", "noche online"],
+      "en": ["emotional electronics", "digital post-hardcore", "niche discovery", "online night"]
+    },
+    "key_albums": [
+      {
+        "title": "loop",
+        "year": 2021,
+        "description": {
+          "es": "Single central para el perfil: repetitivo, melódico y conectado al tipo de canción que se queda girando como pensamiento fijo.",
+          "en": "Central single for the profile: repetitive, melodic and tied to the kind of track that keeps circling like a fixed thought."
+        }
+      },
+      {
+        "title": "swipe up",
+        "year": 2021,
+        "description": {
+          "es": "Refuerza la estética digital del proyecto: lenguaje de internet, emoción condensada y producción directa.",
+          "en": "Reinforces the project's digital aesthetic: internet language, condensed emotion and direct production."
+        }
+      },
+      {
+        "title": "Toxic",
+        "year": 2023,
+        "description": {
+          "es": "Capítulo posterior con video oficial, más oscuro y afilado dentro de la misma identidad alternativa/electrónica.",
+          "en": "Later chapter with an official video, darker and sharper inside the same alternative/electronic identity."
+        }
+      }
+    ]
+  },
+  {
     "name": "The Midnight",
     "aliases": [],
     "origin": {

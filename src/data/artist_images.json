@@ -394,5 +394,9 @@
   "nightbreakers": {
     "thumb": "https://i.scdn.co/image/ab6761610000517444f016ad60cf1fbf3612bf06",
     "source": "spotify"
+  },
+  "som": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/cf1857ae58a718afe8a342093857a109/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
   }
 }

@@ -22,6 +22,7 @@ import {
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
+import MediaCoverageAudit from './MediaCoverageAudit';
 
 type ConfidenceKind = 'exact' | 'mixed' | 'estimated' | 'inferred' | 'curated' | 'unavailable';
 
@@ -213,6 +214,8 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
           </div>
         </div>
       </section>
+
+      <MediaCoverageAudit data={data} />
 
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
         <div className="xl:col-span-2 space-y-4">

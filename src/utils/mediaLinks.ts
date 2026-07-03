@@ -10,16 +10,22 @@ export interface CuratedArtistMedia {
   spotifyArtistUrl?: string;
   spotifyAlbumUrl?: string;
   spotifyTrackUrl?: string;
+  youtubeChannelUrl?: string;
   youtubeVideoUrl?: string;
   youtubePlaylistUrl?: string;
+  officialAudioUrl?: string;
+  livePerformanceUrl?: string;
   officialSiteUrl?: string;
+  mediaConfidence?: 'verified' | 'partial' | 'search';
+  checkedAt?: string;
+  sourceNote?: string;
 }
 
 export interface MediaAction {
   label: string;
   url: string;
   provider: MediaProvider | 'web';
-  kind: 'artist' | 'track' | 'album' | 'official' | 'live' | 'search';
+  kind: 'artist' | 'track' | 'album' | 'official' | 'live' | 'channel' | 'search';
 }
 
 export interface ArtistMediaProfile {
@@ -82,10 +88,52 @@ function youtubeVideoIdFromUrl(url?: string) {
   }
 }
 
+function youtubePlaylistIdFromUrl(url?: string) {
+  if (!url) return undefined;
+
+  try {
+    const parsed = new URL(url);
+    const listId = parsed.searchParams.get('list');
+    if (listId) return listId;
+  } catch {
+    return undefined;
+  }
+
+  return undefined;
+}
+
 export function youtubeEmbedFromUrl(url?: string) {
   const videoId = youtubeVideoIdFromUrl(url);
-  if (!videoId) return undefined;
-  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+  if (videoId) return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+
+  const playlistId = youtubePlaylistIdFromUrl(url);
+  if (playlistId) return `https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&rel=0`;
+
+  return undefined;
+}
+
+export function hasSpotifyMedia(entry?: CuratedArtistMedia) {
+  return Boolean(entry?.spotifyArtistUrl || entry?.spotifyAlbumUrl || entry?.spotifyTrackUrl);
+}
+
+export function hasYoutubeEmbedMedia(entry?: CuratedArtistMedia) {
+  return Boolean(entry?.officialAudioUrl || entry?.youtubeVideoUrl || entry?.youtubePlaylistUrl);
+}
+
+export function hasYoutubeMedia(entry?: CuratedArtistMedia) {
+  return Boolean(hasYoutubeEmbedMedia(entry) || entry?.youtubeChannelUrl || entry?.livePerformanceUrl);
+}
+
+export function getPrimarySpotifyUrl(entry?: CuratedArtistMedia) {
+  return entry?.spotifyTrackUrl ?? entry?.spotifyAlbumUrl ?? entry?.spotifyArtistUrl;
+}
+
+export function getPrimaryYoutubeUrl(entry?: CuratedArtistMedia) {
+  return entry?.officialAudioUrl
+    ?? entry?.youtubeVideoUrl
+    ?? entry?.youtubePlaylistUrl
+    ?? entry?.youtubeChannelUrl
+    ?? entry?.livePerformanceUrl;
 }
 
 export function buildSpotifySearchUrl(query: string) {
@@ -105,8 +153,9 @@ export function buildArtistMediaProfile(
   const artistQuery = artistName;
   const trackQuery = topTrack ? `${topTrack.artist} ${topTrack.title}` : artistQuery;
   const albumQuery = topAlbum ? `${topAlbum.artist} ${topAlbum.title}` : artistQuery;
-  const spotifyUrl = curated?.spotifyTrackUrl ?? curated?.spotifyAlbumUrl ?? curated?.spotifyArtistUrl;
-  const youtubeUrl = curated?.youtubeVideoUrl ?? curated?.youtubePlaylistUrl;
+  const spotifyUrl = getPrimarySpotifyUrl(curated);
+  const youtubeUrl = getPrimaryYoutubeUrl(curated);
+  const youtubeEmbedUrl = curated?.officialAudioUrl ?? curated?.youtubeVideoUrl ?? curated?.youtubePlaylistUrl;
 
   const spotifyExternalUrl = spotifyUrl ?? buildSpotifySearchUrl(artistQuery);
   const youtubeExternalUrl = youtubeUrl ?? buildYoutubeSearchUrl(`${artistQuery} official audio`);
@@ -121,8 +170,8 @@ export function buildArtistMediaProfile(
     },
     youtube: {
       externalUrl: youtubeExternalUrl,
-      embedUrl: youtubeEmbedFromUrl(youtubeUrl),
-      verified: Boolean(youtubeUrl),
+      embedUrl: youtubeEmbedFromUrl(youtubeEmbedUrl),
+      verified: hasYoutubeMedia(curated),
     },
     actions: [
       {
@@ -144,14 +193,23 @@ export function buildArtistMediaProfile(
         kind: 'album',
       },
       {
+        label: 'YouTube Channel',
+        url: curated?.youtubeChannelUrl ?? buildYoutubeSearchUrl(`${artistQuery} official channel`),
+        provider: 'youtube',
+        kind: 'channel',
+      },
+      {
         label: 'YouTube Official',
-        url: buildYoutubeSearchUrl(`${trackQuery} official video official audio`),
+        url: curated?.officialAudioUrl
+          ?? curated?.youtubeVideoUrl
+          ?? curated?.youtubePlaylistUrl
+          ?? buildYoutubeSearchUrl(`${trackQuery} official video official audio`),
         provider: 'youtube',
         kind: 'official',
       },
       {
         label: 'YouTube Live',
-        url: buildYoutubeSearchUrl(`${artistQuery} live official`),
+        url: curated?.livePerformanceUrl ?? buildYoutubeSearchUrl(`${artistQuery} live official`),
         provider: 'youtube',
         kind: 'live',
       },

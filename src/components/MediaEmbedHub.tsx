@@ -77,6 +77,7 @@ const ACTION_LABELS = {
   album: { es: 'Álbum', en: 'Album' },
   official: { es: 'Oficial', en: 'Official' },
   live: { es: 'Live', en: 'Live' },
+  channel: { es: 'Canal', en: 'Channel' },
   search: { es: 'Buscar', en: 'Search' },
 } as const;
 
@@ -163,20 +164,26 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
   ];
 
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.025]">
-      <div className="absolute inset-x-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${tc.c1}, ${tc.c3}, transparent)` }} />
-      <div className="p-4 md:p-5 space-y-4">
+    <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025]">
+      <div className="absolute inset-0 pointer-events-none opacity-80"
+        style={{
+          background: `radial-gradient(circle at 12% 10%, ${accent}22, transparent 34%), radial-gradient(circle at 88% 20%, ${tc.c3}18, transparent 30%), linear-gradient(135deg, ${tc.c1}06, transparent 48%, ${tc.c2}05)`,
+        }} />
+      <div className="absolute inset-x-0 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${accent}, ${tc.c3}, transparent)` }} />
+      <div className="relative z-10 p-4 md:p-5 space-y-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
-                <Headphones className="w-5 h-5" />
+              <span className="relative w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden"
+                style={{ color: accent, backgroundColor: `${accent}16`, border: `1px solid ${accent}40`, boxShadow: `0 0 24px ${accent}18` }}>
+                <span className="absolute inset-2 rounded-full border border-current opacity-25" />
+                <Headphones className="w-6 h-6 relative z-10" />
               </span>
               <div>
                 <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
                   {copy.title}
                 </h3>
+                <p className="text-lg font-black text-white leading-tight mt-1">{profile.artistName}</p>
                 <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-3xl">{copy.subtitle}</p>
               </div>
             </div>
@@ -218,7 +225,9 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(260px,0.85fr)] gap-4">
-          <div className="rounded-2xl border border-white/8 bg-black/20 overflow-hidden">
+          <div className="relative rounded-3xl border border-white/8 bg-black/25 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: `radial-gradient(circle at 50% 0%, ${accent}18, transparent 42%)` }} />
             <div className="flex items-center justify-between gap-3 p-3 border-b border-white/8 flex-wrap">
               <div className="flex gap-2">
                 {providerTabs.map(tab => {
@@ -245,16 +254,18 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
             </div>
 
             {active.embedUrl ? (
-              <div className="relative bg-[#050812]">
+              <div className="relative bg-[#050812] p-2">
                 <div className="absolute left-4 top-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-mono font-black uppercase tracking-widest"
                   style={{ color: accent, backgroundColor: '#030712cc', border: `1px solid ${accent}40` }}>
                   <Radio className="w-3 h-3 inline mr-1" />
                   {copy.officialPlayer}
                 </div>
+                <div className="absolute inset-x-8 bottom-0 h-24 pointer-events-none blur-2xl opacity-30"
+                  style={{ backgroundColor: accent }} />
                 <iframe
                   title={`${profile.artistName} ${provider} player`}
                   src={active.embedUrl}
-                  className="w-full h-[352px] border-0"
+                  className="relative z-10 w-full h-[352px] border-0 rounded-2xl"
                   loading="lazy"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   allowFullScreen
@@ -286,7 +297,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
             )}
           </div>
 
-          <div className="rounded-2xl border border-white/8 bg-white/[0.035] p-4">
+          <div className="rounded-3xl border border-white/8 bg-white/[0.035] p-4">
             <div className="flex items-center gap-2 mb-4">
               <PlayCircle className="w-4 h-4" style={{ color: tc.c2 }} />
               <h4 className="text-xs font-mono font-black uppercase tracking-widest" style={{ color: tc.c2 }}>
@@ -302,7 +313,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                     href={action.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="group rounded-xl border bg-black/15 px-3 py-3 flex items-center gap-3 transition-all hover:bg-white/[0.07]"
+                    className="group rounded-2xl border bg-black/15 px-3 py-3 flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:bg-white/[0.07]"
                     style={{ borderColor: `${color}26` }}
                   >
                     <span className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
