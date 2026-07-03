@@ -9,6 +9,7 @@ import CoverArt from './CoverArt';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
+import { MOOD_ICONS } from './MoodBadge';
 import {
   buildEmotionalMapEngineProfile,
   emotionalAxisLabels,
@@ -21,17 +22,6 @@ interface EmotionalMapProps {
 }
 
 type EmotionKey = EmotionalMoodKey;
-
-const MOOD_ICONS = {
-  moon: Moon,
-  flame: Flame,
-  sun: Sun,
-  activity: Activity,
-  heart: Heart,
-  shield: Shield,
-  orbit: Orbit,
-  sparkles: Sparkles,
-} as const;
 
 const EMOTION_DETAILS = {
   melancolia: {

@@ -33,10 +33,13 @@ import { buildArtistMediaProfile } from '../utils/mediaLinks';
 import {
   buildAlbumEmotionalReading,
   buildArtistEmotionalReading,
+  buildArtistMoodProfile,
   buildTrackEmotionalReading,
   emotionalAxisLabels,
+  EMOTIONAL_MOOD_TAXONOMY,
   type EmotionalEngineReading,
 } from '../engines/emotionalEngine';
+import MoodBadge from './MoodBadge';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -322,6 +325,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     data.top_artists.filter(a => !q || a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q)),
     [data.top_artists, q]);
 
+  /* Emotional-engine mood color per artist, for the row identity dots */
+  const artistMoodColors = useMemo(() => {
+    const map = new Map<string, string>();
+    data.top_artists.forEach(a => {
+      map.set(a.name, EMOTIONAL_MOOD_TAXONOMY[buildArtistMoodProfile(a).moodKey].color);
+    });
+    return map;
+  }, [data.top_artists]);
+
   const filteredTracks = useMemo(() =>
     data.top_tracks.filter(t => !q || t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q)),
     [data.top_tracks, q]);
@@ -503,6 +515,13 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     selectedArtist ? getArtistEnrichment(selectedArtist.name) : undefined,
     [selectedArtist]);
 
+  const selectedArtistMood = useMemo(() =>
+    selectedArtist ? buildArtistMoodProfile(selectedArtist) : null,
+    [selectedArtist]);
+  const selectedMoodColor = selectedArtistMood
+    ? EMOTIONAL_MOOD_TAXONOMY[selectedArtistMood.moodKey].color
+    : null;
+
   const selectedArtistAlbums = useMemo(() =>
     selectedArtist ? getArtistArchiveAlbums(data, selectedArtist.name, selectedProfile) : [],
     [data, selectedArtist, selectedProfile]);
@@ -649,7 +668,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const ListRow = ({
-    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind,
+    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind, moodColor,
   }: {
     rank: number;
     main: string;
@@ -663,6 +682,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     /** When set (with coverKind), show album/track artwork instead of the artist photo. */
     coverTitle?: string;
     coverKind?: 'album' | 'track';
+    /** Emotional-engine mood color: renders a glowing identity dot next to the name. */
+    moodColor?: string;
   }) => {
     const rowBody = (
       <>
@@ -675,7 +696,13 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             ? <CoverArt artist={avatarName} title={coverTitle} kind={coverKind} size={36} />
             : avatarName && <ArtistAvatar name={avatarName} size={32} />}
           <div className="truncate">
-            <p className="text-sm font-bold text-white truncate leading-tight">{main}</p>
+            <p className="text-sm font-bold text-white truncate leading-tight flex items-center gap-1.5">
+              {moodColor && (
+                <span className="w-2 h-2 rounded-full shrink-0"
+                  style={{ backgroundColor: moodColor, boxShadow: `0 0 6px ${moodColor}` }} />
+              )}
+              {main}
+            </p>
             {sub && (
               <p className="text-[11px] text-gray-400 truncate flex items-center gap-1.5">
                 {flagCountry && <FlagArt country={flagCountry} size={15} />}
@@ -1142,9 +1169,11 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             <div className="relative z-10 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_280px] gap-6 items-center">
               <div className="flex items-start gap-4 md:gap-5">
                 <div className="relative shrink-0">
-                  <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-45"
-                    style={{ background: `linear-gradient(135deg, ${tc.c1}, ${tc.c3})` }} />
-                  <div className="relative rounded-[1.65rem] border border-white/15 bg-black/35 p-2">
+                  {/* Aura tinted by the artist's emotional-engine mood */}
+                  <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-50"
+                    style={{ background: `linear-gradient(135deg, ${selectedMoodColor ?? tc.c1}, ${tc.c3})` }} />
+                  <div className="relative rounded-[1.65rem] border bg-black/35 p-2"
+                    style={{ borderColor: selectedMoodColor ? `${selectedMoodColor}45` : 'rgba(255,255,255,0.15)' }}>
                     <ArtistAvatar name={selectedArtist.name} size={88} />
                   </div>
                 </div>
@@ -1162,6 +1191,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         style={{ color: tc.c4, backgroundColor: `${tc.c4}14`, border: `1px solid ${tc.c4}35` }}>
                         {artistCopy.visualSignal}
                       </span>
+                    )}
+                    {selectedArtistMood && (
+                      <MoodBadge moodKey={selectedArtistMood.moodKey} confidence={selectedArtistMood.confidence} />
                     )}
                   </div>
                   <h3 className="text-3xl md:text-4xl font-black text-white leading-tight text-neon-glow">
@@ -1822,6 +1854,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     <ListRow key={a.name} rank={idx + 1} main={a.name}
                       sub={`${a.country} · ${a.genre}`} plays={a.plays}
                       color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country}
+                      moodColor={artistMoodColors.get(a.name)}
                       onClick={() => setSelectedArtistName(a.name)}
                       active={selectedArtist?.name === a.name} />
                   ))}
