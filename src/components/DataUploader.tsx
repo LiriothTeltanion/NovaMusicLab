@@ -1,5 +1,18 @@
 import React, { useState, useRef } from 'react';
-import { Upload, CheckCircle2, AlertCircle, AlertTriangle, ShieldCheck, Files } from 'lucide-react';
+import {
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle2,
+  Files,
+  FileJson,
+  FileText,
+  Headphones,
+  ListChecks,
+  Music2,
+  PlaySquare,
+  ShieldCheck,
+  Upload,
+} from 'lucide-react';
 import { parseMusicSources, ParseError } from '../utils/parser';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
@@ -18,6 +31,13 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
   const [warning, setWarning] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const providerIcons = [Headphones, Music2, PlaySquare, FileJson, ListChecks];
+  const providerCards = t.uploader.providerGuide.map((provider, index) => ({
+    ...provider,
+    icon: providerIcons[index] ?? Files,
+    color: [tc.c1, '#1DB954', '#ff0033', tc.c3, tc.c4][index] ?? tc.c1,
+  }));
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -55,8 +75,12 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
     try {
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
       const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
+      const htmlFiles = files.filter(f => {
+        const name = f.name.toLowerCase();
+        return name.endsWith('.html') || name.endsWith('.htm');
+      });
 
-      if (csvFiles.length === 0 && jsonFiles.length === 0) {
+      if (csvFiles.length === 0 && jsonFiles.length === 0 && htmlFiles.length === 0) {
         throw new Error(t.uploader.noFilesError);
       }
 
@@ -65,12 +89,13 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         setWarning(t.uploader.largeFileWarning((largestFile / (1024 * 1024)).toFixed(0)));
       }
 
-      const [lastfmCsvTexts, spotifyJsonTexts] = await Promise.all([
+      const [lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts] = await Promise.all([
         Promise.all(csvFiles.map(readFileAsText)),
         Promise.all(jsonFiles.map(readFileAsText)),
+        Promise.all(htmlFiles.map(readFileAsText)),
       ]);
 
-      const parsed = parseMusicSources({ lastfmCsvTexts, spotifyJsonTexts });
+      const parsed = parseMusicSources({ lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts });
       onDataLoaded(parsed);
 
       const source = parsed.source_summary;
@@ -102,7 +127,65 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-5xl mx-auto space-y-5">
+      <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] gap-4 items-stretch">
+        <div className="glass-panel rounded-3xl border border-white/10 p-5">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-2xl border" style={{ color: tc.c1, borderColor: `${tc.c1}35`, backgroundColor: `${tc.c1}12` }}>
+              <ListChecks className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c1 }}>
+                {t.uploader.wizardEyebrow}
+              </p>
+              <h3 className="text-xl font-black text-white leading-tight">
+                {t.uploader.wizardTitle}
+              </h3>
+            </div>
+          </div>
+          <p className="mt-4 text-sm text-gray-400 leading-relaxed">
+            {t.uploader.wizardBody}
+          </p>
+          <div className="mt-5 space-y-2">
+            {t.uploader.wizardSteps.map((step, index) => (
+              <div key={step} className="flex items-start gap-3 rounded-2xl border border-white/8 bg-white/[0.035] p-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-mono font-black" style={{ color: '#020617', backgroundColor: tc.c1 }}>
+                  {index + 1}
+                </span>
+                <p className="text-xs text-gray-300 leading-relaxed">{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {providerCards.map(({ icon: Icon, title, badge, body, steps, color }) => (
+            <article key={title} className="rounded-3xl border bg-white/[0.035] p-4" style={{ borderColor: `${color}30` }}>
+              <div className="flex items-start gap-3">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border" style={{ color, borderColor: `${color}42`, backgroundColor: `${color}12` }}>
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-black text-white leading-tight">{title}</p>
+                  <p className="mt-1 inline-flex rounded-full border px-2 py-0.5 text-[9px] font-mono font-black uppercase tracking-widest" style={{ color, borderColor: `${color}45`, backgroundColor: `${color}12` }}>
+                    {badge}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs text-gray-400 leading-relaxed">{body}</p>
+              <ul className="mt-3 space-y-1.5">
+                {steps.map(step => (
+                  <li key={step} className="flex gap-2 text-[11px] text-gray-400 leading-relaxed">
+                    <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: color }} />
+                    <span>{step}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <div 
         onDragEnter={handleDrag}
         onDragOver={handleDrag}
@@ -125,7 +208,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
           ref={fileInputRef}
           type="file" 
           multiple
-          accept=".csv,.json"
+          accept=".csv,.json,.html,.htm"
           onChange={handleChange}
           className="hidden" 
         />
@@ -140,11 +223,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
               {t.uploader.title}
             </h3>
             <p className="text-sm text-gray-400 max-w-sm mx-auto">
-              {t.uploader.dropHintBefore}
-              <span className="font-bold" style={{ color: tc.c1 }}>Last.fm CSV</span>
-              {t.uploader.dropHintMiddle}
-              <span className="font-bold" style={{ color: tc.c2 }}>Spotify JSON</span>
-              {t.uploader.dropHintAfter}
+              {t.uploader.dropHint}
             </p>
           </div>
 
@@ -154,7 +233,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="flex items-start gap-3 p-4 rounded-2xl border bg-white/3" style={{ borderColor: `${tc.c1}20` }}>
           <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c1 }} />
           <p className="text-xs text-gray-400 leading-relaxed">
@@ -165,6 +244,12 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
           <Files className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c2 }} />
           <p className="text-xs text-gray-400 leading-relaxed">
             {t.uploader.mergeNote}
+          </p>
+        </div>
+        <div className="flex items-start gap-3 p-4 rounded-2xl border bg-white/3" style={{ borderColor: `${tc.c3}20` }}>
+          <FileText className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c3 }} />
+          <p className="text-xs text-gray-400 leading-relaxed">
+            {t.uploader.youtubeNote}
           </p>
         </div>
       </div>

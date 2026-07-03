@@ -372,7 +372,11 @@ function AppInner() {
       {/* ── Main ── */}
       {activeTab === 'hero' ? (
         <Suspense fallback={<LoadingPanel />}>
-          <HeroSection data={musicData} onEnter={() => goToTab('dashboard')} />
+          <HeroSection
+            data={musicData}
+            onEnter={() => goToTab('dashboard')}
+            onUpload={() => goToTab('upload')}
+          />
         </Suspense>
       ) : (
         <div className="flex-1 flex flex-col md:flex-row z-10">

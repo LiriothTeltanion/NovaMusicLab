@@ -297,6 +297,9 @@ export function localizeSourceNote(source: SourceSummary, lang: Lang) {
     if (source.source_type === 'spotify') {
       return 'Spotify-only upload: skip, platform and country data are measured directly from the export.';
     }
+    if (source.source_type === 'youtube') {
+      return 'YouTube-only upload: watch timestamps are direct, while artist and track names are inferred from video titles and channels.';
+    }
     if (source.source_type === 'lastfm' && (source.spotify_plays > 0 || source.spotify_short_plays > 0)) {
       return 'Bundled Kevin analysis: Last.fm is the primary verified timeline; Spotify values are report-level estimates unless a fresh Spotify export is uploaded.';
     }
@@ -311,6 +314,9 @@ export function localizeSourceNote(source: SourceSummary, lang: Lang) {
   }
   if (source.source_type === 'spotify') {
     return 'Carga solo de Spotify: saltos, plataforma y país se miden directamente desde la exportación.';
+  }
+  if (source.source_type === 'youtube') {
+    return 'Carga solo de YouTube: los timestamps son directos, mientras artista y canción se infieren desde títulos de video y canales.';
   }
   if (source.source_type === 'lastfm' && (source.spotify_plays > 0 || source.spotify_short_plays > 0)) {
     return 'Análisis incluido de Kevin: Last.fm es la línea temporal verificada principal; los valores de Spotify son estimaciones del informe salvo que se suba una exportación fresca de Spotify.';

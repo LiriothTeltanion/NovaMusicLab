@@ -51,6 +51,56 @@ describe('music data parser', () => {
     expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['cast', 'windows']);
   });
 
+  it('parses YouTube Takeout watch history JSON as listening events', () => {
+    const youtube = JSON.stringify([
+      {
+        header: 'YouTube Music',
+        title: 'Watched Bring Me The Horizon - MANTRA (Official Video)',
+        titleUrl: 'https://www.youtube.com/watch?v=VAXg78MKJcM',
+        subtitles: [{ name: 'Bring Me The Horizon' }],
+        time: '2026-02-03T20:15:00.000Z',
+        products: ['YouTube'],
+      },
+      {
+        header: 'YouTube',
+        title: 'Watched In Blur (Official Audio)',
+        subtitles: [{ name: 'Deafheaven - Topic' }],
+        time: '2026-02-03T20:20:00.000Z',
+      },
+    ]);
+
+    const data = parseMusicSources({ spotifyJsonTexts: [youtube] });
+
+    expect(data.source_summary?.source_type).toBe('youtube');
+    expect(data.source_summary?.youtube_plays).toBe(2);
+    expect(data.top_artists[0].name).toBe('Bring Me The Horizon');
+    expect(data.top_tracks.map(track => track.title)).toContain('MANTRA');
+    expect(data.top_tracks.map(track => track.title)).toContain('In Blur');
+  });
+
+  it('parses YouTube Takeout watch history HTML as listening events', () => {
+    const youtubeHtml = `
+      <html>
+        <body>
+          Watched <a href="https://www.youtube.com/watch?v=VAXg78MKJcM">Bring Me The Horizon - MANTRA (Official Video)</a><br>
+          <a href="https://www.youtube.com/channel/example">Bring Me The Horizon</a><br>
+          Feb 3, 2026, 8:15:00 PM UTC<br>
+          Watched <a href="https://www.youtube.com/watch?v=abc123">In Blur (Official Audio)</a><br>
+          <a href="https://www.youtube.com/channel/example2">Deafheaven - Topic</a><br>
+          Feb 3, 2026, 8:20:00 PM UTC<br>
+        </body>
+      </html>
+    `;
+
+    const data = parseMusicSources({ youtubeHtmlTexts: [youtubeHtml] });
+
+    expect(data.source_summary?.source_type).toBe('youtube');
+    expect(data.source_summary?.youtube_plays).toBe(2);
+    expect(data.platform_breakdown?.[0]).toEqual({ platform: 'YouTube Takeout HTML', plays: 2 });
+    expect(data.top_tracks.map(track => track.title)).toContain('MANTRA');
+    expect(data.top_tracks.map(track => track.title)).toContain('In Blur');
+  });
+
   it('detects merged source overlap by normalized artist and track', () => {
     const lastfm = 'Shared Artist,Shared Album,Shared Track,01 Jan 2026 10:00';
     const spotify = JSON.stringify([

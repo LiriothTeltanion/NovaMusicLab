@@ -11,7 +11,7 @@ export interface CoreMetrics {
   match_rate_pct: number;
 }
 
-export type PlaySource = 'lastfm' | 'spotify' | 'merged' | 'unknown';
+export type PlaySource = 'lastfm' | 'spotify' | 'youtube' | 'merged' | 'unknown';
 
 export interface MonthlyActivity {
   year: number;
@@ -28,6 +28,7 @@ export interface SourceSummary {
   source_type: PlaySource;
   lastfm_plays: number;
   spotify_plays: number;
+  youtube_plays: number;
   merged_plays: number;
   spotify_skips: number;
   spotify_skip_rate_pct: number;

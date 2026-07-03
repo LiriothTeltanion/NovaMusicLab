@@ -6,6 +6,7 @@ import {
   Clock,
   Database,
   Disc,
+  FileUp,
   Headphones,
   LibraryBig,
   Play,
@@ -24,6 +25,7 @@ import { deriveSourceSummary, formatNumber, getPeakYear } from '../utils/analyti
 interface HeroSectionProps {
   data: MusicDnaData;
   onEnter: () => void;
+  onUpload: () => void;
 }
 
 /** Count-up using native requestAnimationFrame — reliable across React versions */
@@ -31,7 +33,7 @@ function CountUp({ target, duration = 1.8, delay = 0 }: { target: number; durati
   return <CountUpCmp target={target} duration={duration} delay={delay} />;
 }
 
-export default function HeroSection({ data, onEnter }: HeroSectionProps) {
+export default function HeroSection({ data, onEnter, onUpload }: HeroSectionProps) {
   const metrics = data.core_metrics;
   const topArtist = data.top_artists[0];
   const topTrack = data.top_tracks[0];
@@ -100,6 +102,27 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
     setTimeout(onEnter, 400);
   };
 
+  const productPaths = [
+    {
+      icon: LibraryBig,
+      title: t.heroSection.paths.kevinTitle,
+      body: t.heroSection.paths.kevinBody,
+      button: t.hero.enter,
+      color: 'var(--c1)',
+      action: handleEnter,
+      primary: true,
+    },
+    {
+      icon: FileUp,
+      title: t.heroSection.paths.uploadTitle,
+      body: t.heroSection.paths.uploadBody,
+      button: t.heroSection.paths.uploadButton,
+      color: 'var(--c2)',
+      action: onUpload,
+      primary: false,
+    },
+  ];
+
   return (
     <section className="relative min-h-screen flex flex-col justify-start items-center px-4 sm:px-6 py-8 md:py-10 text-center select-none overflow-hidden">
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-cyberCyan/10 blur-[120px] animate-cloud-1 pointer-events-none" />
@@ -123,7 +146,7 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
         >
           <span>{t.heroSection.badge}</span>
           <span className="w-1.5 h-1.5 bg-cyberCyan rounded-full" />
-          <span>Spotify + Last.fm</span>
+          <span>{sourceLabel}</span>
         </motion.div>
 
         <motion.div
@@ -171,17 +194,54 @@ export default function HeroSection({ data, onEnter }: HeroSectionProps) {
               />
             ))}
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              onClick={handleEnter}
-              className="group px-8 py-3.5 bg-gradient-to-r from-cyberCyan to-cyberPurple text-white font-mono font-bold rounded-full text-sm md:text-base tracking-wider hover:shadow-cyber hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center space-x-3 mx-auto"
-            >
-              <span>{t.hero.enter}</span>
-              <Play className="w-4 h-4 fill-white group-hover:translate-x-1 transition-transform" />
-            </button>
-            <p className="max-w-sm text-xs md:text-sm text-gray-400 leading-relaxed sm:text-left">
-              {t.heroSection.ctaSupport}
-            </p>
+          <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-3">
+            {productPaths.map(({ icon: Icon, title, body, button, color, action, primary }) => (
+              <button
+                key={title}
+                onClick={action}
+                className="group glass-panel min-h-[156px] rounded-3xl border p-5 text-left transition-all hover:-translate-y-1 hover:shadow-cyber active:scale-[0.99]"
+                style={{
+                  borderColor: `${color}45`,
+                  background: primary
+                    ? `linear-gradient(135deg, ${color}1f, rgba(255,255,255,0.035))`
+                    : `linear-gradient(135deg, rgba(255,255,255,0.045), ${color}18)`,
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <span
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border"
+                    style={{ color, borderColor: `${color}55`, backgroundColor: `${color}16` }}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-mono font-black uppercase tracking-widest text-white">
+                      {title}
+                    </span>
+                    <span className="mt-2 block text-xs text-gray-400 leading-relaxed">
+                      {body}
+                    </span>
+                  </span>
+                </div>
+                <span
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-mono font-black uppercase tracking-widest transition-all group-hover:bg-white/10"
+                  style={{ color, borderColor: `${color}55`, backgroundColor: `${color}12` }}
+                >
+                  {button}
+                  {primary ? <Play className="w-3.5 h-3.5 fill-current" /> : <FileUp className="w-3.5 h-3.5" />}
+                </span>
+              </button>
+            ))}
+          </div>
+          <p className="max-w-2xl text-xs md:text-sm text-gray-400 leading-relaxed">
+            {t.heroSection.ctaSupport}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {t.heroSection.supportedSources.map(source => (
+              <span key={source} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[10px] font-mono font-black uppercase tracking-widest text-gray-300">
+                {source}
+              </span>
+            ))}
           </div>
         </motion.div>
 

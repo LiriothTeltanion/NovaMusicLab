@@ -30,6 +30,13 @@ import MediaEmbedHub from './MediaEmbedHub';
 import SectionNarrative from './SectionNarrative';
 import { localizeEraLabel } from '../utils/localeText';
 import { buildArtistMediaProfile } from '../utils/mediaLinks';
+import {
+  buildAlbumEmotionalReading,
+  buildArtistEmotionalReading,
+  buildTrackEmotionalReading,
+  emotionalAxisLabels,
+  type EmotionalEngineReading,
+} from '../engines/emotionalEngine';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -133,6 +140,17 @@ const ARTIST_ATLAS_COPY = {
     relatedArtists: 'Artistas conectados en tu archivo',
     relatedHint: 'La conexión se calcula por géneros compartidos, país y peso dentro de tu ranking histórico.',
     catalogFootprint: 'Huella de catálogo',
+    emotionalEngine: 'Motor emocional',
+    artistLongBio: 'Biografía emocional extendida',
+    albumLongRead: 'Lectura extendida del álbum',
+    trackLongRead: 'Lectura extendida de canción',
+    primaryEmotion: 'Emoción primaria',
+    secondaryEmotion: 'Capa secundaria',
+    emotionalIntensity: 'Intensidad',
+    emotionalAxis: 'Ejes emocionales',
+    emotionalEvidence: 'Evidencia del motor',
+    recommendedUse: 'Uso recomendado',
+    emotionalEngineNote: 'Calculado desde género, ranking, plays, álbumes, canciones cercanas, eras dominadas y ficha local cuando existe.',
     catalogRange: 'Rango curado',
     archiveCovers: 'Portadas del archivo',
     visualSignal: 'señal visual',
@@ -236,6 +254,17 @@ const ARTIST_ATLAS_COPY = {
     relatedArtists: 'Connected artists in your archive',
     relatedHint: 'Connections are calculated from shared genre language, country and weight inside your historical ranking.',
     catalogFootprint: 'Catalog footprint',
+    emotionalEngine: 'Emotional engine',
+    artistLongBio: 'Extended emotional biography',
+    albumLongRead: 'Extended album reading',
+    trackLongRead: 'Extended track reading',
+    primaryEmotion: 'Primary emotion',
+    secondaryEmotion: 'Secondary layer',
+    emotionalIntensity: 'Intensity',
+    emotionalAxis: 'Emotional axes',
+    emotionalEvidence: 'Engine evidence',
+    recommendedUse: 'Recommended use',
+    emotionalEngineNote: 'Calculated from genre, rank, plays, albums, nearby tracks, dominant eras and the local profile when available.',
     catalogRange: 'Curated range',
     archiveCovers: 'Archive covers',
     visualSignal: 'visual signal',
@@ -374,6 +403,28 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     return artistCopy.trackEmotionDefault;
   })();
 
+  const selectedTrackReading = useMemo(() =>
+    selectedTrack
+      ? buildTrackEmotionalReading({
+        track: selectedTrack,
+        artist: selectedTrackArtist,
+        profile: selectedTrackProfile,
+        rank: selectedTrackRank,
+        artistTracks: selectedTrackArtistTracks,
+        artistAlbums: selectedTrackArtistAlbums,
+        eras: selectedTrackArtistEras,
+      })
+      : undefined,
+    [
+      selectedTrack,
+      selectedTrackArtist,
+      selectedTrackProfile,
+      selectedTrackRank,
+      selectedTrackArtistTracks,
+      selectedTrackArtistAlbums,
+      selectedTrackArtistEras,
+    ]);
+
   const selectedAlbum = useMemo(() =>
     data.top_albums.find(album => albumKey(album.artist, album.title) === selectedAlbumKey) ?? data.top_albums[0],
     [data.top_albums, selectedAlbumKey]);
@@ -422,6 +473,28 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       : undefined,
     [selectedAlbum, selectedAlbumArtistTracks, selectedAlbumProfile]);
 
+  const selectedAlbumReading = useMemo(() =>
+    selectedAlbum
+      ? buildAlbumEmotionalReading({
+        album: selectedAlbum,
+        artist: selectedAlbumArtist,
+        profile: selectedAlbumProfile,
+        albumMeta: selectedAlbumMeta,
+        rank: selectedAlbumRank,
+        artistTracks: selectedAlbumArtistTracks,
+        catalogIndex: selectedAlbumCatalogIndex,
+      })
+      : undefined,
+    [
+      selectedAlbum,
+      selectedAlbumArtist,
+      selectedAlbumProfile,
+      selectedAlbumMeta,
+      selectedAlbumRank,
+      selectedAlbumArtistTracks,
+      selectedAlbumCatalogIndex,
+    ]);
+
   const selectedArtist = useMemo(() =>
     data.top_artists.find(a => a.name === selectedArtistName) ?? data.top_artists[0],
     [data.top_artists, selectedArtistName]);
@@ -454,6 +527,18 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       ? buildArtistMediaProfile(selectedProfile?.name ?? selectedArtist.name, selectedArtistTracks[0], selectedArtistAlbums[0])
       : undefined,
     [selectedArtist, selectedArtistAlbums, selectedArtistTracks, selectedProfile]);
+
+  const selectedArtistReading = useMemo(() =>
+    selectedArtist
+      ? buildArtistEmotionalReading({
+        artist: selectedArtist,
+        profile: selectedProfile,
+        albums: selectedArtistAlbums,
+        tracks: selectedArtistTracks,
+        eras: selectedArtistEras,
+      })
+      : undefined,
+    [selectedArtist, selectedProfile, selectedArtistAlbums, selectedArtistTracks, selectedArtistEras]);
 
   const selectedDisplayCountry = selectedProfile?.country[lang] ?? selectedArtist?.country ?? '';
   const selectedFlagCountry = selectedProfile?.country.en ?? selectedArtist?.country ?? '';
@@ -659,6 +744,104 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     </div>
   );
 
+  const EmotionalEnginePanel = ({
+    reading,
+    title,
+    color,
+  }: {
+    reading?: EmotionalEngineReading;
+    title: string;
+    color: string;
+  }) => {
+    if (!reading) return null;
+
+    const axisEntries = Object.entries(reading.axis) as Array<[keyof typeof reading.axis, number]>;
+
+    return (
+      <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 md:p-5 overflow-hidden relative">
+        <div className="absolute inset-0 pointer-events-none opacity-70"
+          style={{
+            background: `radial-gradient(circle at 12% 12%, ${color}22, transparent 34%), radial-gradient(circle at 86% 16%, ${tc.c4}18, transparent 30%)`,
+          }} />
+        <div className="relative z-10 space-y-4">
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4" style={{ color }} />
+                <h3 className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color }}>
+                  {artistCopy.emotionalEngine}
+                </h3>
+              </div>
+              <p className="text-lg md:text-xl font-black text-white mt-1">{title}</p>
+              <p className="text-[11px] text-gray-500 leading-relaxed mt-2 max-w-3xl">
+                {artistCopy.emotionalEngineNote}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-left min-w-[220px]">
+              <EvidencePill label={artistCopy.primaryEmotion} value={reading.primaryEmotion[lang]} color={color} />
+              <EvidencePill label={artistCopy.secondaryEmotion} value={reading.secondaryEmotion[lang]} color={tc.c3} />
+              <EvidencePill label={artistCopy.emotionalIntensity} value={reading.intensityLabel[lang]} color={tc.c4} />
+            </div>
+          </div>
+
+          <p className="text-sm md:text-[15px] text-gray-300 leading-relaxed">
+            {reading.longNarrative[lang]}
+          </p>
+
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,0.55fr)] gap-4">
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <BarChart2 className="w-4 h-4" style={{ color }} />
+                <h4 className="text-[11px] font-mono uppercase tracking-widest font-bold" style={{ color }}>
+                  {artistCopy.emotionalAxis}
+                </h4>
+              </div>
+              <div className="space-y-2.5">
+                {axisEntries.map(([axis, value], index) => {
+                  const axisColor = COLORS[index % COLORS.length];
+                  return (
+                    <div key={axis}>
+                      <div className="flex items-center justify-between gap-3 text-[11px] font-mono mb-1">
+                        <span className="uppercase tracking-widest text-gray-400">{emotionalAxisLabels[axis][lang]}</span>
+                        <span className="font-black" style={{ color: axisColor }}>{value}</span>
+                      </div>
+                      <div className="h-2 rounded-full bg-white/8 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${value}%`, backgroundColor: axisColor }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Info className="w-4 h-4" style={{ color: tc.c4 }} />
+                <h4 className="text-[11px] font-mono uppercase tracking-widest font-bold" style={{ color: tc.c4 }}>
+                  {artistCopy.emotionalEvidence}
+                </h4>
+              </div>
+              <ul className="space-y-2">
+                {reading.evidence[lang].map((item, index) => (
+                  <li key={`${item}-${index}`} className="flex gap-2 text-xs text-gray-400 leading-relaxed">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.035] p-3">
+                <p className="text-[10px] font-mono uppercase tracking-widest font-bold mb-2" style={{ color: tc.c2 }}>
+                  {artistCopy.recommendedUse}
+                </p>
+                <p className="text-xs text-gray-300 leading-relaxed">{reading.listeningUse[lang]}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const TimelineAlbum = ({ album, index }: { album: NonNullable<typeof selectedProfile>['key_albums'][number]; index: number }) => {
     const archivedAlbum = selectedArtistAlbums.find(a => getAlbumEnrichment(selectedProfile, a.title)?.title === album.title);
     const color = COLORS[index % COLORS.length];
@@ -766,6 +949,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {selectedTrackProfile?.why_it_matters[lang] ?? artistCopy.trackContextBody}
         </p>
 
+        <EmotionalEnginePanel
+          reading={selectedTrackReading}
+          title={artistCopy.trackLongRead}
+          color={tc.c2}
+        />
+
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           <EvidencePill label={artistCopy.trackPlaysMetric} value={fmtNum(selectedTrack.plays)} color={tc.c1} />
           <EvidencePill label={artistCopy.trackRank} value={selectedTrackRank ? `#${selectedTrackRank}` : '-'} color={tc.c2} />
@@ -789,7 +978,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           />
           <InfoBlock
             title={artistCopy.emotionalFunction}
-            body={selectedTrackEmotionBody}
+            body={selectedTrackReading?.listeningUse[lang] ?? selectedTrackEmotionBody}
             icon={Sparkles}
             color={tc.c3}
           />
@@ -1042,6 +1231,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           <p className="text-sm md:text-[15px] text-gray-300 leading-relaxed">
             {selectedProfile?.bio[lang] ?? artistCopy.noProfileBody}
           </p>
+
+          <EmotionalEnginePanel
+            reading={selectedArtistReading}
+            title={artistCopy.artistLongBio}
+            color={tc.c1}
+          />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div className="rounded-2xl bg-white/[0.035] border border-white/8 p-3">
@@ -1419,6 +1614,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         <p className="text-sm md:text-[15px] text-gray-300 leading-relaxed">
           {selectedAlbumMeta?.description[lang] ?? artistCopy.noAlbumContext}
         </p>
+
+        <EmotionalEnginePanel
+          reading={selectedAlbumReading}
+          title={artistCopy.albumLongRead}
+          color={tc.c3}
+        />
 
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           <EvidencePill label={artistCopy.albumPlays} value={fmtNum(selectedAlbum.plays)} color={tc.c1} />

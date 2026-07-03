@@ -124,7 +124,9 @@
   },
   {
     "artist": "nothingnowhere.",
-    "aliases": ["nothing,nowhere."],
+    "aliases": [
+      "nothing,nowhere."
+    ],
     "spotifyArtistUrl": "https://open.spotify.com/artist/7FngGIEGgN3Iwauw1MvO4P",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCBEWNR_x89cYolTNhuV7-Fw",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=NGKdYF3STsk",
@@ -134,15 +136,18 @@
   },
   {
     "artist": "Tokio Hotel",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/46aNfN89JrOQTCy97GoCHa"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/46aNfN89JrOQTCy97GoCHa",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Carpenter Brut",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Perturbator",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/244uLu9lkdw39BJwlul3k8"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/244uLu9lkdw39BJwlul3k8",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Magnolia Park",
@@ -155,7 +160,9 @@
   },
   {
     "artist": "Machine Gun Kelly",
-    "aliases": ["mgk"],
+    "aliases": [
+      "mgk"
+    ],
     "spotifyArtistUrl": "https://open.spotify.com/artist/6TIYQ3jFPwQSRmorSezPxX",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCUs8sGiP4avNaYNVO22INhQ",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=z7kYa5GQYKg",
@@ -192,83 +199,480 @@
   },
   {
     "artist": "Hammock",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0VOR7Ie9xUSb45fzIIVJQ1"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0VOR7Ie9xUSb45fzIIVJQ1",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Dayseeker",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/5FjQVp1Lb0kltmwIuu5kfj"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5FjQVp1Lb0kltmwIuu5kfj",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "H.E.A.T",
-    "aliases": ["HEAT"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7M4PCSo5DDasGginrPHSDd"
+    "aliases": [
+      "HEAT"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7M4PCSo5DDasGginrPHSDd",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Ghost",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "The Story So Far",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/6meTcQ79DrfkIuSLPZkpBg"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6meTcQ79DrfkIuSLPZkpBg",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Roosevelt",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4AQrqVz6BYwy29iMxcGtx7"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4AQrqVz6BYwy29iMxcGtx7",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Don Vedda",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/3RAhsZklmP61em9lYAgCLc"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3RAhsZklmP61em9lYAgCLc",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Myrath",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/72500XOYPw5e7OgFWuW2Gl"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/72500XOYPw5e7OgFWuW2Gl",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Blessthefall",
-    "aliases": ["blessthefall"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7t2C8WwLyKUKRe0LVh8zl9"
+    "aliases": [
+      "blessthefall"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7t2C8WwLyKUKRe0LVh8zl9",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Crazy Lixx",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/24k1UCsJJHHU9ohk7YIvzC"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/24k1UCsJJHHU9ohk7YIvzC",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Type O Negative",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0blJzvevdXrp21YeI2vbco"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0blJzvevdXrp21YeI2vbco",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Crown the Empire",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2vKiJjsgjgqIECUyYeIVvO"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2vKiJjsgjgqIECUyYeIVvO",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Teenage Wrist",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/79HbBkVgOVUuVhuTJ50pIx"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/79HbBkVgOVUuVhuTJ50pIx",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Neck Deep",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2TM0qnbJH4QPhGMCdPt7fH"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2TM0qnbJH4QPhGMCdPt7fH",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Silverstein",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Anathema",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0ZXKT0FCsLWkSLCjoBJgBX"
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0ZXKT0FCsLWkSLCjoBJgBX",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "The Kid LAROI",
-    "aliases": ["The Kid Laroi", "Kid Laroi"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2tIP7SsRs7vjIcLrU85W8J"
+    "aliases": [
+      "The Kid Laroi",
+      "Kid Laroi"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2tIP7SsRs7vjIcLrU85W8J",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "HaYehudim",
-    "aliases": ["Hayehudim", "היהודים", "I.U.D.M"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4xOU852y5U5YPQe29uWPH5"
+    "aliases": [
+      "Hayehudim",
+      "היהודים",
+      "I.U.D.M"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4xOU852y5U5YPQe29uWPH5",
+    "mediaConfidence": "partial"
   },
   {
     "artist": "Mooki",
-    "aliases": ["מוקי", "Muki"],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2RMH8nqc3YmaUEikglXlXm"
+    "aliases": [
+      "מוקי",
+      "Muki"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2RMH8nqc3YmaUEikglXlXm",
+    "mediaConfidence": "partial"
+  },
+  {
+    "artist": "Rain City Drive",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "Slaves"
+    ]
+  },
+  {
+    "artist": "Jordyne",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Kiremi",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Primal Fear",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Diversify",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Drake",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Sweezy",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Def Leppard",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Annihilator",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "thekidszn",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "the kidszn",
+      "kidszn"
+    ]
+  },
+  {
+    "artist": "Nightlife",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Landon Tewers",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Skid Row",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Entwine",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "ג'ירפות",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "Girafot"
+    ]
+  },
+  {
+    "artist": "Trevor Something",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Naits",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Blackfield",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Arrows in Action",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Som",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Katatonia",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "FM-84",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "FM84"
+    ]
+  },
+  {
+    "artist": "Ryan Caraveo",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Being as an Ocean",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "44phantom",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Indighxst",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "boy pablo",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Paloma",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Louta",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Asking Alexandria",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Issues",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Sebastian Gampl",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Treat",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Thirty Seconds to Mars",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "30 Seconds to Mars"
+    ]
+  },
+  {
+    "artist": "Twin Shadow",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Scar Symmetry",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Polyphia",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Atzmus",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "SMBDY ELSE",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "ERRA",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Nine Inch Nails",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Lost Society",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Rami Kleinstein",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Corbin Karasu",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "The Killers",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Acres",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Unprocessed",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Blut aus Nord",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Knox",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Firehouse",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "The Damned",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Volumes",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "The 1975",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Hurtwave",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "The Cult",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Skyharbor",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Thornhill",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "NIGHTBREAKERS",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   }
 ]

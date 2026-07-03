@@ -33,11 +33,12 @@ describe('HeroSection intro rebalance', () => {
 
     render(
       <AppProvider>
-        <HeroSection data={data} onEnter={vi.fn()} />
+        <HeroSection data={data} onEnter={vi.fn()} onUpload={vi.fn()} />
       </AppProvider>
     );
 
     expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
     expect(screen.getByText('Archive Snapshot')).toBeInTheDocument();
     expect(screen.getByText('Anchor artist')).toBeInTheDocument();
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
@@ -50,11 +51,12 @@ describe('HeroSection intro rebalance', () => {
 
     render(
       <AppProvider>
-        <HeroSection data={data} onEnter={vi.fn()} />
+        <HeroSection data={data} onEnter={vi.fn()} onUpload={vi.fn()} />
       </AppProvider>
     );
 
     expect(screen.getByRole('button', { name: /entrar al museo sonoro/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /subir mis datos/i })).toBeInTheDocument();
     expect(screen.getByText('Instantánea del Archivo')).toBeInTheDocument();
     expect(screen.getByText('Artista ancla')).toBeInTheDocument();
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);

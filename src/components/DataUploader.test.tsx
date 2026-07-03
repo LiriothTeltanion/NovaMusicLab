@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DataUploader from './DataUploader';
 import { AppProvider } from '../context/AppContext';
@@ -13,7 +13,8 @@ const STRINGS = {
       browseButton: 'Examinar archivos localmente',
       dropZoneAriaLabel: 'Subir archivos de historial musical',
       noFilesError:
-        'Por favor, sube un CSV de Last.fm o archivos JSON de Spotify Extended Streaming History.',
+        'Por favor, sube un CSV de Last.fm, JSON de Spotify o JSON/HTML de YouTube Takeout.',
+      wizardTitle: 'Elige tu fuente, descarga tu historial y súbelo aquí',
     },
   },
   en: {
@@ -22,7 +23,8 @@ const STRINGS = {
       browseButton: 'Browse local files',
       dropZoneAriaLabel: 'Upload music history files',
       noFilesError:
-        'Please upload a Last.fm CSV or Spotify Extended Streaming History JSON files.',
+        'Please upload Last.fm CSV, Spotify JSON or YouTube Takeout JSON/HTML files.',
+      wizardTitle: 'Choose your source, download your history and upload it here',
     },
   },
 };
@@ -45,6 +47,8 @@ describe('DataUploader', () => {
     );
 
     expect(screen.getByText(STRINGS.es.uploader.title)).toBeInTheDocument();
+    expect(screen.getByText(STRINGS.es.uploader.wizardTitle)).toBeInTheDocument();
+    expect(screen.getByText('▶️ YouTube / YouTube Music')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: STRINGS.es.uploader.browseButton })
     ).toBeInTheDocument();
@@ -54,7 +58,7 @@ describe('DataUploader', () => {
   });
 
   it('shows the "no files" error when an unsupported file extension is selected', async () => {
-    // The hidden input has accept=".csv,.json", which user-event's default
+    // The hidden input has accept=".csv,.json,.html,.htm", which user-event's default
     // upload() enforces client-side (silently dropping non-matching files
     // before they ever reach the input, like a real browser file picker
     // would). Disable that filtering so a file with the wrong extension
@@ -93,6 +97,36 @@ describe('DataUploader', () => {
     expect(onDataLoaded).not.toHaveBeenCalled();
   });
 
+  it('accepts YouTube Takeout HTML exports', async () => {
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const youtubeHtml = `
+      <html>
+        <body>
+          Watched <a href="https://www.youtube.com/watch?v=VAXg78MKJcM">Bring Me The Horizon - MANTRA (Official Video)</a><br>
+          <a href="https://www.youtube.com/channel/example">Bring Me The Horizon</a><br>
+          Feb 3, 2026, 8:15:00 PM UTC<br>
+        </body>
+      </html>
+    `;
+    const htmlFile = new File([youtubeHtml], 'watch-history.html', { type: 'text/html' });
+
+    await user.upload(input, htmlFile);
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    const parsed = onDataLoaded.mock.calls[0][0];
+    expect(parsed.source_summary?.source_type).toBe('youtube');
+    expect(parsed.source_summary?.youtube_plays).toBe(1);
+    expect(parsed.top_tracks[0].title).toBe('MANTRA');
+  });
+
   it('renders English strings when nml_lang is set to "en"', () => {
     window.localStorage.setItem('nml_lang', 'en');
 
@@ -103,6 +137,7 @@ describe('DataUploader', () => {
     );
 
     expect(screen.getByText(STRINGS.en.uploader.title)).toBeInTheDocument();
+    expect(screen.getByText(STRINGS.en.uploader.wizardTitle)).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: STRINGS.en.uploader.browseButton })
     ).toBeInTheDocument();

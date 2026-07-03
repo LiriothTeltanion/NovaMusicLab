@@ -73,17 +73,23 @@ export function parseLastfmCsv(csvText: string): MusicDnaData {
 }
 
 export function parseSpotifyJsons(jsonTexts: string[]): MusicDnaData {
-  return aggregateData(parseSpotifyRows(jsonTexts), 'Spotify History JSON');
+  return aggregateData(parseStreamingJsonRows(jsonTexts), 'Streaming History JSON');
 }
 
-export function parseMusicSources(options: { lastfmCsvTexts?: string[]; spotifyJsonTexts?: string[] }): MusicDnaData {
+export function parseMusicSources(options: {
+  lastfmCsvTexts?: string[];
+  spotifyJsonTexts?: string[];
+  youtubeHtmlTexts?: string[];
+}): MusicDnaData {
   const plays = [
     ...(options.lastfmCsvTexts ?? []).flatMap(parseLastfmCsvRows),
-    ...parseSpotifyRows(options.spotifyJsonTexts ?? []),
+    ...parseStreamingJsonRows(options.spotifyJsonTexts ?? []),
+    ...parseYoutubeHtmlRows(options.youtubeHtmlTexts ?? []),
   ];
   const sourceLabel = [
     options.lastfmCsvTexts?.length ? 'Last.fm CSV' : '',
-    options.spotifyJsonTexts?.length ? 'Spotify History JSON' : '',
+    options.spotifyJsonTexts?.length ? 'Streaming History JSON' : '',
+    options.youtubeHtmlTexts?.length ? 'YouTube Takeout HTML' : '',
   ].filter(Boolean).join(' + ');
   return aggregateData(plays, sourceLabel || 'Imported Files');
 }
@@ -115,7 +121,7 @@ export function parseLastfmCsvRows(csvText: string): ParsedPlay[] {
   return plays;
 }
 
-function parseSpotifyRows(jsonTexts: string[]): ParsedPlay[] {
+function parseStreamingJsonRows(jsonTexts: string[]): ParsedPlay[] {
   const plays: ParsedPlay[] = [];
 
   jsonTexts.forEach(text => {
@@ -128,34 +134,183 @@ function parseSpotifyRows(jsonTexts: string[]): ParsedPlay[] {
     if (!Array.isArray(parsed)) return;
 
     parsed.forEach(item => {
-      const tsStr = item.ts || item.endTime;
-      const artist = item.master_metadata_album_artist_name || item.artistName;
-      const track = item.master_metadata_track_name || item.trackName;
-      const album = item.master_metadata_album_album_name || item.albumName || '';
-      const ts = new Date(tsStr);
+      if (!item || typeof item !== 'object') return;
 
-      if (!artist || !track || !tsStr || Number.isNaN(ts.getTime())) return;
+      const spotifyPlay = spotifyPlayFromItem(item);
+      if (spotifyPlay) {
+        plays.push(spotifyPlay);
+        return;
+      }
 
-      plays.push({
-        artist: String(artist).trim(),
-        track: String(track).trim(),
-        album: String(album).trim(),
-        ts,
-        ts_str: ts.toISOString(),
-        source: 'spotify',
-        ms_played: Number(item.ms_played ?? item.msPlayed ?? 0) || 0,
-        skipped: Boolean(item.skipped),
-        conn_country: item.conn_country ? countryCodeToName(item.conn_country) : 'Unknown',
-        platform: item.platform || 'Unknown',
-        reason_start: item.reason_start,
-        reason_end: item.reason_end,
-        offline: Boolean(item.offline),
-        spotify_uri: item.spotify_track_uri,
-      });
+      const youtubePlay = youtubePlayFromItem(item);
+      if (youtubePlay) plays.push(youtubePlay);
     });
   });
 
   return plays;
+}
+
+function parseYoutubeHtmlRows(htmlTexts: string[]): ParsedPlay[] {
+  const plays: ParsedPlay[] = [];
+
+  htmlTexts.forEach(text => {
+    const lines = htmlToLines(text);
+
+    lines.forEach((line, index) => {
+      if (!looksLikeYoutubeHistoryTitle(line)) return;
+
+      const channelLine = lines[index + 1] && !looksLikeYoutubeDate(lines[index + 1])
+        ? lines[index + 1]
+        : 'YouTube';
+      const dateLine = [lines[index + 1], lines[index + 2], lines[index + 3]]
+        .find(looksLikeYoutubeDate);
+      const play = youtubePlayFromParts(line, channelLine, dateLine, 'YouTube Takeout HTML');
+
+      if (play) plays.push(play);
+    });
+  });
+
+  return plays;
+}
+
+function spotifyPlayFromItem(item: any): ParsedPlay | undefined {
+  const tsStr = item.ts || item.endTime;
+  const artist = item.master_metadata_album_artist_name || item.artistName;
+  const track = item.master_metadata_track_name || item.trackName;
+  const album = item.master_metadata_album_album_name || item.albumName || '';
+  const ts = new Date(tsStr);
+
+  if (!artist || !track || !tsStr || Number.isNaN(ts.getTime())) return undefined;
+
+  return {
+    artist: String(artist).trim(),
+    track: String(track).trim(),
+    album: String(album).trim(),
+    ts,
+    ts_str: ts.toISOString(),
+    source: 'spotify',
+    ms_played: Number(item.ms_played ?? item.msPlayed ?? 0) || 0,
+    skipped: Boolean(item.skipped),
+    conn_country: item.conn_country ? countryCodeToName(item.conn_country) : 'Unknown',
+    platform: item.platform || 'Unknown',
+    reason_start: item.reason_start,
+    reason_end: item.reason_end,
+    offline: Boolean(item.offline),
+    spotify_uri: item.spotify_track_uri,
+  };
+}
+
+function youtubePlayFromItem(item: any): ParsedPlay | undefined {
+  const title = typeof item.title === 'string' ? item.title : '';
+  const tsStr = item.time || item.timestamp;
+  const header = typeof item.header === 'string' ? item.header : '';
+  const titleUrl = typeof item.titleUrl === 'string' ? item.titleUrl : '';
+  const products = Array.isArray(item.products) ? item.products.join(' ') : '';
+  const looksLikeYoutube = /youtube/i.test(`${header} ${titleUrl} ${products}`) || /^(watched|listened to|visto|has visto|escuchaste)\b/i.test(title);
+
+  if (!looksLikeYoutube) return undefined;
+
+  const channelName = youtubeSubtitleName(item) ?? 'YouTube';
+  return youtubePlayFromParts(title, channelName, tsStr, header || 'YouTube');
+}
+
+function youtubePlayFromParts(title: string, channelName: string, tsStr?: string, platform = 'YouTube'): ParsedPlay | undefined {
+  const ts = parseYoutubeTakeoutDate(tsStr);
+  if (!title || !tsStr || Number.isNaN(ts.getTime())) return undefined;
+
+  const cleanTitle = cleanYoutubeTitle(title);
+  if (!cleanTitle) return undefined;
+
+  const parsed = splitYoutubeArtistTitle(cleanTitle, channelName);
+  if (!parsed.track) return undefined;
+
+  return {
+    artist: parsed.artist,
+    track: parsed.track,
+    album: '',
+    ts,
+    ts_str: ts.toISOString(),
+    source: 'youtube',
+    platform,
+  };
+}
+
+function youtubeSubtitleName(item: any) {
+  if (!Array.isArray(item.subtitles)) return undefined;
+  const first = item.subtitles.find((subtitle: any) => typeof subtitle?.name === 'string' && subtitle.name.trim());
+  return first?.name?.trim();
+}
+
+function decodeHtmlEntities(value: string) {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>');
+}
+
+function htmlToLines(html: string) {
+  const inlineAnchors = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, (_, inner: string) => (
+    decodeHtmlEntities(inner.replace(/<[^>]+>/g, ' '))
+  ));
+
+  return decodeHtmlEntities(inlineAnchors)
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(div|p|li|tr|td|h[1-6])>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .split('\n')
+    .map(line => line.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+function looksLikeYoutubeHistoryTitle(line: string) {
+  return /^(watched|listened to|visto|has visto|escuchaste)\b/i.test(line);
+}
+
+function parseYoutubeTakeoutDate(input?: string) {
+  if (!input) return new Date(Number.NaN);
+  const normalized = decodeHtmlEntities(input)
+    .replace(/[\u00a0\u202f]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const direct = new Date(normalized);
+  return direct;
+}
+
+function looksLikeYoutubeDate(line?: string) {
+  return !Number.isNaN(parseYoutubeTakeoutDate(line).getTime());
+}
+
+function cleanYoutubeTitle(title: string) {
+  return decodeHtmlEntities(title)
+    .replace(/^(watched|listened to|visto|has visto|escuchaste)\s+/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function cleanTrackDescriptor(title: string) {
+  return title
+    .replace(/\s*[[(](official\s+)?(music\s+)?(video|audio|visualizer|lyrics?|lyric video|hd|4k|live session)[\])]/ig, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function splitYoutubeArtistTitle(title: string, channelName: string) {
+  const normalizedDashTitle = title.replace(/[–—]/g, '-');
+  const dashParts = normalizedDashTitle.split(/\s+-\s+/);
+
+  if (dashParts.length >= 2) {
+    const artist = dashParts[0].trim();
+    const track = cleanTrackDescriptor(dashParts.slice(1).join(' - '));
+    if (artist && track) return { artist, track };
+  }
+
+  return {
+    artist: channelName.replace(/\s+-\s+Topic$/i, '').trim() || 'YouTube',
+    track: cleanTrackDescriptor(title),
+  };
 }
 
 export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDnaData {
@@ -257,7 +412,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
       active_days: dateCounts.size,
       max_year: yearlyEras.length ? [...yearlyEras].sort((a, b) => b.plays - a.plays)[0].year : 'N/A',
       match_rate_pct: sourceSummary.source_type === 'merged'
-        ? sourceSummary.spotify_plays || sourceSummary.lastfm_plays
+        ? sourceSummary.spotify_plays || sourceSummary.lastfm_plays || sourceSummary.youtube_plays
           ? round2(sourceSummary.overlap_unique_tracks / Math.max(1, new Set(sortedItems.map(item => normalizedTrackKey(item.artist, item.track))).size) * 100)
           : 0
         : 100,
@@ -284,19 +439,23 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
 function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
   const lastfmItems = items.filter(item => item.source === 'lastfm');
   const spotifyItems = items.filter(item => item.source === 'spotify');
+  const youtubeItems = items.filter(item => item.source === 'youtube');
   const lastfmTracks = new Set(lastfmItems.map(item => normalizedTrackKey(item.artist, item.track)));
   const spotifyTracks = new Set(spotifyItems.map(item => normalizedTrackKey(item.artist, item.track)));
-  const overlap = [...lastfmTracks].filter(key => spotifyTracks.has(key)).length;
+  const youtubeTracks = new Set(youtubeItems.map(item => normalizedTrackKey(item.artist, item.track)));
+  const allSources = [lastfmItems.length, spotifyItems.length, youtubeItems.length].filter(Boolean).length;
+  const overlap = [...lastfmTracks].filter(key => spotifyTracks.has(key) || youtubeTracks.has(key)).length;
   const spotifySkips = spotifyItems.filter(item => item.skipped).length;
   const spotifyShortPlays = spotifyItems.filter(item => (item.ms_played ?? 0) > 0 && (item.ms_played ?? 0) < 30000).length;
-  const sourceType: PlaySource = lastfmItems.length && spotifyItems.length
+  const sourceType: PlaySource = allSources > 1
     ? 'merged'
-    : spotifyItems.length ? 'spotify' : 'lastfm';
+    : spotifyItems.length ? 'spotify' : youtubeItems.length ? 'youtube' : 'lastfm';
 
   return {
     source_type: sourceType,
     lastfm_plays: lastfmItems.length,
     spotify_plays: spotifyItems.length,
+    youtube_plays: youtubeItems.length,
     merged_plays: items.length,
     spotify_skips: spotifySkips,
     spotify_skip_rate_pct: spotifyItems.length ? round2((spotifySkips / spotifyItems.length) * 100) : 0,
@@ -307,7 +466,9 @@ function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
       ? 'Merged upload: totals include all imported events. Overlap is measured by normalized artist + track names.'
       : sourceType === 'spotify'
         ? 'Spotify-only upload: skip, platform and country data are measured directly from the export.'
-        : 'Last.fm-only upload: timestamps and scrobbles are direct, while skip/platform data are unavailable.',
+        : sourceType === 'youtube'
+          ? 'YouTube-only upload: watch history timestamps are direct, while artist and track names are inferred from video titles and channel names.'
+          : 'Last.fm-only upload: timestamps and scrobbles are direct, while skip/platform data are unavailable.',
   };
 }
 

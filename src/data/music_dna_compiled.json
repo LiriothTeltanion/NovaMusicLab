@@ -17,6 +17,7 @@
     "source_type": "lastfm",
     "lastfm_plays": 50476,
     "spotify_plays": 67016,
+    "youtube_plays": 0,
     "merged_plays": 50476,
     "spotify_skips": 0,
     "spotify_skip_rate_pct": 0,

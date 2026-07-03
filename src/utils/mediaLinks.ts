@@ -182,13 +182,13 @@ export function buildArtistMediaProfile(
       },
       {
         label: 'Spotify Top Track',
-        url: buildSpotifySearchUrl(trackQuery),
+        url: curated?.spotifyTrackUrl ?? buildSpotifySearchUrl(trackQuery),
         provider: 'spotify',
         kind: 'track',
       },
       {
         label: 'Spotify Album',
-        url: buildSpotifySearchUrl(albumQuery),
+        url: curated?.spotifyAlbumUrl ?? buildSpotifySearchUrl(albumQuery),
         provider: 'spotify',
         kind: 'album',
       },

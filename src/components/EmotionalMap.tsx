@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, Tooltip, Cell, ZAxis } from 'recharts';
 import { Activity, BrainCircuit, Compass, Flame, Gauge, Heart, Moon, Orbit, Shield, Sparkles, Sun, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
@@ -9,12 +9,29 @@ import CoverArt from './CoverArt';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
+import {
+  buildEmotionalMapEngineProfile,
+  emotionalAxisLabels,
+  EMOTIONAL_MOOD_TAXONOMY,
+  type EmotionalMoodKey,
+} from '../engines/emotionalEngine';
 
 interface EmotionalMapProps {
   data: MusicDnaData;
 }
 
-type EmotionKey = 'melancolia' | 'energia' | 'dopamina' | 'calma' | 'nostalgia' | 'rebeldia' | 'futurismo' | 'romanticismo';
+type EmotionKey = EmotionalMoodKey;
+
+const MOOD_ICONS = {
+  moon: Moon,
+  flame: Flame,
+  sun: Sun,
+  activity: Activity,
+  heart: Heart,
+  shield: Shield,
+  orbit: Orbit,
+  sparkles: Sparkles,
+} as const;
 
 const EMOTION_DETAILS = {
   melancolia: {
@@ -282,6 +299,16 @@ const EMOTIONAL_MAP_COPY = {
       anchorTitle: (artist: string) => artist,
       anchorBody: 'El artista más fuerte del archivo funciona como una puerta rápida al estado emocional que más regresa.',
     },
+    engine: {
+      title: 'Mezcla del motor emocional',
+      subtitle: 'La misma capa que ahora alimenta los dossiers lee tus artistas principales y calcula qué modos emocionales dominan el archivo activo.',
+      dominant: 'Modo dominante',
+      analyzedArtists: 'artistas analizados',
+      moodMix: 'Distribución por mood',
+      averageAxis: 'Promedio de ejes',
+      confidence: 'confianza',
+      artistMode: 'modo del motor',
+    },
     quadrantTitle: 'Guía de cuadrantes emocionales',
     quadrantIntro: 'El mapa se lee mejor como clima emocional: no mide sentimientos exactos, ubica texturas de energía y brillo.',
     quadrants: [
@@ -327,6 +354,16 @@ const EMOTIONAL_MAP_COPY = {
       anchorTitle: (artist: string) => artist,
       anchorBody: 'The strongest artist in the archive works as a fast doorway into the emotional state that returns most often.',
     },
+    engine: {
+      title: 'Emotional engine mix',
+      subtitle: 'The same layer now powering the dossiers reads your main artists and calculates which emotional modes dominate the active archive.',
+      dominant: 'Dominant mode',
+      analyzedArtists: 'artists analyzed',
+      moodMix: 'Mood distribution',
+      averageAxis: 'Average axes',
+      confidence: 'confidence',
+      artistMode: 'engine mode',
+    },
     quadrantTitle: 'Emotional Quadrant Guide',
     quadrantIntro: 'The map works best as emotional weather: it does not measure exact feelings, it places textures of energy and brightness.',
     quadrants: [
@@ -365,13 +402,19 @@ const EMOTIONAL_MAP_COPY = {
 export default function EmotionalMap({ data }: EmotionalMapProps) {
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionKey>('melancolia');
   const { tc, t, lang } = useApp();
+  const engineProfile = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24), [data.top_artists]);
+  const engineArtistMap = useMemo(
+    () => new Map(engineProfile.artists.map(profile => [profile.artist.name, profile])),
+    [engineProfile],
+  );
 
-  const galaxyArtists = data.top_artists.slice(0, 14).map(artist => ({
+  const galaxyArtists = useMemo(() => data.top_artists.slice(0, 14).map(artist => ({
     name: artist.name,
     plays: artist.plays,
     genre: artist.genre,
+    engine: engineArtistMap.get(artist.name),
     ...inferMoodCoordinates(artist.genre, artist.name),
-  }));
+  })), [data.top_artists, engineArtistMap]);
 
   const copy = EMOTIONAL_MAP_COPY[lang];
   const emotionDetails = Object.fromEntries(
@@ -402,6 +445,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
     : 0;
   const darkArtists = galaxyArtists.filter(artist => artist.valence < 0.46).length;
   const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const DominantMoodIcon = MOOD_ICONS[engineProfile.dominantMood.icon];
 
   const quickReadItems = [
     {
@@ -452,6 +496,105 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
       <SectionNarrative content={t.deepNarratives.emotions} accent="c2" />
 
       <SectionQuickRead items={quickReadItems} />
+
+      <section className="glass-panel p-5 md:p-6 rounded-3xl border border-white/10 overflow-hidden relative">
+        <div className="absolute inset-0 pointer-events-none opacity-70"
+          style={{
+            background: `radial-gradient(circle at 12% 10%, ${engineProfile.dominantMood.color}24, transparent 34%), radial-gradient(circle at 88% 10%, ${tc.c2}18, transparent 30%)`,
+          }} />
+        <div className="relative z-10 space-y-5">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <div className="flex items-center gap-2">
+                <BrainCircuit className="w-5 h-5" style={{ color: engineProfile.dominantMood.color }} />
+                <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
+                  {copy.engine.title}
+                </h3>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed mt-2 max-w-3xl">
+                {copy.engine.subtitle}
+              </p>
+            </div>
+
+            <div className="rounded-2xl border bg-black/20 px-4 py-3 min-w-[220px]"
+              style={{ borderColor: `${engineProfile.dominantMood.color}35` }}>
+              <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                {copy.engine.dominant}
+              </p>
+              <div className="mt-2 flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-2xl border"
+                  style={{
+                    color: engineProfile.dominantMood.color,
+                    borderColor: `${engineProfile.dominantMood.color}40`,
+                    backgroundColor: `${engineProfile.dominantMood.color}12`,
+                  }}>
+                  <DominantMoodIcon className="w-5 h-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-black text-white">{engineProfile.dominantMood.shortLabel[lang]}</p>
+                  <p className="text-[10px] text-gray-500 font-mono">
+                    {engineProfile.artists.length} {copy.engine.analyzedArtists}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] gap-4">
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Orbit className="w-4 h-4" style={{ color: tc.c1 }} />
+                <h4 className="text-[11px] font-mono uppercase tracking-widest font-black" style={{ color: tc.c1 }}>
+                  {copy.engine.moodMix}
+                </h4>
+              </div>
+              <div className="space-y-3">
+                {engineProfile.distribution.map(item => {
+                  const Icon = MOOD_ICONS[item.mood.icon];
+                  return (
+                    <div key={item.mood.key}>
+                      <div className="flex items-center justify-between gap-3 mb-1.5">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Icon className="w-4 h-4 shrink-0" style={{ color: item.mood.color }} />
+                          <span className="text-xs font-bold text-white truncate">{item.mood.shortLabel[lang]}</span>
+                          <span className="text-[10px] text-gray-500 font-mono">{item.count}</span>
+                        </div>
+                        <span className="text-[10px] font-mono font-black" style={{ color: item.mood.color }}>
+                          {item.pct}%
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-white/8 overflow-hidden">
+                        <div className="h-full rounded-full" style={{ width: `${item.pct}%`, backgroundColor: item.mood.color }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Gauge className="w-4 h-4" style={{ color: tc.c3 }} />
+                <h4 className="text-[11px] font-mono uppercase tracking-widest font-black" style={{ color: tc.c3 }}>
+                  {copy.engine.averageAxis}
+                </h4>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {(Object.entries(engineProfile.averageAxis) as Array<[keyof typeof engineProfile.averageAxis, number]>).map(([axis, value], index) => (
+                  <div key={axis} className="rounded-2xl border border-white/8 bg-white/[0.035] p-3">
+                    <p className="text-[9px] font-mono uppercase tracking-widest text-gray-500">
+                      {emotionalAxisLabels[axis][lang]}
+                    </p>
+                    <p className="text-lg font-black font-mono mt-1" style={{ color: [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#a78bfa'][index] }}>
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scatter Chart "Galaxia Emocional" */}
@@ -629,7 +772,10 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {galaxyArtists.slice(0, 8).map(artist => {
-            const color = artist.valence > 0.58 ? '#ffb703' : artist.energy > 0.78 ? '#f72585' : '#00f2fe';
+            const moodProfile = artist.engine;
+            const mood = moodProfile ? EMOTIONAL_MOOD_TAXONOMY[moodProfile.moodKey] : engineProfile.dominantMood;
+            const Icon = MOOD_ICONS[mood.icon];
+            const color = mood.color;
             return (
               <article key={artist.name} className="glass-panel p-4 rounded-2xl border hover:scale-[1.01] transition-transform"
                 style={{ borderColor: `${color}25` }}>
@@ -641,10 +787,19 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                   </div>
                 </div>
                 <div className="mt-3 space-y-2">
-                  <p className="text-[10px] font-mono font-black uppercase tracking-wider" style={{ color }}>
-                    {copy.labels.role}
-                  </p>
-                  <p className="text-xs text-gray-300 leading-relaxed">{artist.type}</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[10px] font-mono font-black uppercase tracking-wider" style={{ color }}>
+                      {copy.engine.artistMode}
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[9px] font-mono font-black"
+                      style={{ color, border: `1px solid ${color}35`, backgroundColor: `${color}12` }}>
+                      <Icon className="w-3 h-3" />
+                      {moodProfile?.confidence ?? 0}% {copy.engine.confidence}
+                    </span>
+                  </div>
+                  <p className="text-xs text-white font-bold leading-relaxed">{mood.title[lang]}</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{mood.description[lang]}</p>
+                  <p className="text-[11px] text-gray-500 leading-relaxed">{artist.type}</p>
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-gray-500">
                     <span>{t.emotionalMap.positivityName}: {Math.round(artist.valence * 100)}%</span>
                     <span>{t.emotionalMap.energyAxis}: {Math.round(artist.energy * 100)}%</span>

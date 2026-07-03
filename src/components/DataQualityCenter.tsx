@@ -64,6 +64,7 @@ function overallConfidence(data: MusicDnaData) {
 
   if (source.source_type === 'lastfm') score += 10;
   if (source.source_type === 'spotify') score += 14;
+  if (source.source_type === 'youtube') score += 8;
   if (source.source_type === 'merged') score += 24;
   if (data.records) score += 6;
   if (data.platform_breakdown?.length) score += 5;
@@ -101,9 +102,11 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
     ? t.dataQuality.dynamic.sourceMerged
     : source.source_type === 'spotify'
       ? t.dataQuality.dynamic.sourceSpotify
-      : source.source_type === 'lastfm'
-        ? t.dataQuality.dynamic.sourceLastfm
-        : t.dataQuality.dynamic.sourceUnknown;
+      : source.source_type === 'youtube'
+        ? t.dataQuality.dynamic.sourceYoutube
+        : source.source_type === 'lastfm'
+          ? t.dataQuality.dynamic.sourceLastfm
+          : t.dataQuality.dynamic.sourceUnknown;
 
   const profileCards = [
     {
@@ -144,6 +147,11 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       label: t.dataQuality.spotifyLabel,
       value: source.spotify_plays,
       kind: source.source_type === 'lastfm' && source.spotify_plays > 0 ? 'estimated' as ConfidenceKind : 'exact' as ConfidenceKind,
+    },
+    {
+      label: t.dataQuality.youtubeLabel,
+      value: source.youtube_plays,
+      kind: source.youtube_plays ? 'inferred' as ConfidenceKind : 'unavailable' as ConfidenceKind,
     },
     {
       label: t.dataQuality.overlapLabel,

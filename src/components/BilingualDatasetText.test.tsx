@@ -85,6 +85,9 @@ describe('bilingual dataset text', () => {
   it('renders the expanded Emotional Map observatory in both languages', () => {
     renderInLang(<EmotionalMap data={data} />, 'en');
 
+    expect(screen.getByText('Emotional engine mix')).toBeInTheDocument();
+    expect(screen.getByText('Dominant mode')).toBeInTheDocument();
+    expect(screen.getByText('Mood distribution')).toBeInTheDocument();
     expect(screen.getByText('Emotional Quadrant Guide')).toBeInTheDocument();
     expect(screen.getByText('Selected Emotional Dossier')).toBeInTheDocument();
     expect(screen.getByText('Recommended Rituals')).toBeInTheDocument();
@@ -93,6 +96,9 @@ describe('bilingual dataset text', () => {
     cleanup();
     renderInLang(<EmotionalMap data={data} />, 'es');
 
+    expect(screen.getByText('Mezcla del motor emocional')).toBeInTheDocument();
+    expect(screen.getByText('Modo dominante')).toBeInTheDocument();
+    expect(screen.getByText('Distribución por mood')).toBeInTheDocument();
     expect(screen.getByText('Guía de cuadrantes emocionales')).toBeInTheDocument();
     expect(screen.getByText('Dossier emocional seleccionado')).toBeInTheDocument();
     expect(screen.getByText('Rituales recomendados')).toBeInTheDocument();
@@ -104,6 +110,8 @@ describe('bilingual dataset text', () => {
 
     expect(screen.getByText('Artist Dossier')).toBeInTheDocument();
     expect(screen.getByText('Archive role')).toBeInTheDocument();
+    expect(screen.getByText('Emotional engine')).toBeInTheDocument();
+    expect(screen.getByText('Extended emotional biography')).toBeInTheDocument();
     expect(screen.getByText('Catalog footprint')).toBeInTheDocument();
     expect(screen.getByText('Deep listening path')).toBeInTheDocument();
     expect(screen.getByText('Archive anchor')).toBeInTheDocument();
@@ -120,6 +128,8 @@ describe('bilingual dataset text', () => {
 
     expect(screen.getByText('Dossier de artista')).toBeInTheDocument();
     expect(screen.getByText('Rol en el archivo')).toBeInTheDocument();
+    expect(screen.getByText('Motor emocional')).toBeInTheDocument();
+    expect(screen.getByText('Biografía emocional extendida')).toBeInTheDocument();
     expect(screen.getByText('Huella de catálogo')).toBeInTheDocument();
     expect(screen.getByText('Ruta de escucha profunda')).toBeInTheDocument();
     expect(screen.getByText('Ancla del archivo')).toBeInTheDocument();
@@ -137,6 +147,7 @@ describe('bilingual dataset text', () => {
 
     await user.click(screen.getByRole('button', { name: 'Albums' }));
     expect(await screen.findByText('Album Dossier')).toBeInTheDocument();
+    expect(screen.getByText('Extended album reading')).toBeInTheDocument();
     expect(screen.getByText('Album context')).toBeInTheDocument();
     expect(screen.getByText('Artist tracks in your archive')).toBeInTheDocument();
     expect(screen.getByText('Open artist dossier')).toBeInTheDocument();
@@ -148,6 +159,7 @@ describe('bilingual dataset text', () => {
 
     await spanishUser.click(screen.getByRole('button', { name: 'Álbumes' }));
     expect(await screen.findByText('Dossier de álbum')).toBeInTheDocument();
+    expect(screen.getByText('Lectura extendida del álbum')).toBeInTheDocument();
     expect(screen.getByText('Contexto del álbum')).toBeInTheDocument();
     expect(screen.getByText('Canciones del artista en tu archivo')).toBeInTheDocument();
     expect(screen.getByText('Abrir dossier de artista')).toBeInTheDocument();
@@ -159,6 +171,7 @@ describe('bilingual dataset text', () => {
 
     await user.click(screen.getByRole('button', { name: 'Tracks' }));
     expect(await screen.findByText('Track Dossier')).toBeInTheDocument();
+    expect(screen.getByText('Extended track reading')).toBeInTheDocument();
     expect(screen.getByText('Track reading')).toBeInTheDocument();
     expect(screen.getByText('Replay role')).toBeInTheDocument();
     expect(screen.getByText('More tracks by this artist')).toBeInTheDocument();
@@ -171,6 +184,7 @@ describe('bilingual dataset text', () => {
 
     await spanishUser.click(screen.getByRole('button', { name: 'Canciones' }));
     expect(await screen.findByText('Dossier de canción')).toBeInTheDocument();
+    expect(screen.getByText('Lectura extendida de canción')).toBeInTheDocument();
     expect(screen.getByText('Lectura de la canción')).toBeInTheDocument();
     expect(screen.getByText('Rol de repetición')).toBeInTheDocument();
     expect(screen.getByText('Más canciones de este artista')).toBeInTheDocument();

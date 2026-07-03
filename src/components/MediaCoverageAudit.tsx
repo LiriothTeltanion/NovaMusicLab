@@ -75,7 +75,7 @@ export default function MediaCoverageAudit({ data }: MediaCoverageAuditProps) {
   const { t, tc, lang } = useApp();
   const copy = t.dataQuality.mediaCoverage;
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
-  const report = useMemo(() => buildMediaCoverageReport(data, 20), [data]);
+  const report = useMemo(() => buildMediaCoverageReport(data, 100), [data]);
 
   const statCards = [
     {
