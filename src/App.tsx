@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useCallback, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Headphones, LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
@@ -8,6 +8,7 @@ import {
 
 import defaultMusicData from './data/music_dna_compiled.json';
 import { MusicDnaData } from './types';
+import { clearDataset, loadDataset, saveDataset } from './utils/datasetStorage';
 import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
@@ -237,16 +238,48 @@ function AppInner() {
   const [activeTab, setActiveTab]   = useState<Tab>('hero');
   const [musicData, setMusicData]   = useState<MusicDnaData>(() => defaultMusicData as MusicDnaData);
   const [showThemes, setShowThemes] = useState(false);
+  const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(null);
+  const [restoredAt, setRestoredAt] = useState<string | null>(null);
 
   const goToTab = useCallback((tab: Tab) => {
     setActiveTab(tab);
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
   }, []);
 
-  const handleDataLoaded = (newData: MusicDnaData) => {
+  // Restore the visitor's own dataset from IndexedDB (if they uploaded one before).
+  useEffect(() => {
+    let cancelled = false;
+    loadDataset().then(rec => {
+      if (cancelled || !rec) return;
+      setMusicData(rec.data);
+      setStoredMeta({ savedAt: rec.savedAt, sourceLabel: rec.sourceLabel });
+      setRestoredAt(rec.savedAt);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Auto-dismiss the restore toast.
+  useEffect(() => {
+    if (!restoredAt) return;
+    const id = window.setTimeout(() => setRestoredAt(null), 9000);
+    return () => window.clearTimeout(id);
+  }, [restoredAt]);
+
+  const handleDataLoaded = (newData: MusicDnaData, sourceLabel?: string) => {
     setMusicData(newData);
     goToTab('dashboard');
+    const label = sourceLabel ?? 'Upload';
+    void saveDataset(newData, label).then(ok => {
+      if (ok) setStoredMeta({ savedAt: new Date().toISOString(), sourceLabel: label });
+    });
   };
+
+  const handleClearStored = useCallback(() => {
+    void clearDataset();
+    setStoredMeta(null);
+    setRestoredAt(null);
+    setMusicData(defaultMusicData as MusicDnaData);
+  }, []);
 
   const menuItems = [
     { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
@@ -479,7 +512,12 @@ function AppInner() {
                           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
                         </div>
                         <SectionNarrative content={t.deepNarratives.upload} accent="c2" />
-                        <DataUploader onDataLoaded={handleDataLoaded} />
+                        <DataUploader
+                          onDataLoaded={handleDataLoaded}
+                          currentData={musicData}
+                          storedMeta={storedMeta}
+                          onClearStored={handleClearStored}
+                        />
                       </div>
                     )}
                   </Suspense>
@@ -489,6 +527,31 @@ function AppInner() {
           </main>
         </div>
       )}
+
+      {/* ── Restore toast ── */}
+      <AnimatePresence>
+        {restoredAt && (
+          <motion.button
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.3, ease: 'easeOut' as const }}
+            onClick={() => setRestoredAt(null)}
+            className="fixed bottom-4 right-4 z-50 glass-panel flex items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-cyber"
+            style={{ borderColor: `${tc.c1}40` }}
+            aria-live="polite"
+          >
+            <ShieldCheck className="h-5 w-5 shrink-0" style={{ color: tc.c1 }} />
+            <span className="max-w-xs text-xs leading-relaxed" style={{ color: 'var(--fg)' }}>
+              {t.uploader.restoredNotice(
+                new Date(restoredAt).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', {
+                  day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit',
+                })
+              )}
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

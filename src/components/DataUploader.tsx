@@ -14,17 +14,22 @@ import {
   ShieldCheck,
   Upload,
 } from 'lucide-react';
+import { Download, Trash2 } from 'lucide-react';
 import { parseMusicSources, ParseError } from '../utils/parser';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import { downloadExport, parseExport } from '../utils/datasetStorage';
 
 const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 
 interface DataUploaderProps {
-  onDataLoaded: (data: MusicDnaData) => void;
+  onDataLoaded: (data: MusicDnaData, sourceLabel?: string) => void;
+  currentData: MusicDnaData;
+  storedMeta: { savedAt: string; sourceLabel: string } | null;
+  onClearStored: () => void;
 }
 
-export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
+export default function DataUploader({ onDataLoaded, currentData, storedMeta, onClearStored }: DataUploaderProps) {
   const { tc, t, lang } = useApp();
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -98,8 +103,28 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
         Promise.all(htmlFiles.map(readFileAsText)),
       ]);
 
+      // Nova portable backups short-circuit parsing: the JSON already IS a MusicDnaData.
+      for (const text of spotifyJsonTexts) {
+        if (!text.slice(0, 300).includes('"nova_music_export"')) continue;
+        const exported = parseExport(JSON.parse(text));
+        if (exported) {
+          onDataLoaded(exported.data, exported.source_label || 'Nova backup');
+          setSuccessMsg(t.uploader.importedMessage(
+            exported.data.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+            exported.data.core_metrics.unique_artists.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+          ));
+          return;
+        }
+      }
+
+      const sourceLabel = [
+        csvFiles.length ? `${csvFiles.length}× Last.fm CSV` : null,
+        jsonFiles.length ? `${jsonFiles.length}× Spotify/YouTube JSON` : null,
+        htmlFiles.length ? `${htmlFiles.length}× YouTube HTML` : null,
+      ].filter(Boolean).join(' + ');
+
       const parsed = parseMusicSources({ lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts });
-      onDataLoaded(parsed);
+      onDataLoaded(parsed, sourceLabel);
       setKnowledgeSummary(parsed.knowledge_summary ?? null);
 
       const source = parsed.source_summary;
@@ -261,6 +286,56 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
           </p>
         </div>
       </div>
+
+      {/* ── Local session: auto-save status + portable backup ── */}
+      <section className="glass-panel rounded-3xl border border-white/10 p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border" style={{ color: tc.c2, borderColor: `${tc.c2}40`, backgroundColor: `${tc.c2}12` }}>
+              <Database className="h-5 w-5" />
+            </span>
+            <div>
+              <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c2 }}>
+                {t.uploader.sessionEyebrow}
+              </p>
+              <h3 className="mt-1 text-lg font-black text-white">
+                {t.uploader.sessionTitle}
+              </h3>
+              <p className="mt-2 max-w-2xl text-xs leading-relaxed text-gray-400">
+                {t.uploader.sessionBody}
+              </p>
+              <p className="mt-2 text-[10px] font-mono text-gray-500">
+                {storedMeta
+                  ? t.uploader.storedMetaLabel(
+                      new Date(storedMeta.savedAt).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                      storedMeta.sourceLabel,
+                    )
+                  : t.uploader.noStoredData}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 lg:shrink-0">
+            <button
+              onClick={() => downloadExport(currentData, storedMeta?.sourceLabel ?? 'Nova Music Lab')}
+              className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
+              style={{ color: tc.c1, borderColor: `${tc.c1}45`, backgroundColor: `${tc.c1}12` }}
+            >
+              <Download className="h-4 w-4" />
+              {t.uploader.exportButton}
+            </button>
+            {storedMeta && (
+              <button
+                onClick={() => { onClearStored(); setSuccessMsg(null); setWarning(t.uploader.clearedMessage); }}
+                className="inline-flex items-center gap-2 rounded-full border border-red-500/35 bg-red-950/20 px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-red-300 transition-all hover:scale-[1.03] hover:border-red-400/60"
+              >
+                <Trash2 className="h-4 w-4" />
+                {t.uploader.clearButton}
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
 
       {loading && (
         <div className="mt-6 flex items-center justify-center space-x-3 p-4 glass-panel border border-cyan-500/20 rounded-2xl">

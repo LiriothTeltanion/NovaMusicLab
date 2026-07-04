@@ -3,6 +3,14 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DataUploader from './DataUploader';
 import { AppProvider } from '../context/AppContext';
+import defaultMusicData from '../data/music_dna_compiled.json';
+import type { MusicDnaData } from '../types';
+
+const baseProps = {
+  currentData: defaultMusicData as unknown as MusicDnaData,
+  storedMeta: null,
+  onClearStored: vi.fn(),
+};
 
 // STRINGS itself isn't exported from AppContext.tsx, so the expected copy is
 // mirrored here from the es/en `uploader` blocks to keep assertions exact.
@@ -42,7 +50,7 @@ describe('DataUploader', () => {
   it('renders the drop-zone with the upload title and browse button', () => {
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={vi.fn()} />
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
       </AppProvider>
     );
 
@@ -67,7 +75,7 @@ describe('DataUploader', () => {
     const user = userEvent.setup({ applyAccept: false });
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={vi.fn()} />
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
       </AppProvider>
     );
 
@@ -85,7 +93,7 @@ describe('DataUploader', () => {
     const onDataLoaded = vi.fn();
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={onDataLoaded} />
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
       </AppProvider>
     );
 
@@ -102,7 +110,7 @@ describe('DataUploader', () => {
     const onDataLoaded = vi.fn();
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={onDataLoaded} />
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
       </AppProvider>
     );
 
@@ -134,7 +142,7 @@ describe('DataUploader', () => {
 
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={vi.fn()} />
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
       </AppProvider>
     );
 
@@ -148,7 +156,7 @@ describe('DataUploader', () => {
   it('renders Spanish strings by default when no language is stored', () => {
     render(
       <AppProvider>
-        <DataUploader onDataLoaded={vi.fn()} />
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
       </AppProvider>
     );
 
