@@ -23,6 +23,7 @@ import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
 import MediaCoverageAudit from './MediaCoverageAudit';
+import { buildOfflineArtistKnowledgeSummary } from '../utils/offlineArtistKnowledge';
 
 type ConfidenceKind = 'exact' | 'mixed' | 'estimated' | 'inferred' | 'curated' | 'unavailable';
 
@@ -84,6 +85,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
   const source = deriveSourceSummary(data);
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
   const sourceNote = localizeSourceNote(source, lang);
+  const knowledgeSummary = data.knowledge_summary ?? buildOfflineArtistKnowledgeSummary(data.top_artists);
   const peakYear = getPeakYear(data);
   const night = getNightRatio(data);
   const confidence = overallConfidence(data);
@@ -97,6 +99,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
   const generatedAt = data.generated_at
     ? new Date(data.generated_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
     : 'N/A';
+  const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
 
   const sourceReading = source.source_type === 'merged'
     ? t.dataQuality.dynamic.sourceMerged
@@ -168,9 +171,41 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
     sourceReading,
     peakYear ? t.dataQuality.dynamic.peakYear(peakYear.year, formatNumber(peakYear.plays, locale)) : '',
     topArtist ? t.dataQuality.dynamic.topArtistShare(topArtist.name, topArtistShare) : '',
+    t.dataQuality.knowledge.dynamic(
+      formatPct(knowledgeSummary.match_rate_pct),
+      knowledgeSummary.matched_artists,
+      knowledgeSummary.total_artists,
+    ),
     t.dataQuality.dynamic.nightRatio(night),
     t.dataQuality.dynamic.exploration(explorationScore),
   ].filter(Boolean);
+
+  const knowledgeCards = [
+    {
+      label: t.dataQuality.knowledge.matchedArtists,
+      value: `${knowledgeSummary.matched_artists}/${knowledgeSummary.total_artists}`,
+      sub: formatPct(knowledgeSummary.match_rate_pct),
+      color: '#22c55e',
+    },
+    {
+      label: t.dataQuality.knowledge.playCoverage,
+      value: formatPct(knowledgeSummary.matched_play_rate_pct),
+      sub: formatNumber(knowledgeSummary.matched_plays, locale),
+      color: tc.c2,
+    },
+    {
+      label: t.dataQuality.knowledge.localCache,
+      value: formatNumber(knowledgeSummary.cache_artist_count, locale),
+      sub: t.dataQuality.knowledge.wikidataProfiles(formatNumber(knowledgeSummary.wikidata_profile_count, locale)),
+      color: tc.c3,
+    },
+    {
+      label: t.dataQuality.knowledge.missingProfiles,
+      value: formatNumber(knowledgeSummary.unmatched_artists, locale),
+      sub: knowledgeSummary.unmatched_artists ? t.dataQuality.knowledge.needsEnrichment : t.dataQuality.knowledge.complete,
+      color: knowledgeSummary.unmatched_artists ? '#f59e0b' : '#22c55e',
+    },
+  ];
 
   return (
     <div className="space-y-10 animate-fade-in">
@@ -219,6 +254,68 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Database className="w-5 h-5" style={{ color: tc.c2 }} />
+          <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
+            {t.dataQuality.knowledge.title}
+          </h3>
+        </div>
+
+        <div className="glass-panel rounded-3xl border border-white/10 p-5">
+          <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+            <div>
+              <p className="text-xs leading-relaxed text-gray-300">
+                {t.dataQuality.knowledge.subtitle}
+              </p>
+              <p className="mt-3 text-[11px] leading-relaxed text-gray-500">
+                {t.dataQuality.knowledge.sourceNote}
+              </p>
+
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                {knowledgeCards.map(card => (
+                  <div key={card.label} className="rounded-2xl border bg-white/[0.035] p-3" style={{ borderColor: `${card.color}28` }}>
+                    <p className="text-[9px] font-mono font-black uppercase tracking-wider text-gray-500">{card.label}</p>
+                    <p className="mt-1 text-xl font-black font-mono" style={{ color: card.color }}>{card.value}</p>
+                    <p className="mt-1 truncate text-[10px] text-gray-500">{card.sub}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                  {t.dataQuality.knowledge.topMatches}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {knowledgeSummary.top_matches.slice(0, 8).map(match => (
+                    <span key={`${match.mbid}-${match.name}`} className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold" style={{ color: tc.c1, borderColor: `${tc.c1}35`, backgroundColor: `${tc.c1}10` }}>
+                      {match.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                  {t.dataQuality.knowledge.topMissing}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {knowledgeSummary.top_missing.length ? knowledgeSummary.top_missing.slice(0, 8).map(match => (
+                    <span key={match.name} className="rounded-full border border-amber-500/30 bg-amber-950/10 px-2.5 py-1 text-[10px] font-mono font-bold text-amber-300">
+                      {match.name}
+                    </span>
+                  )) : (
+                    <span className="text-xs text-gray-400">{t.dataQuality.knowledge.noMissing}</span>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

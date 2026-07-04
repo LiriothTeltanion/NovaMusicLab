@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",
     "test": "vitest run",
     "preview": "vite preview"
   },

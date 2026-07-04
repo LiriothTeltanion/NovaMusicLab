@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 coverage
+.cache
+scripts/.cache
 
 # Env
 .env

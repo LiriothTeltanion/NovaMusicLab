@@ -91,6 +91,8 @@ describe('expanded info sections', () => {
     );
 
     expect(screen.getByText('Data Dictionary')).toBeInTheDocument();
+    expect(screen.getByText('🧠 Offline Brain Coverage')).toBeInTheDocument();
+    expect(screen.getByText('Artists recognized')).toBeInTheDocument();
     expect(screen.getByText('Play / Scrobble')).toBeInTheDocument();
     expect(screen.getByText('Sources and trust')).toBeInTheDocument();
     expect(screen.getByText('Current Pulse')).toBeInTheDocument();

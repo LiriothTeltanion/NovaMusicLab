@@ -13,6 +13,7 @@ import {
 } from '../types';
 import { countryCodeToName, normalizeGenre } from './analytics';
 import artistMetaJson from '../data/artist_meta.json';
+import { buildOfflineArtistKnowledgeSummary } from './offlineArtistKnowledge';
 
 type RawSource = Exclude<PlaySource, 'merged' | 'unknown'>;
 
@@ -386,6 +387,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
     const { artist, title } = splitAlbumKey(key);
     return { artist, title, plays };
   });
+  const knowledgeSummary = buildOfflineArtistKnowledgeSummary(topArtists);
 
   const countries = entriesByCount(countryCounts, 50).map(([country, plays]) => ({ country, plays }));
   const platformBreakdown: PlatformPlay[] = entriesByCount(platformCounts, 30).map(([platform, plays]) => ({ platform, plays }));
@@ -429,6 +431,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
     monthly_activity: monthlyActivity,
     platform_breakdown: platformBreakdown,
     source_summary: sourceSummary,
+    knowledge_summary: knowledgeSummary,
     records,
     personality_matrix: defaultPersonalityMatrix,
     archetypes: defaultArchetypes,

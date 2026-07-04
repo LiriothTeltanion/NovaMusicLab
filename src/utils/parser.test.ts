@@ -97,8 +97,32 @@ describe('music data parser', () => {
     expect(data.source_summary?.source_type).toBe('youtube');
     expect(data.source_summary?.youtube_plays).toBe(2);
     expect(data.platform_breakdown?.[0]).toEqual({ platform: 'YouTube Takeout HTML', plays: 2 });
+    expect(data.knowledge_summary?.matched_artists).toBe(2);
     expect(data.top_tracks.map(track => track.title)).toContain('MANTRA');
     expect(data.top_tracks.map(track => track.title)).toContain('In Blur');
+  });
+
+  it('computes offline artist knowledge coverage for uploaded histories', () => {
+    const csv = [
+      'Bring Me The Horizon,Sempiternal,Can You Feel My Heart,01 Jan 2026 10:00',
+      'Bring Me The Horizon,Sempiternal,Shadow Moses,01 Jan 2026 10:05',
+      'Unknown Future Band,Demo,Signal,01 Jan 2026 10:10',
+    ].join('\n');
+
+    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+
+    expect(data.knowledge_summary).toMatchObject({
+      source: 'offline_artist_knowledge',
+      total_artists: 2,
+      matched_artists: 1,
+      unmatched_artists: 1,
+      matched_plays: 2,
+    });
+    expect(data.knowledge_summary?.top_matches[0]).toMatchObject({
+      name: 'Bring Me The Horizon',
+      matchedName: 'Bring Me the Horizon',
+    });
+    expect(data.knowledge_summary?.top_missing[0].name).toBe('Unknown Future Band');
   });
 
   it('detects merged source overlap by normalized artist and track', () => {

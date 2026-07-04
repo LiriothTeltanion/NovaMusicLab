@@ -38,6 +38,38 @@ export interface SourceSummary {
   source_note: string;
 }
 
+export interface ArtistKnowledgeMatch {
+  name: string;
+  plays: number;
+  rank: number;
+  matchedName?: string;
+  mbid?: string;
+  tags: string[];
+  releaseGroupCount: number;
+}
+
+export interface ArtistKnowledgeSummary {
+  source: 'offline_artist_knowledge';
+  generated_at: string | null;
+  cache_artist_count: number;
+  wikidata_profile_count: number;
+  wikidata_description_count: number;
+  wikidata_website_count: number;
+  wikidata_image_count: number;
+  total_artists: number;
+  matched_artists: number;
+  unmatched_artists: number;
+  match_rate_pct: number;
+  matched_plays: number;
+  matched_play_rate_pct: number;
+  top_matches: ArtistKnowledgeMatch[];
+  top_missing: Array<{
+    name: string;
+    plays: number;
+    rank: number;
+  }>;
+}
+
 export interface RecordsSummary {
   longest_streak_days: number;
   longest_streak_start?: string;
@@ -175,6 +207,7 @@ export interface MusicDnaData {
   monthly_activity?: MonthlyActivity[];
   platform_breakdown?: PlatformPlay[];
   source_summary?: SourceSummary;
+  knowledge_summary?: ArtistKnowledgeSummary;
   records?: RecordsSummary;
   personality_matrix: PersonalityMatrix;
   archetypes: Archetype[];

@@ -3,6 +3,7 @@ import {
   buildEmotionalMapEngineProfile,
   buildAlbumEmotionalReading,
   buildArtistEmotionalReading,
+  buildMusicItemMoodProfile,
   buildTrackEmotionalReading,
 } from './emotionalEngine';
 import type { TopAlbum, TopArtist, TopTrack } from '../types';
@@ -61,8 +62,12 @@ describe('emotional engine', () => {
 
     expect(albumReading.listeningUse.es).toMatch(/Escúchalo/);
     expect(albumReading.listeningUse.en).toMatch(/Play it/);
+    expect(albumReading.moodKey).toBeTruthy();
+    expect(albumReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.longNarrative.es).toContain('Neon Collapse');
     expect(trackReading.longNarrative.en).toContain('Neon Collapse');
+    expect(trackReading.moodKey).toBeTruthy();
+    expect(trackReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.evidence.en.join(' ')).toContain('Rank #3');
   });
 
@@ -77,5 +82,32 @@ describe('emotional engine', () => {
     expect(profile.distribution.length).toBeGreaterThan(0);
     expect(profile.dominantMood.title.en).toBeTruthy();
     expect(profile.averageAxis.energy).toBeGreaterThan(0);
+  });
+
+  it('creates lightweight mood profiles for list rows', () => {
+    const profile = buildMusicItemMoodProfile('Synthwave night drive neon city', 320);
+
+    expect(profile.moodKey).toBe('futurismo');
+    expect(profile.confidence).toBeGreaterThan(0);
+    expect(profile.axis.energy).toBeGreaterThan(0);
+  });
+
+  it('adds offline artist facts to real emotional readings', () => {
+    const reading = buildArtistEmotionalReading({
+      artist: {
+        name: 'Bring Me the Horizon',
+        plays: 2400,
+        genre: 'Metalcore / Alternative Rock',
+        country: 'United Kingdom',
+      },
+      albums: [],
+      tracks: [],
+      eras: [],
+    });
+
+    expect(reading.longNarrative.en).toContain('In the emotional engine');
+    expect(reading.longNarrative.es).toContain('En el motor emocional');
+    expect(reading.evidence.en.some(item => item.includes('MusicBrainz'))).toBe(true);
+    expect(reading.evidence.en.some(item => item.includes('Wikidata'))).toBe(true);
   });
 });

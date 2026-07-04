@@ -1,5 +1,6 @@
 import type { TopAlbum, TopArtist, TopTrack, YearlyEra } from '../types';
 import type { ArtistAlbumEnrichment, ArtistEnrichment, LocalizedText } from '../utils/artistEnrichment';
+import { getOfflineArtistKnowledge, getOfflineArtistSourceText } from '../utils/offlineArtistKnowledge';
 
 export type EmotionalEngineLang = 'es' | 'en';
 
@@ -13,6 +14,8 @@ export interface EmotionalAxis {
 }
 
 export interface EmotionalEngineReading {
+  moodKey: EmotionalMoodKey;
+  moodConfidence: number;
   primaryEmotion: LocalizedText;
   secondaryEmotion: LocalizedText;
   intensityLabel: LocalizedText;
@@ -47,6 +50,12 @@ export interface EmotionalMoodTaxonomyItem {
 
 export interface ArtistMoodProfile {
   artist: TopArtist;
+  moodKey: EmotionalMoodKey;
+  axis: EmotionalAxis;
+  confidence: number;
+}
+
+export interface EmotionalItemMoodProfile {
   moodKey: EmotionalMoodKey;
   axis: EmotionalAxis;
   confidence: number;
@@ -378,6 +387,65 @@ function formatCount(value: number, lang: EmotionalEngineLang) {
   return Math.round(value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 }
 
+function formatShortList(items: string[], lang: EmotionalEngineLang) {
+  const cleanItems = items.filter(Boolean);
+  if (cleanItems.length <= 1) return cleanItems[0] ?? '';
+  const formatter = new Intl.ListFormat(lang === 'en' ? 'en-US' : 'es-ES', {
+    style: 'long',
+    type: 'conjunction',
+  });
+
+  return formatter.format(cleanItems);
+}
+
+function offlineArtistFactLine(artistName: string): LocalizedText | undefined {
+  const knowledge = getOfflineArtistKnowledge(artistName);
+  const mb = knowledge?.musicbrainz;
+
+  if (!knowledge || (!mb && !knowledge.curated)) return undefined;
+
+  const wd = knowledge.wikidata;
+  const curated = knowledge.curated;
+  const place = curated?.origin ?? mb?.beginArea ?? mb?.area ?? mb?.country ?? knowledge.archive.country;
+  const activeYears = knowledge.emotionalSeeds.activeYears.join('-');
+  const tags = knowledge.emotionalSeeds.tags.slice(0, 4);
+  const members = wd?.members.slice(0, 4) ?? [];
+  const occupations = wd?.occupations.slice(0, 3) ?? [];
+  const releases = knowledge.releaseGroups.slice(0, 3).map(group => {
+    const year = group.firstReleaseDate?.slice(0, 4);
+    return year ? `${group.title} (${year})` : group.title;
+  });
+  const alias = mb && mb.name !== knowledge.name ? mb.name : undefined;
+  const sourceEs = mb ? `MusicBrainz lo identifica${alias ? ` también como ${alias}` : ''}` : `ficha curada desde ${curated?.sourceName}`;
+  const sourceEn = mb ? `MusicBrainz identifies it${alias ? ` also as ${alias}` : ''}` : `curated profile from ${curated?.sourceName}`;
+
+  return {
+    es: [
+      `Base offline: ${sourceEs}`,
+      wd?.id ? `Wikidata agrega ficha ${wd.id}` : '',
+      curated?.description ? 'perfil local verificado manualmente' : '',
+      place ? `con conexión a ${place}` : '',
+      activeYears ? `actividad desde ${activeYears}` : '',
+      tags.length ? `señales de ${formatShortList(tags, 'es')}` : '',
+      members.length ? `miembros documentados: ${formatShortList(members, 'es')}` : '',
+      wd?.officialWebsites?.length ? 'sitio oficial verificado' : '',
+      releases.length ? `y una línea de álbumes que arranca con ${formatShortList(releases, 'es')}` : '',
+    ].filter(Boolean).join(', ') + '.',
+    en: [
+      `Offline base: ${sourceEn}`,
+      wd?.description ? `Wikidata profiles it as ${wd.description}` : wd?.id ? `Wikidata adds profile ${wd.id}` : '',
+      curated?.description ? curated.description : '',
+      place ? `with a connection to ${place}` : '',
+      activeYears ? `active from ${activeYears}` : '',
+      tags.length ? `signals of ${formatShortList(tags, 'en')}` : '',
+      members.length ? `documented members: ${formatShortList(members, 'en')}` : '',
+      occupations.length ? `background roles: ${formatShortList(occupations, 'en')}` : '',
+      wd?.officialWebsites?.length ? 'verified official site' : '',
+      releases.length ? `and an album line starting with ${formatShortList(releases, 'en')}` : '',
+    ].filter(Boolean).join(', ') + '.',
+  };
+}
+
 function evidencePair(es: string, en: string) {
   return { es, en };
 }
@@ -471,14 +539,30 @@ function averageAxis(profiles: ArtistMoodProfile[]): EmotionalAxis {
 }
 
 export function buildArtistMoodProfile(artist: TopArtist): ArtistMoodProfile {
-  const axis = scoreAxisFromGenre(`${artist.genre} ${artist.name}`);
-  const moodKey = classifyMoodKey(axis, `${artist.genre} ${artist.name}`);
+  const sourceText = `${artist.genre} ${artist.name} ${getOfflineArtistSourceText(artist.name)}`;
+  const axis = scoreAxisFromGenre(sourceText);
+  const moodKey = classifyMoodKey(axis, sourceText);
 
   return {
     artist,
     moodKey,
     axis,
     confidence: moodConfidence(axis, artist.plays),
+  };
+}
+
+export function buildMusicItemMoodProfile(
+  sourceText: string,
+  plays: number,
+  influence: Partial<EmotionalAxis> = {},
+): EmotionalItemMoodProfile {
+  const axis = blendAxis(scoreAxisFromGenre(sourceText), influence);
+  const moodKey = classifyMoodKey(axis, sourceText);
+
+  return {
+    moodKey,
+    axis,
+    confidence: moodConfidence(axis, plays),
   };
 }
 
@@ -515,7 +599,12 @@ export function buildArtistEmotionalReading({
   tracks,
   eras,
 }: ArtistReadingInput): EmotionalEngineReading {
-  const genre = genreText([artist.genre, profile?.signature_moods.en.join(' '), profile?.signature_moods.es.join(' ')]);
+  const genre = genreText([
+    artist.genre,
+    profile?.signature_moods.en.join(' '),
+    profile?.signature_moods.es.join(' '),
+    getOfflineArtistSourceText(artist.name),
+  ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
     catharsis: Math.min(16, Math.log10(Math.max(artist.plays, 1)) * 3),
     nostalgia: Math.min(12, eras.length * 4),
@@ -526,8 +615,11 @@ export function buildArtistEmotionalReading({
   const strongest = strongestAxisLabel(axis);
   const topTrack = tracks[0];
   const topAlbum = albums[0];
+  const offlineFacts = offlineArtistFactLine(artist.name);
 
   return {
+    moodKey: classifyMoodKey(axis, `${genre} ${artist.name}`),
+    moodConfidence: moodConfidence(axis, artist.plays),
     primaryEmotion: primary,
     secondaryEmotion: secondary,
     intensityLabel: intensityLabel(axis, artist.plays, 1),
@@ -538,17 +630,19 @@ export function buildArtistEmotionalReading({
         topTrack ? `Canción ancla: ${topTrack.title}.` : 'Sin canción ancla directa en el top todavía.',
         topAlbum ? `Álbum con más peso: ${topAlbum.title}.` : 'Sin álbum dominante en el top de álbumes.',
         eras.length ? `Domina ${eras.length} era(s) anual(es).` : 'No domina un año completo, pero puede funcionar como influencia lateral.',
+        ...(offlineFacts ? [offlineFacts.es] : []),
       ],
       en: [
         `${formatCount(artist.plays, 'en')} artist plays in the archive.`,
         topTrack ? `Anchor track: ${topTrack.title}.` : 'No direct anchor track in the top yet.',
         topAlbum ? `Heaviest album: ${topAlbum.title}.` : 'No dominant album in the album top.',
         eras.length ? `Dominates ${eras.length} yearly era(s).` : 'Does not dominate a full year, but may work as a side influence.',
+        ...(offlineFacts ? [offlineFacts.en] : []),
       ],
     },
     longNarrative: {
-      es: `${profile?.bio.es ?? `${artist.name} todavía necesita una biografía curada completa, pero el archivo ya permite leer su función emocional.`} En el motor emocional, ${artist.name} aparece principalmente como ${primary.es}: una presencia marcada por ${strongest.es}, ${formatCount(artist.plays, 'es')} plays y una relación con tu ranking que no se reduce a popularidad. ${topTrack ? `"${topTrack.title}" actúa como puerta de entrada a esa energía; ` : ''}${topAlbum ? `${topAlbum.title} añade una capa de escucha más lenta y de catálogo. ` : ''}La lectura más útil es verlo como un nodo de estado de ánimo: cuando este artista aparece, el museo activa una combinación de memoria, cuerpo, tensión y forma visual.`,
-      en: `${profile?.bio.en ?? `${artist.name} still needs a fully curated biography, but the archive already reveals its emotional function.`} In the emotional engine, ${artist.name} reads mainly as ${primary.en}: a presence shaped by ${strongest.en}, ${formatCount(artist.plays, 'en')} plays and a relationship with your ranking that is bigger than popularity. ${topTrack ? `"${topTrack.title}" works as the doorway into that energy; ` : ''}${topAlbum ? `${topAlbum.title} adds a slower catalog-level layer. ` : ''}The most useful reading is to treat this artist as a mood node: when they appear, the museum activates a blend of memory, body, tension and visual identity.`,
+      es: `En el motor emocional, ${artist.name} aparece principalmente como ${primary.es}: una presencia marcada por ${strongest.es}, ${formatCount(artist.plays, 'es')} plays y una relación con tu ranking que no se reduce a popularidad. ${topTrack ? `"${topTrack.title}" actúa como puerta de entrada a esa energía; ` : ''}${topAlbum ? `${topAlbum.title} añade una capa de escucha más lenta y de catálogo. ` : ''}La lectura más útil es verlo como un nodo de estado de ánimo: cuando este artista aparece, el museo activa una combinación de memoria, cuerpo, tensión y forma visual.`,
+      en: `In the emotional engine, ${artist.name} reads mainly as ${primary.en}: a presence shaped by ${strongest.en}, ${formatCount(artist.plays, 'en')} plays and a relationship with your ranking that is bigger than popularity. ${topTrack ? `"${topTrack.title}" works as the doorway into that energy; ` : ''}${topAlbum ? `${topAlbum.title} adds a slower catalog-level layer. ` : ''}The most useful reading is to treat this artist as a mood node: when they appear, the museum activates a blend of memory, body, tension and visual identity.`,
     },
     listeningUse: {
       es: `Úsalo cuando necesites entrar en ${primary.es} sin perder dirección: primero una canción ancla, luego un álbum fuerte y después una era donde el artista domine o dialogue con tu identidad musical.`,
@@ -566,7 +660,14 @@ export function buildAlbumEmotionalReading({
   artistTracks,
   catalogIndex,
 }: AlbumReadingInput): EmotionalEngineReading {
-  const genre = genreText([artist?.genre, profile?.signature_moods.en.join(' '), profile?.signature_moods.es.join(' '), albumMeta?.description.en, albumMeta?.description.es]);
+  const genre = genreText([
+    artist?.genre,
+    profile?.signature_moods.en.join(' '),
+    profile?.signature_moods.es.join(' '),
+    albumMeta?.description.en,
+    albumMeta?.description.es,
+    getOfflineArtistSourceText(album.artist),
+  ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
     focus: 10,
     nostalgia: albumMeta?.year && albumMeta.year < 2018 ? 12 : 4,
@@ -577,8 +678,11 @@ export function buildAlbumEmotionalReading({
   const strongest = strongestAxisLabel(axis);
   const anchorTrack = artistTracks[0];
   const releaseInfo = albumMeta?.year ? `${albumMeta.year}` : undefined;
+  const offlineFacts = offlineArtistFactLine(album.artist);
 
   return {
+    moodKey: classifyMoodKey(axis, `${genre} ${album.artist} ${album.title}`),
+    moodConfidence: moodConfidence(axis, album.plays),
     primaryEmotion: primary,
     secondaryEmotion: secondary,
     intensityLabel: intensityLabel(axis, album.plays, rank),
@@ -589,12 +693,14 @@ export function buildAlbumEmotionalReading({
         rank ? `Puesto #${rank} dentro del top de álbumes.` : 'Sin puesto de álbum calculado.',
         releaseInfo ? `Año de salida identificado: ${releaseInfo}.` : 'Año de salida pendiente en la ficha local.',
         anchorTrack ? `Conecta con canciones del artista como ${anchorTrack.title}.` : 'Todavía no hay canciones cercanas del artista en el top.',
+        ...(offlineFacts ? [offlineFacts.es] : []),
       ],
       en: [
         `${formatCount(album.plays, 'en')} album plays in the archive.`,
         rank ? `Rank #${rank} inside the album top.` : 'No album rank calculated.',
         releaseInfo ? `Identified release year: ${releaseInfo}.` : 'Release year is still pending in the local profile.',
         anchorTrack ? `Connects with artist tracks such as ${anchorTrack.title}.` : 'No nearby artist tracks in the top yet.',
+        ...(offlineFacts ? [offlineFacts.en] : []),
       ],
     },
     longNarrative: {
@@ -617,7 +723,13 @@ export function buildTrackEmotionalReading({
   artistAlbums,
   eras,
 }: TrackReadingInput): EmotionalEngineReading {
-  const genre = genreText([track.genre, artist?.genre, profile?.signature_moods.en.join(' '), profile?.signature_moods.es.join(' ')]);
+  const genre = genreText([
+    track.genre,
+    artist?.genre,
+    profile?.signature_moods.en.join(' '),
+    profile?.signature_moods.es.join(' '),
+    getOfflineArtistSourceText(track.artist),
+  ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
     catharsis: rank <= 10 ? 16 : rank <= 25 ? 9 : 4,
     focus: artistTracks.length > 3 ? 8 : 2,
@@ -628,8 +740,11 @@ export function buildTrackEmotionalReading({
   const secondary = secondaryEmotion(axis);
   const strongest = strongestAxisLabel(axis);
   const relatedAlbum = artistAlbums[0];
+  const offlineFacts = offlineArtistFactLine(track.artist);
 
   return {
+    moodKey: classifyMoodKey(axis, `${genre} ${track.artist} ${track.title}`),
+    moodConfidence: moodConfidence(axis, track.plays),
     primaryEmotion: primary,
     secondaryEmotion: secondary,
     intensityLabel: intensityLabel(axis, track.plays, rank),
@@ -640,12 +755,14 @@ export function buildTrackEmotionalReading({
         rank ? `Puesto #${rank} en el top histórico de canciones.` : 'Sin puesto calculado.',
         `${artistTracks.length} canción(es) del artista aparecen cerca en tu archivo.`,
         relatedAlbum ? `Gravedad de álbum cercana: ${relatedAlbum.title}.` : 'Sin álbum cercano detectado en el top.',
+        ...(offlineFacts ? [offlineFacts.es] : []),
       ],
       en: [
         `${formatCount(track.plays, 'en')} track plays.`,
         rank ? `Rank #${rank} in the all-time track top.` : 'No calculated rank.',
         `${artistTracks.length} track(s) by the artist appear nearby in your archive.`,
         relatedAlbum ? `Nearby album gravity: ${relatedAlbum.title}.` : 'No nearby album detected in the top.',
+        ...(offlineFacts ? [offlineFacts.en] : []),
       ],
     },
     longNarrative: {

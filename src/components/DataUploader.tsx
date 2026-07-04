@@ -3,6 +3,7 @@ import {
   AlertCircle,
   AlertTriangle,
   CheckCircle2,
+  Database,
   Files,
   FileJson,
   FileText,
@@ -30,6 +31,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [knowledgeSummary, setKnowledgeSummary] = useState<MusicDnaData['knowledge_summary'] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const providerIcons = [Headphones, Music2, PlaySquare, FileJson, ListChecks];
@@ -71,6 +73,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
     setError(null);
     setWarning(null);
     setSuccessMsg(null);
+    setKnowledgeSummary(null);
 
     try {
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
@@ -97,6 +100,7 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
 
       const parsed = parseMusicSources({ lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts });
       onDataLoaded(parsed);
+      setKnowledgeSummary(parsed.knowledge_summary ?? null);
 
       const source = parsed.source_summary;
       setSuccessMsg(t.uploader.successMessage(
@@ -125,6 +129,10 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       reader.readAsText(file);
     });
   };
+
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
+  const formatNumber = (value: number) => value.toLocaleString(locale);
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-5">
@@ -278,9 +286,99 @@ export default function DataUploader({ onDataLoaded }: DataUploaderProps) {
       )}
 
       {successMsg && (
-        <div className="mt-6 flex items-start space-x-3 p-4 bg-green-950/20 border border-green-500/30 text-green-300 rounded-2xl animate-fade-in">
-          <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-green-500" />
-          <span className="text-sm font-mono">{successMsg}</span>
+        <div className="mt-6 space-y-4 animate-fade-in">
+          <div className="flex items-start space-x-3 p-4 bg-green-950/20 border border-green-500/30 text-green-300 rounded-2xl">
+            <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-green-500" />
+            <span className="text-sm font-mono">{successMsg}</span>
+          </div>
+
+          {knowledgeSummary && (
+            <div className="glass-panel rounded-3xl border border-white/10 p-5">
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border" style={{ color: tc.c1, borderColor: `${tc.c1}40`, backgroundColor: `${tc.c1}12` }}>
+                    <Database className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c1 }}>
+                      {t.uploader.knowledgeEyebrow}
+                    </p>
+                    <h3 className="mt-1 text-lg font-black text-white">
+                      {t.uploader.knowledgeTitle}
+                    </h3>
+                    <p className="mt-2 max-w-2xl text-xs leading-relaxed text-gray-400">
+                      {t.uploader.knowledgeBody}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:min-w-[420px]">
+                  {[
+                    {
+                      label: t.uploader.knowledgeMatched,
+                      value: `${knowledgeSummary.matched_artists}/${knowledgeSummary.total_artists}`,
+                      sub: formatPct(knowledgeSummary.match_rate_pct),
+                      color: '#22c55e',
+                    },
+                    {
+                      label: t.uploader.knowledgePlayCoverage,
+                      value: formatPct(knowledgeSummary.matched_play_rate_pct),
+                      sub: formatNumber(knowledgeSummary.matched_plays),
+                      color: tc.c2,
+                    },
+                    {
+                      label: t.uploader.knowledgeCache,
+                      value: formatNumber(knowledgeSummary.cache_artist_count),
+                      sub: t.uploader.knowledgeWikidataProfiles(formatNumber(knowledgeSummary.wikidata_profile_count)),
+                      color: tc.c3,
+                    },
+                    {
+                      label: t.uploader.knowledgeMissing,
+                      value: formatNumber(knowledgeSummary.unmatched_artists),
+                      sub: knowledgeSummary.unmatched_artists ? t.uploader.knowledgeNeedsEnrichment : t.uploader.knowledgeComplete,
+                      color: knowledgeSummary.unmatched_artists ? '#f59e0b' : '#22c55e',
+                    },
+                  ].map(card => (
+                    <div key={card.label} className="rounded-2xl border bg-white/[0.035] p-3" style={{ borderColor: `${card.color}28` }}>
+                      <p className="text-[9px] font-mono font-black uppercase tracking-wider text-gray-500">{card.label}</p>
+                      <p className="mt-1 text-lg font-black font-mono" style={{ color: card.color }}>{card.value}</p>
+                      <p className="mt-1 truncate text-[10px] text-gray-500">{card.sub}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
+                <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                  <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                    {t.uploader.knowledgeTopMatches}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {knowledgeSummary.top_matches.slice(0, 6).map(match => (
+                      <span key={`${match.mbid}-${match.name}`} className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold" style={{ color: tc.c1, borderColor: `${tc.c1}35`, backgroundColor: `${tc.c1}10` }}>
+                        {match.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                  <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                    {t.uploader.knowledgeTopMissing}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {knowledgeSummary.top_missing.length ? knowledgeSummary.top_missing.slice(0, 6).map(match => (
+                      <span key={match.name} className="rounded-full border border-amber-500/30 bg-amber-950/10 px-2.5 py-1 text-[10px] font-mono font-bold text-amber-300">
+                        {match.name}
+                      </span>
+                    )) : (
+                      <span className="text-xs text-gray-400">{t.uploader.knowledgeNoMissing}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -97,7 +97,7 @@
       "name": "Odeon",
       "plays": 621,
       "genre": "Post-Hardcore / Electronic",
-      "country": "Sweden"
+      "country": "Brazil"
     },
     {
       "name": "The Midnight",
@@ -2607,7 +2607,7 @@
     },
     {
       "country": "Sweden",
-      "plays": 2005
+      "plays": 1384
     },
     {
       "country": "Finland",
@@ -2616,6 +2616,10 @@
     {
       "country": "France",
       "plays": 943
+    },
+    {
+      "country": "Brazil",
+      "plays": 621
     },
     {
       "country": "Israel",

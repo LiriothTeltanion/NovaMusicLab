@@ -124,7 +124,9 @@ describe('DataUploader', () => {
     const parsed = onDataLoaded.mock.calls[0][0];
     expect(parsed.source_summary?.source_type).toBe('youtube');
     expect(parsed.source_summary?.youtube_plays).toBe(1);
+    expect(parsed.knowledge_summary?.matched_artists).toBe(1);
     expect(parsed.top_tracks[0].title).toBe('MANTRA');
+    expect(await screen.findByText('Cobertura del catálogo local de artistas')).toBeInTheDocument();
   });
 
   it('renders English strings when nml_lang is set to "en"', () => {

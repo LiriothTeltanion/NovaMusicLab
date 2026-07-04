@@ -624,55 +624,55 @@
   },
   {
     "name": "Odeon",
-    "aliases": ["Odeon Music"],
+    "aliases": ["Odeon Music", "Odeon Sounds"],
     "origin": {
-      "es": "Escandinavia / escena digital europea",
-      "en": "Scandinavia / European digital scene"
+      "es": "Rio de Janeiro, Brasil",
+      "en": "Rio de Janeiro, Brazil"
     },
     "country": {
-      "es": "Suecia",
-      "en": "Sweden"
+      "es": "Brasil",
+      "en": "Brazil"
     },
-    "start_year": "c. 2020",
+    "start_year": "c. 2021",
     "status": {
-      "es": "Proyecto alternativo/electrónico de perfil independiente, con presencia pública más concentrada en singles y videos oficiales que en una discografía tradicional amplia.",
-      "en": "Independent alternative/electronic project with a public footprint centered more on singles and official videos than on a broad traditional album discography."
+      "es": "Proyecto brasileño de post-hardcore/electrónica con base digital independiente, catálogo visible en Bandcamp y actividad en vivo dentro de la escena alternativa de São Paulo y Rio.",
+      "en": "Brazilian post-hardcore/electronic project with an independent digital base, visible Bandcamp catalog and live activity inside the São Paulo and Rio alternative scene."
     },
     "bio": {
-      "es": "Odeon funciona en el archivo como una cápsula moderna: melodía post-hardcore, textura electrónica y una sensación de internet nocturno. No tiene el peso histórico documentado de bandas grandes como BMTH o The Midnight, pero precisamente por eso aparece como una señal de descubrimiento más íntima y específica.",
-      "en": "Odeon works inside the archive like a modern capsule: post-hardcore melody, electronic texture and a feeling of nocturnal internet culture. It does not have the documented historical weight of larger bands like BMTH or The Midnight, but that is exactly why it reads as a more intimate and specific discovery signal."
+      "es": "Odeon entra al archivo como una señal brasileña muy concreta: canciones con vocabulario de internet, guitarras modernas, melodía emocional y producción digital que mezcla post-hardcore, pop alternativo y textura electrónica. El centro de gravedad aquí no es una biografía enciclopédica enorme, sino un grupo de canciones que se volvieron muy reconocibles en tu historial: \"loop\", \"swipe up\", \"dream\" y el álbum \"game\". Eso lo convierte en un caso perfecto para Nova Music Lab: un artista de nicho que demuestra que una identidad pequeña en escala pública puede ocupar un espacio grande dentro de una memoria personal.",
+      "en": "Odeon enters the archive as a very specific Brazilian signal: internet-language song titles, modern guitars, emotional melody and digital production mixing post-hardcore, alternative pop and electronic texture. The center of gravity here is not a huge encyclopedia biography, but a group of tracks that became highly recognizable in your history: \"loop\", \"swipe up\", \"dream\" and the album \"game\". That makes it perfect for Nova Music Lab: a niche artist proving that a small public footprint can still occupy a large space inside personal memory."
     },
     "archive_role": {
-      "es": "Completa el top 10 como puente entre escena alternativa, electrónica emocional y escucha de nicho. En el museo representa la parte menos obvia del gusto: aquello que no viene de una gran mitología de banda, sino de una conexión directa con una canción.",
-      "en": "Completes the top 10 as a bridge between alternative scene energy, emotional electronics and niche listening. In the museum it represents the less obvious side of taste: the part that does not come from a huge band mythology, but from direct connection with a song."
+      "es": "Completa el top 10 como puente entre escena alternativa brasileña, electrónica emocional y escucha de nicho. En el museo representa la parte menos obvia del gusto: aquello que no viene de una gran mitología internacional, sino de una conexión directa con canciones repetidas hasta volverse lugar.",
+      "en": "Completes the top 10 as a bridge between Brazilian alternative scene energy, emotional electronics and niche listening. In the museum it represents the less obvious side of taste: the part that does not come from a large international mythology, but from direct connection with songs repeated until they become a place."
     },
     "sound_evolution": {
-      "es": "La huella pública disponible apunta a singles de producción digital, voz melódica y estética de lyric/video oficial. El arco dentro de Nova Music Lab se lee más por repetición y atmósfera que por una cronología extensa de álbumes.",
-      "en": "The available public footprint points toward digitally produced singles, melodic vocals and an official lyric/video aesthetic. Inside Nova Music Lab, the arc reads more through repetition and atmosphere than through an extensive album chronology."
+      "es": "La etapa documentada por tu archivo gira alrededor de \"game\" y sus canciones: riffs elásticos, melodía procesada, títulos nacidos del lenguaje online y una producción que se siente más cercana a una escena DIY digital que a una banda de rock tradicional. Las señales posteriores como \"Toxic\", \"Labirinto\" o \"(des)amor\" amplían esa identidad hacia un idioma más oscuro, más colaborativo y más conectado con la escena brasileña contemporánea.",
+      "en": "The phase documented by your archive revolves around \"game\" and its songs: elastic riffs, processed melody, titles born from online language and production that feels closer to a digital DIY scene than to a traditional rock band. Later signals like \"Toxic\", \"Labirinto\" and \"(des)amor\" expand that identity toward a darker, more collaborative language connected to the contemporary Brazilian scene."
     },
     "why_it_matters": {
-      "es": "Odeon importa porque demuestra que el archivo no está construido solo por nombres gigantes. También hay artistas pequeños o difíciles de catalogar que pueden ocupar un lugar emocional enorme si una canción cae en el momento correcto.",
-      "en": "Odeon matters because it proves the archive is not built only from giant names. Smaller or harder-to-catalog artists can still occupy a huge emotional space if one song lands at the right moment."
+      "es": "Odeon importa porque corrige una idea falsa del archivo: no todo lo importante viene de Estados Unidos, Reino Unido o Suecia. Aquí aparece Brasil como laboratorio emocional moderno, con una sensibilidad alternativa que conecta escena local, estética de internet y repetición íntima.",
+      "en": "Odeon matters because it corrects a false idea in the archive: not everything important comes from the United States, the United Kingdom or Sweden. Here Brazil appears as a modern emotional laboratory, connecting local scene energy, internet aesthetics and intimate repetition."
     },
     "signature_moods": {
-      "es": ["electrónica emocional", "post-hardcore digital", "descubrimiento de nicho", "noche online"],
-      "en": ["emotional electronics", "digital post-hardcore", "niche discovery", "online night"]
+      "es": ["Brasil alternativo", "post-hardcore digital", "descubrimiento de nicho", "noche online"],
+      "en": ["Brazilian alternative", "digital post-hardcore", "niche discovery", "online night"]
     },
     "key_albums": [
+      {
+        "title": "game",
+        "year": 2022,
+        "description": {
+          "es": "El capítulo central del archivo: incluye \"swipe up\", \"dream\" y \"loop\", y condensa el ADN de Odeon en un formato de álbum digital directo.",
+          "en": "The central archive chapter: includes \"swipe up\", \"dream\" and \"loop\", condensing Odeon's DNA into a direct digital album format."
+        }
+      },
       {
         "title": "loop",
         "year": 2021,
         "description": {
-          "es": "Single central para el perfil: repetitivo, melódico y conectado al tipo de canción que se queda girando como pensamiento fijo.",
-          "en": "Central single for the profile: repetitive, melodic and tied to the kind of track that keeps circling like a fixed thought."
-        }
-      },
-      {
-        "title": "swipe up",
-        "year": 2021,
-        "description": {
-          "es": "Refuerza la estética digital del proyecto: lenguaje de internet, emoción condensada y producción directa.",
-          "en": "Reinforces the project's digital aesthetic: internet language, condensed emotion and direct production."
+          "es": "Single/ancla emocional del perfil: repetitivo, melódico y conectado al tipo de canción que se queda girando como pensamiento fijo.",
+          "en": "Single and emotional anchor for the profile: repetitive, melodic and tied to the kind of track that keeps circling like a fixed thought."
         }
       },
       {

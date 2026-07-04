@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import {
   Trophy, Music2, Disc3, MicVocal, BarChart2, Search, X, BookOpen, Calendar,
-  ChevronRight, Clock, Info, ListMusic, MapPin, Sparkles,
+  ChevronRight, Clock, Info, ListMusic, MapPin, Sparkles, Users, ExternalLink, Globe2,
 } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
@@ -30,16 +30,19 @@ import MediaEmbedHub from './MediaEmbedHub';
 import SectionNarrative from './SectionNarrative';
 import { localizeEraLabel } from '../utils/localeText';
 import { buildArtistMediaProfile } from '../utils/mediaLinks';
+import { getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
 import {
   buildAlbumEmotionalReading,
   buildArtistEmotionalReading,
   buildArtistMoodProfile,
+  buildMusicItemMoodProfile,
   buildTrackEmotionalReading,
   emotionalAxisLabels,
   EMOTIONAL_MOOD_TAXONOMY,
   type EmotionalEngineReading,
+  type EmotionalMoodKey,
 } from '../engines/emotionalEngine';
-import MoodBadge from './MoodBadge';
+import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -63,6 +66,12 @@ function trackKey(artist: string, title: string) {
   return `${artist}::${title}`;
 }
 
+type RowMoodProfile = {
+  moodKey: EmotionalMoodKey;
+  confidence: number;
+  color: string;
+};
+
 const ARTIST_ATLAS_COPY = {
   es: {
     dossier: 'Dossier de artista',
@@ -74,6 +83,13 @@ const ARTIST_ATLAS_COPY = {
     archiveRole: 'Rol en el archivo',
     soundEvolution: 'Evolución sonora',
     whyMatters: 'Por qué importa aquí',
+    verifiedBackground: '🧬 Fondo verificado',
+    verifiedBackgroundHint: 'Hechos compactos desde el cerebro offline: MusicBrainz, Wikidata y fuentes curadas cuando el match automático sería débil.',
+    publicProfile: 'Perfil público',
+    membersAndRoles: 'Miembros y roles',
+    sourceLinks: 'Fuentes / enlaces',
+    noMemberData: 'Sin miembros documentados en la ficha estructurada.',
+    openSource: 'Abrir fuente',
     listeningPath: 'Ruta de escucha profunda',
     listeningPathHint: 'Una lectura guiada en tres pasos: primero lo que tu archivo ya repite, luego el giro de carrera y al final el capítulo más reciente.',
     archiveAnchor: 'Ancla del archivo',
@@ -99,6 +115,7 @@ const ARTIST_ATLAS_COPY = {
     trackAlbumHint: 'Estos álbumes son señales a nivel de artista; el dataset no trae metadatos exactos canción-álbum, así que la app muestra la gravedad de álbumes dentro de tu archivo.',
     trackNeighborsHint: 'Canciones cercanas del mismo artista dentro de tu top histórico.',
     openAlbumDossier: 'Abrir dossier de álbum',
+    openTrackDossier: 'Abrir dossier de canción',
     noTrackSelected: 'Selecciona una canción del ranking para abrir su dossier.',
     trackReplayCore: 'Núcleo de repetición',
     trackReplayCoreBody: 'Está en la zona más alta del archivo: probablemente funciona como himno central, acceso rápido a una emoción o pieza que define una etapa.',
@@ -154,6 +171,14 @@ const ARTIST_ATLAS_COPY = {
     emotionalEvidence: 'Evidencia del motor',
     recommendedUse: 'Uso recomendado',
     emotionalEngineNote: 'Calculado desde género, ranking, plays, álbumes, canciones cercanas, eras dominadas y ficha local cuando existe.',
+    moodLens: 'Lente emocional',
+    moodConfidence: 'confianza del mood',
+    moodRitual: 'Ritual sugerido',
+    albumMoodBody: 'Esta capa traduce la lectura del álbum en identidad visual: color, atmósfera y una función clara dentro del museo.',
+    trackMoodBody: 'Esta capa convierte la repetición de la canción en una señal visual inmediata: qué estado activa y cómo usarla mejor.',
+    moodFilter: 'Filtro emocional',
+    moodFilterHint: 'Filtra artistas, canciones y álbumes por estado emocional dominante. El ranking se mantiene como una lectura del archivo, pero la lista se vuelve navegable por mood.',
+    allMoods: 'Todos',
     catalogRange: 'Rango curado',
     archiveCovers: 'Portadas del archivo',
     visualSignal: 'señal visual',
@@ -188,6 +213,13 @@ const ARTIST_ATLAS_COPY = {
     archiveRole: 'Archive role',
     soundEvolution: 'Sound evolution',
     whyMatters: 'Why it matters here',
+    verifiedBackground: '🧬 Verified background',
+    verifiedBackgroundHint: 'Compact facts from the offline brain: MusicBrainz, Wikidata and curated sources when automatic matching would be weak.',
+    publicProfile: 'Public profile',
+    membersAndRoles: 'Members and roles',
+    sourceLinks: 'Sources / links',
+    noMemberData: 'No documented members in the structured profile.',
+    openSource: 'Open source',
     listeningPath: 'Deep listening path',
     listeningPathHint: 'A three-step reading: first what your archive already repeats, then the career pivot, and finally the most recent chapter.',
     archiveAnchor: 'Archive anchor',
@@ -213,6 +245,7 @@ const ARTIST_ATLAS_COPY = {
     trackAlbumHint: 'These albums are artist-level signals; the dataset does not include exact track-to-album metadata, so the app shows album gravity inside your archive.',
     trackNeighborsHint: 'Nearby songs by the same artist inside your historical top.',
     openAlbumDossier: 'Open album dossier',
+    openTrackDossier: 'Open track dossier',
     noTrackSelected: 'Select a track from the ranking to open its dossier.',
     trackReplayCore: 'Replay core',
     trackReplayCoreBody: 'It sits at the very top of the archive: likely a central anthem, a shortcut into an emotion, or a track that defines a period.',
@@ -268,6 +301,14 @@ const ARTIST_ATLAS_COPY = {
     emotionalEvidence: 'Engine evidence',
     recommendedUse: 'Recommended use',
     emotionalEngineNote: 'Calculated from genre, rank, plays, albums, nearby tracks, dominant eras and the local profile when available.',
+    moodLens: 'Emotional lens',
+    moodConfidence: 'mood confidence',
+    moodRitual: 'Suggested ritual',
+    albumMoodBody: 'This layer translates the album reading into visual identity: color, atmosphere and a clear function inside the museum.',
+    trackMoodBody: 'This layer turns track repetition into an immediate visual signal: which state it activates and how to use it better.',
+    moodFilter: 'Emotional filter',
+    moodFilterHint: 'Filter artists, tracks and albums by dominant emotional state. The ranking stays as an archive reading, but the list becomes navigable by mood.',
+    allMoods: 'All',
     catalogRange: 'Curated range',
     archiveCovers: 'Archive covers',
     visualSignal: 'visual signal',
@@ -298,6 +339,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const { tc, t, lang } = useApp();
   const [tab, setTab] = useState<TopTab>('artistas');
   const [search, setSearch] = useState('');
+  const [selectedMood, setSelectedMood] = useState<EmotionalMoodKey | 'all'>('all');
   const [selectedArtistName, setSelectedArtistName] = useState(data.top_artists[0]?.name ?? '');
   const [selectedAlbumKey, setSelectedAlbumKey] = useState(
     data.top_albums[0] ? albumKey(data.top_albums[0].artist, data.top_albums[0].title) : '',
@@ -308,6 +350,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const COLORS = [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#a78bfa', '#34d399', '#f59e0b', '#ec4899', '#6ee7b7'];
   const artistCopy = ARTIST_ATLAS_COPY[lang];
+  const moodEntries = Object.values(EMOTIONAL_MOOD_TAXONOMY);
 
   const tabs = [
     { id: 'artistas',  label: t.topHistorico.tabArtists,  icon: MicVocal },
@@ -318,29 +361,97 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   ] as const;
 
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const fmtList = useCallback((items: string[], max = 4) => items.slice(0, max).join(', '), []);
   const q = search.toLowerCase().trim();
 
-  /* ── Filtered lists ── */
-  const filteredArtists = useMemo(() =>
-    data.top_artists.filter(a => !q || a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q)),
-    [data.top_artists, q]);
+  const artistLookup = useMemo(() =>
+    new Map(data.top_artists.map(artist => [artist.name, artist])),
+    [data.top_artists]);
 
-  /* Emotional-engine mood color per artist, for the row identity dots */
-  const artistMoodColors = useMemo(() => {
-    const map = new Map<string, string>();
+  const buildTrackRowMood = useCallback((track: MusicDnaData['top_tracks'][number], index: number): RowMoodProfile => {
+    const artist = artistLookup.get(track.artist);
+    const moodProfile = buildMusicItemMoodProfile(`${track.genre} ${artist?.genre ?? ''} ${track.artist} ${track.title}`, track.plays, {
+      catharsis: index < 10 ? 16 : index < 25 ? 9 : 4,
+      energy: track.plays > 500 ? 8 : 2,
+    });
+    const mood = EMOTIONAL_MOOD_TAXONOMY[moodProfile.moodKey];
+
+    return {
+      moodKey: moodProfile.moodKey,
+      confidence: moodProfile.confidence,
+      color: mood.color,
+    };
+  }, [artistLookup]);
+
+  const buildAlbumRowMood = useCallback((
+    album: MusicDnaData['top_albums'][number],
+    index: number,
+    profile: ReturnType<typeof getArtistEnrichment>,
+    albumMeta: ReturnType<typeof getAlbumEnrichment>,
+  ): RowMoodProfile => {
+    const artist = artistLookup.get(album.artist);
+    const moodProfile = buildMusicItemMoodProfile([
+      artist?.genre,
+      profile?.signature_moods.en.join(' '),
+      profile?.signature_moods.es.join(' '),
+      albumMeta?.description.en,
+      albumMeta?.description.es,
+      album.artist,
+      album.title,
+    ].filter(Boolean).join(' '), album.plays, {
+      focus: 10,
+      nostalgia: albumMeta?.year && albumMeta.year < 2018 ? 12 : 4,
+      catharsis: Math.max(0, 10 - (index + 1)),
+    });
+    const mood = EMOTIONAL_MOOD_TAXONOMY[moodProfile.moodKey];
+
+    return {
+      moodKey: moodProfile.moodKey,
+      confidence: moodProfile.confidence,
+      color: mood.color,
+    };
+  }, [artistLookup]);
+
+  const artistMoodProfiles = useMemo(() => {
+    const map = new Map<string, RowMoodProfile>();
     data.top_artists.forEach(a => {
-      map.set(a.name, EMOTIONAL_MOOD_TAXONOMY[buildArtistMoodProfile(a).moodKey].color);
+      const profile = buildArtistMoodProfile(a);
+      const mood = EMOTIONAL_MOOD_TAXONOMY[profile.moodKey];
+      map.set(a.name, {
+        moodKey: profile.moodKey,
+        confidence: profile.confidence,
+        color: mood.color,
+      });
     });
     return map;
   }, [data.top_artists]);
 
+  /* ── Filtered lists ── */
+  const filteredArtists = useMemo(() =>
+    data.top_artists.filter(a => {
+      const matchesSearch = !q || a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q);
+      const matchesMood = selectedMood === 'all' || artistMoodProfiles.get(a.name)?.moodKey === selectedMood;
+      return matchesSearch && matchesMood;
+    }),
+    [artistMoodProfiles, data.top_artists, q, selectedMood]);
+
   const filteredTracks = useMemo(() =>
-    data.top_tracks.filter(t => !q || t.title.toLowerCase().includes(q) || t.artist.toLowerCase().includes(q)),
-    [data.top_tracks, q]);
+    data.top_tracks.filter((track, index) => {
+      const matchesSearch = !q || track.title.toLowerCase().includes(q) || track.artist.toLowerCase().includes(q);
+      const matchesMood = selectedMood === 'all' || buildTrackRowMood(track, index).moodKey === selectedMood;
+      return matchesSearch && matchesMood;
+    }),
+    [buildTrackRowMood, data.top_tracks, q, selectedMood]);
 
   const filteredAlbums = useMemo(() =>
-    data.top_albums.filter(a => !q || a.title.toLowerCase().includes(q) || a.artist.toLowerCase().includes(q)),
-    [data.top_albums, q]);
+    data.top_albums.filter((album, index) => {
+      const matchesSearch = !q || album.title.toLowerCase().includes(q) || album.artist.toLowerCase().includes(q);
+      const albumProfile = getArtistEnrichment(album.artist);
+      const matchesMood = selectedMood === 'all'
+        || buildAlbumRowMood(album, index, albumProfile, getAlbumEnrichment(albumProfile, album.title)).moodKey === selectedMood;
+      return matchesSearch && matchesMood;
+    }),
+    [buildAlbumRowMood, data.top_albums, q, selectedMood]);
 
   const selectedTrack = useMemo(() =>
     data.top_tracks.find(track => trackKey(track.artist, track.title) === selectedTrackKey) ?? data.top_tracks[0],
@@ -353,8 +464,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     [data.top_tracks, selectedTrack]);
 
   const selectedTrackArtist = useMemo(() =>
-    selectedTrack ? data.top_artists.find(artist => artist.name === selectedTrack.artist) : undefined,
-    [data.top_artists, selectedTrack]);
+    selectedTrack ? artistLookup.get(selectedTrack.artist) : undefined,
+    [artistLookup, selectedTrack]);
 
   const selectedTrackProfile = useMemo(() =>
     selectedTrack ? getArtistEnrichment(selectedTrack.artist) : undefined,
@@ -437,6 +548,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       selectedTrackArtistEras,
     ]);
 
+  const selectedTrackMoodColor = selectedTrackReading
+    ? EMOTIONAL_MOOD_TAXONOMY[selectedTrackReading.moodKey].color
+    : tc.c2;
+
   const selectedAlbum = useMemo(() =>
     data.top_albums.find(album => albumKey(album.artist, album.title) === selectedAlbumKey) ?? data.top_albums[0],
     [data.top_albums, selectedAlbumKey]);
@@ -454,8 +569,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     [data.top_albums, selectedAlbum]);
 
   const selectedAlbumArtist = useMemo(() =>
-    selectedAlbum ? data.top_artists.find(artist => artist.name === selectedAlbum.artist) : undefined,
-    [data.top_artists, selectedAlbum]);
+    selectedAlbum ? artistLookup.get(selectedAlbum.artist) : undefined,
+    [artistLookup, selectedAlbum]);
 
   const selectedAlbumArtistTracks = useMemo(() =>
     selectedAlbum ? getArtistArchiveTracks(data, selectedAlbum.artist, selectedAlbumProfile) : [],
@@ -507,12 +622,20 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       selectedAlbumCatalogIndex,
     ]);
 
+  const selectedAlbumMoodColor = selectedAlbumReading
+    ? EMOTIONAL_MOOD_TAXONOMY[selectedAlbumReading.moodKey].color
+    : tc.c3;
+
   const selectedArtist = useMemo(() =>
     data.top_artists.find(a => a.name === selectedArtistName) ?? data.top_artists[0],
     [data.top_artists, selectedArtistName]);
 
   const selectedProfile = useMemo(() =>
     selectedArtist ? getArtistEnrichment(selectedArtist.name) : undefined,
+    [selectedArtist]);
+
+  const selectedKnowledge = useMemo(() =>
+    selectedArtist ? getOfflineArtistKnowledge(selectedArtist.name) : undefined,
     [selectedArtist]);
 
   const selectedArtistMood = useMemo(() =>
@@ -561,6 +684,44 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const selectedDisplayCountry = selectedProfile?.country[lang] ?? selectedArtist?.country ?? '';
   const selectedFlagCountry = selectedProfile?.country.en ?? selectedArtist?.country ?? '';
+
+  const selectedKnowledgeSummary = useMemo(() => {
+    if (!selectedKnowledge) return undefined;
+
+    const wd = selectedKnowledge.wikidata;
+    const curated = selectedKnowledge.curated;
+    const mb = selectedKnowledge.musicbrainz;
+    const description = curated
+      ? (lang === 'es'
+        ? `Perfil local verificado desde ${curated.sourceName}: ${curated.origin}. ${curated.background}`
+        : `${curated.description} ${curated.background}`)
+      : wd?.description
+        ? (lang === 'es'
+          ? `Ficha pública ${wd.id}: ${wd.description}.`
+          : `${wd.description}.`)
+        : mb?.disambiguation
+          ? `${mb.disambiguation}.`
+          : artistCopy.noProfileBody;
+    const facts = [
+      curated?.origin ?? wd?.formationPlaces?.[0] ?? mb?.beginArea,
+      curated?.country ?? wd?.countries?.[0] ?? mb?.area ?? selectedKnowledge.archive.country,
+      wd?.genres?.length ? fmtList(wd.genres, 5) : '',
+      wd?.recordLabels?.length ? fmtList(wd.recordLabels, 3) : '',
+      wd?.occupations?.length ? fmtList(wd.occupations, 3) : '',
+      selectedKnowledge.releaseGroups.length ? `${selectedKnowledge.releaseGroups.length} ${artistCopy.knownAlbums}` : '',
+    ].filter(Boolean);
+    const members = [
+      ...(wd?.members ?? []),
+      ...(wd?.instruments ?? []),
+    ].filter(Boolean);
+    const links = [
+      ...(curated?.sourceUrls ?? []),
+      ...(wd?.officialWebsites ?? []),
+      ...(wd?.url ? [wd.url] : []),
+    ];
+
+    return { description, facts, members, links };
+  }, [artistCopy.knownAlbums, artistCopy.noProfileBody, fmtList, lang, selectedKnowledge]);
 
   const selectedListeningPath = (() => {
     if (!selectedArtist) return [];
@@ -668,7 +829,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const ListRow = ({
-    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind, moodColor,
+    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind, moodColor, moodKey, moodConfidence,
   }: {
     rank: number;
     main: string;
@@ -684,6 +845,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     coverKind?: 'album' | 'track';
     /** Emotional-engine mood color: renders a glowing identity dot next to the name. */
     moodColor?: string;
+    /** Emotional-engine mood identity: renders the canonical bilingual mood badge. */
+    moodKey?: EmotionalMoodKey;
+    moodConfidence?: number;
   }) => {
     const rowBody = (
       <>
@@ -706,7 +870,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             {sub && (
               <p className="text-[11px] text-gray-400 truncate flex items-center gap-1.5">
                 {flagCountry && <FlagArt country={flagCountry} size={15} />}
-                {sub}
+                {moodKey && (
+                  <MoodBadge moodKey={moodKey} confidence={moodConfidence} size="sm" className="shrink-0" />
+                )}
+                <span className="truncate">{sub}</span>
               </p>
             )}
           </div>
@@ -751,6 +918,63 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       </motion.div>
     );
   };
+
+  const MoodFilterBar = () => (
+    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-4">
+      <div className="absolute inset-0 pointer-events-none opacity-70"
+        style={{
+          background: `radial-gradient(circle at 8% 10%, ${tc.c1}18, transparent 28%), radial-gradient(circle at 90% 10%, ${tc.c3}14, transparent 26%)`,
+        }} />
+      <div className="relative z-10 flex flex-col gap-4">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0"
+            style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div>
+            <h3 className="text-xs font-mono font-black uppercase tracking-widest" style={{ color: tc.c1 }}>
+              {artistCopy.moodFilter}
+            </h3>
+            <p className="text-xs text-gray-500 leading-relaxed mt-1 max-w-4xl">
+              {artistCopy.moodFilterHint}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          <button
+            type="button"
+            onClick={() => setSelectedMood('all')}
+            className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all shrink-0"
+            style={selectedMood === 'all'
+              ? { color: '#020617', backgroundColor: tc.c1, borderColor: tc.c1, boxShadow: `0 0 18px ${tc.c1}28` }
+              : { color: tc.c1, backgroundColor: `${tc.c1}10`, borderColor: `${tc.c1}30` }}>
+            <Sparkles className="w-3.5 h-3.5" />
+            {artistCopy.allMoods}
+          </button>
+          {moodEntries.map(mood => {
+            const Icon = MOOD_ICONS[mood.icon] ?? Sparkles;
+            const active = selectedMood === mood.key;
+            return (
+              <button
+                key={mood.key}
+                type="button"
+                onClick={() => setSelectedMood(active ? 'all' : mood.key)}
+                className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all shrink-0"
+                style={active
+                  ? { color: '#020617', backgroundColor: mood.color, borderColor: mood.color, boxShadow: `0 0 18px ${mood.color}32` }
+                  : { color: mood.color, backgroundColor: `${mood.color}10`, borderColor: `${mood.color}32` }}
+                title={mood.description[lang]}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {mood.shortLabel[lang]}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 
   const InfoBlock = ({ title, body, icon: Icon, color }: { title: string; body: string; icon: React.ElementType; color: string }) => (
     <div className="rounded-2xl p-4 bg-white/[0.035] border border-white/8">
@@ -869,6 +1093,69 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     );
   };
 
+  const MoodInsightCard = ({
+    reading,
+    body,
+    accent,
+  }: {
+    reading?: EmotionalEngineReading;
+    body: string;
+    accent: string;
+  }) => {
+    if (!reading) return null;
+
+    const mood = EMOTIONAL_MOOD_TAXONOMY[reading.moodKey];
+    const Icon = MOOD_ICONS[mood.icon] ?? Sparkles;
+
+    return (
+      <div className="relative overflow-hidden rounded-3xl border bg-white/[0.025] p-4 md:p-5"
+        style={{ borderColor: `${mood.color}35`, boxShadow: `0 0 24px ${mood.color}12` }}>
+        <div className="absolute inset-0 pointer-events-none opacity-75"
+          style={{
+            background: `radial-gradient(circle at 10% 10%, ${mood.color}24, transparent 36%), radial-gradient(circle at 92% 12%, ${accent}16, transparent 30%)`,
+          }} />
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,0.8fr)_minmax(220px,0.42fr)] gap-4 items-start">
+          <div>
+            <div className="flex items-center gap-2 flex-wrap mb-3">
+              <div className="w-9 h-9 rounded-2xl flex items-center justify-center"
+                style={{ color: mood.color, backgroundColor: `${mood.color}18`, border: `1px solid ${mood.color}40` }}>
+                <Icon className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: mood.color }}>
+                  {artistCopy.moodLens}
+                </p>
+                <p className="text-lg font-black text-white leading-tight">{mood.title[lang]}</p>
+              </div>
+              <MoodBadge moodKey={reading.moodKey} confidence={reading.moodConfidence} />
+            </div>
+            <p className="text-sm text-gray-300 leading-relaxed">{body}</p>
+            <p className="text-xs text-gray-500 leading-relaxed mt-3">{mood.description[lang]}</p>
+          </div>
+
+          <div className="rounded-2xl border border-white/8 bg-black/25 p-3">
+            <div className="flex items-center justify-between gap-3 mb-2">
+              <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                {artistCopy.moodConfidence}
+              </p>
+              <span className="text-sm font-mono font-black" style={{ color: mood.color }}>
+                {Math.round(reading.moodConfidence)}%
+              </span>
+            </div>
+            <div className="h-2 rounded-full bg-white/8 overflow-hidden mb-4">
+              <div className="h-full rounded-full"
+                style={{ width: `${reading.moodConfidence}%`, backgroundColor: mood.color, boxShadow: `0 0 12px ${mood.color}` }} />
+            </div>
+            <p className="text-[10px] font-mono font-black uppercase tracking-widest mb-2" style={{ color: accent }}>
+              {artistCopy.moodRitual}
+            </p>
+            <p className="text-xs text-gray-300 leading-relaxed">{mood.ritual[lang]}</p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const TimelineAlbum = ({ album, index }: { album: NonNullable<typeof selectedProfile>['key_albums'][number]; index: number }) => {
     const archivedAlbum = selectedArtistAlbums.find(a => getAlbumEnrichment(selectedProfile, a.title)?.title === album.title);
     const color = COLORS[index % COLORS.length];
@@ -907,12 +1194,23 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         <div className="absolute left-[5px] top-2 bottom-0 w-px bg-white/10" />
         <div className="absolute left-0 top-1.5 w-3 h-3 rounded-full border-2"
           style={{ borderColor: color, backgroundColor: '#07101f', boxShadow: `0 0 14px ${color}55` }} />
-        <div
-          className={`rounded-2xl border border-white/8 p-3 ${archivedAlbum ? 'bg-white/[0.035]' : 'bg-white/[0.025]'}`}
-          style={{ boxShadow: archivedAlbum ? `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px ${color}12` : undefined }}
-        >
-          {content}
-        </div>
+        {archivedAlbum ? (
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedAlbumKey(albumKey(archivedAlbum.artist, archivedAlbum.title));
+              setTab('albums');
+            }}
+            className="w-full rounded-2xl border border-white/8 bg-white/[0.035] p-3 text-left transition-all hover:bg-white/[0.06]"
+            style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px ${color}12` }}
+          >
+            {content}
+          </button>
+        ) : (
+          <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-3">
+            {content}
+          </div>
+        )}
       </div>
     );
   };
@@ -939,36 +1237,52 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           </h3>
         </div>
 
-        <div className="flex items-start gap-4">
-          <CoverArt artist={selectedTrack.artist} title={selectedTrack.title} kind="track" size={72} />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap mb-2">
-              <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
-                style={{ color: tc.c2, backgroundColor: `${tc.c2}18`, border: `1px solid ${tc.c2}35` }}>
-                {artistCopy.trackAtlas}
-              </span>
-              <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
-                style={{ color: selectedTrackReplay.color, backgroundColor: `${selectedTrackReplay.color}18`, border: `1px solid ${selectedTrackReplay.color}35` }}>
-                {selectedTrackReplay.label}
-              </span>
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/20 p-5 md:p-6">
+          <div className="absolute inset-0 pointer-events-none opacity-80"
+            style={{
+              background: `radial-gradient(circle at 12% 18%, ${selectedTrackMoodColor}28, transparent 34%), radial-gradient(circle at 88% 8%, ${tc.c2}18, transparent 30%), linear-gradient(135deg, ${selectedTrackMoodColor}08, ${tc.c2}06 45%, transparent)`,
+            }} />
+          <div className="relative z-10 flex items-start gap-4">
+            <div className="relative shrink-0">
+              <div className="absolute -inset-3 rounded-[1.75rem] blur-2xl opacity-50"
+                style={{ background: `linear-gradient(135deg, ${selectedTrackMoodColor}, ${tc.c2})` }} />
+              <div className="relative rounded-[1.45rem] border bg-black/35 p-2"
+                style={{ borderColor: `${selectedTrackMoodColor}45` }}>
+                <CoverArt artist={selectedTrack.artist} title={selectedTrack.title} kind="track" size={72} />
+              </div>
             </div>
-            <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-              {selectedTrack.title}
-            </h3>
-            <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
-              {trackFlagCountry && <FlagArt country={trackFlagCountry} size={17} />}
-              <span>{trackArtistName}</span>
-              {trackDisplayCountry && (
-                <>
-                  <span className="text-gray-600">/</span>
-                  <span>{trackDisplayCountry}</span>
-                </>
-              )}
-              <span className="text-gray-600">/</span>
-              <span>{selectedTrack.genre}</span>
-              <span className="text-gray-600">/</span>
-              <span>{fmtNum(selectedTrack.plays)} {artistCopy.archivePlays}</span>
-            </p>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap mb-2">
+                <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                  style={{ color: tc.c2, backgroundColor: `${tc.c2}18`, border: `1px solid ${tc.c2}35` }}>
+                  {artistCopy.trackAtlas}
+                </span>
+                <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full"
+                  style={{ color: selectedTrackReplay.color, backgroundColor: `${selectedTrackReplay.color}18`, border: `1px solid ${selectedTrackReplay.color}35` }}>
+                  {selectedTrackReplay.label}
+                </span>
+                {selectedTrackReading && (
+                  <MoodBadge moodKey={selectedTrackReading.moodKey} confidence={selectedTrackReading.moodConfidence} />
+                )}
+              </div>
+              <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+                {selectedTrack.title}
+              </h3>
+              <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
+                {trackFlagCountry && <FlagArt country={trackFlagCountry} size={17} />}
+                <span>{trackArtistName}</span>
+                {trackDisplayCountry && (
+                  <>
+                    <span className="text-gray-600">/</span>
+                    <span>{trackDisplayCountry}</span>
+                  </>
+                )}
+                <span className="text-gray-600">/</span>
+                <span>{selectedTrack.genre}</span>
+                <span className="text-gray-600">/</span>
+                <span>{fmtNum(selectedTrack.plays)} {artistCopy.archivePlays}</span>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -976,10 +1290,16 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {selectedTrackProfile?.why_it_matters[lang] ?? artistCopy.trackContextBody}
         </p>
 
+        <MoodInsightCard
+          reading={selectedTrackReading}
+          body={artistCopy.trackMoodBody}
+          accent={tc.c2}
+        />
+
         <EmotionalEnginePanel
           reading={selectedTrackReading}
           title={artistCopy.trackLongRead}
-          color={tc.c2}
+          color={selectedTrackMoodColor}
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
@@ -1240,16 +1560,21 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {selectedArtistAlbums.slice(0, 4).map((album, idx) => {
                     const albumMeta = getAlbumEnrichment(selectedProfile, album.title);
                     return (
-                      <div
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedAlbumKey(albumKey(album.artist, album.title));
+                          setTab('albums');
+                        }}
                         key={`${album.artist}-${album.title}`}
-                        className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5"
+                        className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-transform hover:scale-[1.03]"
                         title={`${album.title} · ${fmtNum(album.plays)} ${artistCopy.archivePlays}`}
                       >
                         <CoverArt artist={album.artist} title={album.title} kind="album" size={56} className="rounded-2xl" />
                         <span className="absolute inset-x-0 bottom-0 bg-black/70 px-1 py-1 text-center text-[9px] font-mono font-black text-white backdrop-blur-sm">
                           {albumMeta?.year ? `’${String(albumMeta.year).slice(-2)}` : `#${idx + 1}`}
                         </span>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -1293,6 +1618,88 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <p className="text-xs text-gray-300 leading-relaxed">{selectedProfile?.status[lang] ?? artistCopy.noProfileTitle}</p>
             </div>
           </div>
+
+          {selectedKnowledgeSummary && (
+            <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 md:p-5">
+              <div className="flex items-start justify-between gap-3 flex-wrap mb-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Globe2 className="w-4 h-4" style={{ color: tc.c2 }} />
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-widest" style={{ color: tc.c2 }}>
+                      {artistCopy.verifiedBackground}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2 leading-relaxed max-w-3xl">
+                    {artistCopy.verifiedBackgroundHint}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(260px,0.55fr)] gap-4">
+                <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <p className="text-[10px] font-mono font-black uppercase tracking-widest mb-2" style={{ color: tc.c2 }}>
+                    {artistCopy.publicProfile}
+                  </p>
+                  <p className="text-sm text-gray-300 leading-relaxed">
+                    {selectedKnowledgeSummary.description}
+                  </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {selectedKnowledgeSummary.facts.slice(0, 8).map((fact, idx) => (
+                      <span key={`${fact}-${idx}`} className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold"
+                        style={{
+                          color: COLORS[idx % COLORS.length],
+                          borderColor: `${COLORS[idx % COLORS.length]}35`,
+                          backgroundColor: `${COLORS[idx % COLORS.length]}10`,
+                        }}>
+                        {fact}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3">
+                  <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Users className="w-4 h-4" style={{ color: tc.c3 }} />
+                      <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: tc.c3 }}>
+                        {artistCopy.membersAndRoles}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedKnowledgeSummary.members.length ? selectedKnowledgeSummary.members.slice(0, 10).map((member, idx) => (
+                        <span key={`${member}-${idx}`} className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold"
+                          style={{ color: tc.c3, borderColor: `${tc.c3}35`, backgroundColor: `${tc.c3}10` }}>
+                          {member}
+                        </span>
+                      )) : (
+                        <span className="text-xs text-gray-500">{artistCopy.noMemberData}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {selectedKnowledgeSummary.links.length > 0 && (
+                    <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <ExternalLink className="w-4 h-4" style={{ color: tc.c4 }} />
+                        <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: tc.c4 }}>
+                          {artistCopy.sourceLinks}
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedKnowledgeSummary.links.slice(0, 5).map((url, idx) => (
+                          <a key={url} href={url} target="_blank" rel="noreferrer"
+                            className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold transition-colors hover:bg-white/8"
+                            style={{ color: tc.c4, borderColor: `${tc.c4}35`, backgroundColor: `${tc.c4}10` }}>
+                            {artistCopy.openSource} {idx + 1}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {selectedProfile && (
             <div className="flex flex-wrap gap-2">
@@ -1420,13 +1827,21 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 {selectedArtistAlbums.length ? selectedArtistAlbums.slice(0, 6).map((album, idx) => {
                   const albumMeta = getAlbumEnrichment(selectedProfile, album.title);
                   return (
-                    <div key={`${album.artist}-${album.title}`} className="flex items-center justify-between gap-3 text-xs">
+                    <button
+                      key={`${album.artist}-${album.title}`}
+                      type="button"
+                      onClick={() => {
+                        setSelectedAlbumKey(albumKey(album.artist, album.title));
+                        setTab('albums');
+                      }}
+                      className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-1.5 text-left text-xs transition-colors hover:bg-white/[0.06]"
+                    >
                       <div className="min-w-0">
                         <p className="font-bold text-white truncate">{album.title}</p>
                         <p className="text-gray-500 font-mono">{albumMeta?.year ?? '-'} · #{idx + 1}</p>
                       </div>
                       <span className="font-mono font-bold shrink-0" style={{ color: tc.c2 }}>{fmtNum(album.plays)}</span>
-                    </div>
+                    </button>
                   );
                 }) : (
                   <p className="text-xs text-gray-500 leading-relaxed">{artistCopy.noAlbums}</p>
@@ -1443,13 +1858,21 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               </div>
               <div className="space-y-2">
                 {selectedArtistTracks.length ? selectedArtistTracks.slice(0, 6).map((track, idx) => (
-                  <div key={`${track.artist}-${track.title}`} className="flex items-center justify-between gap-3 text-xs">
+                  <button
+                    key={`${track.artist}-${track.title}`}
+                    type="button"
+                    onClick={() => {
+                      setSelectedTrackKey(trackKey(track.artist, track.title));
+                      setTab('canciones');
+                    }}
+                    className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-1.5 text-left text-xs transition-colors hover:bg-white/[0.06]"
+                  >
                     <div className="min-w-0">
                       <p className="font-bold text-white truncate">{track.title}</p>
                       <p className="text-gray-500 font-mono">#{idx + 1} · {track.genre}</p>
                     </div>
                     <span className="font-mono font-bold shrink-0" style={{ color: tc.c3 }}>{fmtNum(track.plays)}</span>
-                  </div>
+                  </button>
                 )) : (
                   <p className="text-xs text-gray-500 leading-relaxed">{artistCopy.noTracks}</p>
                 )}
@@ -1574,14 +1997,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/20 p-5 md:p-6">
           <div className="absolute inset-0 pointer-events-none opacity-80"
             style={{
-              background: `radial-gradient(circle at 14% 18%, ${tc.c3}28, transparent 34%), radial-gradient(circle at 88% 10%, ${tc.c1}18, transparent 30%), linear-gradient(135deg, ${tc.c3}08, ${tc.c1}06 45%, transparent)`,
+              background: `radial-gradient(circle at 14% 18%, ${selectedAlbumMoodColor}28, transparent 34%), radial-gradient(circle at 88% 10%, ${tc.c1}18, transparent 30%), linear-gradient(135deg, ${selectedAlbumMoodColor}08, ${tc.c1}06 45%, transparent)`,
             }} />
           <div className="relative z-10 grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_220px] gap-6 items-center">
             <div className="flex items-start gap-4 md:gap-5">
               <div className="relative shrink-0">
                 <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-50"
-                  style={{ background: `linear-gradient(135deg, ${tc.c3}, ${tc.c1})` }} />
-                <div className="relative rounded-[1.75rem] border border-white/15 bg-black/35 p-2">
+                  style={{ background: `linear-gradient(135deg, ${selectedAlbumMoodColor}, ${tc.c1})` }} />
+                <div className="relative rounded-[1.75rem] border bg-black/35 p-2"
+                  style={{ borderColor: `${selectedAlbumMoodColor}45` }}>
                   <CoverArt artist={selectedAlbum.artist} title={selectedAlbum.title} kind="album" size={96} className="rounded-3xl" />
                 </div>
               </div>
@@ -1601,6 +2025,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     style={{ color: '#fb923c', backgroundColor: '#fb923c18', border: '1px solid #fb923c35' }}>
                     {catalogChapter}
                   </span>
+                  {selectedAlbumReading && (
+                    <MoodBadge moodKey={selectedAlbumReading.moodKey} confidence={selectedAlbumReading.moodConfidence} />
+                  )}
                 </div>
                 <h3 className="text-3xl md:text-4xl font-black text-white leading-tight">
                   {selectedAlbum.title}
@@ -1647,10 +2074,16 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {selectedAlbumMeta?.description[lang] ?? artistCopy.noAlbumContext}
         </p>
 
+        <MoodInsightCard
+          reading={selectedAlbumReading}
+          body={artistCopy.albumMoodBody}
+          accent={tc.c3}
+        />
+
         <EmotionalEnginePanel
           reading={selectedAlbumReading}
           title={artistCopy.albumLongRead}
-          color={tc.c3}
+          color={selectedAlbumMoodColor}
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
@@ -1828,6 +2261,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         })}
       </div>
 
+      {(tab === 'artistas' || tab === 'canciones' || tab === 'albums') && (
+        <MoodFilterBar />
+      )}
+
       {/* Content */}
       <AnimatePresence mode="wait">
         <motion.div key={tab} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
@@ -1850,14 +2287,17 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </div>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
                   className="space-y-2 max-h-[620px] overflow-y-auto pr-1">
-                  {filteredArtists.slice(0, 50).map((a, idx) => (
-                    <ListRow key={a.name} rank={idx + 1} main={a.name}
-                      sub={`${a.country} · ${a.genre}`} plays={a.plays}
-                      color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country}
-                      moodColor={artistMoodColors.get(a.name)}
-                      onClick={() => setSelectedArtistName(a.name)}
-                      active={selectedArtist?.name === a.name} />
-                  ))}
+                  {filteredArtists.slice(0, 50).map((a, idx) => {
+                    const mood = artistMoodProfiles.get(a.name);
+                    return (
+                      <ListRow key={a.name} rank={idx + 1} main={a.name}
+                        sub={`${a.country} · ${a.genre}`} plays={a.plays}
+                        color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country}
+                        moodColor={mood?.color}
+                        onClick={() => setSelectedArtistName(a.name)}
+                        active={selectedArtist?.name === a.name} />
+                    );
+                  })}
                 </motion.div>
               </div>
 
@@ -1908,14 +2348,18 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </div>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
                   className="space-y-2 max-h-[720px] overflow-y-auto pr-1">
-                  {filteredTracks.slice(0, 50).map((track, idx) => (
-                    <ListRow key={`${track.artist}-${track.title}`} rank={idx + 1} main={track.title}
-                      sub={`${track.artist} · ${track.genre}`} plays={track.plays}
-                      color={COLORS[idx % COLORS.length]} avatarName={track.artist}
-                      coverTitle={track.title} coverKind="track"
-                      onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
-                      active={selectedTrack ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title) : false} />
-                  ))}
+                  {filteredTracks.slice(0, 50).map((track, idx) => {
+                    const mood = buildTrackRowMood(track, idx);
+                    return (
+                      <ListRow key={`${track.artist}-${track.title}`} rank={idx + 1} main={track.title}
+                        sub={`${track.artist} · ${track.genre}`} plays={track.plays}
+                        color={COLORS[idx % COLORS.length]} avatarName={track.artist}
+                        coverTitle={track.title} coverKind="track"
+                        moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
+                        onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
+                        active={selectedTrack ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title) : false} />
+                    );
+                  })}
                 </motion.div>
               </div>
 
@@ -1976,11 +2420,13 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {filteredAlbums.slice(0, 50).map((a, idx) => {
                     const albumProfile = getArtistEnrichment(a.artist);
                     const releaseYear = albumReleaseLabel(a, albumProfile);
+                    const mood = buildAlbumRowMood(a, idx, albumProfile, getAlbumEnrichment(albumProfile, a.title));
                     return (
                       <ListRow key={`${a.artist}-${a.title}`} rank={idx + 1} main={a.title}
                         sub={releaseYear ? `${a.artist} · ${artistCopy.released} ${releaseYear}` : a.artist}
                         plays={a.plays} color={COLORS[idx % COLORS.length]} avatarName={a.artist}
                         coverTitle={a.title} coverKind="album"
+                        moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
                         onClick={() => setSelectedAlbumKey(albumKey(a.artist, a.title))}
                         active={selectedAlbum ? albumKey(a.artist, a.title) === albumKey(selectedAlbum.artist, selectedAlbum.title) : false} />
                     );
