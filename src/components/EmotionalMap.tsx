@@ -1,15 +1,17 @@
 import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, Tooltip, Cell, ZAxis } from 'recharts';
-import { Activity, BrainCircuit, Compass, Flame, Gauge, Heart, Moon, Orbit, Shield, Sparkles, Sun, Zap } from 'lucide-react';
+import { Activity, BrainCircuit, Compass, ExternalLink, Flame, Gauge, Heart, Moon, Orbit, Radio, Shield, Sparkles, Sun, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { inferMoodCoordinates } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
 import CoverArt from './CoverArt';
+import EmotionalTimeline from './EmotionalTimeline';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import { MOOD_ICONS } from './MoodBadge';
+import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
   buildEmotionalMapEngineProfile,
   emotionalAxisLabels,
@@ -331,6 +333,13 @@ const EMOTIONAL_MAP_COPY = {
       { title: 'Procesamiento nocturno', body: 'Usa melancolía o romanticismo oscuro para cerrar emociones sin quedarte atrapado.', emotion: 'melancolia' as EmotionKey },
       { title: 'Construcción de mundos', body: 'Usa futurismo y nostalgia para convertir memoria en estética, arte o narrativa.', emotion: 'futurismo' as EmotionKey },
     ],
+    stations: {
+      title: 'Estaciones de Mood',
+      intro: 'Cada emoción funciona como una estación de radio curada desde tu propio archivo. Los enlaces abren páginas oficiales o búsquedas públicas en Spotify y YouTube — nada se reproduce dentro de la app.',
+      spotifyAria: (artist: string) => `Abrir ${artist} en Spotify`,
+      youtubeAria: (artist: string) => `Abrir ${artist} en YouTube`,
+      verifiedNote: 'Los enlaces marcados con punto son páginas oficiales verificadas; el resto abre una búsqueda pública.',
+    },
   },
   en: {
     quick: {
@@ -386,6 +395,13 @@ const EMOTIONAL_MAP_COPY = {
       { title: 'Night processing', body: 'Use melancholy or dark romanticism to close emotions without getting trapped.', emotion: 'melancolia' as EmotionKey },
       { title: 'Worldbuilding', body: 'Use futurism and nostalgia to turn memory into aesthetics, art or narrative.', emotion: 'futurismo' as EmotionKey },
     ],
+    stations: {
+      title: 'Mood Stations',
+      intro: 'Each emotion works as a radio station curated from your own archive. Links open official pages or public searches on Spotify and YouTube — nothing plays inside the app.',
+      spotifyAria: (artist: string) => `Open ${artist} on Spotify`,
+      youtubeAria: (artist: string) => `Open ${artist} on YouTube`,
+      verifiedNote: 'Links marked with a dot are verified official pages; the rest open a public search.',
+    },
   },
 };
 
@@ -585,6 +601,8 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
           </div>
         </div>
       </section>
+
+      <EmotionalTimeline data={data} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Scatter Chart "Galaxia Emocional" */}
@@ -834,6 +852,63 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
             );
           })}
         </div>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center gap-2">
+          <Radio className="w-5 h-5" style={{ color: tc.c4 }} />
+          <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
+            {copy.stations.title}
+          </h3>
+        </div>
+        <p className="text-xs text-gray-400 leading-relaxed max-w-3xl">{copy.stations.intro}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {EMOTION_KEYS.map(key => {
+            const emotion = emotionDetails[key];
+            const Icon = MOOD_ICONS[EMOTIONAL_MOOD_TAXONOMY[key].icon];
+            return (
+              <article key={key} className="glass-panel rounded-2xl border p-4" style={{ borderColor: `${emotion.color}28` }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl border"
+                    style={{ color: emotion.color, borderColor: `${emotion.color}38`, backgroundColor: `${emotion.color}10` }}>
+                    <Icon className="w-4 h-4" />
+                  </span>
+                  <h4 className="text-xs font-mono font-black uppercase tracking-widest" style={{ color: emotion.color }}>
+                    {emotion.tab}
+                  </h4>
+                </div>
+                <div className="space-y-2">
+                  {emotion.artists.map(name => {
+                    const curated = getCuratedArtistMedia(name);
+                    const spotifyUrl = getPrimarySpotifyUrl(curated) ?? buildSpotifySearchUrl(name);
+                    const youtubeUrl = getPrimaryYoutubeUrl(curated) ?? buildYoutubeSearchUrl(`${name} official`);
+                    const verified = Boolean(curated);
+                    return (
+                      <div key={name} className="flex items-center gap-2">
+                        <ArtistAvatar name={name} size={24} />
+                        <span className="min-w-0 flex-1 truncate text-xs font-semibold text-white">
+                          {name}
+                          {verified && <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: emotion.color }} />}
+                        </span>
+                        <a href={spotifyUrl} target="_blank" rel="noopener noreferrer"
+                          aria-label={copy.stations.spotifyAria(name)} title={copy.stations.spotifyAria(name)}
+                          className="flex h-6 w-6 items-center justify-center rounded-full border border-[#1DB954]/40 bg-[#1DB954]/10 text-[#1DB954] transition-transform hover:scale-110">
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                        <a href={youtubeUrl} target="_blank" rel="noopener noreferrer"
+                          aria-label={copy.stations.youtubeAria(name)} title={copy.stations.youtubeAria(name)}
+                          className="flex h-6 w-6 items-center justify-center rounded-full border border-[#ff0033]/40 bg-[#ff0033]/10 text-[#ff4d6a] transition-transform hover:scale-110">
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    );
+                  })}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <p className="text-[10px] text-gray-500 leading-relaxed">{copy.stations.verifiedNote}</p>
       </section>
 
       <section className="glass-panel p-5 rounded-2xl border border-white/10 flex items-start gap-3">
