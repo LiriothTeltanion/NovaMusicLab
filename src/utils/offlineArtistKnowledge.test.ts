@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  buildArtistEnrichmentQueue,
   buildOfflineArtistKnowledgeSummary,
   getOfflineArtistKnowledge,
   getOfflineArtistKnowledgeStats,
@@ -78,5 +79,20 @@ describe('offline artist knowledge', () => {
     expect(summary.matched_play_rate_pct).toBe(83.3);
     expect(summary.top_matches[0].matchedName).toBe('Bring Me the Horizon');
     expect(summary.top_missing[0].name).toBe('Unknown Future Band');
+    expect(summary.enrichment_queue[0].name).toBe('Unknown Future Band');
+    expect(summary.enrichment_queue[0].gaps).toContain('missing_profile');
+  });
+
+  it('prioritizes the next artist enrichment work', () => {
+    const queue = buildArtistEnrichmentQueue([
+      { name: 'Bring Me The Horizon', plays: 2000, genre: 'Metalcore', country: 'United Kingdom' },
+      { name: 'Odeon', plays: 621, genre: 'Post-Hardcore / Electronic', country: 'Brazil' },
+      { name: 'Corbin Karasu', plays: 200, genre: 'Lo-Fi / R&B', country: 'Unknown' },
+    ]);
+
+    expect(queue.map(item => item.name)).toContain('Odeon');
+    expect(queue.map(item => item.name)).toContain('Corbin Karasu');
+    expect(queue.find(item => item.name === 'Odeon')?.gaps).toContain('curated_needs_catalog_match');
+    expect(queue.find(item => item.name === 'Corbin Karasu')?.gaps).toContain('missing_profile');
   });
 });

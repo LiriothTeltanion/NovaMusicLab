@@ -829,7 +829,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const ListRow = ({
-    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind, moodColor, moodKey, moodConfidence,
+    rank, main, sub, plays, color, avatarName, flagCountry, onClick, active = false, coverTitle, coverKind, moodColor, moodKey, moodConfidence, ariaLabel,
   }: {
     rank: number;
     main: string;
@@ -848,6 +848,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     /** Emotional-engine mood identity: renders the canonical bilingual mood badge. */
     moodKey?: EmotionalMoodKey;
     moodConfidence?: number;
+    ariaLabel?: string;
   }) => {
     const rowBody = (
       <>
@@ -858,7 +859,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           </span>
           {coverTitle && coverKind && avatarName
             ? <CoverArt artist={avatarName} title={coverTitle} kind={coverKind} size={36} />
-            : avatarName && <ArtistAvatar name={avatarName} size={32} />}
+            : avatarName && <ArtistAvatar name={avatarName} size={32} tooltip={false} />}
           <div className="truncate">
             <p className="text-sm font-bold text-white truncate leading-tight flex items-center gap-1.5">
               {moodColor && (
@@ -904,6 +905,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     if (onClick) {
       return (
         <motion.button type="button" variants={itemVariants} onClick={onClick}
+          aria-label={ariaLabel ?? [main, sub, `${fmtNum(plays)} ${t.topHistorico.playsLegend}`].filter(Boolean).join(' - ')}
           className={rowClassName} style={rowStyle}>
           {rowBody}
         </motion.button>
@@ -1346,6 +1348,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             </div>
             <button
               type="button"
+              aria-label={`${artistCopy.openArtistDossier} - ${selectedTrackArtist?.name ?? selectedTrack.artist}`}
               onClick={() => {
                 setSelectedArtistName(selectedTrackArtist?.name ?? selectedTrack.artist);
                 setTab('artistas');
@@ -1380,6 +1383,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <button
                     key={`${track.artist}-${track.title}`}
                     type="button"
+                    aria-label={`${track.title} - ${track.artist} - ${track.genre} - ${fmtNum(track.plays)} ${t.topHistorico.playsLegend}`}
                     onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
                     className="w-full flex items-center justify-between gap-3 text-xs text-left rounded-xl px-2 py-2 hover:bg-white/[0.05] transition-all"
                     style={active ? { backgroundColor: `${tc.c2}12`, border: `1px solid ${tc.c2}30` } : { border: '1px solid transparent' }}
@@ -1562,6 +1566,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     return (
                       <button
                         type="button"
+                        aria-label={`${album.title} - ${album.artist} - ${fmtNum(album.plays)} ${artistCopy.archivePlays}`}
                         onClick={() => {
                           setSelectedAlbumKey(albumKey(album.artist, album.title));
                           setTab('albums');
@@ -1896,6 +1901,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
                 {selectedRelatedArtists.map((item, idx) => (
                   <button key={item.artist.name} type="button" onClick={() => setSelectedArtistName(item.artist.name)}
+                    aria-label={`${item.artist.name} - ${item.artist.genre} - ${fmtNum(item.artist.plays)} ${t.topHistorico.playsLegend}`}
                     className="rounded-2xl bg-white/[0.035] border border-white/8 p-3 text-left hover:bg-white/[0.06] transition-all group">
                     <div className="flex items-center gap-3">
                       <ArtistAvatar name={item.artist.name} size={38} />
@@ -2294,6 +2300,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         sub={`${a.country} · ${a.genre}`} plays={a.plays}
                         color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country}
                         moodColor={mood?.color}
+                        ariaLabel={`${idx + 1}. ${a.name} - ${a.country} - ${a.genre} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
                         onClick={() => setSelectedArtistName(a.name)}
                         active={selectedArtist?.name === a.name} />
                     );
@@ -2356,6 +2363,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         color={COLORS[idx % COLORS.length]} avatarName={track.artist}
                         coverTitle={track.title} coverKind="track"
                         moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
+                        ariaLabel={`${idx + 1}. ${track.title} - ${track.artist} - ${track.genre} - ${fmtNum(track.plays)} ${t.topHistorico.playsLegend}`}
                         onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
                         active={selectedTrack ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title) : false} />
                     );
@@ -2427,6 +2435,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         plays={a.plays} color={COLORS[idx % COLORS.length]} avatarName={a.artist}
                         coverTitle={a.title} coverKind="album"
                         moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
+                        ariaLabel={`${idx + 1}. ${a.title} - ${a.artist}${releaseYear ? ` - ${artistCopy.released} ${releaseYear}` : ''} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
                         onClick={() => setSelectedAlbumKey(albumKey(a.artist, a.title))}
                         active={selectedAlbum ? albumKey(a.artist, a.title) === albumKey(selectedAlbum.artist, selectedAlbum.title) : false} />
                     );

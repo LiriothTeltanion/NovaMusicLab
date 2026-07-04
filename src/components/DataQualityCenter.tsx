@@ -11,7 +11,7 @@ import {
   ListChecks,
   ShieldCheck,
 } from 'lucide-react';
-import type { MusicDnaData, PlaySource } from '../types';
+import type { ArtistEnrichmentGap, ArtistEnrichmentPriority, MusicDnaData, PlaySource } from '../types';
 import {
   buildMonthlyActivity,
   deriveSourceSummary,
@@ -80,6 +80,16 @@ function sourceKindCopy(sourceType: PlaySource, copy: Record<PlaySource, string>
   return copy[sourceType] ?? copy.unknown;
 }
 
+function priorityColor(priority: ArtistEnrichmentPriority, tc: ReturnType<typeof useApp>['tc']) {
+  const colors: Record<ArtistEnrichmentPriority, string> = {
+    critical: '#ef4444',
+    high: '#f59e0b',
+    medium: tc.c2,
+    low: '#22c55e',
+  };
+  return colors[priority];
+}
+
 export default function DataQualityCenter({ data }: DataQualityCenterProps) {
   const { t, tc, lang } = useApp();
   const source = deriveSourceSummary(data);
@@ -100,6 +110,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
     ? new Date(data.generated_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
     : 'N/A';
   const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
+  const gapLabel = (gap: ArtistEnrichmentGap) => t.dataQuality.knowledge.gaps[gap] ?? gap;
 
   const sourceReading = source.source_type === 'merged'
     ? t.dataQuality.dynamic.sourceMerged
@@ -312,6 +323,60 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
                     </span>
                   )) : (
                     <span className="text-xs text-gray-400">{t.dataQuality.knowledge.noMissing}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4 lg:col-span-2">
+                <div className="flex items-start justify-between gap-3 flex-wrap">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <ListChecks className="w-4 h-4" style={{ color: tc.c4 }} />
+                      <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: tc.c4 }}>
+                        {t.dataQuality.knowledge.enrichmentQueueTitle}
+                      </p>
+                    </div>
+                    <p className="mt-2 max-w-2xl text-xs leading-relaxed text-gray-500">
+                      {t.dataQuality.knowledge.enrichmentQueueHint}
+                    </p>
+                  </div>
+                  <span className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-black"
+                    style={{ color: tc.c4, borderColor: `${tc.c4}35`, backgroundColor: `${tc.c4}10` }}>
+                    {knowledgeSummary.enrichment_queue.length}
+                  </span>
+                </div>
+
+                <div className="mt-4 grid grid-cols-1 gap-3 xl:grid-cols-2">
+                  {knowledgeSummary.enrichment_queue.length ? knowledgeSummary.enrichment_queue.slice(0, 6).map(item => {
+                    const color = priorityColor(item.priority, tc);
+                    return (
+                      <div key={`${item.rank}-${item.name}`} className="rounded-2xl border bg-black/20 p-3" style={{ borderColor: `${color}30` }}>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-black text-white truncate">
+                              #{item.rank} {item.name}
+                            </p>
+                            <p className="mt-1 text-[10px] font-mono text-gray-500">
+                              {formatNumber(item.plays, locale)} {t.topHistorico.playsLegend.toLowerCase()} · {t.dataQuality.knowledge.queueScore}: {item.score}
+                            </p>
+                          </div>
+                          <span className="shrink-0 rounded-full border px-2 py-1 text-[9px] font-mono font-black uppercase tracking-wider"
+                            style={{ color, borderColor: `${color}40`, backgroundColor: `${color}12` }}>
+                            {t.dataQuality.knowledge.priorityLabels[item.priority]}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 flex flex-wrap gap-1.5">
+                          {item.gaps.slice(0, 4).map(gap => (
+                            <span key={`${item.name}-${gap}`} className="rounded-full border border-white/10 bg-white/[0.035] px-2 py-1 text-[9px] font-mono font-bold text-gray-300">
+                              {gapLabel(gap)}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  }) : (
+                    <p className="text-xs text-gray-400">{t.dataQuality.knowledge.noEnrichmentQueue}</p>
                   )}
                 </div>
               </div>

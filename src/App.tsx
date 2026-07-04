@@ -1,7 +1,7 @@
 import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  Headphones, LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
+  LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
   Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone
 } from 'lucide-react';
@@ -206,7 +206,7 @@ function SidebarSignalIcon({ icon: Icon, color, secondary, motif, active, index 
       <span className="relative z-10 rounded-xl border border-white/15 bg-black/20 p-1.5 backdrop-blur-sm">
         <Icon className="h-3.5 w-3.5" style={{ color, filter: active ? `drop-shadow(0 0 8px ${color})` : `drop-shadow(0 0 5px ${color}75)` }} />
       </span>
-      <span className="absolute -left-1 -top-1 z-20 hidden h-4 min-w-4 items-center justify-center rounded-full px-1 text-[7px] font-black md:flex"
+      <span aria-hidden="true" className="absolute -left-1 -top-1 z-20 hidden h-4 min-w-4 items-center justify-center rounded-full px-1 text-[7px] font-black md:flex"
         style={{
           color: active ? '#020617' : color,
           backgroundColor: active ? color : 'rgba(2, 6, 23, 0.72)',
@@ -218,15 +218,61 @@ function SidebarSignalIcon({ icon: Icon, color, secondary, motif, active, index 
   );
 }
 
+function NovaAppMark({ className = 'h-8 w-8' }: { className?: string }) {
+  return (
+    <img
+      src="/favicon.svg"
+      alt=""
+      aria-hidden="true"
+      draggable={false}
+      className={className}
+    />
+  );
+}
+
 function LoadingPanel() {
   const { tc, t } = useApp();
   return (
-    <div className="min-h-[40vh] flex items-center justify-center">
-      <div className="glass-panel px-6 py-4 rounded-2xl flex items-center gap-3">
-        <div className="w-4 h-4 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: `${tc.c1} transparent ${tc.c1} ${tc.c1}` }} />
-        <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: tc.c1 }}>
-          {t.loadingModule}
-        </span>
+    <div className="min-h-[46vh] flex items-center justify-center px-4" aria-live="polite">
+      <div className="glass-panel relative w-full max-w-md overflow-hidden rounded-3xl border px-5 py-5 shadow-2xl"
+        style={{ borderColor: `${tc.c1}26`, boxShadow: `0 22px 60px ${tc.c1}12` }}>
+        <div className="absolute inset-0 pointer-events-none opacity-80"
+          style={{
+            background: `radial-gradient(circle at 18% 10%, ${tc.c1}20, transparent 32%), radial-gradient(circle at 86% 20%, ${tc.c3}1f, transparent 30%), linear-gradient(135deg, ${tc.c1}08, transparent 45%, ${tc.c4}08)`,
+          }} />
+        <div className="relative z-10 flex items-center gap-4">
+          <div className="relative h-14 w-14 shrink-0">
+            <motion.span
+              aria-hidden="true"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' as const }}
+              className="absolute inset-0 rounded-full border border-dashed"
+              style={{ borderColor: `${tc.c1}55` }}
+            />
+            <span className="absolute inset-1.5 overflow-hidden rounded-2xl bg-black/30">
+              <NovaAppMark className="h-full w-full" />
+            </span>
+          </div>
+          <div className="min-w-0">
+            <p className="font-mono text-xs font-black uppercase tracking-[0.22em]" style={{ color: tc.c1 }}>
+              {t.loadingModule}
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-gray-400">
+              {t.loadingModuleBody}
+            </p>
+          </div>
+        </div>
+        <div className="relative z-10 mt-5 grid grid-cols-3 gap-2" aria-hidden="true">
+          {[tc.c1, tc.c3, tc.c4].map((color, idx) => (
+            <span key={color} className="h-1.5 rounded-full animate-pulse"
+              style={{
+                backgroundColor: color,
+                opacity: idx === 1 ? 0.55 : 0.8,
+                animationDelay: `${idx * 160}ms`,
+                boxShadow: `0 0 14px ${color}55`,
+              }} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -329,8 +375,9 @@ function AppInner() {
           onClick={() => goToTab('hero')}
           aria-label={t.homeAria}
         >
-          <div className="p-2 rounded-xl shadow-cyber" style={{ background: `linear-gradient(135deg, ${tc.c1}, ${tc.c3})` }}>
-            <Headphones className="w-4 h-4 text-white" />
+          <div className="relative h-10 w-10 overflow-hidden rounded-2xl border bg-black/35 shadow-cyber"
+            style={{ borderColor: `${tc.c1}45`, boxShadow: `0 0 20px ${tc.c1}24` }}>
+            <NovaAppMark className="h-full w-full" />
           </div>
           <span className="font-mono font-bold text-base text-white tracking-widest uppercase hidden sm:block">
             NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
@@ -441,6 +488,7 @@ function AppInner() {
                       return (
                         <button key={item.id} onClick={() => goToTab(item.id as Tab)}
                           aria-current={active ? 'page' : undefined}
+                          aria-label={`${item.label} - ${group.label}`}
                           className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap shrink-0 md:w-full border relative overflow-hidden"
                           style={active ? {
                             borderColor: `${item.color}60`,

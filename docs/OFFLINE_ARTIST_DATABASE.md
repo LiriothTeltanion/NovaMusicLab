@@ -57,6 +57,7 @@ This pass builds a local offline knowledge cache for the 100 artists already pre
 - compact emotional seed text that the engine can score without new network calls.
 
 The emotional engine reads this file through `src/utils/offlineArtistKnowledge.ts`, so artist, album and song dossiers can use real structured context while still writing original bilingual prose.
+The Data Quality center also reads the same file to build an enrichment queue: a ranked list of artists needing profile work, Wikidata facts, descriptions, member/role facts, official links, public images or dated album context.
 
 Current generated coverage:
 
@@ -67,6 +68,12 @@ Current generated coverage:
 - 65 Wikidata genre/country fact sets, 52 formation-place fact sets and 53 record-label fact sets.
 - 32 artists with structured member data, 11 with occupation facts and 5 with instrument facts.
 - 89 artists with release-group album context.
+
+Current first queue targets:
+
+- `Corbin Karasu`: unresolved local profile.
+- `Jordyne`, `Sweezy`, `thekidszn`, `Mooki`, `Naits`, `Indighxst`: matched enough to appear in the archive, but missing most structured public facts.
+- `Normandie` and `Magnolia Park`: important high-rank artists that need stronger Wikidata/source enrichment.
 
 ## World-Scale Next Phase
 

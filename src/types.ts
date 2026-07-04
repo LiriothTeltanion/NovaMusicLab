@@ -48,6 +48,33 @@ export interface ArtistKnowledgeMatch {
   releaseGroupCount: number;
 }
 
+export type ArtistEnrichmentGap =
+  | 'missing_profile'
+  | 'missing_wikidata'
+  | 'missing_description'
+  | 'missing_member_or_role'
+  | 'missing_website'
+  | 'missing_image'
+  | 'missing_releases'
+  | 'curated_needs_catalog_match';
+
+export type ArtistEnrichmentPriority = 'critical' | 'high' | 'medium' | 'low';
+
+export interface ArtistEnrichmentQueueItem {
+  name: string;
+  rank: number;
+  plays: number;
+  score: number;
+  priority: ArtistEnrichmentPriority;
+  profileStatus: 'missing' | 'curated' | 'matched';
+  gaps: ArtistEnrichmentGap[];
+  releaseGroupCount: number;
+  hasWikidata: boolean;
+  hasMembersOrRoles: boolean;
+  hasOfficialLinks: boolean;
+  hasImage: boolean;
+}
+
 export interface ArtistKnowledgeSummary {
   source: 'offline_artist_knowledge';
   generated_at: string | null;
@@ -68,6 +95,7 @@ export interface ArtistKnowledgeSummary {
     plays: number;
     rank: number;
   }>;
+  enrichment_queue: ArtistEnrichmentQueueItem[];
 }
 
 export interface RecordsSummary {

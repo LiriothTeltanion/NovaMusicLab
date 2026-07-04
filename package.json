@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",
+    "icons:generate": "node scripts/generate_nova_icons.mjs",
     "test": "vitest run",
     "preview": "vite preview"
   },
