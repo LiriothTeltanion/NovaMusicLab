@@ -10,7 +10,8 @@ import EmotionalTimeline from './EmotionalTimeline';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
-import { MOOD_ICONS } from './MoodBadge';
+import MoodBadge, { MOOD_ICONS } from './MoodBadge';
+import MoodArtCanvas from './MoodArtCanvas';
 import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
   buildEmotionalMapEngineProfile,
@@ -340,6 +341,12 @@ const EMOTIONAL_MAP_COPY = {
       youtubeAria: (artist: string) => `Abrir ${artist} en YouTube`,
       verifiedNote: 'Los enlaces marcados con punto son páginas oficiales verificadas; el resto abre una búsqueda pública.',
     },
+    gallery: {
+      title: 'Galería Generativa',
+      intro: 'Ocho obras pintadas por código desde tu propio archivo: cada mood genera su pieza con una semilla determinista basada en tus artistas. Mismo archivo, misma galería; otro archivo, otro museo.',
+      variation: 'Nueva variación',
+      variationHint: 'Cada variación repinta las ocho obras con una semilla nueva.',
+    },
   },
   en: {
     quick: {
@@ -402,11 +409,18 @@ const EMOTIONAL_MAP_COPY = {
       youtubeAria: (artist: string) => `Open ${artist} on YouTube`,
       verifiedNote: 'Links marked with a dot are verified official pages; the rest open a public search.',
     },
+    gallery: {
+      title: 'Generative Gallery',
+      intro: 'Eight artworks painted by code from your own archive: each mood generates its piece with a deterministic seed based on your artists. Same archive, same gallery; another archive, another museum.',
+      variation: 'New variation',
+      variationHint: 'Each variation repaints all eight pieces with a new seed.',
+    },
   },
 };
 
 export default function EmotionalMap({ data }: EmotionalMapProps) {
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionKey>('melancolia');
+  const [artVariation, setArtVariation] = useState(0);
   const { tc, t, lang } = useApp();
   const engineProfile = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24), [data.top_artists]);
   const engineArtistMap = useMemo(
@@ -909,6 +923,46 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
           })}
         </div>
         <p className="text-[10px] text-gray-500 leading-relaxed">{copy.stations.verifiedNote}</p>
+      </section>
+
+      <section className="space-y-4">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5" style={{ color: tc.c3 }} />
+            <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
+              {copy.gallery.title}
+            </h3>
+          </div>
+          <button
+            onClick={() => setArtVariation(v => v + 1)}
+            title={copy.gallery.variationHint}
+            className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[10px] font-mono font-black uppercase tracking-wider transition-all hover:scale-[1.04]"
+            style={{ color: tc.c3, borderColor: `${tc.c3}45`, backgroundColor: `${tc.c3}12` }}
+          >
+            <Zap className="h-3.5 w-3.5" />
+            {copy.gallery.variation}
+          </button>
+        </div>
+        <p className="text-xs text-gray-400 leading-relaxed max-w-3xl">{copy.gallery.intro}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          {EMOTION_KEYS.map(key => {
+            const emotion = emotionDetails[key];
+            const seed = `${emotion.artists.join('|')}::${data.top_artists[0]?.name ?? ''}::v${artVariation}`;
+            return (
+              <figure key={key} className="glass-panel rounded-2xl border overflow-hidden group"
+                style={{ borderColor: `${emotion.color}28` }}>
+                <div className="aspect-[4/3] overflow-hidden">
+                  <MoodArtCanvas moodKey={key} seed={seed} width={340} height={255}
+                    className="transition-transform duration-500 group-hover:scale-[1.04]" />
+                </div>
+                <figcaption className="flex items-center justify-between gap-2 p-3">
+                  <MoodBadge moodKey={key} size="sm" />
+                  <span className="text-[9px] font-mono text-gray-500">#{String(artVariation + 1).padStart(2, '0')}</span>
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
       </section>
 
       <section className="glass-panel p-5 rounded-2xl border border-white/10 flex items-start gap-3">

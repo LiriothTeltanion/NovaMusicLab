@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYearPeak } from '../utils/analytics';
+import MuseumPoster from './MuseumPoster';
 import SectionNarrative from './SectionNarrative';
 
 interface FinalReportProps { data: MusicDnaData; }
@@ -198,6 +199,12 @@ export default function FinalReport({ data }: FinalReportProps) {
           </p>
           <PullQuote text={tr.s6Quote} color="#4cc9f0" />
         </motion.section>
+
+        <div className="h-px bg-gradient-to-r from-transparent via-cyberCyan/20 to-transparent" />
+
+        <motion.div variants={paraVariants}>
+          <MuseumPoster data={data} />
+        </motion.div>
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">
           <Heart className="w-6 h-6 text-cyberPink fill-cyberPink animate-pulse-slow" />
