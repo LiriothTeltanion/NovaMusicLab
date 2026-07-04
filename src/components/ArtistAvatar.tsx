@@ -67,20 +67,25 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
     if (entry && stage !== 'failed') {
       const src = stage === 'hi' && hiRes ? hiRes : entry.thumb;
       return (
-        <img
-          src={src}
-          alt={name}
-          loading="lazy"
-          width={size}
-          height={size}
-          onLoad={() => setLoaded(true)}
-          onError={() => {
-            setLoaded(false);
-            setStage(s => (s === 'hi' ? 'std' : 'failed'));
-          }}
-          className={`rounded-full object-cover shrink-0 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-          style={{ width: size, height: size, border: `1px solid ${tc.c1}30` }}
-        />
+        <span
+          className={`relative inline-flex rounded-full overflow-hidden shrink-0 ${loaded ? '' : 'art-loading'}`}
+          style={{ width: size, height: size }}
+        >
+          <img
+            src={src}
+            alt={name}
+            loading="lazy"
+            width={size}
+            height={size}
+            onLoad={() => setLoaded(true)}
+            onError={() => {
+              setLoaded(false);
+              setStage(s => (s === 'hi' ? 'std' : 'failed'));
+            }}
+            className={`rounded-full object-cover shrink-0 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+            style={{ width: size, height: size, border: `1px solid ${tc.c1}30` }}
+          />
+        </span>
       );
     }
     const color = PALETTE[hashString(name) % PALETTE.length];

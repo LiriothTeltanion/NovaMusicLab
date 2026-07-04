@@ -14,6 +14,7 @@ import CountUp from './CountUp';
 import ArtistAvatar from './ArtistAvatar';
 import { getNightRatio, getPeakYear, getRecords } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
+import { axisProps, barCursor, ChartGradients, GlassTooltip, gridStroke } from './chartKit';
 
 interface AchievementsProps { data: MusicDnaData; }
 
@@ -132,7 +133,9 @@ export default function Achievements({ data }: AchievementsProps) {
     {
       id: 'peak_year', icon: TrendingUp, tier: 'legendary',
       label_es: 'Año de Leyenda', label_en: 'Legendary Year',
-      value: String(peakYear?.year ?? 'N/D'), numericVal: Number(peakYear?.year ?? 0),
+      // No numericVal on purpose: years must render as "2021", never through
+      // CountUp/locale formatting (which would show "2,021").
+      value: String(peakYear?.year ?? 'N/D'),
       unit_es: `tu año cumbre — ${fmtNum(peakYear?.plays ?? 0)} plays`, unit_en: `your peak year — ${fmtNum(peakYear?.plays ?? 0)} plays`,
       desc_es: `${peakYear?.year ?? 'Tu año cumbre'} concentra ${fmtNum(peakYear?.plays ?? 0)} reproducciones y marca la maxima intensidad del dataset actual.`,
       desc_en: `${peakYear?.year ?? 'Your peak year'} contains ${fmtNum(peakYear?.plays ?? 0)} plays and marks the strongest intensity in the current dataset.`,
@@ -271,18 +274,17 @@ export default function Achievements({ data }: AchievementsProps) {
           return (
             <motion.div key={ach.id} variants={cardV}
               onClick={() => setSelected(isSelected ? null : ach.id)}
-              className="glass-panel p-5 rounded-2xl cursor-pointer transition-all relative overflow-hidden border"
+              className={`glass-panel p-5 rounded-2xl cursor-pointer transition-all relative overflow-hidden border hover:scale-[1.02] ${ach.tier === 'legendary' ? 'tier-shine' : ''}`}
               style={{
-                borderColor: isSelected ? colors.glow : 'rgba(255,255,255,0.06)',
+                borderColor: isSelected ? colors.glow : `${colors.glow}30`,
                 background: isSelected ? colors.bg : undefined,
+                boxShadow: `0 0 ${ach.tier === 'legendary' ? 26 : 16}px ${colors.glow}${ach.tier === 'legendary' ? '2e' : '14'}`,
               }}>
-              {/* Tier glow */}
-              {isSelected && (
-                <div className="absolute inset-0 pointer-events-none rounded-2xl"
-                  style={{ background: `radial-gradient(circle at 50% 0%, ${colors.glow}15, transparent 70%)` }} />
-              )}
-              {/* Shine effect */}
-              <div className="absolute top-0 left-0 right-0 h-px opacity-30"
+              {/* Tier glow — always on, stronger when selected */}
+              <div className="absolute inset-0 pointer-events-none rounded-2xl"
+                style={{ background: `radial-gradient(circle at 50% 0%, ${colors.glow}${isSelected ? '18' : '0c'}, transparent 70%)` }} />
+              {/* Shine line */}
+              <div className="absolute top-0 left-0 right-0 h-px opacity-40"
                 style={{ background: `linear-gradient(90deg, transparent, ${colors.glow}, transparent)` }} />
 
               <div className="relative z-10">
@@ -291,8 +293,12 @@ export default function Achievements({ data }: AchievementsProps) {
                     <ArtistAvatar name={ach.avatarName} size={40} />
                   ) : (
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                      style={{ backgroundColor: `${colors.glow}20`, border: `1px solid ${colors.glow}40` }}>
-                      <Icon className="w-5 h-5" style={{ color: colors.glow }} />
+                      style={{
+                        background: `linear-gradient(135deg, ${colors.glow}38, ${colors.glow}10)`,
+                        border: `1px solid ${colors.glow}45`,
+                        boxShadow: `inset 0 0 12px ${colors.glow}18`,
+                      }}>
+                      <Icon className="w-5 h-5" style={{ color: colors.glow, filter: `drop-shadow(0 0 5px ${colors.glow}90)` }} />
                     </div>
                   )}
                   <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full"
@@ -338,10 +344,11 @@ export default function Achievements({ data }: AchievementsProps) {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData}>
-                <PolarGrid stroke="#1e293b" />
-                <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
+                <PolarGrid stroke={gridStroke(tc.c1)} />
+                <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: tc.mode === 'light' ? '#475569' : '#9ca3af' }} />
                 <Radar name={t.achievements.yourProfile} dataKey="val"
-                  stroke={tc.c1} fill={tc.c1} fillOpacity={0.2} />
+                  stroke={tc.c1} strokeWidth={2} fill={tc.c1} fillOpacity={0.22}
+                  dot={{ fill: tc.c1, r: 3, strokeWidth: 0 }} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
@@ -354,13 +361,16 @@ export default function Achievements({ data }: AchievementsProps) {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={tierPointData} margin={{ left: 0, right: 16, top: 8, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" horizontal={false} />
-                <XAxis dataKey="tier" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                <YAxis stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                <Tooltip contentStyle={{ backgroundColor: '#070e1c', borderColor: `${tc.c1}40`, borderRadius: '12px' }} />
+                <ChartGradients specs={[TIER_COLORS.legendary.glow, TIER_COLORS.platinum.glow, TIER_COLORS.gold.glow, TIER_COLORS.silver.glow].map((color, i) => ({
+                  id: `tierGrad-${i}`, color, from: 0.95, to: 0.28,
+                }))} />
+                <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1)} horizontal={false} />
+                <XAxis dataKey="tier" {...axisProps(tc.mode)} />
+                <YAxis {...axisProps(tc.mode)} />
+                <Tooltip cursor={barCursor(tc.c1)} content={<GlassTooltip accent={tc.c1} />} />
                 <Bar dataKey="points" name={t.achievements.pointsLegend} radius={[6, 6, 0, 0]}>
                   {[TIER_COLORS.legendary.glow, TIER_COLORS.platinum.glow, TIER_COLORS.gold.glow, TIER_COLORS.silver.glow].map((color, i) => (
-                    <Cell key={i} fill={color} fillOpacity={0.85} />
+                    <Cell key={i} fill={`url(#tierGrad-${i})`} stroke={color} strokeOpacity={0.6} strokeWidth={1} />
                   ))}
                 </Bar>
               </BarChart>

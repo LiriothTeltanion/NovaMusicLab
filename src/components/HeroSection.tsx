@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import {
@@ -19,8 +19,12 @@ import { MusicDnaData } from '../types';
 import CountUpCmp from './CountUp';
 import { useApp } from '../context/AppContext';
 import AnimatedParticles from './AnimatedParticles';
+import ArtistAvatar from './ArtistAvatar';
+import CoverArt from './CoverArt';
+import { paintMoodArt } from './MoodArtCanvas';
 import SectionNarrative from './SectionNarrative';
 import { deriveSourceSummary, formatNumber, getPeakYear } from '../utils/analytics';
+import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
 
 interface HeroSectionProps {
   data: MusicDnaData;
@@ -43,41 +47,62 @@ export default function HeroSection({ data, onEnter, onUpload }: HeroSectionProp
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
   const fmtNum = (num: number) => formatNumber(num, locale);
   const sourceLabel = t.heroSection.sourceLabels[sourceSummary.source_type] ?? t.heroSection.sourceLabels.unknown;
+  const dominantMood = useMemo(
+    () => buildEmotionalMapEngineProfile(data.top_artists, 24).dominantMood,
+    [data.top_artists],
+  );
+
+  // Painted once to a static data URL: a live full-viewport canvas layer is
+  // needlessly expensive to composite; a background-image costs nothing.
+  const heroArtUrl = useMemo(() => {
+    if (typeof document === 'undefined') return null;
+    const canvas = document.createElement('canvas');
+    canvas.width = 1440;
+    canvas.height = 900;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+    paintMoodArt(ctx, 1440, 900, dominantMood.key, `hero::${topArtist?.name ?? 'nova'}`);
+    return canvas.toDataURL('image/png');
+  }, [dominantMood.key, topArtist?.name]);
 
   const archiveCards = [
     {
       icon: Headphones,
-      color: 'text-cyberCyan',
+      accent: '#00f2fe',
       label: t.heroSection.archiveSnapshot.topArtist,
       value: topArtist?.name ?? t.heroSection.archiveSnapshot.unknown,
       detail: topArtist
         ? t.heroSection.archiveSnapshot.topArtistDetail(fmtNum(topArtist.plays))
         : t.heroSection.archiveSnapshot.pending,
+      art: topArtist ? <ArtistAvatar name={topArtist.name} size={36} /> : null,
     },
     {
       icon: Disc,
-      color: 'text-cyberPink',
+      accent: '#f72585',
       label: t.heroSection.archiveSnapshot.topTrack,
       value: topTrack?.title ?? t.heroSection.archiveSnapshot.unknown,
       detail: topTrack
         ? t.heroSection.archiveSnapshot.topTrackDetail(topTrack.artist)
         : t.heroSection.archiveSnapshot.pending,
+      art: topTrack ? <CoverArt artist={topTrack.artist} title={topTrack.title} kind="track" size={36} /> : null,
     },
     {
       icon: Trophy,
-      color: 'text-cyberPurple',
+      accent: '#a78bfa',
       label: t.heroSection.archiveSnapshot.peakEra,
       value: peakYear ? String(peakYear.year) : t.heroSection.archiveSnapshot.unknown,
       detail: peakYear
         ? t.heroSection.archiveSnapshot.peakEraDetail(fmtNum(peakYear.plays))
         : t.heroSection.archiveSnapshot.pending,
+      art: null,
     },
     {
       icon: ShieldCheck,
-      color: 'text-cyberBlue',
+      accent: '#4cc9f0',
       label: t.heroSection.archiveSnapshot.dataTrust,
       value: sourceLabel,
       detail: t.heroSection.archiveSnapshot.dataTrustDetail(sourceLabel),
+      art: null,
     },
   ];
 
@@ -125,6 +150,20 @@ export default function HeroSection({ data, onEnter, onUpload }: HeroSectionProp
 
   return (
     <section className="relative min-h-screen flex flex-col justify-start items-center px-4 sm:px-6 py-8 md:py-10 text-center select-none overflow-hidden">
+      {/* Generative backdrop: dominant-mood art, screen-blended so the canvas
+          black disappears and only the mood light bleeds through (both modes). */}
+      {heroArtUrl && (
+        <div
+          className="absolute inset-0 pointer-events-none opacity-40"
+          aria-hidden="true"
+          style={{
+            backgroundImage: `url(${heroArtUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            mixBlendMode: 'screen',
+          }}
+        />
+      )}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-cyberCyan/10 blur-[120px] animate-cloud-1 pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-96 h-96 rounded-full bg-cyberPink/10 blur-[120px] animate-cloud-2 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-cyberPurple/5 blur-[80px] pointer-events-none" />
@@ -261,20 +300,29 @@ export default function HeroSection({ data, onEnter, onUpload }: HeroSectionProp
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            {archiveCards.map(({ icon: Icon, color, label, value, detail }) => (
-              <div key={label} className="glass-panel rounded-2xl p-4 min-w-0 border border-white/10">
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon className={`w-4 h-4 shrink-0 ${color}`} />
-                  <p className="text-[10px] font-mono font-black uppercase tracking-[0.18em] text-gray-400">
-                    {label}
+            {archiveCards.map(({ icon: Icon, accent, label, value, detail, art }) => (
+              <div key={label} className="glass-panel card-lift relative overflow-hidden rounded-2xl p-4 min-w-0 border"
+                style={{ borderColor: `${accent}30`, boxShadow: `0 0 16px ${accent}10` }}>
+                <div className="absolute -right-3 -bottom-4 pointer-events-none opacity-[0.07]" aria-hidden="true">
+                  <Icon className="h-20 w-20" style={{ color: accent }} />
+                </div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Icon className="w-4 h-4 shrink-0" style={{ color: accent }} />
+                    <p className="text-[10px] font-mono font-black uppercase tracking-[0.18em] text-gray-400">
+                      {label}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    {art && <span className="shrink-0">{art}</span>}
+                    <p className="text-base md:text-lg font-black text-white leading-tight break-words min-w-0">
+                      {value}
+                    </p>
+                  </div>
+                  <p className="mt-2 text-xs text-gray-400 leading-relaxed">
+                    {detail}
                   </p>
                 </div>
-                <p className="text-base md:text-lg font-black text-white leading-tight break-words">
-                  {value}
-                </p>
-                <p className="mt-2 text-xs text-gray-400 leading-relaxed">
-                  {detail}
-                </p>
               </div>
             ))}
           </div>
@@ -299,7 +347,7 @@ export default function HeroSection({ data, onEnter, onUpload }: HeroSectionProp
             {t.heroSection.museumMapItems.map((item, index) => {
               const colors = ['text-cyberCyan', 'text-cyberPink', 'text-cyberPurple', 'text-cyberBlue'];
               return (
-                <div key={item.title} className="glass-panel rounded-2xl p-4 border border-white/10">
+                <div key={item.title} className="glass-panel card-lift rounded-2xl p-4 border border-white/10">
                   <div className="flex items-center gap-2 mb-2">
                     <Sparkles className={`w-4 h-4 shrink-0 ${colors[index % colors.length]}`} />
                     <p className="text-xs font-mono font-black uppercase tracking-wider text-white">

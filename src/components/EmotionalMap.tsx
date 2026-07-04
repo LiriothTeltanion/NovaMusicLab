@@ -12,6 +12,7 @@ import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 import MoodArtCanvas from './MoodArtCanvas';
+import { GlassTooltip } from './chartKit';
 import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
   buildEmotionalMapEngineProfile,
@@ -648,12 +649,20 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <ZAxis type="number" dataKey="plays" range={[50, 450]} />
                 <Tooltip
                   cursor={{ strokeDasharray: '3 3' }}
-                  contentStyle={{ backgroundColor: 'rgba(10, 25, 47, 0.95)', borderColor: '#00f2fe', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
-                  formatter={(value, name) => {
-                    if (name === "plays") return [`${value} plays`, t.emotionalMap.frequencyLabel];
-                    return [value, name];
-                  }}
+                  content={
+                    <GlassTooltip
+                      accent={tc.c1}
+                      renderHeader={(row) => (
+                        <div className="flex items-center gap-2">
+                          <ArtistAvatar name={String(row.name)} size={26} />
+                          <div className="min-w-0">
+                            <p className="truncate text-xs font-black text-white">{String(row.name)}</p>
+                            <p className="text-[9px] font-mono uppercase tracking-wider text-gray-400">{String(row.genre ?? '')}</p>
+                          </div>
+                        </div>
+                      )}
+                    />
+                  }
                 />
                 <Scatter name={t.emotionalMap.artistsLegend} data={galaxyArtists} fill="#00f2fe">
                   {galaxyArtists.map((entry, index) => (

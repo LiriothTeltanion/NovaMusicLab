@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, AreaChart, Area, CartesianGrid } from 'recharts';
 import {
@@ -12,6 +12,9 @@ import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames, normalizeGenre } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
 import { localizeEraLabel } from '../utils/localeText';
+import { axisProps, barCursor, ChartGradients, GlassTooltip, gridStroke } from './chartKit';
+import { buildArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/emotionalEngine';
+import Reveal from './Reveal';
 
 interface DashboardProps {
   data: MusicDnaData;
@@ -215,7 +218,13 @@ function DashboardSignalIcon({ icon: Icon, color, secondary, motif, size = 'md' 
 export default function Dashboard({ data }: DashboardProps) {
   const { tc, t, lang } = useApp();
   const metrics = data.core_metrics;
-  const topArtistsData = data.top_artists.slice(0, 10);
+  const topArtistsData = useMemo(
+    () => data.top_artists.slice(0, 10).map(artist => ({
+      ...artist,
+      moodColor: EMOTIONAL_MOOD_TAXONOMY[buildArtistMoodProfile(artist).moodKey].color,
+    })),
+    [data.top_artists],
+  );
   const records = getRecords(data);
 
   /* ── Advanced KPIs ── */
@@ -406,6 +415,7 @@ export default function Dashboard({ data }: DashboardProps) {
       plays: totalHourPlays
     };
   });
+  const maxHourlyPlays = Math.max(...hourlyData.map(h => h.plays), 0);
 
   const ArtistTick = ({ x, y, payload }: any) => (
     <foreignObject x={x - 148} y={y - 12} width={144} height={24}>
@@ -494,6 +504,7 @@ export default function Dashboard({ data }: DashboardProps) {
       </motion.div>
 
       {/* 2. Top Artists + Genre DNA */}
+      <Reveal>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Top Artists */}
         <div className="glass-panel p-6 rounded-3xl lg:col-span-2">
@@ -506,15 +517,34 @@ export default function Dashboard({ data }: DashboardProps) {
           <div className="h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={topArtistsData} layout="vertical" margin={{ left: 60, right: 20, top: 0, bottom: 0 }}>
-                <XAxis type="number" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11} width={150} tick={<ArtistTick />} />
+                <ChartGradients specs={topArtistsData.map((artist, index) => ({
+                  id: `artistBar-${index}`,
+                  color: artist.moodColor ?? tc.c1,
+                  direction: 'h' as const,
+                  from: index === 0 ? 1 : 0.85,
+                  to: 0.3,
+                }))} />
+                <XAxis type="number" {...axisProps(tc.mode)} />
+                <YAxis type="category" dataKey="name" width={150} {...axisProps(tc.mode)} tick={<ArtistTick />} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c1, borderRadius: '12px' }}
-                  labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
+                  cursor={barCursor(tc.c1)}
+                  content={
+                    <GlassTooltip
+                      renderHeader={(row) => (
+                        <div className="flex items-center gap-2">
+                          <ArtistAvatar name={String(row.name)} size={28} />
+                          <div className="min-w-0">
+                            <p className="truncate text-xs font-black text-white">{String(row.name)}</p>
+                            <p className="text-[9px] font-mono uppercase tracking-wider text-gray-400">{String(row.genre ?? '')}</p>
+                          </div>
+                        </div>
+                      )}
+                    />
+                  }
                 />
-                <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[0, 4, 4, 0]}>
-                  {topArtistsData.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={index === 0 ? tc.c1 : tc.c3} fillOpacity={index === 0 ? 1 : 0.7} />
+                <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[0, 6, 6, 0]}>
+                  {topArtistsData.map((artist, index) => (
+                    <Cell key={`cell-${index}`} fill={`url(#artistBar-${index})`} stroke={artist.moodColor ?? tc.c1} strokeOpacity={0.5} strokeWidth={1} />
                   ))}
                 </Bar>
               </BarChart>
@@ -534,15 +564,12 @@ export default function Dashboard({ data }: DashboardProps) {
             <div className="h-60 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={richGenreData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={3} dataKey="plays">
+                  <Pie data={richGenreData} cx="50%" cy="50%" innerRadius={55} outerRadius={80} paddingAngle={3} cornerRadius={5} dataKey="plays" nameKey="name">
                     {richGenreData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="none" />
                     ))}
                   </Pie>
-                  <Tooltip
-                    contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c2, borderRadius: '12px' }}
-                    formatter={(val: any) => [`${Number(val).toLocaleString((lang === 'en' ? 'en-US' : 'es-ES'))} plays`]}
-                  />
+                  <Tooltip content={<GlassTooltip accent={tc.c2} unit="plays" />} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -562,8 +589,10 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
         </div>
       </div>
+      </Reveal>
 
       {/* 3. Heatmap */}
+      <Reveal>
       <div className="glass-panel p-6 rounded-3xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div className="flex items-center space-x-3">
@@ -616,8 +645,10 @@ export default function Dashboard({ data }: DashboardProps) {
           {t.dashboard.heatmapFooter}
         </p>
       </div>
+      </Reveal>
 
       {/* 4. Hourly bar chart */}
+      <Reveal>
       <div className="glass-panel p-6 rounded-3xl">
         <div className="flex items-center space-x-3 mb-6">
           <DashboardSignalIcon icon={Clock} color={tc.c4} secondary="#10b981" motif="clock" size="sm" />
@@ -628,19 +659,34 @@ export default function Dashboard({ data }: DashboardProps) {
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={hourlyData} margin={{ left: 0, right: 0, top: 0, bottom: 0 }}>
-              <XAxis dataKey="hour" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <Tooltip
-                contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c4, borderRadius: '12px' }}
-                labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
-              />
-              <Bar dataKey="plays" name={t.dashboard.playsLegend} fill={tc.c4} radius={[4, 4, 0, 0]} fillOpacity={0.8} />
+              <ChartGradients specs={[
+                { id: 'hourlyGrad', color: tc.c4, from: 0.85, to: 0.18 },
+                { id: 'hourlyPeak', color: tc.c1, from: 1, to: 0.35 },
+              ]} />
+              <XAxis dataKey="hour" {...axisProps(tc.mode)} />
+              <YAxis {...axisProps(tc.mode)} />
+              <Tooltip cursor={barCursor(tc.c4)} content={<GlassTooltip accent={tc.c4} />} />
+              <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[5, 5, 0, 0]}>
+                {hourlyData.map((entry, index) => {
+                  const isPeak = entry.plays === maxHourlyPlays && entry.plays > 0;
+                  return (
+                    <Cell
+                      key={`hour-${index}`}
+                      fill={isPeak ? 'url(#hourlyPeak)' : 'url(#hourlyGrad)'}
+                      stroke={isPeak ? tc.c1 : 'none'}
+                      strokeWidth={isPeak ? 1.5 : 0}
+                    />
+                  );
+                })}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
+      </Reveal>
 
       {/* 5. Yearly Evolution Area Chart */}
+      <Reveal>
       <div className="glass-panel p-6 rounded-3xl">
         <div className="flex items-center space-x-3 mb-6">
           <DashboardSignalIcon icon={TrendingUp} color={tc.c1} secondary={tc.c3} motif="pulse" size="sm" />
@@ -661,13 +707,10 @@ export default function Dashboard({ data }: DashboardProps) {
                   <stop offset="95%" stopColor={tc.c3} stopOpacity={0.02} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" />
-              <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <Tooltip
-                contentStyle={{ backgroundColor: 'rgba(7,14,28,0.95)', borderColor: tc.c1, borderRadius: '12px' }}
-                labelStyle={{ color: '#fff', fontFamily: 'monospace' }}
-              />
+              <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1)} />
+              <XAxis dataKey="year" {...axisProps(tc.mode)} />
+              <YAxis {...axisProps(tc.mode)} />
+              <Tooltip content={<GlassTooltip accent={tc.c1} />} />
               <Area type="monotone" dataKey="plays" name={t.dashboard.playsLegend}
                 stroke={tc.c1} strokeWidth={2.5} fill="url(#dashGradPlays)"
                 dot={{ fill: tc.c1, r: 4, strokeWidth: 0 }} activeDot={{ r: 7, stroke: '#fff', strokeWidth: 2 }} />
@@ -686,6 +729,7 @@ export default function Dashboard({ data }: DashboardProps) {
           ))}
         </div>
       </div>
+      </Reveal>
     </div>
   );
 }

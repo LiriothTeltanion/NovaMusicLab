@@ -18,3 +18,30 @@ if (typeof window !== 'undefined' && !window.localStorage) {
   Object.defineProperty(window, 'localStorage', { value: memoryStorage, configurable: true });
   Object.defineProperty(globalThis, 'localStorage', { value: memoryStorage, configurable: true });
 }
+
+// jsdom has no IntersectionObserver; framer-motion's whileInView needs one.
+// Stub that reports every element as immediately visible so Reveal-wrapped
+// content renders in tests exactly like it does after scrolling into view.
+if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
+  class ImmediateIntersectionObserver implements IntersectionObserver {
+    readonly root = null;
+    readonly rootMargin = '';
+    readonly scrollMargin = '';
+    readonly thresholds: ReadonlyArray<number> = [];
+    private callback: IntersectionObserverCallback;
+    constructor(callback: IntersectionObserverCallback) {
+      this.callback = callback;
+    }
+    observe(target: Element) {
+      this.callback(
+        [{ isIntersecting: true, target, intersectionRatio: 1 } as IntersectionObserverEntry],
+        this,
+      );
+    }
+    unobserve() {}
+    disconnect() {}
+    takeRecords(): IntersectionObserverEntry[] { return []; }
+  }
+  Object.defineProperty(window, 'IntersectionObserver', { value: ImmediateIntersectionObserver, configurable: true });
+  Object.defineProperty(globalThis, 'IntersectionObserver', { value: ImmediateIntersectionObserver, configurable: true });
+}

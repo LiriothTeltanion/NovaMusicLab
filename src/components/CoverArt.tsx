@@ -44,23 +44,28 @@ export default function CoverArt({ artist, title, kind, size = 44, className = '
 
   if (entry && !imgFailed) {
     return (
-      <img
-        src={entry.thumb}
-        alt={`${title} — ${artist}`}
-        loading="lazy"
-        decoding="async"
-        width={size}
-        height={size}
-        onLoad={() => setLoaded(true)}
-        onError={() => setImgFailed(true)}
-        className={`object-cover shrink-0 rounded-lg transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
-        style={{
-          width: size,
-          height: size,
-          border: '1px solid rgba(255,255,255,0.18)',
-          boxShadow: '0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)',
-        }}
-      />
+      <span
+        className={`relative inline-flex rounded-lg overflow-hidden shrink-0 ${loaded ? '' : 'art-loading'}`}
+        style={{ width: size, height: size }}
+      >
+        <img
+          src={entry.thumb}
+          alt={`${title} — ${artist}`}
+          loading="lazy"
+          decoding="async"
+          width={size}
+          height={size}
+          onLoad={() => setLoaded(true)}
+          onError={() => setImgFailed(true)}
+          className={`object-cover shrink-0 rounded-lg transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+          style={{
+            width: size,
+            height: size,
+            border: '1px solid rgba(255,255,255,0.18)',
+            boxShadow: '0 10px 24px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.18)',
+          }}
+        />
+      </span>
     );
   }
 

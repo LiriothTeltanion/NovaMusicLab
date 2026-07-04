@@ -491,6 +491,47 @@ input:focus-visible,
   background: linear-gradient(90deg, var(--c1), var(--c2));
 }
 
+/* ── Legendary tier shine (Achievements) ── */
+@keyframes nova-shine {
+  0%        { transform: translateX(-130%) skewX(-18deg); }
+  55%, 100% { transform: translateX(260%) skewX(-18deg); }
+}
+.tier-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 55%;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.14) 50%, transparent 70%);
+  animation: nova-shine 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+[data-mode='light'] .tier-shine::after {
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+}
+
+/* ── Unified card lift (hover language for interactive cards) ── */
+.card-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-lift:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35), 0 0 22px color-mix(in srgb, var(--c1) 22%, transparent);
+}
+
+/* ── Image shimmer placeholder (while art loads) ── */
+@keyframes art-shimmer {
+  0%   { background-position: -160% 0; }
+  100% { background-position: 160% 0; }
+}
+.art-loading {
+  background: linear-gradient(100deg,
+    color-mix(in srgb, var(--c1) 7%, transparent) 30%,
+    color-mix(in srgb, var(--c1) 18%, transparent) 50%,
+    color-mix(in srgb, var(--c1) 7%, transparent) 70%);
+  background-size: 200% 100%;
+  animation: art-shimmer 1.4s linear infinite;
+}
+
 /* ── Print styles ── */
 @media print {
   body { background: white !important; color: black !important; }
