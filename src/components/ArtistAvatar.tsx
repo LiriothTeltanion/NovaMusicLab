@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import artistImages from '../data/artist_images.json';
 import artistMeta from '../data/artist_meta.json';
 import FlagArt from './FlagArt';
+import { getArtistGallery, getDailyPhotoIndex } from '../utils/artistGallery';
 
 type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
@@ -58,14 +59,25 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
   const { tc } = useApp();
   const key = name.trim().toLowerCase();
   const entry = IMAGES[key];
-  const hiRes = entry && size >= 48 ? hiResVariant(entry.thumb) : null;
-  const [stage, setStage] = useState<'hi' | 'std' | 'failed'>(hiRes ? 'hi' : 'std');
+  // Photo of the day: rotate deterministically through the artist's gallery
+  // (primary + Deezer + Wikimedia) so portraits change daily, never randomly.
+  const gallery = getArtistGallery(key);
+  const dailyUrl = gallery.length ? gallery[getDailyPhotoIndex(key, gallery.length)].url : undefined;
+  const isDailyPrimary = !dailyUrl || dailyUrl === entry?.thumb;
+  const hiRes = entry && isDailyPrimary && size >= 48 ? hiResVariant(entry.thumb) : null;
+  // Fallback chain: hi-res primary → daily pick → primary thumb → initials.
+  const [stage, setStage] = useState<'hi' | 'std' | 'alt' | 'failed'>(hiRes ? 'hi' : 'std');
   const [loaded, setLoaded] = useState(false);
   const meta = META[key];
+  const hasPhoto = Boolean(entry || dailyUrl);
 
   const avatar = (() => {
-    if (entry && stage !== 'failed') {
-      const src = stage === 'hi' && hiRes ? hiRes : entry.thumb;
+    if (hasPhoto && stage !== 'failed') {
+      const src = stage === 'hi' && hiRes
+        ? hiRes
+        : stage === 'alt' && entry
+          ? entry.thumb
+          : dailyUrl ?? entry!.thumb;
       return (
         <span
           className={`relative inline-flex rounded-full overflow-hidden shrink-0 ${loaded ? '' : 'art-loading'}`}
@@ -80,7 +92,11 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
             onLoad={() => setLoaded(true)}
             onError={() => {
               setLoaded(false);
-              setStage(s => (s === 'hi' ? 'std' : 'failed'));
+              setStage(s => {
+                if (s === 'hi') return 'std';
+                if (s === 'std' && !isDailyPrimary && entry) return 'alt';
+                return 'failed';
+              });
             }}
             className={`rounded-full object-cover shrink-0 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
             style={{ width: size, height: size, border: `1px solid ${tc.c1}30` }}

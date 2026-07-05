@@ -40,6 +40,14 @@ export interface OfflineArtistCuratedFacts {
   activeYears: string[];
 }
 
+export interface OfflineArtistBandMember {
+  name: string;
+  roles: string[];
+  begin: string | null;
+  end: string | null;
+  current: boolean;
+}
+
 export interface OfflineArtistKnowledge {
   name: string;
   normalizedName: string;
@@ -70,6 +78,7 @@ export interface OfflineArtistKnowledge {
   };
   wikidata?: OfflineArtistWikidataFacts;
   curated?: OfflineArtistCuratedFacts;
+  bandMembers?: OfflineArtistBandMember[];
   releaseGroups: OfflineArtistReleaseGroup[];
   emotionalSeeds: {
     sourceText: string;
@@ -117,6 +126,11 @@ function hasOfflineProfile(knowledge?: OfflineArtistKnowledge): knowledge is Off
 
 export function getOfflineArtistKnowledge(artistName: string) {
   return artistMap.get(normalizeCatalogName(artistName));
+}
+
+/** Band lineup from MusicBrainz artist-rels (empty for solo artists). */
+export function getArtistBandMembers(artistName: string): OfflineArtistBandMember[] {
+  return getOfflineArtistKnowledge(artistName)?.bandMembers ?? [];
 }
 
 export function getOfflineArtistSourceText(artistName: string) {

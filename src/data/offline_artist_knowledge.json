@@ -283,7 +283,80 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Matt Kean",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Lee Malia",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt Nicholls",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Oliver Sykes",
+          "roles": [
+            "keyboard",
+            "lead vocals",
+            "guitar"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Curtis Ward",
+          "roles": [
+            "guitar",
+            "background vocals"
+          ],
+          "begin": "2004",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Jona Weinhofen",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2009",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Jordan Fish",
+          "roles": [
+            "background vocals",
+            "keyboard",
+            "percussion"
+          ],
+          "begin": "2012",
+          "end": "2023-12-22",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Deafheaven",
@@ -472,7 +545,103 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Daniel Tracy",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2012",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Shiv Mehra",
+          "roles": [
+            "guitar",
+            "background vocals",
+            "keyboard"
+          ],
+          "begin": "2013",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Chris Johnson",
+          "roles": [
+            "background vocals",
+            "bass guitar"
+          ],
+          "begin": "2017",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "George Clarke",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Kerry McCoy",
+          "roles": [
+            "guitar",
+            "bass guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Trevor Deschryver",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2010",
+          "end": "2011",
+          "current": false
+        },
+        {
+          "name": "Nick Bassett",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2010",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Derek Prine",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2010",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Korey Severson",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2011",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Stephen Lee Clark",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2013",
+          "end": "2017",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Bilmuri",
@@ -922,7 +1091,180 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Colin Vieira",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Weston Richmond",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Felipe Sanchez",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2017",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Zack Baker",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2018",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt McAndrew",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2019-07-26",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jason Mays",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014-05-30",
+          "current": false
+        },
+        {
+          "name": "Andrew Mena",
+          "roles": [
+            "additional",
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Michael Nordeen",
+          "roles": [
+            "additional",
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Christopher Kim",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2014",
+          "end": "2015-02-09",
+          "current": false
+        },
+        {
+          "name": "Tai Wright",
+          "roles": [
+            "drums (drum set)",
+            "percussion"
+          ],
+          "begin": "2014",
+          "end": "2016-04-09",
+          "current": false
+        },
+        {
+          "name": "Alex Lyman",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2014",
+          "end": "2016-04-10",
+          "current": false
+        },
+        {
+          "name": "Jonny Craig",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2014",
+          "end": "2019-01-24",
+          "current": false
+        },
+        {
+          "name": "Jonathan Wolfe",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2015",
+          "end": "2015",
+          "current": false
+        },
+        {
+          "name": "Paul Gaul",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Thomas Michael Joy",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Christian Kett",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Blake Howard",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": false
+        },
+        {
+          "name": "Matthew Marquez",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "2017",
+          "end": "2018",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Jonny Craig",
@@ -1062,7 +1404,50 @@
           2021
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Old Flame",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dance Gavin Dance",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2005",
+          "end": "2012-08-21",
+          "current": false
+        },
+        {
+          "name": "Emarosa",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2007-11-19",
+          "end": "2011-04-11",
+          "current": false
+        },
+        {
+          "name": "Isles & Glaciers",
+          "roles": [],
+          "begin": "2008",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Rain City Drive",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2014",
+          "end": "2019-01-24",
+          "current": false
+        }
+      ]
     },
     {
       "name": "TesseracT",
@@ -1237,7 +1622,91 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Acle Kahney",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2003-05",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jamie Postones",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2005",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "James Monteith",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Amos Williams",
+          "roles": [
+            "background vocals",
+            "bass guitar"
+          ],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Daniel Tompkins",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2009-08",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Julien Perier",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2004",
+          "end": "2006",
+          "current": false
+        },
+        {
+          "name": "Abisola Obasanya",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2006",
+          "end": "2009",
+          "current": false
+        },
+        {
+          "name": "Elliot Coleman",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2011-08-23",
+          "end": "2012-06-12",
+          "current": false
+        },
+        {
+          "name": "Ashe O’Hara",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2012-09-07",
+          "end": "2014-06-27",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Santa Cruz",
@@ -1365,7 +1834,108 @@
           2022
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Ero Cruz",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Archie Cruz",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Toxy Cruz",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2019",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Arttu Kuosmanen",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Antti Parkkonen",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mitja Toivonen",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Leo Stillman",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2007",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Johnny Cruz",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2007",
+          "end": "2018",
+          "current": false
+        },
+        {
+          "name": "Middy",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2008",
+          "end": "2018",
+          "current": false
+        },
+        {
+          "name": "Taz",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2009",
+          "end": "2018",
+          "current": false
+        },
+        {
+          "name": "Brody DeRozie",
+          "roles": [],
+          "begin": "2018-04",
+          "end": "2018-05-24",
+          "current": false
+        },
+        {
+          "name": "Joonas Parkkonen",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Normandie",
@@ -1451,7 +2021,27 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Anton Franzon",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2018-07-07",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Philip Strand",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Odeon",
@@ -1664,7 +2254,25 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Tyler Lyle",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tim McEwan",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Emarosa",
@@ -1807,7 +2415,32 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Bradley Walden",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Chris Roberts",
+          "roles": [],
+          "begin": "2006",
+          "end": "2006",
+          "current": false
+        },
+        {
+          "name": "Jonny Craig",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2007-11-19",
+          "end": "2011-04-11",
+          "current": false
+        }
+      ]
     },
     {
       "name": "The Word Alive",
@@ -1961,7 +2594,85 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Zack Hansen",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tyler Smith",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2008-12-03",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Craig Mabbitt",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2008",
+          "end": "2008-11",
+          "current": false
+        },
+        {
+          "name": "Nick Urlacher",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2008",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Dusty Riach",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": "2008",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Tony Pizzuti",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2008",
+          "end": "2021",
+          "current": false
+        },
+        {
+          "name": "Justin Salinas",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2010",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Luke Holland",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2012",
+          "end": "2016",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Holding Absence",
@@ -2068,7 +2779,36 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Lucas Woodland",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Zac Vernon",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2015",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Feisal El-Khazragi",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2017",
+          "end": "2018",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Magnolia Park",
@@ -2151,7 +2891,30 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Freddie Criales",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Joe Horsham",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tristan Torres",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Machine Gun Kelly",
@@ -2705,7 +3468,23 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Tony Kim",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Justin Pointer",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Omnium Gatherum",
@@ -2886,7 +3665,27 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jukka Pelkonen",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jukka Perälä",
+          "roles": [
+            "synthesizer"
+          ],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Alcest",
@@ -3039,7 +3838,48 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Neige",
+          "roles": [
+            "bass guitar",
+            "guitar",
+            "lead vocals",
+            "membranophone"
+          ],
+          "begin": "1999",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Winterhalter",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Argoth",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2000",
+          "end": "2001",
+          "current": false
+        },
+        {
+          "name": "La Sale Famine de Valfunde",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2000",
+          "end": "2001",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Don Vedda",
@@ -3087,7 +3927,18 @@
           2018
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jamie’s Elsewhere",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2011",
+          "end": "2014",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Hammock",
@@ -3341,7 +4192,23 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Marc Byrd",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Andrew Thompson",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Tokio Hotel",
@@ -3560,7 +4427,45 @@
           2022
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Bill Kaulitz",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tom Kaulitz",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Georg Listing",
+          "roles": [
+            "bass"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Gustav Schäfer",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Rain City Drive",
@@ -3689,7 +4594,180 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Colin Vieira",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Weston Richmond",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Felipe Sanchez",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2017",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Zack Baker",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2018",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt McAndrew",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2019-07-26",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jason Mays",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014-05-30",
+          "current": false
+        },
+        {
+          "name": "Andrew Mena",
+          "roles": [
+            "additional",
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Michael Nordeen",
+          "roles": [
+            "additional",
+            "bass guitar"
+          ],
+          "begin": "2014",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Christopher Kim",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2014",
+          "end": "2015-02-09",
+          "current": false
+        },
+        {
+          "name": "Tai Wright",
+          "roles": [
+            "drums (drum set)",
+            "percussion"
+          ],
+          "begin": "2014",
+          "end": "2016-04-09",
+          "current": false
+        },
+        {
+          "name": "Alex Lyman",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2014",
+          "end": "2016-04-10",
+          "current": false
+        },
+        {
+          "name": "Jonny Craig",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2014",
+          "end": "2019-01-24",
+          "current": false
+        },
+        {
+          "name": "Jonathan Wolfe",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2015",
+          "end": "2015",
+          "current": false
+        },
+        {
+          "name": "Paul Gaul",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Thomas Michael Joy",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Christian Kett",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "2016",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Blake Howard",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": false
+        },
+        {
+          "name": "Matthew Marquez",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "2017",
+          "end": "2018",
+          "current": false
+        }
+      ]
     },
     {
       "name": "H.E.A.T",
@@ -3864,7 +4942,72 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Kenny Leckremo",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dave Dalone",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Crash",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jimmy Jay",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jona Tee",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Eric Rivers",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2007",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Erik Grönwall",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2010",
+          "end": "2020",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Ghost",
@@ -4059,7 +5202,44 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Tobias Forge",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "A Ghoul Writer",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Nameless Ghoul",
+          "roles": [
+            "bass guitar",
+            "drums (drum set)",
+            "keyboard",
+            "guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Megan X Thomas",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "היהודים",
@@ -4183,7 +5363,101 @@
           2015
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "תום פטרובר",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "1992",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "אורית שחף",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "1992",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "עמרי אגמון",
+          "roles": [
+            "guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Yahav Lipinski",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "רועי זוארץ",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "ערן מיטלמן",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": "1993",
+          "end": "2006",
+          "current": false
+        },
+        {
+          "name": "יפתח שחף",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1998",
+          "end": "2003",
+          "current": false
+        },
+        {
+          "name": "גיא באר",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2003",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "ניר מימון",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2009",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "גיא אילוז",
+          "roles": [
+            "task"
+          ],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Carpenter Brut",
@@ -4478,7 +5752,70 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Ryan Torf",
+          "roles": [
+            "percussion",
+            "drums (drum set)",
+            "keyboard",
+            "bass guitar"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Parker Cannon",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Kevin Geyer",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "lead vocals",
+            "keyboard"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "William Levy",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Kevin Ambrose",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2007",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Kelen Capener",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2007",
+          "end": "2022",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Jordyne",
@@ -4676,7 +6013,25 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Zaher Zorgati",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2007",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Malek Benarbia",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Blessthefall",
@@ -4820,7 +6175,68 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jared Warth",
+          "roles": [
+            "bass guitar",
+            "lead vocals",
+            "keyboard"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Eric Lambert",
+          "roles": [
+            "guitar",
+            "lead vocals",
+            "background vocals"
+          ],
+          "begin": "2005",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Beau Bokan",
+          "roles": [
+            "keyboard",
+            "lead vocals"
+          ],
+          "begin": "2008-09-26",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Craig Mabbitt",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2004",
+          "end": "2007-12-15",
+          "current": false
+        },
+        {
+          "name": "Mike Frisby",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2004",
+          "end": "2011",
+          "current": false
+        },
+        {
+          "name": "Matt Traynor",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2004",
+          "end": "2018-08-17",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Dayseeker",
@@ -4973,7 +6389,94 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Rory Rodriguez",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2012",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ramone Valerio",
+          "roles": [
+            "electric bass guitar",
+            "background vocals"
+          ],
+          "begin": "2017",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Zac Mayfield",
+          "roles": [
+            "percussion",
+            "drums (drum set)"
+          ],
+          "begin": "2022",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt Steenstra",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2012",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Alex Polk",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2012",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Andrew Sharp",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2012",
+          "end": "2016",
+          "current": false
+        },
+        {
+          "name": "Mike Karle",
+          "roles": [
+            "drums (drum set)",
+            "percussion"
+          ],
+          "begin": "2012",
+          "end": "2022",
+          "current": false
+        },
+        {
+          "name": "Gino Sgambelluri",
+          "roles": [
+            "guitar",
+            "background vocals"
+          ],
+          "begin": "2012",
+          "end": "2025",
+          "current": false
+        },
+        {
+          "name": "Shawn Yates",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2016",
+          "end": "2018",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Roosevelt",
@@ -5088,7 +6591,16 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Beat!Beat!Beat!",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Kiremi",
@@ -5535,7 +7047,108 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Tom Naumann",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1997",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ralf Scheepers",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1997",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mat Sinner",
+          "roles": [
+            "bass"
+          ],
+          "begin": "1997",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Magnus Karlsson",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Francesco Jovino",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Klaus Sperling",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1997",
+          "end": "2003",
+          "current": false
+        },
+        {
+          "name": "Stefan Leibing",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1998",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Henny Wolter",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1999",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Randy Black",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2003",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Alex Beyrodt",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2011",
+          "end": "2024",
+          "current": false
+        },
+        {
+          "name": "Aquiles Priester",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2014",
+          "end": "2015",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Diversify",
@@ -5873,7 +7486,57 @@
           2019
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Josh Silver",
+          "roles": [
+            "background vocals",
+            "keyboard"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Sal Abruscato",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1989",
+          "end": "1993",
+          "current": false
+        },
+        {
+          "name": "Ken Hickey",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "1989",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Peter Steele",
+          "roles": [
+            "bass",
+            "lead vocals"
+          ],
+          "begin": "1989",
+          "end": "2010",
+          "current": false
+        },
+        {
+          "name": "Johnny Kelly",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1993",
+          "end": "2010",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Drake",
@@ -6182,7 +7845,16 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Young Money",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Sweezy",
@@ -6353,7 +8025,40 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Andy Leo",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dave Escamilla",
+          "roles": [
+            "lead vocals",
+            "guitar"
+          ],
+          "begin": "2012",
+          "end": "2017",
+          "current": false
+        },
+        {
+          "name": "Brendan Barone",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": false
+        },
+        {
+          "name": "Bennett Vogelman",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Perturbator",
@@ -6631,7 +8336,19 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Kamtin Mohager",
+          "roles": [
+            "bass guitar",
+            "lead vocals"
+          ],
+          "begin": "2014",
+          "end": "2019",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Def Leppard",
@@ -6930,7 +8647,73 @@
           2022
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Joe Elliott",
+          "roles": [
+            "acoustic guitar",
+            "lead vocals"
+          ],
+          "begin": "1977",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rick Savage",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1977",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rick Allen",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1978-11-28",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Phil Collen",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1982",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Vivian Campbell",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1992",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Pete Willis",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1977",
+          "end": "1982",
+          "current": false
+        },
+        {
+          "name": "Steve Clark",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1978",
+          "end": "1991-01-08",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Annihilator",
@@ -7200,7 +8983,256 @@
           2022
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jeff Waters",
+          "roles": [
+            "bass guitar",
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "1984",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Big John Bates",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1984",
+          "end": "1985",
+          "current": false
+        },
+        {
+          "name": "Dave Scott Davis",
+          "roles": [
+            "bass guitar",
+            "guitar"
+          ],
+          "begin": "1984",
+          "end": "2001",
+          "current": false
+        },
+        {
+          "name": "Paul Malek",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1984",
+          "end": "1986",
+          "current": false
+        },
+        {
+          "name": "Richard Death",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1985",
+          "end": "1985",
+          "current": false
+        },
+        {
+          "name": "Dennis Dubeau",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1987",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Ray Hartmann",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1987",
+          "end": "2001",
+          "current": false
+        },
+        {
+          "name": "Randy Rampage",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1988",
+          "end": "2000",
+          "current": false
+        },
+        {
+          "name": "Wayne Darley",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1989",
+          "end": "1993",
+          "current": false
+        },
+        {
+          "name": "Coburn Pharr",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1990",
+          "end": "1992",
+          "current": false
+        },
+        {
+          "name": "Neil Goldberg",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1992",
+          "end": "1993",
+          "current": false
+        },
+        {
+          "name": "Aaron Randall",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1992",
+          "end": "1994",
+          "current": false
+        },
+        {
+          "name": "Mike Mangini",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1993",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Randy Black",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1993",
+          "end": "2003",
+          "current": false
+        },
+        {
+          "name": "Cam Dixon",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1994",
+          "end": "1995",
+          "current": false
+        },
+        {
+          "name": "Lou Bujdoso",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1995",
+          "end": "1996",
+          "current": false
+        },
+        {
+          "name": "Dave Machander",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "1996",
+          "end": "1996",
+          "current": false
+        },
+        {
+          "name": "Russell Bergquist",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1999",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Joe Comeau",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2000",
+          "end": "2003-05",
+          "current": false
+        },
+        {
+          "name": "Curran Murphy",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2002",
+          "end": "2005",
+          "current": false
+        },
+        {
+          "name": "Dave Padden",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "2003",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Sandor de Bretan",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2004",
+          "end": "2004",
+          "current": false
+        },
+        {
+          "name": "Robert Falzano",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2004",
+          "end": "2004",
+          "current": false
+        },
+        {
+          "name": "Tony Chappelle",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2005",
+          "end": "2005",
+          "current": false
+        },
+        {
+          "name": "Brian Stephenson",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2007",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Alex Landenburg",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2007",
+          "end": "2008",
+          "current": false
+        },
+        {
+          "name": "Carlos Cantatore",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2010",
+          "end": "2010",
+          "current": false
+        }
+      ]
     },
     {
       "name": "thekidszn",
@@ -7325,7 +9357,30 @@
         "activeYears": [],
         "releaseYears": []
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Errol Lafleur",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mark Nieuwenhuijzen",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Steven Renes",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Silverstein",
@@ -7584,7 +9639,76 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Josh Bradford",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2000",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Billy Hamilton",
+          "roles": [
+            "background vocals",
+            "bass"
+          ],
+          "begin": "2000",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Paul Koehler",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2000",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Shane Told",
+          "roles": [
+            "bass guitar",
+            "lead vocals"
+          ],
+          "begin": "2000",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Paul‐Marc Rousseau",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2012",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Richard McWalter",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2000",
+          "end": "2001",
+          "current": false
+        },
+        {
+          "name": "Neil Boshart",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2001",
+          "end": "2012",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Landon Tewers",
@@ -7682,7 +9806,23 @@
           2019
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "The Plot in You",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Thoughts In The Mind Of God",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Skid Row",
@@ -7954,7 +10094,248 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Rachel Bolan",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1986",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dave “The Snake” Sabo",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1986",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Scotti Hill",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1987",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rob Hammersmith",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "ZP Theart",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2016-02-13",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Taime Downe",
+          "roles": [
+            "additional",
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Alex Grossi",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rob Halford",
+          "roles": [
+            "additional",
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Keri Kelli",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ryan Spencer Cook",
+          "roles": [
+            "additional",
+            "guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Steve Brotherton",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1986",
+          "end": "1986",
+          "current": false
+        },
+        {
+          "name": "Cody Howell",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1986",
+          "end": "1986",
+          "current": false
+        },
+        {
+          "name": "Kurtis Jackson",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1986",
+          "end": "1986",
+          "current": false
+        },
+        {
+          "name": "Matt Fallon",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1986",
+          "end": "1987",
+          "current": false
+        },
+        {
+          "name": "Charlie Mills",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1986",
+          "end": "1987",
+          "current": false
+        },
+        {
+          "name": "John Ratkowski, Jr.",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1986",
+          "end": "1987",
+          "current": false
+        },
+        {
+          "name": "Jim Yuhas",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1986",
+          "end": "1987",
+          "current": false
+        },
+        {
+          "name": "Sebastian Bach",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1987",
+          "end": "1997",
+          "current": false
+        },
+        {
+          "name": "Rob Affuso",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1987",
+          "end": "1998",
+          "current": false
+        },
+        {
+          "name": "Shawn Mars",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1997",
+          "end": "1998",
+          "current": false
+        },
+        {
+          "name": "Phil Varone",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1999",
+          "end": "2004",
+          "current": false
+        },
+        {
+          "name": "Johnny Solinger",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1999",
+          "end": "2015",
+          "current": false
+        },
+        {
+          "name": "Timothy DiDuro",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2004",
+          "end": "2004",
+          "current": false
+        },
+        {
+          "name": "Dave Gara",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2004",
+          "end": "2010-04",
+          "current": false
+        },
+        {
+          "name": "Tony Harnell",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2015",
+          "end": "2015-12-30",
+          "current": false
+        },
+        {
+          "name": "Erik Grönwall",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2022",
+          "end": "2024",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Anathema",
@@ -8252,7 +10633,120 @@
           2018
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "John Douglas",
+          "roles": [
+            "drums (drum set)",
+            "keyboard"
+          ],
+          "begin": "1990",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Daniel Cavanagh",
+          "roles": [
+            "guitar",
+            "piano",
+            "keyboard",
+            "background vocals",
+            "lead vocals"
+          ],
+          "begin": "1990",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Vincent Cavanagh",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "1990",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Lee Douglas",
+          "roles": [
+            "additional",
+            "background vocals",
+            "lead vocals"
+          ],
+          "begin": "1999",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Daniel Cardoso",
+          "roles": [
+            "drums (drum set)",
+            "keyboard",
+            "electric bass guitar"
+          ],
+          "begin": "2012",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jamie Cavanagh",
+          "roles": [
+            "bass guitar",
+            "electric bass guitar"
+          ],
+          "begin": "1990",
+          "end": "2018-06-16",
+          "current": false
+        },
+        {
+          "name": "Darren White",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1990",
+          "end": "1995",
+          "current": false
+        },
+        {
+          "name": "Duncan Patterson",
+          "roles": [
+            "electric bass guitar",
+            "keyboard"
+          ],
+          "begin": "1991",
+          "end": "1998-09",
+          "current": false
+        },
+        {
+          "name": "Shaun Taylor‐Steels",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1997-09",
+          "end": "1998-11",
+          "current": false
+        },
+        {
+          "name": "Dave Pybus",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "1998-10",
+          "end": "2001-06",
+          "current": false
+        },
+        {
+          "name": "Les Smith",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": "2000-05",
+          "end": "2011-09-12",
+          "current": false
+        }
+      ]
     },
     {
       "name": "The Kid LAROI",
@@ -8520,7 +11014,18 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Ben Barlow",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Entwine",
@@ -8670,7 +11175,67 @@
           2015
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Aksu Hanttu",
+          "roles": [],
+          "begin": "1995-03",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tom Mikkola",
+          "roles": [],
+          "begin": "1995-03",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Riitta Heikkonen",
+          "roles": [],
+          "begin": "1998-02",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Joni Miettinen",
+          "roles": [],
+          "begin": "2000-05",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mika Tauriainen",
+          "roles": [],
+          "begin": "2000-05",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jaani Kähkönen",
+          "roles": [],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Teppo Taipale",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1995-03",
+          "end": "1999",
+          "current": false
+        },
+        {
+          "name": "Panu Willman",
+          "roles": [],
+          "begin": "1997",
+          "end": "2000-04",
+          "current": false
+        }
+      ]
     },
     {
       "name": "ג'ירפות",
@@ -8777,7 +11342,58 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "לוי בן ברוך",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "גלעד כהנא",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "יאיר קז",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "ארז רוסו",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "אסי ששון",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "דידי ארז",
+          "roles": [],
+          "begin": "1993",
+          "end": "2000",
+          "current": false
+        },
+        {
+          "name": "רותם דרור",
+          "roles": [],
+          "begin": null,
+          "end": "2006",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Trevor Something",
@@ -9162,7 +11778,30 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "אביב גפן",
+          "roles": [],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Steven Wilson",
+          "roles": [],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "תומר צדקיהו",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Arrows in Action",
@@ -9317,7 +11956,38 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Will Benoit",
+          "roles": [
+            "synthesizer",
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Justin Forrest",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Duncan Rich",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Katatonia",
@@ -9612,7 +12282,145 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jonas Renkse",
+          "roles": [
+            "drums (drum set)",
+            "lead vocals",
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "1991",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Niklas Sandin",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Daniel Moilanen",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Nico Elgstrand",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2025",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Sebastian Svalland",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2025",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Anders Nyström",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "1991",
+          "end": "2025-03-17",
+          "current": false
+        },
+        {
+          "name": "Guillaume Le Huche",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "1992",
+          "end": "1995",
+          "current": false
+        },
+        {
+          "name": "Fredrik Norrman",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "1994",
+          "end": "2009-12",
+          "current": false
+        },
+        {
+          "name": "Mikael Åkerfeldt",
+          "roles": [
+            "additional",
+            "lead vocals"
+          ],
+          "begin": "1996",
+          "end": "1997",
+          "current": false
+        },
+        {
+          "name": "Mikael Oretoft",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "1997",
+          "end": "1998",
+          "current": false
+        },
+        {
+          "name": "Mattias Norrman",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "1999",
+          "end": "2009-12",
+          "current": false
+        },
+        {
+          "name": "Daniel Liljekvist",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1999",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Per Eriksson",
+          "roles": [
+            "electric guitar",
+            "background vocals"
+          ],
+          "begin": "2010",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Roger Öjersson",
+          "roles": [
+            "electric guitar",
+            "background vocals"
+          ],
+          "begin": "2016",
+          "end": "2024",
+          "current": false
+        }
+      ]
     },
     {
       "name": "FM-84",
@@ -9886,7 +12694,23 @@
           2024
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Michael McGough",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Joel Quartuccio",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "44phantom",
@@ -10095,7 +12919,56 @@
           2020
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Eric Tryland",
+          "roles": [
+            "background vocals",
+            "piano"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Gabriel Muñoz",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Henrik Åmdal",
+          "roles": [
+            "bass"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Nicolas Pablo Muñoz",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Sigmund Vestrheim",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Paloma",
@@ -10406,7 +13279,83 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Danny Worsnop",
+          "roles": [
+            "lead vocals",
+            "keyboard",
+            "guitar"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "James Cassells",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Cameron Liddell",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2008",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Sam Bettley",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ben Bruce",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2006",
+          "end": "2024-01-19",
+          "current": false
+        },
+        {
+          "name": "Ryan Binns",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": "2008",
+          "end": "2008",
+          "current": false
+        },
+        {
+          "name": "Joe Lancaster",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2008",
+          "end": "2009",
+          "current": false
+        },
+        {
+          "name": "Denis Stoff",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2015-05-26",
+          "end": "2016-10",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Issues",
@@ -10519,7 +13468,104 @@
           2019
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Ben Ferris",
+          "roles": [
+            "synthesizer",
+            "keyboard"
+          ],
+          "begin": "2012",
+          "end": "2012-09",
+          "current": false
+        },
+        {
+          "name": "Cory Ferris",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2012",
+          "end": "2012-11",
+          "current": false
+        },
+        {
+          "name": "Case Snedecor",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2012",
+          "end": "2013-05",
+          "current": false
+        },
+        {
+          "name": "Jake Vintson",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2012",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Tyler Acord",
+          "roles": [
+            "sampler",
+            "synthesizer",
+            "keyboard",
+            "turntable",
+            "keytar"
+          ],
+          "begin": "2012",
+          "end": "2015",
+          "current": false
+        },
+        {
+          "name": "Michael Bohn",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2012",
+          "end": "2018",
+          "current": false
+        },
+        {
+          "name": "Tyler Carter",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2012",
+          "end": "2020-09-01",
+          "current": false
+        },
+        {
+          "name": "AJ Rebollo",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2012",
+          "end": "2024",
+          "current": false
+        },
+        {
+          "name": "Skyler Acord",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2013",
+          "end": "2024",
+          "current": false
+        },
+        {
+          "name": "Josh Manuel",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2013-06",
+          "end": "2024",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Sebastian Gampl",
@@ -10756,7 +13802,106 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Robert Ernlund",
+          "roles": [],
+          "begin": "1983",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Anders Wikström",
+          "roles": [],
+          "begin": "1983",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jamie Borger",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1987",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Patrick Appelgren",
+          "roles": [],
+          "begin": "1989",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Nalle Påhlsson",
+          "roles": [],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Pontus Egberg",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Leif Liljegren",
+          "roles": [],
+          "begin": "1983",
+          "end": "1988",
+          "current": false
+        },
+        {
+          "name": "Thomas Lind",
+          "roles": [],
+          "begin": "1984",
+          "end": "1984",
+          "current": false
+        },
+        {
+          "name": "Dalton Dahlberg",
+          "roles": [],
+          "begin": "1984",
+          "end": "1985",
+          "current": false
+        },
+        {
+          "name": "Ken Siewertson",
+          "roles": [],
+          "begin": "1984",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Leif Sundin",
+          "roles": [],
+          "begin": "1985",
+          "end": "1987",
+          "current": false
+        },
+        {
+          "name": "Joakim Larsson",
+          "roles": [],
+          "begin": "1989",
+          "end": "1993",
+          "current": false
+        },
+        {
+          "name": "Mats Levén",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1991",
+          "end": "1993",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Thirty Seconds to Mars",
@@ -10975,7 +14120,67 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jared Leto",
+          "roles": [
+            "bass guitar",
+            "guitar",
+            "keyboard",
+            "lead vocals"
+          ],
+          "begin": "1998",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Shannon Leto",
+          "roles": [
+            "drums (drum set)",
+            "percussion"
+          ],
+          "begin": "1998",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Solon Bixler",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2001",
+          "end": "2003",
+          "current": false
+        },
+        {
+          "name": "Tomo Miličević",
+          "roles": [
+            "background vocals",
+            "bass guitar",
+            "guitar",
+            "keyboard",
+            "percussion",
+            "violin"
+          ],
+          "begin": "2003",
+          "end": "2018-06-11",
+          "current": false
+        },
+        {
+          "name": "Matt Wachter",
+          "roles": [
+            "background vocals",
+            "bass guitar",
+            "keyboard"
+          ],
+          "begin": null,
+          "end": "2007-03",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Twin Shadow",
@@ -11273,7 +14478,96 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Henrik Ohlsson",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2004-04",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Per Nilsson",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2004-04",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Roberth Karlsson",
+          "roles": [
+            "lead vocals",
+            "background vocals"
+          ],
+          "begin": "2008-10-06",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Lars Palmqvist",
+          "roles": [
+            "lead vocals",
+            "background vocals"
+          ],
+          "begin": "2008-10-06",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ben Ellis",
+          "roles": [
+            "background vocals",
+            "electric guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Christian Älvestam",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2004-04",
+          "end": "2008-09-11",
+          "current": false
+        },
+        {
+          "name": "Jonas Kjellgren",
+          "roles": [
+            "electric guitar",
+            "background vocals",
+            "keyboard"
+          ],
+          "begin": "2004-04",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Kenneth Seil",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2004-04",
+          "end": "2015",
+          "current": false
+        },
+        {
+          "name": "Andreas Holma",
+          "roles": [
+            "background vocals",
+            "electric bass guitar"
+          ],
+          "begin": "2016",
+          "end": "2019-03-12",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Polyphia",
@@ -11406,7 +14700,55 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Tim Henson",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Scott LePage",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Clay Gober",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2012",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Clay Aeschliman",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Brandon Burkhalter",
+          "roles": [
+            "background vocals",
+            "drums (drum set)"
+          ],
+          "begin": "2010",
+          "end": "2016",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Atzmus",
@@ -11634,7 +14976,93 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Alex Ballew",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jesse Cash",
+          "roles": [
+            "lead vocals",
+            "electric guitar",
+            "bass guitar"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Conor Hesse",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "JT Cavey",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2016-02",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Clint Tustin",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2023-08-10",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Adam Hicks",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2009",
+          "end": "2012",
+          "current": false
+        },
+        {
+          "name": "Alan Rigdon",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2009",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Garrison Lee",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2009",
+          "end": "2014",
+          "current": false
+        },
+        {
+          "name": "Sean Price",
+          "roles": [
+            "bass guitar",
+            "electric guitar"
+          ],
+          "begin": "2012",
+          "end": "2022-03-28",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Nine Inch Nails",
@@ -11944,7 +15372,392 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Trent Reznor",
+          "roles": [
+            "lead vocals",
+            "background vocals",
+            "saxophone",
+            "bass",
+            "percussion",
+            "synthesizer",
+            "piano",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "1988",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Robin Finck",
+          "roles": [
+            "additional",
+            "background vocals",
+            "violin",
+            "synthesizer",
+            "guitar",
+            "keyboard",
+            "lap steel guitar"
+          ],
+          "begin": "1994",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Atticus Ross",
+          "roles": [
+            "background vocals",
+            "bass",
+            "synthesizer",
+            "keyboard"
+          ],
+          "begin": "2004",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Josh Freese",
+          "roles": [
+            "additional",
+            "drums (drum set)",
+            "marimba"
+          ],
+          "begin": "2005",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Stu Brooks",
+          "roles": [
+            "additional",
+            "background vocals",
+            "electric bass guitar",
+            "electric guitar",
+            "keyboard"
+          ],
+          "begin": "2026-02",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ron Musarra",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "1988",
+          "end": "1988",
+          "current": false
+        },
+        {
+          "name": "Chris Vrenna",
+          "roles": [
+            "additional",
+            "percussion",
+            "drums (drum set)",
+            "sampler",
+            "keyboard"
+          ],
+          "begin": "1988-10",
+          "end": "1997",
+          "current": false
+        },
+        {
+          "name": "Nick Rushe",
+          "roles": [
+            "additional",
+            "keyboard"
+          ],
+          "begin": "1989",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Gary Talpas",
+          "roles": [
+            "additional",
+            "keyboard"
+          ],
+          "begin": "1989",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Richard Patrick",
+          "roles": [
+            "additional",
+            "guitar",
+            "background vocals"
+          ],
+          "begin": "1989",
+          "end": "1993",
+          "current": false
+        },
+        {
+          "name": "David Haymes",
+          "roles": [
+            "additional",
+            "keyboard"
+          ],
+          "begin": "1990",
+          "end": "1990",
+          "current": false
+        },
+        {
+          "name": "Lee Mars",
+          "roles": [
+            "additional",
+            "keyboard"
+          ],
+          "begin": "1990",
+          "end": "1991",
+          "current": false
+        },
+        {
+          "name": "Jeff Ward",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "1990",
+          "end": "1991",
+          "current": false
+        },
+        {
+          "name": "Martin Atkins",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "1991",
+          "end": "1991",
+          "current": false
+        },
+        {
+          "name": "James Woolley",
+          "roles": [
+            "additional",
+            "background vocals",
+            "synthesizer",
+            "keyboard"
+          ],
+          "begin": "1991",
+          "end": "1994",
+          "current": false
+        },
+        {
+          "name": "Danny Lohner",
+          "roles": [
+            "additional",
+            "background vocals",
+            "bass",
+            "synthesizer",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "1993",
+          "end": "2003",
+          "current": false
+        },
+        {
+          "name": "Charlie Clouser",
+          "roles": [
+            "additional",
+            "background vocals",
+            "percussion",
+            "synthesizer",
+            "theremin",
+            "keyboard"
+          ],
+          "begin": "1994",
+          "end": "2001",
+          "current": false
+        },
+        {
+          "name": "Kevin McMahon",
+          "roles": [
+            "additional",
+            "guitar",
+            "background vocals"
+          ],
+          "begin": "1996",
+          "end": "1996",
+          "current": false
+        },
+        {
+          "name": "Keith Hillebrandt",
+          "roles": [
+            "additional",
+            "piano",
+            "keyboard"
+          ],
+          "begin": "1997",
+          "end": "1999",
+          "current": false
+        },
+        {
+          "name": "Dave Ogilvie",
+          "roles": [
+            "additional",
+            "keyboard"
+          ],
+          "begin": "1997",
+          "end": "1999",
+          "current": false
+        },
+        {
+          "name": "Jerome Dillon",
+          "roles": [
+            "additional",
+            "drums (drum set)",
+            "guitar"
+          ],
+          "begin": "1999",
+          "end": "2005-10-01",
+          "current": false
+        },
+        {
+          "name": "Aaron North",
+          "roles": [
+            "additional",
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2005",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Jeordie White",
+          "roles": [
+            "additional",
+            "background vocals",
+            "bass",
+            "synthesizer",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2005",
+          "end": "2007",
+          "current": false
+        },
+        {
+          "name": "Alessandro Cortini",
+          "roles": [
+            "additional",
+            "background vocals",
+            "bass",
+            "synthesizer",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2005",
+          "end": "2026-01",
+          "current": false
+        },
+        {
+          "name": "Alex Carapetis",
+          "roles": [
+            "additional",
+            "drums (drum set)"
+          ],
+          "begin": "2005-10-07",
+          "end": "2005-12-01",
+          "current": false
+        },
+        {
+          "name": "Justin Meldal‐Johnsen",
+          "roles": [
+            "additional",
+            "background vocals",
+            "bass",
+            "synthesizer",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2008",
+          "end": "2009",
+          "current": false
+        },
+        {
+          "name": "Ilan Rubin",
+          "roles": [
+            "additional",
+            "drums (drum set)",
+            "keyboard",
+            "percussion",
+            "background vocals",
+            "bass",
+            "cello",
+            "guitar"
+          ],
+          "begin": "2008",
+          "end": "2025",
+          "current": false
+        },
+        {
+          "name": "Adrian Belew",
+          "roles": [
+            "additional",
+            "background vocals",
+            "marimba",
+            "guitar"
+          ],
+          "begin": "2013",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Joshua Eustis",
+          "roles": [
+            "additional",
+            "guitar",
+            "background vocals",
+            "bass",
+            "mandolin",
+            "percussion",
+            "marimba",
+            "keyboard",
+            "erhu"
+          ],
+          "begin": "2013",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Lisa Fischer",
+          "roles": [
+            "additional",
+            "background vocals"
+          ],
+          "begin": "2013",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Sharlotte Gibson",
+          "roles": [
+            "additional",
+            "background vocals"
+          ],
+          "begin": "2013",
+          "end": "2013",
+          "current": false
+        },
+        {
+          "name": "Pino Palladino",
+          "roles": [
+            "additional",
+            "bass"
+          ],
+          "begin": "2013",
+          "end": "2013",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Lost Society",
@@ -12081,7 +15894,19 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Samy Elbanna",
+          "roles": [
+            "lead vocals",
+            "electric guitar"
+          ],
+          "begin": "2010",
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Rami Kleinstein",
@@ -12426,7 +16251,77 @@
           2023
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Brandon Flowers",
+          "roles": [
+            "keyboard",
+            "lead vocals"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dave Keuning",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mark Stoermer",
+          "roles": [
+            "background vocals",
+            "bass"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ronnie Vannucci Jr.",
+          "roles": [
+            "membranophone",
+            "percussion"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dell Neal",
+          "roles": [
+            "background vocals",
+            "bass"
+          ],
+          "begin": "2001",
+          "end": "2002",
+          "current": false
+        },
+        {
+          "name": "Matt Norcross",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2001",
+          "end": "2002",
+          "current": false
+        },
+        {
+          "name": "Brian Havens",
+          "roles": [
+            "membranophone"
+          ],
+          "begin": "2002",
+          "end": "2002",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Acres",
@@ -12618,7 +16513,73 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Manuel Gardner Fernandes",
+          "roles": [
+            "lead vocals",
+            "electric guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Marvin Jüchtern",
+          "roles": [
+            "keyboard"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "LEVY",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Leon Pfeifer",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Christoph Schultz",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jan Aimene",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": null,
+          "end": null,
+          "current": false
+        },
+        {
+          "name": "Simon Lorenz",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Blut aus Nord",
@@ -12869,7 +16830,47 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Vindsval",
+          "roles": [
+            "lead vocals",
+            "guitar"
+          ],
+          "begin": "1994",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "GhÖst",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "2003",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "W.D. Feld",
+          "roles": [
+            "drums (drum set)",
+            "keyboard"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Gionata Potenti",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2014",
+          "end": "2014",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Knox",
@@ -13128,7 +17129,45 @@
           2017
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Michael Foster",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1988",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Bill Leverty",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1988",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Perry Richardson",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1988",
+          "end": "2000",
+          "current": false
+        },
+        {
+          "name": "CJ Snare",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "1988",
+          "end": "2024-04-05",
+          "current": false
+        }
+      ]
     },
     {
       "name": "The Damned",
@@ -13440,7 +17479,147 @@
           2026
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Captain Sensible",
+          "roles": [],
+          "begin": "1976",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Dave Vanian",
+          "roles": [],
+          "begin": "1976",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Monty Oxymoron",
+          "roles": [],
+          "begin": "1996",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Pinch",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1999",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Paul Gray",
+          "roles": [],
+          "begin": "2017-09",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Kris Dollimore",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Garrie Dreadful",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Lu Edmonds",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Moose Harris",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jon Moss",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Paul Shepley",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Algy Ward",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rat Scabies",
+          "roles": [],
+          "begin": "1976",
+          "end": "1995",
+          "current": false
+        },
+        {
+          "name": "Roman Jugg",
+          "roles": [
+            "keyboard",
+            "guitar"
+          ],
+          "begin": "1981",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Bryn Merrick",
+          "roles": [],
+          "begin": "1983",
+          "end": "1989",
+          "current": false
+        },
+        {
+          "name": "Alan Lee Shaw",
+          "roles": [],
+          "begin": "1993",
+          "end": "1996",
+          "current": false
+        },
+        {
+          "name": "Patricia Morrison",
+          "roles": [],
+          "begin": "1996",
+          "end": "2004",
+          "current": false
+        },
+        {
+          "name": "Stu West",
+          "roles": [],
+          "begin": "2004",
+          "end": "2017-09",
+          "current": false
+        },
+        {
+          "name": "Brian James",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": false
+        }
+      ]
     },
     {
       "name": "Volumes",
@@ -13561,7 +17740,62 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Michael Barr",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Raad Soudani",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2009",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Myke Terry",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2016-06-05",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Gus Farias",
+          "roles": [],
+          "begin": "2009",
+          "end": "2019",
+          "current": false
+        },
+        {
+          "name": "Diego Farías",
+          "roles": [
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2009",
+          "end": "2020-01-29",
+          "current": false
+        },
+        {
+          "name": "Dan Braunstein",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2009-01",
+          "end": "2010",
+          "current": false
+        }
+      ]
     },
     {
       "name": "The 1975",
@@ -13752,7 +17986,51 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "George Daniel",
+          "roles": [
+            "background vocals",
+            "drums (drum set)"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Adam Hann",
+          "roles": [
+            "background vocals",
+            "guitar",
+            "keyboard"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matthew Healy",
+          "roles": [
+            "guitar",
+            "lead vocals"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ross MacDonald",
+          "roles": [
+            "background vocals",
+            "bass guitar",
+            "keyboard"
+          ],
+          "begin": "2002",
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Hurtwave",
@@ -13799,7 +18077,27 @@
           2021
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Mike Karle",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rory Rodriguez",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "The Cult",
@@ -14081,7 +18379,106 @@
           2022
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "John Tempesta",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Chris Wyse",
+          "roles": [],
+          "begin": "2006",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Craig Adams",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ian Astbury",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Mickey Curry",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Billy Duffy",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Scott Garrett",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Martyn LeNoble",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt Sorum",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "James Stevenson",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jamie Stewart",
+          "roles": [
+            "bass guitar"
+          ],
+          "begin": "1983",
+          "end": "1990",
+          "current": false
+        },
+        {
+          "name": "Nigel Preston",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "1984-01",
+          "end": "1985-06",
+          "current": false
+        },
+        {
+          "name": "Les Warner",
+          "roles": [],
+          "begin": "1985",
+          "end": "1986",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Skyharbor",
@@ -14185,7 +18582,34 @@
           2018
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Eric Emery",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2015-06-29",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Devesh Dayal",
+          "roles": [],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Daniel Tompkins",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2012",
+          "end": "2015-06-29",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Thornhill",
@@ -14297,7 +18721,54 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Jacob Charlton",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ben Maida",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": "2015",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ethan McCann",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Nick Sjogren",
+          "roles": [
+            "electric bass guitar"
+          ],
+          "begin": "2016",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Matt van Duppen",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2017",
+          "end": "2022-09-16",
+          "current": false
+        }
+      ]
     },
     {
       "name": "NIGHTBREAKERS",

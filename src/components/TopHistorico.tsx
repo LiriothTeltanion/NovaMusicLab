@@ -30,7 +30,8 @@ import MediaEmbedHub from './MediaEmbedHub';
 import SectionNarrative from './SectionNarrative';
 import { localizeEraLabel } from '../utils/localeText';
 import { buildArtistMediaProfile } from '../utils/mediaLinks';
-import { getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
+import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
+import ArtistPhotoCarousel from './ArtistPhotoCarousel';
 import {
   buildAlbumEmotionalReading,
   buildArtistEmotionalReading,
@@ -202,6 +203,13 @@ const ARTIST_ATLAS_COPY = {
     albumPlays: 'plays en álbumes',
     trackPlays: 'plays en canciones',
     curatedNote: 'Esta ficha es una capa editorial local: mezcla datos públicos de carrera con evidencia de tu propio historial. Más adelante puede conectarse a Spotify, MusicBrainz o imágenes generadas por Claude.',
+    lineupTitle: 'Formación',
+    lineupHint: 'Miembros documentados en MusicBrainz: instrumento y años de actividad. Los puntos encendidos marcan integrantes actuales.',
+    lineupCurrent: 'actual',
+    lineupPast: 'pasado',
+    lineupSince: (year: string) => `desde ${year}`,
+    lineupSpan: (from: string, to: string) => `${from}–${to}`,
+    lineupMore: (count: number) => `+${count} integrantes más en la historia de la banda`,
   },
   en: {
     dossier: 'Artist Dossier',
@@ -332,6 +340,13 @@ const ARTIST_ATLAS_COPY = {
     albumPlays: 'album plays',
     trackPlays: 'track plays',
     curatedNote: 'This profile is a local editorial layer: it blends public career facts with evidence from your own history. Later it can connect to Spotify, MusicBrainz or Claude-generated art.',
+    lineupTitle: 'Lineup',
+    lineupHint: 'Members documented in MusicBrainz: instrument and active years. Lit dots mark current members.',
+    lineupCurrent: 'current',
+    lineupPast: 'past',
+    lineupSince: (year: string) => `since ${year}`,
+    lineupSpan: (from: string, to: string) => `${from}–${to}`,
+    lineupMore: (count: number) => `+${count} more members across the band's history`,
   },
 } as const;
 
@@ -636,6 +651,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const selectedKnowledge = useMemo(() =>
     selectedArtist ? getOfflineArtistKnowledge(selectedArtist.name) : undefined,
+    [selectedArtist]);
+
+  const selectedLineup = useMemo(() =>
+    selectedArtist ? getArtistBandMembers(selectedArtist.name) : [],
     [selectedArtist]);
 
   const selectedArtistMood = useMemo(() =>
@@ -1496,9 +1515,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {/* Aura tinted by the artist's emotional-engine mood */}
                   <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-50"
                     style={{ background: `linear-gradient(135deg, ${selectedMoodColor ?? tc.c1}, ${tc.c3})` }} />
-                  <div className="relative rounded-[1.65rem] border bg-black/35 p-2"
+                  <div className="relative rounded-[1.65rem] border bg-black/35 p-2 pb-3"
                     style={{ borderColor: selectedMoodColor ? `${selectedMoodColor}45` : 'rgba(255,255,255,0.15)' }}>
-                    <ArtistAvatar name={selectedArtist.name} size={88} />
+                    <ArtistPhotoCarousel name={selectedArtist.name} size={88} />
                   </div>
                 </div>
                 <div className="min-w-0 flex-1">
@@ -1588,6 +1607,54 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 )}
               </div>
             </div>
+
+            {/* Band lineup from MusicBrainz artist-rels */}
+            {selectedLineup.length > 0 && (
+              <div className="relative z-10 mt-5 rounded-3xl border border-white/10 bg-black/25 p-4">
+                <div className="flex items-center justify-between gap-3 mb-1">
+                  <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: selectedMoodColor ?? tc.c1 }}>
+                    👥 {artistCopy.lineupTitle}
+                  </p>
+                  <span className="text-[10px] font-mono text-gray-500">
+                    {selectedLineup.filter(m => m.current).length}/{selectedLineup.length}
+                  </span>
+                </div>
+                <p className="mb-3 text-[11px] leading-relaxed text-gray-500">{artistCopy.lineupHint}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+                  {selectedLineup.slice(0, 9).map(member => (
+                    <div key={member.name} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-2">
+                      <ArtistAvatar name={member.name} size={28} tooltip={false} />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-bold text-white">{member.name}</p>
+                        <p className="truncate text-[10px] font-mono text-gray-500">
+                          {member.roles.slice(0, 2).join(' · ') || (member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast)}
+                        </p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <span
+                          className="ml-auto block h-1.5 w-1.5 rounded-full"
+                          title={member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
+                          style={{
+                            backgroundColor: member.current ? '#22c55e' : '#6b7280',
+                            boxShadow: member.current ? '0 0 6px #22c55e' : 'none',
+                          }}
+                        />
+                        <span className="text-[9px] font-mono text-gray-500">
+                          {member.begin
+                            ? member.current
+                              ? artistCopy.lineupSince(member.begin.slice(0, 4))
+                              : artistCopy.lineupSpan(member.begin.slice(0, 4), (member.end ?? '').slice(0, 4))
+                            : member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {selectedLineup.length > 9 && (
+                  <p className="mt-2 text-[10px] font-mono text-gray-500">{artistCopy.lineupMore(selectedLineup.length - 9)}</p>
+                )}
+              </div>
+            )}
           </div>
 
           <p className="text-sm md:text-[15px] text-gray-300 leading-relaxed">
