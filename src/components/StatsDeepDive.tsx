@@ -19,6 +19,7 @@ import {
   normalizeGenre,
 } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
+import YearlyErasTable from './YearlyErasTable';
 
 interface StatsDeepDiveProps { data: MusicDnaData; }
 
@@ -303,6 +304,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           </div>
         </div>
       </div>
+
+      {/* ── Interactive yearly eras table ── */}
+      <YearlyErasTable
+        eras={data.yearly_eras}
+        selectedYear={selectedYear}
+        onSelectYear={setSelectedYear}
+      />
 
       {/* ── Genre Treemap ── */}
       <div className="glass-panel p-6 rounded-3xl">
