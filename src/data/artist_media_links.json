@@ -1,21 +1,87 @@
 [
   {
-    "artist": "Bring Me the Horizon",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAayZDDj3uom0QpSJiwLoUw",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=VAXg78MKJcM",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official YouTube channel and MANTRA official video."
+    "artist": "44phantom",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1vwwjIPFeYoRfAUCqqO6cZ",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCpCloXdPM2dT3-DnWVsyUTw",
+    "officialSiteUrl": "https://www.44phantom.com/"
   },
   {
-    "artist": "Deafheaven",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4XpPveeg7RuYS3CgLo75t9",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UC97UMkZzchbn0uO-KFyq8ww",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=fXTBQQU191Y",
+    "artist": "Acres",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Alcest",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0d5ZwMtCer8dQdOPAgWhe7",
+    "youtubeChannelUrl": "https://www.youtube.com/@alcestofficial",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=haQ_zgn9ck4",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official YouTube channel and In Blur official video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Alcest channel and L'Envol official music video.",
+    "officialSiteUrl": "https://alcestmusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Alcest",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Alcest"
+  },
+  {
+    "artist": "Anathema",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0ZXKT0FCsLWkSLCjoBJgBX",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCD_YQdIsW1phqp5AqQwmKhg",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://www.anathemamusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Anathema_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Anathema"
+  },
+  {
+    "artist": "Annihilator",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0L8QRAAuWjqvTM8FpQ1gYO",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UChzFYBW7JICbmLd0VW6HyTQ",
+    "officialSiteUrl": "http://www.annihilatormetal.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Annihilator_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Annihilator"
+  },
+  {
+    "artist": "Arrows in Action",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/467o5z7PYxbXFAGA0mvhAQ"
+  },
+  {
+    "artist": "Asking Alexandria",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1caBfBEapzw8z2Qz9q0OaQ",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCxvK_CXbYocZsD_DwJtlmbw",
+    "officialSiteUrl": "http://www.askingalexandria.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Asking_Alexandria",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Asking_Alexandria"
+  },
+  {
+    "artist": "Atzmus",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "officialSiteUrl": "http://www.atzmus.com/"
+  },
+  {
+    "artist": "Being as an Ocean",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7ML9AQvVVE3c5m0sx1PlmP",
+    "officialSiteUrl": "https://beingasanocean.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Being_as_an_Ocean",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Being_as_an_Ocean"
   },
   {
     "artist": "Bilmuri",
@@ -23,77 +89,176 @@
     "youtubeChannelUrl": "https://www.youtube.com/@Bilmuriband",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=7NCtXJPcxOk",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Bilmuri channel and 2016 CAVALIERS official music video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Bilmuri channel and 2016 CAVALIERS official music video.",
+    "officialSiteUrl": "https://www.bilmuri.com/"
   },
   {
-    "artist": "Nevertel",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0uTkKGuqdf7CtKlZLt9N0Y",
-    "youtubeChannelUrl": "https://www.youtube.com/nevertel",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=waXmudP9n88",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Nevertel channel and Stuck Inside official music video."
+    "artist": "Blackfield",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3xrzXKnScjOEoy172vsJMW",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCHyP2ptJtiqXZTN6RIwkIdA",
+    "officialSiteUrl": "https://www.blackfield.org/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Blackfield",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Blackfield"
   },
   {
-    "artist": "Slaves",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0QF3SelvOph6yRhKH8jRxU",
-    "officialAudioUrl": "https://www.youtube.com/watch?v=F-9QalFBz0U",
+    "artist": "Blessthefall",
+    "aliases": [
+      "blessthefall"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7t2C8WwLyKUKRe0LVh8zl9",
     "mediaConfidence": "partial",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official YouTube audio for Prayers provided by TuneCore."
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCy8cHsKgHWbf-2pl7mFKPVQ",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://blessthefallmusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Blessthefall",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Blessthefall"
   },
   {
-    "artist": "Jonny Craig",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/46MmlFKM8ivDsUnGOejvSM",
-    "youtubeChannelUrl": "https://www.youtube.com/iamjonnycraig",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=M4RKfwymZo0",
+    "artist": "Blut aus Nord",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0c0xIXQhCbmtvzM93liaSf",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UClzQECpVnm9bqPNMFiksllg",
+    "officialSiteUrl": "http://www.blutausnord.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Blut_Aus_Nord",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Blut_Aus_Nord"
+  },
+  {
+    "artist": "boy pablo",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7wbkl3zgDZEoZer357mVIw",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCeA2KEyAm5WOG-cLD8jEYfw",
+    "officialSiteUrl": "https://www.boypablo.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Boy_Pablo",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Boy_Pablo"
+  },
+  {
+    "artist": "Bring Me the Horizon",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Ffb6ejR6Fe5IamqA5oRUF",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAayZDDj3uom0QpSJiwLoUw",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=VAXg78MKJcM",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Jonny Craig channel and GOOSEBUMPS video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official YouTube channel and MANTRA official video.",
+    "officialSiteUrl": "https://www.bmthofficial.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Bring_Me_the_Horizon",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Bring_Me_the_Horizon"
   },
   {
-    "artist": "TesseracT",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/23ytwhG1pzX6DIVWRWvW1r",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UCzvBMFhS0gqjx1rA0bswiHg",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=UnkpPIupQxM",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official TesseracT channel and War Of Being official music video."
-  },
-  {
-    "artist": "Santa Cruz",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1ZP10xzJoQljzTHiaU2Gri",
-    "officialAudioUrl": "https://www.youtube.com/watch?v=FrW6BPJ9zz4",
+    "artist": "Carpenter Brut",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
     "mediaConfidence": "partial",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official YouTube audio for Drag Me out of the Darkness provided by The Orchard Enterprises."
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCPVnLrkvF3M_H1NTOsMvgrA",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://carpenterbrut.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Carpenter_Brut",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Carpenter_Brut"
   },
   {
-    "artist": "Normandie",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1zsOttiR3VjZRnw4Iq8Zg6",
-    "youtubeChannelUrl": "https://www.youtube.com/c/NormandieOfficial",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9dnlWNOtJkU",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Normandie channel and Ritual official music video."
+    "artist": "Corbin Karasu",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   },
   {
-    "artist": "Odeon",
-    "youtubeChannelUrl": "https://www.youtube.com/c/Odeonmusic",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=t70_Zh3Pbqc",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Odeon channel and loop official lyric video."
+    "artist": "Crazy Lixx",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/24k1UCsJJHHU9ohk7YIvzC",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC2kGfOvdKpvZUaUceKblIwQ",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.crazylixx.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Crazy_Lixx",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Crazy_Lixx"
   },
   {
-    "artist": "The Midnight",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2NFrAuh8RQdQoS7iYFbckw",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UC-sM_PLqzgktdUcW2LEKKkQ",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9LD3NKlS55g",
+    "artist": "Crown the Empire",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2vKiJjsgjgqIECUyYeIVvO",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCONOAhfiP64S2DyXnqJ3ilw",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.thisistheresistance.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Crown_the_Empire",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Crown_the_Empire"
+  },
+  {
+    "artist": "Dance With the Dead",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2KtnZQwMQJN3uyI8eHZRvm",
+    "youtubeChannelUrl": "https://www.youtube.com/c/dancewiththedead",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=_eHMCbR_s_Y",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official The Midnight channel and Vampires official video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Dance With the Dead channel and Waves video.",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Dance_with_the_Dead",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Dance_With_the_Dead"
+  },
+  {
+    "artist": "Dayseeker",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5FjQVp1Lb0kltmwIuu5kfj",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC8Mj8S4i3qTfrODM_IOyxRw",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.dayseekerband.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Dayseeker",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Dayseeker"
+  },
+  {
+    "artist": "Deafheaven",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4XpPveeg7RuYS3CgLo75t9",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC97UMkZzchbn0uO-KFyq8ww",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=fXTBQQU191Y",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official YouTube channel and In Blur official video.",
+    "officialSiteUrl": "http://deafheaven.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Deafheaven",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Deafheaven"
+  },
+  {
+    "artist": "Def Leppard",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6H1RjVyNruCmrBEWRbD0VZ",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCZjBqZjGsmI5OAVsLSroaWQ",
+    "officialSiteUrl": "http://www.defleppard.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Def_Leppard",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Def_Leppard"
+  },
+  {
+    "artist": "Diversify",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/356W28yEFY8MEeYNUOLzJq",
+    "officialSiteUrl": "https://itsdiversify.com/"
+  },
+  {
+    "artist": "Don Vedda",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3RAhsZklmP61em9lYAgCLc",
+    "mediaConfidence": "partial"
+  },
+  {
+    "artist": "Drake",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCByOQJjav0CUDwxCk-jVNRQ",
+    "officialSiteUrl": "https://drakerelated.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Drake_(musician)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Drake_(m%C3%BAsico)"
   },
   {
     "artist": "Emarosa",
@@ -101,17 +266,105 @@
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCw6OWvA_vTE1xl0mLN9ke9w",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=Shmt5YnF40A",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Emarosa channel and Givin' Up official music video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Emarosa channel and Givin' Up official music video.",
+    "officialSiteUrl": "https://www.emarosa.us/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Emarosa",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Emarosa"
   },
   {
-    "artist": "The Word Alive",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1CF8aEN939swnuIZGFI7Hk",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UCoi1iAjO1KEpLOtlbtqIp_Q",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=T9sjPryO160",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official YouTube channel and Red Clouds video."
+    "artist": "Entwine",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3PgNlHzp2aZ46SHJVQzdSU",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCIcnAmnQ2hV__F6JapTOknA",
+    "officialSiteUrl": "https://www.entwine.org/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Entwine",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Entwine"
+  },
+  {
+    "artist": "ERRA",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2UoOdQyBGyzrEfxcY77ce0",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCM64dJz1HdlmYlZ8xYSO8TA",
+    "officialSiteUrl": "https://www.erraband.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Erra_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Erra_(banda)"
+  },
+  {
+    "artist": "Firehouse",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/28pS8WVbFstY0o1SrqCf8I",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCwl4eWSYd6iJM8TDbx9ukDQ",
+    "officialSiteUrl": "http://www.firehousemusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/FireHouse",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/FireHouse_(banda)"
+  },
+  {
+    "artist": "FM-84",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "FM84"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1xvEo98zythSrgN69GQevk",
+    "officialSiteUrl": "http://colinbennett.com/"
+  },
+  {
+    "artist": "Ghost",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAOiVaJJlH0Oduv48NN0mMA",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://ghost-official.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Ghost_(Swedish_band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Ghost_(banda)"
+  },
+  {
+    "artist": "H.E.A.T",
+    "aliases": [
+      "HEAT"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7M4PCSo5DDasGginrPHSDd",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC_pB_-OjOy4B_Nig0bzxkAw",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.heatsweden.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/H.E.A.T_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/H.E.A.T"
+  },
+  {
+    "artist": "Hammock",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0VOR7Ie9xUSb45fzIIVJQ1",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/user/Hammockmusic",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://www.hammockmusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Hammock_(band)"
+  },
+  {
+    "artist": "HaYehudim",
+    "aliases": [
+      "Hayehudim",
+      "היהודים",
+      "I.U.D.M"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4xOU852y5U5YPQe29uWPH5",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCYmfpIW2WA3NaL9uMlSqLDA",
+    "officialSiteUrl": "http://www.hayehudim.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/HaYehudim"
   },
   {
     "artist": "Holding Absence",
@@ -119,44 +372,109 @@
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCc0o7N0dIYQHMrL9vl2WHIA",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=MqiasiqEgPY",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Holding Absence channel and In Circles official music video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Holding Absence channel and In Circles official music video.",
+    "officialSiteUrl": "https://www.holdingabsence.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Holding_Absence",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Holding_Absence"
   },
   {
-    "artist": "nothingnowhere.",
-    "aliases": [
-      "nothing,nowhere."
-    ],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7FngGIEGgN3Iwauw1MvO4P",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UCBEWNR_x89cYolTNhuV7-Fw",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=NGKdYF3STsk",
+    "artist": "Hurtwave",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6nEa9O0zPZtkuGJ6lWYcNy"
+  },
+  {
+    "artist": "Indighxst",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2Qrn6Dm9jI2sRQE0dIGSsd",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCOwZ3fPk0p8grwp4ZNYBW7Q"
+  },
+  {
+    "artist": "Issues",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3zRstk92RGCVDyslSySNsm",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCYFvlwgT7H_1K2qAPLXef7g",
+    "officialSiteUrl": "http://www.issuesrock.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Issues_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Issues_(banda)"
+  },
+  {
+    "artist": "Jonny Craig",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/46MmlFKM8ivDsUnGOejvSM",
+    "youtubeChannelUrl": "https://www.youtube.com/iamjonnycraig",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=M4RKfwymZo0",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official nothing,nowhere. channel and lights (4444) official video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Jonny Craig channel and GOOSEBUMPS video.",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Jonny_Craig"
   },
   {
-    "artist": "Tokio Hotel",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/46aNfN89JrOQTCy97GoCHa",
-    "mediaConfidence": "partial"
+    "artist": "Jordyne",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-03",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   },
   {
-    "artist": "Carpenter Brut",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1l2oLiukA9i5jEtIyNWIEP",
-    "mediaConfidence": "partial"
+    "artist": "Katatonia",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2CWWgbxApjbyByxBBCvGTm",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCoe-mXCnuAlAxeDtAsYlCNg",
+    "officialSiteUrl": "http://www.katatonia.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Katatonia",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Katatonia"
   },
   {
-    "artist": "Perturbator",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/244uLu9lkdw39BJwlul3k8",
-    "mediaConfidence": "partial"
+    "artist": "Kiremi",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/60ZTa5QfmhzN1ToB8GOwCW"
   },
   {
-    "artist": "Magnolia Park",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7B76SsfzG0wWk1WEvGzCmY",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UCJq-RYYVxDJWrReqfGjwjdQ",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=rejdfxutez0",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Magnolia Park channel and Tokyo video."
+    "artist": "Knox",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/61S5H9Lxn1PDUvu1TV0kCX",
+    "officialSiteUrl": "https://www.musicbyknox.com/"
+  },
+  {
+    "artist": "Landon Tewers",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6xImdXivKF2ww2h8sP9uVF",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCeDyNBBZ0vh3wsZ5ieC8Jag",
+    "officialSiteUrl": "https://www.landontewers.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Landon_Tewers",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Landon_Tewers"
+  },
+  {
+    "artist": "Lost Society",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5Vy1NbrZXTMTAGFa4Im6hN",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCf-NDLpZveMwi_gn1uqPJ8g",
+    "officialSiteUrl": "http://lostsocietyfinland.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Lost_Society",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Lost_Society"
+  },
+  {
+    "artist": "Louta",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5l4GdLELvdnXZVT5g947i3",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCtP2T0FvFlDVKq2iVukQGgQ"
   },
   {
     "artist": "Machine Gun Kelly",
@@ -167,140 +485,21 @@
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCUs8sGiP4avNaYNVO22INhQ",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=z7kYa5GQYKg",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official mgk channel and Candy official music video."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official mgk channel and Candy official music video.",
+    "officialSiteUrl": "http://www.machinegunkelly.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/MGK",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/MGK"
   },
   {
-    "artist": "Dance With the Dead",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2KtnZQwMQJN3uyI8eHZRvm",
-    "youtubeChannelUrl": "https://www.youtube.com/c/dancewiththedead",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=_eHMCbR_s_Y",
+    "artist": "Magnolia Park",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7B76SsfzG0wWk1WEvGzCmY",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCJq-RYYVxDJWrReqfGjwjdQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=rejdfxutez0",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Dance With the Dead channel and Waves video."
-  },
-  {
-    "artist": "Omnium Gatherum",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/52xuvlUvnxqH0xzxGPKXSu",
-    "youtubeChannelUrl": "https://www.youtube.com/user/omniumgatherumband",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=BK8eDu-tuSA",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Omnium Gatherum channel and The Darkest City official video."
-  },
-  {
-    "artist": "Alcest",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0d5ZwMtCer8dQdOPAgWhe7",
-    "youtubeChannelUrl": "https://www.youtube.com/@alcestofficial",
-    "youtubeVideoUrl": "https://www.youtube.com/watch?v=haQ_zgn9ck4",
-    "mediaConfidence": "verified",
-    "checkedAt": "2026-07-02",
-    "sourceNote": "Official Alcest channel and L'Envol official music video."
-  },
-  {
-    "artist": "Hammock",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0VOR7Ie9xUSb45fzIIVJQ1",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Dayseeker",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/5FjQVp1Lb0kltmwIuu5kfj",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "H.E.A.T",
-    "aliases": [
-      "HEAT"
-    ],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7M4PCSo5DDasGginrPHSDd",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Ghost",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Qp56T7n950O3EGMsSl81D",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "The Story So Far",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/6meTcQ79DrfkIuSLPZkpBg",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Roosevelt",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4AQrqVz6BYwy29iMxcGtx7",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Don Vedda",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/3RAhsZklmP61em9lYAgCLc",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Myrath",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/72500XOYPw5e7OgFWuW2Gl",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Blessthefall",
-    "aliases": [
-      "blessthefall"
-    ],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/7t2C8WwLyKUKRe0LVh8zl9",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Crazy Lixx",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/24k1UCsJJHHU9ohk7YIvzC",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Type O Negative",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0blJzvevdXrp21YeI2vbco",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Crown the Empire",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2vKiJjsgjgqIECUyYeIVvO",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Teenage Wrist",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/79HbBkVgOVUuVhuTJ50pIx",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Neck Deep",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2TM0qnbJH4QPhGMCdPt7fH",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Silverstein",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "Anathema",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/0ZXKT0FCsLWkSLCjoBJgBX",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "The Kid LAROI",
-    "aliases": [
-      "The Kid Laroi",
-      "Kid Laroi"
-    ],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/2tIP7SsRs7vjIcLrU85W8J",
-    "mediaConfidence": "partial"
-  },
-  {
-    "artist": "HaYehudim",
-    "aliases": [
-      "Hayehudim",
-      "היהודים",
-      "I.U.D.M"
-    ],
-    "spotifyArtistUrl": "https://open.spotify.com/artist/4xOU852y5U5YPQe29uWPH5",
-    "mediaConfidence": "partial"
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Magnolia Park channel and Tokyo video.",
+    "officialSiteUrl": "https://www.magnoliaparkband.com/"
   },
   {
     "artist": "Mooki",
@@ -312,71 +511,53 @@
     "mediaConfidence": "partial"
   },
   {
-    "artist": "Rain City Drive",
+    "artist": "Myrath",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/72500XOYPw5e7OgFWuW2Gl",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCBZIyqn0Jl66ndrxT1I6qwA",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://www.myrath.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Myrath",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Myrath"
+  },
+  {
+    "artist": "Naits",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
+    "checkedAt": "2026-07-05",
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "aliases": [
-      "Slaves"
-    ]
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7eD6KWTeu81k4qcy1taHaj",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCzFf_Ra1COKtREYhqkGcp0g"
   },
   {
-    "artist": "Jordyne",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Neck Deep",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2TM0qnbJH4QPhGMCdPt7fH",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCvW1rSUzDMoT4Qdeep-c-Ow",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://neckdeepuk.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Neck_Deep",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Neck_Deep"
   },
   {
-    "artist": "Kiremi",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Nevertel",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0uTkKGuqdf7CtKlZLt9N0Y",
+    "youtubeChannelUrl": "https://www.youtube.com/nevertel",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=waXmudP9n88",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Nevertel channel and Stuck Inside official music video.",
+    "officialSiteUrl": "https://www.nevertelband.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Nevertel",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Nevertel"
   },
   {
-    "artist": "Primal Fear",
+    "artist": "NIGHTBREAKERS",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Diversify",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Drake",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Sweezy",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Def Leppard",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Annihilator",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "thekidszn",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
+    "checkedAt": "2026-07-05",
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "aliases": [
-      "the kidszn",
-      "kidszn"
-    ]
+    "officialSiteUrl": "https://www.nightbrkrs.com/"
   },
   {
     "artist": "Nightlife",
@@ -385,106 +566,60 @@
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   },
   {
-    "artist": "Landon Tewers",
+    "artist": "Nine Inch Nails",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Skid Row",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Entwine",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "ג'ירפות",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
+    "checkedAt": "2026-07-05",
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0X380XXQSNBYuleKzav5UO",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC4a5d57ZAWl999-YXw0C1Vg",
+    "officialSiteUrl": "https://www.nin.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Nine_Inch_Nails",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Nine_Inch_Nails"
+  },
+  {
+    "artist": "Normandie",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1zsOttiR3VjZRnw4Iq8Zg6",
+    "youtubeChannelUrl": "https://www.youtube.com/c/NormandieOfficial",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9dnlWNOtJkU",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Normandie channel and Ritual official music video.",
+    "officialSiteUrl": "http://www.normandieofficial.com/"
+  },
+  {
+    "artist": "nothingnowhere.",
     "aliases": [
-      "Girafot"
-    ]
+      "nothing,nowhere."
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/7FngGIEGgN3Iwauw1MvO4P",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCBEWNR_x89cYolTNhuV7-Fw",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=NGKdYF3STsk",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official nothing,nowhere. channel and lights (4444) official video.",
+    "officialSiteUrl": "http://nothingnowhere.net",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Nothing%2CNowhere",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Nothing%2CNowhere"
   },
   {
-    "artist": "Trevor Something",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Odeon",
+    "youtubeChannelUrl": "https://www.youtube.com/c/Odeonmusic",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=t70_Zh3Pbqc",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-02",
+    "sourceNote": "Official Odeon channel and loop official lyric video."
   },
   {
-    "artist": "Naits",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Blackfield",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Arrows in Action",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Som",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Katatonia",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "FM-84",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "aliases": [
-      "FM84"
-    ]
-  },
-  {
-    "artist": "Ryan Caraveo",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Being as an Ocean",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "44phantom",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Indighxst",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "boy pablo",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Omnium Gatherum",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/52xuvlUvnxqH0xzxGPKXSu",
+    "youtubeChannelUrl": "https://www.youtube.com/user/omniumgatherumband",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=BK8eDu-tuSA",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official Omnium Gatherum channel and The Darkest City official video.",
+    "officialSiteUrl": "https://omniumgatherum.org/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Omnium_Gatherum",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Omnium_Gatherum"
   },
   {
     "artist": "Paloma",
@@ -493,91 +628,47 @@
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   },
   {
-    "artist": "Louta",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Asking Alexandria",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Issues",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Sebastian Gampl",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Treat",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Thirty Seconds to Mars",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "aliases": [
-      "30 Seconds to Mars"
-    ]
-  },
-  {
-    "artist": "Twin Shadow",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Scar Symmetry",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Perturbator",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/244uLu9lkdw39BJwlul3k8",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCXemm0lOxCrW_pRD1lhLhQg",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.perturbator.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Perturbator",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Perturbator"
   },
   {
     "artist": "Polyphia",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4vGrte8FDu062Ntj0RsPiZ",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCDe08Fs0s0YKJuk5h45csAQ",
+    "officialSiteUrl": "https://www.polyphia.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Polyphia",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Polyphia"
   },
   {
-    "artist": "Atzmus",
+    "artist": "Primal Fear",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1yfiDL3YUEJlQCgb5Pun6g",
+    "officialSiteUrl": "http://www.primalfear.de/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Primal_Fear_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Primal_Fear"
   },
   {
-    "artist": "SMBDY ELSE",
+    "artist": "Rain City Drive",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "ERRA",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Nine Inch Nails",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Lost Society",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Current-era profile after the Slaves rename; the separate Slaves entry keeps the legacy Spotify profile.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4rMxZovfLSDjEL9eI2pKo7",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCFqOLfGt44dmdhJQEml5O8w",
+    "officialSiteUrl": "https://www.youareallslaves.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Rain_City_Drive",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Rain_City_Drive"
   },
   {
     "artist": "Rami Kleinstein",
@@ -586,93 +677,356 @@
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
   },
   {
-    "artist": "Corbin Karasu",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Roosevelt",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4AQrqVz6BYwy29iMxcGtx7",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCqqY6fzyLY3OmdjYRe2eJAg",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.iamroosevelt.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Roosevelt_(musician)"
   },
   {
-    "artist": "The Killers",
+    "artist": "Ryan Caraveo",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1PDE2MIJ4M6uvFJDrslazf",
+    "officialSiteUrl": "http://www.ryancaraveo.com/"
   },
   {
-    "artist": "Acres",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Santa Cruz",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1ZP10xzJoQljzTHiaU2Gri",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=FrW6BPJ9zz4",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official YouTube audio for Drag Me out of the Darkness provided by The Orchard Enterprises.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCTuBeGZ_jiKu-ufh-W1HYmg",
+    "officialSiteUrl": "http://santacruzbandofficial.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Santa_Cruz_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Santa_Cruz_(banda)"
   },
   {
-    "artist": "Unprocessed",
+    "artist": "Scar Symmetry",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2PQVMx0BpRQhzMWLa7X0T6",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCt4grsCj7cTJM33kpS3mcsw",
+    "officialSiteUrl": "http://www.myspace.com/scarsymmetry",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Scar_Symmetry",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Scar_Symmetry"
   },
   {
-    "artist": "Blut aus Nord",
+    "artist": "Sebastian Gampl",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3jtCAPtVjW9Q7KHfnGCZsy",
+    "officialSiteUrl": "http://sebastiangampl.com/"
   },
   {
-    "artist": "Knox",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "artist": "Silverstein",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UChQidgcBzCuN2IOQ6s1wRFw",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://silversteinmusic.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Silverstein_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Silverstein"
   },
   {
-    "artist": "Firehouse",
+    "artist": "Skid Row",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "The Damned",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Volumes",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "The 1975",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "Hurtwave",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
-  },
-  {
-    "artist": "The Cult",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4opTS86dN9uO313J9CE8xg",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCKf3ql762O9-Mhp0-l23AqQ",
+    "officialSiteUrl": "https://www.skidrow.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Skid_Row_(American_band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Skid_Row"
   },
   {
     "artist": "Skyharbor",
     "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0YbvZPP1HufDyWIsR0ei6K",
+    "officialSiteUrl": "http://www.skyharbormusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Skyharbor",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Skyharbor"
+  },
+  {
+    "artist": "Slaves",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0QF3SelvOph6yRhKH8jRxU",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=F-9QalFBz0U",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official YouTube audio for Prayers provided by TuneCore.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCFqOLfGt44dmdhJQEml5O8w",
+    "officialSiteUrl": "https://www.youareallslaves.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Rain_City_Drive",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Rain_City_Drive"
+  },
+  {
+    "artist": "SMBDY ELSE",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/63E0puQN47nWNF9wCJ8xdv"
+  },
+  {
+    "artist": "Som",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0l5d2oD9unQCRRogw47e2Q",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCRpxw3AZSI4niqVBE_JYjSQ",
+    "officialSiteUrl": "https://www.som.band/"
+  },
+  {
+    "artist": "Sweezy",
+    "mediaConfidence": "search",
     "checkedAt": "2026-07-03",
     "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+  },
+  {
+    "artist": "Teenage Wrist",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/79HbBkVgOVUuVhuTJ50pIx",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCJIjXHQ4WqinCJQYtdmQ1MQ",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://teenagewrist.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Teenage_Wrist"
+  },
+  {
+    "artist": "TesseracT",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/23ytwhG1pzX6DIVWRWvW1r",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCzvBMFhS0gqjx1rA0bswiHg",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=UnkpPIupQxM",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official TesseracT channel and War Of Being official music video.",
+    "officialSiteUrl": "http://www.tesseractband.co.uk",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Tesseract_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Tesseract_(banda)"
+  },
+  {
+    "artist": "The 1975",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3mIj9lX2MWuHmhNCA7LSCW",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC_LfW1R3B0of9qOw1uI-QNQ",
+    "officialSiteUrl": "https://the1975.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_1975",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_1975"
+  },
+  {
+    "artist": "The Cult",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/49DW3KvkyjHO35mK1JnSyS",
+    "youtubeChannelUrl": "https://www.youtube.com/user/TheCULTofficial",
+    "officialSiteUrl": "http://www.thecult.us/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Cult",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Cult"
+  },
+  {
+    "artist": "The Damned",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6VeL8VhaMjHTPc5uovFl3h",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCzutsHtxpt5NlFFF_vQUHpQ",
+    "officialSiteUrl": "http://www.officialdamned.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Damned_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Damned"
+  },
+  {
+    "artist": "The Kid LAROI",
+    "aliases": [
+      "The Kid Laroi",
+      "Kid Laroi"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2tIP7SsRs7vjIcLrU85W8J",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC6G2vAJrt407lwiynW116Eg",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://www.tkl.world/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Kid_Laroi",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Kid_Laroi"
+  },
+  {
+    "artist": "The Killers",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCkhyoTaWKuB-Rdbb6Z3Z5DA",
+    "officialSiteUrl": "http://www.thekillersmusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Killers",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Killers"
+  },
+  {
+    "artist": "The Midnight",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2NFrAuh8RQdQoS7iYFbckw",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC-sM_PLqzgktdUcW2LEKKkQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9LD3NKlS55g",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official The Midnight channel and Vampires official video.",
+    "officialSiteUrl": "https://www.themidnightofficial.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Midnight",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Midnight"
+  },
+  {
+    "artist": "The Story So Far",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6meTcQ79DrfkIuSLPZkpBg",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAuQvoS8f8_4YgcvaxLRJdQ",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.thestorysofarca.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Story_So_Far_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Story_So_Far"
+  },
+  {
+    "artist": "The Word Alive",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1CF8aEN939swnuIZGFI7Hk",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCoi1iAjO1KEpLOtlbtqIp_Q",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=T9sjPryO160",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Official YouTube channel and Red Clouds video.",
+    "officialSiteUrl": "http://wearethewordalive.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/The_Word_Alive",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/The_Word_Alive"
+  },
+  {
+    "artist": "thekidszn",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "the kidszn",
+      "kidszn"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/138UAIyJocdHT5PpR0iTJE"
+  },
+  {
+    "artist": "Thirty Seconds to Mars",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "30 Seconds to Mars"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0RqtSIYZmd4fiBKVFqyIqD",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCK7wTMguyPyPCjhLoOK2rJg",
+    "officialSiteUrl": "https://thirtysecondstomars.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Thirty_Seconds_to_Mars",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/30_Seconds_to_Mars"
   },
   {
     "artist": "Thornhill",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/2dE5audbkV3o5cKxvM7lBD",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC200qebkD-H4BEaj71s-ijQ/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Thornhill_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Thornhill_(banda)"
   },
   {
-    "artist": "NIGHTBREAKERS",
+    "artist": "Tokio Hotel",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/46aNfN89JrOQTCy97GoCHa",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCEGVZ50kxeQrgbZ9CBTPXcg",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.tokiohotel.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Tokio_Hotel",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Tokio_Hotel"
+  },
+  {
+    "artist": "Treat",
     "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6HY1gnFOOY9ZAgQtzvtZHI",
+    "officialSiteUrl": "http://www.treatnews.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Treat_(band)"
+  },
+  {
+    "artist": "Trevor Something",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6bWylzDlsTfR8khADRQJfd",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCiC0VV7OpArN2467_ns4u_A",
+    "officialSiteUrl": "https://www.trevorsomething.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Trevor_Something",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Trevor_Something"
+  },
+  {
+    "artist": "Twin Shadow",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6fLrPFLWLSCrp7gcTZXcKb",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCfaR1gkH7HdYU7dete7IpEw",
+    "officialSiteUrl": "http://twinshadow.net",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Twin_Shadow",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Twin_Shadow"
+  },
+  {
+    "artist": "Type O Negative",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/0blJzvevdXrp21YeI2vbco",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC4nQA4NX8FXklISTmga-yqw",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.typeonegative.net",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Type_O_Negative",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Type_O_Negative"
+  },
+  {
+    "artist": "Unprocessed",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/13GH7wviJQ9gfZmr1pXHS4",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCR213I8IGeNXdLiYRGWXlOQ",
+    "officialSiteUrl": "https://unprocessed.band/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Unprocessed"
+  },
+  {
+    "artist": "Volumes",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1DgmdsnwOexqTH8ohPCFAU",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCh-r8pJtL2tIqW-ZJkD2-9g",
+    "officialSiteUrl": "http://www.myspace.com/volumes",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Volumes_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Volumes"
+  },
+  {
+    "artist": "ג'ירפות",
+    "mediaConfidence": "search",
+    "checkedAt": "2026-07-05",
+    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "aliases": [
+      "Girafot"
+    ],
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5EgEUxXi9uTYYN4cQwmLPy",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCq9AYFKgUryOgOtVxqnL3Bg",
+    "officialSiteUrl": "http://www.girafot.org",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Girafot"
   }
 ]

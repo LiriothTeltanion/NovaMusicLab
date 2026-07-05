@@ -4,6 +4,7 @@ import {
   Search, ShieldCheck,
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getWikipediaUrl } from '../utils/mediaLinks';
 import type { ArtistMediaProfile, MediaAction, MediaProvider } from '../utils/mediaLinks';
 
 interface MediaEmbedHubProps {
@@ -79,7 +80,14 @@ const ACTION_LABELS = {
   live: { es: 'Live', en: 'Live' },
   channel: { es: 'Canal', en: 'Channel' },
   search: { es: 'Buscar', en: 'Search' },
+  wiki: { es: 'Biografía en Wikipedia', en: 'Wikipedia biography' },
 } as const;
+
+function providerName(provider: MediaProvider | 'web', copy: { spotify: string; youtube: string }) {
+  if (provider === 'spotify') return copy.spotify;
+  if (provider === 'youtube') return copy.youtube;
+  return 'Wikipedia';
+}
 
 function SpotifyGlyph({ size = 18 }: { size?: number }) {
   return (
@@ -140,6 +148,11 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
     { id: 'youtube', label: copy.youtube, verified: profile.youtube.verified, embed: profile.youtube.embedUrl },
   ];
 
+  const wikipediaUrl = getWikipediaUrl(profile.curated, lang);
+  const allActions: MediaAction[] = wikipediaUrl
+    ? [...profile.actions, { label: 'Wikipedia', url: wikipediaUrl, provider: 'web', kind: 'wiki' }]
+    : profile.actions;
+
   const sourceRows = [
     {
       label: copy.spotifySource,
@@ -153,7 +166,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
     },
     {
       label: copy.actionCoverage,
-      value: String(profile.actions.length),
+      value: String(allActions.length),
       color: tc.c2,
     },
     {
@@ -305,7 +318,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
               </h4>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-2">
-              {profile.actions.map(action => {
+              {allActions.map(action => {
                 const color = providerColor(action.provider);
                 return (
                   <a
@@ -323,7 +336,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm font-bold text-white truncate">{ACTION_LABELS[action.kind][lang]}</span>
                       <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-500 truncate">
-                        {action.provider === 'spotify' ? copy.spotify : copy.youtube}
+                        {providerName(action.provider, copy)}
                       </span>
                     </span>
                     <ExternalLink className="w-3.5 h-3.5 text-gray-500 group-hover:text-white transition-colors shrink-0" />

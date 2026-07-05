@@ -13,7 +13,7 @@ import SectionQuickRead from './SectionQuickRead';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 import MoodArtCanvas from './MoodArtCanvas';
 import { GlassTooltip } from './chartKit';
-import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
+import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, getWikipediaUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
   buildEmotionalMapEngineProfile,
   emotionalAxisLabels,
@@ -340,6 +340,7 @@ const EMOTIONAL_MAP_COPY = {
       intro: 'Cada emoción funciona como una estación de radio curada desde tu propio archivo. Los enlaces abren páginas oficiales o búsquedas públicas en Spotify y YouTube — nada se reproduce dentro de la app.',
       spotifyAria: (artist: string) => `Abrir ${artist} en Spotify`,
       youtubeAria: (artist: string) => `Abrir ${artist} en YouTube`,
+      wikipediaAria: (artist: string) => `Leer la biografía de ${artist} en Wikipedia`,
       verifiedNote: 'Los enlaces marcados con punto son páginas oficiales verificadas; el resto abre una búsqueda pública.',
     },
     gallery: {
@@ -408,6 +409,7 @@ const EMOTIONAL_MAP_COPY = {
       intro: 'Each emotion works as a radio station curated from your own archive. Links open official pages or public searches on Spotify and YouTube — nothing plays inside the app.',
       spotifyAria: (artist: string) => `Open ${artist} on Spotify`,
       youtubeAria: (artist: string) => `Open ${artist} on YouTube`,
+      wikipediaAria: (artist: string) => `Read the ${artist} biography on Wikipedia`,
       verifiedNote: 'Links marked with a dot are verified official pages; the rest open a public search.',
     },
     gallery: {
@@ -905,6 +907,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                     const curated = getCuratedArtistMedia(name);
                     const spotifyUrl = getPrimarySpotifyUrl(curated) ?? buildSpotifySearchUrl(name);
                     const youtubeUrl = getPrimaryYoutubeUrl(curated) ?? buildYoutubeSearchUrl(`${name} official`);
+                    const wikipediaUrl = getWikipediaUrl(curated, lang);
                     const verified = Boolean(curated);
                     return (
                       <div key={name} className="flex items-center gap-2">
@@ -923,6 +926,13 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                           className="flex h-6 w-6 items-center justify-center rounded-full border border-[#ff0033]/40 bg-[#ff0033]/10 text-[#ff4d6a] transition-transform hover:scale-110">
                           <ExternalLink className="h-3 w-3" />
                         </a>
+                        {wikipediaUrl && (
+                          <a href={wikipediaUrl} target="_blank" rel="noopener noreferrer"
+                            aria-label={copy.stations.wikipediaAria(name)} title={copy.stations.wikipediaAria(name)}
+                            className="flex h-6 w-6 items-center justify-center rounded-full border border-[#38bdf8]/40 bg-[#38bdf8]/10 text-[#38bdf8] transition-transform hover:scale-110">
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
                       </div>
                     );
                   })}

@@ -16,6 +16,8 @@ export interface CuratedArtistMedia {
   officialAudioUrl?: string;
   livePerformanceUrl?: string;
   officialSiteUrl?: string;
+  wikipediaEnUrl?: string;
+  wikipediaEsUrl?: string;
   mediaConfidence?: 'verified' | 'partial' | 'search';
   checkedAt?: string;
   sourceNote?: string;
@@ -25,7 +27,19 @@ export interface MediaAction {
   label: string;
   url: string;
   provider: MediaProvider | 'web';
-  kind: 'artist' | 'track' | 'album' | 'official' | 'live' | 'channel' | 'search';
+  kind: 'artist' | 'track' | 'album' | 'official' | 'live' | 'channel' | 'search' | 'wiki';
+}
+
+/**
+ * Wikipedia article for the artist in the user's language, falling back to
+ * the other language's article. Never falls back to a search URL: a wrong
+ * or noisy wiki link is worse than no link.
+ */
+export function getWikipediaUrl(entry: CuratedArtistMedia | undefined, lang: 'es' | 'en') {
+  if (!entry) return undefined;
+  return lang === 'es'
+    ? entry.wikipediaEsUrl ?? entry.wikipediaEnUrl
+    : entry.wikipediaEnUrl ?? entry.wikipediaEsUrl;
 }
 
 export interface ArtistMediaProfile {
