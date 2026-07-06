@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ParseError, parseLastfmCsvRows, parseMusicSources } from './parser';
+import { ParseError, parseAppleMusicCsvRows, parseLastfmCsvRows, parseMusicSources } from './parser';
 
 describe('music data parser', () => {
   it('parses Last.fm CSV rows with quoted commas', () => {
@@ -109,7 +109,7 @@ describe('music data parser', () => {
       'Unknown Future Band,Demo,Signal,01 Jan 2026 10:10',
     ].join('\n');
 
-    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const data = parseMusicSources({ csvTexts: [csv] });
 
     expect(data.knowledge_summary).toMatchObject({
       source: 'offline_artist_knowledge',
@@ -138,7 +138,7 @@ describe('music data parser', () => {
       },
     ]);
 
-    const data = parseMusicSources({ lastfmCsvTexts: [lastfm], spotifyJsonTexts: [spotify] });
+    const data = parseMusicSources({ csvTexts: [lastfm], spotifyJsonTexts: [spotify] });
 
     expect(data.source_summary?.source_type).toBe('merged');
     expect(data.source_summary?.lastfm_plays).toBe(1);
@@ -159,7 +159,7 @@ describe('music data parser', () => {
       'Other Artist,Album,Other Song,05 Jan 2026 10:00',
     ].join('\n');
 
-    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const data = parseMusicSources({ csvTexts: [csv] });
 
     expect(data.records?.max_day_plays).toBe(5);
     expect(data.records?.max_day_date).toBe('2026-01-01');
@@ -184,10 +184,10 @@ describe('music data parser', () => {
   });
 
   it('throws a ParseError with code NO_VALID_ROWS for empty input', () => {
-    expect(() => parseMusicSources({ lastfmCsvTexts: [''], spotifyJsonTexts: [] }))
+    expect(() => parseMusicSources({ csvTexts: [''], spotifyJsonTexts: [] }))
       .toThrow(ParseError);
     try {
-      parseMusicSources({ lastfmCsvTexts: [''], spotifyJsonTexts: [] });
+      parseMusicSources({ csvTexts: [''], spotifyJsonTexts: [] });
     } catch (err) {
       expect(err).toBeInstanceOf(ParseError);
       expect((err as ParseError).code).toBe('NO_VALID_ROWS');
@@ -222,7 +222,7 @@ describe('music data parser', () => {
       'Totally Unknown Garage Band,Demo,Song,01 Jan 2026 12:00',
     ].join('\n');
 
-    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const data = parseMusicSources({ csvTexts: [csv] });
     const metallica = data.top_artists.find(a => a.name === 'Metallica');
     const badBunny = data.top_artists.find(a => a.name === 'Bad Bunny');
     const unknown = data.top_artists.find(a => a.name === 'Totally Unknown Garage Band');
@@ -245,7 +245,7 @@ describe('music data parser', () => {
         master_metadata_album_album_name: 'Album',
       },
     ]);
-    const data = parseMusicSources({ lastfmCsvTexts: [lastfm], spotifyJsonTexts: [spotify] });
+    const data = parseMusicSources({ csvTexts: [lastfm], spotifyJsonTexts: [spotify] });
     expect(data.source_summary?.overlap_unique_tracks).toBe(1);
   });
 
@@ -299,7 +299,7 @@ describe('music data parser', () => {
       'Comma Artist,"Album, Deluxe (Special / Edition)",Track Two,01 Jan 2026 10:05',
     ].join('\n');
 
-    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const data = parseMusicSources({ csvTexts: [csv] });
 
     expect(data.top_albums).toHaveLength(1);
     expect(data.top_albums[0]).toMatchObject({
@@ -318,7 +318,7 @@ describe('music data parser', () => {
       'Gap Artist,Album,Song Three,01 Jan 2026 12:01',
     ].join('\n');
 
-    const data = parseMusicSources({ lastfmCsvTexts: [csv] });
+    const data = parseMusicSources({ csvTexts: [csv] });
 
     expect(data.sessions).toHaveLength(2);
     const sessionsByTrackCount = [...data.sessions].sort((a, b) => b.tracks_count - a.tracks_count);
@@ -326,14 +326,155 @@ describe('music data parser', () => {
     expect(sessionsByTrackCount[1].tracks_count).toBe(1);
   });
 
-  it('throws ParseError NO_VALID_ROWS when both lastfmCsvTexts and spotifyJsonTexts are empty arrays', () => {
-    expect(() => parseMusicSources({ lastfmCsvTexts: [], spotifyJsonTexts: [] }))
+  it('throws ParseError NO_VALID_ROWS when both csvTexts and spotifyJsonTexts are empty arrays', () => {
+    expect(() => parseMusicSources({ csvTexts: [], spotifyJsonTexts: [] }))
       .toThrow(ParseError);
     try {
-      parseMusicSources({ lastfmCsvTexts: [], spotifyJsonTexts: [] });
+      parseMusicSources({ csvTexts: [], spotifyJsonTexts: [] });
     } catch (err) {
       expect(err).toBeInstanceOf(ParseError);
       expect((err as ParseError).code).toBe('NO_VALID_ROWS');
     }
+  });
+
+  it('parses Apple Music Play Activity CSV rows with a dedicated artist column', () => {
+    const csv = [
+      'Country,Apple Id Number,Event Start Timestamp,Event Received Timestamp,Track Description,Artist Name,Container Description,Genre,Media Duration In Milliseconds,Play Duration Milliseconds,End Reason Type',
+      'US,123,2026-03-01T10:00:00Z,2026-03-01T10:03:20Z,MANTRA,Bring Me The Horizon,Post Human: Survival Horror,Metalcore,200000,200000,NATURAL_END_OF_TRACK',
+      'US,123,2026-03-01T10:05:00Z,2026-03-01T10:05:10Z,In Blur,Deafheaven,Infinite Granite,Blackgaze,300000,10000,SKIP_FORWARD',
+    ].join('\n');
+
+    const rows = parseAppleMusicCsvRows(csv);
+
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({
+      artist: 'Bring Me The Horizon',
+      track: 'MANTRA',
+      album: 'Post Human: Survival Horror',
+      source: 'apple_music',
+      ms_played: 200000,
+      skipped: false,
+      platform: 'Apple Music',
+    });
+    expect(rows[1]).toMatchObject({ artist: 'Deafheaven', track: 'In Blur', skipped: true });
+  });
+
+  it('falls back to splitting "Artist - Track" when Apple Music CSV has no artist column', () => {
+    const csv = [
+      'Apple Id Number,Event Start Timestamp,Track Description,Container Description,Media Duration In Milliseconds,Play Duration Milliseconds',
+      '123,2026-03-01T10:00:00Z,Bring Me The Horizon - MANTRA,Post Human: Survival Horror,200000,200000',
+    ].join('\n');
+
+    const rows = parseAppleMusicCsvRows(csv);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ artist: 'Bring Me The Horizon', track: 'MANTRA', source: 'apple_music' });
+  });
+
+  it('skips Apple Music CSV rows without a resolvable artist instead of guessing', () => {
+    const csv = [
+      'Apple Id Number,Event Start Timestamp,Track Description,Container Description,Media Duration In Milliseconds',
+      '123,2026-03-01T10:00:00Z,MANTRA,Post Human: Survival Horror,200000',
+    ].join('\n');
+
+    const rows = parseAppleMusicCsvRows(csv);
+
+    expect(rows).toHaveLength(0);
+  });
+
+  it('does not misclassify a Last.fm CSV as Apple Music', () => {
+    const data = parseMusicSources({ csvTexts: ['Real Artist,Real Album,Real Track,01 Jan 2026 10:00'] });
+    expect(data.source_summary?.source_type).toBe('lastfm');
+    expect(data.top_artists[0].name).toBe('Real Artist');
+  });
+
+  it('routes an Apple Music CSV through parseMusicSources via header sniffing', () => {
+    const csv = [
+      'Apple Id Number,Event Start Timestamp,Track Description,Artist Name,Container Description,Media Duration In Milliseconds',
+      '123,2026-03-01T10:00:00Z,MANTRA,Bring Me The Horizon,Post Human: Survival Horror,200000',
+    ].join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+
+    expect(data.source_summary?.source_type).toBe('apple_music');
+    expect(data.source_summary?.apple_music_plays).toBe(1);
+    expect(data.top_artists[0].name).toBe('Bring Me The Horizon');
+  });
+
+  it('parses a ListenBrainz listens export (plain array)', () => {
+    const listenBrainz = JSON.stringify([
+      {
+        listened_at: 1770000000,
+        track_metadata: {
+          artist_name: 'Deafheaven',
+          track_name: 'In Blur',
+          release_name: 'Infinite Granite',
+          additional_info: { duration_ms: 300000, listening_from: 'spotify' },
+        },
+      },
+      {
+        listened_at: 1770000600,
+        track_metadata: {
+          artist_name: 'Bring Me The Horizon',
+          track_name: 'MANTRA',
+        },
+      },
+    ]);
+
+    const data = parseMusicSources({ spotifyJsonTexts: [listenBrainz] });
+
+    expect(data.source_summary?.source_type).toBe('listenbrainz');
+    expect(data.source_summary?.listenbrainz_plays).toBe(2);
+    expect(data.top_artists.map(a => a.name)).toEqual(expect.arrayContaining(['Deafheaven', 'Bring Me The Horizon']));
+    expect(data.top_tracks.find(t => t.title === 'In Blur')).toMatchObject({ artist: 'Deafheaven' });
+  });
+
+  it('parses a ListenBrainz API-shaped payload wrapper', () => {
+    const wrapped = JSON.stringify({
+      payload: {
+        count: 1,
+        listens: [
+          {
+            listened_at: 1770000000,
+            track_metadata: { artist_name: 'Deafheaven', track_name: 'In Blur' },
+          },
+        ],
+      },
+    });
+
+    const data = parseMusicSources({ spotifyJsonTexts: [wrapped] });
+
+    expect(data.source_summary?.listenbrainz_plays).toBe(1);
+    expect(data.top_artists[0].name).toBe('Deafheaven');
+  });
+
+  it('merges Last.fm, Apple Music, Spotify and ListenBrainz into one dataset', () => {
+    const lastfmCsv = 'Artist A,Album A,Track A,01 Jan 2026 10:00';
+    const appleCsv = [
+      'Apple Id Number,Event Start Timestamp,Track Description,Artist Name,Container Description',
+      '1,2026-01-01T11:00:00Z,Track B,Artist B,Album B',
+    ].join('\n');
+    const spotifyJson = JSON.stringify([{
+      ts: '2026-01-01T12:00:00Z',
+      ms_played: 120000,
+      master_metadata_track_name: 'Track C',
+      master_metadata_album_artist_name: 'Artist C',
+    }]);
+    const listenBrainzJson = JSON.stringify([{
+      listened_at: 1770003600,
+      track_metadata: { artist_name: 'Artist D', track_name: 'Track D' },
+    }]);
+
+    const data = parseMusicSources({
+      csvTexts: [lastfmCsv, appleCsv],
+      spotifyJsonTexts: [spotifyJson, listenBrainzJson],
+    });
+
+    expect(data.source_summary?.source_type).toBe('merged');
+    expect(data.source_summary?.lastfm_plays).toBe(1);
+    expect(data.source_summary?.apple_music_plays).toBe(1);
+    expect(data.source_summary?.spotify_plays).toBe(1);
+    expect(data.source_summary?.listenbrainz_plays).toBe(1);
+    expect(data.core_metrics.total_plays).toBe(4);
   });
 });

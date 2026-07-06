@@ -66,6 +66,8 @@ function overallConfidence(data: MusicDnaData) {
   if (source.source_type === 'lastfm') score += 10;
   if (source.source_type === 'spotify') score += 14;
   if (source.source_type === 'youtube') score += 8;
+  if (source.source_type === 'apple_music') score += 10;
+  if (source.source_type === 'listenbrainz') score += 12;
   if (source.source_type === 'merged') score += 24;
   if (data.records) score += 6;
   if (data.platform_breakdown?.length) score += 5;
@@ -118,9 +120,13 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       ? t.dataQuality.dynamic.sourceSpotify
       : source.source_type === 'youtube'
         ? t.dataQuality.dynamic.sourceYoutube
-        : source.source_type === 'lastfm'
-          ? t.dataQuality.dynamic.sourceLastfm
-          : t.dataQuality.dynamic.sourceUnknown;
+        : source.source_type === 'apple_music'
+          ? t.dataQuality.dynamic.sourceAppleMusic
+          : source.source_type === 'listenbrainz'
+            ? t.dataQuality.dynamic.sourceListenBrainz
+            : source.source_type === 'lastfm'
+              ? t.dataQuality.dynamic.sourceLastfm
+              : t.dataQuality.dynamic.sourceUnknown;
 
   const profileCards = [
     {
@@ -167,6 +173,19 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       value: source.youtube_plays,
       kind: source.youtube_plays ? 'inferred' as ConfidenceKind : 'unavailable' as ConfidenceKind,
     },
+    // Apple Music / ListenBrainz only appear once a matching upload actually
+    // contributed plays - most datasets never touch these two sources, so a
+    // permanent zero-value row would just be noise for everyone else.
+    ...(source.apple_music_plays ? [{
+      label: t.dataQuality.appleMusicLabel,
+      value: source.apple_music_plays,
+      kind: 'exact' as ConfidenceKind,
+    }] : []),
+    ...(source.listenbrainz_plays ? [{
+      label: t.dataQuality.listenBrainzLabel,
+      value: source.listenbrainz_plays,
+      kind: 'exact' as ConfidenceKind,
+    }] : []),
     {
       label: t.dataQuality.overlapLabel,
       value: source.overlap_unique_tracks,

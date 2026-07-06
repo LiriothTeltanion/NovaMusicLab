@@ -21,7 +21,7 @@ const STRINGS = {
       browseButton: 'Examinar archivos localmente',
       dropZoneAriaLabel: 'Subir archivos de historial musical',
       noFilesError:
-        'Por favor, sube un CSV de Last.fm, JSON de Spotify o JSON/HTML de YouTube Takeout.',
+        'Por favor, sube un CSV de Last.fm/Apple Music, JSON de Spotify/ListenBrainz o JSON/HTML de YouTube Takeout.',
       wizardTitle: 'Elige tu fuente, descarga tu historial y súbelo aquí',
     },
   },
@@ -31,7 +31,7 @@ const STRINGS = {
       browseButton: 'Browse local files',
       dropZoneAriaLabel: 'Upload music history files',
       noFilesError:
-        'Please upload Last.fm CSV, Spotify JSON or YouTube Takeout JSON/HTML files.',
+        'Please upload Last.fm/Apple Music CSV, Spotify/ListenBrainz JSON or YouTube Takeout JSON/HTML files.',
       wizardTitle: 'Choose your source, download your history and upload it here',
     },
   },
@@ -135,6 +135,59 @@ describe('DataUploader', () => {
     expect(parsed.knowledge_summary?.matched_artists).toBe(1);
     expect(parsed.top_tracks[0].title).toBe('MANTRA');
     expect(await screen.findByText('Cobertura del catálogo local de artistas')).toBeInTheDocument();
+  });
+
+  it('accepts an Apple Music Play Activity CSV export', async () => {
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const appleMusicCsv = [
+      'Apple Id Number,Event Start Timestamp,Track Description,Artist Name,Container Description,Media Duration In Milliseconds',
+      '123,2026-03-01T10:00:00Z,MANTRA,Bring Me The Horizon,Post Human: Survival Horror,200000',
+    ].join('\n');
+    const csvFile = new File([appleMusicCsv], 'Apple Music Play Activity.csv', { type: 'text/csv' });
+
+    await user.upload(input, csvFile);
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    const parsed = onDataLoaded.mock.calls[0][0];
+    expect(parsed.source_summary?.source_type).toBe('apple_music');
+    expect(parsed.source_summary?.apple_music_plays).toBe(1);
+    expect(parsed.top_artists[0].name).toBe('Bring Me The Horizon');
+    expect(await screen.findByText('Cobertura del catálogo local de artistas')).toBeInTheDocument();
+  });
+
+  it('accepts a ListenBrainz listens JSON export', async () => {
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const listenBrainzJson = JSON.stringify([
+      {
+        listened_at: 1770000000,
+        track_metadata: { artist_name: 'Deafheaven', track_name: 'In Blur', release_name: 'Infinite Granite' },
+      },
+    ]);
+    const jsonFile = new File([listenBrainzJson], 'listenbrainz-export.json', { type: 'application/json' });
+
+    await user.upload(input, jsonFile);
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    const parsed = onDataLoaded.mock.calls[0][0];
+    expect(parsed.source_summary?.source_type).toBe('listenbrainz');
+    expect(parsed.source_summary?.listenbrainz_plays).toBe(1);
+    expect(parsed.top_artists[0].name).toBe('Deafheaven');
   });
 
   it('renders English strings when nml_lang is set to "en"', () => {

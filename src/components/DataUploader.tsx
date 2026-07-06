@@ -11,6 +11,7 @@ import {
   ListChecks,
   Music2,
   PlaySquare,
+  Radio,
   ShieldCheck,
   Upload,
 } from 'lucide-react';
@@ -39,11 +40,11 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
   const [knowledgeSummary, setKnowledgeSummary] = useState<MusicDnaData['knowledge_summary'] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const providerIcons = [Headphones, Music2, PlaySquare, FileJson, ListChecks];
+  const providerIcons = [Headphones, Music2, PlaySquare, FileJson, Radio, ListChecks];
   const providerCards = t.uploader.providerGuide.map((provider, index) => ({
     ...provider,
     icon: providerIcons[index] ?? Files,
-    color: [tc.c1, '#1DB954', '#ff0033', tc.c3, tc.c4][index] ?? tc.c1,
+    color: [tc.c1, '#1DB954', '#ff0033', tc.c3, tc.c2, tc.c4][index] ?? tc.c1,
   }));
 
   const handleDrag = (e: React.DragEvent) => {
@@ -97,7 +98,7 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
         setWarning(t.uploader.largeFileWarning((largestFile / (1024 * 1024)).toFixed(0)));
       }
 
-      const [lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts] = await Promise.all([
+      const [csvTexts, spotifyJsonTexts, youtubeHtmlTexts] = await Promise.all([
         Promise.all(csvFiles.map(readFileAsText)),
         Promise.all(jsonFiles.map(readFileAsText)),
         Promise.all(htmlFiles.map(readFileAsText)),
@@ -117,17 +118,22 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
         }
       }
 
+      const parsed = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
+      // Built from actually-recognized plays (not file extensions), since a
+      // .csv can be Last.fm or Apple Music and a .json can be Spotify/YouTube/
+      // ListenBrainz - only the parsed result knows which sources landed.
+      const source = parsed.source_summary;
       const sourceLabel = [
-        csvFiles.length ? `${csvFiles.length}× Last.fm CSV` : null,
-        jsonFiles.length ? `${jsonFiles.length}× Spotify/YouTube JSON` : null,
-        htmlFiles.length ? `${htmlFiles.length}× YouTube HTML` : null,
-      ].filter(Boolean).join(' + ');
+        source?.lastfm_plays ? `${source.lastfm_plays}× Last.fm` : null,
+        source?.apple_music_plays ? `${source.apple_music_plays}× Apple Music` : null,
+        source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
+        source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
+        source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
+      ].filter(Boolean).join(' + ') || 'Imported Files';
 
-      const parsed = parseMusicSources({ lastfmCsvTexts, spotifyJsonTexts, youtubeHtmlTexts });
       onDataLoaded(parsed, sourceLabel);
       setKnowledgeSummary(parsed.knowledge_summary ?? null);
 
-      const source = parsed.source_summary;
       setSuccessMsg(t.uploader.successMessage(
         files.length,
         parsed.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),

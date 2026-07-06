@@ -300,6 +300,12 @@ export function localizeSourceNote(source: SourceSummary, lang: Lang) {
     if (source.source_type === 'youtube') {
       return 'YouTube-only upload: watch timestamps are direct, while artist and track names are inferred from video titles and channels.';
     }
+    if (source.source_type === 'apple_music') {
+      return 'Apple Music-only upload: Play Activity timestamps are direct, while rows without a resolvable artist are skipped rather than guessed.';
+    }
+    if (source.source_type === 'listenbrainz') {
+      return 'ListenBrainz-only upload: listens are direct, including the artist, track and album fields you already scrobbled there.';
+    }
     if (source.source_type === 'lastfm' && (source.spotify_plays > 0 || source.spotify_short_plays > 0)) {
       return 'Bundled Kevin analysis: Last.fm is the primary verified timeline; Spotify values are report-level estimates unless a fresh Spotify export is uploaded.';
     }
@@ -317,6 +323,12 @@ export function localizeSourceNote(source: SourceSummary, lang: Lang) {
   }
   if (source.source_type === 'youtube') {
     return 'Carga solo de YouTube: los timestamps son directos, mientras artista y canción se infieren desde títulos de video y canales.';
+  }
+  if (source.source_type === 'apple_music') {
+    return 'Carga solo de Apple Music: los timestamps de Play Activity son directos; las filas sin artista identificable se descartan en vez de adivinarse.';
+  }
+  if (source.source_type === 'listenbrainz') {
+    return 'Carga solo de ListenBrainz: los listens son directos, incluyendo artista, canción y álbum que ya scrobbleaste ahí.';
   }
   if (source.source_type === 'lastfm' && (source.spotify_plays > 0 || source.spotify_short_plays > 0)) {
     return 'Análisis incluido de Kevin: Last.fm es la línea temporal verificada principal; los valores de Spotify son estimaciones del informe salvo que se suba una exportación fresca de Spotify.';

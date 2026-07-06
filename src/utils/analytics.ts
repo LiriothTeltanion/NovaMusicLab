@@ -132,6 +132,8 @@ export function deriveSourceSummary(data: MusicDnaData): SourceSummary {
     return {
       ...data.source_summary,
       youtube_plays: data.source_summary.youtube_plays ?? 0,
+      apple_music_plays: data.source_summary.apple_music_plays ?? 0,
+      listenbrainz_plays: data.source_summary.listenbrainz_plays ?? 0,
     };
   }
   return {
@@ -139,6 +141,8 @@ export function deriveSourceSummary(data: MusicDnaData): SourceSummary {
     lastfm_plays: data.core_metrics.total_plays,
     spotify_plays: 0,
     youtube_plays: 0,
+    apple_music_plays: 0,
+    listenbrainz_plays: 0,
     merged_plays: data.core_metrics.total_plays,
     spotify_skips: 0,
     spotify_skip_rate_pct: 0,

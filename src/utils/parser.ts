@@ -77,26 +77,52 @@ export function parseSpotifyJsons(jsonTexts: string[]): MusicDnaData {
   return aggregateData(parseStreamingJsonRows(jsonTexts), 'Streaming History JSON');
 }
 
+const SOURCE_LABELS: Record<RawSource, string> = {
+  lastfm: 'Last.fm CSV',
+  apple_music: 'Apple Music CSV',
+  spotify: 'Spotify JSON',
+  youtube: 'YouTube JSON/HTML',
+  listenbrainz: 'ListenBrainz JSON',
+};
+
 export function parseMusicSources(options: {
-  lastfmCsvTexts?: string[];
+  /** CSV files of any supported shape - Last.fm and Apple Music are told apart by header sniffing. */
+  csvTexts?: string[];
   spotifyJsonTexts?: string[];
   youtubeHtmlTexts?: string[];
 }): MusicDnaData {
   const plays = [
-    ...(options.lastfmCsvTexts ?? []).flatMap(parseLastfmCsvRows),
+    ...(options.csvTexts ?? []).flatMap(parseCsvSourceRows),
     ...parseStreamingJsonRows(options.spotifyJsonTexts ?? []),
     ...parseYoutubeHtmlRows(options.youtubeHtmlTexts ?? []),
   ];
-  const sourceLabel = [
-    options.lastfmCsvTexts?.length ? 'Last.fm CSV' : '',
-    options.spotifyJsonTexts?.length ? 'Streaming History JSON' : '',
-    options.youtubeHtmlTexts?.length ? 'YouTube Takeout HTML' : '',
-  ].filter(Boolean).join(' + ');
-  return aggregateData(plays, sourceLabel || 'Imported Files');
+  const detectedSources = [...new Set(plays.map(play => play.source))];
+  const sourceLabel = detectedSources.length
+    ? detectedSources.map(source => SOURCE_LABELS[source]).join(' + ')
+    : 'Imported Files';
+  return aggregateData(plays, sourceLabel);
+}
+
+/**
+ * Routes a single CSV file to the right row parser by sniffing its header
+ * row - Apple Music's Play Activity export and Last.fm's scrobble export
+ * share the .csv extension but nothing else, so extension alone can't tell
+ * them apart.
+ */
+function parseCsvSourceRows(csvText: string): ParsedPlay[] {
+  const rows = parseCsvRows(csvText);
+  if (!rows.length) return [];
+  const header = rows[0].map(cell => cell.trim().toLowerCase());
+  return looksLikeAppleMusicHeader(header)
+    ? appleMusicRowsFromParsedRows(rows)
+    : lastfmRowsFromParsedRows(rows);
 }
 
 export function parseLastfmCsvRows(csvText: string): ParsedPlay[] {
-  const rows = parseCsvRows(csvText);
+  return lastfmRowsFromParsedRows(parseCsvRows(csvText));
+}
+
+function lastfmRowsFromParsedRows(rows: string[][]): ParsedPlay[] {
   const plays: ParsedPlay[] = [];
 
   rows.forEach((row, index) => {
@@ -122,6 +148,134 @@ export function parseLastfmCsvRows(csvText: string): ParsedPlay[] {
   return plays;
 }
 
+/**
+ * Apple's "Play Activity" privacy-export CSV. Its exact column set varies by
+ * export year/region and it notoriously omits a reliable artist column in
+ * some variants, so this parser is deliberately conservative: it looks up
+ * known column aliases and SKIPS any row it cannot confidently attribute to
+ * an artist, rather than guessing. Wrong data is worse than missing data.
+ */
+const APPLE_MUSIC_HEADER_SIGNALS = [
+  'track description',
+  'apple id number',
+  'media duration in milliseconds',
+  'play duration milliseconds',
+  'container description',
+];
+
+const APPLE_MUSIC_COLUMNS = {
+  track: ['track description', 'song name', 'track name', 'title'],
+  artist: ['artist name', 'artist'],
+  album: ['container description', 'album name', 'container name'],
+  timestamp: ['event start timestamp', 'event received timestamp', 'date played', 'timestamp', 'date'],
+  playDurationMs: ['play duration milliseconds', 'play duration in millis', 'play duration ms'],
+  mediaDurationMs: ['media duration in milliseconds', 'media duration ms'],
+  endReason: ['end reason type'],
+} as const;
+
+function looksLikeAppleMusicHeader(header: string[]): boolean {
+  const joined = header.join(',');
+  // Require 2+ strong signals so a Last.fm export that happens to contain a
+  // column named "track" or "date" is never misclassified as Apple Music.
+  return APPLE_MUSIC_HEADER_SIGNALS.filter(signal => joined.includes(signal)).length >= 2;
+}
+
+function findColumnIndex(header: string[], aliases: readonly string[]): number {
+  for (const alias of aliases) {
+    const idx = header.indexOf(alias);
+    if (idx !== -1) return idx;
+  }
+  return -1;
+}
+
+/** Best-effort "Artist - Track" split for Apple exports without a dedicated artist column. */
+function splitDashedArtistTrack(title: string): { artist: string; track: string } | null {
+  const normalized = title.replace(/[–—]/g, '-');
+  const parts = normalized.split(/\s+-\s+/);
+  if (parts.length < 2) return null;
+  const artist = parts[0].trim();
+  const track = cleanTrackDescriptor(parts.slice(1).join(' - '));
+  return artist && track ? { artist, track } : null;
+}
+
+export function parseAppleMusicCsvRows(csvText: string): ParsedPlay[] {
+  return appleMusicRowsFromParsedRows(parseCsvRows(csvText));
+}
+
+function appleMusicRowsFromParsedRows(rows: string[][]): ParsedPlay[] {
+  if (!rows.length) return [];
+  const header = rows[0].map(cell => cell.trim().toLowerCase());
+  const col = {
+    track: findColumnIndex(header, APPLE_MUSIC_COLUMNS.track),
+    artist: findColumnIndex(header, APPLE_MUSIC_COLUMNS.artist),
+    album: findColumnIndex(header, APPLE_MUSIC_COLUMNS.album),
+    timestamp: findColumnIndex(header, APPLE_MUSIC_COLUMNS.timestamp),
+    playDurationMs: findColumnIndex(header, APPLE_MUSIC_COLUMNS.playDurationMs),
+    mediaDurationMs: findColumnIndex(header, APPLE_MUSIC_COLUMNS.mediaDurationMs),
+    endReason: findColumnIndex(header, APPLE_MUSIC_COLUMNS.endReason),
+  };
+  if (col.track === -1 || col.timestamp === -1) return [];
+
+  const plays: ParsedPlay[] = [];
+
+  for (let i = 1; i < rows.length; i++) {
+    const row = rows[i];
+    const rawTrack = (row[col.track] ?? '').trim();
+    const rawArtist = col.artist !== -1 ? (row[col.artist] ?? '').trim() : '';
+    const rawTimestamp = (row[col.timestamp] ?? '').trim();
+    if (!rawTrack || !rawTimestamp) continue;
+
+    let artist = rawArtist;
+    let track = cleanTrackDescriptor(rawTrack);
+    if (!artist) {
+      const split = splitDashedArtistTrack(rawTrack);
+      if (!split) continue; // No dedicated artist column and no dash pattern - cannot attribute safely.
+      artist = split.artist;
+      track = split.track;
+    }
+    if (!artist || !track) continue;
+
+    const ts = new Date(rawTimestamp);
+    if (Number.isNaN(ts.getTime())) continue;
+
+    const album = col.album !== -1 ? (row[col.album] ?? '').trim() : '';
+    const playMs = col.playDurationMs !== -1 ? Number(row[col.playDurationMs]) || 0 : 0;
+    const mediaMs = col.mediaDurationMs !== -1 ? Number(row[col.mediaDurationMs]) || 0 : 0;
+    const endReason = col.endReason !== -1 ? (row[col.endReason] ?? '').toLowerCase() : '';
+
+    plays.push({
+      artist,
+      track,
+      album,
+      ts,
+      ts_str: ts.toISOString(),
+      source: 'apple_music',
+      ms_played: playMs > 0 ? playMs : (mediaMs > 0 ? mediaMs : undefined),
+      skipped: endReason.includes('skip'),
+      platform: 'Apple Music',
+    });
+  }
+
+  return plays;
+}
+
+/**
+ * Unwraps the shapes a JSON-based export can arrive in: a plain array
+ * (Spotify Extended History, YouTube Takeout, ListenBrainz's own profile
+ * export) or an object wrapping the listen array (ListenBrainz API-shaped
+ * responses: `{listens:[...]}` or `{payload:{listens:[...]}}`).
+ */
+function extractJsonRowsArray(parsed: unknown): unknown[] | null {
+  if (Array.isArray(parsed)) return parsed;
+  if (parsed && typeof parsed === 'object') {
+    const obj = parsed as Record<string, unknown>;
+    if (Array.isArray(obj.listens)) return obj.listens;
+    const payload = obj.payload as Record<string, unknown> | undefined;
+    if (payload && Array.isArray(payload.listens)) return payload.listens;
+  }
+  return null;
+}
+
 function parseStreamingJsonRows(jsonTexts: string[]): ParsedPlay[] {
   const plays: ParsedPlay[] = [];
 
@@ -132,14 +286,21 @@ function parseStreamingJsonRows(jsonTexts: string[]): ParsedPlay[] {
     } catch {
       throw new ParseError('INVALID_JSON', 'One of the uploaded files is not valid JSON.');
     }
-    if (!Array.isArray(parsed)) return;
+    const rows = extractJsonRowsArray(parsed);
+    if (!rows) return;
 
-    parsed.forEach(item => {
+    rows.forEach(item => {
       if (!item || typeof item !== 'object') return;
 
       const spotifyPlay = spotifyPlayFromItem(item);
       if (spotifyPlay) {
         plays.push(spotifyPlay);
+        return;
+      }
+
+      const listenBrainzPlay = listenBrainzPlayFromItem(item);
+      if (listenBrainzPlay) {
+        plays.push(listenBrainzPlay);
         return;
       }
 
@@ -198,6 +359,38 @@ function spotifyPlayFromItem(item: any): ParsedPlay | undefined {
     reason_end: item.reason_end,
     offline: Boolean(item.offline),
     spotify_uri: item.spotify_track_uri,
+  };
+}
+
+/**
+ * ListenBrainz listens: `{listened_at: unixSeconds, track_metadata: {artist_name, track_name, release_name, additional_info}}`.
+ * This is ListenBrainz's own documented listen shape (profile export and API responses share it).
+ */
+function listenBrainzPlayFromItem(item: any): ParsedPlay | undefined {
+  const listenedAt = item.listened_at;
+  const meta = item.track_metadata;
+  if (typeof listenedAt !== 'number' || !meta || typeof meta !== 'object') return undefined;
+
+  const artist = meta.artist_name;
+  const track = meta.track_name;
+  if (!artist || !track) return undefined;
+
+  const ts = new Date(listenedAt * 1000);
+  if (Number.isNaN(ts.getTime())) return undefined;
+
+  const album = meta.release_name || '';
+  const durationMs = meta.additional_info?.duration_ms;
+  const listeningFrom = meta.additional_info?.listening_from;
+
+  return {
+    artist: String(artist).trim(),
+    track: String(track).trim(),
+    album: String(album).trim(),
+    ts,
+    ts_str: ts.toISOString(),
+    source: 'listenbrainz',
+    ms_played: typeof durationMs === 'number' ? durationMs : undefined,
+    platform: typeof listeningFrom === 'string' ? listeningFrom : 'ListenBrainz',
   };
 }
 
@@ -414,9 +607,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
       active_days: dateCounts.size,
       max_year: yearlyEras.length ? [...yearlyEras].sort((a, b) => b.plays - a.plays)[0].year : 'N/A',
       match_rate_pct: sourceSummary.source_type === 'merged'
-        ? sourceSummary.spotify_plays || sourceSummary.lastfm_plays || sourceSummary.youtube_plays
-          ? round2(sourceSummary.overlap_unique_tracks / Math.max(1, new Set(sortedItems.map(item => normalizedTrackKey(item.artist, item.track))).size) * 100)
-          : 0
+        ? round2(sourceSummary.overlap_unique_tracks / Math.max(1, new Set(sortedItems.map(item => normalizedTrackKey(item.artist, item.track))).size) * 100)
         : 100,
     },
     top_artists: topArtists,
@@ -439,26 +630,45 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
   };
 }
 
+const SOURCE_NOTES: Record<RawSource, string> = {
+  lastfm: 'Last.fm-only upload: timestamps and scrobbles are direct, while skip/platform data are unavailable.',
+  spotify: 'Spotify-only upload: skip, platform and country data are measured directly from the export.',
+  youtube: 'YouTube-only upload: watch history timestamps are direct, while artist and track names are inferred from video titles and channel names.',
+  apple_music: 'Apple Music-only upload: Play Activity timestamps are direct, while rows without a resolvable artist are skipped.',
+  listenbrainz: 'ListenBrainz-only upload: listens are direct, including the artist, track and album fields already scrobbled there.',
+};
+
 function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
-  const lastfmItems = items.filter(item => item.source === 'lastfm');
-  const spotifyItems = items.filter(item => item.source === 'spotify');
-  const youtubeItems = items.filter(item => item.source === 'youtube');
-  const lastfmTracks = new Set(lastfmItems.map(item => normalizedTrackKey(item.artist, item.track)));
-  const spotifyTracks = new Set(spotifyItems.map(item => normalizedTrackKey(item.artist, item.track)));
-  const youtubeTracks = new Set(youtubeItems.map(item => normalizedTrackKey(item.artist, item.track)));
-  const allSources = [lastfmItems.length, spotifyItems.length, youtubeItems.length].filter(Boolean).length;
-  const overlap = [...lastfmTracks].filter(key => spotifyTracks.has(key) || youtubeTracks.has(key)).length;
+  const bySource: Record<RawSource, ParsedPlay[]> = {
+    lastfm: items.filter(item => item.source === 'lastfm'),
+    spotify: items.filter(item => item.source === 'spotify'),
+    youtube: items.filter(item => item.source === 'youtube'),
+    apple_music: items.filter(item => item.source === 'apple_music'),
+    listenbrainz: items.filter(item => item.source === 'listenbrainz'),
+  };
+  const activeSources = (Object.keys(bySource) as RawSource[]).filter(source => bySource[source].length > 0);
+
+  const trackKeyCounts = new Map<string, number>();
+  activeSources.forEach(source => {
+    new Set(bySource[source].map(item => normalizedTrackKey(item.artist, item.track))).forEach(key => {
+      trackKeyCounts.set(key, (trackKeyCounts.get(key) ?? 0) + 1);
+    });
+  });
+  const overlap = [...trackKeyCounts.values()].filter(count => count > 1).length;
+
+  const spotifyItems = bySource.spotify;
   const spotifySkips = spotifyItems.filter(item => item.skipped).length;
   const spotifyShortPlays = spotifyItems.filter(item => (item.ms_played ?? 0) > 0 && (item.ms_played ?? 0) < 30000).length;
-  const sourceType: PlaySource = allSources > 1
-    ? 'merged'
-    : spotifyItems.length ? 'spotify' : youtubeItems.length ? 'youtube' : 'lastfm';
+
+  const sourceType: PlaySource = activeSources.length > 1 ? 'merged' : (activeSources[0] ?? 'unknown');
 
   return {
     source_type: sourceType,
-    lastfm_plays: lastfmItems.length,
-    spotify_plays: spotifyItems.length,
-    youtube_plays: youtubeItems.length,
+    lastfm_plays: bySource.lastfm.length,
+    spotify_plays: bySource.spotify.length,
+    youtube_plays: bySource.youtube.length,
+    apple_music_plays: bySource.apple_music.length,
+    listenbrainz_plays: bySource.listenbrainz.length,
     merged_plays: items.length,
     spotify_skips: spotifySkips,
     spotify_skip_rate_pct: spotifyItems.length ? round2((spotifySkips / spotifyItems.length) * 100) : 0,
@@ -467,11 +677,7 @@ function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
     overlap_unique_tracks: overlap,
     source_note: sourceType === 'merged'
       ? 'Merged upload: totals include all imported events. Overlap is measured by normalized artist + track names.'
-      : sourceType === 'spotify'
-        ? 'Spotify-only upload: skip, platform and country data are measured directly from the export.'
-        : sourceType === 'youtube'
-          ? 'YouTube-only upload: watch history timestamps are direct, while artist and track names are inferred from video titles and channel names.'
-          : 'Last.fm-only upload: timestamps and scrobbles are direct, while skip/platform data are unavailable.',
+      : SOURCE_NOTES[sourceType as RawSource] ?? 'Unknown source: this dataset uses the best available imported events.',
   };
 }
 
