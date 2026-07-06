@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass
+  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users
 } from 'lucide-react';
 
 import defaultMusicData from './data/music_dna_compiled.json';
@@ -37,11 +37,12 @@ const Achievements = lazy(() => import('./components/Achievements'));
 const TimeCapsule = lazy(() => import('./components/TimeCapsule'));
 const WrappedCard = lazy(() => import('./components/WrappedCard'));
 const RecentPulse = lazy(() => import('./components/RecentPulse'));
+const MuseumComparator = lazy(() => import('./components/MuseumComparator'));
 
 type Tab =
   | 'hero' | 'dashboard' | 'eras' | 'top' | 'personality' | 'emotions'
   | 'obsessions' | 'cultural' | 'inner' | 'artist' | 'insights'
-  | 'compare' | 'platforms' | 'quality' | 'statsdeep' | 'achievements'
+  | 'compare' | 'museums' | 'platforms' | 'quality' | 'statsdeep' | 'achievements'
   | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload';
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
@@ -353,6 +354,7 @@ function AppInner() {
     { id: 'wrapped',     group: 'listening', label: t.nav.wrapped,      icon: Gift,            color: '#ec4899', secondary: '#facc15', motif: 'spark' },
     { id: 'pulse',       group: 'listening', label: t.nav.pulse,        icon: Radio,           color: '#22d3ee', secondary: '#10b981', motif: 'pulse' },
     { id: 'compare',     group: 'data',      label: t.nav.compare,      icon: GitCompare,      color: '#1DB954', secondary: '#e8334a', motif: 'orbit' },
+    { id: 'museums',     group: 'data',      label: t.nav.museums,      icon: Users,           color: '#84cc16', secondary: '#0ea5e9', motif: 'orbit' },
     { id: 'platforms',   group: 'data',      label: t.nav.platforms,    icon: TabletSmartphone, color: '#38bdf8', secondary: '#10b981', motif: 'grid' },
     { id: 'quality',     group: 'data',      label: t.nav.dataQuality,  icon: ShieldCheck,     color: '#2dd4bf', secondary: '#60a5fa', motif: 'grid' },
     { id: 'statsdeep',   group: 'data',      label: t.nav.statsPro,     icon: Activity,        color: '#38bdf8', secondary: '#a78bfa', motif: 'pulse' },
@@ -557,6 +559,7 @@ function AppInner() {
                     {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
                     {activeTab === 'top'         && <TopHistorico data={filteredData} />}
                     {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
+                    {activeTab === 'museums'     && <MuseumComparator data={filteredData} primaryLabel={storedMeta?.sourceLabel ?? filteredData.project} />}
                     {activeTab === 'platforms'   && <PlatformsDevices data={filteredData} />}
                     {activeTab === 'quality'     && <DataQualityCenter data={filteredData} />}
                     {activeTab === 'statsdeep'   && <StatsDeepDive data={filteredData} />}
