@@ -2914,7 +2914,36 @@
           "end": null,
           "current": true
         }
-      ]
+      ],
+      "wikidata": {
+        "id": "Q113240744",
+        "url": "https://www.wikidata.org/entity/Q113240744",
+        "label": "Magnolia Park",
+        "description": "American rock band",
+        "genres": [
+          "alternative rock",
+          "emo",
+          "rap rock",
+          "pop-punk",
+          "punk rock"
+        ],
+        "countries": [
+          "United States"
+        ],
+        "formationPlaces": [
+          "Orlando"
+        ],
+        "recordLabels": [],
+        "members": [],
+        "occupations": [],
+        "instruments": [],
+        "instanceOf": [
+          "musical group"
+        ],
+        "officialWebsites": [],
+        "images": [],
+        "inception": "2019-01-01"
+      }
     },
     {
       "name": "Machine Gun Kelly",
@@ -7890,7 +7919,36 @@
         "activeYears": [],
         "releaseYears": []
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "wikidata": {
+        "id": "Q102164711",
+        "url": "https://www.wikidata.org/entity/Q102164711",
+        "label": "Sweez",
+        "description": "New York Singer",
+        "genres": [
+          "pop rap",
+          "alternative hip-hop",
+          "hip-hop",
+          "rock music"
+        ],
+        "countries": [
+          "United States"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [],
+        "members": [],
+        "occupations": [
+          "singer",
+          "songwriter"
+        ],
+        "instruments": [],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [],
+        "images": [],
+        "birthDate": "1994-05-19"
+      }
     },
     {
       "name": "Crown the Empire",
@@ -9305,7 +9363,42 @@
         "activeYears": [],
         "releaseYears": []
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "wikidata": {
+        "id": "Q2908623",
+        "url": "https://www.wikidata.org/entity/Q2908623",
+        "label": "Mooki",
+        "description": "Israeli singer",
+        "genres": [
+          "hip-hop"
+        ],
+        "countries": [
+          "Israel"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [
+          "NMC"
+        ],
+        "members": [],
+        "occupations": [
+          "actor",
+          "singer",
+          "reality television program judge",
+          "rapper",
+          "songwriter"
+        ],
+        "instruments": [
+          "voice"
+        ],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [],
+        "images": [
+          "http://commons.wikimedia.org/wiki/Special:FilePath/Muki.jpg"
+        ],
+        "birthDate": "1975-03-02"
+      }
     },
     {
       "name": "Nightlife",
@@ -13085,7 +13178,35 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "wikidata": {
+        "id": "Q106514848",
+        "url": "https://www.wikidata.org/entity/Q106514848",
+        "label": "Louta",
+        "description": "Argentinian musical artist",
+        "genres": [],
+        "countries": [
+          "Argentina"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [],
+        "members": [],
+        "occupations": [
+          "disc jockey",
+          "singer",
+          "musician",
+          "songwriter"
+        ],
+        "instruments": [
+          "voice"
+        ],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [],
+        "images": [],
+        "birthDate": "1994-06-22"
+      }
     },
     {
       "name": "Asking Alexandria",
@@ -14801,7 +14922,30 @@
           2013
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "wikidata": {
+        "id": "Q48700524",
+        "url": "https://www.wikidata.org/entity/Q48700524",
+        "label": "Atzmus",
+        "description": "Argentine fusion rock band",
+        "genres": [],
+        "countries": [
+          "Argentina"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [],
+        "members": [],
+        "occupations": [],
+        "instruments": [],
+        "instanceOf": [
+          "musical group",
+          "musical ensemble"
+        ],
+        "officialWebsites": [
+          "http://atzmus.com/"
+        ],
+        "images": []
+      }
     },
     {
       "name": "SMBDY ELSE",
@@ -15940,7 +16084,44 @@
         "activeYears": [],
         "releaseYears": []
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "wikidata": {
+        "id": "Q2688195",
+        "url": "https://www.wikidata.org/entity/Q2688195",
+        "label": "Rami Kleinstein",
+        "description": "Israeli singer/composer",
+        "genres": [
+          "rock music"
+        ],
+        "countries": [
+          "Israel"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [
+          "Hed Arzi Music"
+        ],
+        "members": [],
+        "occupations": [
+          "composer",
+          "singer",
+          "pianist",
+          "musician",
+          "songwriter"
+        ],
+        "instruments": [
+          "voice"
+        ],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [
+          "http://www.ramikleinstein.co.il"
+        ],
+        "images": [
+          "http://commons.wikimedia.org/wiki/Special:FilePath/Rami%20Kleinstein.jpg"
+        ],
+        "birthDate": "1962-11-10"
+      }
     },
     {
       "name": "Corbin Karasu",
