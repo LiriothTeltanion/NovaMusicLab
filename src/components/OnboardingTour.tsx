@@ -117,10 +117,10 @@ export default function OnboardingTour({ open, onClose, onFinish }: OnboardingTo
               ))}
             </div>
 
-            <div className="mt-5 flex items-center justify-between gap-3">
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
               <button
                 onClick={onClose}
-                className="text-xs font-mono font-bold uppercase tracking-wider text-gray-500 transition-colors hover:text-gray-300"
+                className="text-xs font-mono font-bold uppercase tracking-wider text-gray-400 transition-colors hover:text-gray-200"
               >
                 {copy.skip}
               </button>

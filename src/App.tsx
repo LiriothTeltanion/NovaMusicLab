@@ -13,8 +13,12 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
-import OnboardingTour from './components/OnboardingTour';
 import SectionNarrative from './components/SectionNarrative';
+
+// Lazy: not needed for the very first paint (skipped entirely for returning
+// visitors who already dismissed it), and its MoodArtCanvas dependency would
+// otherwise bloat the main bundle every visitor downloads immediately.
+const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -453,10 +457,10 @@ function AppInner() {
           {/* Reopen welcome tour */}
           <button onClick={() => setShowTour(true)}
             aria-label={t.onboarding.reopenAria}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs font-bold rounded-full transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs font-bold rounded-full transition-all"
             style={{ borderColor: `${tc.c3}35`, color: tc.c3 }}>
             <Compass className="w-3.5 h-3.5" />
-            <span className="hidden lg:block">{t.onboarding.reopenLabel}</span>
+            <span className="hidden sm:block">{t.onboarding.reopenLabel}</span>
           </button>
 
           {/* Load data button */}
@@ -623,11 +627,15 @@ function AppInner() {
         )}
       </AnimatePresence>
 
-      <OnboardingTour
-        open={showTour}
-        onClose={closeTour}
-        onFinish={() => goToTab(activeTab === 'hero' ? 'dashboard' : activeTab)}
-      />
+      {showTour && (
+        <Suspense fallback={null}>
+          <OnboardingTour
+            open
+            onClose={closeTour}
+            onFinish={() => goToTab(activeTab === 'hero' ? 'dashboard' : activeTab)}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
