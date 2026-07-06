@@ -1341,6 +1341,38 @@ const STRINGS = {
         { title: 'Límite', tag: 'No live', body: 'La app no consulta Spotify en vivo. Para actualizar este pulso hay que reemplazar el snapshot local.' },
       ],
     },
+    onboarding: {
+      reopenLabel: 'Tour',
+      reopenAria: 'Reabrir el tour de bienvenida',
+      closeAria: 'Cerrar',
+      skip: 'Saltar',
+      back: 'Atrás',
+      next: 'Siguiente',
+      finish: 'Empezar a explorar',
+      stepLabel: (current: number, total: number) => `Paso ${current} de ${total}`,
+      steps: [
+        {
+          title: 'Bienvenido al Museo Sonoro',
+          body: 'Nova Music Lab convierte tu historial de escucha en un museo visual, estadístico y emocional. Todo se procesa en tu navegador: nada se sube a un servidor.',
+        },
+        {
+          title: 'Dos caminos de entrada',
+          body: 'Explora el museo curado de Kevin/Lirioth con un clic, o sube tu propio historial de Last.fm, Spotify, YouTube, Apple Music o ListenBrainz para generar tu propio museo.',
+        },
+        {
+          title: 'Un museo con muchas salas',
+          body: 'La barra lateral organiza el archivo en Vista General, Archivo, Identidad, Escucha, Datos y Exportar: eras musicales, tops históricos, mapa emocional, logros, comparativas y más.',
+        },
+        {
+          title: 'Arte que respira',
+          body: 'Los retratos de artista rotan entre varias fotos, las auras cambian según el mood dominante y la galería generativa pinta piezas únicas desde tu propio archivo.',
+        },
+        {
+          title: 'Todo se queda en tu navegador',
+          body: 'Tu dataset se guarda automáticamente en este dispositivo. Puedes exportar un respaldo portátil o borrarlo cuando quieras desde la sección de carga de datos.',
+        },
+      ],
+    },
   },
   en: {
     appTitle: 'NOVA MUSIC LAB',
@@ -2664,6 +2696,38 @@ const STRINGS = {
         { title: 'Archive', tag: 'Historical', body: 'Matching is done by artist name against the historical artist ranking in the active dataset.' },
         { title: 'New radar', tag: 'Comparative', body: 'An artist marked as new does not mean you never played them; it means they do not appear in the main historical top.' },
         { title: 'Limit', tag: 'Not live', body: 'The app does not call Spotify live. Updating this pulse requires replacing the local snapshot.' },
+      ],
+    },
+    onboarding: {
+      reopenLabel: 'Tour',
+      reopenAria: 'Reopen the welcome tour',
+      closeAria: 'Close',
+      skip: 'Skip',
+      back: 'Back',
+      next: 'Next',
+      finish: 'Start exploring',
+      stepLabel: (current: number, total: number) => `Step ${current} of ${total}`,
+      steps: [
+        {
+          title: 'Welcome to the Sound Museum',
+          body: 'Nova Music Lab turns your listening history into a visual, statistical and emotional museum. Everything is processed in your browser: nothing is ever uploaded to a server.',
+        },
+        {
+          title: 'Two ways in',
+          body: "Explore Kevin/Lirioth's curated museum with one click, or upload your own history from Last.fm, Spotify, YouTube, Apple Music or ListenBrainz to build your own museum.",
+        },
+        {
+          title: 'A museum with many rooms',
+          body: 'The sidebar organizes the archive into Overview, Archive, Identity, Listening, Data and Export: musical eras, all-time tops, emotional map, achievements, comparisons and more.',
+        },
+        {
+          title: 'Art that breathes',
+          body: 'Artist portraits rotate between several photos, auras shift with the dominant mood, and the generative gallery paints unique pieces straight from your own archive.',
+        },
+        {
+          title: 'Everything stays in your browser',
+          body: 'Your dataset saves itself automatically on this device. Export a portable backup or clear it anytime from the upload section.',
+        },
       ],
     },
   },

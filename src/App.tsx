@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone
+  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass
 } from 'lucide-react';
 
 import defaultMusicData from './data/music_dna_compiled.json';
@@ -13,6 +13,7 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
+import OnboardingTour from './components/OnboardingTour';
 import SectionNarrative from './components/SectionNarrative';
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
@@ -44,6 +45,7 @@ type Tab =
   | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload';
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
+const TOUR_STORAGE_KEY = 'nml_tour_seen';
 
 type NavIconMotif = 'grid' | 'timeline' | 'crown' | 'pulse' | 'orbit' | 'spiral' | 'globe' | 'palette' | 'spark' | 'stack' | 'alert';
 type NavGroupId = 'overview' | 'archive' | 'identity' | 'listening' | 'data' | 'export';
@@ -286,10 +288,18 @@ function AppInner() {
   const [showThemes, setShowThemes] = useState(false);
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(null);
   const [restoredAt, setRestoredAt] = useState<string | null>(null);
+  const [showTour, setShowTour] = useState(() => {
+    try { return window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true'; } catch { return true; }
+  });
 
   const goToTab = useCallback((tab: Tab) => {
     setActiveTab(tab);
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+  }, []);
+
+  const closeTour = useCallback(() => {
+    setShowTour(false);
+    try { window.localStorage.setItem(TOUR_STORAGE_KEY, 'true'); } catch { /* private browsing: session-only dismissal */ }
   }, []);
 
   // Restore the visitor's own dataset from IndexedDB (if they uploaded one before).
@@ -437,6 +447,15 @@ function AppInner() {
               )}
             </AnimatePresence>
           </div>
+
+          {/* Reopen welcome tour */}
+          <button onClick={() => setShowTour(true)}
+            aria-label={t.onboarding.reopenAria}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs font-bold rounded-full transition-all"
+            style={{ borderColor: `${tc.c3}35`, color: tc.c3 }}>
+            <Compass className="w-3.5 h-3.5" />
+            <span className="hidden lg:block">{t.onboarding.reopenLabel}</span>
+          </button>
 
           {/* Load data button */}
           <button onClick={() => goToTab('upload')}
@@ -600,6 +619,12 @@ function AppInner() {
           </motion.button>
         )}
       </AnimatePresence>
+
+      <OnboardingTour
+        open={showTour}
+        onClose={closeTour}
+        onFinish={() => goToTab(activeTab === 'hero' ? 'dashboard' : activeTab)}
+      />
     </div>
   );
 }

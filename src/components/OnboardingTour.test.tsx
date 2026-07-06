@@ -1,0 +1,108 @@
+import { describe, expect, it, vi, afterEach } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import OnboardingTour from './OnboardingTour';
+import { AppProvider } from '../context/AppContext';
+
+describe('OnboardingTour', () => {
+  afterEach(() => {
+    cleanup();
+    window.localStorage.clear();
+  });
+
+  it('renders nothing when closed', () => {
+    render(
+      <AppProvider>
+        <OnboardingTour open={false} onClose={vi.fn()} />
+      </AppProvider>
+    );
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('shows step 1 of 5 when opened', () => {
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={vi.fn()} />
+      </AppProvider>
+    );
+    expect(screen.getByText('Paso 1 de 5')).toBeInTheDocument();
+    expect(screen.getByText('Bienvenido al Museo Sonoro')).toBeInTheDocument();
+  });
+
+  it('advances through every step and finishes on the last one', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const onFinish = vi.fn();
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={onClose} onFinish={onFinish} />
+      </AppProvider>
+    );
+
+    for (let step = 2; step <= 5; step++) {
+      await user.click(screen.getByRole('button', { name: /Siguiente|Empezar a explorar/ }));
+      expect(screen.getByText(`Paso ${step} de 5`)).toBeInTheDocument();
+    }
+
+    expect(screen.getByRole('button', { name: 'Empezar a explorar' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Empezar a explorar' }));
+
+    expect(onFinish).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('lets the user go back a step', async () => {
+    const user = userEvent.setup();
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={vi.fn()} />
+      </AppProvider>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Siguiente' }));
+    expect(screen.getByText('Paso 2 de 5')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Atrás' }));
+    expect(screen.getByText('Paso 1 de 5')).toBeInTheDocument();
+  });
+
+  it('closes without calling onFinish when skipped', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const onFinish = vi.fn();
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={onClose} onFinish={onFinish} />
+      </AppProvider>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Saltar' }));
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(onFinish).not.toHaveBeenCalled();
+  });
+
+  it('closes on Escape', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={onClose} />
+      </AppProvider>
+    );
+
+    await user.keyboard('{Escape}');
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders English copy when nml_lang is "en"', () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={vi.fn()} />
+      </AppProvider>
+    );
+    expect(screen.getByText('Step 1 of 5')).toBeInTheDocument();
+    expect(screen.getByText('Welcome to the Sound Museum')).toBeInTheDocument();
+  });
+});
