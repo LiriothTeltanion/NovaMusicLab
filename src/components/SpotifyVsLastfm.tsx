@@ -41,8 +41,9 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const [activeInsight, setActiveInsight] = useState(0);
-  const { t, lang } = useApp();
-  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const { t, lang, setActiveTab, setSelectedArtistName, setTopSubTab } = useApp();
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
   const source = deriveSourceSummary(data);
   const sourceNote = localizeSourceNote(source, lang);
   const lastfmTotal = source.lastfm_plays;
@@ -339,7 +340,17 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
               {insights[activeInsight].avatarNames && (
                 <div className="flex items-center -space-x-2">
                   {insights[activeInsight].avatarNames!.map(name => (
-                    <ArtistAvatar key={name} name={name} size={32} className="ring-2 ring-black" />
+                    <span 
+                      key={name} 
+                      className="cursor-pointer transition-transform hover:scale-110 active:scale-95 z-10 hover:z-20"
+                      onClick={() => {
+                        setSelectedArtistName(name);
+                        setTopSubTab('artists');
+                        setActiveTab('top');
+                      }}
+                    >
+                      <ArtistAvatar name={name} size={32} className="ring-2 ring-black" />
+                    </span>
                   ))}
                 </div>
               )}

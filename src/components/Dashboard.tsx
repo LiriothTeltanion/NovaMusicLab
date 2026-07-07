@@ -216,7 +216,7 @@ function DashboardSignalIcon({ icon: Icon, color, secondary, motif, size = 'md' 
 }
 
 export default function Dashboard({ data }: DashboardProps) {
-  const { tc, t, lang } = useApp();
+  const { tc, t, lang, setActiveTab, setSelectedArtistName, setTopSubTab } = useApp();
   const metrics = data.core_metrics;
   const topArtistsData = useMemo(
     () => data.top_artists.slice(0, 10).map(artist => ({
@@ -542,9 +542,20 @@ export default function Dashboard({ data }: DashboardProps) {
                     />
                   }
                 />
-                <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[0, 6, 6, 0]}>
+                <Bar dataKey="plays" name={t.dashboard.playsLegend} radius={[0, 6, 6, 0]} className="cursor-pointer">
                   {topArtistsData.map((artist, index) => (
-                    <Cell key={`cell-${index}`} fill={`url(#artistBar-${index})`} stroke={artist.moodColor ?? tc.c1} strokeOpacity={0.5} strokeWidth={1} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={`url(#artistBar-${index})`} 
+                      stroke={artist.moodColor ?? tc.c1} 
+                      strokeOpacity={0.5} 
+                      strokeWidth={1}
+                      onClick={() => {
+                        setSelectedArtistName(artist.name);
+                        setTopSubTab('artists');
+                        setActiveTab('top');
+                      }}
+                    />
                   ))}
                 </Bar>
               </BarChart>

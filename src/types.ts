@@ -234,6 +234,7 @@ export interface MusicDnaData {
   obsessions: Obsession[];
   countries: CountryPlay[];
   heatmap: number[][]; // 24x7 matrix
+  daily_plays?: Record<string, number>;
   monthly_activity?: MonthlyActivity[];
   platform_breakdown?: PlatformPlay[];
   source_summary?: SourceSummary;

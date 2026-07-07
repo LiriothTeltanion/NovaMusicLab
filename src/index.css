@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── CSS Variable Registration for Smooth Transitions ── */
+@property --c1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #00f2fe;
+}
+@property --c2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f72585;
+}
+@property --c3 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #7209b7;
+}
+@property --c4 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #4cc9f0;
+}
+@property --bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #050b14;
+}
+@property --fg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f3f4f6;
+}
+@property --glass-bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: rgba(10, 25, 47, 0.45);
+}
+
 /* ── Theme CSS Variables (set by AppContext on :root) ── */
 :root {
   --c1: #00f2fe;
@@ -11,7 +48,17 @@
   --bg: #050b14;
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
+  
+  /* Smoothly transition theme variables */
+  transition: --c1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --c2 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --c3 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --c4 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --bg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --fg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              --glass-bg 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 
 /* Theme-aware utility classes */
 .accent1  { color: var(--c1); }
@@ -61,26 +108,86 @@
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
+    transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
 /* Glassmorphism Styles */
 .glass-panel {
+  position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid color-mix(in srgb, var(--c1) 12%, transparent);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--c1), var(--c2), transparent);
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .glass-panel:hover {
   border-color: color-mix(in srgb, var(--c1) 28%, transparent);
   box-shadow: 0 0 24px color-mix(in srgb, var(--c1) 12%, transparent), 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+}
+
+.glass-panel:hover::before {
+  opacity: 0.9;
+  animation: cyber-border-slide 2.5s linear infinite;
+}
+
+/* Glass Spotlight Torchlight */
+.glass-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    280px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    color-mix(in srgb, var(--c1) 9%, transparent),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.glass-panel:hover::after {
+  opacity: 1;
+}
+
+@keyframes cyber-border-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
 button:focus-visible,

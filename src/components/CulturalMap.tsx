@@ -5,7 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import FlagArt from './FlagArt';
-import { getCulturalLanguageData, getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
+import { getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -83,9 +83,34 @@ export default function CulturalMap({ data }: CulturalMapProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const { lang, t } = useApp();
   const countries = data.countries;
-  const maxPlays = Math.max(...countries.map(c => c.plays));
+  const maxPlays = Math.max(...countries.map(c => c.plays), 1);
   const sceneTags = getCulturalSceneTags(lang);
-  const languageData = getCulturalLanguageData(lang);
+
+  // Dynamically calculate language distribution based on country play counts
+  const languageData = React.useMemo(() => {
+    const totalPlays = countries.reduce((sum, c) => sum + c.plays, 0) || 1;
+    const langGroup: Record<string, number> = {};
+
+    countries.forEach(c => {
+      const meta = COUNTRY_META[c.country];
+      const langStr = meta ? meta[lang].lang : (lang === 'es' ? 'Otros' : 'Other');
+      langGroup[langStr] = (langGroup[langStr] || 0) + c.plays;
+    });
+
+    const COLORS = ['#00f2fe', '#fb923c', '#34d399', '#f72585', '#a78bfa', '#06b6d4', '#ef4444', '#8b5cf6'];
+    return Object.entries(langGroup)
+      .map(([label, plays]) => ({
+        label,
+        plays,
+        pct: (plays / totalPlays) * 100,
+      }))
+      .sort((a, b) => b.plays - a.plays)
+      .map((item, idx) => ({
+        label: item.label,
+        pct: Math.max(1, Math.round(item.pct)), // Ensure at least 1% for display
+        color: COLORS[idx % COLORS.length],
+      }));
+  }, [countries, lang]);
 
   const cardVariants = {
     initial: { opacity: 0, scale: 0.9 },

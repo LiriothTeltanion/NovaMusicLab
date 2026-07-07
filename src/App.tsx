@@ -3,7 +3,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users
+  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users,
+  ChevronDown, Bot
 } from 'lucide-react';
 
 import defaultMusicData from './data/music_dna_compiled.json';
@@ -19,6 +20,11 @@ import SectionNarrative from './components/SectionNarrative';
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
 // otherwise bloat the main bundle every visitor downloads immediately.
 const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
+
+// Lazy: pulls in emotionalEngine -> offlineArtistKnowledge, which bundles the
+// full offline_artist_knowledge.json + artist_enrichment.json (~800KB raw).
+// Eagerly importing this decorative background doubled the main bundle.
+const InteractiveBackdrop = lazy(() => import('./components/InteractiveBackdrop'));
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -42,18 +48,35 @@ const TimeCapsule = lazy(() => import('./components/TimeCapsule'));
 const WrappedCard = lazy(() => import('./components/WrappedCard'));
 const RecentPulse = lazy(() => import('./components/RecentPulse'));
 const MuseumComparator = lazy(() => import('./components/MuseumComparator'));
+const AIAssistant = lazy(() => import('./components/AIAssistant'));
 
 type Tab =
   | 'hero' | 'dashboard' | 'eras' | 'top' | 'personality' | 'emotions'
   | 'obsessions' | 'cultural' | 'inner' | 'artist' | 'insights'
   | 'compare' | 'museums' | 'platforms' | 'quality' | 'statsdeep' | 'achievements'
-  | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload';
+  | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload' | 'aiassistant';
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
 const TOUR_STORAGE_KEY = 'nml_tour_seen';
 
 type NavIconMotif = 'grid' | 'timeline' | 'crown' | 'pulse' | 'orbit' | 'spiral' | 'globe' | 'palette' | 'spark' | 'stack' | 'alert';
 type NavGroupId = 'overview' | 'archive' | 'identity' | 'listening' | 'data' | 'export';
+
+interface MenuItem {
+  id: Tab;
+  group: NavGroupId;
+  label: string;
+  icon: React.ComponentType<any>;
+  color: string;
+  secondary: string;
+  motif: NavIconMotif;
+}
+
+interface NavGroup {
+  id: NavGroupId;
+  label: string;
+  color: string;
+}
 
 interface SidebarSignalIconProps {
   icon: React.ElementType;
@@ -288,7 +311,8 @@ function LoadingPanel() {
 // ─── Inner app uses context ────────────────────────────────────────────────────
 function AppInner() {
   const { t, theme, setTheme, tc, lang, setLang } = useApp();
-  const [activeTab, setActiveTab]   = useState<Tab>('hero');
+  const activeTab = useApp().activeTab as Tab;
+  const setActiveTab = useApp().setActiveTab as (t: Tab) => void;
   const [musicData, setMusicData]   = useState<MusicDnaData>(() => defaultMusicData as MusicDnaData);
   const [showThemes, setShowThemes] = useState(false);
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(null);
@@ -297,14 +321,81 @@ function AppInner() {
     try { return window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true'; } catch { return true; }
   });
 
+  // Collapsible nav group state
+  const [expandedGroups, setExpandedGroups] = useState<Record<NavGroupId, boolean>>({
+    overview: true,
+    archive: true,
+    identity: true,
+    listening: false,
+    data: false,
+    export: false
+  });
+
+  // Spotlight Hover Coordinates Tracker
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('.glass-panel') as HTMLElement;
+      if (!target) return;
+      const rect = target.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      target.style.setProperty('--mouse-x', `${x}px`);
+      target.style.setProperty('--mouse-y', `${y}px`);
+    };
+    window.addEventListener('mousemove', handleMove);
+    return () => window.removeEventListener('mousemove', handleMove);
+  }, []);
+
+  const menuItems: MenuItem[] = React.useMemo(() => [
+    { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
+    { id: 'aiassistant', group: 'overview',  label: lang === 'en' ? 'AI Assistant' : 'Asistente IA', icon: Bot, color: '#a78bfa', secondary: '#f72585', motif: 'orbit' },
+    { id: 'eras',        group: 'overview',  label: t.nav.eras,         icon: CalendarDays,    color: '#60a5fa', secondary: '#f59e0b', motif: 'timeline' },
+    { id: 'top',         group: 'archive',   label: t.nav.top,          icon: Trophy,          color: '#facc15', secondary: '#f97316', motif: 'crown' },
+    { id: 'timecapsule', group: 'archive',   label: t.nav.timeCapsule,  icon: Hourglass,       color: '#818cf8', secondary: '#f472b6', motif: 'timeline' },
+    { id: 'personality', group: 'identity',  label: t.nav.personality,  icon: BrainCircuit,    color: '#a78bfa', secondary: '#22d3ee', motif: 'orbit' },
+    { id: 'emotions',    group: 'identity',  label: t.nav.emotions,     icon: Heart,           color: '#fb7185', secondary: '#f0abfc', motif: 'pulse' },
+    { id: 'cultural',    group: 'identity',  label: t.nav.cultural,     icon: Globe,           color: '#34d399', secondary: '#38bdf8', motif: 'globe' },
+    { id: 'inner',       group: 'identity',  label: t.nav.inner,        icon: Palette,         color: '#f472b6', secondary: '#8b5cf6', motif: 'palette' },
+    { id: 'artist',      group: 'identity',  label: t.nav.artist,       icon: Sparkles,        color: '#fbbf24', secondary: '#22d3ee', motif: 'spark' },
+    { id: 'obsessions',  group: 'listening', label: t.nav.obsessions,   icon: RotateCcw,       color: '#fb923c', secondary: '#ef4444', motif: 'spiral' },
+    { id: 'insights',    group: 'listening', label: t.nav.insights,     icon: AlertCircle,     color: '#f43f5e', secondary: '#f97316', motif: 'alert' },
+    { id: 'achievements', group: 'listening', label: t.nav.achievements, icon: Award,          color: '#f59e0b', secondary: '#facc15', motif: 'crown' },
+    { id: 'wrapped',     group: 'listening', label: t.nav.wrapped,      icon: Gift,            color: '#ec4899', secondary: '#facc15', motif: 'spark' },
+    { id: 'pulse',       group: 'listening', label: t.nav.pulse,        icon: Radio,           color: '#22d3ee', secondary: '#10b981', motif: 'pulse' },
+    { id: 'compare',     group: 'data',      label: t.nav.compare,      icon: GitCompare,      color: '#1DB954', secondary: '#e8334a', motif: 'orbit' },
+    { id: 'museums',     group: 'data',      label: t.nav.museums,      icon: Users,           color: '#84cc16', secondary: '#0ea5e9', motif: 'orbit' },
+    { id: 'platforms',   group: 'data',      label: t.nav.platforms,    icon: TabletSmartphone, color: '#38bdf8', secondary: '#10b981', motif: 'grid' },
+    { id: 'quality',     group: 'data',      label: t.nav.dataQuality,  icon: ShieldCheck,     color: '#2dd4bf', secondary: '#60a5fa', motif: 'grid' },
+    { id: 'statsdeep',   group: 'data',      label: t.nav.statsPro,     icon: Activity,        color: '#38bdf8', secondary: '#a78bfa', motif: 'pulse' },
+    { id: 'report',      group: 'export',    label: t.nav.report,       icon: FileText,        color: '#c084fc', secondary: '#60a5fa', motif: 'stack' },
+    { id: 'upload',      group: 'export',    label: t.nav.upload,       icon: Upload,          color: '#10b981', secondary: '#facc15', motif: 'orbit' },
+  ], [t.nav, tc, lang]);
+
+  const navGroups: NavGroup[] = React.useMemo(() => [
+    { id: 'overview', label: t.navGroups.overview, color: tc.c1 },
+    { id: 'archive', label: t.navGroups.archive, color: '#facc15' },
+    { id: 'identity', label: t.navGroups.identity, color: '#a78bfa' },
+    { id: 'listening', label: t.navGroups.listening, color: '#fb923c' },
+    { id: 'data', label: t.navGroups.data, color: '#2dd4bf' },
+    { id: 'export', label: t.navGroups.export, color: '#10b981' },
+  ], [t.navGroups, tc.c1]);
+
+  const toggleGroup = useCallback((groupId: NavGroupId) => {
+    setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
+  }, []);
+
   const goToTab = useCallback((tab: Tab) => {
     setActiveTab(tab);
+    const item = menuItems.find(i => i.id === tab);
+    if (item) {
+      setExpandedGroups(prev => ({ ...prev, [item.group]: true }));
+    }
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
-  }, []);
+  }, [menuItems, setActiveTab]);
 
   const closeTour = useCallback(() => {
     setShowTour(false);
-    try { window.localStorage.setItem(TOUR_STORAGE_KEY, 'true'); } catch { /* private browsing: session-only dismissal */ }
+    try { window.localStorage.setItem(TOUR_STORAGE_KEY, 'true'); } catch { /* private browsing */ }
   }, []);
 
   // Restore the visitor's own dataset from IndexedDB (if they uploaded one before).
@@ -342,43 +433,46 @@ function AppInner() {
     setMusicData(defaultMusicData as MusicDnaData);
   }, []);
 
-  const menuItems = [
-    { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
-    { id: 'eras',        group: 'overview',  label: t.nav.eras,         icon: CalendarDays,    color: '#60a5fa', secondary: '#f59e0b', motif: 'timeline' },
-    { id: 'top',         group: 'archive',   label: t.nav.top,          icon: Trophy,          color: '#facc15', secondary: '#f97316', motif: 'crown' },
-    { id: 'timecapsule', group: 'archive',   label: t.nav.timeCapsule,  icon: Hourglass,       color: '#818cf8', secondary: '#f472b6', motif: 'timeline' },
-    { id: 'personality', group: 'identity',  label: t.nav.personality,  icon: BrainCircuit,    color: '#a78bfa', secondary: '#22d3ee', motif: 'orbit' },
-    { id: 'emotions',    group: 'identity',  label: t.nav.emotions,     icon: Heart,           color: '#fb7185', secondary: '#f0abfc', motif: 'pulse' },
-    { id: 'cultural',    group: 'identity',  label: t.nav.cultural,     icon: Globe,           color: '#34d399', secondary: '#38bdf8', motif: 'globe' },
-    { id: 'inner',       group: 'identity',  label: t.nav.inner,        icon: Palette,         color: '#f472b6', secondary: '#8b5cf6', motif: 'palette' },
-    { id: 'artist',      group: 'identity',  label: t.nav.artist,       icon: Sparkles,        color: '#fbbf24', secondary: '#22d3ee', motif: 'spark' },
-    { id: 'obsessions',  group: 'listening', label: t.nav.obsessions,   icon: RotateCcw,       color: '#fb923c', secondary: '#ef4444', motif: 'spiral' },
-    { id: 'insights',    group: 'listening', label: t.nav.insights,     icon: AlertCircle,     color: '#f43f5e', secondary: '#f97316', motif: 'alert' },
-    { id: 'achievements', group: 'listening', label: t.nav.achievements, icon: Award,          color: '#f59e0b', secondary: '#facc15', motif: 'crown' },
-    { id: 'wrapped',     group: 'listening', label: t.nav.wrapped,      icon: Gift,            color: '#ec4899', secondary: '#facc15', motif: 'spark' },
-    { id: 'pulse',       group: 'listening', label: t.nav.pulse,        icon: Radio,           color: '#22d3ee', secondary: '#10b981', motif: 'pulse' },
-    { id: 'compare',     group: 'data',      label: t.nav.compare,      icon: GitCompare,      color: '#1DB954', secondary: '#e8334a', motif: 'orbit' },
-    { id: 'museums',     group: 'data',      label: t.nav.museums,      icon: Users,           color: '#84cc16', secondary: '#0ea5e9', motif: 'orbit' },
-    { id: 'platforms',   group: 'data',      label: t.nav.platforms,    icon: TabletSmartphone, color: '#38bdf8', secondary: '#10b981', motif: 'grid' },
-    { id: 'quality',     group: 'data',      label: t.nav.dataQuality,  icon: ShieldCheck,     color: '#2dd4bf', secondary: '#60a5fa', motif: 'grid' },
-    { id: 'statsdeep',   group: 'data',      label: t.nav.statsPro,     icon: Activity,        color: '#38bdf8', secondary: '#a78bfa', motif: 'pulse' },
-    { id: 'report',      group: 'export',    label: t.nav.report,       icon: FileText,        color: '#c084fc', secondary: '#60a5fa', motif: 'stack' },
-    { id: 'upload',      group: 'export',    label: t.nav.upload,       icon: Upload,          color: '#10b981', secondary: '#facc15', motif: 'orbit' },
-  ] as const;
-
-  const navGroups: { id: NavGroupId; label: string; color: string }[] = [
-    { id: 'overview', label: t.navGroups.overview, color: tc.c1 },
-    { id: 'archive', label: t.navGroups.archive, color: '#facc15' },
-    { id: 'identity', label: t.navGroups.identity, color: '#a78bfa' },
-    { id: 'listening', label: t.navGroups.listening, color: '#fb923c' },
-    { id: 'data', label: t.navGroups.data, color: '#2dd4bf' },
-    { id: 'export', label: t.navGroups.export, color: '#10b981' },
-  ];
+  const renderNavItem = (item: typeof menuItems[number], group: typeof navGroups[number]) => {
+    const idx = menuItems.findIndex(candidate => candidate.id === item.id);
+    const active = activeTab === item.id;
+    return (
+      <button key={item.id} onClick={() => goToTab(item.id as Tab)}
+        aria-current={active ? 'page' : undefined}
+        aria-label={`${item.label} - ${group.label}`}
+        className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap shrink-0 md:w-full border relative overflow-hidden text-left"
+        style={active ? {
+          borderColor: `${item.color}60`,
+          color: item.color,
+          background: `linear-gradient(135deg, ${item.color}16, ${item.secondary}08)`,
+          boxShadow: `0 0 18px ${item.color}22`,
+        } : { borderColor: 'transparent', color: '#6b7280' }}>
+        <span className="absolute inset-y-1 left-1 w-px rounded-full opacity-0 transition-opacity group-hover:opacity-60"
+          style={{ backgroundColor: item.color }} />
+        <SidebarSignalIcon
+          icon={item.icon}
+          color={item.color}
+          secondary={item.secondary}
+          motif={item.motif}
+          active={active}
+          index={idx}
+        />
+        <span className="flex-1 text-left leading-tight">{item.label}</span>
+        {active && (
+          <span className="hidden md:block h-2 w-2 rounded-full animate-pulse shrink-0"
+            style={{ backgroundColor: item.secondary, boxShadow: `0 0 10px ${item.secondary}` }} />
+        )}
+      </button>
+    );
+  };
 
   const filteredData = musicData;
 
   return (
     <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}>
+      <Suspense fallback={null}>
+        <InteractiveBackdrop data={musicData} />
+      </Suspense>
       <DynamicMuseumBackground activeTab={activeTab} data={musicData} />
 
       {/* ── Navbar ── */}
@@ -492,53 +586,55 @@ function AppInner() {
               {navGroups.map(group => {
                 const groupItems = menuItems.filter(item => item.group === group.id);
                 const groupActive = groupItems.some(item => item.id === activeTab);
+                const isExpanded = expandedGroups[group.id];
 
                 return (
                   <section key={group.id} className="flex shrink-0 flex-row gap-1 md:flex-col md:gap-1.5">
-                    <div className="hidden md:flex items-center justify-between gap-2 px-2.5 pt-1">
+                    <button
+                      onClick={() => toggleGroup(group.id)}
+                      className="hidden md:flex w-full items-center justify-between gap-2 px-2.5 pt-1.5 pb-1 cursor-pointer hover:bg-white/5 rounded-lg transition-colors text-left font-mono"
+                    >
                       <span
-                        className="font-mono text-[9px] font-black uppercase tracking-[0.22em]"
+                        className="text-[9px] font-black uppercase tracking-[0.22em] transition-colors"
                         style={{ color: groupActive ? group.color : '#64748b' }}
                       >
                         {group.label}
                       </span>
-                      <span
-                        className="h-1.5 w-1.5 rounded-full"
-                        style={{ backgroundColor: groupActive ? group.color : `${group.color}45`, boxShadow: groupActive ? `0 0 10px ${group.color}` : 'none' }}
-                      />
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className="h-1.5 w-1.5 rounded-full"
+                          style={{
+                            backgroundColor: groupActive ? group.color : `${group.color}45`,
+                            boxShadow: groupActive ? `0 0 10px ${group.color}` : 'none'
+                          }}
+                        />
+                        <ChevronDown
+                          className="w-3 h-3 text-gray-500 transition-transform duration-200"
+                          style={{
+                            transform: isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)',
+                            color: groupActive ? group.color : '#64748b'
+                          }}
+                        />
+                      </div>
+                    </button>
+
+                    {/* Mobile items container */}
+                    <div className="flex md:hidden flex-row gap-1">
+                      {groupItems.map(item => renderNavItem(item, group))}
                     </div>
-                    {groupItems.map(item => {
-                      const idx = menuItems.findIndex(candidate => candidate.id === item.id);
-                      const active = activeTab === item.id;
-                      return (
-                        <button key={item.id} onClick={() => goToTab(item.id as Tab)}
-                          aria-current={active ? 'page' : undefined}
-                          aria-label={`${item.label} - ${group.label}`}
-                          className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap shrink-0 md:w-full border relative overflow-hidden"
-                          style={active ? {
-                            borderColor: `${item.color}60`,
-                            color: item.color,
-                            background: `linear-gradient(135deg, ${item.color}16, ${item.secondary}08)`,
-                            boxShadow: `0 0 18px ${item.color}22`,
-                          } : { borderColor: 'transparent', color: '#6b7280' }}>
-                          <span className="absolute inset-y-1 left-1 w-px rounded-full opacity-0 transition-opacity group-hover:opacity-60"
-                            style={{ backgroundColor: item.color }} />
-                          <SidebarSignalIcon
-                            icon={item.icon}
-                            color={item.color}
-                            secondary={item.secondary}
-                            motif={item.motif}
-                            active={active}
-                            index={idx}
-                          />
-                          <span className="flex-1 text-left leading-tight">{item.label}</span>
-                          {active && (
-                            <span className="hidden md:block h-2 w-2 rounded-full animate-pulse shrink-0"
-                              style={{ backgroundColor: item.secondary, boxShadow: `0 0 10px ${item.secondary}` }} />
-                          )}
-                        </button>
-                      );
-                    })}
+
+                    {/* Desktop items container (collapsible) */}
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: isExpanded ? 'auto' : 0,
+                        opacity: isExpanded ? 1 : 0
+                      }}
+                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                      className="hidden md:flex flex-col gap-1.5 overflow-hidden"
+                    >
+                      {groupItems.map(item => renderNavItem(item, group))}
+                    </motion.div>
                   </section>
                 );
               })}
@@ -560,6 +656,7 @@ function AppInner() {
                 <ErrorBoundary key={activeTab}>
                   <Suspense fallback={<LoadingPanel />}>
                     {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
+                    {activeTab === 'aiassistant' && <AIAssistant data={filteredData} />}
                     {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
                     {activeTab === 'top'         && <TopHistorico data={filteredData} />}
                     {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}

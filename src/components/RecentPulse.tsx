@@ -100,7 +100,7 @@ function AlbumArt({ title, image, size, rounded = 'rounded-xl' }: { title: strin
 }
 
 export default function RecentPulse({ data }: RecentPulseProps) {
-  const { tc, t, lang } = useApp();
+  const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 
   const formatDate = (dateStr: string) => {
@@ -203,7 +203,12 @@ export default function RecentPulse({ data }: RecentPulseProps) {
               <motion.div
                 key={`${artist.name}-${idx}`}
                 variants={itemVariants}
-                className="glass-panel p-5 rounded-3xl flex flex-col items-center text-center space-y-3 hover:scale-[1.03] transition-transform"
+                className="glass-panel p-5 rounded-3xl flex flex-col items-center text-center space-y-3 hover:scale-[1.03] transition-transform cursor-pointer hover:border-white/20"
+                onClick={() => {
+                  setSelectedArtistName(artist.name);
+                  setTopSubTab('artists');
+                  setActiveTab('top');
+                }}
               >
                 <PulsePhoto name={artist.name} image={artist.image} size={72} />
                 <p className="text-sm font-bold text-white truncate w-full">{artist.name}</p>
@@ -241,7 +246,13 @@ export default function RecentPulse({ data }: RecentPulseProps) {
             <motion.div
               key={`${track.title}-${idx}`}
               variants={itemVariants}
-              className="glass-panel p-4 rounded-3xl flex items-center space-x-4 hover:scale-[1.02] transition-transform"
+              className="glass-panel p-4 rounded-3xl flex items-center space-x-4 hover:scale-[1.02] transition-transform cursor-pointer hover:border-white/20"
+              onClick={() => {
+                setSelectedArtistName(track.artist);
+                setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`);
+                setTopSubTab('tracks');
+                setActiveTab('top');
+              }}
             >
               <AlbumArt title={track.title} image={track.image} size={56} rounded="rounded-2xl" />
               <div className="truncate">
@@ -270,7 +281,13 @@ export default function RecentPulse({ data }: RecentPulseProps) {
             <motion.div
               key={`${track.title}-${idx}`}
               variants={itemVariants}
-              className="flex items-center space-x-3 py-3 first:pt-1 last:pb-1"
+              className="flex items-center space-x-3 py-3 first:pt-1 last:pb-1 cursor-pointer hover:bg-white/[0.02] rounded-xl px-2 transition-all"
+              onClick={() => {
+                setSelectedArtistName(track.artist);
+                setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`);
+                setTopSubTab('tracks');
+                setActiveTab('top');
+              }}
             >
               <AlbumArt title={track.title} image={track.image} size={36} rounded="rounded-lg" />
               <div className="truncate">

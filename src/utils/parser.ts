@@ -619,6 +619,7 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
     obsessions: buildObsessions(sortedItems),
     countries: countries.length ? countries : [{ country: 'Unknown', plays: totalPlays }],
     heatmap,
+    daily_plays: Object.fromEntries(dateCounts),
     monthly_activity: monthlyActivity,
     platform_breakdown: platformBreakdown,
     source_summary: sourceSummary,

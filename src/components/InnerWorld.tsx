@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, Eye, Moon, Film, Gamepad2, Landmark, Music, Zap, Star } from 'lucide-react';
+import { Palette, Eye, Moon, Film, Gamepad2, Landmark, Music, Zap, Star, Orbit } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import GenreConstellation from './GenreConstellation';
 
 interface InnerWorldProps { data: MusicDnaData; }
 
@@ -12,7 +13,8 @@ const cardVariants = {
   animate: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
-export default function InnerWorld({ data: _ }: InnerWorldProps) {
+export default function InnerWorld({ data }: InnerWorldProps) {
+  const [viewMode, setViewMode] = useState<'identity' | 'constellation'>('identity');
   const { lang, tc, t } = useApp();
   const L = lang === 'en';
 
@@ -175,66 +177,100 @@ export default function InnerWorld({ data: _ }: InnerWorldProps) {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <Palette className="w-6 h-6" style={{ color: tc.c2 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.innerWorld.pageTitle}
-        </h2>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center space-x-3">
+          <Palette className="w-6 h-6" style={{ color: tc.c2 }} />
+          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
+            {t.innerWorld.pageTitle}
+          </h2>
+        </div>
+
+        {/* View Toggle Tabs */}
+        <div className="flex bg-black/40 border border-white/10 p-1 rounded-2xl w-fit self-start md:self-auto z-10">
+          <button
+            onClick={() => setViewMode('identity')}
+            className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+              viewMode === 'identity'
+                ? 'bg-purple-600/20 text-purple-300 border border-purple-500/35 font-extrabold'
+                : 'text-gray-400 hover:text-white border border-transparent'
+            }`}
+          >
+            <Palette className="w-3.5 h-3.5" />
+            <span>{L ? 'Artistic Identity' : 'Identidad Artística'}</span>
+          </button>
+          <button
+            onClick={() => setViewMode('constellation')}
+            className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+              viewMode === 'constellation'
+                ? 'bg-purple-600/20 text-purple-300 border border-purple-500/35 font-extrabold'
+                : 'text-gray-400 hover:text-white border border-transparent'
+            }`}
+          >
+            <Orbit className="w-3.5 h-3.5" />
+            <span>{L ? 'Genre Constellation' : 'Constelación'}</span>
+          </button>
+        </div>
       </div>
 
       <SectionNarrative content={t.deepNarratives.inner} accent="c3" />
 
-      {/* Universe banner */}
-      <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden border border-cyberPurple/20">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(25)].map((_, i) => (
-            <div key={i} className="absolute rounded-full animate-pulse-slow"
-              style={{
-                width: `${2 + (i % 3)}px`, height: `${2 + (i % 3)}px`,
-                backgroundColor: [tc.c1, tc.c2, tc.c3, tc.c4][i % 4],
-                left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`,
-                opacity: 0.2 + (i % 4) * 0.1,
-                animationDelay: `${i * 0.25}s`,
-              }}
-            />
-          ))}
-        </div>
-        <div className="relative z-10 text-center space-y-3">
-          <h3 className="text-xl font-bold text-white font-mono">
-            {t.innerWorld.bannerTitle}
-          </h3>
-          <p className="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            {t.innerWorld.bannerBody}
-          </p>
-          <div className="flex justify-center flex-wrap gap-2 pt-2">
-            {moodTags.map(tag => (
-              <span key={tag} className="text-xs px-3 py-1 rounded-full border font-mono"
-                style={{ backgroundColor: `${tc.c3}10`, borderColor: `${tc.c3}30`, color: '#c4b5fd' }}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-        {CARDS.map((card, i) => {
-          const Icon = card.icon;
-          const Body = card.body;
-          return (
-            <motion.div key={card.title} custom={i} variants={cardVariants} initial="initial" animate="animate"
-              className="glass-panel p-5 rounded-2xl space-y-3 border-t-2 hover:border-t-4 transition-all"
-              style={{ borderTopColor: card.color }}>
-              <div className="flex items-center space-x-2">
-                <Icon className="w-4 h-4 shrink-0" style={{ color: card.color }} />
-                <h4 className="font-mono text-xs font-bold uppercase tracking-wide text-white leading-tight">{card.title}</h4>
+      {viewMode === 'constellation' ? (
+        <GenreConstellation data={data} />
+      ) : (
+        <>
+          {/* Universe banner */}
+          <div className="glass-panel p-6 md:p-8 rounded-3xl relative overflow-hidden border border-cyberPurple/20">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {[...Array(25)].map((_, i) => (
+                <div key={i} className="absolute rounded-full animate-pulse-slow"
+                  style={{
+                    width: `${2 + (i % 3)}px`, height: `${2 + (i % 3)}px`,
+                    backgroundColor: [tc.c1, tc.c2, tc.c3, tc.c4][i % 4],
+                    left: `${(i * 37) % 100}%`, top: `${(i * 53) % 100}%`,
+                    opacity: 0.2 + (i % 4) * 0.1,
+                    animationDelay: `${i * 0.25}s`,
+                  }}
+                />
+              ))}
+            </div>
+            <div className="relative z-10 text-center space-y-3">
+              <h3 className="text-xl font-bold text-white font-mono">
+                {t.innerWorld.bannerTitle}
+              </h3>
+              <p className="text-sm text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                {t.innerWorld.bannerBody}
+              </p>
+              <div className="flex justify-center flex-wrap gap-2 pt-2">
+                {moodTags.map(tag => (
+                  <span key={tag} className="text-xs px-3 py-1 rounded-full border font-mono"
+                    style={{ backgroundColor: `${tc.c3}10`, borderColor: `${tc.c3}30`, color: '#c4b5fd' }}>
+                    {tag}
+                  </span>
+                ))}
               </div>
-              <Body />
-            </motion.div>
-          );
-        })}
-      </div>
+            </div>
+          </div>
+
+          {/* Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            {CARDS.map((card, i) => {
+              const Icon = card.icon;
+              const Body = card.body;
+              return (
+                <motion.div key={card.title} custom={i} variants={cardVariants} initial="initial" animate="animate"
+                  className="glass-panel p-5 rounded-2xl space-y-3 border-t-2 hover:border-t-4 transition-all"
+                  style={{ borderTopColor: card.color }}>
+                  <div className="flex items-center space-x-2">
+                    <Icon className="w-4 h-4 shrink-0" style={{ color: card.color }} />
+                    <h4 className="font-mono text-xs font-bold uppercase tracking-wide text-white leading-tight">{card.title}</h4>
+                  </div>
+                  <Body />
+                </motion.div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }

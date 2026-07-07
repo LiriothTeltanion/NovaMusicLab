@@ -10,13 +10,23 @@ import CoverArt from './CoverArt';
 import MethodologyPanel from './MethodologyPanel';
 import SectionNarrative from './SectionNarrative';
 import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
+import { fetchBase64Image } from '../utils/imageLoader';
+import artistImages from '../data/artist_images.json';
+import albumImages from '../data/album_images.json';
+import trackImages from '../data/track_images.json';
+
+type ArtMap = Record<string, { thumb: string; source: string }>;
+const ARTISTS = artistImages as Record<string, { thumb: string; source: string }>;
+const ALBUMS = albumImages as ArtMap;
+const TRACKS = trackImages as ArtMap;
+
 
 interface WrappedCardProps {
   data: MusicDnaData;
 }
 
 export default function WrappedCard({ data }: WrappedCardProps) {
-  const { tc, t, lang } = useApp();
+  const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
   const eras = data.yearly_eras;
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -32,6 +42,10 @@ export default function WrappedCard({ data }: WrappedCardProps) {
   const [selectedYear, setSelectedYear] = useState<number>(defaultYear);
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
+  const [preloadedImages, setPreloadedImages] = useState<{
+    artist: string | null;
+    track: string | null;
+  } | null>(null);
 
   const era = eras.find((e) => e.year === selectedYear) ?? eras[0];
 
@@ -60,16 +74,36 @@ export default function WrappedCard({ data }: WrappedCardProps) {
     setDownloading(true);
     setDownloadError(false);
     try {
+      // 1. Resolve remote image URLs
+      const artistKey = era.top_artist.trim().toLowerCase();
+      const artistUrl = ARTISTS[artistKey]?.thumb;
+
+      const trackKey = `${era.top_artist.toLowerCase()}|||${era.top_track.toLowerCase()}`;
+      const trackUrl = TRACKS[trackKey]?.thumb ?? ALBUMS[trackKey]?.thumb;
+
+      // 2. Fetch base64 representations in parallel
+      const [artistBase64, trackBase64] = await Promise.all([
+        artistUrl ? fetchBase64Image(artistUrl) : Promise.resolve(null),
+        trackUrl ? fetchBase64Image(trackUrl) : Promise.resolve(null),
+      ]);
+
+      // 3. Inject base64 into state to trigger component update
+      setPreloadedImages({
+        artist: artistBase64,
+        track: trackBase64,
+      });
+
+      // 4. Wait for React render & paint cycle
+      await new Promise((resolve) => window.requestAnimationFrame(() => window.setTimeout(resolve, 300)));
+
+      // 5. Perform clean PNG canvas capture
       const dataUrl = await toPng(cardRef.current, {
         pixelRatio: 2,
         cacheBust: true,
-        // Google Fonts stylesheets are cross-origin: html-to-image can't read
-        // their cssRules and spams SecurityErrors trying - skip font embedding
-        // and let the exported PNG use system font fallbacks instead.
         skipFonts: true,
-        // Skip cross-origin nodes (artist photo) so the canvas never taints.
         filter: (node) => !(node instanceof HTMLElement && node.dataset && node.dataset.noExport !== undefined),
       });
+
       const link = document.createElement('a');
       link.download = `nova-wrapped-${era.year}.png`;
       link.href = dataUrl;
@@ -78,6 +112,7 @@ export default function WrappedCard({ data }: WrappedCardProps) {
       console.error('WrappedCard PNG export failed:', err);
       setDownloadError(true);
     } finally {
+      setPreloadedImages(null);
       setDownloading(false);
     }
   };
@@ -256,8 +291,13 @@ export default function WrappedCard({ data }: WrappedCardProps) {
               {/* Top artist */}
               <motion.div
                 variants={item}
-                className="rounded-2xl p-4"
-                style={{ backgroundColor: `${tc.c1}0d`, border: `1px solid ${tc.c1}26` }}
+                className="rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] hover:border-white/20 border border-transparent"
+                style={{ backgroundColor: `${tc.c1}0d`, borderColor: `${tc.c1}26` }}
+                onClick={() => {
+                  setSelectedArtistName(era.top_artist);
+                  setTopSubTab('artists');
+                  setActiveTab('top');
+                }}
               >
                 <div
                   className="flex items-center space-x-2 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3"
@@ -267,9 +307,14 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                   <span>{t.wrapped.topArtistLabel}</span>
                 </div>
                 <div className="flex items-center space-x-4">
-                  {/* Cross-origin photo: excluded from PNG export via data-no-export */}
-                  <div data-no-export className="shrink-0">
-                    <ArtistAvatar name={era.top_artist} size={72} />
+                  {/* Cross-origin photo: excluded from PNG export via data-no-export, unless preloaded */}
+                  <div className="shrink-0" {...(!preloadedImages ? { 'data-no-export': true } : {})}>
+                    <ArtistAvatar
+                      name={era.top_artist}
+                      size={72}
+                      overrideSrc={preloadedImages?.artist || undefined}
+                      tooltip={!preloadedImages}
+                    />
                   </div>
                   {/* Plain-text name always visible so the exported PNG stays complete */}
                   <p
@@ -284,8 +329,14 @@ export default function WrappedCard({ data }: WrappedCardProps) {
               {/* Anthem */}
               <motion.div
                 variants={item}
-                className="rounded-2xl p-4"
-                style={{ backgroundColor: `${tc.c2}0d`, border: `1px solid ${tc.c2}26` }}
+                className="rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] hover:border-white/20 border border-transparent"
+                style={{ backgroundColor: `${tc.c2}0d`, borderColor: `${tc.c2}26` }}
+                onClick={() => {
+                  setSelectedArtistName(era.top_artist);
+                  setSelectedTrackKey(`${era.top_artist.toLowerCase()}|||${era.top_track.toLowerCase()}`);
+                  setTopSubTab('tracks');
+                  setActiveTab('top');
+                }}
               >
                 <div
                   className="flex items-center space-x-2 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-2"
@@ -295,9 +346,15 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                   <span>{t.wrapped.anthemLabel}</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  {/* Cross-origin cover: excluded from PNG export via data-no-export */}
-                  <div data-no-export className="shrink-0">
-                    <CoverArt artist={era.top_artist} title={era.top_track} kind="track" size={44} />
+                  {/* Cross-origin cover: excluded from PNG export via data-no-export, unless preloaded */}
+                  <div className="shrink-0" {...(!preloadedImages ? { 'data-no-export': true } : {})}>
+                    <CoverArt
+                      artist={era.top_artist}
+                      title={era.top_track}
+                      kind="track"
+                      size={44}
+                      overrideSrc={preloadedImages?.track || undefined}
+                    />
                   </div>
                   <p className="text-lg font-bold leading-snug break-words" style={{ color: '#ffffff' }}>
                     {era.top_track}

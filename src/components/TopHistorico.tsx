@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
@@ -23,15 +23,19 @@ import {
   summarizeArtistEvidence,
 } from '../utils/artistEnrichment';
 import ArtistAvatar from './ArtistAvatar';
+import BrandIcon from './BrandIcon';
 import CoverArt from './CoverArt';
 import GenreArt from './GenreArt';
 import FlagArt from './FlagArt';
 import MediaEmbedHub from './MediaEmbedHub';
 import SectionNarrative from './SectionNarrative';
 import { localizeEraLabel } from '../utils/localeText';
-import { buildArtistMediaProfile } from '../utils/mediaLinks';
+import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
 import ArtistPhotoCarousel from './ArtistPhotoCarousel';
+import memberEnrichment from '../data/member_enrichment.json';
+
+const MEMBER_ENRICHMENT = memberEnrichment as Record<string, { name: string; photo?: string; birthDate?: string; age?: number | null; links?: Record<string, string> }>;
 import {
   buildAlbumEmotionalReading,
   buildArtistEmotionalReading,
@@ -44,6 +48,53 @@ import {
   type EmotionalMoodKey,
 } from '../engines/emotionalEngine';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
+
+function getLinkLabel(url: string): string {
+  const lowercase = url.toLowerCase();
+  if (lowercase.includes('wikipedia.org')) return 'Wikipedia';
+  if (lowercase.includes('wikidata.org')) return 'Wikidata';
+  if (lowercase.includes('bandcamp.com')) return 'Bandcamp';
+  if (lowercase.includes('spotify.com')) return 'Spotify';
+  if (lowercase.includes('youtube.com') || lowercase.includes('youtu.be')) return 'YouTube';
+  if (lowercase.includes('discogs.com')) return 'Discogs';
+  if (lowercase.includes('musicbrainz.org')) return 'MusicBrainz';
+  return 'Official Website';
+}
+
+function getLinkColor(url: string, defaultColor: string): { color: string; borderColor: string; backgroundColor: string } {
+  const lowercase = url.toLowerCase();
+  if (lowercase.includes('wikipedia.org')) {
+    return { color: '#e5e7eb', borderColor: 'rgba(255, 255, 255, 0.18)', backgroundColor: 'rgba(255, 255, 255, 0.05)' };
+  }
+  if (lowercase.includes('wikidata.org')) {
+    return { color: '#60a5fa', borderColor: 'rgba(96, 165, 250, 0.3)', backgroundColor: 'rgba(96, 165, 250, 0.08)' };
+  }
+  if (lowercase.includes('bandcamp.com')) {
+    return { color: '#22d3ee', borderColor: 'rgba(34, 211, 238, 0.3)', backgroundColor: 'rgba(34, 211, 238, 0.08)' };
+  }
+  if (lowercase.includes('spotify.com')) {
+    return { color: '#1DB954', borderColor: 'rgba(29, 185, 84, 0.3)', backgroundColor: 'rgba(29, 185, 84, 0.08)' };
+  }
+  if (lowercase.includes('youtube.com') || lowercase.includes('youtu.be')) {
+    return { color: '#f87171', borderColor: 'rgba(248, 113, 113, 0.3)', backgroundColor: 'rgba(248, 113, 113, 0.08)' };
+  }
+  if (lowercase.includes('discogs.com')) {
+    return { color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)', backgroundColor: 'rgba(251, 191, 36, 0.08)' };
+  }
+  return { color: defaultColor, borderColor: `${defaultColor}35`, backgroundColor: `${defaultColor}10` };
+}
+
+function getRoleIcon(roles: string[]): string {
+  const r = roles.join(' ').toLowerCase();
+  if (r.includes('vocals') || r.includes('singer') || r.includes('lyrics') || r.includes('voice')) return '🎤';
+  if (r.includes('guitar')) return '🎸';
+  if (r.includes('bass')) return '🎸';
+  if (r.includes('drum') || r.includes('percussion') || r.includes('drummer')) return '🥁';
+  if (r.includes('keyboard') || r.includes('piano') || r.includes('synthesizer') || r.includes('organ')) return '🎹';
+  if (r.includes('violin') || r.includes('viola') || r.includes('cello') || r.includes('double bass')) return '🎻';
+  if (r.includes('trumpet') || r.includes('trombone') || r.includes('sax') || r.includes('flute')) return '🎷';
+  return '🎵';
+}
 
 interface TopHistoricoProps {
   data: MusicDnaData;
@@ -352,16 +403,51 @@ const ARTIST_ATLAS_COPY = {
 
 export default function TopHistorico({ data }: TopHistoricoProps) {
   const { tc, t, lang } = useApp();
-  const [tab, setTab] = useState<TopTab>('artistas');
+  const {
+    selectedArtistName: globalArtist, setSelectedArtistName,
+    selectedAlbumKey: globalAlbum, setSelectedAlbumKey,
+    selectedTrackKey: globalTrack, setSelectedTrackKey,
+    topSubTab, setTopSubTab
+  } = useApp();
+
+  const [tab, setTabState] = useState<TopTab>('artistas');
   const [search, setSearch] = useState('');
   const [selectedMood, setSelectedMood] = useState<EmotionalMoodKey | 'all'>('all');
-  const [selectedArtistName, setSelectedArtistName] = useState(data.top_artists[0]?.name ?? '');
-  const [selectedAlbumKey, setSelectedAlbumKey] = useState(
-    data.top_albums[0] ? albumKey(data.top_albums[0].artist, data.top_albums[0].title) : '',
-  );
-  const [selectedTrackKey, setSelectedTrackKey] = useState(
-    data.top_tracks[0] ? trackKey(data.top_tracks[0].artist, data.top_tracks[0].title) : '',
-  );
+
+  // Sync local tab state from global topSubTab
+  useEffect(() => {
+    if (topSubTab === 'artists') setTabState('artistas');
+    else if (topSubTab === 'albums') setTabState('albums');
+    else if (topSubTab === 'tracks') setTabState('canciones');
+  }, [topSubTab]);
+
+  const setTab = (t: TopTab) => {
+    setTabState(t);
+    if (t === 'artistas') setTopSubTab('artists');
+    else if (t === 'albums') setTopSubTab('albums');
+    else if (t === 'canciones') setTopSubTab('tracks');
+  };
+
+  // Initialize global defaults if empty
+  const hasInitialized = useRef(false);
+  useEffect(() => {
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
+    if (!globalArtist && data.top_artists[0]?.name) {
+      setSelectedArtistName(data.top_artists[0].name);
+    }
+    if (!globalAlbum && data.top_albums[0]) {
+      setSelectedAlbumKey(albumKey(data.top_albums[0].artist, data.top_albums[0].title));
+    }
+    if (!globalTrack && data.top_tracks[0]) {
+      setSelectedTrackKey(trackKey(data.top_tracks[0].artist, data.top_tracks[0].title));
+    }
+  }, [data, globalArtist, globalAlbum, globalTrack, setSelectedArtistName, setSelectedAlbumKey, setSelectedTrackKey]);
+
+  const selectedArtistName = globalArtist || (data.top_artists[0]?.name ?? '');
+  const selectedAlbumKey = globalAlbum || (data.top_albums[0] ? albumKey(data.top_albums[0].artist, data.top_albums[0].title) : '');
+  const selectedTrackKey = globalTrack || (data.top_tracks[0] ? trackKey(data.top_tracks[0].artist, data.top_tracks[0].title) : '');
 
   const COLORS = [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#a78bfa', '#34d399', '#f59e0b', '#ec4899', '#6ee7b7'];
   const artistCopy = ARTIST_ATLAS_COPY[lang];
@@ -733,11 +819,25 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       ...(wd?.members ?? []),
       ...(wd?.instruments ?? []),
     ].filter(Boolean);
-    const links = [
+    const media = getCuratedArtistMedia(selectedKnowledge.name);
+    const rawLinks = [
       ...(curated?.sourceUrls ?? []),
       ...(wd?.officialWebsites ?? []),
       ...(wd?.url ? [wd.url] : []),
+      ...(media?.spotifyArtistUrl ? [media.spotifyArtistUrl] : []),
+      ...(media?.youtubeChannelUrl ? [media.youtubeChannelUrl] : []),
+      ...(media?.officialSiteUrl ? [media.officialSiteUrl] : []),
+      `https://bandcamp.com/search?q=${encodeURIComponent(selectedKnowledge.name)}`,
+      `https://www.discogs.com/search/?q=${encodeURIComponent(selectedKnowledge.name)}&type=artist`
     ];
+    // Deduplicate and filter links
+    const links = Array.from(new Set(rawLinks)).filter((url, idx, self) => {
+      const isSearchBc = url.includes('bandcamp.com/search');
+      if (isSearchBc && self.some(s => s.includes('bandcamp.com') && !s.includes('search'))) {
+        return false;
+      }
+      return true;
+    });
 
     return { description, facts, members, links };
   }, [artistCopy.knownAlbums, artistCopy.noProfileBody, fmtList, lang, selectedKnowledge]);
@@ -1621,34 +1721,91 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </div>
                 <p className="mb-3 text-[11px] leading-relaxed text-gray-500">{artistCopy.lineupHint}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
-                  {selectedLineup.slice(0, 9).map(member => (
-                    <div key={member.name} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-2">
-                      <ArtistAvatar name={member.name} size={28} tooltip={false} />
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-xs font-bold text-white">{member.name}</p>
-                        <p className="truncate text-[10px] font-mono text-gray-500">
-                          {member.roles.slice(0, 2).join(' · ') || (member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast)}
-                        </p>
+                  {selectedLineup.slice(0, 9).map(member => {
+                    const enrichment = MEMBER_ENRICHMENT[member.name.toLowerCase()];
+                    return (
+                      <div key={member.name} className="group relative flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-2 transition-all hover:bg-white/[0.07] hover:border-white/15 cursor-help">
+                        <ArtistAvatar name={member.name} size={28} tooltip={false} />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-xs font-bold text-white">{member.name}</p>
+                          <p className="truncate text-[10px] font-mono text-gray-500 flex items-center gap-1">
+                            <span className="shrink-0">{getRoleIcon(member.roles)}</span>
+                            <span className="truncate">{member.roles.slice(0, 2).join(' · ') || (member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast)}</span>
+                          </p>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <span
+                            className="ml-auto block h-1.5 w-1.5 rounded-full"
+                            title={member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
+                            style={{
+                              backgroundColor: member.current ? '#22c55e' : '#6b7280',
+                              boxShadow: member.current ? '0 0 6px #22c55e' : 'none',
+                            }}
+                          />
+                          <span className="text-[9px] font-mono text-gray-500">
+                            {member.begin
+                              ? member.current
+                                ? artistCopy.lineupSince(member.begin.slice(0, 4))
+                                : artistCopy.lineupSpan(member.begin.slice(0, 4), (member.end ?? '').slice(0, 4))
+                              : member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
+                          </span>
+                        </div>
+
+                        {/* Cyberpunk Glassmorphic Hover Tooltip */}
+                        <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2.5 w-56 -translate-x-1/2 scale-95 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
+                          <div className="rounded-xl border border-white/15 bg-black/95 p-3 shadow-2xl backdrop-blur-md text-left">
+                            <div className="flex items-center gap-2 mb-2">
+                              <ArtistAvatar name={member.name} size={36} tooltip={false} />
+                              <div className="min-w-0 flex-1">
+                                <p className="text-xs font-black text-white truncate">{member.name}</p>
+                                {enrichment?.age && (
+                                  <p className="text-[10px] font-mono text-cyan-400">
+                                    {lang === 'es' ? `Edad: ${enrichment.age} años` : `Age: ${enrichment.age}`}
+                                  </p>
+                                )}
+                                {enrichment?.birthDate && !enrichment?.age && (
+                                  <p className="text-[10px] font-mono text-gray-400">
+                                    🎂 {enrichment.birthDate}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                            
+                            <div className="border-t border-white/10 pt-2 mb-2">
+                              <p className="text-[9px] font-mono text-gray-400 uppercase tracking-wider mb-1">
+                                {lang === 'es' ? 'Roles' : 'Roles'}
+                              </p>
+                              <div className="flex flex-wrap gap-1">
+                                {member.roles.slice(0, 5).map(r => (
+                                  <span key={r} className="text-[8px] font-mono bg-white/5 border border-white/10 rounded px-1.5 py-0.5 text-gray-300">
+                                    {getRoleIcon([r])} {r}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+
+                            {enrichment?.links && Object.keys(enrichment.links).length > 0 && (
+                              <div className="border-t border-white/10 pt-2 flex items-center gap-1.5 justify-end">
+                                {Object.entries(enrichment.links).map(([platform, url]) => {
+                                  const style = getLinkColor(url, tc.c4);
+                                  return (
+                                    <a key={platform} href={url} target="_blank" rel="noreferrer"
+                                      className="rounded-full w-5 h-5 flex items-center justify-center border transition-all hover:scale-110 active:scale-95"
+                                      style={{ color: style.color, borderColor: style.borderColor, backgroundColor: style.backgroundColor }}
+                                      title={platform}
+                                    >
+                                      <BrandIcon name={platform} size={10} color={style.color} />
+                                    </a>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
                       </div>
-                      <div className="shrink-0 text-right">
-                        <span
-                          className="ml-auto block h-1.5 w-1.5 rounded-full"
-                          title={member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
-                          style={{
-                            backgroundColor: member.current ? '#22c55e' : '#6b7280',
-                            boxShadow: member.current ? '0 0 6px #22c55e' : 'none',
-                          }}
-                        />
-                        <span className="text-[9px] font-mono text-gray-500">
-                          {member.begin
-                            ? member.current
-                              ? artistCopy.lineupSince(member.begin.slice(0, 4))
-                              : artistCopy.lineupSpan(member.begin.slice(0, 4), (member.end ?? '').slice(0, 4))
-                            : member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 {selectedLineup.length > 9 && (
                   <p className="mt-2 text-[10px] font-mono text-gray-500">{artistCopy.lineupMore(selectedLineup.length - 9)}</p>
@@ -1758,13 +1915,22 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         </p>
                       </div>
                       <div className="flex flex-wrap gap-2">
-                        {selectedKnowledgeSummary.links.slice(0, 5).map((url, idx) => (
-                          <a key={url} href={url} target="_blank" rel="noreferrer"
-                            className="rounded-full border px-2.5 py-1 text-[10px] font-mono font-bold transition-colors hover:bg-white/8"
-                            style={{ color: tc.c4, borderColor: `${tc.c4}35`, backgroundColor: `${tc.c4}10` }}>
-                            {artistCopy.openSource} {idx + 1}
-                          </a>
-                        ))}
+                        {selectedKnowledgeSummary.links.slice(0, 8).map((url) => {
+                          const linkStyle = getLinkColor(url, tc.c4);
+                          const platformName = getLinkLabel(url);
+                          return (
+                            <a key={url} href={url} target="_blank" rel="noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-mono font-bold transition-all hover:scale-[1.04] active:scale-95 shadow-sm hover:shadow-md"
+                              style={{
+                                color: linkStyle.color,
+                                borderColor: linkStyle.borderColor,
+                                backgroundColor: linkStyle.backgroundColor,
+                              }}>
+                              <BrandIcon name={platformName} size={11} color={linkStyle.color} />
+                              <span>{platformName}</span>
+                            </a>
+                          );
+                        })}
                       </div>
                     </div>
                   )}

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import artistImages from '../data/artist_images.json';
 import artistMeta from '../data/artist_meta.json';
+import memberImages from '../data/member_images.json';
+import memberEnrichment from '../data/member_enrichment.json';
 import FlagArt from './FlagArt';
 import { getArtistGallery, getDailyPhotoIndex } from '../utils/artistGallery';
 
@@ -9,6 +11,8 @@ type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
 const IMAGES = artistImages as ArtistImages;
 const META = artistMeta as ArtistMeta;
+const MEMBER_IMAGES = memberImages as Record<string, string>;
+const MEMBER_ENRICHMENT = memberEnrichment as Record<string, { photo?: string }>;
 
 interface ArtistAvatarProps {
   name: string;
@@ -16,6 +20,7 @@ interface ArtistAvatarProps {
   className?: string;
   /** Rich hover tooltip with genre/country/flag (default on; disable in dense exports). */
   tooltip?: boolean;
+  overrideSrc?: string;
 }
 
 const PALETTE = ['#00f2fe', '#f72585', '#7209b7', '#10b981', '#f59e0b', '#06b6d4', '#ef4444', '#8b5cf6'];
@@ -55,7 +60,7 @@ function hiResVariant(url: string): string | null {
  * fade in on load; larger renders try a hi-res variant first and degrade
  * gracefully (hi-res -> standard -> initials) via onError stages.
  */
-export default function ArtistAvatar({ name, size = 40, className = '', tooltip = true }: ArtistAvatarProps) {
+export default function ArtistAvatar({ name, size = 40, className = '', tooltip = true, overrideSrc }: ArtistAvatarProps) {
   const { tc } = useApp();
   const key = name.trim().toLowerCase();
   const entry = IMAGES[key];
@@ -69,15 +74,16 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
   const [stage, setStage] = useState<'hi' | 'std' | 'alt' | 'failed'>(hiRes ? 'hi' : 'std');
   const [loaded, setLoaded] = useState(false);
   const meta = META[key];
-  const hasPhoto = Boolean(entry || dailyUrl);
+  const memberPhoto = MEMBER_ENRICHMENT[key]?.photo || MEMBER_IMAGES[key];
+  const hasPhoto = Boolean(overrideSrc || memberPhoto || entry || dailyUrl);
 
   const avatar = (() => {
     if (hasPhoto && stage !== 'failed') {
-      const src = stage === 'hi' && hiRes
+      const src = overrideSrc || memberPhoto || (stage === 'hi' && hiRes
         ? hiRes
         : stage === 'alt' && entry
           ? entry.thumb
-          : dailyUrl ?? entry!.thumb;
+          : dailyUrl ?? entry!.thumb);
       return (
         <span
           className={`relative inline-flex rounded-full overflow-hidden shrink-0 ${loaded ? '' : 'art-loading'}`}

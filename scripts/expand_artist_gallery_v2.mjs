@@ -37,8 +37,14 @@ const EXCLUDE_FILENAME_SIGNALS = [
   'file-type-icons', 'fileicon',
 ];
 
+// A pure ASCII-strip key collapses any non-Latin-script name (Hebrew, etc.)
+// to the same empty string, silently sharing one cache file across
+// different artists. The hash suffix guarantees uniqueness regardless.
 function cacheKey(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 80);
+  const ascii = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 60);
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
+  return `${ascii || 'x'}_${(hash >>> 0).toString(36)}`;
 }
 
 function cacheGet(key) {

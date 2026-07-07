@@ -20,7 +20,7 @@ interface Capsule {
 }
 
 export default function TimeCapsule({ data }: TimeCapsuleProps) {
-  const { tc, t, lang } = useApp();
+  const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 
   const eras = data.yearly_eras;
@@ -162,8 +162,14 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                     />
 
                     <div
-                      className="glass-panel p-6 rounded-3xl transition-all hover:scale-[1.01]"
+                      className="glass-panel p-6 rounded-3xl transition-all hover:scale-[1.01] cursor-pointer hover:border-white/20"
                       style={{ borderColor: `${accent}25` }}
+                      onClick={() => {
+                        setSelectedArtistName(cap.era.top_artist);
+                        setSelectedTrackKey(`${cap.era.top_artist.toLowerCase()}|||${cap.era.top_track.toLowerCase()}`);
+                        setTopSubTab('tracks');
+                        setActiveTab('top');
+                      }}
                     >
                       <div className="flex flex-col md:flex-row md:items-center gap-5">
                         {/* Year badge + avatar */}

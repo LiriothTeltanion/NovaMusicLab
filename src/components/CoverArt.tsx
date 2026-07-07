@@ -13,6 +13,7 @@ interface CoverArtProps {
   kind: 'album' | 'track';
   size?: number;
   className?: string;
+  overrideSrc?: string;
 }
 
 const HUES = [188, 330, 271, 152, 38, 199, 0, 258];
@@ -34,13 +35,13 @@ function hashString(str: string): number {
  * deterministic gradient tile with a disc/note icon - so every row has a
  * consistent visual even for unmatched underground releases.
  */
-export default function CoverArt({ artist, title, kind, size = 44, className = '' }: CoverArtProps) {
+export default function CoverArt({ artist, title, kind, size = 44, className = '', overrideSrc }: CoverArtProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const key = `${artist.toLowerCase()}|||${title.toLowerCase()}`;
-  const entry = kind === 'album'
+  const entry = overrideSrc ? { thumb: overrideSrc } : (kind === 'album'
     ? ALBUMS[key]
-    : TRACKS[key] ?? ALBUMS[key];
+    : TRACKS[key] ?? ALBUMS[key]);
 
   if (entry && !imgFailed) {
     return (

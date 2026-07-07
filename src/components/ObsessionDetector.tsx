@@ -13,7 +13,8 @@ interface ObsessionDetectorProps {
 export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
   const obsessions = data.obsessions;
   const sessions = data.sessions;
-  const { tc, t, lang } = useApp();
+  const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
+  const trackKey = (artist: string, title: string) => `${artist.toLowerCase()}|||${title.toLowerCase()}`;
 
   // Format date to the active language's locale
   const formatDate = (dateStr: string) => {
@@ -50,7 +51,16 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
           <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
             {obsessions.length > 0 ? (
               obsessions.map((obs, idx) => (
-                <div key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all">
+                 <div 
+                  key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} 
+                  className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                  onClick={() => {
+                    setSelectedArtistName(obs.artist);
+                    setSelectedTrackKey(trackKey(obs.artist, obs.track));
+                    setTopSubTab('tracks');
+                    setActiveTab('top');
+                  }}
+                >
                   <div className="flex items-center space-x-3 truncate pr-4">
                     <CoverArt artist={obs.artist} title={obs.track} kind="track" size={36} />
                     <div className="truncate">

@@ -10,6 +10,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
 import GenreArt from './GenreArt';
+import DailyHeatmap from './DailyHeatmap';
 import {
   buildMonthlyActivity,
   getMonthNames,
@@ -231,6 +232,9 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           {t.statsDeepDive.clickYearHint}
         </p>
       </div>
+
+      {/* Daily Scrobble Grid Heatmap */}
+      <DailyHeatmap data={data} />
 
       {/* ── Monthly Breakdown + Weekday Radar ── */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">

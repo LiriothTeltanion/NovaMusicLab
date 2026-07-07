@@ -2865,6 +2865,16 @@ interface AppContextValue {
   theme: Theme;
   setTheme: (th: Theme) => void;
   tc: ThemeColors;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+  selectedArtistName: string;
+  setSelectedArtistName: (name: string) => void;
+  selectedAlbumKey: string;
+  setSelectedAlbumKey: (key: string) => void;
+  selectedTrackKey: string;
+  setSelectedTrackKey: (key: string) => void;
+  topSubTab: 'artists' | 'albums' | 'tracks';
+  setTopSubTab: (sub: 'artists' | 'albums' | 'tracks') => void;
 }
 
 const AppContext = createContext<AppContextValue>({
@@ -2874,6 +2884,16 @@ const AppContext = createContext<AppContextValue>({
   theme: 'cyber',
   setTheme: () => {},
   tc: THEMES.cyber,
+  activeTab: 'hero',
+  setActiveTab: () => {},
+  selectedArtistName: '',
+  setSelectedArtistName: () => {},
+  selectedAlbumKey: '',
+  setSelectedAlbumKey: () => {},
+  selectedTrackKey: '',
+  setSelectedTrackKey: () => {},
+  topSubTab: 'artists',
+  setTopSubTab: () => {},
 });
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
@@ -2885,6 +2905,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const stored = localStorage.getItem('nml_theme');
     return isTheme(stored) ? stored : 'cyber';
   });
+
+  // Global navigation & dossiers selection state
+  const [activeTab, setActiveTab] = useState<string>('hero');
+  const [selectedArtistName, setSelectedArtistName] = useState<string>('');
+  const [selectedAlbumKey, setSelectedAlbumKey] = useState<string>('');
+  const [selectedTrackKey, setSelectedTrackKey] = useState<string>('');
+  const [topSubTab, setTopSubTab] = useState<'artists' | 'albums' | 'tracks'>('artists');
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
@@ -2917,6 +2944,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       t: STRINGS[lang] as TranslationKeys,
       theme, setTheme,
       tc: THEMES[theme],
+      activeTab, setActiveTab,
+      selectedArtistName, setSelectedArtistName,
+      selectedAlbumKey, setSelectedAlbumKey,
+      selectedTrackKey, setSelectedTrackKey,
+      topSubTab, setTopSubTab,
     }}>
       {children}
     </AppContext.Provider>

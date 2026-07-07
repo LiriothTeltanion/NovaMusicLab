@@ -27,8 +27,14 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const BAND_TYPES = new Set(['Q215380', 'Q2088357', 'Q5741069', 'Q1249737', 'Q125191']); // musical group / ensemble / rock band / musical duo / hip hop group
 const MUSICIAN_OCCUPATIONS = new Set(['Q639669', 'Q177220', 'Q36834', 'Q488205', 'Q713200', 'Q130857', 'Q855091']); // musician/singer/composer/singer-songwriter/rapper/DJ/guitarist
 
+// A pure ASCII-strip key collapses any non-Latin-script name (Hebrew, etc.)
+// to the same empty string, silently sharing one cache file across
+// different artists. The hash suffix guarantees uniqueness regardless.
 function cacheKey(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 80);
+  const ascii = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 60);
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
+  return `${ascii || 'x'}_${(hash >>> 0).toString(36)}`;
 }
 
 function cacheGet(key) {

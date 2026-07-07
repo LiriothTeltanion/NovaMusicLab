@@ -52,7 +52,7 @@ const TIER_POINTS: Record<Achievement['tier'], number> = {
 };
 
 export default function Achievements({ data }: AchievementsProps) {
-  const { lang, tc, t } = useApp();
+  const { lang, tc, t, setActiveTab, setSelectedArtistName, setTopSubTab } = useApp();
   const L = lang === 'en';
   const tierLabel = useCallback(
     (tier: keyof typeof t.achievements.tiers) => t.achievements.tiers[tier],
@@ -321,12 +321,26 @@ export default function Achievements({ data }: AchievementsProps) {
 
                 <AnimatePresence>
                   {isSelected && (
-                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
-                      className="text-xs text-gray-300 mt-3 pt-3 border-t font-sans leading-relaxed"
+                      className="text-xs text-gray-300 mt-3 pt-3 border-t font-sans leading-relaxed flex flex-col gap-2"
                       style={{ borderTopColor: `${colors.glow}20` }}>
-                      {L ? ach.desc_en : ach.desc_es}
-                    </motion.p>
+                      <p>{L ? ach.desc_en : ach.desc_es}</p>
+                      {ach.avatarName && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedArtistName(ach.avatarName || '');
+                            setTopSubTab('artists');
+                            setActiveTab('top');
+                          }}
+                          className="mt-1 text-[10px] font-mono font-black uppercase tracking-wider text-left hover:underline flex items-center gap-1 w-fit transition-all duration-200 hover:translate-x-0.5"
+                          style={{ color: colors.glow }}
+                        >
+                          🔍 {L ? 'View Dossier' : 'Ver Expediente'}
+                        </button>
+                      )}
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>

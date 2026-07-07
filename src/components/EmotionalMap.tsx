@@ -757,7 +757,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{copy.labels.tracks}</span>
                 <div className="space-y-1">
                   {currentEmotion.tracks.map((track, index) => (
-                    <div key={track} className="px-3 py-2 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs flex items-start gap-2.5">
+                    <div key={`${currentEmotion.artists[index] ?? index}-${track}`} className="px-3 py-2 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs flex items-start gap-2.5">
                       <CoverArt artist={currentEmotion.artists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
                       <div className="min-w-0">
                         <p className="font-mono text-gray-200 truncate">{track}</p>
