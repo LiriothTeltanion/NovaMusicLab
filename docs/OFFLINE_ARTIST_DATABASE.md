@@ -59,21 +59,30 @@ This pass builds a local offline knowledge cache for the 100 artists already pre
 The emotional engine reads this file through `src/utils/offlineArtistKnowledge.ts`, so artist, album and song dossiers can use real structured context while still writing original bilingual prose.
 The Data Quality center also reads the same file to build an enrichment queue: a ranked list of artists needing profile work, Wikidata facts, descriptions, member/role facts, official links, public images or dated album context.
 
-Current generated coverage:
+Current generated coverage (2026-07-07 — run `npm run audit:data` for a live
+number instead of trusting this table long-term):
 
 - 100 cached artist rows from the bundled archive.
-- 98 MusicBrainz matches, 1 curated public-link profile (`Odeon`) and 1 unresolved profile (`Corbin Karasu`).
-- 71 Wikidata profiles with public descriptions.
-- 62 official website links and 63 Wikimedia image URLs.
-- 65 Wikidata genre/country fact sets, 52 formation-place fact sets and 53 record-label fact sets.
-- 32 artists with structured member data, 11 with occupation facts and 5 with instrument facts.
-- 89 artists with release-group album context.
+- 77 Wikidata profiles with public descriptions — this is a **confirmed
+  ceiling**, not a gap: the other 23 artists (mostly small/independent acts)
+  were retried by name, alias, and "(band)"/"(musician)" suffix variants and
+  genuinely have no Wikidata entry to match.
+- 67 artists with structured band-member data, plus a newer, separate
+  `member_enrichment.json`/`member_images.json` pass that adds per-member
+  photo/age/social-link facts for the members of the top 30 artists specifically
+  (see `HANDOFF.md` for the two real bugs already found and fixed there).
+- Curated bilingual bios in `artist_enrichment.json` now cover all 100 artists
+  (was 42) — artists with a weak public footprint (`Odeon`, `Corbin Karasu`,
+  `Acres`, `SMBDY ELSE`, `NIGHTBREAKERS`, `Nightlife`, …) were written as
+  compact, evidence-based reads grounded in their real archive data rather than
+  inflated biographies or left unresolved.
 
-Current first queue targets:
-
-- `Corbin Karasu`: unresolved local profile.
-- `Jordyne`, `Sweezy`, `thekidszn`, `Mooki`, `Naits`, `Indighxst`: matched enough to appear in the archive, but missing most structured public facts.
-- `Normandie` and `Magnolia Park`: important high-rank artists that need stronger Wikidata/source enrichment.
+Previous "first queue targets" (Jordyne, Sweezy, thekidszn, Mooki, Naits,
+Indighxst, Normandie, Magnolia Park, Corbin Karasu) have all since gotten a
+curated enrichment pass — none of them are open queue items anymore. If you're
+looking for the current highest-value gap, run `npm run audit:data` and check
+the "Next priority targets" section of its output rather than reading this as
+a static list.
 
 ## World-Scale Next Phase
 
