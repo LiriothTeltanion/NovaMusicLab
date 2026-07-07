@@ -1513,11 +1513,11 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="flex items-start gap-4 md:gap-5">
                 <div className="relative shrink-0">
                   {/* Aura tinted by the artist's emotional-engine mood */}
-                  <div className="absolute -inset-3 rounded-[2rem] blur-2xl opacity-50"
+                  <div className="absolute -inset-4 rounded-[2.25rem] blur-2xl opacity-50"
                     style={{ background: `linear-gradient(135deg, ${selectedMoodColor ?? tc.c1}, ${tc.c3})` }} />
-                  <div className="relative rounded-[1.65rem] border bg-black/35 p-2 pb-3"
+                  <div className="relative rounded-[2rem] border bg-black/35 p-2.5 pb-3.5"
                     style={{ borderColor: selectedMoodColor ? `${selectedMoodColor}45` : 'rgba(255,255,255,0.15)' }}>
-                    <ArtistPhotoCarousel name={selectedArtist.name} size={88} />
+                    <ArtistPhotoCarousel name={selectedArtist.name} size={144} />
                   </div>
                 </div>
                 <div className="min-w-0 flex-1">

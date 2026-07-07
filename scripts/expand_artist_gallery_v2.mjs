@@ -53,6 +53,30 @@ async function fetchJson(url, key) {
   return { json, fromCache: false };
 }
 
+/**
+ * Same Commons file can be reached through different URL shapes
+ * (commons.wikimedia.org/wiki/Special:FilePath/X vs.
+ * upload.wikimedia.org/.../thumb/.../NNNpx-X) depending on which API served
+ * it. A raw string dedup misses that, so callers should key their
+ * "already have this photo" sets by this instead of the literal URL.
+ */
+function wikimediaFileKey(url) {
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'commons.wikimedia.org' && u.pathname.startsWith('/wiki/Special:FilePath/')) {
+      const name = decodeURIComponent(u.pathname.replace('/wiki/Special:FilePath/', ''));
+      return name.replace(/_/g, ' ').toLowerCase();
+    }
+    if (u.hostname === 'upload.wikimedia.org') {
+      const parts = u.pathname.split('/').filter(Boolean);
+      let last = decodeURIComponent(parts[parts.length - 1] || '');
+      last = last.replace(/^\d+px-/, '');
+      return last.replace(/_/g, ' ').toLowerCase();
+    }
+  } catch { /* not a valid URL */ }
+  return url;
+}
+
 function looksLikePortrait(title) {
   const lower = title.toLowerCase();
   if (lower.endsWith('.svg')) return false;
@@ -146,7 +170,7 @@ for (const artist of knowledge.artists) {
   if (existing.length >= TARGET_PHOTOS) continue;
   artistsChecked++;
 
-  const existingUrls = new Set(existing.map((p) => p.url));
+  const existingKeys = new Set(existing.map((p) => wikimediaFileKey(p.url)));
   const needed = TARGET_PHOTOS - existing.length;
   const candidates = categoryCandidates(artist, artist.musicbrainz?.name);
 
@@ -168,10 +192,10 @@ for (const artist of knowledge.artists) {
   for (const title of portraitTitles) {
     if (newPhotos.length >= needed) break;
     const url = thumbs.get(title);
-    if (!url || existingUrls.has(url)) continue;
+    if (!url || existingKeys.has(wikimediaFileKey(url))) continue;
     if (SKIP_CHECK || (await checkUrl(url))) {
       newPhotos.push({ url, source: 'wikimedia' });
-      existingUrls.add(url);
+      existingKeys.add(wikimediaFileKey(url));
     }
   }
 

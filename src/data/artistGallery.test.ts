@@ -6,6 +6,28 @@ import { getDailyPhotoIndex } from '../utils/artistGallery';
 const entries = gallery as Record<string, Array<{ url: string; source: string }>>;
 const VALID_SOURCES = new Set(['wikipedia', 'spotify', 'deezer', 'wikimedia']);
 
+/**
+ * Commons serves the same file through multiple URL shapes
+ * (commons.wikimedia.org/wiki/Special:FilePath/X vs.
+ * upload.wikimedia.org/.../thumb/.../NNNpx-X) - a raw string dedup misses
+ * that two "different" URLs are actually the same photo. Mirrors
+ * wikimediaFileKey() in scripts/expand_artist_gallery_v2.mjs.
+ */
+function wikimediaFileKey(url: string): string {
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'commons.wikimedia.org' && u.pathname.startsWith('/wiki/Special:FilePath/')) {
+      return decodeURIComponent(u.pathname.replace('/wiki/Special:FilePath/', '')).replace(/_/g, ' ').toLowerCase();
+    }
+    if (u.hostname === 'upload.wikimedia.org') {
+      const parts = u.pathname.split('/').filter(Boolean);
+      const last = decodeURIComponent(parts[parts.length - 1] || '').replace(/^\d+px-/, '');
+      return last.replace(/_/g, ' ').toLowerCase();
+    }
+  } catch { /* not a valid URL */ }
+  return url;
+}
+
 describe('artist_gallery.json stability', () => {
   it('has valid photo shapes, sources and https URLs with no duplicates per artist', () => {
     for (const [artist, photos] of Object.entries(entries)) {
@@ -17,6 +39,9 @@ describe('artist_gallery.json stability', () => {
         expect(VALID_SOURCES.has(photo.source), `${artist} source "${photo.source}"`).toBe(true);
         expect(seen.has(photo.url), `${artist} duplicate url`).toBe(false);
         seen.add(photo.url);
+        const fileKey = wikimediaFileKey(photo.url);
+        expect(seen.has(`file:${fileKey}`), `${artist} duplicate photo (same file, different URL shape)`).toBe(false);
+        seen.add(`file:${fileKey}`);
       }
     }
   });

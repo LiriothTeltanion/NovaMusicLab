@@ -41,6 +41,10 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
   }
 
   const active = index % photos.length;
+  // Scales down on narrow viewports instead of overflowing, but never
+  // exceeds `size` - lets callers ask for a bigger, more prominent photo
+  // without needing a separate mobile size prop.
+  const boxSize = `clamp(${Math.round(size * 0.65)}px, 26vw, ${size}px)`;
 
   return (
     <button
@@ -48,7 +52,7 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
       onClick={() => setIndex(i => (i + 1) % photos.length)}
       aria-label={name}
       className="relative block cursor-pointer rounded-full focus:outline-none"
-      style={{ width: size, height: size }}
+      style={{ width: boxSize, height: boxSize }}
       title={`${name} · ${photos[active].source}`}
     >
       {photos.map((photo, i) => (
@@ -59,10 +63,8 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
           loading={i === active ? 'eager' : 'lazy'}
           decoding="async"
           onError={() => setFailed(prev => new Set(prev).add(photo.url))}
-          className="absolute inset-0 rounded-full object-cover transition-opacity duration-700"
+          className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-700"
           style={{
-            width: size,
-            height: size,
             opacity: i === active ? 1 : 0,
             border: `1px solid ${tc.c1}30`,
           }}
