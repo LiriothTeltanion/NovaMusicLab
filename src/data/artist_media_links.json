@@ -1,18 +1,20 @@
 [
   {
     "artist": "44phantom",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for hurricane plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/1vwwjIPFeYoRfAUCqqO6cZ",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCpCloXdPM2dT3-DnWVsyUTw",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=Vh4q3k_UA4s",
     "officialSiteUrl": "https://www.44phantom.com/"
   },
   {
     "artist": "Acres",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=lNNzdVWZx2I",
+    "sourceNote": "Official Acres video for Into Flames."
   },
   {
     "artist": "Alcest",
@@ -50,10 +52,11 @@
   },
   {
     "artist": "Arrows in Action",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/467o5z7PYxbXFAGA0mvhAQ"
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official Arrows in Action video for Head in the Clouds plus Spotify profile.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/467o5z7PYxbXFAGA0mvhAQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=Ph-dNwu5xsg"
   },
   {
     "artist": "Asking Alexandria",
@@ -68,17 +71,19 @@
   },
   {
     "artist": "Atzmus",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official Atzmus video for No Hay Mundo Sin Amor.",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=5qq94_BWxY0",
     "officialSiteUrl": "http://www.atzmus.com/"
   },
   {
     "artist": "Being as an Ocean",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official visualizer for Death Can Wait from Out Of Line Music plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/7ML9AQvVVE3c5m0sx1PlmP",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=kcMhtW0VZo4",
     "officialSiteUrl": "https://beingasanocean.com/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Being_as_an_Ocean",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Being_as_an_Ocean"
@@ -165,9 +170,10 @@
   },
   {
     "artist": "Corbin Karasu",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=_pV1-7ppQf0",
+    "sourceNote": "YouTube Topic official audio for The Journey."
   },
   {
     "artist": "Crazy Lixx",
@@ -238,16 +244,20 @@
   },
   {
     "artist": "Diversify",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for All My Life plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/356W28yEFY8MEeYNUOLzJq",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=hlPIGRSE4Zc",
     "officialSiteUrl": "https://itsdiversify.com/"
   },
   {
     "artist": "Don Vedda",
     "spotifyArtistUrl": "https://open.spotify.com/artist/3RAhsZklmP61em9lYAgCLc",
-    "mediaConfidence": "partial"
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=0I10qffujng",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Artist-channel video for Talking Body with Raymond Warner."
   },
   {
     "artist": "Drake",
@@ -307,13 +317,14 @@
   },
   {
     "artist": "FM-84",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official music video for Running In The Night via NewRetroWave plus existing profile links.",
     "aliases": [
       "FM84"
     ],
     "spotifyArtistUrl": "https://open.spotify.com/artist/1xvEo98zythSrgN69GQevk",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=TvZskcqdYcE",
     "officialSiteUrl": "http://colinbennett.com/"
   },
   {
@@ -380,10 +391,11 @@
   },
   {
     "artist": "Hurtwave",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/6nEa9O0zPZtkuGJ6lWYcNy"
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official visualiser for Fever Dream via Spinefarm plus Spotify profile.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6nEa9O0zPZtkuGJ6lWYcNy",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=JcjphtuSKl8"
   },
   {
     "artist": "Indighxst",
@@ -416,9 +428,10 @@
   },
   {
     "artist": "Jordyne",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=KB6VFfejC6U",
+    "sourceNote": "YouTube Topic official audio for Some Way."
   },
   {
     "artist": "Katatonia",
@@ -433,17 +446,19 @@
   },
   {
     "artist": "Kiremi",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for I NEVER COULD plus Spotify profile.",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=-Yvqd9I6zFQ",
     "spotifyArtistUrl": "https://open.spotify.com/artist/60ZTa5QfmhzN1ToB8GOwCW"
   },
   {
     "artist": "Knox",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official visualizer for Not The 1975 plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/61S5H9Lxn1PDUvu1TV0kCX",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=gF0HEdinEC4",
     "officialSiteUrl": "https://www.musicbyknox.com/"
   },
   {
@@ -508,7 +523,10 @@
       "Muki"
     ],
     "spotifyArtistUrl": "https://open.spotify.com/artist/2RMH8nqc3YmaUEikglXlXm",
-    "mediaConfidence": "partial"
+    "officialAudioUrl": "https://www.youtube.com/watch?v=XXGqmyg8vWU",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for Teuna Be Slow Motion plus Spotify profile."
   },
   {
     "artist": "Myrath",
@@ -554,16 +572,18 @@
   },
   {
     "artist": "NIGHTBREAKERS",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official NIGHTBREAKERS video for Not Around plus existing official site.",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=CXsR4Qf2Uf8",
     "officialSiteUrl": "https://www.nightbrkrs.com/"
   },
   {
     "artist": "Nightlife",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=-yQ7_ziGsU8",
+    "sourceNote": "YouTube Topic official audio for all i know."
   },
   {
     "artist": "Nine Inch Nails",
@@ -623,9 +643,10 @@
   },
   {
     "artist": "Paloma",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=gYundXq7g40",
+    "sourceNote": "YouTube Topic official audio for Actresses Date Actors."
   },
   {
     "artist": "Perturbator",
@@ -651,10 +672,11 @@
   },
   {
     "artist": "Primal Fear",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official Another Hero video via Reigning Phoenix Music plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/1yfiDL3YUEJlQCgb5Pun6g",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=JUISvCi3hyA",
     "officialSiteUrl": "http://www.primalfear.de/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Primal_Fear_(band)",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Primal_Fear"
@@ -672,9 +694,10 @@
   },
   {
     "artist": "Rami Kleinstein",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=L2i03hBb2Kw",
+    "sourceNote": "Official Rami Kleinstein channel video for אהביני."
   },
   {
     "artist": "Roosevelt",
@@ -688,10 +711,11 @@
   },
   {
     "artist": "Ryan Caraveo",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official Ryan Caraveo audio for Hate Me Now plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/1PDE2MIJ4M6uvFJDrslazf",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=SFd90Drvrjs",
     "officialSiteUrl": "http://www.ryancaraveo.com/"
   },
   {
@@ -719,10 +743,11 @@
   },
   {
     "artist": "Sebastian Gampl",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for City Hunter plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/3jtCAPtVjW9Q7KHfnGCZsy",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=yJYvbGc7trE",
     "officialSiteUrl": "http://sebastiangampl.com/"
   },
   {
@@ -749,10 +774,11 @@
   },
   {
     "artist": "Skyharbor",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "SkyharborVEVO video for Dim plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/0YbvZPP1HufDyWIsR0ei6K",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=OoyC7j7M03U",
     "officialSiteUrl": "http://www.skyharbormusic.com/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Skyharbor",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Skyharbor"
@@ -771,10 +797,11 @@
   },
   {
     "artist": "SMBDY ELSE",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/63E0puQN47nWNF9wCJ8xdv"
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for the other side plus Spotify profile.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/63E0puQN47nWNF9wCJ8xdv",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=CQk2xGGGDdk"
   },
   {
     "artist": "Som",
@@ -787,9 +814,10 @@
   },
   {
     "artist": "Sweezy",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-03",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified."
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=QmsuJb5_Wyc",
+    "sourceNote": "YouTube Topic official audio for Falling In Love."
   },
   {
     "artist": "Teenage Wrist",
@@ -909,13 +937,14 @@
   },
   {
     "artist": "thekidszn",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "YouTube Topic official audio for PROUD OF ME plus Spotify profile.",
     "aliases": [
       "the kidszn",
       "kidszn"
     ],
+    "officialAudioUrl": "https://www.youtube.com/watch?v=5jeUBsv4y9I",
     "spotifyArtistUrl": "https://open.spotify.com/artist/138UAIyJocdHT5PpR0iTJE"
   },
   {
@@ -955,10 +984,11 @@
   },
   {
     "artist": "Treat",
-    "mediaConfidence": "search",
-    "checkedAt": "2026-07-05",
-    "sourceNote": "Search-only legal media profile seeded by Codex. Spotify and YouTube buttons use generated searches until exact official artist links are verified.",
+    "mediaConfidence": "partial",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "Official Ghost of Graceland video via Frontiers Music srl plus existing profile links.",
     "spotifyArtistUrl": "https://open.spotify.com/artist/6HY1gnFOOY9ZAgQtzvtZHI",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=TnIlzxcb5zo",
     "officialSiteUrl": "http://www.treatnews.com/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Treat_(band)"
   },

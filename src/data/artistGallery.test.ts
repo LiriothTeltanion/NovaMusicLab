@@ -62,6 +62,15 @@ describe('artist_gallery.json stability', () => {
     expect(total).toBeGreaterThanOrEqual(95);
     expect(multi).toBeGreaterThanOrEqual(85);
   });
+
+  it('keeps Slaves gallery focused on the real American band, not generic slavery media', () => {
+    const slaves = entries.slaves ?? [];
+    expect(slaves.length).toBeGreaterThanOrEqual(2);
+    expect(slaves[0]?.url).toContain('Slaves_American_band.jpg');
+    for (const photo of slaves) {
+      expect(photo.url).not.toMatch(/fileicon|Newly_released_Slaves|Cargo_of_Newly_released_Slaves|Slavery/i);
+    }
+  });
 });
 
 describe('getDailyPhotoIndex', () => {

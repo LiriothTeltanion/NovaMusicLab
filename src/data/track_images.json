@@ -155,10 +155,6 @@
     "thumb": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/d0/61/9e/d0619e02-142f-313d-22f1-967b46be02d7/artwork.jpg/600x600bb.jpg",
     "source": "itunes"
   },
-  "slaves|||prayers": {
-    "thumb": "https://cdn-images.dzcdn.net/images/cover/f715aa08d64a1a8f0654d607a9df8ec2/1000x1000-000000-80-0-0.jpg",
-    "source": "deezer"
-  },
   "bilmuri|||better hell (thicc boi)": {
     "thumb": "https://cdn-images.dzcdn.net/images/cover/4abd3ab702d513a077185d7279ccc4c4/1000x1000-000000-80-0-0.jpg",
     "source": "deezer"
@@ -409,6 +405,38 @@
   },
   "magnolia park|||tokyo": {
     "thumb": "https://cdn-images.dzcdn.net/images/cover/d1f1c5c5a3cf9348923b3a248008fb58/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "jordyne|||some way": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/9182d250b1ca3a8807f3d38f8649fb42/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "corbin karasu|||the journey": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/06dfc85a7b5c35c0ca5417e464fe2fe1/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "naits|||lonely road": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/b2a00f0328e7286dc523b904ac5b7366/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "sweezy|||falling in love": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/fba4dd84e68f36137346a03cc1abdb21/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "landon tewers|||sink with me": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/e68e4c3d4265f506ec61ea40c006ceda/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "thekidszn|||proud of me": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/682fe18d4353bbd4004a3eb0c7127e51/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "44phantom|||hurricane": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/548911e0d25a3942f36b6b9714de1239/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "normandie|||white flag": {
+    "thumb": "https://cdn-images.dzcdn.net/images/cover/8a82893317f5a168705020496f1e0435/1000x1000-000000-80-0-0.jpg",
     "source": "deezer"
   }
 }

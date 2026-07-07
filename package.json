@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "audit:data": "node scripts/audit_data_quality.mjs",
+    "audit:data:strict": "node scripts/audit_data_quality.mjs --strict",
     "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",
     "icons:generate": "node scripts/generate_nova_icons.mjs",
     "test": "vitest run",

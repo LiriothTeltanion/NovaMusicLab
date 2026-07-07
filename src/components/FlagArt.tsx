@@ -215,6 +215,17 @@ const FLAGS: Record<string, React.ReactNode> = {
       <circle cx="15" cy="10" r="1.1" fill="#85340A" opacity="0.6" />
     </>
   ),
+  'Brazil': (
+    <>
+      <rect width="30" height="20" fill="#009B3A" />
+      <path d="M15 3.1 L26 10 L15 16.9 L4 10 Z" fill="#FFDF00" />
+      <circle cx="15" cy="10" r="4.7" fill="#002776" />
+      <path d="M10.7 8.8 C13 8.1 16.9 8.6 19.4 10.8" fill="none" stroke="#fff" strokeWidth="1.05" />
+      {[0, 1, 2, 3, 4].map(i => (
+        <circle key={i} cx={12 + i * 1.55} cy={7.6 + (i % 2) * 0.9} r="0.28" fill="#fff" />
+      ))}
+    </>
+  ),
   'Barbados': (
     <>
       <rect width="10" height="20" fill="#00267F" />
