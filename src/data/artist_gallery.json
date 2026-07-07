@@ -255,6 +255,10 @@
     {
       "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Nothing%2CNowhere%20-%20Rock%20am%20Ring%202019-2460.jpg?width=800",
       "source": "wikimedia"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/18243705c5bbc13807f886204be76e0b/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
     }
   ],
   "dance with the dead": [
@@ -269,6 +273,10 @@
     {
       "url": "https://commons.wikimedia.org/wiki/Special:FilePath/HF2023DanceWithTheDead%207.jpg?width=800",
       "source": "wikimedia"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/9d9f792a5b18b6ba418681e7a2e92e8c/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
     }
   ],
   "omnium gatherum": [
@@ -722,6 +730,10 @@
     },
     {
       "url": "https://cdn-images.dzcdn.net/images/artist/51736529e354f44c7da2d8bbe9f1c169/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/b37f13f6df9ccc1a95fcb8742d0de749/1000x1000-000000-80-0-0.jpg",
       "source": "deezer"
     }
   ],
@@ -1194,6 +1206,10 @@
     },
     {
       "url": "https://cdn-images.dzcdn.net/images/artist/10cda21802b393d43deb9a58954832c7/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/25a98bdcb021771ec452334b8fa7f26e/1000x1000-000000-80-0-0.jpg",
       "source": "deezer"
     }
   ],

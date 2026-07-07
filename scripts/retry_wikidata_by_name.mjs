@@ -157,7 +157,11 @@ console.log(`Retrying name-based Wikidata match for ${targets.length} artists wi
 
 let matched = 0;
 for (const artist of targets) {
-  const searchNames = [artist.name, artist.musicbrainz?.name].filter(Boolean);
+  const baseNames = [artist.name, artist.musicbrainz?.name, ...(artist.musicbrainz?.aliases ?? [])].filter(Boolean);
+  const searchNames = [...baseNames];
+  for (const n of baseNames) {
+    searchNames.push(`${n} (band)`, `${n} (musician)`, `${n} (music duo)`);
+  }
   let acceptedQid = null;
 
   for (const name of new Set(searchNames)) {
