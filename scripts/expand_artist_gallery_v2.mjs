@@ -27,6 +27,14 @@ const EXCLUDE_FILENAME_SIGNALS = [
   'cover', 'album', 'single', ' ep ', '-ep', 'logo', 'poster', 'flyer',
   'ticket', 'setlist', 'banner', 'wordmark', 'symbol', 'artwork',
   'discography', 'tracklist', 'billboard', 'map', 'flag', 'award',
+  // Some band names (Slaves, Nightlife, ...) collide with unrelated, sensitive
+  // real-world Commons categories - a bare portrait-likeness filter isn't
+  // enough to keep those out. Block specific known-bad patterns rather than
+  // a bare "slave" substring, since the band's OWN legitimate photo is
+  // literally titled "Slaves_American_band.jpg" and would match otherwise.
+  'newly_released_slaves', 'cargo_of_newly_released', 'slavery',
+  'plantation', 'auschwitz', 'holocaust', 'genocide', 'lynching', 'massacre',
+  'file-type-icons', 'fileicon',
 ];
 
 function cacheKey(name) {
