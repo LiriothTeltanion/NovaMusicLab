@@ -45,3 +45,9 @@ if (typeof window !== 'undefined' && !('IntersectionObserver' in window)) {
   Object.defineProperty(window, 'IntersectionObserver', { value: ImmediateIntersectionObserver, configurable: true });
   Object.defineProperty(globalThis, 'IntersectionObserver', { value: ImmediateIntersectionObserver, configurable: true });
 }
+
+import { vi } from 'vitest';
+import mockData from './data/music_dna_mock.json';
+vi.mock('./data/music_dna_compiled.json', () => ({
+  default: mockData,
+}));

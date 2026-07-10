@@ -46,13 +46,25 @@ describe('artist_gallery.json stability', () => {
     }
   });
 
-  it('keys are lowercase and match knowledge artists', () => {
+  it('keys are lowercase and match knowledge artists or documented legacy keys', () => {
     const known = new Set(
       (knowledge as { artists: Array<{ name: string }> }).artists.map(a => a.name.toLowerCase()),
     );
+    // Verified photos for artists that left the top-100 when the bundled
+    // dataset was recompiled (2026-07-10 dedup pass), plus curated-content
+    // artists referenced outside the top-100 (EmotionalMap moods) and
+    // canonical-spelling twins of renamed/transliterated artists. Kept on
+    // purpose - deleting them would break curated dossier avatars and lose
+    // verified photo work if an artist re-enters the top. Any key NOT in
+    // this list and NOT in the knowledge file is a typo.
+    const LEGACY_KEYS = new Set([
+      'indighxst', 'louta', 'atzmus', 'smbdy else', 'corbin karasu', 'acres',
+      'knox', 'the damned', 'volumes', 'hurtwave', 'the cult', 'thornhill',
+      'היהודים', 'machine gun kelly', 'nothingnowhere.',
+    ]);
     for (const key of Object.keys(entries)) {
       expect(key, `key not lowercase: ${key}`).toBe(key.toLowerCase());
-      expect(known.has(key), `gallery key without knowledge row: ${key}`).toBe(true);
+      expect(known.has(key) || LEGACY_KEYS.has(key), `gallery key without knowledge row: ${key}`).toBe(true);
     }
   });
 

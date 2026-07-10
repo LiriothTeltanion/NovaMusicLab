@@ -75,6 +75,13 @@ const FLAGS: Record<string, React.ReactNode> = {
       <rect y="8.5" width="30" height="3" fill="#DC1E35" />
     </>
   ),
+  'Romania': (
+    <>
+      <rect width="10" height="20" fill="#002B7F" />
+      <rect x="10" width="10" height="20" fill="#FCD116" />
+      <rect x="20" width="10" height="20" fill="#CE1126" />
+    </>
+  ),
   'France': (
     <>
       <rect width="10" height="20" fill="#002395" />
@@ -253,14 +260,37 @@ const FLAGS: Record<string, React.ReactNode> = {
   'Barbados_alt': null,
 };
 
-/** Generic fallback for countries without a hand-authored flag: a globe motif. */
-function GlobeFallback() {
+
+function GeneratedStripeFlag({ country }: { country: string }) {
+  // Stable hash based on country name
+  const hash = (str: string, seed: number) => {
+    let h = seed;
+    for (let i = 0; i < str.length; i++) {
+      h = (h << 5) - h + str.charCodeAt(i);
+      h |= 0;
+    }
+    return Math.abs(h);
+  };
+  
+  const h1 = hash(country, 987);
+  const h2 = hash(country, 432);
+  const h3 = hash(country, 115);
+
+  const hue1 = h1 % 360;
+  const hue2 = h2 % 360;
+  const hue3 = h3 % 360;
+
+  const c1 = `hsl(${hue1}, 80%, 42%)`;
+  const c2 = `hsl(${hue2}, 75%, 48%)`;
+  const c3 = `hsl(${hue3}, 85%, 38%)`;
+
+  // Draw a beautiful 3-stripe design with a small glowing neonic circle in the center
   return (
     <>
-      <rect width="30" height="20" fill="#1f2937" />
-      <circle cx="15" cy="10" r="7" fill="none" stroke="#9ca3af" strokeWidth="1" />
-      <ellipse cx="15" cy="10" rx="3" ry="7" fill="none" stroke="#9ca3af" strokeWidth="0.8" />
-      <path d="M8 10 H22 M9.5 6 H20.5 M9.5 14 H20.5" stroke="#9ca3af" strokeWidth="0.8" />
+      <rect width="30" height="6.67" fill={c1} />
+      <rect y="6.67" width="30" height="6.67" fill={c2} />
+      <rect y="13.33" width="30" height="6.67" fill={c3} />
+      <circle cx="15" cy="10" r="2.2" fill="#ffffff" opacity="0.65" style={{ filter: 'drop-shadow(0 0 2px #fff)' }} />
     </>
   );
 }
@@ -283,7 +313,7 @@ export default function FlagArt({ country, size = 20, className = '', title }: F
         <rect width="30" height="20" rx="1.5" />
       </clipPath>
       <g clipPath={`url(#flag-clip-${country.replace(/[^a-zA-Z]/g, '')})`}>
-        {flag ?? <GlobeFallback />}
+        {flag ?? <GeneratedStripeFlag country={country} />}
       </g>
     </svg>
   );

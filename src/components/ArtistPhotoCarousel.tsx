@@ -51,7 +51,7 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
       type="button"
       onClick={() => setIndex(i => (i + 1) % photos.length)}
       aria-label={name}
-      className="relative block cursor-pointer rounded-full focus:outline-none"
+      className="relative block cursor-pointer rounded-full"
       style={{ width: boxSize, height: boxSize }}
       title={`${name} · ${photos[active].source}`}
     >

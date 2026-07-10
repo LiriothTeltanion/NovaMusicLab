@@ -37,6 +37,8 @@ export interface SourceSummary {
   spotify_short_plays: number;
   spotify_short_play_rate_pct: number;
   overlap_unique_tracks: number;
+  /** Same-listen events reported by two sources at once, collapsed to one during merge. */
+  cross_source_duplicates?: number;
   source_note: string;
 }
 

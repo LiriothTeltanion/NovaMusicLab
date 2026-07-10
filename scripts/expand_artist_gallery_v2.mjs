@@ -207,6 +207,11 @@ for (const artist of knowledge.artists) {
     if (newPhotos.length >= needed) break;
     const url = thumbs.get(title);
     if (!url || existingKeys.has(wikimediaFileKey(url))) continue;
+    // Re-check the FINAL URL against the exclusion signals, not just the file
+    // title: an .ogg/.pdf page passes the title filter but its "thumbnail" is
+    // a generic file-type icon (this exact hole once put fileicon-ogg.png in
+    // the Slaves gallery - twice).
+    if (!looksLikePortrait(url)) continue;
     if (SKIP_CHECK || (await checkUrl(url))) {
       newPhotos.push({ url, source: 'wikimedia' });
       existingKeys.add(wikimediaFileKey(url));

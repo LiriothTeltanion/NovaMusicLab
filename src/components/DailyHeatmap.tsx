@@ -197,6 +197,7 @@ export default function DailyHeatmap({ data }: DailyHeatmapProps) {
           <button
             onClick={() => shiftYear('prev')}
             disabled={selectedYear === availableYears[availableYears.length - 1]}
+            aria-label={L ? 'Previous year' : 'Año anterior'}
             className="p-1.5 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -207,6 +208,7 @@ export default function DailyHeatmap({ data }: DailyHeatmapProps) {
           <button
             onClick={() => shiftYear('next')}
             disabled={selectedYear === availableYears[0]}
+            aria-label={L ? 'Next year' : 'Año siguiente'}
             className="p-1.5 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent transition-all"
           >
             <ChevronRight className="w-4 h-4" />

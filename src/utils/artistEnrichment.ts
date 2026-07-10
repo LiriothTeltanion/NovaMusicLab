@@ -67,14 +67,23 @@ export function getArtistEnrichment(artistName: string) {
   return profiles.find(profile => artistMatchesProfile(artistName, profile));
 }
 
+// Substring matching (to catch "In Blur - Single" vs "In Blur") is only safe
+// when the shorter side is long enough to be distinctive - "II", "Live", "Demo"
+// or "Solo" would otherwise silently inherit an unrelated album's year and
+// description. Exact matches (after normalization, which already strips
+// parenthesized suffixes like "(Deluxe Edition)") are always allowed.
+const MIN_SUBSTRING_MATCH_LENGTH = 5;
+
 export function getAlbumEnrichment(profile: ArtistEnrichment | undefined, albumTitle: string) {
   if (!profile) return undefined;
   const normalizedAlbum = normalizeCatalogName(albumTitle);
 
   return profile.key_albums.find(album => {
     const normalizedProfileAlbum = normalizeCatalogName(album.title);
-    return normalizedAlbum === normalizedProfileAlbum
-      || normalizedAlbum.includes(normalizedProfileAlbum)
+    if (normalizedAlbum === normalizedProfileAlbum) return true;
+    const shorter = Math.min(normalizedAlbum.length, normalizedProfileAlbum.length);
+    if (shorter < MIN_SUBSTRING_MATCH_LENGTH) return false;
+    return normalizedAlbum.includes(normalizedProfileAlbum)
       || normalizedProfileAlbum.includes(normalizedAlbum);
   });
 }

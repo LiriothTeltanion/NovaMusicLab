@@ -296,6 +296,16 @@
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Emarosa"
   },
   {
+    "artist": "Enforcer",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6nQ7NZbr43lnKpLYBvLf7A",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "https://www.enforcerofficial.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Enforcer_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Enforcer"
+  },
+  {
     "artist": "Entwine",
     "mediaConfidence": "partial",
     "checkedAt": "2026-07-07",
@@ -398,6 +408,18 @@
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=6EDRUIrh_PY"
   },
   {
+    "artist": "Helloween",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4pQN0GB0fNEEOfQCaWotsY",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCJ_GGoAmF-LTtmV_2P5q8Dw",
+    "officialSiteUrl": "http://www.helloween.org",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Helloween",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Helloween",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUJ_GGoAmF-LTtmV_2P5q8Dw"
+  },
+  {
     "artist": "Holding Absence",
     "spotifyArtistUrl": "https://open.spotify.com/artist/2tl280wIokrLjabzrSKTgU",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCc0o7N0dIYQHMrL9vl2WHIA",
@@ -425,6 +447,18 @@
     "spotifyArtistUrl": "https://open.spotify.com/artist/2Qrn6Dm9jI2sRQE0dIGSsd",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UCOwZ3fPk0p8grwp4ZNYBW7Q",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=FM_HmfooQ2A"
+  },
+  {
+    "artist": "Insomnium",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3uIgLG971oRM5fe6v8lvQS",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCjInzLVCghqY-1lqfDcpOaQ",
+    "officialSiteUrl": "https://www.insomnium.net/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Insomnium",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Insomnium",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUjInzLVCghqY-1lqfDcpOaQ"
   },
   {
     "artist": "Issues",
@@ -543,6 +577,16 @@
     "officialSiteUrl": "https://www.magnoliaparkband.com/"
   },
   {
+    "artist": "Marty Friedman",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5czW6bitDSKbNBNDizRT9p",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "officialSiteUrl": "http://www.martyfriedman.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Marty_Friedman",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Marty_Friedman"
+  },
+  {
     "artist": "Mooki",
     "aliases": [
       "מוקי",
@@ -553,6 +597,17 @@
     "mediaConfidence": "partial",
     "checkedAt": "2026-07-07",
     "sourceNote": "YouTube Topic official audio for Teuna Be Slow Motion plus Spotify profile."
+  },
+  {
+    "artist": "My Vitriol",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/75SjeTpGbsxZDpwPeVGERn",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCFpr1VXusG_xskjEeh1a5Rw",
+    "officialSiteUrl": "http://www.myvitriol.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/My_Vitriol",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUFpr1VXusG_xskjEeh1a5Rw"
   },
   {
     "artist": "Myrath",
@@ -763,6 +818,17 @@
     "officialSiteUrl": "http://santacruzbandofficial.com/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Santa_Cruz_(band)",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Santa_Cruz_(banda)"
+  },
+  {
+    "artist": "Saurom",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4B2Iosqk1yAbGbx08My1fM",
+    "checkedAt": "2026-07-10",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
+    "youtubeChannelUrl": "https://www.youtube.com/user/sauromofficial",
+    "officialSiteUrl": "http://www.saurom.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Saurom",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Saurom"
   },
   {
     "artist": "Scar Symmetry",

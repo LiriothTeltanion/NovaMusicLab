@@ -398,5 +398,45 @@
   "som": {
     "thumb": "https://cdn-images.dzcdn.net/images/artist/cf1857ae58a718afe8a342093857a109/1000x1000-000000-80-0-0.jpg",
     "source": "deezer"
+  },
+  "hayehudim": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hayehudim_in_Caesarea_2010_3.jpg/330px-Hayehudim_in_Caesarea_2010_3.jpg",
+    "source": "wikipedia"
+  },
+  "mgk": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Machine_Gun_Kelly_Charity_Softball_%2853117851335%29crop.png/330px-Machine_Gun_Kelly_Charity_Softball_%2853117851335%29crop.png",
+    "source": "wikipedia"
+  },
+  "nothing,nowhere.": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/2023_Rock_im_Park_-_nothing_nowhere_-_by_2eight_-_9SC9954.jpg/330px-2023_Rock_im_Park_-_nothing_nowhere_-_by_2eight_-_9SC9954.jpg",
+    "source": "wikipedia"
+  },
+  "enforcer": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Enforcer_live_hole_in_the_sky_festival_27_august_2010.jpg/960px-Enforcer_live_hole_in_the_sky_festival_27_august_2010.jpg",
+    "source": "wikimedia"
+  },
+  "girafot": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/ebc1e07cc0c5c5e6005b7ecbd0d828d6/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "saurom": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/0f98f073714c0994cf60b082ff622355/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "helloween": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/8b6315773337100076cb8d4139efa6a8/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "insomnium": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Insomnium_%28live_in_Bologna_2010%29.JPG/960px-Insomnium_%28live_in_Bologna_2010%29.JPG",
+    "source": "wikimedia"
+  },
+  "marty friedman": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/7dcf3eb3a5d60d0862a8d06d57bbbc25/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
+  },
+  "my vitriol": {
+    "thumb": "https://cdn-images.dzcdn.net/images/artist/e020a590f9567317369f5d47f71fa301/1000x1000-000000-80-0-0.jpg",
+    "source": "deezer"
   }
 }

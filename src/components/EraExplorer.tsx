@@ -20,14 +20,14 @@ const ERA_COLORS: Record<number, string> = {
 
 const ERA_INTERPRETATIONS: Record<number, string> = {
   2015: 'Los cimientos: synthwave oscuro y metal técnico como primer lenguaje musical propio. Carpenter Brut abrió un portal hacia una estética cyberpunk que nunca abandonarías.',
-  2016: 'Un año de melodías pegajosas y glam. H.E.A.T y Tokio Hotel representan la búsqueda de conexión emocional a través de canciones brillantes y mela ncólicas.',
+  2016: 'Un año de melodías pegajosas y glam. H.E.A.T y Tokio Hotel representan la búsqueda de conexión emocional a través de canciones brillantes y melancólicas.',
   2017: 'El misterio domina. Ghost y The Midnight construyen un año de rock cinematográfico donde la atmósfera cuenta más que el riff.',
   2018: 'Integración cultural y hard rock. El rock israelí local convive con la energía glam de Santa Cruz. Tu racha más larga: 68 días consecutivos empieza aquí.',
   2019: 'Post-hardcore vulnerable. The Word Alive y Emarosa traen voces que sangran. Un año de catarsis emocional profunda.',
   2020: 'Pandemia + caos musical. Bring Me the Horizon y Bilmuri mezclan metal con pop en bucles intensos. La diversidad baja: escuchas lo que te ancla.',
-  2021: 'El año cumbre. 7.275 reproducciones. Deafheaven y la era Blackgaze: guitarras que brillan como heridas sanadas. Tu música más importante.',
-  2022: '6.958 scrobbles. La era Deafheaven consolida. Las mañanas se vuelven el momento de mayor intensidad musical. In Blur como himno permanente.',
-  2023: 'Reinvención: Magnolia Park y el pop-punk digital. Energía renovada, sonidos más modernos. La exploración regresa con 787 artistas únicos.',
+  2021: 'El año cumbre. 13.011 reproducciones. Deafheaven y la era Blackgaze: guitarras que brillan como heridas sanadas. Tu música más importante.',
+  2022: '10.728 scrobbles. La era Deafheaven consolida. Las mañanas se vuelven el momento de mayor intensidad musical. In Blur como himno permanente.',
+  2023: 'Reinvención: Magnolia Park y el pop-punk digital. Energía renovada, sonidos más modernos. La exploración regresa con 1.001 artistas únicos.',
   2024: 'Intimidad y groove. Bilmuri y Corbin Karasu en un año de madurez reconstructiva. Menos volumen, más profundidad.',
   2025: 'Emo rap e introspección. nothingnowhere. como guía de una búsqueda lírica intensa. Recuperación y reconstrucción artística.',
   2026: 'Energía fresca. The Kid LAROI y la nueva generación de rap-pop alternativo marcan el presente y el futuro de tu universo sonoro.',
@@ -40,9 +40,9 @@ const ERA_INTERPRETATIONS_EN: Record<number, string> = {
   2018: 'Cultural integration and hard rock. Local Israeli rock coexists with the glam energy of Santa Cruz. Your longest streak: 68 consecutive days begins here.',
   2019: 'Vulnerable post-hardcore. The Word Alive and Emarosa bring bleeding voices. A year of deep emotional catharsis.',
   2020: 'Pandemic + musical chaos. Bring Me the Horizon and Bilmuri blend metal with pop in intense loops. Diversity drops: you listen to what anchors you.',
-  2021: 'The peak year. 7,275 plays. Deafheaven and the Blackgaze Era: guitars that shine like healed wounds. Your most important music.',
-  2022: '6,958 scrobbles. The Deafheaven era solidifies. Mornings become the moment of greatest musical intensity. In Blur as a permanent anthem.',
-  2023: 'Reinvention: Magnolia Park and digital pop-punk. Renewed energy, more modern sounds. Exploration returns with 787 unique artists.',
+  2021: 'The peak year. 13,011 plays. Deafheaven and the Blackgaze Era: guitars that shine like healed wounds. Your most important music.',
+  2022: '10,728 scrobbles. The Deafheaven era solidifies. Mornings become the moment of greatest musical intensity. In Blur as a permanent anthem.',
+  2023: 'Reinvention: Magnolia Park and digital pop-punk. Renewed energy, more modern sounds. Exploration returns with 1,001 unique artists.',
   2024: 'Intimacy and groove. Bilmuri and Corbin Karasu in a year of reconstructive maturity. Less volume, more depth.',
   2025: 'Emo rap and introspection. nothingnowhere. as a guide through intense lyrical searching. Recovery and artistic reconstruction.',
   2026: 'Fresh energy. The Kid LAROI and the new generation of alternative rap-pop mark the present and future of your sonic universe.',
@@ -55,7 +55,8 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const eras = data.yearly_eras;
   const currentEra = eras[selectedIdx];
   const color = ERA_COLORS[currentEra.year] ?? '#00f2fe';
-  const maxPlays = Math.max(...eras.map(e => e.plays));
+  // Independent of which era is selected - no reason to rescan on every click.
+  const maxPlays = React.useMemo(() => Math.max(...eras.map(e => e.plays)), [eras]);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const currentEraLabel = localizeEraLabel(currentEra.era_label, lang);
   const currentDaypartLabel = localizeDaypart(currentEra.dominant_daypart, lang);
@@ -83,10 +84,12 @@ export default function EraExplorer({ data }: EraExplorerProps) {
         </div>
         <div className="flex space-x-2">
           <button onClick={() => setSelectedIdx(i => Math.max(0, i - 1))} disabled={selectedIdx === 0}
+            aria-label={L ? 'Previous era' : 'Era anterior'}
             className="p-2 bg-cyan-950/20 border border-cyan-500/20 hover:border-cyberCyan disabled:opacity-30 text-cyberCyan rounded-full transition-all">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button onClick={() => setSelectedIdx(i => Math.min(eras.length - 1, i + 1))} disabled={selectedIdx === eras.length - 1}
+            aria-label={L ? 'Next era' : 'Era siguiente'}
             className="p-2 bg-cyan-950/20 border border-cyan-500/20 hover:border-cyberCyan disabled:opacity-30 text-cyberCyan rounded-full transition-all">
             <ChevronRight className="w-5 h-5" />
           </button>

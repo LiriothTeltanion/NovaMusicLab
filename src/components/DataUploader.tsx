@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   AlertCircle,
   AlertTriangle,
@@ -20,6 +20,7 @@ import { parseMusicSources, ParseError } from '../utils/parser';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { downloadExport, parseExport } from '../utils/datasetStorage';
+import { motion } from 'framer-motion';
 
 const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 
@@ -39,6 +40,16 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [knowledgeSummary, setKnowledgeSummary] = useState<MusicDnaData['knowledge_summary'] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [parsingLogs, setParsingLogs] = useState<string[]>([]);
+  const [progressPercent, setProgressPercent] = useState(0);
+  const consoleRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll the terminal console to the bottom on new log additions
+  useEffect(() => {
+    if (consoleRef.current) {
+      consoleRef.current.scrollTop = consoleRef.current.scrollHeight;
+    }
+  }, [parsingLogs]);
 
   const providerIcons = [Headphones, Music2, PlaySquare, FileJson, Radio, ListChecks];
   const providerCards = t.uploader.providerGuide.map((provider, index) => ({
@@ -74,12 +85,24 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
     }
   };
 
+  // Yields to the event loop so React can paint the latest console line and
+  // progress bar before the next (synchronous, potentially heavy) parse step.
+  // Deliberately NOT a fixed-duration sleep: staging fake multi-second delays
+  // to dramatize the terminal would make every real upload slower than it is.
+  const paint = () => new Promise(resolve => setTimeout(resolve, 0));
+
+  const addLog = (msg: string) => {
+    setParsingLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
+  };
+
   const processFiles = async (files: File[]) => {
     setLoading(true);
     setError(null);
     setWarning(null);
     setSuccessMsg(null);
     setKnowledgeSummary(null);
+    setParsingLogs([]);
+    setProgressPercent(0);
 
     try {
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
@@ -93,23 +116,45 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
         throw new Error(t.uploader.noFilesError);
       }
 
+      addLog(lang === 'en' ? 'Initializing parsing pipeline...' : 'Inicializando el canal de análisis...');
+      setProgressPercent(5);
+      await paint();
+
+      addLog(lang === 'en'
+        ? `Files identified: ${csvFiles.length} CSV, ${jsonFiles.length} JSON, ${htmlFiles.length} HTML.`
+        : `Archivos identificados: ${csvFiles.length} CSV, ${jsonFiles.length} JSON, ${htmlFiles.length} HTML.`
+      );
+      setProgressPercent(15);
+      await paint();
+
       const largestFile = files.reduce((max, f) => Math.max(max, f.size), 0);
       if (largestFile > LARGE_FILE_WARNING_BYTES) {
         setWarning(t.uploader.largeFileWarning((largestFile / (1024 * 1024)).toFixed(0)));
       }
 
+      addLog(lang === 'en' ? 'Reading raw file buffers into memory...' : 'Leyendo búferes de archivos a memoria...');
       const [csvTexts, spotifyJsonTexts, youtubeHtmlTexts] = await Promise.all([
         Promise.all(csvFiles.map(readFileAsText)),
         Promise.all(jsonFiles.map(readFileAsText)),
         Promise.all(htmlFiles.map(readFileAsText)),
       ]);
+      setProgressPercent(45);
+      await paint();
 
-      // Nova portable backups short-circuit parsing: the JSON already IS a MusicDnaData.
+      // Nova portable backups short-circuit parsing
+      let isBackup = false;
       for (const text of spotifyJsonTexts) {
         if (!text.slice(0, 300).includes('"nova_music_export"')) continue;
+        isBackup = true;
+        addLog(lang === 'en' ? 'Verified Nova backup signature. Restoring database...' : 'Firma de copia de seguridad Nova verificada. Restaurando base de datos...');
+        setProgressPercent(70);
+        await paint();
+
         const exported = parseExport(JSON.parse(text));
         if (exported) {
           onDataLoaded(exported.data, exported.source_label || 'Nova backup');
+          setProgressPercent(100);
+          addLog(lang === 'en' ? 'Restore complete. Reloading panel metrics...' : 'Restauración completa. Recargando métricas del panel...');
           setSuccessMsg(t.uploader.importedMessage(
             exported.data.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
             exported.data.core_metrics.unique_artists.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
@@ -118,28 +163,44 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
         }
       }
 
-      const parsed = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
-      // Built from actually-recognized plays (not file extensions), since a
-      // .csv can be Last.fm or Apple Music and a .json can be Spotify/YouTube/
-      // ListenBrainz - only the parsed result knows which sources landed.
-      const source = parsed.source_summary;
-      const sourceLabel = [
-        source?.lastfm_plays ? `${source.lastfm_plays}× Last.fm` : null,
-        source?.apple_music_plays ? `${source.apple_music_plays}× Apple Music` : null,
-        source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
-        source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
-        source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
-      ].filter(Boolean).join(' + ') || 'Imported Files';
+      if (!isBackup) {
+        addLog(lang === 'en' ? 'Processing scrobbles and streaming records...' : 'Procesando registros de scrobbles y reproducción...');
+        const parsed = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
+        setProgressPercent(75);
+        await paint();
 
-      onDataLoaded(parsed, sourceLabel);
-      setKnowledgeSummary(parsed.knowledge_summary ?? null);
+        addLog(lang === 'en'
+          ? `Parsed ${parsed.core_metrics.total_plays.toLocaleString()} plays across ${parsed.core_metrics.unique_artists.toLocaleString()} unique artists.`
+          : `Parseadas ${parsed.core_metrics.total_plays.toLocaleString()} reproducciones de ${parsed.core_metrics.unique_artists.toLocaleString()} artistas.`
+        );
+        await paint();
 
-      setSuccessMsg(t.uploader.successMessage(
-        files.length,
-        parsed.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
-        parsed.core_metrics.unique_artists.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
-        source?.spotify_skip_rate_pct ?? 0
-      ));
+        addLog(lang === 'en' ? 'Synthesizing metadata and cross-nav mappings...' : 'Sintetizando metadatos y mapeos de navegación cruzada...');
+        setProgressPercent(90);
+        await paint();
+
+        const source = parsed.source_summary;
+        const sourceLabel = [
+          source?.lastfm_plays ? `${source.lastfm_plays}× Last.fm` : null,
+          source?.apple_music_plays ? `${source.apple_music_plays}× Apple Music` : null,
+          source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
+          source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
+          source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
+        ].filter(Boolean).join(' + ') || 'Imported Files';
+
+        onDataLoaded(parsed, sourceLabel);
+        setKnowledgeSummary(parsed.knowledge_summary ?? null);
+
+        setProgressPercent(100);
+        addLog(lang === 'en' ? 'Ingestion successful. Panel refreshed!' : 'Ingesta exitosa. ¡Panel de control actualizado!');
+
+        setSuccessMsg(t.uploader.successMessage(
+          files.length,
+          parsed.core_metrics.total_plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+          parsed.core_metrics.unique_artists.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES'),
+          source?.spotify_skip_rate_pct ?? 0
+        ));
+      }
     } catch (err: any) {
       console.error(err);
       if (err instanceof ParseError) {
@@ -344,11 +405,49 @@ export default function DataUploader({ onDataLoaded, currentData, storedMeta, on
       </section>
 
       {loading && (
-        <div className="mt-6 flex items-center justify-center space-x-3 p-4 glass-panel border border-cyan-500/20 rounded-2xl">
-          <div className="w-5 h-5 border-2 border-cyberCyan border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-sm text-gray-300 font-mono">
-            {t.uploader.processingStatus}
-          </span>
+        <div className="mt-6 p-5 glass-panel border border-cyberCyan/20 rounded-3xl space-y-4 animate-fade-in relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-cyberCyan/5 blur-[50px] rounded-full pointer-events-none" />
+          
+          <div className="flex items-center justify-between font-mono text-xs">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-3.5 h-3.5 border-2 border-cyberCyan border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-300 font-bold uppercase tracking-wider">
+                {t.uploader.processingStatus}
+              </span>
+            </div>
+            <span className="text-cyberCyan font-black">{progressPercent}%</span>
+          </div>
+
+          {/* Neon Progress Bar */}
+          <div className="h-2 w-full rounded-full bg-white/5 overflow-hidden">
+            <motion.div
+              className="h-full rounded-full"
+              style={{
+                background: `linear-gradient(90deg, ${tc.c1}, ${tc.c2})`,
+                boxShadow: `0 0 10px ${tc.c1}80`,
+              }}
+              animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            />
+          </div>
+
+          {/* Scrolling Cyberpunk Terminal Console */}
+          <div
+            ref={consoleRef}
+            className="bg-black/40 border border-white/5 rounded-2xl p-4 h-36 overflow-y-auto font-mono text-[11px] text-cyberCyan/90 space-y-1.5 scrollbar-thin scrollbar-thumb-white/10"
+          >
+            {parsingLogs.length === 0 ? (
+              <div className="text-gray-500 animate-pulse">Initializing pipeline...</div>
+            ) : (
+              parsingLogs.map((log, idx) => (
+                <div key={idx} className="leading-relaxed flex items-start gap-1">
+                  <span className="text-cyberPink select-none">&gt;</span>
+                  <span className="break-all">{log}</span>
+                </div>
+              ))
+            )}
+            <div className="h-2" />
+          </div>
         </div>
       )}
 

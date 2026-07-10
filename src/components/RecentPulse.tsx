@@ -204,6 +204,10 @@ export default function RecentPulse({ data }: RecentPulseProps) {
                 key={`${artist.name}-${idx}`}
                 variants={itemVariants}
                 className="glass-panel p-5 rounded-3xl flex flex-col items-center text-center space-y-3 hover:scale-[1.03] transition-transform cursor-pointer hover:border-white/20"
+                role="button"
+                tabIndex={0}
+                aria-label={artist.name}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedArtistName(artist.name); setTopSubTab('artists'); setActiveTab('top'); } }}
                 onClick={() => {
                   setSelectedArtistName(artist.name);
                   setTopSubTab('artists');
@@ -247,6 +251,10 @@ export default function RecentPulse({ data }: RecentPulseProps) {
               key={`${track.title}-${idx}`}
               variants={itemVariants}
               className="glass-panel p-4 rounded-3xl flex items-center space-x-4 hover:scale-[1.02] transition-transform cursor-pointer hover:border-white/20"
+              role="button"
+              tabIndex={0}
+              aria-label={`${track.title} — ${track.artist}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedArtistName(track.artist); setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`); setTopSubTab('tracks'); setActiveTab('top'); } }}
               onClick={() => {
                 setSelectedArtistName(track.artist);
                 setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`);
@@ -282,6 +290,10 @@ export default function RecentPulse({ data }: RecentPulseProps) {
               key={`${track.title}-${idx}`}
               variants={itemVariants}
               className="flex items-center space-x-3 py-3 first:pt-1 last:pb-1 cursor-pointer hover:bg-white/[0.02] rounded-xl px-2 transition-all"
+              role="button"
+              tabIndex={0}
+              aria-label={`${track.title} — ${track.artist}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedArtistName(track.artist); setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`); setTopSubTab('tracks'); setActiveTab('top'); } }}
               onClick={() => {
                 setSelectedArtistName(track.artist);
                 setSelectedTrackKey(`${track.artist.toLowerCase()}|||${track.title.toLowerCase()}`);

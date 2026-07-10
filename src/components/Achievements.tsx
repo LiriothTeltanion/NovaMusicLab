@@ -79,7 +79,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Maestro del Scrobble', label_en: 'Scrobble Master',
       value: fmtNum(m.total_plays), numericVal: m.total_plays,
       unit_es: 'reproducciones totales', unit_en: 'total plays',
-      desc_es: `Tu archivo contiene ${fmtNum(m.total_plays)} reproducciones. Es una autobiografia sonora lo bastante grande como para detectar eras, rituales y patrones reales.`,
+      desc_es: `Tu archivo contiene ${fmtNum(m.total_plays)} reproducciones. Es una autobiografía sonora lo bastante grande como para detectar eras, rituales y patrones reales.`,
       desc_en: `Your archive contains ${fmtNum(m.total_plays)} plays. It is large enough to detect real eras, rituals and behavioral patterns.`,
     },
     {
@@ -87,7 +87,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Señor del Tiempo', label_en: 'Time Lord',
       value: fmtNum(m.listening_hours), numericVal: m.listening_hours,
       unit_es: 'horas de música escuchada', unit_en: 'hours of music listened',
-      desc_es: `${fmtNum(m.listening_hours)} horas equivalen a ${fmtNum(m.listening_days)} dias completos de musica continua.`,
+      desc_es: `${fmtNum(m.listening_hours)} horas equivalen a ${fmtNum(m.listening_days)} días completos de música continua.`,
       desc_en: `${fmtNum(m.listening_hours)} hours equals ${fmtNum(m.listening_days)} full days of continuous music.`,
     },
     {
@@ -95,7 +95,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Gran Explorador', label_en: 'Grand Explorer',
       value: fmtNum(m.unique_artists), numericVal: m.unique_artists,
       unit_es: 'artistas únicos descubiertos', unit_en: 'unique artists discovered',
-      desc_es: `Con ${fmtNum(m.unique_artists)} artistas unicos, tu mapa musical ya funciona como una ciudad completa de escenas y microclimas.`,
+      desc_es: `Con ${fmtNum(m.unique_artists)} artistas únicos, tu mapa musical ya funciona como una ciudad completa de escenas y microclimas.`,
       desc_en: `With ${fmtNum(m.unique_artists)} unique artists, your music map behaves like a full city of scenes and microclimates.`,
     },
     {
@@ -103,7 +103,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Coleccionista Sonoro', label_en: 'Sound Collector',
       value: fmtNum(m.unique_tracks), numericVal: m.unique_tracks,
       unit_es: 'canciones únicas escuchadas', unit_en: 'unique tracks listened',
-      desc_es: `${fmtNum(m.unique_tracks)} canciones unicas convierten tu historial en una biblioteca personal de alto detalle.`,
+      desc_es: `${fmtNum(m.unique_tracks)} canciones únicas convierten tu historial en una biblioteca personal de alto detalle.`,
       desc_en: `${fmtNum(m.unique_tracks)} unique tracks turn your history into a detailed personal library.`,
     },
     {
@@ -111,7 +111,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Rey de la Racha', label_en: 'Streak King',
       value: String(records.longest_streak_days),  numericVal: records.longest_streak_days,
       unit_es: 'días consecutivos de escucha', unit_en: 'consecutive listening days',
-      desc_es: `Tu racha mas larga detectada es de ${records.longest_streak_days} dias consecutivos.`,
+      desc_es: `Tu racha más larga detectada es de ${records.longest_streak_days} días consecutivos.`,
       desc_en: `Your longest detected streak is ${records.longest_streak_days} consecutive days.`,
     },
     {
@@ -127,7 +127,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Corredor de Maratón', label_en: 'Marathon Runner',
       value: String(Math.round(records.longest_session_minutes)),  numericVal: Math.round(records.longest_session_minutes),
       unit_es: `minutos en sesión más larga (${records.longest_session_tracks} canciones)`, unit_en: `minutes in longest session (${records.longest_session_tracks} songs)`,
-      desc_es: `Tu sesion mas larga detectada dura ${fmtNum(records.longest_session_minutes)} minutos y contiene ${records.longest_session_tracks} canciones.`,
+      desc_es: `Tu sesión más larga detectada dura ${fmtNum(records.longest_session_minutes)} minutos y contiene ${records.longest_session_tracks} canciones.`,
       desc_en: `Your longest detected session lasts ${fmtNum(records.longest_session_minutes)} minutes and contains ${records.longest_session_tracks} songs.`,
     },
     {
@@ -137,7 +137,7 @@ export default function Achievements({ data }: AchievementsProps) {
       // CountUp/locale formatting (which would show "2,021").
       value: String(peakYear?.year ?? 'N/D'),
       unit_es: `tu año cumbre — ${fmtNum(peakYear?.plays ?? 0)} plays`, unit_en: `your peak year — ${fmtNum(peakYear?.plays ?? 0)} plays`,
-      desc_es: `${peakYear?.year ?? 'Tu año cumbre'} concentra ${fmtNum(peakYear?.plays ?? 0)} reproducciones y marca la maxima intensidad del dataset actual.`,
+      desc_es: `${peakYear?.year ?? 'Tu año cumbre'} concentra ${fmtNum(peakYear?.plays ?? 0)} reproducciones y marca la máxima intensidad del dataset actual.`,
       desc_en: `${peakYear?.year ?? 'Your peak year'} contains ${fmtNum(peakYear?.plays ?? 0)} plays and marks the strongest intensity in the current dataset.`,
     },
     {
@@ -153,7 +153,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Constante y Firme', label_en: 'Steady & Consistent',
       value: fmtNum(m.active_days), numericVal: m.active_days,
       unit_es: 'días activos de escucha', unit_en: 'active listening days',
-      desc_es: `${fmtNum(m.active_days)} dias activos convierten la musica en un habito medible, no solo en consumo ocasional.`,
+      desc_es: `${fmtNum(m.active_days)} días activos convierten la música en un hábito medible, no solo en consumo ocasional.`,
       desc_en: `${fmtNum(m.active_days)} active days make music a measurable habit, not just occasional consumption.`,
     },
     {
@@ -161,7 +161,7 @@ export default function Achievements({ data }: AchievementsProps) {
       label_es: 'Ciudadano Global', label_en: 'Global Citizen',
       value: `${data.countries.length}+`,
       unit_es: 'países de origen de tus artistas', unit_en: 'countries of origin of your artists',
-      desc_es: `El dataset registra ${data.countries.length} paises o regiones de escucha/artistas, segun la fuente cargada.`,
+      desc_es: `El dataset registra ${data.countries.length} países o regiones de escucha/artistas, según la fuente cargada.`,
       desc_en: `The dataset registers ${data.countries.length} countries or regions, depending on the loaded source.`,
     },
     {
@@ -274,6 +274,10 @@ export default function Achievements({ data }: AchievementsProps) {
           return (
             <motion.div key={ach.id} variants={cardV}
               onClick={() => setSelected(isSelected ? null : ach.id)}
+              role="button"
+              tabIndex={0}
+              aria-expanded={isSelected}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelected(isSelected ? null : ach.id); } }}
               className={`glass-panel p-5 rounded-2xl cursor-pointer transition-all relative overflow-hidden border hover:scale-[1.02] ${ach.tier === 'legendary' ? 'tier-shine' : ''}`}
               style={{
                 borderColor: isSelected ? colors.glow : `${colors.glow}30`,

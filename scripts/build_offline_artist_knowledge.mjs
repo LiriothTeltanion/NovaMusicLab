@@ -19,6 +19,10 @@ const ARTIST_QUERY_ALIASES = new Map([
   ['nothingnowhere', ['nothing,nowhere.', 'nothing nowhere']],
   ['slaves', ['Rain City Drive']],
   ['machine gun kelly', ['mgk']],
+  ['mgk', ['machine gun kelly']],
+  // Spotify transliterates Hebrew band names; MusicBrainz indexes the originals.
+  ['hayehudim', ['היהודים']],
+  ['girafot', ['גירפות', "ג'ירפות"]],
 ]);
 
 const ARTIST_KNOWLEDGE_OVERRIDES = new Map([

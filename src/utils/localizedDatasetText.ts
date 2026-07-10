@@ -10,12 +10,6 @@ import type {
 
 type PersonalityKey = keyof PersonalityMatrix;
 
-interface CulturalLanguageDatum {
-  label: string;
-  pct: number;
-  color: string;
-}
-
 interface CulturalSceneTag {
   tag: string;
   color: string;
@@ -46,23 +40,6 @@ const ERA_DESC_EN: Record<string, string> = {
     'nothingnowhere., deep lyrical introspection and artistic reconstruction.',
   'The Kid LAROI, rap-pop alternativo, sonidos modernos de alta energía.':
     'The Kid LAROI, alternative rap-pop and modern high-energy sounds.',
-};
-
-const CULTURAL_LANGUAGE_DATA: Record<Lang, CulturalLanguageDatum[]> = {
-  es: [
-    { label: 'Inglés', pct: 78, color: '#00f2fe' },
-    { label: 'Español', pct: 9, color: '#fb923c' },
-    { label: 'Hebreo', pct: 7, color: '#34d399' },
-    { label: 'Alemán/Sueco', pct: 4, color: '#f72585' },
-    { label: 'Otros', pct: 2, color: '#a78bfa' },
-  ],
-  en: [
-    { label: 'English', pct: 78, color: '#00f2fe' },
-    { label: 'Spanish', pct: 9, color: '#fb923c' },
-    { label: 'Hebrew', pct: 7, color: '#34d399' },
-    { label: 'German/Swedish', pct: 4, color: '#f72585' },
-    { label: 'Other', pct: 2, color: '#a78bfa' },
-  ],
 };
 
 const CULTURAL_SCENE_TAGS: Record<Lang, CulturalSceneTag[]> = {
@@ -101,6 +78,7 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   'Puerto Rico': 'Puerto Rico',
   Venezuela: 'Venezuela',
   'Dominican Republic': 'República Dominicana',
+  Romania: 'Rumanía',
   Unknown: 'Desconocido',
 };
 
@@ -337,10 +315,6 @@ export function localizeSourceNote(source: SourceSummary, lang: Lang) {
     return 'Carga solo de Last.fm: marcas de tiempo y scrobbles son directos; los datos de saltos y plataforma no están disponibles.';
   }
   return 'Fuente no identificada: esta vista usa los eventos importados disponibles y marca por separado los campos no disponibles.';
-}
-
-export function getCulturalLanguageData(lang: Lang) {
-  return CULTURAL_LANGUAGE_DATA[lang];
 }
 
 export function getCulturalSceneTags(lang: Lang) {

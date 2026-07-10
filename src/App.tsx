@@ -348,7 +348,7 @@ function AppInner() {
 
   const menuItems: MenuItem[] = React.useMemo(() => [
     { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
-    { id: 'aiassistant', group: 'overview',  label: lang === 'en' ? 'AI Assistant' : 'Asistente IA', icon: Bot, color: '#a78bfa', secondary: '#f72585', motif: 'orbit' },
+    { id: 'aiassistant', group: 'overview',  label: t.nav.aiAssistant,  icon: Bot,             color: '#a78bfa', secondary: '#f72585', motif: 'orbit' },
     { id: 'eras',        group: 'overview',  label: t.nav.eras,         icon: CalendarDays,    color: '#60a5fa', secondary: '#f59e0b', motif: 'timeline' },
     { id: 'top',         group: 'archive',   label: t.nav.top,          icon: Trophy,          color: '#facc15', secondary: '#f97316', motif: 'crown' },
     { id: 'timecapsule', group: 'archive',   label: t.nav.timeCapsule,  icon: Hourglass,       color: '#818cf8', secondary: '#f472b6', motif: 'timeline' },
@@ -369,7 +369,7 @@ function AppInner() {
     { id: 'statsdeep',   group: 'data',      label: t.nav.statsPro,     icon: Activity,        color: '#38bdf8', secondary: '#a78bfa', motif: 'pulse' },
     { id: 'report',      group: 'export',    label: t.nav.report,       icon: FileText,        color: '#c084fc', secondary: '#60a5fa', motif: 'stack' },
     { id: 'upload',      group: 'export',    label: t.nav.upload,       icon: Upload,          color: '#10b981', secondary: '#facc15', motif: 'orbit' },
-  ], [t.nav, tc, lang]);
+  ], [t.nav, tc]);
 
   const navGroups: NavGroup[] = React.useMemo(() => [
     { id: 'overview', label: t.navGroups.overview, color: tc.c1 },
@@ -575,6 +575,7 @@ function AppInner() {
             data={musicData}
             onEnter={() => goToTab('dashboard')}
             onUpload={() => goToTab('upload')}
+            onOpenAssistant={() => goToTab('aiassistant')}
           />
         </Suspense>
       ) : (

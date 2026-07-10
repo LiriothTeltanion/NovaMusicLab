@@ -463,7 +463,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
   const fmtList = useCallback((items: string[], max = 4) => items.slice(0, max).join(', '), []);
-  const q = search.toLowerCase().trim();
+  // Diacritic-insensitive search: "sigur ros" must find "Sigur Rós", and an
+  // NFD-encoded uploaded name must match its NFC twin.
+  const searchable = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const q = searchable(search.trim());
 
   const artistLookup = useMemo(() =>
     new Map(data.top_artists.map(artist => [artist.name, artist])),
@@ -530,7 +533,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   /* ── Filtered lists ── */
   const filteredArtists = useMemo(() =>
     data.top_artists.filter(a => {
-      const matchesSearch = !q || a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q);
+      const matchesSearch = !q || searchable(a.name).includes(q) || searchable(a.genre).includes(q);
       const matchesMood = selectedMood === 'all' || artistMoodProfiles.get(a.name)?.moodKey === selectedMood;
       return matchesSearch && matchesMood;
     }),
@@ -538,7 +541,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const filteredTracks = useMemo(() =>
     data.top_tracks.filter((track, index) => {
-      const matchesSearch = !q || track.title.toLowerCase().includes(q) || track.artist.toLowerCase().includes(q);
+      const matchesSearch = !q || searchable(track.title).includes(q) || searchable(track.artist).includes(q);
       const matchesMood = selectedMood === 'all' || buildTrackRowMood(track, index).moodKey === selectedMood;
       return matchesSearch && matchesMood;
     }),
@@ -546,7 +549,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   const filteredAlbums = useMemo(() =>
     data.top_albums.filter((album, index) => {
-      const matchesSearch = !q || album.title.toLowerCase().includes(q) || album.artist.toLowerCase().includes(q);
+      const matchesSearch = !q || searchable(album.title).includes(q) || searchable(album.artist).includes(q);
       const albumProfile = getArtistEnrichment(album.artist);
       const matchesMood = selectedMood === 'all'
         || buildAlbumRowMood(album, index, albumProfile, getAlbumEnrichment(albumProfile, album.title)).moodKey === selectedMood;
@@ -903,14 +906,22 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   })();
 
   /* ── Charts data ── */
-  const yearlyData = data.yearly_eras.map(e => ({ year: String(e.year), plays: e.plays, artistas: e.unique_artists }));
+  // Memoized: local search state re-renders this component on every keystroke,
+  // and none of these depend on the search box.
+  const yearlyData = useMemo(() =>
+    data.yearly_eras.map(e => ({ year: String(e.year), plays: e.plays, artistas: e.unique_artists })),
+    [data.yearly_eras]);
 
-  const genreMap: Record<string, number> = {};
-  data.top_artists.forEach(a => { const g = normalizeGenre(a.genre); genreMap[g] = (genreMap[g] || 0) + a.plays; });
-  const genreData = Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, plays]) => ({ name, plays }));
+  const genreData = useMemo(() => {
+    const genreMap: Record<string, number> = {};
+    data.top_artists.forEach(a => { const g = normalizeGenre(a.genre); genreMap[g] = (genreMap[g] || 0) + a.plays; });
+    return Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, plays]) => ({ name, plays }));
+  }, [data.top_artists]);
 
   /* ── Treemap ── */
-  const treemapChildren = genreData.slice(0, 10).map(g => ({ name: g.name, size: g.plays, plays: g.plays }));
+  const treemapChildren = useMemo(() =>
+    genreData.slice(0, 10).map(g => ({ name: g.name, size: g.plays, plays: g.plays })),
+    [genreData]);
   const TREEMAP_COLORS = COLORS;
 
   const CustomTreemapContent = ({ x, y, width, height, index, name, plays }: any) => {
@@ -2467,11 +2478,11 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder={t.topHistorico.searchPlaceholder}
-            className="bg-white/5 border rounded-xl pl-9 pr-8 py-2 text-sm font-mono text-white placeholder-gray-500 focus:outline-none transition-all w-52"
+            className="bg-white/5 border rounded-xl pl-9 pr-8 py-2 text-sm font-mono text-white placeholder-gray-500 transition-all w-52"
             style={{ borderColor: search ? tc.c1 : 'rgba(255,255,255,0.1)' }}
           />
           {search && (
-            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2">
+            <button onClick={() => setSearch('')} aria-label={lang === 'en' ? 'Clear search' : 'Limpiar búsqueda'} className="absolute right-3 top-1/2 -translate-y-1/2">
               <X className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-colors" />
             </button>
           )}

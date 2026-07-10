@@ -1,7 +1,9 @@
 [
   {
     "name": "Bring Me the Horizon",
-    "aliases": ["BMTH"],
+    "aliases": [
+      "BMTH"
+    ],
     "origin": {
       "es": "Sheffield, Inglaterra",
       "en": "Sheffield, England"
@@ -32,8 +34,18 @@
       "en": "Inside Nova Music Lab, BMTH is the main laboratory of change: proof that a heavy identity can become melodic, futuristic and massive without losing tension."
     },
     "signature_moods": {
-      "es": ["catarsis", "renacimiento", "tensión moderna", "estadio oscuro"],
-      "en": ["catharsis", "rebirth", "modern tension", "dark arena"]
+      "es": [
+        "catarsis",
+        "renacimiento",
+        "tensión moderna",
+        "estadio oscuro"
+      ],
+      "en": [
+        "catharsis",
+        "rebirth",
+        "modern tension",
+        "dark arena"
+      ]
     },
     "key_albums": [
       {
@@ -111,8 +123,18 @@
       "en": "They turn noise into emotional architecture. They help read the most expansive, melancholic and atmospheric side of your musical DNA."
     },
     "signature_moods": {
-      "es": ["blackgaze luminoso", "contemplación", "catarsis lenta", "belleza abrasiva"],
-      "en": ["luminous blackgaze", "contemplation", "slow catharsis", "abrasive beauty"]
+      "es": [
+        "blackgaze luminoso",
+        "contemplación",
+        "catarsis lenta",
+        "belleza abrasiva"
+      ],
+      "en": [
+        "luminous blackgaze",
+        "contemplation",
+        "slow catharsis",
+        "abrasive beauty"
+      ]
     },
     "key_albums": [
       {
@@ -159,7 +181,9 @@
   },
   {
     "name": "Bilmuri",
-    "aliases": ["Johnny Franck"],
+    "aliases": [
+      "Johnny Franck"
+    ],
     "origin": {
       "es": "Columbus, Ohio",
       "en": "Columbus, Ohio"
@@ -190,8 +214,18 @@
       "en": "In your map, Bilmuri is dopamine with guitars: proof that post-hardcore can also be colorful, athletic, absurd and deeply catchy."
     },
     "signature_moods": {
-      "es": ["groove emocional", "dopamina", "humor raro", "energía de verano"],
-      "en": ["emotional groove", "dopamine", "weird humor", "summer energy"]
+      "es": [
+        "groove emocional",
+        "dopamina",
+        "humor raro",
+        "energía de verano"
+      ],
+      "en": [
+        "emotional groove",
+        "dopamine",
+        "weird humor",
+        "summer energy"
+      ]
     },
     "key_albums": [
       {
@@ -261,8 +295,18 @@
       "en": "Helps read your taste for digital alt-rock: songs that do not need long conceptual worlds to leave a mark."
     },
     "signature_moods": {
-      "es": ["rap-rock emocional", "presión moderna", "hook directo", "velocidad urbana"],
-      "en": ["emotional rap-rock", "modern pressure", "direct hook", "urban speed"]
+      "es": [
+        "rap-rock emocional",
+        "presión moderna",
+        "hook directo",
+        "velocidad urbana"
+      ],
+      "en": [
+        "emotional rap-rock",
+        "modern pressure",
+        "direct hook",
+        "urban speed"
+      ]
     },
     "key_albums": [
       {
@@ -277,7 +321,9 @@
   },
   {
     "name": "Slaves",
-    "aliases": ["Rain City Drive"],
+    "aliases": [
+      "Rain City Drive"
+    ],
     "origin": {
       "es": "Sacramento, California",
       "en": "Sacramento, California"
@@ -308,8 +354,18 @@
       "en": "It explains why your archive is not only heavy: it also searches for voices that feel like confession."
     },
     "signature_moods": {
-      "es": ["vulnerabilidad", "post-hardcore melódico", "drama vocal", "limpieza emocional"],
-      "en": ["vulnerability", "melodic post-hardcore", "vocal drama", "emotional clarity"]
+      "es": [
+        "vulnerabilidad",
+        "post-hardcore melódico",
+        "drama vocal",
+        "limpieza emocional"
+      ],
+      "en": [
+        "vulnerability",
+        "melodic post-hardcore",
+        "vocal drama",
+        "emotional clarity"
+      ]
     },
     "key_albums": [
       {
@@ -379,8 +435,18 @@
       "en": "It separates an important truth in the project: sometimes the strongest attachment is not to a genre, but to a specific voice."
     },
     "signature_moods": {
-      "es": ["soul post-hardcore", "vulnerabilidad vocal", "drama íntimo", "R&B alternativo"],
-      "en": ["post-hardcore soul", "vocal vulnerability", "intimate drama", "alternative R&B"]
+      "es": [
+        "soul post-hardcore",
+        "vulnerabilidad vocal",
+        "drama íntimo",
+        "R&B alternativo"
+      ],
+      "en": [
+        "post-hardcore soul",
+        "vocal vulnerability",
+        "intimate drama",
+        "alternative R&B"
+      ]
     },
     "key_albums": [
       {
@@ -411,7 +477,9 @@
   },
   {
     "name": "TesseracT",
-    "aliases": ["Tesseract"],
+    "aliases": [
+      "Tesseract"
+    ],
     "origin": {
       "es": "Milton Keynes, Inglaterra",
       "en": "Milton Keynes, England"
@@ -442,8 +510,18 @@
       "en": "Adds architecture to the map: it shows that your taste for intensity also includes design, patience and space."
     },
     "signature_moods": {
-      "es": ["djent atmosférico", "precisión", "trance progresivo", "espacio"],
-      "en": ["atmospheric djent", "precision", "progressive trance", "space"]
+      "es": [
+        "djent atmosférico",
+        "precisión",
+        "trance progresivo",
+        "espacio"
+      ],
+      "en": [
+        "atmospheric djent",
+        "precision",
+        "progressive trance",
+        "space"
+      ]
     },
     "key_albums": [
       {
@@ -521,8 +599,18 @@
       "en": "Balances the archive's melancholy with a layer of party, riff and stage confidence."
     },
     "signature_moods": {
-      "es": ["hard rock glam", "adrenalina", "neón", "escenario"],
-      "en": ["glam hard rock", "adrenaline", "neon", "stage"]
+      "es": [
+        "hard rock glam",
+        "adrenalina",
+        "neón",
+        "escenario"
+      ],
+      "en": [
+        "glam hard rock",
+        "adrenaline",
+        "neon",
+        "stage"
+      ]
     },
     "key_albums": [
       {
@@ -584,8 +672,18 @@
       "en": "In Lirioth's map, Normandie clears the haze: it keeps intensity, but organizes it into big, clear songs."
     },
     "signature_moods": {
-      "es": ["rock alternativo sueco", "claridad", "drama pulido", "luz fría"],
-      "en": ["Swedish alternative rock", "clarity", "polished drama", "cold light"]
+      "es": [
+        "rock alternativo sueco",
+        "claridad",
+        "drama pulido",
+        "luz fría"
+      ],
+      "en": [
+        "Swedish alternative rock",
+        "clarity",
+        "polished drama",
+        "cold light"
+      ]
     },
     "key_albums": [
       {
@@ -624,7 +722,10 @@
   },
   {
     "name": "Odeon",
-    "aliases": ["Odeon Music", "Odeon Sounds"],
+    "aliases": [
+      "Odeon Music",
+      "Odeon Sounds"
+    ],
     "origin": {
       "es": "Rio de Janeiro, Brasil",
       "en": "Rio de Janeiro, Brazil"
@@ -655,8 +756,18 @@
       "en": "Odeon matters because it corrects a false idea in the archive: not everything important comes from the United States, the United Kingdom or Sweden. Here Brazil appears as a modern emotional laboratory, connecting local scene energy, internet aesthetics and intimate repetition."
     },
     "signature_moods": {
-      "es": ["Brasil alternativo", "post-hardcore digital", "descubrimiento de nicho", "noche online"],
-      "en": ["Brazilian alternative", "digital post-hardcore", "niche discovery", "online night"]
+      "es": [
+        "Brasil alternativo",
+        "post-hardcore digital",
+        "descubrimiento de nicho",
+        "noche online"
+      ],
+      "en": [
+        "Brazilian alternative",
+        "digital post-hardcore",
+        "niche discovery",
+        "online night"
+      ]
     },
     "key_albums": [
       {
@@ -718,8 +829,18 @@
       "en": "Gives the project its soft cinematic dimension: music for driving at night inside an invented memory."
     },
     "signature_moods": {
-      "es": ["synthwave", "nostalgia", "neón nocturno", "verano perdido"],
-      "en": ["synthwave", "nostalgia", "night neon", "lost summer"]
+      "es": [
+        "synthwave",
+        "nostalgia",
+        "neón nocturno",
+        "verano perdido"
+      ],
+      "en": [
+        "synthwave",
+        "nostalgia",
+        "night neon",
+        "lost summer"
+      ]
     },
     "key_albums": [
       {
@@ -797,8 +918,18 @@
       "en": "Enriches the archive with a more sensual, danceable and polished version of alternative emotion."
     },
     "signature_moods": {
-      "es": ["pop rock nocturno", "R&B alternativo", "glamour", "drama limpio"],
-      "en": ["night pop rock", "alternative R&B", "glamour", "clean drama"]
+      "es": [
+        "pop rock nocturno",
+        "R&B alternativo",
+        "glamour",
+        "drama limpio"
+      ],
+      "en": [
+        "night pop rock",
+        "alternative R&B",
+        "glamour",
+        "clean drama"
+      ]
     },
     "key_albums": [
       {
@@ -868,8 +999,18 @@
       "en": "Helps explain the side of your listening that uses heavy energy as self-correction and movement."
     },
     "signature_moods": {
-      "es": ["metalcore emocional", "resistencia", "catarsis directa", "autoexamen"],
-      "en": ["emotional metalcore", "resilience", "direct catharsis", "self-examination"]
+      "es": [
+        "metalcore emocional",
+        "resistencia",
+        "catarsis directa",
+        "autoexamen"
+      ],
+      "en": [
+        "emotional metalcore",
+        "resilience",
+        "direct catharsis",
+        "self-examination"
+      ]
     },
     "key_albums": [
       {
@@ -939,8 +1080,18 @@
       "en": "Gives language to the part of your archive that searches for direct beauty in sadness, not just darkness."
     },
     "signature_moods": {
-      "es": ["emo épico", "pérdida", "corazón abierto", "catarsis melódica"],
-      "en": ["epic emo", "loss", "open heart", "melodic catharsis"]
+      "es": [
+        "emo épico",
+        "pérdida",
+        "corazón abierto",
+        "catarsis melódica"
+      ],
+      "en": [
+        "epic emo",
+        "loss",
+        "open heart",
+        "melodic catharsis"
+      ]
     },
     "key_albums": [
       {
@@ -971,7 +1122,10 @@
   },
   {
     "name": "nothingnowhere.",
-    "aliases": ["nothing,nowhere.", "Nothing,Nowhere"],
+    "aliases": [
+      "nothing,nowhere.",
+      "Nothing,Nowhere"
+    ],
     "origin": {
       "es": "Vermont, Estados Unidos",
       "en": "Vermont, United States"
@@ -1002,8 +1156,18 @@
       "en": "Helps read a stage where intensity does not always explode: sometimes it stays low, tense and honest."
     },
     "signature_moods": {
-      "es": ["emo rap", "recuperación", "ansiedad", "noche privada"],
-      "en": ["emo rap", "recovery", "anxiety", "private night"]
+      "es": [
+        "emo rap",
+        "recuperación",
+        "ansiedad",
+        "noche privada"
+      ],
+      "en": [
+        "emo rap",
+        "recovery",
+        "anxiety",
+        "private night"
+      ]
     },
     "key_albums": [
       {
@@ -1073,8 +1237,18 @@
       "en": "Reminds us that the archive is also made of first images, discovery eras and songs that survive through memory."
     },
     "signature_moods": {
-      "es": ["nostalgia europea", "pop rock", "drama visual", "memoria adolescente"],
-      "en": ["European nostalgia", "pop rock", "visual drama", "teen memory"]
+      "es": [
+        "nostalgia europea",
+        "pop rock",
+        "drama visual",
+        "memoria adolescente"
+      ],
+      "en": [
+        "European nostalgia",
+        "pop rock",
+        "visual drama",
+        "teen memory"
+      ]
     },
     "key_albums": [
       {
@@ -1129,7 +1303,9 @@
   },
   {
     "name": "Carpenter Brut",
-    "aliases": ["Franck Hueso"],
+    "aliases": [
+      "Franck Hueso"
+    ],
     "origin": {
       "es": "Poitiers, Francia",
       "en": "Poitiers, France"
@@ -1160,8 +1336,18 @@
       "en": "Gives Nova Music Lab its most night-video-game side: speed, neon, danger and visual design."
     },
     "signature_moods": {
-      "es": ["darksynth", "cyberpunk", "cine ochentero", "adrenalina nocturna"],
-      "en": ["darksynth", "cyberpunk", "1980s cinema", "night adrenaline"]
+      "es": [
+        "darksynth",
+        "cyberpunk",
+        "cine ochentero",
+        "adrenalina nocturna"
+      ],
+      "en": [
+        "darksynth",
+        "cyberpunk",
+        "1980s cinema",
+        "night adrenaline"
+      ]
     },
     "key_albums": [
       {
@@ -1231,8 +1417,18 @@
       "en": "Helps read the archive's most current side: not everything is nostalgia or weight; there is also urgency, humor, color and online culture."
     },
     "signature_moods": {
-      "es": ["pop punk moderno", "dopamina", "emo colorido", "velocidad"],
-      "en": ["modern pop punk", "dopamine", "colorful emo", "speed"]
+      "es": [
+        "pop punk moderno",
+        "dopamina",
+        "emo colorido",
+        "velocidad"
+      ],
+      "en": [
+        "modern pop punk",
+        "dopamine",
+        "colorful emo",
+        "speed"
+      ]
     },
     "key_albums": [
       {
@@ -1271,7 +1467,10 @@
   },
   {
     "name": "Machine Gun Kelly",
-    "aliases": ["mgk", "Colson Baker"],
+    "aliases": [
+      "mgk",
+      "Colson Baker"
+    ],
     "origin": {
       "es": "Cleveland, Ohio",
       "en": "Cleveland, Ohio"
@@ -1302,8 +1501,18 @@
       "en": "Inside Nova Music Lab, he explains the zone where alternative music crosses pop culture, public vulnerability and guitar-driven hits."
     },
     "signature_moods": {
-      "es": ["pop punk mainstream", "emo rap", "fama", "drama moderno"],
-      "en": ["mainstream pop punk", "emo rap", "fame", "modern drama"]
+      "es": [
+        "pop punk mainstream",
+        "emo rap",
+        "fama",
+        "drama moderno"
+      ],
+      "en": [
+        "mainstream pop punk",
+        "emo rap",
+        "fame",
+        "modern drama"
+      ]
     },
     "key_albums": [
       {
@@ -1342,7 +1551,9 @@
   },
   {
     "name": "Dance With the Dead",
-    "aliases": ["Dance with the Dead"],
+    "aliases": [
+      "Dance with the Dead"
+    ],
     "origin": {
       "es": "Orange County, California",
       "en": "Orange County, California"
@@ -1373,8 +1584,18 @@
       "en": "Strengthens the project's cyberpunk identity: music that feels like a boss fight, highway and dangerous neon."
     },
     "signature_moods": {
-      "es": ["darksynth", "horror", "arcade", "riff nocturno"],
-      "en": ["darksynth", "horror", "arcade", "night riff"]
+      "es": [
+        "darksynth",
+        "horror",
+        "arcade",
+        "riff nocturno"
+      ],
+      "en": [
+        "darksynth",
+        "horror",
+        "arcade",
+        "night riff"
+      ]
     },
     "key_albums": [
       {
@@ -1444,8 +1665,18 @@
       "en": "Expands the archive beyond post-hardcore and synthwave: here intensity becomes long-breathing European metal."
     },
     "signature_moods": {
-      "es": ["melodeath", "épica nórdica", "frío", "resistencia"],
-      "en": ["melodeath", "Nordic epic", "cold", "endurance"]
+      "es": [
+        "melodeath",
+        "épica nórdica",
+        "frío",
+        "resistencia"
+      ],
+      "en": [
+        "melodeath",
+        "Nordic epic",
+        "cold",
+        "endurance"
+      ]
     },
     "key_albums": [
       {
@@ -1515,8 +1746,18 @@
       "en": "Completes the project's blackgaze reading: if Deafheaven is city and storm, Alcest is forest, sky and memory."
     },
     "signature_moods": {
-      "es": ["blackgaze espiritual", "sueño", "luz", "memoria"],
-      "en": ["spiritual blackgaze", "dream", "light", "memory"]
+      "es": [
+        "blackgaze espiritual",
+        "sueño",
+        "luz",
+        "memoria"
+      ],
+      "en": [
+        "spiritual blackgaze",
+        "dream",
+        "light",
+        "memory"
+      ]
     },
     "key_albums": [
       {
@@ -1594,8 +1835,18 @@
       "en": "Balances the museum: not every emotion needs impact; some parts need space, echo and air."
     },
     "signature_moods": {
-      "es": ["ambient", "post-rock", "suspensión", "duelo suave"],
-      "en": ["ambient", "post-rock", "suspension", "soft grief"]
+      "es": [
+        "ambient",
+        "post-rock",
+        "suspensión",
+        "duelo suave"
+      ],
+      "en": [
+        "ambient",
+        "post-rock",
+        "suspension",
+        "soft grief"
+      ]
     },
     "key_albums": [
       {
@@ -1665,8 +1916,18 @@
       "en": "Connects with Holding Absence and Normandie: big emotion, modern production and melody as the center."
     },
     "signature_moods": {
-      "es": ["duelo", "synth post-hardcore", "voz enorme", "catarsis limpia"],
-      "en": ["grief", "synth post-hardcore", "huge voice", "clean catharsis"]
+      "es": [
+        "duelo",
+        "synth post-hardcore",
+        "voz enorme",
+        "catarsis limpia"
+      ],
+      "en": [
+        "grief",
+        "synth post-hardcore",
+        "huge voice",
+        "clean catharsis"
+      ]
     },
     "key_albums": [
       {
@@ -1713,7 +1974,10 @@
   },
   {
     "name": "H.E.A.T",
-    "aliases": ["H.e.a.t", "HEAT"],
+    "aliases": [
+      "H.e.a.t",
+      "HEAT"
+    ],
     "origin": {
       "es": "Upplands Väsby, Suecia",
       "en": "Upplands Vasby, Sweden"
@@ -1744,8 +2008,18 @@
       "en": "Helps balance the archive with a more optimistic energy inherited from Scandinavian glam/hard rock."
     },
     "signature_moods": {
-      "es": ["AOR", "arena rock", "adrenalina", "melodía sueca"],
-      "en": ["AOR", "arena rock", "adrenaline", "Swedish melody"]
+      "es": [
+        "AOR",
+        "arena rock",
+        "adrenalina",
+        "melodía sueca"
+      ],
+      "en": [
+        "AOR",
+        "arena rock",
+        "adrenaline",
+        "Swedish melody"
+      ]
     },
     "key_albums": [
       {
@@ -1823,8 +2097,18 @@
       "en": "Connects directly with Nova Music Lab's visual side: masks, eras, symbols and stage narrative."
     },
     "signature_moods": {
-      "es": ["teatro oculto", "arena rock", "mitología", "melodía oscura"],
-      "en": ["occult theater", "arena rock", "mythology", "dark melody"]
+      "es": [
+        "teatro oculto",
+        "arena rock",
+        "mitología",
+        "melodía oscura"
+      ],
+      "en": [
+        "occult theater",
+        "arena rock",
+        "mythology",
+        "dark melody"
+      ]
     },
     "key_albums": [
       {
@@ -1871,7 +2155,9 @@
   },
   {
     "name": "The Story So Far",
-    "aliases": ["TSSF"],
+    "aliases": [
+      "TSSF"
+    ],
     "origin": {
       "es": "Walnut Creek, California",
       "en": "Walnut Creek, California"
@@ -1902,8 +2188,18 @@
       "en": "Connects the museum's pop-punk side with a more adult, less shiny and more internally processed emotion."
     },
     "signature_moods": {
-      "es": ["pop punk", "presión", "duelo", "madurez amarga"],
-      "en": ["pop punk", "pressure", "grief", "bitter maturity"]
+      "es": [
+        "pop punk",
+        "presión",
+        "duelo",
+        "madurez amarga"
+      ],
+      "en": [
+        "pop punk",
+        "pressure",
+        "grief",
+        "bitter maturity"
+      ]
     },
     "key_albums": [
       {
@@ -1950,7 +2246,9 @@
   },
   {
     "name": "Roosevelt",
-    "aliases": ["Marius Lauber"],
+    "aliases": [
+      "Marius Lauber"
+    ],
     "origin": {
       "es": "Colonia, Alemania",
       "en": "Cologne, Germany"
@@ -1981,8 +2279,18 @@
       "en": "Gives the project an alternative to heavy catharsis: groove, softness and danceable memory."
     },
     "signature_moods": {
-      "es": ["synth-pop", "dance suave", "verano", "nostalgia elegante"],
-      "en": ["synth-pop", "soft dance", "summer", "elegant nostalgia"]
+      "es": [
+        "synth-pop",
+        "dance suave",
+        "verano",
+        "nostalgia elegante"
+      ],
+      "en": [
+        "synth-pop",
+        "soft dance",
+        "summer",
+        "elegant nostalgia"
+      ]
     },
     "key_albums": [
       {
@@ -2052,8 +2360,18 @@
       "en": "Shows that your archive also responds to smaller artists when they have voice, melody and a clear nocturnal vibe."
     },
     "signature_moods": {
-      "es": ["pop rock", "vibra nocturna", "voz soul", "indie alternativo"],
-      "en": ["pop rock", "night vibe", "soul voice", "alternative indie"]
+      "es": [
+        "pop rock",
+        "vibra nocturna",
+        "voz soul",
+        "indie alternativo"
+      ],
+      "en": [
+        "pop rock",
+        "night vibe",
+        "soul voice",
+        "alternative indie"
+      ]
     },
     "key_albums": [
       {
@@ -2100,7 +2418,10 @@
   },
   {
     "name": "Myrath",
-    "aliases": ["X-Tazy", "Xtazy"],
+    "aliases": [
+      "X-Tazy",
+      "Xtazy"
+    ],
     "origin": {
       "es": "Túnez; con base internacional en Francia",
       "en": "Tunisia; internationally based around France"
@@ -2131,8 +2452,18 @@
       "en": "Adds a global dimension to the archive: not just intensity, but metal with geography, language, percussion and a sense of adventure."
     },
     "signature_moods": {
-      "es": ["desert metal", "épico", "progresivo", "oriental"],
-      "en": ["desert metal", "epic", "progressive", "oriental"]
+      "es": [
+        "desert metal",
+        "épico",
+        "progresivo",
+        "oriental"
+      ],
+      "en": [
+        "desert metal",
+        "epic",
+        "progressive",
+        "oriental"
+      ]
     },
     "key_albums": [
       {
@@ -2187,7 +2518,9 @@
   },
   {
     "name": "Blessthefall",
-    "aliases": ["blessthefall"],
+    "aliases": [
+      "blessthefall"
+    ],
     "origin": {
       "es": "Phoenix, Arizona",
       "en": "Phoenix, Arizona"
@@ -2218,8 +2551,18 @@
       "en": "Their presence helps explain why the archive responds so much to contrast: clean vocals against screams, melodic shine against weight."
     },
     "signature_moods": {
-      "es": ["metalcore melódico", "drama juvenil", "coros grandes", "post-hardcore"],
-      "en": ["melodic metalcore", "youth drama", "huge choruses", "post-hardcore"]
+      "es": [
+        "metalcore melódico",
+        "drama juvenil",
+        "coros grandes",
+        "post-hardcore"
+      ],
+      "en": [
+        "melodic metalcore",
+        "youth drama",
+        "huge choruses",
+        "post-hardcore"
+      ]
     },
     "key_albums": [
       {
@@ -2305,8 +2648,18 @@
       "en": "Balances the darkness of other archive artists with fun, speed, guitars and full-escape choruses."
     },
     "signature_moods": {
-      "es": ["glam metal", "hard rock sueco", "coros de estadio", "nostalgia 80s"],
-      "en": ["glam metal", "Swedish hard rock", "arena choruses", "80s nostalgia"]
+      "es": [
+        "glam metal",
+        "hard rock sueco",
+        "coros de estadio",
+        "nostalgia 80s"
+      ],
+      "en": [
+        "glam metal",
+        "Swedish hard rock",
+        "arena choruses",
+        "80s nostalgia"
+      ]
     },
     "key_albums": [
       {
@@ -2408,8 +2761,18 @@
       "en": "Explains the archive's taste for artists that can be heavy and vulnerable at the same time."
     },
     "signature_moods": {
-      "es": ["gótico", "doom", "romanticismo oscuro", "barítono"],
-      "en": ["gothic", "doom", "dark romance", "baritone"]
+      "es": [
+        "gótico",
+        "doom",
+        "romanticismo oscuro",
+        "barítono"
+      ],
+      "en": [
+        "gothic",
+        "doom",
+        "dark romance",
+        "baritone"
+      ]
     },
     "key_albums": [
       {
@@ -2464,7 +2827,9 @@
   },
   {
     "name": "Crown the Empire",
-    "aliases": ["Crown The Empire"],
+    "aliases": [
+      "Crown The Empire"
+    ],
     "origin": {
       "es": "Dallas, Texas",
       "en": "Dallas, Texas"
@@ -2495,8 +2860,18 @@
       "en": "Helps explain the archive's attraction to artists that make not just songs, but emotional worlds with their own aesthetic."
     },
     "signature_moods": {
-      "es": ["metalcore teatral", "coros limpios", "drama conceptual", "post-hardcore"],
-      "en": ["theatrical metalcore", "clean choruses", "concept drama", "post-hardcore"]
+      "es": [
+        "metalcore teatral",
+        "coros limpios",
+        "drama conceptual",
+        "post-hardcore"
+      ],
+      "en": [
+        "theatrical metalcore",
+        "clean choruses",
+        "concept drama",
+        "post-hardcore"
+      ]
     },
     "key_albums": [
       {
@@ -2543,7 +2918,9 @@
   },
   {
     "name": "Perturbator",
-    "aliases": ["James Kent"],
+    "aliases": [
+      "James Kent"
+    ],
     "origin": {
       "es": "París, Francia",
       "en": "Paris, France"
@@ -2574,8 +2951,18 @@
       "en": "Expands the archive beyond bands: it shows intensity can also come from textures, pulses and electronic architecture."
     },
     "signature_moods": {
-      "es": ["darksynth", "cyberpunk", "industrial", "nocturno"],
-      "en": ["darksynth", "cyberpunk", "industrial", "nocturnal"]
+      "es": [
+        "darksynth",
+        "cyberpunk",
+        "industrial",
+        "nocturno"
+      ],
+      "en": [
+        "darksynth",
+        "cyberpunk",
+        "industrial",
+        "nocturnal"
+      ]
     },
     "key_albums": [
       {
@@ -2669,8 +3056,18 @@
       "en": "Reinforces that the archive does not only seek power: it also returns to guitar texture, nostalgia and soft sadness."
     },
     "signature_moods": {
-      "es": ["shoegaze", "alt rock", "melancolía", "grunge pop"],
-      "en": ["shoegaze", "alt rock", "melancholy", "grunge pop"]
+      "es": [
+        "shoegaze",
+        "alt rock",
+        "melancolía",
+        "grunge pop"
+      ],
+      "en": [
+        "shoegaze",
+        "alt rock",
+        "melancholy",
+        "grunge pop"
+      ]
     },
     "key_albums": [
       {
@@ -2740,8 +3137,18 @@
       "en": "Shows the part of the archive that seeks relief, movement and simple but powerful emotion."
     },
     "signature_moods": {
-      "es": ["pop punk", "catarsis", "nostalgia", "coros rápidos"],
-      "en": ["pop punk", "catharsis", "nostalgia", "fast choruses"]
+      "es": [
+        "pop punk",
+        "catarsis",
+        "nostalgia",
+        "coros rápidos"
+      ],
+      "en": [
+        "pop punk",
+        "catharsis",
+        "nostalgia",
+        "fast choruses"
+      ]
     },
     "key_albums": [
       {
@@ -2827,8 +3234,18 @@
       "en": "Connects many archive zones: confessional emotion, heavy riffs, melodic punk and scene memory."
     },
     "signature_moods": {
-      "es": ["post-hardcore", "emo", "catarsis", "larga trayectoria"],
-      "en": ["post-hardcore", "emo", "catharsis", "long-running"]
+      "es": [
+        "post-hardcore",
+        "emo",
+        "catarsis",
+        "larga trayectoria"
+      ],
+      "en": [
+        "post-hardcore",
+        "emo",
+        "catharsis",
+        "long-running"
+      ]
     },
     "key_albums": [
       {
@@ -2907,7 +3324,9 @@
   },
   {
     "name": "Anathema",
-    "aliases": ["Pagan Angel"],
+    "aliases": [
+      "Pagan Angel"
+    ],
     "origin": {
       "es": "Liverpool, Inglaterra",
       "en": "Liverpool, England"
@@ -2938,8 +3357,18 @@
       "en": "Fits the contemplative part of the archive: music that does not only hit, but accompanies long processes."
     },
     "signature_moods": {
-      "es": ["melancolía", "progresivo", "doom temprano", "catarsis lenta"],
-      "en": ["melancholy", "progressive", "early doom", "slow catharsis"]
+      "es": [
+        "melancolía",
+        "progresivo",
+        "doom temprano",
+        "catarsis lenta"
+      ],
+      "en": [
+        "melancholy",
+        "progressive",
+        "early doom",
+        "slow catharsis"
+      ]
     },
     "key_albums": [
       {
@@ -3018,7 +3447,11 @@
   },
   {
     "name": "The Kid LAROI",
-    "aliases": ["The Kid Laroi", "Kid Laroi", "Charlton Howard"],
+    "aliases": [
+      "The Kid Laroi",
+      "Kid Laroi",
+      "Charlton Howard"
+    ],
     "origin": {
       "es": "Waterloo, Sídney",
       "en": "Waterloo, Sydney"
@@ -3049,8 +3482,18 @@
       "en": "Shows that your archive also reads intensity in soft voices, viral hooks and pop-format emotional wounds."
     },
     "signature_moods": {
-      "es": ["emo rap", "pop global", "vulnerabilidad", "hooks digitales"],
-      "en": ["emo rap", "global pop", "vulnerability", "digital hooks"]
+      "es": [
+        "emo rap",
+        "pop global",
+        "vulnerabilidad",
+        "hooks digitales"
+      ],
+      "en": [
+        "emo rap",
+        "global pop",
+        "vulnerability",
+        "digital hooks"
+      ]
     },
     "key_albums": [
       {
@@ -3097,7 +3540,12 @@
   },
   {
     "name": "HaYehudim",
-    "aliases": ["היהודים", "I.U.D.M", "Hayehudim", "The Jews"],
+    "aliases": [
+      "היהודים",
+      "I.U.D.M",
+      "Hayehudim",
+      "The Jews"
+    ],
     "origin": {
       "es": "Tel Aviv, Israel",
       "en": "Tel Aviv, Israel"
@@ -3128,8 +3576,18 @@
       "en": "It is culturally important because it connects your global archive with a nearby, Hebrew and emotionally direct scene."
     },
     "signature_moods": {
-      "es": ["hard rock israelí", "hebreo", "oscuro", "voz teatral"],
-      "en": ["Israeli hard rock", "Hebrew", "dark", "theatrical voice"]
+      "es": [
+        "hard rock israelí",
+        "hebreo",
+        "oscuro",
+        "voz teatral"
+      ],
+      "en": [
+        "Israeli hard rock",
+        "Hebrew",
+        "dark",
+        "theatrical voice"
+      ]
     },
     "key_albums": [
       {
@@ -3176,7 +3634,13 @@
   },
   {
     "name": "Mooki",
-    "aliases": ["מוקי", "Muki", "Danny Niv", "Daniel Niv", "Daniel Neyburger"],
+    "aliases": [
+      "מוקי",
+      "Muki",
+      "Danny Niv",
+      "Daniel Niv",
+      "Daniel Neyburger"
+    ],
     "origin": {
       "es": "Rishon LeZion, Israel",
       "en": "Rishon LeZion, Israel"
@@ -3207,8 +3671,18 @@
       "en": "Helps the archive read Israel not only through hard rock, but also through street language, melody and cultural memory."
     },
     "signature_moods": {
-      "es": ["hip hop israelí", "reggae", "pop hebreo", "conciencia social"],
-      "en": ["Israeli hip hop", "reggae", "Hebrew pop", "social awareness"]
+      "es": [
+        "hip hop israelí",
+        "reggae",
+        "pop hebreo",
+        "conciencia social"
+      ],
+      "en": [
+        "Israeli hip hop",
+        "reggae",
+        "Hebrew pop",
+        "social awareness"
+      ]
     },
     "key_albums": [
       {
@@ -3263,7 +3737,9 @@
   },
   {
     "name": "Jordyne",
-    "aliases": ["xxjordyne"],
+    "aliases": [
+      "xxjordyne"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -3294,8 +3770,18 @@
       "en": "Helps Nova Music Lab avoid looking only at legends or huge bands: it also detects when a smaller song becomes a daily emotional anchor."
     },
     "signature_moods": {
-      "es": ["alt pop intimo", "repeticion", "vulnerabilidad", "loop emocional"],
-      "en": ["intimate alt pop", "repetition", "vulnerability", "emotional loop"]
+      "es": [
+        "alt pop intimo",
+        "repeticion",
+        "vulnerabilidad",
+        "loop emocional"
+      ],
+      "en": [
+        "intimate alt pop",
+        "repetition",
+        "vulnerability",
+        "emotional loop"
+      ]
     },
     "key_albums": [
       {
@@ -3349,8 +3835,18 @@
       "en": "Kiremi explains the part of the map where music does not push: it surrounds, lowers speed and lets the listener stay awake without hardening the body."
     },
     "signature_moods": {
-      "es": ["lo-fi", "dream pop", "noche", "suspension"],
-      "en": ["lo-fi", "dream pop", "night", "suspension"]
+      "es": [
+        "lo-fi",
+        "dream pop",
+        "noche",
+        "suspension"
+      ],
+      "en": [
+        "lo-fi",
+        "dream pop",
+        "night",
+        "suspension"
+      ]
     },
     "key_albums": [
       {
@@ -3381,7 +3877,9 @@
   },
   {
     "name": "Primal Fear",
-    "aliases": ["PRIMAL FEAR"],
+    "aliases": [
+      "PRIMAL FEAR"
+    ],
     "origin": {
       "es": "Esslingen am Neckar, Alemania",
       "en": "Esslingen am Neckar, Germany"
@@ -3412,8 +3910,18 @@
       "en": "Helps read the archive's taste for ordered force: metal that does not collapse, but builds a structure of energy."
     },
     "signature_moods": {
-      "es": ["power metal", "heavy metal", "velocidad", "epica"],
-      "en": ["power metal", "heavy metal", "speed", "epic drive"]
+      "es": [
+        "power metal",
+        "heavy metal",
+        "velocidad",
+        "epica"
+      ],
+      "en": [
+        "power metal",
+        "heavy metal",
+        "speed",
+        "epic drive"
+      ]
     },
     "key_albums": [
       {
@@ -3491,8 +3999,18 @@
       "en": "Adds a recent-discovery reading: artists that do not need a long biography to become tools for focus and repetition."
     },
     "signature_moods": {
-      "es": ["alternativo reciente", "movimiento", "foco", "descubrimiento"],
-      "en": ["recent alternative", "movement", "focus", "discovery"]
+      "es": [
+        "alternativo reciente",
+        "movimiento",
+        "foco",
+        "descubrimiento"
+      ],
+      "en": [
+        "recent alternative",
+        "movement",
+        "focus",
+        "discovery"
+      ]
     },
     "key_albums": [
       {
@@ -3531,7 +4049,11 @@
   },
   {
     "name": "Drake",
-    "aliases": ["Aubrey Drake Graham", "Champagne Papi", "C. Papi"],
+    "aliases": [
+      "Aubrey Drake Graham",
+      "Champagne Papi",
+      "C. Papi"
+    ],
     "origin": {
       "es": "Toronto, Ontario",
       "en": "Toronto, Ontario"
@@ -3562,8 +4084,18 @@
       "en": "Makes visible that the archive is not only metal/alternative: it also absorbs pop culture, melodic rap and songs that work as social weather."
     },
     "signature_moods": {
-      "es": ["rap melodico", "R&B nocturno", "estatus", "presente pop"],
-      "en": ["melodic rap", "nocturnal R&B", "status", "pop present"]
+      "es": [
+        "rap melodico",
+        "R&B nocturno",
+        "estatus",
+        "presente pop"
+      ],
+      "en": [
+        "melodic rap",
+        "nocturnal R&B",
+        "status",
+        "pop present"
+      ]
     },
     "key_albums": [
       {
@@ -3610,7 +4142,9 @@
   },
   {
     "name": "Sweezy",
-    "aliases": ["Sweez"],
+    "aliases": [
+      "Sweez"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -3641,8 +4175,18 @@
       "en": "Helps separate romantic intensity from metal intensity: here the weight comes from a returning phrase, not a riff."
     },
     "signature_moods": {
-      "es": ["romance digital", "alt hip hop", "melodia simple", "loop afectivo"],
-      "en": ["digital romance", "alt hip-hop", "simple melody", "affective loop"]
+      "es": [
+        "romance digital",
+        "alt hip hop",
+        "melodia simple",
+        "loop afectivo"
+      ],
+      "en": [
+        "digital romance",
+        "alt hip-hop",
+        "simple melody",
+        "affective loop"
+      ]
     },
     "key_albums": [
       {
@@ -3657,7 +4201,10 @@
   },
   {
     "name": "Def Leppard",
-    "aliases": ["Def Leopard", "Def Lepard"],
+    "aliases": [
+      "Def Leopard",
+      "Def Lepard"
+    ],
     "origin": {
       "es": "Sheffield, Inglaterra",
       "en": "Sheffield, England"
@@ -3688,8 +4235,18 @@
       "en": "Explains why the archive responds so strongly to gigantic choruses: before melodic metalcore, this school of heavy pop-rock precision was already there."
     },
     "signature_moods": {
-      "es": ["hard rock", "glam metal", "estadio", "nostalgia brillante"],
-      "en": ["hard rock", "glam metal", "arena", "bright nostalgia"]
+      "es": [
+        "hard rock",
+        "glam metal",
+        "estadio",
+        "nostalgia brillante"
+      ],
+      "en": [
+        "hard rock",
+        "glam metal",
+        "arena",
+        "bright nostalgia"
+      ]
     },
     "key_albums": [
       {
@@ -3736,7 +4293,11 @@
   },
   {
     "name": "Annihilator",
-    "aliases": ["Anihiliator", "Annihiliator", "Annihiltor"],
+    "aliases": [
+      "Anihiliator",
+      "Annihiliator",
+      "Annihiltor"
+    ],
     "origin": {
       "es": "Ottawa, Canada",
       "en": "Ottawa, Canada"
@@ -3767,8 +4328,18 @@
       "en": "Adds historical depth to the taste for fast metal: not only modern metalcore, but also the technical school of Canadian thrash."
     },
     "signature_moods": {
-      "es": ["thrash tecnico", "precision", "velocidad", "metal clasico"],
-      "en": ["technical thrash", "precision", "speed", "classic metal"]
+      "es": [
+        "thrash tecnico",
+        "precision",
+        "velocidad",
+        "metal clasico"
+      ],
+      "en": [
+        "technical thrash",
+        "precision",
+        "speed",
+        "classic metal"
+      ]
     },
     "key_albums": [
       {
@@ -3815,7 +4386,11 @@
   },
   {
     "name": "thekidszn",
-    "aliases": ["Thekidszn", "the kidszn", "kidszn"],
+    "aliases": [
+      "Thekidszn",
+      "the kidszn",
+      "kidszn"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -3846,8 +4421,18 @@
       "en": "Adds a generational emo-rap sensitivity to the museum: vulnerable pride, self-affirmation and melody as shield."
     },
     "signature_moods": {
-      "es": ["emo rap", "melodic trap", "autoafirmacion", "vulnerabilidad"],
-      "en": ["emo rap", "melodic trap", "self-affirmation", "vulnerability"]
+      "es": [
+        "emo rap",
+        "melodic trap",
+        "autoafirmacion",
+        "vulnerabilidad"
+      ],
+      "en": [
+        "emo rap",
+        "melodic trap",
+        "self-affirmation",
+        "vulnerability"
+      ]
     },
     "key_albums": [
       {
@@ -3862,7 +4447,9 @@
   },
   {
     "name": "Nightlife",
-    "aliases": ["nightlife"],
+    "aliases": [
+      "nightlife"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -3893,8 +4480,18 @@
       "en": "Contrasts the heavy zone: Nightlife shows how a compact alternative song can occupy as much emotional space as a historical band."
     },
     "signature_moods": {
-      "es": ["alt pop nocturno", "hook", "ansiedad suave", "fijacion reciente"],
-      "en": ["nocturnal alt pop", "hook", "soft anxiety", "recent fixation"]
+      "es": [
+        "alt pop nocturno",
+        "hook",
+        "ansiedad suave",
+        "fijacion reciente"
+      ],
+      "en": [
+        "nocturnal alt pop",
+        "hook",
+        "soft anxiety",
+        "recent fixation"
+      ]
     },
     "key_albums": [
       {
@@ -3917,7 +4514,9 @@
   },
   {
     "name": "Landon Tewers",
-    "aliases": ["Ai640"],
+    "aliases": [
+      "Ai640"
+    ],
     "origin": {
       "es": "Detroit, Michigan",
       "en": "Detroit, Michigan"
@@ -3948,8 +4547,18 @@
       "en": "Helps read the part of the archive where intensity does not come from a full band, but from a very frontal voice and emotionally uncomfortable production."
     },
     "signature_moods": {
-      "es": ["post-hardcore intimo", "R&B oscuro", "confesion", "tension nocturna"],
-      "en": ["intimate post-hardcore", "dark R&B", "confession", "nocturnal tension"]
+      "es": [
+        "post-hardcore intimo",
+        "R&B oscuro",
+        "confesion",
+        "tension nocturna"
+      ],
+      "en": [
+        "intimate post-hardcore",
+        "dark R&B",
+        "confession",
+        "nocturnal tension"
+      ]
     },
     "key_albums": [
       {
@@ -3980,7 +4589,9 @@
   },
   {
     "name": "Skid Row",
-    "aliases": ["Skidrow"],
+    "aliases": [
+      "Skidrow"
+    ],
     "origin": {
       "es": "Toms River, Nueva Jersey",
       "en": "Toms River, New Jersey"
@@ -4011,8 +4622,18 @@
       "en": "Explains the archive's affinity for hard rock with nerve: big songs, but also dirty, tense and physical."
     },
     "signature_moods": {
-      "es": ["hard rock", "heavy metal", "rabia juvenil", "glam metal crudo"],
-      "en": ["hard rock", "heavy metal", "youthful anger", "raw glam metal"]
+      "es": [
+        "hard rock",
+        "heavy metal",
+        "rabia juvenil",
+        "glam metal crudo"
+      ],
+      "en": [
+        "hard rock",
+        "heavy metal",
+        "youthful anger",
+        "raw glam metal"
+      ]
     },
     "key_albums": [
       {
@@ -4082,8 +4703,18 @@
       "en": "Connects the map with the family of European metal melancholy: cold, melodic and emotionally sustained."
     },
     "signature_moods": {
-      "es": ["gothic metal", "melancolia finlandesa", "pulso medio", "oscuridad elegante"],
-      "en": ["gothic metal", "Finnish melancholy", "mid-tempo pulse", "elegant darkness"]
+      "es": [
+        "gothic metal",
+        "melancolia finlandesa",
+        "pulso medio",
+        "oscuridad elegante"
+      ],
+      "en": [
+        "gothic metal",
+        "Finnish melancholy",
+        "mid-tempo pulse",
+        "elegant darkness"
+      ]
     },
     "key_albums": [
       {
@@ -4122,7 +4753,10 @@
   },
   {
     "name": "ג'ירפות",
-    "aliases": ["ג׳ירפות", "Girafot"],
+    "aliases": [
+      "ג׳ירפות",
+      "Girafot"
+    ],
     "origin": {
       "es": "Israel",
       "en": "Israel"
@@ -4153,8 +4787,18 @@
       "en": "Makes cultural DNA more than country: also alphabet, humor, local memory and scenes that change the museum's texture."
     },
     "signature_moods": {
-      "es": ["rock israeli", "hebreo", "rareza urbana", "alternativo local"],
-      "en": ["Israeli rock", "Hebrew", "urban strangeness", "local alternative"]
+      "es": [
+        "rock israeli",
+        "hebreo",
+        "rareza urbana",
+        "alternativo local"
+      ],
+      "en": [
+        "Israeli rock",
+        "Hebrew",
+        "urban strangeness",
+        "local alternative"
+      ]
     },
     "key_albums": [
       {
@@ -4224,8 +4868,18 @@
       "en": "Expands the museum toward a nostalgia that is not only biographical but aesthetic: screens, artificial summer and desire filtered through synthesizers."
     },
     "signature_moods": {
-      "es": ["synthwave", "romance digital", "neon", "melancolia retro"],
-      "en": ["synthwave", "digital romance", "neon", "retro melancholy"]
+      "es": [
+        "synthwave",
+        "romance digital",
+        "neon",
+        "melancolia retro"
+      ],
+      "en": [
+        "synthwave",
+        "digital romance",
+        "neon",
+        "retro melancholy"
+      ]
     },
     "key_albums": [
       {
@@ -4303,8 +4957,18 @@
       "en": "Helps the dashboard treat smaller artists fairly: lacking long history does not mean they lack a clear function in the sonic biography."
     },
     "signature_moods": {
-      "es": ["camino", "soledad", "alternativo", "loop compacto"],
-      "en": ["road", "solitude", "alternative", "compact loop"]
+      "es": [
+        "camino",
+        "soledad",
+        "alternativo",
+        "loop compacto"
+      ],
+      "en": [
+        "road",
+        "solitude",
+        "alternative",
+        "compact loop"
+      ]
     },
     "key_albums": [
       {
@@ -4350,8 +5014,18 @@
       "en": "Helps read a less explosive emotion: song architecture, elegant sadness and cultural bridge."
     },
     "signature_moods": {
-      "es": ["art rock", "melancolia", "progresivo compacto", "puente israeli"],
-      "en": ["art rock", "melancholy", "compact progressive", "Israeli bridge"]
+      "es": [
+        "art rock",
+        "melancolia",
+        "progresivo compacto",
+        "puente israeli"
+      ],
+      "en": [
+        "art rock",
+        "melancholy",
+        "compact progressive",
+        "Israeli bridge"
+      ]
     },
     "key_albums": [
       {
@@ -4429,8 +5103,18 @@
       "en": "Helps balance the archive: not everything alternative needs darkness; there is also movement, clarity and reconstruction hooks."
     },
     "signature_moods": {
-      "es": ["pop rock", "guitarras luminosas", "movimiento", "reconstruccion"],
-      "en": ["pop rock", "bright guitars", "movement", "reconstruction"]
+      "es": [
+        "pop rock",
+        "guitarras luminosas",
+        "movimiento",
+        "reconstruccion"
+      ],
+      "en": [
+        "pop rock",
+        "bright guitars",
+        "movement",
+        "reconstruction"
+      ]
     },
     "key_albums": [
       {
@@ -4469,7 +5153,9 @@
   },
   {
     "name": "Som",
-    "aliases": ["SOM"],
+    "aliases": [
+      "SOM"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -4500,8 +5186,18 @@
       "en": "Explains a preference for spatial intensity: heavy music that can also be haze, landscape and suspension."
     },
     "signature_moods": {
-      "es": ["post-metal", "shoegaze", "atmosfera", "peso flotante"],
-      "en": ["post-metal", "shoegaze", "atmosphere", "floating weight"]
+      "es": [
+        "post-metal",
+        "shoegaze",
+        "atmosfera",
+        "peso flotante"
+      ],
+      "en": [
+        "post-metal",
+        "shoegaze",
+        "atmosphere",
+        "floating weight"
+      ]
     },
     "key_albums": [
       {
@@ -4563,8 +5259,18 @@
       "en": "Adds historical depth to the dark map: a band showing how heaviness can become introspective without losing gravity."
     },
     "signature_moods": {
-      "es": ["doom metal", "gothic metal", "melancolia sueca", "rock progresivo oscuro"],
-      "en": ["doom metal", "gothic metal", "Swedish melancholy", "dark progressive rock"]
+      "es": [
+        "doom metal",
+        "gothic metal",
+        "melancolia sueca",
+        "rock progresivo oscuro"
+      ],
+      "en": [
+        "doom metal",
+        "gothic metal",
+        "Swedish melancholy",
+        "dark progressive rock"
+      ]
     },
     "key_albums": [
       {
@@ -4619,7 +5325,11 @@
   },
   {
     "name": "FM-84",
-    "aliases": ["FM84", "Colin Bennett", "Col Bennett"],
+    "aliases": [
+      "FM84",
+      "Colin Bennett",
+      "Col Bennett"
+    ],
     "origin": {
       "es": "Escocia / California",
       "en": "Scotland / California"
@@ -4650,8 +5360,18 @@
       "en": "Gives the emotional map a luminous exit: speed, air, memory and electronic pop without metal hardness."
     },
     "signature_moods": {
-      "es": ["synthwave", "neon", "nostalgia luminosa", "night drive"],
-      "en": ["synthwave", "neon", "luminous nostalgia", "night drive"]
+      "es": [
+        "synthwave",
+        "neon",
+        "nostalgia luminosa",
+        "night drive"
+      ],
+      "en": [
+        "synthwave",
+        "neon",
+        "luminous nostalgia",
+        "night drive"
+      ]
     },
     "key_albums": [
       {
@@ -4705,8 +5425,18 @@
       "en": "Lets the archive be read through lyrics of emotional defense and alternative pop with a rap pulse."
     },
     "signature_moods": {
-      "es": ["alt pop", "rap melodico", "autoconciencia", "defensa emocional"],
-      "en": ["alt pop", "melodic rap", "self-awareness", "emotional defense"]
+      "es": [
+        "alt pop",
+        "rap melodico",
+        "autoconciencia",
+        "defensa emocional"
+      ],
+      "en": [
+        "alt pop",
+        "melodic rap",
+        "self-awareness",
+        "emotional defense"
+      ]
     },
     "key_albums": [
       {
@@ -4776,8 +5506,18 @@
       "en": "Gives the museum a reading of emotional endurance without turning it into diagnosis: music as ritual, not clinical conclusion."
     },
     "signature_moods": {
-      "es": ["post-hardcore", "melodic hardcore", "busqueda", "catarsis espiritual"],
-      "en": ["post-hardcore", "melodic hardcore", "searching", "spiritual catharsis"]
+      "es": [
+        "post-hardcore",
+        "melodic hardcore",
+        "busqueda",
+        "catarsis espiritual"
+      ],
+      "en": [
+        "post-hardcore",
+        "melodic hardcore",
+        "searching",
+        "spiritual catharsis"
+      ]
     },
     "key_albums": [
       {
@@ -4847,8 +5587,18 @@
       "en": "Helps read the sensitivity of small singles that capture intense states without needing a large album architecture."
     },
     "signature_moods": {
-      "es": ["emo pop", "alt rap", "tormenta", "hook vulnerable"],
-      "en": ["emo pop", "alt rap", "storm", "vulnerable hook"]
+      "es": [
+        "emo pop",
+        "alt rap",
+        "tormenta",
+        "hook vulnerable"
+      ],
+      "en": [
+        "emo pop",
+        "alt rap",
+        "storm",
+        "vulnerable hook"
+      ]
     },
     "key_albums": [
       {
@@ -4879,7 +5629,10 @@
   },
   {
     "name": "Indighxst",
-    "aliases": ["INDIGHXST", "INDIGHOST"],
+    "aliases": [
+      "INDIGHXST",
+      "INDIGHOST"
+    ],
     "origin": {
       "es": "Nueva Jersey, Estados Unidos",
       "en": "New Jersey, United States"
@@ -4910,8 +5663,18 @@
       "en": "Lets the museum avoid erasing smaller artists: even a focused presence can add a unique texture to the emotional map."
     },
     "signature_moods": {
-      "es": ["post-hardcore", "sombra", "textura", "single ancla"],
-      "en": ["post-hardcore", "shadow", "texture", "anchor single"]
+      "es": [
+        "post-hardcore",
+        "sombra",
+        "textura",
+        "single ancla"
+      ],
+      "en": [
+        "post-hardcore",
+        "shadow",
+        "texture",
+        "anchor single"
+      ]
     },
     "key_albums": [
       {
@@ -4926,7 +5689,10 @@
   },
   {
     "name": "boy pablo",
-    "aliases": ["Boy Pablo", "Nicolás Pablo Rivera Muñoz"],
+    "aliases": [
+      "Boy Pablo",
+      "Nicolás Pablo Rivera Muñoz"
+    ],
     "origin": {
       "es": "Bergen, Noruega",
       "en": "Bergen, Norway"
@@ -4957,8 +5723,18 @@
       "en": "Reminds the sonic biography that it also needs lightness: songs that do not discharge anger, but open a window."
     },
     "signature_moods": {
-      "es": ["indie pop", "dream pop", "guitarras soleadas", "nostalgia ligera"],
-      "en": ["indie pop", "dream pop", "sunny guitars", "light nostalgia"]
+      "es": [
+        "indie pop",
+        "dream pop",
+        "guitarras soleadas",
+        "nostalgia ligera"
+      ],
+      "en": [
+        "indie pop",
+        "dream pop",
+        "sunny guitars",
+        "light nostalgia"
+      ]
     },
     "key_albums": [
       {
@@ -5012,8 +5788,18 @@
       "en": "Helps the audit avoid rewarding only famous artists: it also preserves unusual profiles that belong to the personal museum."
     },
     "signature_moods": {
-      "es": ["alternativo lateral", "rareza", "perfil discreto", "archivo"],
-      "en": ["side alternative", "strangeness", "discreet profile", "archive"]
+      "es": [
+        "alternativo lateral",
+        "rareza",
+        "perfil discreto",
+        "archivo"
+      ],
+      "en": [
+        "side alternative",
+        "strangeness",
+        "discreet profile",
+        "archive"
+      ]
     },
     "key_albums": [
       {
@@ -5036,7 +5822,9 @@
   },
   {
     "name": "Louta",
-    "aliases": ["LOUTA"],
+    "aliases": [
+      "LOUTA"
+    ],
     "origin": {
       "es": "Argentina",
       "en": "Argentina"
@@ -5067,8 +5855,18 @@
       "en": "Lets the museum read Latin music not only through reggaeton or mainstream pop, but also through performance, strangeness and auteur pop."
     },
     "signature_moods": {
-      "es": ["pop alternativo", "Argentina", "performance", "castellano"],
-      "en": ["alternative pop", "Argentina", "performance", "Spanish language"]
+      "es": [
+        "pop alternativo",
+        "Argentina",
+        "performance",
+        "castellano"
+      ],
+      "en": [
+        "alternative pop",
+        "Argentina",
+        "performance",
+        "Spanish language"
+      ]
     },
     "key_albums": [
       {
@@ -5107,7 +5905,9 @@
   },
   {
     "name": "Asking Alexandria",
-    "aliases": ["Аsking Аlехаndriа"],
+    "aliases": [
+      "Аsking Аlехаndriа"
+    ],
     "origin": {
       "es": "York, Inglaterra / Dubai",
       "en": "York, England / Dubai"
@@ -5138,8 +5938,18 @@
       "en": "Explains a key part of the taste for bands that transform: from breakdown to arena hook without fully cutting the tension."
     },
     "signature_moods": {
-      "es": ["metalcore", "electronicore", "rock moderno", "soledad de estadio"],
-      "en": ["metalcore", "electronicore", "modern rock", "arena solitude"]
+      "es": [
+        "metalcore",
+        "electronicore",
+        "rock moderno",
+        "soledad de estadio"
+      ],
+      "en": [
+        "metalcore",
+        "electronicore",
+        "modern rock",
+        "arena solitude"
+      ]
     },
     "key_albums": [
       {
@@ -5217,8 +6027,18 @@
       "en": "Helps explain why the archive tolerates and seeks strange mixtures: heavy music can also dance, seduce and mutate."
     },
     "signature_moods": {
-      "es": ["metalcore fusion", "R&B", "groove", "post-hardcore experimental"],
-      "en": ["fusion metalcore", "R&B", "groove", "experimental post-hardcore"]
+      "es": [
+        "metalcore fusion",
+        "R&B",
+        "groove",
+        "post-hardcore experimental"
+      ],
+      "en": [
+        "fusion metalcore",
+        "R&B",
+        "groove",
+        "experimental post-hardcore"
+      ]
     },
     "key_albums": [
       {
@@ -5280,8 +6100,18 @@
       "en": "Adds a more technical variant of retro futurism: less confessional voice, more atmosphere, movement and sound design."
     },
     "signature_moods": {
-      "es": ["synthwave", "rock ochentero", "neon", "accion nocturna"],
-      "en": ["synthwave", "eighties rock", "neon", "night action"]
+      "es": [
+        "synthwave",
+        "rock ochentero",
+        "neon",
+        "accion nocturna"
+      ],
+      "en": [
+        "synthwave",
+        "eighties rock",
+        "neon",
+        "night action"
+      ]
     },
     "key_albums": [
       {
@@ -5343,8 +6173,18 @@
       "en": "Explains the taste for guitar anthems that sound big without becoming extreme."
     },
     "signature_moods": {
-      "es": ["AOR", "hard rock melodico", "Suecia", "coros brillantes"],
-      "en": ["AOR", "melodic hard rock", "Sweden", "bright choruses"]
+      "es": [
+        "AOR",
+        "hard rock melodico",
+        "Suecia",
+        "coros brillantes"
+      ],
+      "en": [
+        "AOR",
+        "melodic hard rock",
+        "Sweden",
+        "bright choruses"
+      ]
     },
     "key_albums": [
       {
@@ -5375,7 +6215,10 @@
   },
   {
     "name": "Thirty Seconds to Mars",
-    "aliases": ["30 Seconds to Mars", "Thirty Seconds To Mars"],
+    "aliases": [
+      "30 Seconds to Mars",
+      "Thirty Seconds To Mars"
+    ],
     "origin": {
       "es": "Los Ángeles, California",
       "en": "Los Angeles, California"
@@ -5406,8 +6249,18 @@
       "en": "Connects listening with visual identity, narrative ambition and rock that wants to occupy a big screen."
     },
     "signature_moods": {
-      "es": ["arena rock", "cinematico", "pop alternativo", "drama visual"],
-      "en": ["arena rock", "cinematic", "alternative pop", "visual drama"]
+      "es": [
+        "arena rock",
+        "cinematico",
+        "pop alternativo",
+        "drama visual"
+      ],
+      "en": [
+        "arena rock",
+        "cinematic",
+        "alternative pop",
+        "visual drama"
+      ]
     },
     "key_albums": [
       {
@@ -5438,7 +6291,9 @@
   },
   {
     "name": "Twin Shadow",
-    "aliases": ["George Lewis Jr."],
+    "aliases": [
+      "George Lewis Jr."
+    ],
     "origin": {
       "es": "República Dominicana / Estados Unidos",
       "en": "Dominican Republic / United States"
@@ -5469,8 +6324,18 @@
       "en": "Gives the map a reading of urban romanticism: soft groove, low neon and affective memory."
     },
     "signature_moods": {
-      "es": ["synth-pop", "chillwave", "romance urbano", "new wave"],
-      "en": ["synth-pop", "chillwave", "urban romance", "new wave"]
+      "es": [
+        "synth-pop",
+        "chillwave",
+        "romance urbano",
+        "new wave"
+      ],
+      "en": [
+        "synth-pop",
+        "chillwave",
+        "urban romance",
+        "new wave"
+      ]
     },
     "key_albums": [
       {
@@ -5516,8 +6381,18 @@
       "en": "Shows that the archive's heaviness can also be technical, cosmic and narrative."
     },
     "signature_moods": {
-      "es": ["melodic death metal", "ciencia ficcion", "tecnica", "coros limpios"],
-      "en": ["melodic death metal", "science fiction", "technique", "clean choruses"]
+      "es": [
+        "melodic death metal",
+        "ciencia ficcion",
+        "tecnica",
+        "coros limpios"
+      ],
+      "en": [
+        "melodic death metal",
+        "science fiction",
+        "technique",
+        "clean choruses"
+      ]
     },
     "key_albums": [
       {
@@ -5548,7 +6423,9 @@
   },
   {
     "name": "Polyphia",
-    "aliases": ["ポリフィア"],
+    "aliases": [
+      "ポリフィア"
+    ],
     "origin": {
       "es": "Plano/Dallas, Texas",
       "en": "Plano/Dallas, Texas"
@@ -5579,8 +6456,18 @@
       "en": "Explains the archive's fascination with visible skill: music that is mentally watched while being heard."
     },
     "signature_moods": {
-      "es": ["instrumental", "math rock", "virtuosismo", "trap metal"],
-      "en": ["instrumental", "math rock", "virtuosity", "trap metal"]
+      "es": [
+        "instrumental",
+        "math rock",
+        "virtuosismo",
+        "trap metal"
+      ],
+      "en": [
+        "instrumental",
+        "math rock",
+        "virtuosity",
+        "trap metal"
+      ]
     },
     "key_albums": [
       {
@@ -5642,8 +6529,18 @@
       "en": "Adds emotional contrast: not all Latin archive material enters through party or sadness, but also through spiritual statement and alternative rock."
     },
     "signature_moods": {
-      "es": ["rock argentino", "fusion", "luz", "castellano"],
-      "en": ["Argentinian rock", "fusion", "light", "Spanish language"]
+      "es": [
+        "rock argentino",
+        "fusion",
+        "luz",
+        "castellano"
+      ],
+      "en": [
+        "Argentinian rock",
+        "fusion",
+        "light",
+        "Spanish language"
+      ]
     },
     "key_albums": [
       {
@@ -5666,7 +6563,9 @@
   },
   {
     "name": "SMBDY ELSE",
-    "aliases": ["smbdy/else"],
+    "aliases": [
+      "smbdy/else"
+    ],
     "origin": {
       "es": "Francia",
       "en": "France"
@@ -5697,8 +6596,18 @@
       "en": "Keeps the audit honest: curation also means knowing when to write little and not invent a large story."
     },
     "signature_moods": {
-      "es": ["alternativo", "identidad", "perfil minimo", "mood"],
-      "en": ["alternative", "identity", "minimal profile", "mood"]
+      "es": [
+        "alternativo",
+        "identidad",
+        "perfil minimo",
+        "mood"
+      ],
+      "en": [
+        "alternative",
+        "identity",
+        "minimal profile",
+        "mood"
+      ]
     },
     "key_albums": [
       {
@@ -5713,7 +6622,9 @@
   },
   {
     "name": "ERRA",
-    "aliases": ["Erra"],
+    "aliases": [
+      "Erra"
+    ],
     "origin": {
       "es": "Birmingham, Alabama",
       "en": "Birmingham, Alabama"
@@ -5744,8 +6655,18 @@
       "en": "Connects the taste for metalcore with the archive's cerebral/progressive side."
     },
     "signature_moods": {
-      "es": ["progressive metalcore", "djent", "tecnica", "catarsis luminosa"],
-      "en": ["progressive metalcore", "djent", "technique", "luminous catharsis"]
+      "es": [
+        "progressive metalcore",
+        "djent",
+        "tecnica",
+        "catarsis luminosa"
+      ],
+      "en": [
+        "progressive metalcore",
+        "djent",
+        "technique",
+        "luminous catharsis"
+      ]
     },
     "key_albums": [
       {
@@ -5784,7 +6705,12 @@
   },
   {
     "name": "Nine Inch Nails",
-    "aliases": ["NIN", "N.I.N.", "NineInchNails", "NIИ"],
+    "aliases": [
+      "NIN",
+      "N.I.N.",
+      "NineInchNails",
+      "NIИ"
+    ],
     "origin": {
       "es": "Cleveland, Ohio",
       "en": "Cleveland, Ohio"
@@ -5815,8 +6741,18 @@
       "en": "Gives the archive a major reference for reading technology, rage, precision and vulnerability without turning it into diagnosis."
     },
     "signature_moods": {
-      "es": ["industrial rock", "maquina", "oscuridad tecnologica", "control"],
-      "en": ["industrial rock", "machine", "technological darkness", "control"]
+      "es": [
+        "industrial rock",
+        "maquina",
+        "oscuridad tecnologica",
+        "control"
+      ],
+      "en": [
+        "industrial rock",
+        "machine",
+        "technological darkness",
+        "control"
+      ]
     },
     "key_albums": [
       {
@@ -5894,8 +6830,18 @@
       "en": "Completes the archive's thrash side alongside Annihilator, but from a more recent generation."
     },
     "signature_moods": {
-      "es": ["thrash metal", "Finlandia", "velocidad", "adrenalina"],
-      "en": ["thrash metal", "Finland", "speed", "adrenaline"]
+      "es": [
+        "thrash metal",
+        "Finlandia",
+        "velocidad",
+        "adrenalina"
+      ],
+      "en": [
+        "thrash metal",
+        "Finland",
+        "speed",
+        "adrenaline"
+      ]
     },
     "key_albums": [
       {
@@ -5926,7 +6872,9 @@
   },
   {
     "name": "Rami Kleinstein",
-    "aliases": ["Rita and Rami Kleinstein"],
+    "aliases": [
+      "Rita and Rami Kleinstein"
+    ],
     "origin": {
       "es": "Israel",
       "en": "Israel"
@@ -5957,8 +6905,18 @@
       "en": "Keeps the cultural DNA carrying language, ballad and local affection, not only global alternative energy."
     },
     "signature_moods": {
-      "es": ["pop hebreo", "piano", "afecto", "Israel"],
-      "en": ["Hebrew pop", "piano", "affection", "Israel"]
+      "es": [
+        "pop hebreo",
+        "piano",
+        "afecto",
+        "Israel"
+      ],
+      "en": [
+        "Hebrew pop",
+        "piano",
+        "affection",
+        "Israel"
+      ]
     },
     "key_albums": [
       {
@@ -6004,8 +6962,18 @@
       "en": "Lets the museum read soft micro-anchors too, not only long careers."
     },
     "signature_moods": {
-      "es": ["lo-fi", "R&B", "viaje", "baja luz"],
-      "en": ["lo-fi", "R&B", "journey", "low light"]
+      "es": [
+        "lo-fi",
+        "R&B",
+        "viaje",
+        "baja luz"
+      ],
+      "en": [
+        "lo-fi",
+        "R&B",
+        "journey",
+        "low light"
+      ]
     },
     "key_albums": [
       {
@@ -6020,7 +6988,9 @@
   },
   {
     "name": "The Killers",
-    "aliases": ["Killers, The"],
+    "aliases": [
+      "Killers, The"
+    ],
     "origin": {
       "es": "Las Vegas, Nevada",
       "en": "Las Vegas, Nevada"
@@ -6051,8 +7021,18 @@
       "en": "Gives the museum an alternative-rock point looking toward desert, neon and shared chorus."
     },
     "signature_moods": {
-      "es": ["indie rock", "Las Vegas", "estadio", "nostalgia americana"],
-      "en": ["indie rock", "Las Vegas", "arena", "American nostalgia"]
+      "es": [
+        "indie rock",
+        "Las Vegas",
+        "estadio",
+        "nostalgia americana"
+      ],
+      "en": [
+        "indie rock",
+        "Las Vegas",
+        "arena",
+        "American nostalgia"
+      ]
     },
     "key_albums": [
       {
@@ -6106,8 +7086,18 @@
       "en": "Protects curation quality: when automatic matching is uncertain, archive musical evidence leads."
     },
     "signature_moods": {
-      "es": ["post-hardcore", "fuego", "catarsis", "peso emocional"],
-      "en": ["post-hardcore", "fire", "catharsis", "emotional weight"]
+      "es": [
+        "post-hardcore",
+        "fuego",
+        "catarsis",
+        "peso emocional"
+      ],
+      "en": [
+        "post-hardcore",
+        "fire",
+        "catharsis",
+        "emotional weight"
+      ]
     },
     "key_albums": [
       {
@@ -6161,8 +7151,18 @@
       "en": "Explains the taste for music combining body, calculation and futuristic emotion."
     },
     "signature_moods": {
-      "es": ["progressive metal", "math rock", "djent", "precision"],
-      "en": ["progressive metal", "math rock", "djent", "precision"]
+      "es": [
+        "progressive metal",
+        "math rock",
+        "djent",
+        "precision"
+      ],
+      "en": [
+        "progressive metal",
+        "math rock",
+        "djent",
+        "precision"
+      ]
     },
     "key_albums": [
       {
@@ -6185,7 +7185,9 @@
   },
   {
     "name": "Blut aus Nord",
-    "aliases": ["Vlad"],
+    "aliases": [
+      "Vlad"
+    ],
     "origin": {
       "es": "Mondeville, Francia",
       "en": "Mondeville, France"
@@ -6216,8 +7218,18 @@
       "en": "Gives the museum an extreme reference for reading landscape, shadow and abstraction without turning it into a closed psychological reading."
     },
     "signature_moods": {
-      "es": ["black metal atmosferico", "industrial", "abismo", "disonancia"],
-      "en": ["atmospheric black metal", "industrial", "abyss", "dissonance"]
+      "es": [
+        "black metal atmosferico",
+        "industrial",
+        "abismo",
+        "disonancia"
+      ],
+      "en": [
+        "atmospheric black metal",
+        "industrial",
+        "abyss",
+        "dissonance"
+      ]
     },
     "key_albums": [
       {
@@ -6248,7 +7260,10 @@
   },
   {
     "name": "Knox",
-    "aliases": ["Knox Morris", "Knox Alexander Morris"],
+    "aliases": [
+      "Knox Morris",
+      "Knox Alexander Morris"
+    ],
     "origin": {
       "es": "Nashville, Tennessee",
       "en": "Nashville, Tennessee"
@@ -6279,8 +7294,18 @@
       "en": "Adds a less dark version of pop vulnerability inside the top."
     },
     "signature_moods": {
-      "es": ["pop rock", "ruptura", "humor", "Nashville"],
-      "en": ["pop rock", "breakup", "humor", "Nashville"]
+      "es": [
+        "pop rock",
+        "ruptura",
+        "humor",
+        "Nashville"
+      ],
+      "en": [
+        "pop rock",
+        "breakup",
+        "humor",
+        "Nashville"
+      ]
     },
     "key_albums": [
       {
@@ -6303,7 +7328,9 @@
   },
   {
     "name": "Firehouse",
-    "aliases": ["FireHouse"],
+    "aliases": [
+      "FireHouse"
+    ],
     "origin": {
       "es": "Richmond/Charlotte, Estados Unidos",
       "en": "Richmond/Charlotte, United States"
@@ -6334,8 +7361,18 @@
       "en": "Explains the part of the archive seeking rock melodrama without extreme heaviness."
     },
     "signature_moods": {
-      "es": ["glam metal", "AOR", "balada rock", "coros grandes"],
-      "en": ["glam metal", "AOR", "rock ballad", "big choruses"]
+      "es": [
+        "glam metal",
+        "AOR",
+        "balada rock",
+        "coros grandes"
+      ],
+      "en": [
+        "glam metal",
+        "AOR",
+        "rock ballad",
+        "big choruses"
+      ]
     },
     "key_albums": [
       {
@@ -6358,7 +7395,10 @@
   },
   {
     "name": "The Damned",
-    "aliases": ["Damned", "The Doomed"],
+    "aliases": [
+      "Damned",
+      "The Doomed"
+    ],
     "origin": {
       "es": "Londres, Inglaterra",
       "en": "London, England"
@@ -6389,8 +7429,18 @@
       "en": "Adds genealogy: many modern shadows in the archive have a punk/gothic root like this."
     },
     "signature_moods": {
-      "es": ["punk", "gothic rock", "post-punk", "Londres"],
-      "en": ["punk", "gothic rock", "post-punk", "London"]
+      "es": [
+        "punk",
+        "gothic rock",
+        "post-punk",
+        "Londres"
+      ],
+      "en": [
+        "punk",
+        "gothic rock",
+        "post-punk",
+        "London"
+      ]
     },
     "key_albums": [
       {
@@ -6444,8 +7494,18 @@
       "en": "Adds modern weight with a direct emotional question, not only technique."
     },
     "signature_moods": {
-      "es": ["djent", "metalcore", "groove", "pregunta emocional"],
-      "en": ["djent", "metalcore", "groove", "emotional question"]
+      "es": [
+        "djent",
+        "metalcore",
+        "groove",
+        "pregunta emocional"
+      ],
+      "en": [
+        "djent",
+        "metalcore",
+        "groove",
+        "emotional question"
+      ]
     },
     "key_albums": [
       {
@@ -6468,7 +7528,9 @@
   },
   {
     "name": "The 1975",
-    "aliases": ["Drive Like I Do"],
+    "aliases": [
+      "Drive Like I Do"
+    ],
     "origin": {
       "es": "Wilmslow, Inglaterra",
       "en": "Wilmslow, England"
@@ -6499,8 +7561,18 @@
       "en": "Shows the side of the museum that reads pop culture as emotional and aesthetic language."
     },
     "signature_moods": {
-      "es": ["indie pop", "art pop", "synthpop", "autoconciencia"],
-      "en": ["indie pop", "art pop", "synthpop", "self-awareness"]
+      "es": [
+        "indie pop",
+        "art pop",
+        "synthpop",
+        "autoconciencia"
+      ],
+      "en": [
+        "indie pop",
+        "art pop",
+        "synthpop",
+        "self-awareness"
+      ]
     },
     "key_albums": [
       {
@@ -6554,8 +7626,18 @@
       "en": "Gives the archive a form of dark relief without falling into diagnosis: music as a quiet room."
     },
     "signature_moods": {
-      "es": ["synthpop nocturno", "terapia", "voz emocional", "calma oscura"],
-      "en": ["nocturnal synthpop", "therapy", "emotional voice", "dark calm"]
+      "es": [
+        "synthpop nocturno",
+        "terapia",
+        "voz emocional",
+        "calma oscura"
+      ],
+      "en": [
+        "nocturnal synthpop",
+        "therapy",
+        "emotional voice",
+        "dark calm"
+      ]
     },
     "key_albums": [
       {
@@ -6570,7 +7652,10 @@
   },
   {
     "name": "The Cult",
-    "aliases": ["Cult", "Cult, The"],
+    "aliases": [
+      "Cult",
+      "Cult, The"
+    ],
     "origin": {
       "es": "Londres, Inglaterra",
       "en": "London, England"
@@ -6601,8 +7686,18 @@
       "en": "Adds a tradition of dark rock that is sensual, ritual and physical."
     },
     "signature_moods": {
-      "es": ["gothic rock", "hard rock", "ritual", "post-punk"],
-      "en": ["gothic rock", "hard rock", "ritual", "post-punk"]
+      "es": [
+        "gothic rock",
+        "hard rock",
+        "ritual",
+        "post-punk"
+      ],
+      "en": [
+        "gothic rock",
+        "hard rock",
+        "ritual",
+        "post-punk"
+      ]
     },
     "key_albums": [
       {
@@ -6664,8 +7759,18 @@
       "en": "Gives the museum a variant of technical metal that breathes and looks far away."
     },
     "signature_moods": {
-      "es": ["progressive metal", "djent", "panoramico", "atmosfera"],
-      "en": ["progressive metal", "djent", "panoramic", "atmosphere"]
+      "es": [
+        "progressive metal",
+        "djent",
+        "panoramico",
+        "atmosfera"
+      ],
+      "en": [
+        "progressive metal",
+        "djent",
+        "panoramic",
+        "atmosphere"
+      ]
     },
     "key_albums": [
       {
@@ -6719,8 +7824,18 @@
       "en": "Adds a modern reading where weight and visual beauty coexist."
     },
     "signature_moods": {
-      "es": ["metalcore progresivo", "Australia", "nocturno", "alternative metal"],
-      "en": ["progressive metalcore", "Australia", "nocturnal", "alternative metal"]
+      "es": [
+        "metalcore progresivo",
+        "Australia",
+        "nocturno",
+        "alternative metal"
+      ],
+      "en": [
+        "progressive metalcore",
+        "Australia",
+        "nocturnal",
+        "alternative metal"
+      ]
     },
     "key_albums": [
       {
@@ -6751,7 +7866,9 @@
   },
   {
     "name": "NIGHTBREAKERS",
-    "aliases": ["Nightbreakers"],
+    "aliases": [
+      "Nightbreakers"
+    ],
     "origin": {
       "es": "Estados Unidos",
       "en": "United States"
@@ -6782,8 +7899,18 @@
       "en": "Completes coverage without pretending certainty: sometimes the best curation is a brief and honest note."
     },
     "signature_moods": {
-      "es": ["alternativo", "noche", "cierre", "perfil minimo"],
-      "en": ["alternative", "night", "closure", "minimal profile"]
+      "es": [
+        "alternativo",
+        "noche",
+        "cierre",
+        "perfil minimo"
+      ],
+      "en": [
+        "alternative",
+        "night",
+        "closure",
+        "minimal profile"
+      ]
     },
     "key_albums": [
       {
@@ -6792,6 +7919,398 @@
         "description": {
           "es": "Marcador curado hasta que el catalogo local tenga una pieza especifica verificable.",
           "en": "Curated marker until the local catalog has a specific verifiable piece."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Enforcer",
+    "aliases": [],
+    "origin": {
+      "es": "Arvika, Suecia",
+      "en": "Arvika, Sweden"
+    },
+    "country": {
+      "es": "Suecia",
+      "en": "Sweden"
+    },
+    "start_year": 2004,
+    "status": {
+      "es": "Banda sueca de speed/heavy metal, parte del revival tradicionalista.",
+      "en": "Swedish speed/heavy metal band, part of the traditionalist revival."
+    },
+    "bio": {
+      "es": "Enforcer revive el speed metal ochentero con producción moderna: riffs veloces, agudos clásicos y devoción total por la era dorada del heavy. En el archivo entra por la puerta del metal europeo de alta energía.",
+      "en": "Enforcer revives eighties speed metal with modern production: fast riffs, classic high vocals and total devotion to the golden era of heavy metal. In the archive it enters through the high-energy European metal door."
+    },
+    "archive_role": {
+      "es": "Aporta la vena speed metal pura del museo: velocidad sin ironía, culto directo al riff.",
+      "en": "Brings the museum its pure speed metal vein: speed without irony, direct riff worship."
+    },
+    "sound_evolution": {
+      "es": "De un inicio crudo cercano al NWOBHM hacia un sonido más épico y melódico; From Beyond es su punto más visible en tu archivo.",
+      "en": "From a raw NWOBHM-adjacent start toward a more epic, melodic sound; From Beyond is their most visible point in your archive."
+    },
+    "why_it_matters": {
+      "es": "Confirma que el archivo no solo mira el metal moderno: también celebra su linaje clásico.",
+      "en": "Confirms the archive does not only look at modern metal: it also celebrates its classic lineage."
+    },
+    "signature_moods": {
+      "es": [
+        "speed metal",
+        "velocidad",
+        "culto al riff",
+        "denim y cuero"
+      ],
+      "en": [
+        "speed metal",
+        "velocity",
+        "riff worship",
+        "denim and leather"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Diamonds",
+        "year": 2010,
+        "description": {
+          "es": "El disco que consolidó el revival: speed metal clásico ejecutado con precisión juvenil.",
+          "en": "The album that cemented the revival: classic speed metal executed with youthful precision."
+        }
+      },
+      {
+        "title": "From Beyond",
+        "year": 2015,
+        "description": {
+          "es": "El álbum que más aparece en tu archivo: su versión más épica y melódica de la fórmula.",
+          "en": "The album most visible in your archive: their most epic, melodic take on the formula."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Saurom",
+    "aliases": [
+      "Saurom Lamderth"
+    ],
+    "origin": {
+      "es": "San Fernando, Cádiz, España",
+      "en": "San Fernando, Cádiz, Spain"
+    },
+    "country": {
+      "es": "España",
+      "en": "Spain"
+    },
+    "start_year": 1996,
+    "status": {
+      "es": "Banda española de folk metal juglaresco en activo desde los noventa.",
+      "en": "Spanish minstrel-style folk metal band active since the nineties."
+    },
+    "bio": {
+      "es": "Saurom mezcla metal, folclore andaluz y narrativa de juglares: flautas, cuentos y épica cantada en castellano. En el archivo representa el puente entre metal europeo y raíz hispanohablante.",
+      "en": "Saurom blends metal, Andalusian folklore and minstrel storytelling: flutes, tales and epic narratives sung in Spanish. In the archive it represents the bridge between European metal and Spanish-language roots."
+    },
+    "archive_role": {
+      "es": "Es el cuentacuentos del museo: fantasía, flauta y metal en el mismo escenario.",
+      "en": "It is the museum storyteller: fantasy, flute and metal on the same stage."
+    },
+    "sound_evolution": {
+      "es": "Del power metal tolkiendiano de su primera época hacia un folk metal más cálido y narrativo; Vida concentra esa madurez.",
+      "en": "From the Tolkien-inspired power metal of their early era toward a warmer, more narrative folk metal; Vida concentrates that maturity."
+    },
+    "why_it_matters": {
+      "es": "Añade una voz en castellano al ala metalera del archivo, algo poco común en el resto del top.",
+      "en": "Adds a Spanish-language voice to the archive metal wing, rare across the rest of the top."
+    },
+    "signature_moods": {
+      "es": [
+        "folk metal",
+        "juglaría",
+        "fantasía",
+        "raíz"
+      ],
+      "en": [
+        "folk metal",
+        "minstrelsy",
+        "fantasy",
+        "roots"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Juglarmetal",
+        "year": 2006,
+        "description": {
+          "es": "El manifiesto de su identidad: metal de juglares con folclore ibérico.",
+          "en": "The manifesto of their identity: minstrel metal with Iberian folklore."
+        }
+      },
+      {
+        "title": "Vida",
+        "year": 2017,
+        "description": {
+          "es": "El álbum que más aparece en tu archivo: su etapa más melódica y emocional.",
+          "en": "The album most visible in your archive: their most melodic, emotional era."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Helloween",
+    "aliases": [],
+    "origin": {
+      "es": "Hamburgo, Alemania",
+      "en": "Hamburg, Germany"
+    },
+    "country": {
+      "es": "Alemania",
+      "en": "Germany"
+    },
+    "start_year": 1984,
+    "status": {
+      "es": "Pioneros alemanes del power metal, reunidos con sus voces históricas desde 2016.",
+      "en": "German power metal pioneers, reunited with their historic singers since 2016."
+    },
+    "bio": {
+      "es": "Helloween inventó buena parte del vocabulario del power metal: doble bombo, coros épicos y melodía luminosa sobre velocidad. Su presencia en el archivo conecta con la raíz del metal melódico europeo que atraviesa todo el top.",
+      "en": "Helloween invented much of power metal vocabulary: double bass drums, epic choruses and luminous melody over speed. Their presence in the archive connects to the melodic European metal root that runs through the whole top."
+    },
+    "archive_role": {
+      "es": "Funciona como piedra fundacional: el ancestro directo de medio museo metalero.",
+      "en": "Works as a foundation stone: the direct ancestor of half the museum metal wing."
+    },
+    "sound_evolution": {
+      "es": "De los himnos fundacionales de los Keeper a la era moderna reunificada con Kiske y Hansen de nuevo en la banda.",
+      "en": "From the foundational Keeper anthems to the modern reunited era with Kiske and Hansen back in the band."
+    },
+    "why_it_matters": {
+      "es": "Sitúa el gusto del archivo en su contexto histórico: la melodía épica no empezó en los 2010.",
+      "en": "Places the archive taste in historical context: epic melody did not start in the 2010s."
+    },
+    "signature_moods": {
+      "es": [
+        "power metal",
+        "épica",
+        "himnos",
+        "fundacional"
+      ],
+      "en": [
+        "power metal",
+        "epic",
+        "anthems",
+        "foundational"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Keeper of the Seven Keys, Pt. 1",
+        "year": 1987,
+        "description": {
+          "es": "El disco que definió el power metal europeo como género propio.",
+          "en": "The album that defined European power metal as its own genre."
+        }
+      },
+      {
+        "title": "Helloween",
+        "year": 2021,
+        "description": {
+          "es": "La reunión: tres voces históricas conviviendo en un mismo disco moderno.",
+          "en": "The reunion: three historic voices coexisting on one modern record."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Insomnium",
+    "aliases": [],
+    "origin": {
+      "es": "Joensuu, Finlandia",
+      "en": "Joensuu, Finland"
+    },
+    "country": {
+      "es": "Finlandia",
+      "en": "Finland"
+    },
+    "start_year": 1997,
+    "status": {
+      "es": "Banda finlandesa de death metal melódico y melancolía nórdica.",
+      "en": "Finnish melodic death metal band of Nordic melancholy."
+    },
+    "bio": {
+      "es": "Insomnium convierte el death metal melódico en paisaje: guturales profundos sobre melodías de invierno, bosque y pérdida. Encaja de forma natural con la vena melancólica que domina el resto del archivo.",
+      "en": "Insomnium turns melodic death metal into landscape: deep growls over melodies of winter, forest and loss. It fits naturally with the melancholic vein that dominates the rest of the archive."
+    },
+    "archive_role": {
+      "es": "Es la sala nórdica del museo: melancolía pesada, belleza gris y paisajes largos.",
+      "en": "It is the museum Nordic room: heavy melancholy, grey beauty and long landscapes."
+    },
+    "sound_evolution": {
+      "es": "De un melodeath clásico de escuela finlandesa hacia obras más atmosféricas y conceptuales como Winter's Gate.",
+      "en": "From classic Finnish-school melodeath toward more atmospheric, conceptual works like Winter's Gate."
+    },
+    "why_it_matters": {
+      "es": "Demuestra que la melancolía del archivo también habla en gutural, no solo en shoegaze.",
+      "en": "Proves the archive melancholy also speaks in growls, not only in shoegaze."
+    },
+    "signature_moods": {
+      "es": [
+        "melodeath",
+        "melancolía nórdica",
+        "invierno",
+        "atmósfera"
+      ],
+      "en": [
+        "melodeath",
+        "Nordic melancholy",
+        "winter",
+        "atmosphere"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Above the Weeping World",
+        "year": 2006,
+        "description": {
+          "es": "Su clásico más citado: melodeath finlandés en plena madurez.",
+          "en": "Their most cited classic: Finnish melodeath in full maturity."
+        }
+      },
+      {
+        "title": "Winter's Gate",
+        "year": 2016,
+        "description": {
+          "es": "Una sola canción de 40 minutos: su obra más atmosférica y narrativa.",
+          "en": "A single 40-minute song: their most atmospheric, narrative work."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Marty Friedman",
+    "aliases": [],
+    "origin": {
+      "es": "Washington D. C., Estados Unidos (radicado en Tokio)",
+      "en": "Washington D.C., United States (based in Tokyo)"
+    },
+    "country": {
+      "es": "Estados Unidos",
+      "en": "United States"
+    },
+    "start_year": 1988,
+    "status": {
+      "es": "Guitarrista solista instrumental; ex-Megadeth, residente en Japón desde 2003.",
+      "en": "Instrumental solo guitarist; ex-Megadeth, resident in Japan since 2003."
+    },
+    "bio": {
+      "es": "Marty Friedman fusiona virtuosismo de guitarra con fraseo exótico y sensibilidad melódica japonesa. Tras su etapa en Megadeth construyó una carrera solista donde la guitarra canta en lugar de competir.",
+      "en": "Marty Friedman fuses guitar virtuosity with exotic phrasing and Japanese melodic sensibility. After his Megadeth era he built a solo career where the guitar sings instead of competing."
+    },
+    "archive_role": {
+      "es": "Es la sala instrumental del museo: técnica al servicio de la melodía, sin voz que la traduzca.",
+      "en": "It is the museum instrumental room: technique in service of melody, with no voice translating it."
+    },
+    "sound_evolution": {
+      "es": "Del neoclásico velocista de Cacophony al metal instrumental melódico y cinematográfico de su etapa japonesa; Inferno es su pico más visible en tu archivo.",
+      "en": "From the neoclassical speed of Cacophony to the melodic, cinematic instrumental metal of his Japanese era; Inferno is his most visible peak in your archive."
+    },
+    "why_it_matters": {
+      "es": "Añade una capa puramente instrumental a un archivo dominado por voces emocionales.",
+      "en": "Adds a purely instrumental layer to an archive dominated by emotional voices."
+    },
+    "signature_moods": {
+      "es": [
+        "guitarra instrumental",
+        "virtuosismo",
+        "fraseo exótico",
+        "cine"
+      ],
+      "en": [
+        "instrumental guitar",
+        "virtuosity",
+        "exotic phrasing",
+        "cinema"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Dragon's Kiss",
+        "year": 1988,
+        "description": {
+          "es": "Debut solista: virtuosismo neoclásico con identidad melódica propia.",
+          "en": "Solo debut: neoclassical virtuosity with its own melodic identity."
+        }
+      },
+      {
+        "title": "Inferno",
+        "year": 2014,
+        "description": {
+          "es": "Su regreso más intenso; la pista homónima es la que más aparece en tu archivo.",
+          "en": "His most intense comeback; the title track is the one most visible in your archive."
+        }
+      }
+    ]
+  },
+  {
+    "name": "My Vitriol",
+    "aliases": [],
+    "origin": {
+      "es": "Londres, Reino Unido",
+      "en": "London, United Kingdom"
+    },
+    "country": {
+      "es": "Reino Unido",
+      "en": "United Kingdom"
+    },
+    "start_year": 1999,
+    "status": {
+      "es": "Banda británica de rock alternativo/nu-gaze con culto persistente.",
+      "en": "British alternative rock/nu-gaze band with a persistent cult following."
+    },
+    "bio": {
+      "es": "My Vitriol condensó a inicios de los 2000 la mezcla de shoegaze, grunge y melodía británica que la prensa llamó nu-gaze. Su catálogo breve y su aura de banda de culto encajan con la capa shoegaze que atraviesa el archivo.",
+      "en": "In the early 2000s My Vitriol condensed the mix of shoegaze, grunge and British melody the press called nu-gaze. Their brief catalog and cult-band aura fit the shoegaze layer that runs through the archive."
+    },
+    "archive_role": {
+      "es": "Es el eslabón perdido entre el shoegaze clásico y las guitarras luminosas modernas del museo.",
+      "en": "It is the missing link between classic shoegaze and the museum modern luminous guitars."
+    },
+    "sound_evolution": {
+      "es": "Finelines definió su sonido en 2001; tras una larga pausa volvieron en 2016 con The Secret Sessions, manteniendo la misma estética de muro de guitarras.",
+      "en": "Finelines defined their sound in 2001; after a long hiatus they returned in 2016 with The Secret Sessions, keeping the same wall-of-guitars aesthetic."
+    },
+    "why_it_matters": {
+      "es": "Conecta la genealogía del blackgaze y el shoegaze moderno del archivo con su antepasado británico directo.",
+      "en": "Connects the archive blackgaze and modern shoegaze genealogy to its direct British ancestor."
+    },
+    "signature_moods": {
+      "es": [
+        "nu-gaze",
+        "muro de guitarras",
+        "culto",
+        "melancolía brillante"
+      ],
+      "en": [
+        "nu-gaze",
+        "wall of guitars",
+        "cult",
+        "bright melancholy"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Finelines",
+        "year": 2001,
+        "description": {
+          "es": "Su obra central: shoegaze afilado con urgencia post-grunge.",
+          "en": "Their central work: sharpened shoegaze with post-grunge urgency."
+        }
+      },
+      {
+        "title": "The Secret Sessions",
+        "year": 2016,
+        "description": {
+          "es": "El regreso tras 15 años, fiel al muro de guitarras original.",
+          "en": "The return after 15 years, faithful to the original wall of guitars."
         }
       }
     ]

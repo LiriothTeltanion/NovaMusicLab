@@ -164,6 +164,16 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                     <div
                       className="glass-panel p-6 rounded-3xl transition-all hover:scale-[1.01] cursor-pointer hover:border-white/20"
                       style={{ borderColor: `${accent}25` }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key !== 'Enter' && e.key !== ' ') return;
+                        e.preventDefault();
+                        setSelectedArtistName(cap.era.top_artist);
+                        setSelectedTrackKey(`${cap.era.top_artist.toLowerCase()}|||${cap.era.top_track.toLowerCase()}`);
+                        setTopSubTab('tracks');
+                        setActiveTab('top');
+                      }}
                       onClick={() => {
                         setSelectedArtistName(cap.era.top_artist);
                         setSelectedTrackKey(`${cap.era.top_artist.toLowerCase()}|||${cap.era.top_track.toLowerCase()}`);

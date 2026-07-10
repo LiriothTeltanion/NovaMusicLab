@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import FlagArt from './FlagArt';
+import InteractiveGlobe from './InteractiveGlobe';
 import { getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
 
 interface CulturalMapProps {
@@ -76,6 +77,11 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
     flag: '🇩🇴 DO', color: '#ec4899',
     es: { lang: 'Español', scene: 'Ritmos Caribeños' },
     en: { lang: 'Spanish', scene: 'Caribbean Rhythms' },
+  },
+  'Romania': {
+    flag: '🇷🇴 RO', color: '#fb923c',
+    es: { lang: 'Rumano/Inglés', scene: 'Metal/Rock Alternativo · Electro-Pop' },
+    en: { lang: 'Romanian/English', scene: 'Metal/Alternative Rock · Electro-Pop' },
   },
 };
 
@@ -206,26 +212,49 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         </div>
       </div>
 
-      {/* Language distribution */}
-      <div className="glass-panel p-6 rounded-3xl">
-        <div className="flex items-center gap-2 mb-5">
-          <Languages className="w-5 h-5 text-cyberPink" />
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
+      {/* Interactive Globe & Language distribution side-by-side */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.5fr)] gap-6 items-stretch">
+        {/* Globe Widget */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-cyberCyan/5 blur-[50px] rounded-full pointer-events-none" />
+          <div className="flex items-center gap-2 mb-4 self-start">
+            <Globe className="w-5 h-5 text-cyberCyan" />
+            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+              {lang === 'en' ? 'Spatial Exploration' : 'Exploración Espacial'}
+            </h3>
+          </div>
+          <InteractiveGlobe
+            countries={countries}
+            selectedCountry={selected}
+            onSelectCountry={setSelected}
+            lang={lang}
+            topArtists={data.top_artists}
+          />
         </div>
-        <div className="space-y-3">
-          {languageData.map(({ label, pct, color }, i) => (
-            <div key={label} className="space-y-1">
-              <div className="flex justify-between text-xs font-mono">
-                <span className="text-gray-300 font-bold">{label}</span>
-                <span style={{ color }}>{pct}%</span>
-              </div>
-              <div className="h-2.5 rounded-full bg-white/5">
-                <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
-                  initial={{ width: 0 }} animate={{ width: `${pct}%` }}
-                  transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: 'easeOut' }} />
-              </div>
+
+        {/* Language distribution */}
+        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-5">
+              <Languages className="w-5 h-5 text-cyberPink" />
+              <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
             </div>
-          ))}
+            <div className="space-y-4">
+              {languageData.map(({ label, pct, color }, i) => (
+                <div key={label} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-mono">
+                    <span className="text-gray-300 font-bold">{label}</span>
+                    <span style={{ color }} className="font-bold">{pct}%</span>
+                  </div>
+                  <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
+                    <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
+                      initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                      transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: 'easeOut' }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

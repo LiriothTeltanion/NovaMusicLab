@@ -37,6 +37,7 @@ const STRINGS = {
     },
     nav: {
       dashboard:   'Dashboard',
+      aiAssistant: 'Asistente IA',
       eras:        'Eras Musicales',
       top:         'Top Histórico',
       personality: 'Personalidad',
@@ -97,19 +98,6 @@ const STRINGS = {
       uploadTitle:      'Subir archivos reales',
     },
     deepNarratives: {
-      hero: {
-        eyebrow: 'Lectura inicial',
-        title: 'Este no es solo un dashboard: es una biografía sonora navegable.',
-        body: 'Nova Music Lab convierte años de escuchas en un archivo emocional, estadístico y creativo. La portada funciona como entrada al museo: resume volumen, tiempo, artistas y canciones, pero también prepara una lectura más personal sobre tus anclas musicales, tus eras y tu forma de construir identidad a través del sonido.',
-        insights: [
-          { title: 'Identidad', body: 'El proyecto trata tu historial como una huella estética: no solo qué escuchaste, sino qué mundos visuales, energías y rituales aparecen alrededor de esa música.' },
-          { title: 'Memoria', body: 'Las cifras grandes sirven como puerta de entrada a algo más íntimo: etapas, regresos, canciones refugio y artistas que se repiten cuando una versión de ti necesita volver a aparecer.' },
-          { title: 'Futuro', body: 'La lectura no termina en nostalgia. También sugiere hacia dónde puede crecer Lirioth: producción, storytelling, diseño sonoro, playlists narrativas y arte visual.' },
-        ],
-        dataNote: 'Los datos incluidos son una lectura curada del archivo de Kevin/Lirioth. Al subir archivos nuevos, las métricas principales se recalculan localmente en el navegador.',
-        deepDiveLabel: 'Lectura profunda',
-        deepDive: 'La portada debería sentirse como abrir una cápsula personal: estadísticas arriba, mito debajo. La app gana profundidad cuando cada número se conecta con una historia posible sin afirmar verdades absolutas sobre la persona.',
-      },
       dashboard: {
         eyebrow: 'Resumen interpretativo',
         title: 'El tablero general muestra el pulso real del archivo.',
@@ -958,7 +946,6 @@ const STRINGS = {
     heroSection: {
       badge: '✨ 11 Años de Biografía Sonora',
       subtitle: '✧ El Universo Musical de Lirioth ✧',
-      description: 'Un espacio ornamental, emocional y estadístico que explora tu identidad, tus etapas de vida y tus bandas de transformación. Tu música no es solo una lista de reproducción; es la banda sonora de tu propia evolución.',
       ctaSupport: 'Puedes explorar el museo curado de Kevin/Lirioth o comenzar con tus propios archivos. Todo se procesa localmente en el navegador.',
       supportedSources: ['Last.fm CSV', 'Spotify JSON', 'YouTube Takeout JSON/HTML', 'Apple Music CSV', 'ListenBrainz JSON'],
       paths: {
@@ -990,20 +977,6 @@ const STRINGS = {
         dataTrustDetail: (source: string) => `${source} analizado localmente`,
         unknown: 'Por calcular',
         pending: 'Esperando datos activos',
-      },
-      museumMapTitle: 'Mapa de Entrada',
-      museumMapSubtitle: 'El museo abre con cuatro lecturas rápidas: escala, memoria, presente y confianza.',
-      museumMapItems: [
-        { title: 'Escala', body: 'Volumen total, horas, artistas y canciones para medir la magnitud real del archivo.' },
-        { title: 'Memoria', body: 'Eras, cápsulas y resúmenes anuales que convierten cada año en capítulo musical.' },
-        { title: 'Presente', body: 'Pulso actual y artistas recientes para detectar si una nueva etapa está empezando.' },
-        { title: 'Confianza', body: 'Metodología, diccionario y notas de fuente para separar dato exacto de lectura creativa.' },
-      ],
-      quote: {
-        before: '"Tu núcleo musical está construido con capas de catarsis, noches de neón, shoegaze luminoso y post-hardcore melódico. Los datos sugieren que vuelves recurrentemente a tus anclas emocionales como ',
-        midA: ' para recargar tu fuerza y a canciones refugio como ',
-        midB: ' de ',
-        after: ' para sanar y crear mundos imaginarios."',
       },
     },
     uploader: {
@@ -1421,6 +1394,7 @@ const STRINGS = {
     },
     nav: {
       dashboard:   'Dashboard',
+      aiAssistant: 'AI Assistant',
       eras:        'Musical Eras',
       top:         'All-Time Top',
       personality: 'Personality',
@@ -1481,19 +1455,6 @@ const STRINGS = {
       uploadTitle:      'Upload real files',
     },
     deepNarratives: {
-      hero: {
-        eyebrow: 'Opening read',
-        title: 'This is not only a dashboard: it is a navigable sonic biography.',
-        body: 'Nova Music Lab turns years of listening into an emotional, statistical and creative archive. The cover acts as the museum entrance: it summarizes volume, time, artists and tracks, while preparing a more personal reading of your musical anchors, eras and identity through sound.',
-        insights: [
-          { title: 'Identity', body: 'The project treats your history as an aesthetic footprint: not only what you heard, but which visual worlds, energies and rituals appear around that music.' },
-          { title: 'Memory', body: 'The big numbers are an entrance into something more intimate: stages, returns, refuge songs and artists that reappear when a version of you needs to come back.' },
-          { title: 'Future', body: 'The reading does not end in nostalgia. It also points toward what Lirioth could become: production, storytelling, sound design, narrative playlists and visual art.' },
-        ],
-        dataNote: 'The included data is a curated reading of the Kevin/Lirioth archive. When you upload new files, the main metrics are recalculated locally in the browser.',
-        deepDiveLabel: 'Deep reading',
-        deepDive: 'The cover should feel like opening a personal capsule: statistics on the surface, myth underneath. The app gains depth when each number connects to a possible story without claiming absolute truths about the person.',
-      },
       dashboard: {
         eyebrow: 'Interpretive summary',
         title: 'The main dashboard shows the real pulse of the archive.',
@@ -2342,7 +2303,6 @@ const STRINGS = {
     heroSection: {
       badge: '✨ 11 Years of Musical Biography',
       subtitle: '✧ Musical Universe of Lirioth ✧',
-      description: 'An ornamental, emotional and statistical space that explores your identity, your life stages and your transformative bands. Your music is not just a playlist — it is the soundtrack of your own evolution.',
       ctaSupport: 'Explore Kevin/Lirioth’s curated museum or start with your own files. Everything is processed locally in the browser.',
       supportedSources: ['Last.fm CSV', 'Spotify JSON', 'YouTube Takeout JSON/HTML', 'Apple Music CSV', 'ListenBrainz JSON'],
       paths: {
@@ -2374,20 +2334,6 @@ const STRINGS = {
         dataTrustDetail: (source: string) => `${source} analyzed locally`,
         unknown: 'To calculate',
         pending: 'Waiting for active data',
-      },
-      museumMapTitle: 'Entry Map',
-      museumMapSubtitle: 'The museum opens with four quick readings: scale, memory, present and trust.',
-      museumMapItems: [
-        { title: 'Scale', body: 'Total volume, hours, artists and tracks to measure the real size of the archive.' },
-        { title: 'Memory', body: 'Eras, capsules and yearly summaries that turn each year into a musical chapter.' },
-        { title: 'Present', body: 'Current pulse and recent artists to detect whether a new stage is starting.' },
-        { title: 'Trust', body: 'Methodology, dictionary and source notes that separate exact data from creative reading.' },
-      ],
-      quote: {
-        before: '"Your musical core is built with layers of catharsis, neon nights, luminous shoegaze and melodic post-hardcore. Data suggests you recurrently return to your emotional anchors like ',
-        midA: ' to recharge your strength, and to refuge songs like ',
-        midB: ' by ',
-        after: ' to heal and build imaginary worlds."',
       },
     },
     uploader: {
@@ -2791,8 +2737,11 @@ export type TranslationKeys = typeof STRINGS.es;
 
 // ─── Themes ───────────────────────────────────────────────────────────────────
 export const THEMES: Record<Theme, ThemeColors> = {
+  // c3 values: every dark theme's c3 is used as real text color (KPI labels,
+  // header buttons), so each must clear WCAG AA 4.5:1 against its own bg -
+  // the original darker c3s (designed as gradient stops) failed in 4 themes.
   cyber: {
-    c1: '#00f2fe', c2: '#f72585', c3: '#7209b7', c4: '#4cc9f0',
+    c1: '#00f2fe', c2: '#f72585', c3: '#a855f7', c4: '#4cc9f0',
     bg: '#050b14', name: 'cyber', label: '⚡ Cyber', mode: 'dark',
   },
   aurora: {
@@ -2800,15 +2749,15 @@ export const THEMES: Record<Theme, ThemeColors> = {
     bg: '#050f0a', name: 'aurora', label: '🌿 Aurora', mode: 'dark',
   },
   crimson: {
-    c1: '#ef4444', c2: '#f97316', c3: '#b91c1c', c4: '#fb923c',
+    c1: '#ef4444', c2: '#f97316', c3: '#f87171', c4: '#fb923c',
     bg: '#0f0505', name: 'crimson', label: '🔥 Crimson', mode: 'dark',
   },
   nebula: {
-    c1: '#8b5cf6', c2: '#a78bfa', c3: '#7c3aed', c4: '#c4b5fd',
+    c1: '#8b5cf6', c2: '#a78bfa', c3: '#9d7bf7', c4: '#c4b5fd',
     bg: '#06050f', name: 'nebula', label: '🔮 Nebula', mode: 'dark',
   },
   ocean: {
-    c1: '#06b6d4', c2: '#0284c7', c3: '#0e7490', c4: '#67e8f9',
+    c1: '#06b6d4', c2: '#0284c7', c3: '#2dd4bf', c4: '#67e8f9',
     bg: '#03080f', name: 'ocean', label: '🌊 Ocean', mode: 'dark',
   },
   gold: {

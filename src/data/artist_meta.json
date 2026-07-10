@@ -99,10 +99,6 @@
     "genre": "Symphonic Metal / Cello Rock",
     "country": "Finland"
   },
-  "arcángel": {
-    "genre": "Latin Trap / Reggaeton",
-    "country": "Puerto Rico"
-  },
   "arch enemy": {
     "genre": "Melodic Death Metal",
     "country": "Sweden"
@@ -114,6 +110,10 @@
   "arctic monkeys": {
     "genre": "Indie Rock / Alternative Rock",
     "country": "United Kingdom"
+  },
+  "arcángel": {
+    "genre": "Latin Trap / Reggaeton",
+    "country": "Puerto Rico"
   },
   "ariana grande": {
     "genre": "Pop / R&B",
@@ -495,6 +495,10 @@
     "genre": "Hip-Hop / Rap",
     "country": "United States"
   },
+  "enforcer": {
+    "genre": "Speed Metal / Heavy Metal",
+    "country": "Sweden"
+  },
   "entwine": {
     "genre": "Alternative",
     "country": "United States"
@@ -570,6 +574,10 @@
   "ghostemane": {
     "genre": "Trap Metal / Industrial Rap",
     "country": "United States"
+  },
+  "girafot": {
+    "genre": "Israeli Indie Rock",
+    "country": "Israel"
   },
   "girl in red": {
     "genre": "Bedroom Pop / Indie Pop",
@@ -647,9 +655,17 @@
     "genre": "Pop / Bedroom Pop",
     "country": "United States"
   },
+  "hayehudim": {
+    "genre": "Israeli Rock / Metal",
+    "country": "Israel"
+  },
   "health": {
     "genre": "Industrial / Noise Rock",
     "country": "United States"
+  },
+  "helloween": {
+    "genre": "Power Metal / Speed Metal",
+    "country": "Germany"
   },
   "highly suspect": {
     "genre": "Alternative Rock / Blues Rock",
@@ -943,6 +959,10 @@
     "genre": "Progressive House / EDM",
     "country": "Netherlands"
   },
+  "marty friedman": {
+    "genre": "Instrumental Rock / Heavy Metal",
+    "country": "United States"
+  },
   "mashina": {
     "genre": "Israeli Rock / New Wave",
     "country": "Israel"
@@ -975,6 +995,10 @@
     "genre": "Thrash Metal / Heavy Metal",
     "country": "United States"
   },
+  "mgk": {
+    "genre": "Pop Punk / Emo Rap",
+    "country": "United States"
+  },
   "mgmt": {
     "genre": "Indie Pop / Psychedelic Pop",
     "country": "United States"
@@ -1003,10 +1027,6 @@
     "genre": "Metalcore / Gothic Metal",
     "country": "United States"
   },
-  "mötley crüe": {
-    "genre": "Glam Metal / Hard Rock",
-    "country": "United States"
-  },
   "muse": {
     "genre": "Alternative Rock / Space Rock",
     "country": "United Kingdom"
@@ -1019,8 +1039,16 @@
     "genre": "Emo / Alternative Rock",
     "country": "United States"
   },
+  "my vitriol": {
+    "genre": "Alternative Rock / Shoegaze",
+    "country": "United Kingdom"
+  },
   "myrath": {
     "genre": "Alternative",
+    "country": "United States"
+  },
+  "mötley crüe": {
+    "genre": "Glam Metal / Hard Rock",
     "country": "United States"
   },
   "naits": {
@@ -1334,6 +1362,10 @@
   "santa cruz": {
     "genre": "Hard Rock / Glam Metal",
     "country": "Finland"
+  },
+  "saurom": {
+    "genre": "Folk Metal / Power Metal",
+    "country": "Spain"
   },
   "scar symmetry": {
     "genre": "Alternative",

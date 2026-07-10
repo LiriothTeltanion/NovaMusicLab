@@ -8,9 +8,13 @@ export interface GalleryPhoto {
 
 const GALLERY = galleryData as Record<string, GalleryPhoto[]>;
 
+// NFC-normalize: the JSON keys are NFC, but uploaded artist names can arrive
+// NFD-decomposed (macOS exports) - byte-different yet visually identical.
+const galleryKey = (name: string) => name.normalize('NFC').trim().toLowerCase();
+
 /** All known photos for an artist (empty array when none). */
 export function getArtistGallery(name: string): GalleryPhoto[] {
-  return GALLERY[name.trim().toLowerCase()] ?? [];
+  return GALLERY[galleryKey(name)] ?? [];
 }
 
 /**
@@ -21,5 +25,5 @@ export function getArtistGallery(name: string): GalleryPhoto[] {
 export function getDailyPhotoIndex(name: string, length: number, date: Date = new Date()): number {
   if (length <= 1) return 0;
   const dayKey = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-  return hashSeed(`${name.trim().toLowerCase()}::${dayKey}`) % length;
+  return hashSeed(`${galleryKey(name)}::${dayKey}`) % length;
 }

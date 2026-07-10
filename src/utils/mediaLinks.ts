@@ -73,7 +73,9 @@ export function getCuratedArtistMedia(artistName: string) {
 
 export function spotifyEmbedFromUrl(url?: string) {
   if (!url) return undefined;
-  const match = url.match(/open\.spotify\.com\/(artist|album|track|playlist)\/([a-zA-Z0-9]+)/);
+  // Optional intl-XX segment: Spotify's share URLs are locale-prefixed
+  // (open.spotify.com/intl-es/artist/...) for many users.
+  const match = url.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(artist|album|track|playlist)\/([a-zA-Z0-9]+)/);
   if (!match) return undefined;
 
   const [, type, id] = match;

@@ -1,5 +1,4 @@
 import type {
-  CountryPlay,
   MonthlyActivity,
   MusicDnaData,
   RecordsSummary,
@@ -153,10 +152,6 @@ export function deriveSourceSummary(data: MusicDnaData): SourceSummary {
   };
 }
 
-export function topCountriesWithKnownMeta(countries: CountryPlay[]) {
-  return countries.filter(country => country.country && country.country !== 'Unknown');
-}
-
 export function countryCodeToName(code?: string) {
   const normalized = (code || '').trim().toUpperCase();
   const map: Record<string, string> = {
@@ -166,6 +161,10 @@ export function countryCodeToName(code?: string) {
     JP: 'Japan', MX: 'Mexico', NL: 'Netherlands', NO: 'Norway',
     NZ: 'New Zealand', PR: 'Puerto Rico', SE: 'Sweden', UK: 'United Kingdom',
     US: 'United States', UY: 'Uruguay', VE: 'Venezuela',
+    RO: 'Romania',
+    ZZ: 'Unknown',
+    A1: 'Unknown',
+    A2: 'Unknown',
   };
   return map[normalized] ?? (normalized || 'Unknown');
 }

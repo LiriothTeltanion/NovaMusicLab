@@ -42,8 +42,8 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('Archive Snapshot')).toBeInTheDocument();
     expect(screen.getByText('Anchor artist')).toBeInTheDocument();
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
-    expect(screen.getByText('Entry Map')).toBeInTheDocument();
-    expect(screen.getByText('Trust')).toBeInTheDocument();
+    expect(screen.getByText(/AI MUSIC PROFILE/i)).toBeInTheDocument();
+    expect(screen.getByText(/Data trust/i)).toBeInTheDocument();
   });
 
   it('surfaces the archive snapshot and entry map in Spanish', () => {
@@ -60,7 +60,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('Instantánea del Archivo')).toBeInTheDocument();
     expect(screen.getByText('Artista ancla')).toBeInTheDocument();
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
-    expect(screen.getByText('Mapa de Entrada')).toBeInTheDocument();
-    expect(screen.getByText('Confianza')).toBeInTheDocument();
+    expect(screen.getByText(/EXPEDIENTE DE MÚSICA IA/i)).toBeInTheDocument();
+    expect(screen.getByText(/Confianza de datos/i)).toBeInTheDocument();
   });
 });

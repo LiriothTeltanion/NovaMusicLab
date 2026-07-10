@@ -184,11 +184,16 @@ Kevin asks: "${prompt}"
 `;
 
         const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              // Header, never a ?key= query param: URLs (with query strings)
+              // leak into DevTools, console errors on failed CORS requests,
+              // and screen-shared bug reports - and this is the user's own
+              // billable personal key.
+              'x-goog-api-key': apiKey,
             },
             body: JSON.stringify({
               contents: [
@@ -367,11 +372,12 @@ Kevin asks: "${prompt}"
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSend(input)}
               placeholder={L ? "Ask about your music history..." : "Pregúntale a tu historial musical..."}
-              className="flex-1 bg-black/40 border border-white/10 focus:border-purple-500/50 rounded-2xl px-4 py-3 text-xs text-white placeholder-gray-500 focus:outline-none transition-colors"
+              className="flex-1 bg-black/40 border border-white/10 focus:border-purple-500/50 rounded-2xl px-4 py-3 text-xs text-white placeholder-gray-500 transition-colors"
             />
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim() || loading}
+              aria-label={L ? 'Send message' : 'Enviar mensaje'}
               className="h-10 w-10 rounded-2xl bg-purple-600 hover:bg-purple-500 disabled:bg-white/5 disabled:text-gray-600 text-white flex items-center justify-center transition-all shadow-lg hover:shadow-purple-500/20"
             >
               <Send className="w-4 h-4" />
@@ -395,7 +401,7 @@ Kevin asks: "${prompt}"
             <p className="text-xs text-gray-400 leading-relaxed">
               {L
                 ? "Connecting your own key enables live, limitless AI reasoning over all your listening statistics. The key is stored locally in your browser's localStorage."
-                : "Conectar tu propia clave permite razonamiento de IA ilimitado y en tiempo real sobre tus estadísticas. La clave se guarda de manera privada en tu navegador."}
+                : "Conectar tu propia clave permite razonamiento de IA ilimitado y en tiempo real sobre tus estadísticas. La clave se guarda localmente en el localStorage de tu navegador."}
             </p>
 
             <div className="space-y-3 pt-2">
@@ -405,11 +411,12 @@ Kevin asks: "${prompt}"
                   value={apiKey}
                   onChange={e => saveKey(e.target.value)}
                   placeholder="Gemini API Key..."
-                  className="w-full bg-black/50 border border-white/10 focus:border-purple-500/50 rounded-xl pl-3 pr-10 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none transition-colors font-mono"
+                  className="w-full bg-black/50 border border-white/10 focus:border-purple-500/50 rounded-xl pl-3 pr-10 py-2.5 text-xs text-white placeholder-gray-500 transition-colors font-mono"
                 />
                 <button
                   type="button"
                   onClick={() => setShowKey(!showKey)}
+                  aria-label={showKey ? (L ? 'Hide API key' : 'Ocultar API key') : (L ? 'Show API key' : 'Mostrar API key')}
                   className="absolute right-2.5 top-2.5 text-gray-500 hover:text-white transition-colors"
                 >
                   {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -419,7 +426,9 @@ Kevin asks: "${prompt}"
               {apiKey ? (
                 <div className="flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span>{L ? 'Key saved in browser local storage.' : 'Clave guardada de forma segura.'}</span>
+                  {/* Honest copy in BOTH languages: plain localStorage is local,
+                      not "secure" - never overclaim how a billable key is kept. */}
+                  <span>{L ? 'Key saved in browser local storage.' : 'Clave guardada localmente en tu navegador.'}</span>
                 </div>
               ) : (
                 <div className="flex items-center space-x-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">

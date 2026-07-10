@@ -100,9 +100,11 @@ export default function FinalReport({ data }: FinalReportProps) {
             <div className="flex items-center justify-center gap-2 text-xs font-mono text-cyberCyan/60 tracking-widest uppercase">
               <Headphones className="w-3 h-3" /><span>{tr.coverBadge}</span><Headphones className="w-3 h-3" />
             </div>
-            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+            {/* h3, not h1: the page opens with an h2 title, so a lone h1 down
+                here + h4 sections made screen-reader heading order skip. */}
+            <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
               {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight}</span>{' '}<br/>{tr.coverHeadlinePost}
-            </h1>
+            </h3>
             <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<span className="text-cyberCyan font-semibold">{tr.coverSubtitleName}</span></p>
           </div>
         </div>

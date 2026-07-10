@@ -43,12 +43,14 @@ describe('music data parser', () => {
 
     const data = parseMusicSources({ spotifyJsonTexts: [spotify] });
 
-    expect(data.core_metrics.total_plays).toBe(2);
+    // The 2.7s skipped event is reported in skip/short-play stats but not
+    // counted as a play (Spotify's own 30s stream-counting rule).
+    expect(data.core_metrics.total_plays).toBe(1);
     expect(data.source_summary?.source_type).toBe('spotify');
     expect(data.source_summary?.spotify_skips).toBe(1);
     expect(data.source_summary?.spotify_short_plays).toBe(1);
-    expect(data.countries[0]).toEqual({ country: 'Israel', plays: 2 });
-    expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['cast', 'windows']);
+    expect(data.countries[0]).toEqual({ country: 'Israel', plays: 1 });
+    expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['windows']);
   });
 
   it('parses YouTube Takeout watch history JSON as listening events', () => {
@@ -145,6 +147,45 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_plays).toBe(1);
     expect(data.source_summary?.overlap_unique_tracks).toBe(1);
     expect(data.core_metrics.match_rate_pct).toBe(100);
+    // Same track from two sources one minute apart = one real listen reported
+    // twice (Last.fm auto-scrobbling Spotify) - counted once, Spotify's richer
+    // event (measured playtime) wins.
+    expect(data.core_metrics.total_plays).toBe(1);
+    expect(data.source_summary?.cross_source_duplicates).toBe(1);
+    expect(data.source_summary?.merged_plays).toBe(1);
+  });
+
+  it('keeps genuinely separate listens of the same track from different sources', () => {
+    const lastfm = 'Shared Artist,Shared Album,Shared Track,01 Jan 2026 10:00';
+    const spotify = JSON.stringify([
+      {
+        ts: '2026-01-01T15:00:00Z', // five hours later: a real second listen
+        ms_played: 120000,
+        master_metadata_track_name: 'Shared Track',
+        master_metadata_album_artist_name: 'Shared Artist',
+        master_metadata_album_album_name: 'Shared Album',
+      },
+    ]);
+
+    const data = parseMusicSources({ csvTexts: [lastfm], spotifyJsonTexts: [spotify] });
+
+    expect(data.core_metrics.total_plays).toBe(2);
+    expect(data.source_summary?.cross_source_duplicates).toBe(0);
+  });
+
+  it('never lets the 30s threshold empty an upload made only of short plays', () => {
+    const spotify = JSON.stringify([
+      {
+        ts: '2026-01-01T05:09:35Z',
+        ms_played: 5000,
+        master_metadata_track_name: 'Only Short',
+        master_metadata_album_artist_name: 'Artist',
+      },
+    ]);
+
+    const data = parseMusicSources({ spotifyJsonTexts: [spotify] });
+
+    expect(data.core_metrics.total_plays).toBe(1);
   });
 
   it('computes records and obsessions from imported history', () => {
@@ -232,6 +273,19 @@ describe('music data parser', () => {
     expect(badBunny?.country).toBe('Puerto Rico');
     expect(unknown?.genre).toBe('Unclassified');
     expect(unknown?.country).toBe('Unknown');
+  });
+
+  it('matches bundled artist metadata for NFD-encoded (decomposed Unicode) names', () => {
+    // macOS and some export tools emit decomposed Unicode: o + combining acute
+    // (U+0301) instead of a precomposed ó. artist_meta.json keys are NFC; both must match.
+    const nfdName = 'Sigur Ro\u0301s'; // decomposed form of 'Sigur Rós'
+    const csv = `${nfdName},Takk...,Hoppípolla,01 Jan 2026 10:00`;
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+    const sigurRos = data.top_artists[0];
+
+    expect(sigurRos.genre).not.toBe('Unclassified');
+    expect(sigurRos.country).toBe('Iceland');
   });
 
   it('normalizes cross-source duplicate tracks despite artist capitalization differences', () => {

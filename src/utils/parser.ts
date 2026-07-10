@@ -55,6 +55,16 @@ const FALLBACK_TRACK_MS = 200000;
 const SESSION_GAP_MINUTES = 60;
 const OBSESSION_MIN_PLAYS_PER_DAY = 5;
 
+// Guard against corrupted/misparsed timestamps (epoch-zero dates, bare row
+// numbers parsed as years, etc.) without discarding genuinely old history:
+// Last.fm launched in 2002, so nothing earlier can be a real scrobble.
+const MIN_VALID_YEAR = 2002;
+const MAX_VALID_YEAR = new Date().getFullYear() + 1;
+
+function isPlausiblePlayYear(year: number): boolean {
+  return year >= MIN_VALID_YEAR && year <= MAX_VALID_YEAR;
+}
+
 /**
  * Bundled offline artist metadata (446 entries): the 100 curated artists from
  * the app's own dataset plus ~350 well-known artists across genres, authored
@@ -63,18 +73,14 @@ const OBSESSION_MIN_PLAYS_PER_DAY = 5;
 const KNOWN_ARTIST_META = artistMetaJson as Record<string, ArtistMeta>;
 
 function metaForArtist(artist: string): ArtistMeta {
-  return KNOWN_ARTIST_META[artist.trim().toLowerCase()] ?? {
+  // normalize('NFC') matters: macOS/some exporters emit decomposed (NFD)
+  // Unicode, and "Sigur Rós" in NFD is a different string than the NFC key
+  // stored in artist_meta.json - without this, every accented/non-Latin
+  // artist from such an export silently falls back to Unclassified.
+  return KNOWN_ARTIST_META[artist.normalize('NFC').trim().toLowerCase()] ?? {
     genre: 'Unclassified',
     country: 'Unknown',
   };
-}
-
-export function parseLastfmCsv(csvText: string): MusicDnaData {
-  return aggregateData(parseLastfmCsvRows(csvText), 'Last.fm CSV');
-}
-
-export function parseSpotifyJsons(jsonTexts: string[]): MusicDnaData {
-  return aggregateData(parseStreamingJsonRows(jsonTexts), 'Streaming History JSON');
 }
 
 const SOURCE_LABELS: Record<RawSource, string> = {
@@ -96,11 +102,75 @@ export function parseMusicSources(options: {
     ...parseStreamingJsonRows(options.spotifyJsonTexts ?? []),
     ...parseYoutubeHtmlRows(options.youtubeHtmlTexts ?? []),
   ];
+  // Spotify's export logs every track START, including 2-second skips; a
+  // "play" here follows Spotify's own stream-counting rule (>=30s listened).
+  // Raw events are still passed through for skip/short-play transparency stats.
+  const counted = plays.filter(isCountablePlay);
+  // Never let the threshold empty a real upload (e.g. a file of only skips).
+  const base = counted.length ? counted : plays;
+  const { items: deduped, dropped } = dedupeCrossSource(base);
   const detectedSources = [...new Set(plays.map(play => play.source))];
   const sourceLabel = detectedSources.length
     ? detectedSources.map(source => SOURCE_LABELS[source]).join(' + ')
     : 'Imported Files';
-  return aggregateData(plays, sourceLabel);
+  return aggregateData(deduped, sourceLabel, plays, dropped);
+}
+
+/** Spotify counts a stream at 30 seconds listened; shorter events are skips/samples. */
+const MIN_COUNTED_SPOTIFY_MS = 30000;
+
+function isCountablePlay(play: ParsedPlay): boolean {
+  if (play.source !== 'spotify') return true;
+  if (!play.ms_played || play.ms_played <= 0) return true;
+  return play.ms_played >= MIN_COUNTED_SPOTIFY_MS;
+}
+
+/**
+ * The same real-world listen is often reported by two services at once - the
+ * classic case is a Last.fm account auto-scrobbling Spotify, where every
+ * Spotify stream also arrives as a Last.fm scrobble a moment later. Verified
+ * empirically on the bundled archive: 77% of its Last.fm rows have the same
+ * track on Spotify within ±10 minutes. Counting both would double-count most
+ * of a user's history, so events with the same normalized artist+track from
+ * DIFFERENT sources within the window collapse to one, keeping the richer
+ * event (the one carrying measured playtime/platform/country data).
+ * Same-source repeats (genuine loop listening) are never collapsed.
+ */
+const CROSS_SOURCE_WINDOW_MS = 10 * 60 * 1000;
+
+function dedupeCrossSource(items: ParsedPlay[]): { items: ParsedPlay[]; dropped: number } {
+  const sources = new Set(items.map(item => item.source));
+  if (sources.size < 2) return { items, dropped: 0 };
+
+  const richness = (play: ParsedPlay) =>
+    (play.ms_played && play.ms_played > 0 ? 2 : 0) +
+    (play.platform && play.platform !== 'Unknown' ? 1 : 0);
+
+  const byKey = new Map<string, ParsedPlay[]>();
+  items.forEach(item => {
+    const key = normalizedTrackKey(item.artist, item.track);
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key)?.push(item);
+  });
+
+  const kept: ParsedPlay[] = [];
+  let dropped = 0;
+  byKey.forEach(group => {
+    group.sort((a, b) => a.ts.getTime() - b.ts.getTime());
+    const groupKept: ParsedPlay[] = [];
+    group.forEach(play => {
+      const prev = groupKept[groupKept.length - 1];
+      if (prev && play.source !== prev.source && play.ts.getTime() - prev.ts.getTime() <= CROSS_SOURCE_WINDOW_MS) {
+        if (richness(play) > richness(prev)) groupKept[groupKept.length - 1] = play;
+        dropped++;
+        return;
+      }
+      groupKept.push(play);
+    });
+    kept.push(...groupKept);
+  });
+
+  return { items: kept, dropped };
 }
 
 /**
@@ -237,6 +307,7 @@ function appleMusicRowsFromParsedRows(rows: string[][]): ParsedPlay[] {
 
     const ts = new Date(rawTimestamp);
     if (Number.isNaN(ts.getTime())) continue;
+    if (!isPlausiblePlayYear(ts.getFullYear())) continue;
 
     const album = col.album !== -1 ? (row[col.album] ?? '').trim() : '';
     const playMs = col.playDurationMs !== -1 ? Number(row[col.playDurationMs]) || 0 : 0;
@@ -343,6 +414,7 @@ function spotifyPlayFromItem(item: any): ParsedPlay | undefined {
   const ts = new Date(tsStr);
 
   if (!artist || !track || !tsStr || Number.isNaN(ts.getTime())) return undefined;
+  if (!isPlausiblePlayYear(ts.getFullYear())) return undefined;
 
   return {
     artist: String(artist).trim(),
@@ -417,6 +489,11 @@ function youtubePlayFromParts(title: string, channelName: string, tsStr?: string
 
   const parsed = splitYoutubeArtistTitle(cleanTitle, channelName);
   if (!parsed.track) return undefined;
+  // "YouTube" as artist means neither the title nor the channel yielded a
+  // real name - that's a parse failure, not a music play. Wrong attribution
+  // is worse than a dropped row (these junk rows once fabricated a whole
+  // fake "2005 era" in the yearly timeline).
+  if (/^youtube( music)?$/i.test(parsed.artist)) return undefined;
 
   return {
     artist: parsed.artist,
@@ -469,7 +546,16 @@ function parseYoutubeTakeoutDate(input?: string) {
     .replace(/[\u00a0\u202f]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+  
+  if (/^\d+$/.test(normalized)) {
+    return new Date(Number.NaN);
+  }
+
   const direct = new Date(normalized);
+  const yr = direct.getFullYear();
+  if (!Number.isNaN(yr) && !isPlausiblePlayYear(yr)) {
+    return new Date(Number.NaN);
+  }
   return direct;
 }
 
@@ -507,7 +593,15 @@ function splitYoutubeArtistTitle(title: string, channelName: string) {
   };
 }
 
-export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDnaData {
+export function aggregateData(
+  items: ParsedPlay[],
+  sourceType: string,
+  // Raw pre-filter/pre-dedup events: skip/short-play/per-source stats are
+  // reported from these so the summary stays transparent about what arrived,
+  // while every counted metric comes from the deduped `items`.
+  rawItems: ParsedPlay[] = items,
+  crossSourceDuplicates = 0,
+): MusicDnaData {
   const sortedItems = [...items].sort((a, b) => a.ts.getTime() - b.ts.getTime());
   if (sortedItems.length === 0) {
     throw new ParseError('NO_VALID_ROWS', 'No valid rows were found in the uploaded files.');
@@ -564,7 +658,11 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
   const totalMinutes = totalMs / 60000;
   const sessions = buildSessions(sortedItems);
   const records = buildRecords(dateCounts, sessions);
-  const sourceSummary = buildSourceSummary(sortedItems);
+  const sourceSummary: SourceSummary = {
+    ...buildSourceSummary(rawItems),
+    merged_plays: sortedItems.length,
+    cross_source_duplicates: crossSourceDuplicates,
+  };
 
   const topArtists: TopArtist[] = entriesByCount(artistCounts, 100).map(([name, plays]) => {
     const meta = metaForArtist(name);
@@ -582,7 +680,9 @@ export function aggregateData(items: ParsedPlay[], sourceType: string): MusicDna
   });
   const knowledgeSummary = buildOfflineArtistKnowledgeSummary(topArtists);
 
-  const countries = entriesByCount(countryCounts, 50).map(([country, plays]) => ({ country, plays }));
+  const countries = entriesByCount(countryCounts, 50)
+    .map(([country, plays]) => ({ country, plays }))
+    .filter(c => c.country && c.country !== 'Unknown');
   const platformBreakdown: PlatformPlay[] = entriesByCount(platformCounts, 30).map(([platform, plays]) => ({ platform, plays }));
   const monthlyActivity = Array.from(monthlyCounts.entries())
     .map(([key, plays]) => {
@@ -677,7 +777,7 @@ function buildSourceSummary(items: ParsedPlay[]): SourceSummary {
     spotify_short_play_rate_pct: spotifyItems.length ? round2((spotifyShortPlays / spotifyItems.length) * 100) : 0,
     overlap_unique_tracks: overlap,
     source_note: sourceType === 'merged'
-      ? 'Merged upload: totals include all imported events. Overlap is measured by normalized artist + track names.'
+      ? 'Merged upload: the same listen reported by two services (e.g. Last.fm auto-scrobbling Spotify) is counted once, and Spotify events under 30s are tracked as skips/short plays rather than counted as plays.'
       : SOURCE_NOTES[sourceType as RawSource] ?? 'Unknown source: this dataset uses the best available imported events.',
   };
 }
@@ -872,23 +972,39 @@ function parseCsvRows(text: string): string[][] {
 
 function parseLastfmDate(input: string) {
   const trimmed = input.trim();
-  const direct = new Date(trimmed);
-  if (!Number.isNaN(direct.getTime())) return direct;
+  if (/^\d+$/.test(trimmed)) return new Date(Number.NaN);
 
+  // Last.fm's "DD Mon YYYY HH:MM" export format is UTC by convention. This
+  // branch must run BEFORE the generic Date() fallback, which would silently
+  // interpret the same string in the machine's local timezone - shifting
+  // every scrobble by the UTC offset and breaking cross-source dedup against
+  // Spotify's properly-zoned ISO timestamps.
   const match = trimmed.match(/^(\d{1,2})\s+([A-Za-z]{3,})\s+(\d{4})\s+(\d{1,2}):(\d{2})$/);
-  if (!match) return new Date(Number.NaN);
+  if (match) {
+    const [, day, monthName, year, hour, minute] = match;
+    const yr = Number(year);
+    if (!isPlausiblePlayYear(yr)) return new Date(Number.NaN);
 
-  const [, day, monthName, year, hour, minute] = match;
-  const months: Record<string, number> = {
-    jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
-    may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7, sep: 8,
-    sept: 8, september: 8, oct: 9, october: 9, nov: 10, november: 10,
-    dec: 11, december: 11,
-  };
+    const months: Record<string, number> = {
+      jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2, apr: 3, april: 3,
+      may: 4, jun: 5, june: 5, jul: 6, july: 6, aug: 7, august: 7, sep: 8,
+      sept: 8, september: 8, oct: 9, october: 9, nov: 10, november: 10,
+      dec: 11, december: 11,
+    };
 
-  const month = months[monthName.toLowerCase()];
-  if (month === undefined) return new Date(Number.NaN);
-  return new Date(Number(year), month, Number(day), Number(hour), Number(minute));
+    const month = months[monthName.toLowerCase()];
+    if (month === undefined) return new Date(Number.NaN);
+    return new Date(Date.UTC(yr, month, Number(day), Number(hour), Number(minute)));
+  }
+
+  // Anything else (ISO strings etc.) carries its own timezone information.
+  const direct = new Date(trimmed);
+  if (!Number.isNaN(direct.getTime())) {
+    if (isPlausiblePlayYear(direct.getFullYear())) return direct;
+    return new Date(Number.NaN);
+  }
+
+  return new Date(Number.NaN);
 }
 
 function looksLikeHeader(row: string[]) {

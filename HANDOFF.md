@@ -2,7 +2,9 @@
 
 Complete state-of-the-project document for any agent (Claude, Codex, Antigravity,
 or human) continuing work on this codebase. Everything below was verified working
-as of the last commit on `main` plus a working-tree reconciliation pass on 2026-07-07.
+as of the last commit on `main` plus a second working-tree reconciliation pass on
+2026-07-10 (Antigravity wave 2: globe, generative avatars/flags, hero rewrite,
+dataset recompile — reviewed, fixed and kept; see change log).
 
 ## What this app is
 
@@ -13,12 +15,16 @@ constraints (from `.github/agents/nova-music-scan.agent.md`):
 
 - **No backend, no runtime API calls, no user-data upload.** All data assets are
   baked at build time. The only runtime network activity is ordinary `<img>` loads
-  of remote image URLs, verified official Spotify/YouTube iframe embeds, and one
+  of remote image URLs, verified official Spotify/YouTube iframe embeds, an
+  export-time CORS re-fetch of those same image URLs (`src/utils/imageLoader.ts`,
+  used only to inline already-displayed images as base64 for PNG export), and one
   documented **opt-in exception**: `AIAssistant.tsx` calls the Gemini API directly
   from the browser, but only if the user pastes their own personal API key into
-  its settings panel (stored in `localStorage`). With no key configured it runs a
-  fully local template-based "sandbox mode" with zero network calls. Never widen
-  this exception elsewhere without calling it out here first.
+  its settings panel (stored in `localStorage`; sent via the `x-goog-api-key`
+  header, never as a `?key=` URL param, so it can't leak through logged URLs).
+  With no key configured it runs a fully local template-based "sandbox mode" with
+  zero network calls. Never widen this exception elsewhere without calling it out
+  here first.
 - Bilingual **ES/EN** everywhere, cyberpunk/glassmorphism aesthetic, 14 themes.
 - **Never fabricate data.** If a real number/attribution isn't available, show an
   honest gap (placeholder, "unresolved", lower confidence badge) instead of
@@ -34,8 +40,8 @@ canvas-confetti, html-to-image. Lint: oxlint. Tests: Vitest 4 + React Testing Li
 
 ```
 npm run dev              # Vite dev server (PORT env respected; .claude/launch.json exists)
-npm run lint              # oxlint — clean
-npm run test              # 112 tests, 20 files — all pass
+npm run lint              # oxlint — clean (dev scripts keep intentional no-console warnings)
+npm run test              # 146 tests, 23 files — all pass
 npm run build             # tsc -b && vite build — clean
 npm run audit:data        # read-only coverage report across every data layer (see below)
 npm run audit:data:strict # same, but exits non-zero on real errors (duplicates, invalid rows, missing flags...)
@@ -43,11 +49,15 @@ npm run audit:data:strict # same, but exits non-zero on real errors (duplicates,
 
 **Always run `npm run audit:data` before trusting any coverage number in a doc,
 including this one — numbers here go stale fast and the audit script is the
-source of truth, not prose.** As of 2026-07-07: primaryArtistImages, artistGalleries,
-curatedArtistEnrichment, offlineKnowledge, mediaProfiles, youtubeVerified,
-youtubeEmbeddable, trackArt, and albumArt are all at **100/100**; spotifyVerified
-is 90/100; Wikidata profile coverage inside `offline_artist_knowledge.json` is
-77/100 (confirmed ceiling — the other 23 artists genuinely have no Wikidata entry).
+source of truth, not prose.** As of 2026-07-10 (after the honest-data recompile
+shifted the top-100): primaryArtistImages, artistGalleries,
+curatedArtistEnrichment, offlineKnowledge, mediaProfiles, trackArt and albumArt
+are at **100/100**; youtubeVerified 98/100, youtubeEmbeddable 97/100,
+spotifyVerified 93/100. `offline_artist_knowledge.json`: 99/100 MusicBrainz
+matched (Odeon is a documented curated override), 77/100 Wikidata profiles,
+71/100 with band-member lineups (506 member rows — re-run
+`scripts/enrich_artist_members.mjs` after ANY `npm run knowledge:artists`,
+which rebuilds the file WITHOUT the members enrichment).
 
 CI: `.github/workflows/ci.yml` runs lint+test+build on push/PR (no GitHub remote
 yet — blocked on installing/authing the `gh` CLI locally, not a code issue).
@@ -186,6 +196,50 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
 
 ## Full change log (recent waves, newest first)
 
+- **2026-07-10 reconciliation pass 2 + honest-data recompile**: Antigravity landed
+  a second large uncommitted wave (InteractiveGlobe wired into CulturalMap with a
+  real world-border dataset + per-country dossier, generative cyber-avatars/flags,
+  a big HeroSection rewrite with AI-dossier/telemetry cards, a terminal-style
+  upload console, `compile_kevin_music_dna.ts` rebuilding the bundled dataset from
+  the RAW exports, theme-transition smoothing, mock-data test isolation). Kept all
+  of it after review; fixed: 2 lint errors (unused confetti import, unstable
+  `metrics` memo dep), a dead-end "Launch Chat Console" CTA (went to dashboard,
+  now opens the AI Assistant), an AudioContext leak per hero click, an invalid
+  `boxShadow` hsl+hex-alpha value, per-frame trig re-projection of the whole
+  world map (now precomputed unit vectors + multiply-adds; the rAF effect also
+  no longer tears itself down every frame), ~2s of artificial `sleep()` theater
+  in the upload console (now 0ms paint yields), city-level location string on
+  the public hero (now country-only), and the Gemini key moving from a `?key=`
+  URL param to the `x-goog-api-key` header. **The big one: the recompiled
+  dataset was double-counting.** Kevin's Last.fm was auto-scrobbling Spotify
+  (77% of Last.fm rows have the same track on Spotify within ±10min — verified
+  empirically against the raw exports), and every Spotify track START (including
+  39K skips and 97K sub-30s samples) counted as a play. `parseMusicSources` now
+  applies Spotify's own 30s stream-counting rule + cross-source dedup (same
+  normalized artist+track from different sources within 10min collapses to the
+  richer event; same-source loop listening never collapses), and
+  `parseLastfmDate` now parses Last.fm's "DD Mon YYYY HH:MM" as UTC (it was
+  being read as local time, shifting every scrobble by the machine's UTC offset
+  — which would also have made dedup silently miss everything). Bundled archive
+  went 212K fake → **79,855 honest plays** (Last.fm-only view was 50K
+  undercounted). A junk "2005 era" (misparsed rows attributed to artist
+  "YouTube") is also guarded out. Year-range guard widened from a hardcoded
+  2010-2028 to 2002..currentYear+1 so other users' genuinely old history isn't
+  silently dropped. Top-100 shifted → coverage refilled the honest way (see
+  audit): 6 new curated bios authored, photos via single-exact-match Deezer +
+  Commons (both-must-match iTunes/Deezer for art — removed the script's
+  same-artist-any-title fallback, which violated the no-wrong-art rule),
+  3 oEmbed-verified uploads-playlist embeds. Also: NFC normalization on every
+  runtime JSON lookup (parser/ArtistAvatar/CoverArt/artistGallery) so
+  NFD-encoded uploads match bundled NFC keys; diacritic-insensitive search in
+  TopHistorico; keyboard access + aria-labels on ~10 click-only cards/controls;
+  c3 contrast fixed in 4 dark themes (computed, all pass 4.5:1); heading-order
+  fix in FinalReport; dead code removed (legacy parser wrappers,
+  `topCountriesWithKnownMeta`, the unused `CULTURAL_LANGUAGE_DATA` table,
+  orphaned hero STRINGS + `.waveform-bar` CSS); 3 new test files
+  (analytics/artistEnrichment/mediaLinks) + parser dedup/NFC/threshold tests;
+  `getAlbumEnrichment` substring matches now require 5+ chars so "Live"/"II"
+  can't inherit an unrelated album's year.
 - **2026-07-07 reconciliation pass**: another parallel session (working tree
   changes, unattributed but referred to as "antigravity") had landed a large
   batch of uncommitted work — new `AIAssistant.tsx` (Gemini chat, opt-in, see
@@ -224,27 +278,32 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
   DataQualityCenter), TimeCapsule/WrappedCard/RecentPulse sections, FlagArt,
   clickable artist/album/track dossiers in TopHistorico.
 
-## Known gaps / next opportunities (prioritized, re-verified 2026-07-07)
+## Known gaps / next opportunities (prioritized, re-verified 2026-07-10)
 
-1. **`InteractiveGlobe.tsx` is fully built but wired into nothing.** 289 lines,
-   takes `countries`/`selectedCountry`/`onSelectCountry` props — clearly meant
-   to complement or replace part of `CulturalMap.tsx`'s current country view,
-   but never got imported anywhere. Finish wiring it in, or remove it.
-2. **Track art**: 1 real gap ("Slaves - Prayers") — see data-assets table above.
-3. **Theme transition smoothing**: add a CSS `transition` on `--bg`/`--fg`
-   consumers when switching themes (currently instant).
-4. **`platform_breakdown`** exists in types/parser for uploads and now has a
-   dedicated `PlatformsDevices.tsx` panel, but it intentionally shows a
-   "limited data" state until a Spotify export with `platform` data is loaded.
-5. **`recent_pulse.json` snapshot is dated** (2026-07-02) — refreshing it
+1. **YouTube embeddable is 97/100**: Saurom (legacy `/user/` channel URL — the
+   uploads-playlist trick needs a `UC…` channel id), Enforcer and Marty Friedman
+   (no channel on file). Needs a manually-found, oEmbed-verified official video.
+2. **`spotifyVerified` is 93/100** — the remaining artists lack a
+   Wikidata-P1902-confirmed Spotify link.
+3. **`member_enrichment.json`/`member_images.json` cover the OLD top-30
+   rosters** — new top-30 entrants (e.g. TesseracT is now #5) haven't had the
+   per-member photo/age/socials pass. Re-run `enrich_members_wikidata.mjs` +
+   `fetch_member_photos.mjs` when touching that area.
+4. **`recent_pulse.json` snapshot is dated** (2026-07-02) — refreshing it
    requires the Spotify connector in a Claude session, or a small paste-in flow.
-6. **`spotifyVerified` coverage is 90/100**, not 100 — 10 artists still lack a
-   confidently-verified Spotify link.
-7. **Component-level i18n/dead-code sweep, per-file test-coverage gaps, and a
-   full accessibility pass (aria-labels, contrast, keyboard focus) have not
-   been done as a dedicated pass** — the 2026-07-07 audit covered these at a
-   high level via direct code reading (subagent fan-out for it failed on a
-   session limit) but didn't systematically map every one of the ~50 components.
+5. **`platform_breakdown`**: the bundled merged dataset now carries real
+   platform data from the Spotify export, but the panel's "limited data" logic
+   should be sanity-checked against it.
+6. **Single-photo galleries**: Enforcer, Girafot (source-availability limits so
+   far, not script gaps).
+7. **`AppContext-*.js` chunk is ~170KB minified** (STRINGS for both languages
+   ship eagerly) — splitting per-language would cut the critical path, but it's
+   an architectural change; don't do it casually.
+8. **Era narratives in `EraExplorer.tsx` embed specific stat numbers as prose**
+   (13,011 plays for 2021, etc., updated 2026-07-10 to match the deduped
+   dataset). If the bundled dataset is ever recompiled again, re-check those
+   hardcoded numbers — `scripts/compile_kevin_music_dna.ts` does NOT update
+   them automatically.
 
 ## Cross-agent etiquette
 

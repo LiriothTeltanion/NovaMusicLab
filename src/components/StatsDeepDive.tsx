@@ -219,6 +219,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
                         style={{ backgroundColor: tc.c1, opacity }}
                         whileHover={{ scale: 1.2, opacity: 1 }}
                         title={t.statsDeepDive.monthCellTitle(year, MONTHS[m], fmtNum(plays))}
+                        role="button"
+                        // One tab stop per row would be ideal, but plain cells
+                        // are at least reachable this way; -1 would hide them
+                        // from keyboards entirely.
+                        tabIndex={0}
+                        aria-label={t.statsDeepDive.monthCellTitle(year, MONTHS[m], fmtNum(plays))}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedYear(year); } }}
                         onClick={() => setSelectedYear(year)}
                       />
                     );

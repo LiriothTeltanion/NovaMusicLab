@@ -6,6 +6,7 @@ import memberImages from '../data/member_images.json';
 import memberEnrichment from '../data/member_enrichment.json';
 import FlagArt from './FlagArt';
 import { getArtistGallery, getDailyPhotoIndex } from '../utils/artistGallery';
+import { hashSeed } from '../utils/seededRandom';
 
 type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
@@ -23,16 +24,7 @@ interface ArtistAvatarProps {
   overrideSrc?: string;
 }
 
-const PALETTE = ['#00f2fe', '#f72585', '#7209b7', '#10b981', '#f59e0b', '#06b6d4', '#ef4444', '#8b5cf6'];
 
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
 
 function initialsFor(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -62,7 +54,9 @@ function hiResVariant(url: string): string | null {
  */
 export default function ArtistAvatar({ name, size = 40, className = '', tooltip = true, overrideSrc }: ArtistAvatarProps) {
   const { tc } = useApp();
-  const key = name.trim().toLowerCase();
+  // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
+  // uploaded export can be NFD (macOS) - byte-different, visually identical.
+  const key = name.normalize('NFC').trim().toLowerCase();
   const entry = IMAGES[key];
   // Photo of the day: rotate deterministically through the artist's gallery
   // (primary + Deezer + Wikimedia) so portraits change daily, never randomly.
@@ -110,22 +104,69 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
         </span>
       );
     }
-    const color = PALETTE[hashString(name) % PALETTE.length];
+    const h = hashSeed(name);
+    const hue1 = h % 360;
+    const hue2 = (h + 120) % 360;
+    
+    // Seeded random coordinates for geometric lines/rings to simulate a digital HUD/music record
+    const shapeCount = 3 + (h % 3);
+    const elements = [];
+    for (let i = 0; i < shapeCount; i++) {
+      const angle = (h + i * 45) % 360;
+      const radius = 25 + ((h + i * 13) % 25);
+      const strokeColor = `hsl(${(hue1 + i * 40) % 360}, 90%, 60%)`;
+      elements.push({ angle, radius, strokeColor });
+    }
+
     return (
       <div
         role="img"
         aria-label={name}
-        className={`rounded-full flex items-center justify-center font-mono font-black shrink-0 ${className}`}
+        className={`rounded-full overflow-hidden relative flex items-center justify-center font-mono font-black shrink-0 ${className}`}
         style={{
           width: size,
           height: size,
-          fontSize: size * 0.38,
-          backgroundColor: `${color}20`,
-          color,
-          border: `1px solid ${color}40`,
+          fontSize: size * 0.35,
+          background: `radial-gradient(circle at 35% 35%, hsl(${hue1}, 80%, 20%) 0%, #050b14 100%)`,
+          border: `1px solid hsl(${hue1}, 80%, 45%)`,
+          // hsl() takes alpha via slash syntax; a hex-style "30" suffix glued
+          // onto hsl() is invalid CSS and the browser drops the whole shadow.
+          boxShadow: `inset 0 0 10px hsl(${hue1} 80% 50% / 0.19)`,
         }}
       >
-        {initialsFor(name)}
+        {/* Generative vector cyber patterns */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-60 pointer-events-none"
+          viewBox="0 0 100 100"
+        >
+          {elements.map((el, idx) => (
+            <circle
+              key={idx}
+              cx="50"
+              cy="50"
+              r={el.radius}
+              fill="none"
+              stroke={el.strokeColor}
+              strokeWidth={1.5}
+              strokeOpacity={0.4}
+              strokeDasharray={idx % 2 === 0 ? "5 5" : undefined}
+              transform={`rotate(${el.angle} 50 50)`}
+            />
+          ))}
+          {/* Glowing central target grid lines */}
+          <line x1="50" y1="10" x2="50" y2="90" stroke={`hsl(${hue2}, 95%, 65%)`} strokeWidth={0.7} strokeOpacity={0.25} />
+          <line x1="10" y1="50" x2="90" y2="50" stroke={`hsl(${hue2}, 95%, 65%)`} strokeWidth={0.7} strokeOpacity={0.25} />
+        </svg>
+
+        {/* Text Initials */}
+        <span
+          className="relative z-10 font-black text-white"
+          style={{
+            textShadow: `0 0 8px hsl(${hue1}, 95%, 65%)`,
+          }}
+        >
+          {initialsFor(name)}
+        </span>
       </div>
     );
   })();

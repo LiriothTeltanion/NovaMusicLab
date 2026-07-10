@@ -293,6 +293,9 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                 variants={item}
                 className="rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] hover:border-white/20 border border-transparent"
                 style={{ backgroundColor: `${tc.c1}0d`, borderColor: `${tc.c1}26` }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedArtistName(era.top_artist); setTopSubTab('artists'); setActiveTab('top'); } }}
                 onClick={() => {
                   setSelectedArtistName(era.top_artist);
                   setTopSubTab('artists');
@@ -331,6 +334,9 @@ export default function WrappedCard({ data }: WrappedCardProps) {
                 variants={item}
                 className="rounded-2xl p-4 cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] hover:border-white/20 border border-transparent"
                 style={{ backgroundColor: `${tc.c2}0d`, borderColor: `${tc.c2}26` }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedArtistName(era.top_artist); setSelectedTrackKey(`${era.top_artist.toLowerCase()}|||${era.top_track.toLowerCase()}`); setTopSubTab('tracks'); setActiveTab('top'); } }}
                 onClick={() => {
                   setSelectedArtistName(era.top_artist);
                   setSelectedTrackKey(`${era.top_artist.toLowerCase()}|||${era.top_track.toLowerCase()}`);

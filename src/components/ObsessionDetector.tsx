@@ -54,6 +54,17 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
                  <div 
                   key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} 
                   className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${obs.artist} — ${obs.track}`}
+                  onKeyDown={(e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
+                    setSelectedArtistName(obs.artist);
+                    setSelectedTrackKey(trackKey(obs.artist, obs.track));
+                    setTopSubTab('tracks');
+                    setActiveTab('top');
+                  }}
                   onClick={() => {
                     setSelectedArtistName(obs.artist);
                     setSelectedTrackKey(trackKey(obs.artist, obs.track));

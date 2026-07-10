@@ -63,6 +63,10 @@
     {
       "url": "https://cdn-images.dzcdn.net/images/artist/ba8adf50a794077c0466b80a7a65832f/1000x1000-000000-80-0-0.jpg",
       "source": "deezer"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/e1da07f987d850048cf2f3e1f0facac2/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
     }
   ],
   "jonny craig": [
@@ -172,6 +176,10 @@
     },
     {
       "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Emarosaband.jpg?width=800",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Emarosa_live1.jpg",
       "source": "wikimedia"
     }
   ],
@@ -679,6 +687,10 @@
     {
       "url": "https://cdn-images.dzcdn.net/images/artist/b37f13f6df9ccc1a95fcb8742d0de749/1000x1000-000000-80-0-0.jpg",
       "source": "deezer"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/1e81188ddc76aca203c61720e96ec45c/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
     }
   ],
   "mooki": [
@@ -888,6 +900,10 @@
     },
     {
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Great_Britain_army_517_Field_Survey_Company%2C_Som_%28FL83894880_4072823%29.jpg/960px-Great_Britain_army_517_Field_Survey_Company%2C_Som_%28FL83894880_4072823%29.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://commons.wikimedia.org/w/resources/assets/file-type-icons/fileicon-ogg.png",
       "source": "wikimedia"
     }
   ],
@@ -1301,6 +1317,10 @@
     {
       "url": "https://commons.wikimedia.org/wiki/Special:FilePath/FireHouse.jpg?width=800",
       "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/AllenMcKenzie.JPG",
+      "source": "wikimedia"
     }
   ],
   "the damned": [
@@ -1417,6 +1437,146 @@
     {
       "url": "https://cdn-images.dzcdn.net/images/artist/b7562eb234f57bf8e71422f41c12c5cf/1000x1000-000000-80-0-0.jpg",
       "source": "deezer"
+    }
+  ],
+  "hayehudim": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hayehudim_in_Caesarea_2010_3.jpg/330px-Hayehudim_in_Caesarea_2010_3.jpg",
+      "source": "wikipedia"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/6993010ed11d2e099f92cb5acbeb7db9/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    }
+  ],
+  "mgk": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Machine_Gun_Kelly_Charity_Softball_%2853117851335%29crop.png/330px-Machine_Gun_Kelly_Charity_Softball_%2853117851335%29crop.png",
+      "source": "wikipedia"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/120b8cdace018519109d162495103da8/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Machine%20Gun%20Kelly%20%28rapper%29%2003.jpg?width=800",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/George_machine_gun_kelly_1933.gif",
+      "source": "wikimedia"
+    }
+  ],
+  "nothing,nowhere.": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/2023_Rock_im_Park_-_nothing_nowhere_-_by_2eight_-_9SC9954.jpg/330px-2023_Rock_im_Park_-_nothing_nowhere_-_by_2eight_-_9SC9954.jpg",
+      "source": "wikipedia"
+    },
+    {
+      "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Nothing%2CNowhere%20-%20Rock%20am%20Ring%202019-2460.jpg?width=800",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/18243705c5bbc13807f886204be76e0b/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/ae/NothingNowhere.png",
+      "source": "wikimedia"
+    }
+  ],
+  "girafot": [
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/ebc1e07cc0c5c5e6005b7ecbd0d828d6/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    }
+  ],
+  "saurom": [
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/0f98f073714c0994cf60b082ff622355/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Saurom_concierto_Almer%C3%ADa_01.jpg/960px-Saurom_concierto_Almer%C3%ADa_01.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Saurom_concierto_Almer%C3%ADa_02.jpg/960px-Saurom_concierto_Almer%C3%ADa_02.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Saurom_concierto_Almer%C3%ADa_03.jpg/960px-Saurom_concierto_Almer%C3%ADa_03.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "helloween": [
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/8b6315773337100076cb8d4139efa6a8/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/2011-08_Woodstock_56.jpg/960px-2011-08_Woodstock_56.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/2011-08_Woodstock_59.jpg/960px-2011-08_Woodstock_59.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2011-08_Woodstock_62.jpg/960px-2011-08_Woodstock_62.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "marty friedman": [
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/7dcf3eb3a5d60d0862a8d06d57bbbc25/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Marty_Friedman_-_01.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Marty_Friedman_-_03.jpg/960px-Marty_Friedman_-_03.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/71/Marty_Friedman_-_04.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "my vitriol": [
+    {
+      "url": "https://cdn-images.dzcdn.net/images/artist/e020a590f9567317369f5d47f71fa301/1000x1000-000000-80-0-0.jpg",
+      "source": "deezer"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/50/MyVitriol.Nov24.KOKO.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "enforcer": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Enforcer_live_hole_in_the_sky_festival_27_august_2010.jpg/960px-Enforcer_live_hole_in_the_sky_festival_27_august_2010.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "insomnium": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Insomnium_%28live_in_Bologna_2010%29.JPG/960px-Insomnium_%28live_in_Bologna_2010%29.JPG",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Insomnium_Christmas_Bash_Geiselwind_2015.jpg/960px-Insomnium_Christmas_Bash_Geiselwind_2015.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Insomnium_John_Smith_2019_%282%29.jpg/960px-Insomnium_John_Smith_2019_%282%29.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Insomnium_John_Smith_2019_%283%29.jpg/960px-Insomnium_John_Smith_2019_%283%29.jpg",
+      "source": "wikimedia"
     }
   ]
 }

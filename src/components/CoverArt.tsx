@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Disc3, Music } from 'lucide-react';
 import albumImages from '../data/album_images.json';
 import trackImages from '../data/track_images.json';
+import { hashSeed } from '../utils/seededRandom';
 
 type ArtMap = Record<string, { thumb: string; source: string }>;
 const ALBUMS = albumImages as ArtMap;
@@ -18,15 +19,6 @@ interface CoverArtProps {
 
 const HUES = [188, 330, 271, 152, 38, 199, 0, 258];
 
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return Math.abs(hash);
-}
-
 /**
  * Square cover art for albums and tracks. Real artwork comes from the
  * one-time dev-side iTunes Search extraction baked into album_images.json /
@@ -38,7 +30,8 @@ function hashString(str: string): number {
 export default function CoverArt({ artist, title, kind, size = 44, className = '', overrideSrc }: CoverArtProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const key = `${artist.toLowerCase()}|||${title.toLowerCase()}`;
+  // NFC-normalize: bundled JSON keys are NFC; uploaded names can arrive NFD.
+  const key = `${artist.normalize('NFC').trim().toLowerCase()}|||${title.normalize('NFC').trim().toLowerCase()}`;
   const entry = overrideSrc ? { thumb: overrideSrc } : (kind === 'album'
     ? ALBUMS[key]
     : TRACKS[key] ?? ALBUMS[key]);
@@ -70,7 +63,7 @@ export default function CoverArt({ artist, title, kind, size = 44, className = '
     );
   }
 
-  const hue = HUES[hashString(artist + title) % HUES.length];
+  const hue = HUES[hashSeed(artist + title) % HUES.length];
   const Icon = kind === 'album' ? Disc3 : Music;
   return (
     <div
