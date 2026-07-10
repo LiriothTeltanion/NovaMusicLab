@@ -2,7 +2,7 @@
   "matt kean": {
     "name": "Matt Kean",
     "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/2016%20RiP%20Bring%20Me%20the%20Horizon%20-%20Matt%20Kean%20-%20by%202eight%20-%208SC6703.jpg?width=300",
-    "birthDate": "1986",
+    "birthDate": "1986-00-00",
     "age": 40,
     "links": {}
   },
@@ -40,7 +40,7 @@
   "curtis ward": {
     "name": "Curtis Ward",
     "photo": "",
-    "birthDate": "1989",
+    "birthDate": "1989-00-00",
     "age": 37,
     "links": {
       "wikipedia": "https://en.wikipedia.org/wiki/Curtis_Ward"
@@ -148,17 +148,25 @@
   },
   "archie cruz": {
     "name": "Archie Cruz",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
-    "links": {}
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Tuska%2020130630%20-%20Santa%20Cruz%20-%2002.jpg?width=300",
+    "birthDate": "1992-03-26",
+    "age": 34,
+    "links": {
+      "instagram": "https://instagram.com/ArchieCruzz",
+      "twitter": "https://twitter.com/archiecruzz",
+      "spotify": "https://open.spotify.com/artist/1Ltz58a2iP9G2cOpBmaCpJ"
+    }
   },
   "arttu kuosmanen": {
     "name": "Arttu Kuosmanen",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
-    "links": {}
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Tuska%2020130630%20-%20Santa%20Cruz%20-%2002.jpg?width=300",
+    "birthDate": "1992-03-26",
+    "age": 34,
+    "links": {
+      "instagram": "https://instagram.com/ArchieCruzz",
+      "twitter": "https://twitter.com/archiecruzz",
+      "spotify": "https://open.spotify.com/artist/1Ltz58a2iP9G2cOpBmaCpJ"
+    }
   },
   "mitja toivonen": {
     "name": "Mitja Toivonen",
@@ -181,17 +189,23 @@
   },
   "johnny cruz": {
     "name": "Johnny Cruz",
-    "photo": "",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Johnny%20Cruz%202016%202.jpg?width=300",
     "birthDate": "",
     "age": null,
-    "links": {}
+    "links": {
+      "instagram": "https://instagram.com/johnnycruzified",
+      "twitter": "https://twitter.com/johnnyxjonas"
+    }
   },
   "joonas parkkonen": {
     "name": "Joonas Parkkonen",
-    "photo": "",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Johnny%20Cruz%202016%202.jpg?width=300",
     "birthDate": "",
     "age": null,
-    "links": {}
+    "links": {
+      "instagram": "https://instagram.com/johnnycruzified",
+      "twitter": "https://twitter.com/johnnyxjonas"
+    }
   },
   "philip strand": {
     "name": "Philip Strand",
@@ -238,7 +252,7 @@
   "la sale famine de valfunde": {
     "name": "La Sale Famine de Valfunde",
     "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Peste%20Noire%207.jpg?width=300",
-    "birthDate": "1981",
+    "birthDate": "1981-00-00",
     "age": 45,
     "links": {}
   },
@@ -293,7 +307,7 @@
   "kenny leckremo": {
     "name": "Kenny Leckremo",
     "photo": "",
-    "birthDate": "1986",
+    "birthDate": "1986-00-00",
     "age": 40,
     "links": {
       "twitter": "https://twitter.com/kennyleckremo"
@@ -352,9 +366,9 @@
   },
   "אורית שחף": {
     "name": "אורית שחף",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/HaYehudim%20-%20Live%20in%20Redding%203%20232650.jpg?width=300",
+    "birthDate": "1971-04-09",
+    "age": 55,
     "links": {}
   },
   "עמרי אגמון": {
@@ -373,9 +387,9 @@
   },
   "ערן מיטלמן": {
     "name": "ערן מיטלמן",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Eran%20Mitelman%20at%20Akko%2C%20Israel.jpg?width=300",
+    "birthDate": "1970-09-03",
+    "age": 56,
     "links": {}
   },
   "יפתח שחף": {
@@ -387,16 +401,18 @@
   },
   "גיא באר": {
     "name": "גיא באר",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
-    "links": {}
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/%D7%92%D7%99%D7%90%20%D7%91%D7%90%D7%A8%20%D7%91%D7%94%D7%95%D7%A4%D7%A2%D7%94%20%D7%91%D7%9E%D7%95%D7%A2%D7%93%D7%95%D7%9F%20%D7%94%D7%AA%D7%99%D7%90%D7%98%D7%A8%D7%95%D7%9F%2C%202019.jpg?width=300",
+    "birthDate": "1973-00-00",
+    "age": 53,
+    "links": {
+      "twitter": "https://twitter.com/beerguy73"
+    }
   },
   "ניר מימון": {
     "name": "ניר מימון",
-    "photo": "",
-    "birthDate": "",
-    "age": null,
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/%D7%A0%D7%99%D7%A8%20%D7%9E%D7%99%D7%9E%D7%95%D7%9F.jpg?width=300",
+    "birthDate": "1980-00-00",
+    "age": 46,
     "links": {}
   },
   "גיא אילוז": {
@@ -405,5 +421,74 @@
     "birthDate": "",
     "age": null,
     "links": {}
+  },
+  "ralf scheepers": {
+    "name": "Ralf Scheepers",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Primal%20Fear%20%E2%80%93%20Logo%20Hamburg%202016%2005.jpg?width=300",
+    "birthDate": "1965-02-05",
+    "age": 61,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Ralf_Scheepers"
+    }
+  },
+  "mat sinner": {
+    "name": "Mat Sinner",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Mat%20Sinner%202009.09.25.jpg?width=300",
+    "birthDate": "1964-10-16",
+    "age": 62,
+    "links": {
+      "instagram": "https://instagram.com/matsinner1",
+      "twitter": "https://twitter.com/mat.sinner",
+      "wikipedia": "https://en.wikipedia.org/wiki/Mat_Sinner"
+    }
+  },
+  "francesco jovino": {
+    "name": "Francesco Jovino",
+    "photo": "",
+    "birthDate": "1977-02-20",
+    "age": 49,
+    "links": {}
+  },
+  "randy black": {
+    "name": "Randy Black",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/VSpectrum-Destruction-Randy%20Black-0339.jpg?width=300",
+    "birthDate": "1963-11-17",
+    "age": 63,
+    "links": {
+      "instagram": "https://instagram.com/randytblack",
+      "twitter": "https://twitter.com/randytblack",
+      "wikipedia": "https://en.wikipedia.org/wiki/Randy_Black"
+    }
+  },
+  "alex beyrodt": {
+    "name": "Alex Beyrodt",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Alexbeyrodt.png?width=300",
+    "birthDate": "1964-11-04",
+    "age": 62,
+    "links": {
+      "instagram": "https://instagram.com/alexbeyrodt",
+      "twitter": "https://twitter.com/alexbeyrodt"
+    }
+  },
+  "aquiles priester": {
+    "name": "Aquiles Priester",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Aquiles%20Priester%20Cropped%20-Aquiles%20Priester%20El%20SALVADOR.jpg?width=300",
+    "birthDate": "1971-06-25",
+    "age": 55,
+    "links": {
+      "instagram": "https://instagram.com/aquilespriester",
+      "twitter": "https://twitter.com/aquilespriester",
+      "spotify": "https://open.spotify.com/artist/0wFKXKv5OTFwArHRijC9W6",
+      "wikipedia": "https://en.wikipedia.org/wiki/Aquiles_Priester"
+    }
+  },
+  "zaher zorgati": {
+    "name": "Zaher Zorgati",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/2024%20Pol%E2%80%99and%E2%80%99Rock%20-%20Myrath%20(05).jpg?width=300",
+    "birthDate": "1982-07-20",
+    "age": 44,
+    "links": {
+      "twitter": "https://twitter.com/zaherzorgati"
+    }
   }
 }
