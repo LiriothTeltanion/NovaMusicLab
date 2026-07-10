@@ -487,23 +487,61 @@ function youtubePlayFromParts(title: string, channelName: string, tsStr?: string
   const cleanTitle = cleanYoutubeTitle(title);
   if (!cleanTitle) return undefined;
 
-  const parsed = splitYoutubeArtistTitle(cleanTitle, channelName);
-  if (!parsed.track) return undefined;
-  // "YouTube" as artist means neither the title nor the channel yielded a
-  // real name - that's a parse failure, not a music play. Wrong attribution
-  // is worse than a dropped row (these junk rows once fabricated a whole
-  // fake "2005 era" in the yearly timeline).
-  if (/^youtube( music)?$/i.test(parsed.artist)) return undefined;
+  const music = youtubeMusicAttribution(cleanTitle, channelName);
+  if (!music) return undefined;
 
   return {
-    artist: parsed.artist,
-    track: parsed.track,
+    artist: music.artist,
+    track: music.track,
     album: '',
     ts,
     ts_str: ts.toISOString(),
     source: 'youtube',
     platform,
   };
+}
+
+const YT_MUSIC_TITLE_MARKERS = /[[(](official\s+)?(music\s+)?(video|audio|visualizer|lyric)/i;
+
+/**
+ * A full YouTube watch history is mostly NOT music (documentaries, gaming,
+ * news...) - blindly importing 42K watch events as "plays" would poison every
+ * chart. A row only counts as a music play with a confident attribution:
+ * - "<Artist> - Topic" channel: YouTube's own auto-generated artist audio.
+ * - "Artist - Track" title where the artist is in the bundled music catalog
+ *   (artist_meta.json, ~450 real artists).
+ * - "Artist - Track" title on a VEVO channel or carrying an explicit
+ *   (Official Video/Audio/Lyric...) marker.
+ * Everything else is skipped: a dropped documentary is correct, a documentary
+ * counted as a song is not.
+ */
+function youtubeMusicAttribution(title: string, channelName: string): { artist: string; track: string } | undefined {
+  const channel = channelName.trim();
+  const dashParts = title.replace(/[–—]/g, '-').split(/\s+-\s+/);
+
+  if (/\s-\s*Topic$/i.test(channel)) {
+    const artist = channel.replace(/\s+-\s*Topic$/i, '').trim();
+    if (!artist || /^youtube( music)?$/i.test(artist)) return undefined;
+    const track = cleanTrackDescriptor(
+      dashParts.length >= 2 && dashParts[0].trim().toLowerCase() === artist.toLowerCase()
+        ? dashParts.slice(1).join(' - ')
+        : title,
+    );
+    return track ? { artist, track } : undefined;
+  }
+
+  if (dashParts.length >= 2) {
+    const artist = dashParts[0].trim();
+    const track = cleanTrackDescriptor(dashParts.slice(1).join(' - '));
+    if (!artist || !track || /^youtube( music)?$/i.test(artist)) return undefined;
+
+    const isKnownArtist = Boolean(KNOWN_ARTIST_META[artist.normalize('NFC').trim().toLowerCase()]);
+    const isVevoChannel = /vevo$/i.test(channel.replace(/\s+/g, ''));
+    const hasMusicMarker = YT_MUSIC_TITLE_MARKERS.test(title);
+    if (isKnownArtist || isVevoChannel || hasMusicMarker) return { artist, track };
+  }
+
+  return undefined;
 }
 
 function youtubeSubtitleName(item: any) {
@@ -540,15 +578,47 @@ function looksLikeYoutubeHistoryTitle(line: string) {
   return /^(watched|listened to|visto|has visto|escuchaste)\b/i.test(line);
 }
 
+// Takeout localizes month abbreviations to the ACCOUNT language - a Spanish
+// account's watch history says "3 jul 2026, 5:00:15 p.m. IDT", which
+// `new Date()` cannot parse (this once silently dropped 42,000 real rows).
+const YT_MONTH_ABBREV: Record<string, number> = {
+  // English
+  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7,
+  sep: 8, sept: 8, oct: 9, nov: 10, dec: 11,
+  // Spanish
+  ene: 0, abr: 3, ago: 7, dic: 11,
+};
+
 function parseYoutubeTakeoutDate(input?: string) {
   if (!input) return new Date(Number.NaN);
   const normalized = decodeHtmlEntities(input)
     .replace(/[\u00a0\u202f]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  
+
   if (/^\d+$/.test(normalized)) {
     return new Date(Number.NaN);
+  }
+
+  // Localized "D MMM YYYY, H:MM:SS a.m./p.m. TZ" (Spanish-style) branch first.
+  // Parsed as wall-clock local time: the timezone abbreviation is where the
+  // user actually was, which is exactly what the hour/day heatmaps want.
+  const localized = normalized.match(
+    /^(\d{1,2})\s+([a-z\u00e1\u00e9\u00ed\u00f3\u00fa\u00fc]{3,5})\.?\s+(\d{4}),?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(a\.?\s?m\.?|p\.?\s?m\.?)?/i,
+  );
+  if (localized) {
+    const [, day, monthName, year, hourRaw, minute, second, ampm] = localized;
+    const month = YT_MONTH_ABBREV[monthName.toLowerCase().replace(/\./g, '')];
+    if (month !== undefined) {
+      if (!isPlausiblePlayYear(Number(year))) return new Date(Number.NaN);
+      let hour = Number(hourRaw);
+      if (ampm) {
+        const isPm = /^p/i.test(ampm);
+        if (isPm && hour < 12) hour += 12;
+        if (!isPm && hour === 12) hour = 0;
+      }
+      return new Date(Number(year), month, Number(day), hour, Number(minute), Number(second ?? 0));
+    }
   }
 
   const direct = new Date(normalized);
@@ -577,22 +647,6 @@ function cleanTrackDescriptor(title: string) {
     .trim();
 }
 
-function splitYoutubeArtistTitle(title: string, channelName: string) {
-  const normalizedDashTitle = title.replace(/[–—]/g, '-');
-  const dashParts = normalizedDashTitle.split(/\s+-\s+/);
-
-  if (dashParts.length >= 2) {
-    const artist = dashParts[0].trim();
-    const track = cleanTrackDescriptor(dashParts.slice(1).join(' - '));
-    if (artist && track) return { artist, track };
-  }
-
-  return {
-    artist: channelName.replace(/\s+-\s+Topic$/i, '').trim() || 'YouTube',
-    track: cleanTrackDescriptor(title),
-  };
-}
-
 export function aggregateData(
   items: ParsedPlay[],
   sourceType: string,
@@ -614,6 +668,10 @@ export function aggregateData(
   const yearBuckets = new Map<number, ParsedPlay[]>();
   const monthlyCounts = new Map<string, number>();
   const dateCounts = new Map<string, number>();
+  // Separate from `countryCounts`: this tracks the artists' home countries
+  // across the entire counted history, while `countryCounts` is listener-side
+  // Spotify connection telemetry.
+  const artistOriginCountryCounts: Record<string, number> = {};
   const countryCounts: Record<string, number> = {};
   const platformCounts: Record<string, number> = {};
   const heatmap: number[][] = Array.from({ length: 24 }, () => Array(7).fill(0));
@@ -635,6 +693,9 @@ export function aggregateData(
     artistCounts[artist] = (artistCounts[artist] || 0) + 1;
     trackCounts[trackKey] = (trackCounts[trackKey] || 0) + 1;
     genreCounts[normalizeGenre(artistMeta.genre)] = (genreCounts[normalizeGenre(artistMeta.genre)] || 0) + 1;
+    if (artistMeta.country && artistMeta.country !== 'Unknown') {
+      artistOriginCountryCounts[artistMeta.country] = (artistOriginCountryCounts[artistMeta.country] || 0) + 1;
+    }
 
     if (album) {
       const albumKey = makeAlbumKey(artist, album);
@@ -683,6 +744,10 @@ export function aggregateData(
   const countries = entriesByCount(countryCounts, 50)
     .map(([country, plays]) => ({ country, plays }))
     .filter(c => c.country && c.country !== 'Unknown');
+  const artistOriginCountries = entriesByCount(
+    artistOriginCountryCounts,
+    Object.keys(artistOriginCountryCounts).length,
+  ).map(([country, plays]) => ({ country, plays }));
   const platformBreakdown: PlatformPlay[] = entriesByCount(platformCounts, 30).map(([platform, plays]) => ({ platform, plays }));
   const monthlyActivity = Array.from(monthlyCounts.entries())
     .map(([key, plays]) => {
@@ -717,6 +782,7 @@ export function aggregateData(
     yearly_eras: yearlyEras,
     sessions: sessions.slice(0, 50),
     obsessions: buildObsessions(sortedItems),
+    artist_origin_countries: artistOriginCountries,
     countries: countries.length ? countries : [{ country: 'Unknown', plays: totalPlays }],
     heatmap,
     daily_plays: Object.fromEntries(dateCounts),
@@ -1007,9 +1073,27 @@ function parseLastfmDate(input: string) {
   return new Date(Number.NaN);
 }
 
+const LASTFM_HEADER_FIELDS = {
+  artist: new Set(['artist', 'artist name']),
+  album: new Set(['album', 'album name']),
+  track: new Set(['track', 'track name', 'song', 'song name']),
+  timestamp: new Set(['date', 'timestamp', 'time', 'played at', 'scrobbled at']),
+};
+
+function normalizeCsvHeaderCell(value: string) {
+  return value
+    .replace(/^\uFEFF/, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_-]+/g, ' ');
+}
+
 function looksLikeHeader(row: string[]) {
-  const joined = row.join(',').toLowerCase();
-  return joined.includes('artist') && joined.includes('track') && (joined.includes('timestamp') || joined.includes('date'));
+  const [artist = '', album = '', track = '', timestamp = ''] = row.map(normalizeCsvHeaderCell);
+  return LASTFM_HEADER_FIELDS.artist.has(artist)
+    && LASTFM_HEADER_FIELDS.album.has(album)
+    && LASTFM_HEADER_FIELDS.track.has(track)
+    && LASTFM_HEADER_FIELDS.timestamp.has(timestamp);
 }
 
 function countBy(values: string[]) {

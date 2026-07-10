@@ -21,6 +21,8 @@ import ArtistAvatar from './ArtistAvatar';
 import CoverArt from './CoverArt';
 import { paintMoodArt } from './MoodArtCanvas';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
+import { deriveSourceSummary, getSourceTelemetry, type SourceTelemetryId } from '../utils/analytics';
+
 interface HeroSectionProps {
   data: MusicDnaData;
   onEnter: () => void;
@@ -39,6 +41,14 @@ const EMPTY_METRICS = {
   listening_days: 0,
   match_rate_pct: 0,
 } as const;
+
+const SOURCE_PLATFORM_VISUALS: Record<SourceTelemetryId, { label: string; from: string; to: string }> = {
+  spotify: { label: 'Spotify', from: '#1DB954', to: '#1ed760' },
+  lastfm: { label: 'Last.fm', from: '#d51007', to: '#e8334a' },
+  youtube: { label: 'YouTube Music', from: '#ff0000', to: '#ff4f4f' },
+  apple_music: { label: 'Apple Music', from: '#fa57c1', to: '#ff7ebd' },
+  listenbrainz: { label: 'ListenBrainz', from: '#f59e0b', to: '#fbbf24' },
+};
 
 /** Count-up using native requestAnimationFrame — reliable across React versions */
 function CountUp({ target, duration = 1.8, delay = 0 }: { target: number; duration?: number; delay?: number }) {
@@ -60,23 +70,8 @@ export default function HeroSection({ data, onEnter, onUpload, onOpenAssistant }
   }, [data?.yearly_eras]);
 
   // Derive source summary details
-  const sourceSummary = useMemo(() => {
-    return data.source_summary || {
-      source_type: 'unknown',
-      lastfm_plays: 0,
-      spotify_plays: 0,
-      youtube_plays: 0,
-      apple_music_plays: 0,
-      listenbrainz_plays: 0,
-      merged_plays: 0,
-      spotify_skips: 0,
-      spotify_skip_rate_pct: 0,
-      spotify_short_plays: 0,
-      spotify_short_play_rate_pct: 0,
-      overlap_unique_tracks: 0,
-      source_note: '',
-    };
-  }, [data?.source_summary]);
+  const sourceSummary = useMemo(() => deriveSourceSummary(data), [data]);
+  const sourceTelemetry = useMemo(() => getSourceTelemetry(sourceSummary), [sourceSummary]);
 
   const sourceLabel = (t.heroSection.sourceLabels as any)[sourceSummary.source_type] ?? t.heroSection.sourceLabels.unknown;
 
@@ -528,8 +523,9 @@ export default function HeroSection({ data, onEnter, onUpload, onOpenAssistant }
           </motion.div>
         )}
 
-        {/* Platform Ingestion Telemetry Bar */}
-        {sourceSummary.merged_plays > 0 && (
+        {/* Platform Ingestion Telemetry Bar. Source counts are raw events;
+            the final listen count is shown separately after deduplication. */}
+        {sourceTelemetry.rawEvents > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
@@ -548,86 +544,71 @@ export default function HeroSection({ data, onEnter, onUpload, onOpenAssistant }
               <div className="flex items-center gap-2">
                 <Database className="w-4 h-4 text-cyberCyan animate-pulse" />
                 <h3 className="text-xs font-mono font-black uppercase tracking-[0.2em] text-white">
-                  {lang === 'en' ? 'Ingested Sources Telemetry' : 'Telemetría de Fuentes Ingeridas'}
+                  {t.heroSection.telemetry.title}
                 </h3>
               </div>
               <span className="text-[9px] font-mono font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded border border-white/10 uppercase">
-                {lang === 'en' ? 'Unified Database' : 'Base de Datos Unificada'}
+                {t.heroSection.telemetry.badge}
               </span>
             </div>
 
-            {/* Stacked Progress Bar */}
-            <div className="h-3.5 rounded-full bg-white/5 overflow-hidden flex border border-white/10 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]">
-              {/* Spotify */}
-              {sourceSummary.spotify_plays > 0 && (
-                <div 
-                  style={{ width: `${(sourceSummary.spotify_plays / sourceSummary.merged_plays) * 100}%` }}
-                  className="h-full bg-gradient-to-r from-[#1DB954] to-[#1ed760] relative group transition-all duration-500 shadow-[0_0_8px_#1DB954]"
-                />
-              )}
-              {/* Last.fm */}
-              {sourceSummary.lastfm_plays > 0 && (
-                <div 
-                  style={{ width: `${(sourceSummary.lastfm_plays / sourceSummary.merged_plays) * 100}%` }}
-                  className="h-full bg-gradient-to-r from-[#d51007] to-[#e8334a] relative group transition-all duration-500 shadow-[0_0_8px_#d51007]"
-                />
-              )}
-              {/* YouTube */}
-              {sourceSummary.youtube_plays > 0 && (
-                <div 
-                  style={{ width: `${(sourceSummary.youtube_plays / sourceSummary.merged_plays) * 100}%` }}
-                  className="h-full bg-gradient-to-r from-[#ff0000] to-[#ff4f4f] relative group transition-all duration-500 shadow-[0_0_8px_#ff0000]"
-                />
-              )}
+            {/* Stacked Progress Bar. role="img" + one composed label: aria-label
+                on bare divs (implicit generic role) is invalid ARIA that screen
+                readers ignore, so the container narrates all shares at once. */}
+            <div
+              className="h-3.5 rounded-full bg-white/5 overflow-hidden flex border border-white/10 shadow-[inset_0_1px_3px_rgba(0,0,0,0.5)]"
+              role="img"
+              aria-label={`${t.heroSection.telemetry.barAria}: ${sourceTelemetry.segments
+                .map((segment) => `${SOURCE_PLATFORM_VISUALS[segment.id].label} ${segment.sharePct.toFixed(1)}%`)
+                .join(', ')}`}
+            >
+              {sourceTelemetry.segments.map((segment) => {
+                const visual = SOURCE_PLATFORM_VISUALS[segment.id];
+                return (
+                  <div
+                    key={segment.id}
+                    data-testid={`source-segment-${segment.id}`}
+                    aria-hidden="true"
+                    style={{
+                      width: `${segment.sharePct}%`,
+                      background: `linear-gradient(to right, ${visual.from}, ${visual.to})`,
+                      boxShadow: `0 0 8px ${visual.from}`,
+                    }}
+                    className="h-full flex-none relative transition-all duration-500"
+                  />
+                );
+              })}
             </div>
 
             {/* Badges and Counts */}
             <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-[10px] font-mono">
-              {/* Spotify */}
-              {sourceSummary.spotify_plays > 0 && (
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#1DB954] shadow-[0_0_6px_#1DB954]" />
-                  <span className="font-bold text-gray-300">Spotify:</span>
-                  <span className="text-white font-black">{sourceSummary.spotify_plays.toLocaleString()}</span>
-                  <span className="text-gray-400">({Math.round((sourceSummary.spotify_plays / sourceSummary.merged_plays) * 100)}%)</span>
-                </div>
-              )}
-              
-              {/* Last.fm */}
-              {sourceSummary.lastfm_plays > 0 && (
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#e8334a] shadow-[0_0_6px_#e8334a]" />
-                  <span className="font-bold text-gray-300">Last.fm:</span>
-                  <span className="text-white font-black">{sourceSummary.lastfm_plays.toLocaleString()}</span>
-                  <span className="text-gray-400">({Math.round((sourceSummary.lastfm_plays / sourceSummary.merged_plays) * 100)}%)</span>
-                </div>
-              )}
-
-              {/* YouTube */}
-              {sourceSummary.youtube_plays > 0 && (
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#ff0000] shadow-[0_0_6px_#ff0000]" />
-                  <span className="font-bold text-gray-300">YouTube Music:</span>
-                  <span className="text-white font-black">{sourceSummary.youtube_plays.toLocaleString()}</span>
-                  <span className="text-gray-400">({(sourceSummary.youtube_plays / sourceSummary.merged_plays * 100).toFixed(2)}%)</span>
-                </div>
-              )}
+              {sourceTelemetry.segments.map((segment) => {
+                const visual = SOURCE_PLATFORM_VISUALS[segment.id];
+                return (
+                  <div key={segment.id} className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: visual.from, boxShadow: `0 0 6px ${visual.from}` }} />
+                    <span className="font-bold text-gray-300">{visual.label}:</span>
+                    <span className="text-white font-black">{fmtNum(segment.plays)}</span>
+                    <span className="text-gray-400">({segment.sharePct.toFixed(1)}%)</span>
+                  </div>
+                );
+              })}
             </div>
 
-            {/* Deduplication, Skips & Integrity */}
-            <div className="mt-3.5 pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-2 text-[9px] font-mono text-gray-400 leading-none">
+            {/* Raw versus counted totals */}
+            <div className="mt-3.5 pt-3 border-t border-white/5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[9px] font-mono text-gray-400 leading-none">
+              <span>
+                {t.heroSection.telemetry.rawInputLabel}{' '}
+                <strong className="text-white">{fmtNum(sourceTelemetry.rawEvents)} {t.heroSection.telemetry.eventsUnit}</strong>
+              </span>
               <span className="flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/80 animate-pulse" />
-                <span>
-                  {lang === 'en' 
-                    ? `Skipped play exclusions: ` 
-                    : `Exclusiones por saltos de reproducción: `}
-                </span>
-                <strong className="text-yellow-500">{sourceSummary.spotify_skips.toLocaleString()} plays</strong>
+                <span>{t.heroSection.telemetry.skipsLabel}{' '}</span>
+                <strong className="text-yellow-500">{fmtNum(sourceSummary.spotify_skips)} {t.heroSection.telemetry.eventsUnit}</strong>
               </span>
               <span>
-                {lang === 'en' ? 'Deduplicated & Merged:' : 'Deduplicado y Combinado:'}{' '}
-                <strong className="text-cyberCyan">{metrics.match_rate_pct}% integrity</strong>
+                {t.heroSection.telemetry.countedLabel}{' '}
+                <strong className="text-cyberCyan">{fmtNum(sourceSummary.merged_plays)} {t.heroSection.telemetry.listensUnit}</strong>
               </span>
             </div>
           </motion.div>

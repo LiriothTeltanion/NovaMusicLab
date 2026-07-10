@@ -3,13 +3,15 @@ import {
   buildMonthlyActivity,
   countryCodeToName,
   formatNumber,
+  getArtistOriginGeography,
   getMonthNames,
   getNightRatio,
   getRecords,
+  getSourceTelemetry,
   getTwoYearPeak,
   normalizeGenre,
 } from './analytics';
-import type { MusicDnaData, YearlyEra } from '../types';
+import type { MusicDnaData, SourceSummary, YearlyEra } from '../types';
 
 describe('normalizeGenre', () => {
   // The cascade is ordered substring matching - these cases lock the ordering
@@ -123,6 +125,80 @@ describe('countryCodeToName', () => {
     expect(countryCodeToName('')).toBe('Unknown');
     expect(countryCodeToName(undefined)).toBe('Unknown');
     expect(countryCodeToName('XQ')).toBe('XQ'); // unmapped real-looking code passes through
+  });
+});
+
+describe('getSourceTelemetry', () => {
+  it('uses one raw-event denominator across every supported source', () => {
+    const summary: SourceSummary = {
+      source_type: 'merged',
+      lastfm_plays: 50_476,
+      spotify_plays: 161_898,
+      youtube_plays: 1_758,
+      apple_music_plays: 44,
+      listenbrainz_plays: 11,
+      merged_plays: 81_604,
+      spotify_skips: 0,
+      spotify_skip_rate_pct: 0,
+      spotify_short_plays: 0,
+      spotify_short_play_rate_pct: 0,
+      overlap_unique_tracks: 0,
+      source_note: '',
+    };
+
+    const telemetry = getSourceTelemetry(summary);
+    const spotify = telemetry.segments.find(segment => segment.id === 'spotify');
+
+    expect(telemetry.rawEvents).toBe(214_187);
+    expect(telemetry.segments.map(segment => segment.id)).toEqual([
+      'spotify', 'lastfm', 'youtube', 'apple_music', 'listenbrainz',
+    ]);
+    expect(spotify?.sharePct).toBeLessThan(100);
+    expect(telemetry.segments.reduce((sum, segment) => sum + segment.sharePct, 0)).toBeCloseTo(100, 10);
+  });
+});
+
+describe('getArtistOriginGeography', () => {
+  it('uses the all-history aggregate instead of the truncated top-artist list', () => {
+    const data = {
+      core_metrics: { total_plays: 12 },
+      artist_origin_countries: [
+        { country: 'United States', plays: 3 },
+        { country: 'Sweden', plays: 2 },
+        { country: 'United States', plays: 4 },
+        { country: 'Unknown', plays: 3 },
+      ],
+      top_artists: [{ country: 'Finland', plays: 12 }],
+    } as unknown as MusicDnaData;
+
+    expect(getArtistOriginGeography(data)).toMatchObject({
+      isCompleteHistory: true,
+      countries: [
+        { country: 'United States', plays: 7 },
+        { country: 'Sweden', plays: 2 },
+      ],
+      knownOriginPlays: 9,
+      unresolvedOriginPlays: 3,
+      coveragePct: 75,
+    });
+  });
+
+  it('keeps legacy archives viewable while identifying their top-artist fallback', () => {
+    const data = {
+      core_metrics: { total_plays: 12 },
+      top_artists: [
+        { country: 'United States', plays: 8 },
+        { country: 'Sweden', plays: 4 },
+      ],
+    } as unknown as MusicDnaData;
+
+    expect(getArtistOriginGeography(data)).toMatchObject({
+      isCompleteHistory: false,
+      countries: [
+        { country: 'United States', plays: 8 },
+        { country: 'Sweden', plays: 4 },
+      ],
+    });
   });
 });
 

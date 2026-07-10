@@ -400,8 +400,8 @@ Kevin asks: "${prompt}"
             
             <p className="text-xs text-gray-400 leading-relaxed">
               {L
-                ? "Connecting your own key enables live, limitless AI reasoning over all your listening statistics. The key is stored locally in your browser's localStorage."
-                : "Conectar tu propia clave permite razonamiento de IA ilimitado y en tiempo real sobre tus estadísticas. La clave se guarda localmente en el localStorage de tu navegador."}
+                ? "Your key stays in browser local storage. When you send a message, Gemini receives your question plus a compact listening summary (totals, top artists, tracks, genres, countries, and eras), never the raw export files."
+                : "Tu clave se guarda localmente en el navegador. Al enviar un mensaje, Gemini recibe tu pregunta y un resumen de escucha (totales, artistas, canciones, géneros, países y eras), nunca los archivos de exportación en bruto."}
             </p>
 
             <div className="space-y-3 pt-2">

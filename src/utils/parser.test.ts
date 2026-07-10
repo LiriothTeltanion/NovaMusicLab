@@ -80,6 +80,45 @@ describe('music data parser', () => {
     expect(data.top_tracks.map(track => track.title)).toContain('In Blur');
   });
 
+  it('parses Spanish-locale Takeout dates and filters non-music watch events', () => {
+    // Real Takeout shape for a Spanish-language Google account: "Has visto"
+    // titles and "3 jul 2026, 5:00:15 p.m. IDT" dates (new Date() can't parse
+    // those - 42,000 rows were once silently dropped because of it).
+    const youtubeHtml = `
+      <html><body>
+        Has visto <a href="https://www.youtube.com/watch?v=a1">Metallica - Battery (Official Audio)</a><br>
+        <a href="https://www.youtube.com/channel/x1">Metallica</a><br>
+        3 jul 2026, 5:00:15 p.m. IDT<br>
+        Has visto <a href="https://www.youtube.com/watch?v=a2">In Blur</a><br>
+        <a href="https://www.youtube.com/channel/x2">Deafheaven - Topic</a><br>
+        3 jul 2026, 4:59:47 p.m. IDT<br>
+        Has visto <a href="https://www.youtube.com/watch?v=a3">El procedimiento que ganó un Premio Nobel pero arruinó cerebros</a><br>
+        <a href="https://www.youtube.com/channel/x3">La Traumatóloga Geek</a><br>
+        3 jul 2026, 4:58:29 p.m. IDT<br>
+        Has visto <a href="https://www.youtube.com/watch?v=a4">Clase magistral del Presidente ante alumnos - discurso completo</a><br>
+        <a href="https://www.youtube.com/channel/x4">Oficina del Presidente</a><br>
+        3 jul 2026, 4:57:13 p.m. IDT<br>
+        Has visto <a href="https://www.youtube.com/watch?v=a5">1 ene 2020, 10:30:00 a.m. IST check</a><br>
+      </body></html>
+    `;
+
+    const data = parseMusicSources({ youtubeHtmlTexts: [youtubeHtml] });
+
+    // Only the two confident music rows survive: known-catalog artist with an
+    // official marker, and a "- Topic" channel. The documentary and the
+    // political speech (dash title, unknown "artist") must NOT count.
+    expect(data.source_summary?.youtube_plays).toBe(2);
+    expect(data.top_artists.map(a => a.name).sort()).toEqual(['Deafheaven', 'Metallica']);
+    // "5:00:15 p.m." parsed as 17:00 local - both plays land in the 16-17h
+    // heatmap rows, none at 4-5 a.m.
+    const hour16and17 = (data.heatmap[16] ?? []).reduce((a, b) => a + b, 0)
+      + (data.heatmap[17] ?? []).reduce((a, b) => a + b, 0);
+    const hour4and5 = (data.heatmap[4] ?? []).reduce((a, b) => a + b, 0)
+      + (data.heatmap[5] ?? []).reduce((a, b) => a + b, 0);
+    expect(hour16and17).toBe(2);
+    expect(hour4and5).toBe(0);
+  });
+
   it('parses YouTube Takeout watch history HTML as listening events', () => {
     const youtubeHtml = `
       <html>
@@ -331,20 +370,31 @@ describe('music data parser', () => {
     expect(rows[0].artist).toBe('Real Artist');
   });
 
-  it('BUG: looksLikeHeader false-positives on a genuine first data row whose values merely contain header-like words', () => {
-    // These artist/album/track values are genuine data (not a header), but they contain the
-    // substrings "artist", "track" and "date" purely as part of their names. looksLikeHeader()
-    // only inspects substrings of the joined row, so it currently misclassifies this as a
-    // header and silently drops the first real row. This test documents the CURRENT (buggy)
-    // behavior; if looksLikeHeader is fixed to be less naive, this assertion should change to
-    // expect the row to be kept.
+  it('detects BOM-prefixed Last.fm headers that use Timestamp', () => {
+    const csv = [
+      '\uFEFFArtist Name,Album Name,Track Name,Timestamp',
+      'Real Artist,Real Album,Real Track,01 Jan 2026 10:00',
+    ].join('\n');
+
+    const rows = parseLastfmCsvRows(csv);
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ artist: 'Real Artist', album: 'Real Album', track: 'Real Track' });
+  });
+
+  it('keeps a genuine first data row whose values merely contain header-like words', () => {
     const csv = [
       'Track Artist Collective,Date Night Album,My Favorite Track,01 Jan 2026 10:00',
     ].join('\n');
 
     const rows = parseLastfmCsvRows(csv);
 
-    expect(rows).toHaveLength(0);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      artist: 'Track Artist Collective',
+      album: 'Date Night Album',
+      track: 'My Favorite Track',
+    });
   });
 
   it('round-trips album keys for albums containing commas and special characters', () => {

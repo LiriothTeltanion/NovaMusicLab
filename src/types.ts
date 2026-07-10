@@ -234,6 +234,17 @@ export interface MusicDnaData {
   yearly_eras: YearlyEra[];
   sessions: Session[];
   obsessions: Obsession[];
+  /**
+   * Resolved artist home countries weighted from every counted play in the
+   * archive. Plays without a known artist origin are omitted so consumers can
+   * report coverage honestly against `core_metrics.total_plays`.
+   *
+   * This is intentionally separate from `countries`, which records where the
+   * listener was connected from (for example, Spotify's `conn_country`). The
+   * field is optional so saved archives compiled before this aggregate was
+   * introduced remain importable.
+   */
+  artist_origin_countries?: CountryPlay[];
   countries: CountryPlay[];
   heatmap: number[][]; // 24x7 matrix
   daily_plays?: Record<string, number>;

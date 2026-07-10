@@ -1,4 +1,5 @@
 import type {
+  CountryPlay,
   MonthlyActivity,
   MusicDnaData,
   RecordsSummary,
@@ -149,6 +150,100 @@ export function deriveSourceSummary(data: MusicDnaData): SourceSummary {
     spotify_short_play_rate_pct: 0,
     overlap_unique_tracks: 0,
     source_note: 'Bundled analysis dataset. Source comparison values may come from the original offline report.',
+  };
+}
+
+export const SOURCE_TELEMETRY_FIELDS = [
+  { id: 'spotify', field: 'spotify_plays' },
+  { id: 'lastfm', field: 'lastfm_plays' },
+  { id: 'youtube', field: 'youtube_plays' },
+  { id: 'apple_music', field: 'apple_music_plays' },
+  { id: 'listenbrainz', field: 'listenbrainz_plays' },
+] as const;
+
+export type SourceTelemetryId = (typeof SOURCE_TELEMETRY_FIELDS)[number]['id'];
+
+export interface SourceTelemetrySegment {
+  id: SourceTelemetryId;
+  plays: number;
+  /** Share of all raw inbound events, never of deduplicated listens. */
+  sharePct: number;
+}
+
+function finiteNonNegative(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+/**
+ * Produces source shares from one internally consistent basis: raw incoming
+ * events. `SourceSummary` keeps source counts before countability filtering and
+ * cross-source deduplication, whereas `merged_plays` is the final listen count.
+ * Mixing those two bases can make a source appear to exceed 100%.
+ */
+export function getSourceTelemetry(summary: SourceSummary): {
+  rawEvents: number;
+  segments: SourceTelemetrySegment[];
+} {
+  const sourceCounts = SOURCE_TELEMETRY_FIELDS
+    .map(({ id, field }) => ({ id, plays: finiteNonNegative(summary[field]) }))
+    .filter((segment) => segment.plays > 0);
+  const rawEvents = sourceCounts.reduce((sum, segment) => sum + segment.plays, 0);
+
+  return {
+    rawEvents,
+    segments: sourceCounts.map((segment) => ({
+      ...segment,
+      sharePct: rawEvents ? Math.min(100, (segment.plays / rawEvents) * 100) : 0,
+    })),
+  };
+}
+
+export interface ArtistOriginGeography {
+  countries: CountryPlay[];
+  /** True when the dataset explicitly contains all-history origin aggregates. */
+  isCompleteHistory: boolean;
+  knownOriginPlays: number;
+  unresolvedOriginPlays: number;
+  coveragePct: number;
+}
+
+function aggregateCountryPlays(rows: readonly CountryPlay[]): CountryPlay[] {
+  const counts = new Map<string, number>();
+  rows.forEach(({ country, plays }) => {
+    const normalizedCountry = country?.trim();
+    const normalizedPlays = finiteNonNegative(plays);
+    if (!normalizedCountry || normalizedCountry === 'Unknown' || !normalizedPlays) return;
+    counts.set(normalizedCountry, (counts.get(normalizedCountry) ?? 0) + normalizedPlays);
+  });
+
+  return [...counts.entries()]
+    .map(([country, plays]) => ({ country, plays }))
+    .sort((a, b) => b.plays - a.plays || a.country.localeCompare(b.country));
+}
+
+/**
+ * Gets artist-origin geography without conflating it with listener-location
+ * telemetry. New datasets carry a precomputed full-history aggregate; legacy
+ * archives gracefully fall back to their available top-artist list so they
+ * remain viewable, while callers can label that reduced coverage accurately.
+ */
+export function getArtistOriginGeography(data: MusicDnaData): ArtistOriginGeography {
+  const isCompleteHistory = Array.isArray(data.artist_origin_countries);
+  const countries = aggregateCountryPlays(
+    isCompleteHistory
+      ? data.artist_origin_countries ?? []
+      : data.top_artists.map(({ country, plays }) => ({ country, plays })),
+  );
+  const knownOriginPlays = countries.reduce((sum, country) => sum + country.plays, 0);
+  const totalPlays = finiteNonNegative(data.core_metrics?.total_plays);
+  const unresolvedOriginPlays = Math.max(0, totalPlays - knownOriginPlays);
+
+  return {
+    countries,
+    isCompleteHistory,
+    knownOriginPlays,
+    unresolvedOriginPlays,
+    coveragePct: totalPlays ? Math.min(100, (knownOriginPlays / totalPlays) * 100) : 0,
   };
 }
 

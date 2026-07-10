@@ -63,4 +63,36 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText(/EXPEDIENTE DE MÚSICA IA/i)).toBeInTheDocument();
     expect(screen.getByText(/Confianza de datos/i)).toBeInTheDocument();
   });
+
+  it('renders every raw source on a normalized telemetry bar', () => {
+    localStorage.setItem('nml_lang', 'en');
+    const telemetryData = {
+      ...data,
+      source_summary: {
+        ...data.source_summary!,
+        spotify_plays: 1_600,
+        lastfm_plays: 500,
+        youtube_plays: 100,
+        apple_music_plays: 40,
+        listenbrainz_plays: 10,
+        merged_plays: 900,
+      },
+    } as MusicDnaData;
+
+    render(
+      <AppProvider>
+        <HeroSection data={telemetryData} onEnter={vi.fn()} onUpload={vi.fn()} />
+      </AppProvider>
+    );
+
+    const widths = ['spotify', 'lastfm', 'youtube', 'apple_music', 'listenbrainz']
+      .map(id => Number.parseFloat(screen.getByTestId(`source-segment-${id}`).style.width));
+
+    expect(screen.getByText('Raw Source Ingestion')).toBeInTheDocument();
+    expect(screen.getByText('Apple Music:')).toBeInTheDocument();
+    expect(screen.getByText('ListenBrainz:')).toBeInTheDocument();
+    expect(widths.every(width => width >= 0 && width <= 100)).toBe(true);
+    expect(widths.reduce((sum, width) => sum + width, 0)).toBeCloseTo(100, 8);
+    expect(screen.getByText(/Counted after dedupe:/i)).toBeInTheDocument();
+  });
 });

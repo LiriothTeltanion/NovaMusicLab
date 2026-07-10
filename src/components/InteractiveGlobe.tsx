@@ -55,6 +55,9 @@ const COUNTRY_COORDS: Record<string, { lat: number; lon: number; color: string }
   'Portugal': { lat: 39, lon: -8, color: '#10b981' },
   'Greece': { lat: 39, lon: 22, color: '#60a5fa' },
   'Romania': { lat: 46, lon: 25, color: '#fb923c' },
+  'South Korea': { lat: 36, lon: 128, color: '#f43f5e' },
+  'South Africa': { lat: -30, lon: 25, color: '#22d3ee' },
+  'Barbados': { lat: 13.19, lon: -59.54, color: '#f59e0b' },
 };
 
 const COUNTRY_CODES: Record<string, string> = {
@@ -90,6 +93,9 @@ const COUNTRY_CODES: Record<string, string> = {
   'Portugal': 'PRT',
   'Greece': 'GRC',
   'Romania': 'ROU',
+  'South Korea': 'KOR',
+  'South Africa': 'ZAF',
+  'Barbados': 'BRB',
 };
 
 // Dimensions & constants

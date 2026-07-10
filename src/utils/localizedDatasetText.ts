@@ -65,6 +65,8 @@ const CULTURAL_SCENE_TAGS: Record<Lang, CulturalSceneTag[]> = {
   ],
 };
 
+// Must cover every country value in artist_meta.json (the origin map surfaces
+// them all now, not just the historical listening countries).
 const COUNTRY_NAMES_ES: Record<string, string> = {
   'United States': 'Estados Unidos',
   'United Kingdom': 'Reino Unido',
@@ -79,6 +81,21 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   Venezuela: 'Venezuela',
   'Dominican Republic': 'República Dominicana',
   Romania: 'Rumanía',
+  Argentina: 'Argentina',
+  Australia: 'Australia',
+  Barbados: 'Barbados',
+  Brazil: 'Brasil',
+  Canada: 'Canadá',
+  Colombia: 'Colombia',
+  Iceland: 'Islandia',
+  Ireland: 'Irlanda',
+  Italy: 'Italia',
+  Japan: 'Japón',
+  Mexico: 'México',
+  Netherlands: 'Países Bajos',
+  'South Africa': 'Sudáfrica',
+  'South Korea': 'Corea del Sur',
+  Spain: 'España',
   Unknown: 'Desconocido',
 };
 

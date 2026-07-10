@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
@@ -75,8 +75,15 @@ describe('expanded info sections', () => {
       </AppProvider>
     );
 
+    // Header is always visible; the methodology body is collapsed by default
+    // and must appear after expanding (the collapse itself is asserted in
+    // SectionNarrative.test.tsx).
     expect(screen.getByText('Present vs archive')).toBeInTheDocument();
     expect(screen.getByText('How the present is compared with the historical archive')).toBeInTheDocument();
+    expect(screen.queryByText('Local Spotify snapshot')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /how the present is compared/i }));
+
     expect(screen.getByText('Local Spotify snapshot')).toBeInTheDocument();
     expect(screen.getByText('Historical match')).toBeInTheDocument();
   });

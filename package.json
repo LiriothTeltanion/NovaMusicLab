@@ -3,10 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "compile:data": "node scripts/compile_kevin_music_dna.mjs",
     "audit:data": "node scripts/audit_data_quality.mjs",
     "audit:data:strict": "node scripts/audit_data_quality.mjs --strict",
     "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",

@@ -7,6 +7,7 @@ import SectionNarrative from './SectionNarrative';
 import FlagArt from './FlagArt';
 import InteractiveGlobe from './InteractiveGlobe';
 import { getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
+import { getArtistOriginGeography } from '../utils/analytics';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -83,16 +84,45 @@ const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMet
     es: { lang: 'Rumano/Inglés', scene: 'Metal/Rock Alternativo · Electro-Pop' },
     en: { lang: 'Romanian/English', scene: 'Metal/Alternative Rock · Electro-Pop' },
   },
+  'Brazil': {
+    flag: '🇧🇷 BR', color: '#34d399',
+    es: { lang: 'Portugués/Inglés', scene: 'Post-Hardcore Digital · Rock Alternativo' },
+    en: { lang: 'Portuguese/English', scene: 'Digital Post-Hardcore · Alternative Rock' },
+  },
+  'Spain': {
+    flag: '🇪🇸 ES', color: '#f59e0b',
+    es: { lang: 'Español', scene: 'Folk Metal · Metal Juglaresco' },
+    en: { lang: 'Spanish', scene: 'Folk Metal · Minstrel Metal' },
+  },
 };
 
 export default function CulturalMap({ data }: CulturalMapProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const { lang, t } = useApp();
-  const countries = data.countries;
+  // Artist-origin geography is compiled from every counted play with a
+  // resolved artist home country. Legacy archives lack that optional aggregate,
+  // so the helper reports a clearly labeled top-artist fallback instead of
+  // pretending it covers all history.
+  const originGeography = React.useMemo(() => getArtistOriginGeography(data), [data]);
+  const countries = originGeography.countries;
+  // `countries` is deliberately not reused here: it means where the listener
+  // was connected from, not where the music came from.
+  const listeningCountries = data.countries.filter(c => c.country && c.country !== 'Unknown' && c.plays > 0);
   const maxPlays = Math.max(...countries.map(c => c.plays), 1);
   const sceneTags = getCulturalSceneTags(lang);
+  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const originScopeNote = originGeography.isCompleteHistory
+    ? t.cultural.originScopeFull(
+        originGeography.knownOriginPlays.toLocaleString(locale),
+        data.core_metrics.total_plays.toLocaleString(locale),
+        Math.round(originGeography.coveragePct),
+      )
+    : t.cultural.originScopeLegacy;
+  const heroDescription = originGeography.isCompleteHistory
+    ? t.cultural.heroDesc(countries.length)
+    : t.cultural.heroDescLegacy;
 
-  // Dynamically calculate language distribution based on country play counts
+  // Language distribution follows the music's origin countries
   const languageData = React.useMemo(() => {
     const totalPlays = countries.reduce((sum, c) => sum + c.plays, 0) || 1;
     const langGroup: Record<string, number> = {};
@@ -113,7 +143,11 @@ export default function CulturalMap({ data }: CulturalMapProps) {
       .sort((a, b) => b.plays - a.plays)
       .map((item, idx) => ({
         label: item.label,
-        pct: Math.max(1, Math.round(item.pct)), // Ensure at least 1% for display
+        // Honest display: a 0.1% share must never be inflated to a fabricated
+        // "1%" (a Math.max(1,...) floor here once made totals exceed 100%).
+        // Bars keep the true fraction; the text shows "<1%" for tiny shares.
+        pct: item.pct,
+        pctLabel: item.pct >= 0.5 ? `${Math.round(item.pct)}%` : '<1%',
         color: COLORS[idx % COLORS.length],
       }));
   }, [countries, lang]);
@@ -140,7 +174,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
             {t.cultural.heroTitle}
           </h3>
           <p className="text-sm text-gray-300 leading-relaxed">
-            {t.cultural.heroDesc(countries.length)}
+            {heroDescription}
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             {sceneTags.map(({ tag, color }) => (
@@ -155,61 +189,71 @@ export default function CulturalMap({ data }: CulturalMapProps) {
 
       {/* Country cards grid */}
       <div>
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-1">
           <Map className="w-4 h-4 text-gray-400" />
           <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">
             {t.cultural.artistsByCountry}
           </span>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-          {countries.map((c, idx) => {
-            const meta = COUNTRY_META[c.country] ?? {
-              flag: '🌐', color: '#6b7280',
-              es: { lang: 'Varios', scene: 'Variado' },
-              en: { lang: 'Various', scene: 'Varied' },
-            };
-            const localeMeta = meta[lang];
-            const pct = Math.round((c.plays / maxPlays) * 100);
-            const isSelected = selected === c.country;
-            return (
-              <motion.button
-                key={c.country}
-                custom={idx}
-                variants={cardVariants}
-                initial="initial"
-                animate="animate"
-                onClick={() => setSelected(isSelected ? null : c.country)}
-                className={`glass-panel p-4 rounded-2xl text-left transition-all border-2 w-full ${isSelected ? 'scale-[1.02]' : ''}`}
-                style={{ borderColor: isSelected ? meta.color : 'transparent' }}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="h-10 px-2 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: `${meta.color}20`, border: `1px solid ${meta.color}40` }}>
-                    <FlagArt country={c.country} size={30} title={localizeCountryName(c.country, lang)} />
+        <p className="text-[11px] text-gray-500 mb-4">
+          {originGeography.isCompleteHistory && `${t.cultural.originNote} `}
+          {originScopeNote}
+        </p>
+        {countries.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {countries.map((c, idx) => {
+              const meta = COUNTRY_META[c.country] ?? {
+                flag: '🌐', color: '#6b7280',
+                es: { lang: 'Varios', scene: 'Variado' },
+                en: { lang: 'Various', scene: 'Varied' },
+              };
+              const localeMeta = meta[lang];
+              const pct = Math.round((c.plays / maxPlays) * 100);
+              const isSelected = selected === c.country;
+              return (
+                <motion.button
+                  key={c.country}
+                  custom={idx}
+                  variants={cardVariants}
+                  initial="initial"
+                  animate="animate"
+                  onClick={() => setSelected(isSelected ? null : c.country)}
+                  className={`glass-panel p-4 rounded-2xl text-left transition-all border-2 w-full ${isSelected ? 'scale-[1.02]' : ''}`}
+                  style={{ borderColor: isSelected ? meta.color : 'transparent' }}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="h-10 px-2 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${meta.color}20`, border: `1px solid ${meta.color}40` }}>
+                      <FlagArt country={c.country} size={30} title={localizeCountryName(c.country, lang)} />
+                    </div>
+                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
+                      style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>
+                      {c.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}
+                    </span>
                   </div>
-                  <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
-                    style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>
-                    {c.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}
-                  </span>
-                </div>
-                <p className="text-sm font-bold text-white leading-tight">{localizeCountryName(c.country, lang)}</p>
-                <p className="text-[10px] text-gray-500 font-mono mt-0.5">{localeMeta.lang}</p>
-                <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
-                  <motion.div className="h-full rounded-full"
-                    style={{ backgroundColor: meta.color }}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${pct}%` }}
-                    transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
-                  />
-                </div>
-                {isSelected && (
-                  <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                    className="text-[10px] text-gray-300 mt-2.5 leading-relaxed">{localeMeta.scene}</motion.p>
-                )}
-              </motion.button>
-            );
-          })}
-        </div>
+                  <p className="text-sm font-bold text-white leading-tight">{localizeCountryName(c.country, lang)}</p>
+                  <p className="text-[10px] text-gray-500 font-mono mt-0.5">{localeMeta.lang}</p>
+                  <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
+                    <motion.div className="h-full rounded-full"
+                      style={{ backgroundColor: meta.color }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
+                    />
+                  </div>
+                  {isSelected && (
+                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                      className="text-[10px] text-gray-300 mt-2.5 leading-relaxed">{localeMeta.scene}</motion.p>
+                  )}
+                </motion.button>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-xs text-gray-500">
+            {t.cultural.originEmpty}
+          </p>
+        )}
       </div>
 
       {/* Interactive Globe & Language distribution side-by-side */}
@@ -220,7 +264,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
           <div className="flex items-center gap-2 mb-4 self-start">
             <Globe className="w-5 h-5 text-cyberCyan" />
             <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {lang === 'en' ? 'Spatial Exploration' : 'Exploración Espacial'}
+              {t.cultural.spatialTitle}
             </h3>
           </div>
           <InteractiveGlobe
@@ -240,15 +284,15 @@ export default function CulturalMap({ data }: CulturalMapProps) {
               <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
             </div>
             <div className="space-y-4">
-              {languageData.map(({ label, pct, color }, i) => (
+              {languageData.map(({ label, pct, pctLabel, color }, i) => (
                 <div key={label} className="space-y-1.5">
                   <div className="flex justify-between text-xs font-mono">
                     <span className="text-gray-300 font-bold">{label}</span>
-                    <span style={{ color }} className="font-bold">{pct}%</span>
+                    <span style={{ color }} className="font-bold">{pctLabel}</span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
                     <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
-                      initial={{ width: 0 }} animate={{ width: `${pct}%` }}
+                      initial={{ width: 0 }} animate={{ width: `${Math.max(pct, 0.75)}%` }}
                       transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: 'easeOut' }} />
                   </div>
                 </div>
@@ -257,6 +301,34 @@ export default function CulturalMap({ data }: CulturalMapProps) {
           </div>
         </div>
       </div>
+
+      {/* Listening locations - a different fact: Spotify's conn_country
+          telemetry of where the USER was, honestly labeled as such. */}
+      {listeningCountries.length > 0 && (
+        <div className="glass-panel p-6 rounded-3xl">
+          <div className="flex items-center gap-2 mb-1">
+            <Map className="w-4 h-4 text-gray-400" />
+            <h3 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-widest">
+              {t.cultural.listeningTitle}
+            </h3>
+          </div>
+          <p className="text-[11px] text-gray-500 mb-4">{t.cultural.listeningNote}</p>
+          <div className="flex flex-wrap gap-3">
+            {listeningCountries.map(c => (
+              <div key={c.country}
+                className="flex items-center gap-2.5 px-3 py-2 rounded-2xl bg-white/[0.03] border border-white/10">
+                <FlagArt country={c.country} size={22} title={localizeCountryName(c.country, lang)} />
+                <div>
+                  <p className="text-xs font-bold text-white leading-tight">{localizeCountryName(c.country, lang)}</p>
+                  <p className="text-[10px] font-mono text-gray-500">
+                    {t.cultural.playsLabel(c.plays.toLocaleString(locale))}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Insight */}
       <div className="glass-panel p-6 rounded-3xl border border-cyberCyan/15 flex items-start gap-4">

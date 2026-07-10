@@ -200,8 +200,8 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
   a second large uncommitted wave (InteractiveGlobe wired into CulturalMap with a
   real world-border dataset + per-country dossier, generative cyber-avatars/flags,
   a big HeroSection rewrite with AI-dossier/telemetry cards, a terminal-style
-  upload console, `compile_kevin_music_dna.ts` rebuilding the bundled dataset from
-  the RAW exports, theme-transition smoothing, mock-data test isolation). Kept all
+  upload console, the `compile:data` workflow rebuilding the bundled dataset from
+  explicitly selected RAW exports, theme-transition smoothing, mock-data test isolation). Kept all
   of it after review; fixed: 2 lint errors (unused confetti import, unstable
   `metrics` memo dep), a dead-end "Launch Chat Console" CTA (went to dashboard,
   now opens the AI Assistant), an AudioContext leak per hero click, an invalid
@@ -302,8 +302,8 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
 8. **Era narratives in `EraExplorer.tsx` embed specific stat numbers as prose**
    (13,011 plays for 2021, etc., updated 2026-07-10 to match the deduped
    dataset). If the bundled dataset is ever recompiled again, re-check those
-   hardcoded numbers — `scripts/compile_kevin_music_dna.ts` does NOT update
-   them automatically.
+   hardcoded numbers — `npm run compile:data -- --source-dir <exports-dir>` does
+   not update them automatically.
 
 ## Cross-agent etiquette
 
