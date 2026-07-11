@@ -14,7 +14,7 @@ import CountUp from './CountUp';
 import ArtistAvatar from './ArtistAvatar';
 import { getNightRatio, getPeakYear, getRecords } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
-import { axisProps, barCursor, ChartGradients, GlassTooltip, gridStroke } from './chartKit';
+import { axisProps, barCursor, ChartGradients, GlassTooltip, gridStroke, CHART_ANIMATION } from './chartKit';
 
 interface AchievementsProps { data: MusicDnaData; }
 
@@ -364,7 +364,7 @@ export default function Achievements({ data }: AchievementsProps) {
               <RadarChart data={radarData}>
                 <PolarGrid stroke={gridStroke(tc.c1)} />
                 <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: tc.mode === 'light' ? '#475569' : '#9ca3af' }} />
-                <Radar name={t.achievements.yourProfile} dataKey="val"
+                <Radar {...CHART_ANIMATION} name={t.achievements.yourProfile} dataKey="val"
                   stroke={tc.c1} strokeWidth={2} fill={tc.c1} fillOpacity={0.22}
                   dot={{ fill: tc.c1, r: 3, strokeWidth: 0 }} />
               </RadarChart>
@@ -386,7 +386,7 @@ export default function Achievements({ data }: AchievementsProps) {
                 <XAxis dataKey="tier" {...axisProps(tc.mode)} />
                 <YAxis {...axisProps(tc.mode)} />
                 <Tooltip cursor={barCursor(tc.c1)} content={<GlassTooltip accent={tc.c1} />} />
-                <Bar dataKey="points" name={t.achievements.pointsLegend} radius={[6, 6, 0, 0]}>
+                <Bar dataKey="points" name={t.achievements.pointsLegend} radius={[6, 6, 0, 0]} {...CHART_ANIMATION}>
                   {[TIER_COLORS.legendary.glow, TIER_COLORS.platinum.glow, TIER_COLORS.gold.glow, TIER_COLORS.silver.glow].map((color, i) => (
                     <Cell key={i} fill={`url(#tierGrad-${i})`} stroke={color} strokeOpacity={0.6} strokeWidth={1} />
                   ))}

@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:check": "npm run build && node scripts/check_bundle_budget.mjs",
     "lint": "oxlint",
     "compile:data": "node scripts/compile_kevin_music_dna.mjs",
     "audit:data": "node scripts/audit_data_quality.mjs",

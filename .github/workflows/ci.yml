@@ -21,4 +21,4 @@ jobs:
       - run: npm run lint
       - run: npm run audit:data:strict
       - run: npm run test
-      - run: npm run build
+      - run: npm run build:check

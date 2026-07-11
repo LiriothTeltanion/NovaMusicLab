@@ -70,6 +70,28 @@ p, span, button, a, svg {
   transition-duration: 450ms;
 }
 
+/* ── Tactile press feedback ─────────────────────────────────────────────────
+ * Every real control compresses slightly while pressed - one consistent,
+ * quick response across mouse and touch. Uses the standalone `scale`
+ * property so it never fights framer-motion's inline `transform`, and gets
+ * its own fast duration inside the shared theme-transition rule above.
+ * Suppressed entirely under prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  button,
+  [role="button"] {
+    transition-property: color, background-color, border-color, box-shadow, scale;
+    transition-duration: 450ms, 450ms, 450ms, 450ms, 120ms;
+  }
+  button:active:not(:disabled),
+  [role="button"]:active:not([aria-disabled="true"]) {
+    scale: 0.965;
+  }
+  /* Larger surfaces compress less - a full card at 0.965 feels like it jumps. */
+  .glass-panel:is(button, [role="button"]):active {
+    scale: 0.988;
+  }
+}
+
 /* Theme-aware utility classes */
 .accent1  { color: var(--c1); }
 .accent2  { color: var(--c2); }

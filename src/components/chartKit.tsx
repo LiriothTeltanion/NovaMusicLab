@@ -1,12 +1,60 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useApp } from '../context/AppContext';
 
 /**
  * Shared premium styling for every Recharts surface in the app, so charts
  * finally match the glass/neon language of the KPI cards: one glass tooltip,
- * reusable gradient defs and theme-aware axis/grid props instead of the
- * default gray Recharts look.
+ * reusable gradient defs, theme-aware axis/grid props and ONE shared motion
+ * language (draw-in timing + swap transition) instead of each section
+ * animating at its own speed.
  */
+
+/**
+ * Shared Recharts draw-in timing - spread into <Bar>/<Area>/<Line>/<Radar>
+ * (`{...CHART_ANIMATION}`) so every chart in the app draws with the same
+ * rhythm instead of Recharts' per-chart defaults.
+ */
+export const CHART_ANIMATION = {
+  animationDuration: 750,
+  animationEasing: 'ease-out',
+} as const;
+
+/** One timing for every chart/panel swap in the app (see ChartSwap below). */
+export const SWAP_TRANSITION = { duration: 0.35, ease: 'easeOut' as const };
+
+/** Enter/exit poses matching ChartSwap, for sites that need AnimatePresence exits. */
+export const SWAP_POSES = {
+  initial: { opacity: 0, y: 14, scale: 0.995 },
+  animate: { opacity: 1, y: 0, scale: 1 },
+  exit: { opacity: 0, y: -10, scale: 0.995 },
+} as const;
+
+/**
+ * Shared transition for swapping one chart/panel for another (sub-tab change,
+ * year selection, mood filter...). Keyed remounts crossfade+rise identically
+ * everywhere. Respects prefers-reduced-motion by collapsing to a plain fade.
+ *
+ *   <ChartSwap swapKey={subTab}> ...chart... </ChartSwap>
+ */
+export function ChartSwap({ swapKey, children, className }: {
+  swapKey: string | number;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const reduceMotion = Boolean(useReducedMotion());
+  return (
+    <motion.div
+      key={swapKey}
+      className={className}
+      initial={reduceMotion ? { opacity: 0 } : SWAP_POSES.initial}
+      animate={reduceMotion ? { opacity: 1 } : SWAP_POSES.animate}
+      transition={SWAP_TRANSITION}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 /** Theme-aware axis tick/stroke props (spread into <XAxis>/<YAxis>). */
 export function axisProps(mode: 'dark' | 'light' = 'dark') {

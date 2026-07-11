@@ -29,6 +29,7 @@ import GenreArt from './GenreArt';
 import FlagArt from './FlagArt';
 import MediaEmbedHub from './MediaEmbedHub';
 import SectionNarrative from './SectionNarrative';
+import { CHART_ANIMATION, SWAP_POSES, SWAP_TRANSITION } from './chartKit';
 import { localizeEraLabel } from '../utils/localeText';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
@@ -102,7 +103,8 @@ interface TopHistoricoProps {
 
 type TopTab = 'canciones' | 'artistas' | 'albums' | 'generos' | 'anos';
 
-const tabTransition = { duration: 0.3, ease: 'easeOut' as const };
+// Sub-tab swaps ride the app-wide shared chart/panel transition (chartKit).
+const tabTransition = SWAP_TRANSITION;
 
 const listVariants = { animate: { transition: { staggerChildren: 0.04 } } };
 const itemVariants = {
@@ -2517,8 +2519,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
       {/* Content */}
       <AnimatePresence mode="wait">
-        <motion.div key={tab} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }} transition={tabTransition}>
+        <motion.div key={tab} initial={SWAP_POSES.initial} animate={SWAP_POSES.animate}
+          exit={SWAP_POSES.exit} transition={tabTransition}>
 
           {/* ARTISTAS */}
           {tab === 'artistas' && (
@@ -2569,7 +2571,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11}
                           width={145} tick={{ fill: '#d1d5db' }} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]}>
+                        <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
                           {data.top_artists.slice(0, 20).map((artist, i) => (
                             <Cell key={artist.name} fill={selectedArtist?.name === artist.name ? tc.c1 : (i < 3 ? tc.c2 : tc.c3)} fillOpacity={selectedArtist?.name === artist.name || i < 3 ? 1 : 0.65} />
                           ))}
@@ -2632,7 +2634,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11}
                           width={145} tick={{ fill: '#d1d5db' }} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="plays" radius={[0, 6, 6, 0]}>
+                        <Bar dataKey="plays" radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
                           {data.top_tracks.slice(0, 20).map((track, i) => {
                             const isActive = selectedTrack
                               ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title)
@@ -2733,7 +2735,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={10}
                         width={160} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]}>
+                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
                         {genreData.map((_, i) => (
                           <Cell key={i} fill={COLORS[i % COLORS.length]} />
                         ))}
@@ -2770,10 +2772,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
                       <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Area type="monotone" dataKey="plays" name={t.topHistorico.playsLegend}
+                      <Area {...CHART_ANIMATION} type="monotone" dataKey="plays" name={t.topHistorico.playsLegend}
                         stroke={tc.c1} strokeWidth={2.5} fill="url(#topGradYear)"
                         dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-                      <Area type="monotone" dataKey="artistas" name={t.topHistorico.uniqueArtistsLegend}
+                      <Area {...CHART_ANIMATION} type="monotone" dataKey="artistas" name={t.topHistorico.uniqueArtistsLegend}
                         stroke={tc.c3} strokeWidth={2} fill="url(#topGradArt)"
                         dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
                     </AreaChart>

@@ -23,6 +23,7 @@ const ARTIST_QUERY_ALIASES = new Map([
   // Spotify transliterates Hebrew band names; MusicBrainz indexes the originals.
   ['hayehudim', ['היהודים']],
   ['girafot', ['גירפות', "ג'ירפות"]],
+  ['rami kleinstein', ['רמי קלינשטיין', 'רמי קליינשטיין']],
 ]);
 
 const ARTIST_KNOWLEDGE_OVERRIDES = new Map([

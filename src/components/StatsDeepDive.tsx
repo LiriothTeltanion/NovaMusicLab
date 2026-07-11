@@ -21,6 +21,7 @@ import {
 } from '../utils/analytics';
 import SectionNarrative from './SectionNarrative';
 import YearlyErasTable from './YearlyErasTable';
+import { CHART_ANIMATION, ChartSwap } from './chartKit';
 
 interface StatsDeepDiveProps { data: MusicDnaData; }
 
@@ -265,21 +266,21 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             {t.statsDeepDive.peakLabel}<span style={{ color: tc.c2 }}>{peakMonth.month}</span>
             {' — '}{t.statsDeepDive.playsCount(fmtNum(peakMonth.plays))}
           </div>
-          <div className="h-52">
+          <ChartSwap swapKey={selectedYear} className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={selectedYearMonths} margin={{ left: 0, right: 8, top: 4, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" />
                 <XAxis dataKey="month" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <YAxis stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
                 <Tooltip content={<CustomTooltip tc={tc} />} />
-                <Bar dataKey="plays" name={t.statsDeepDive.plays} radius={[4, 4, 0, 0]}>
+                <Bar dataKey="plays" name={t.statsDeepDive.plays} radius={[4, 4, 0, 0]} {...CHART_ANIMATION}>
                   {selectedYearMonths.map((d, i) => (
                     <Cell key={i} fill={d.plays === peakMonth.plays ? tc.c2 : tc.c1} fillOpacity={d.plays === peakMonth.plays ? 1 : 0.65} />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </div>
+          </ChartSwap>
         </div>
 
         {/* Weekday Radar */}
@@ -292,7 +293,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
               <RadarChart data={radarData}>
                 <PolarGrid stroke="#1e293b" />
                 <PolarAngleAxis dataKey="day" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <Radar name={t.statsDeepDive.plays} dataKey="plays"
+                <Radar {...CHART_ANIMATION} name={t.statsDeepDive.plays} dataKey="plays"
                   stroke={tc.c1} fill={tc.c1} fillOpacity={0.2} />
               </RadarChart>
             </ResponsiveContainer>
@@ -373,13 +374,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
               <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
               <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
               <Tooltip content={<CustomTooltip tc={tc} />} />
-              <Area type="monotone" dataKey="plays" name={t.statsDeepDive.plays}
+              <Area {...CHART_ANIMATION} type="monotone" dataKey="plays" name={t.statsDeepDive.plays}
                 stroke={tc.c1} strokeWidth={2.5} fill="url(#gPlays)"
                 dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-              <Area type="monotone" dataKey="artistas" name={t.statsDeepDive.uniqueArtists}
+              <Area {...CHART_ANIMATION} type="monotone" dataKey="artistas" name={t.statsDeepDive.uniqueArtists}
                 stroke={tc.c3} strokeWidth={2} fill="url(#gArtistas)"
                 dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
-              <Area type="monotone" dataKey="diversidad" name={t.statsDeepDive.diversityPct}
+              <Area {...CHART_ANIMATION} type="monotone" dataKey="diversidad" name={t.statsDeepDive.diversityPct}
                 stroke={tc.c4} strokeWidth={1.5} fill="url(#gDiversity)"
                 dot={false} activeDot={{ r: 5 }} />
             </AreaChart>

@@ -1,0 +1,493 @@
+.museum-chapter {
+  --chapter-primary: var(--c1);
+  --chapter-secondary: var(--c3);
+  --chapter-tertiary: var(--c2);
+  --chapter-grid-opacity: 0.34;
+  --chapter-scan-opacity: 0.12;
+  --chapter-halo-opacity: 0.2;
+  --chapter-beam-tempo: 14s;
+  --chapter-scan-tempo: 18.2s;
+  --chapter-ring-tempo: 19.6s;
+  --chapter-dash-tempo: 10.5s;
+  --chapter-spin-tempo: 25.2s;
+  --chapter-float-tempo: 7.7s;
+  --chapter-pulse-tempo: 4.5s;
+  position: relative;
+  isolation: isolate;
+  min-height: 17rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--chapter-primary) 34%, transparent);
+  border-radius: clamp(1.5rem, 3vw, 2.25rem);
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--chapter-primary) 20%, transparent), transparent 38%),
+    radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--chapter-secondary) 18%, transparent), transparent 36%),
+    linear-gradient(118deg, color-mix(in srgb, var(--bg) 90%, var(--chapter-primary) 10%), color-mix(in srgb, var(--bg) 92%, var(--chapter-secondary) 8%));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.11),
+    inset 0 -50px 90px rgba(0, 0, 0, 0.13),
+    0 30px 80px color-mix(in srgb, var(--chapter-primary) 12%, transparent);
+}
+
+.museum-chapter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--chapter-primary) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--chapter-primary) 8%, transparent) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: var(--chapter-grid-opacity);
+  mask-image: linear-gradient(90deg, black, transparent 68%);
+  -webkit-mask-image: linear-gradient(90deg, black, transparent 68%);
+}
+
+.museum-chapter::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 8%;
+  left: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--chapter-primary), var(--chapter-secondary), transparent);
+  opacity: 0.86;
+  box-shadow: 0 0 20px var(--chapter-primary);
+}
+
+.museum-chapter__ambient,
+.museum-chapter__ambient > span {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.museum-chapter__ambient {
+  z-index: -1;
+  overflow: hidden;
+}
+
+.museum-chapter__beam {
+  width: 42%;
+  left: auto !important;
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--chapter-tertiary) 13%, transparent), transparent);
+  transform: skewX(-18deg) translateX(95%);
+  animation: museum-chapter-beam var(--chapter-beam-tempo) ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
+
+.museum-chapter__scan {
+  background: repeating-linear-gradient(0deg, transparent 0 7px, color-mix(in srgb, var(--chapter-primary) 7%, transparent) 8px);
+  opacity: var(--chapter-scan-opacity);
+  animation: museum-chapter-scan var(--chapter-scan-tempo) linear infinite;
+}
+
+.museum-chapter__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 3rem);
+  min-height: 15rem;
+  padding: clamp(1.5rem, 4vw, 3.25rem);
+  padding-bottom: clamp(2.6rem, 5vw, 3.5rem);
+}
+
+.museum-chapter__copy {
+  min-width: 0;
+  max-width: 48rem;
+}
+
+.museum-chapter__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.85rem;
+  color: var(--chapter-primary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: clamp(0.64rem, 1.2vw, 0.74rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.museum-chapter__emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid color-mix(in srgb, var(--chapter-primary) 42%, transparent);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--chapter-primary) 12%, transparent);
+  font-size: 1rem;
+  letter-spacing: 0;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--chapter-primary) 22%, transparent);
+}
+
+.museum-chapter__eyebrow-separator {
+  color: color-mix(in srgb, var(--chapter-secondary) 72%, var(--fg));
+}
+
+.museum-chapter h1 {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--fg);
+  font-size: clamp(2.25rem, 5.4vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+  text-wrap: balance;
+  text-shadow: 0 8px 30px color-mix(in srgb, var(--chapter-primary) 18%, transparent);
+}
+
+.museum-chapter__description {
+  max-width: 45rem;
+  margin: 1.05rem 0 0;
+  color: color-mix(in srgb, var(--fg) 68%, transparent);
+  font-size: clamp(0.92rem, 1.8vw, 1.06rem);
+  line-height: 1.7;
+}
+
+.museum-chapter__description strong {
+  color: color-mix(in srgb, var(--chapter-primary) 80%, var(--fg));
+  font-weight: 700;
+}
+
+.museum-chapter__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1.25rem 0 0;
+}
+
+.museum-chapter__metric {
+  min-width: 9rem;
+  max-width: min(100%, 18rem);
+  padding: 0.7rem 0.9rem 0.74rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--chapter-primary) 25%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+}
+
+.museum-chapter__metric dt {
+  margin-bottom: 0.22rem;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--fg) 52%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.57rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.museum-chapter__metric dd {
+  margin: 0;
+  overflow: hidden;
+  color: var(--fg);
+  font-size: clamp(0.86rem, 1.5vw, 1.05rem);
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.museum-chapter__art {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 13rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--chapter-secondary) 24%, transparent);
+  border-radius: clamp(1.25rem, 3vw, 2rem);
+  background:
+    radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--chapter-primary) 15%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--chapter-secondary) 10%, transparent), color-mix(in srgb, var(--bg) 48%, transparent));
+  box-shadow: inset 0 0 45px color-mix(in srgb, var(--chapter-secondary) 8%, transparent);
+}
+
+.museum-chapter__art::before {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border: 1px solid color-mix(in srgb, var(--chapter-primary) 16%, transparent);
+  border-radius: 50%;
+  animation: museum-chapter-ring var(--chapter-ring-tempo) linear infinite;
+}
+
+.museum-chapter__art svg {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 23rem);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--chapter-primary) 30%, transparent));
+}
+
+.museum-chapter__line,
+.museum-chapter__shape {
+  vector-effect: non-scaling-stroke;
+}
+
+.museum-chapter__line {
+  fill: none;
+  stroke: var(--chapter-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.museum-chapter__line--secondary {
+  stroke: var(--chapter-secondary);
+  opacity: 0.72;
+}
+
+.museum-chapter__shape {
+  fill: color-mix(in srgb, var(--chapter-primary) 16%, transparent);
+  stroke: color-mix(in srgb, var(--chapter-primary) 82%, var(--fg));
+  stroke-width: 1.4;
+}
+
+.museum-chapter__shape--secondary {
+  fill: color-mix(in srgb, var(--chapter-secondary) 20%, transparent);
+  stroke: var(--chapter-secondary);
+}
+
+.museum-chapter__node {
+  fill: var(--chapter-tertiary);
+  stroke: color-mix(in srgb, var(--chapter-tertiary) 68%, white);
+  stroke-width: 1.5;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.museum-chapter__dash {
+  stroke-dasharray: 7 11;
+  animation: museum-chapter-dash var(--chapter-dash-tempo) linear infinite;
+}
+
+.museum-chapter__spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: museum-chapter-spin var(--chapter-spin-tempo) linear infinite;
+}
+
+.museum-chapter__float {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: museum-chapter-float var(--chapter-float-tempo) ease-in-out infinite alternate;
+}
+
+.museum-chapter__pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: museum-chapter-pulse var(--chapter-pulse-tempo) ease-in-out infinite;
+}
+
+.museum-chapter__halo {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(24px);
+  opacity: var(--chapter-halo-opacity);
+}
+
+.museum-chapter__halo--one {
+  top: 10%;
+  left: 8%;
+  width: 7rem;
+  height: 7rem;
+  background: var(--chapter-primary);
+}
+
+.museum-chapter__halo--two {
+  right: 4%;
+  bottom: 0;
+  width: 8rem;
+  height: 8rem;
+  background: var(--chapter-secondary);
+}
+
+.museum-chapter__art-caption {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  color: color-mix(in srgb, var(--chapter-primary) 56%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.museum-chapter__footer {
+  position: absolute;
+  right: clamp(1.5rem, 4vw, 3.25rem);
+  bottom: 1rem;
+  left: clamp(1.5rem, 4vw, 3.25rem);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: color-mix(in srgb, var(--fg) 34%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.museum-chapter__footer-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--chapter-primary) 42%, transparent), color-mix(in srgb, var(--chapter-secondary) 20%, transparent));
+}
+
+[data-mode='light'] .museum-chapter {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 28px 70px color-mix(in srgb, var(--chapter-primary) 11%, transparent);
+}
+
+[data-mode='light'] .museum-chapter__metric {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@keyframes museum-chapter-beam {
+  from { transform: skewX(-18deg) translateX(105%); }
+  to { transform: skewX(-18deg) translateX(-230%); }
+}
+
+@keyframes museum-chapter-scan {
+  from { background-position: 0 0; }
+  to { background-position: 0 96px; }
+}
+
+@keyframes museum-chapter-ring {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes museum-chapter-dash {
+  to { stroke-dashoffset: -72; }
+}
+
+@keyframes museum-chapter-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes museum-chapter-float {
+  from { transform: translate3d(0, -2px, 0) rotate(-0.6deg); }
+  to { transform: translate3d(0, 5px, 0) rotate(0.8deg); }
+}
+
+@keyframes museum-chapter-pulse {
+  0%, 100% { opacity: 0.72; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@media (max-width: 920px) {
+  .museum-chapter__content {
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
+  }
+
+  .museum-chapter__art {
+    min-height: 11rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .museum-chapter {
+    min-height: 0;
+    margin-bottom: 1.25rem;
+    border-radius: 1.5rem;
+  }
+
+  .museum-chapter__content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.25rem 1.15rem 2.9rem;
+  }
+
+  .museum-chapter__eyebrow {
+    gap: 0.42rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.61rem;
+    letter-spacing: 0.14em;
+  }
+
+  .museum-chapter__emoji {
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 0.68rem;
+    font-size: 0.9rem;
+  }
+
+  .museum-chapter h1 {
+    max-width: 11ch;
+    font-size: clamp(2.35rem, 12vw, 3.35rem);
+    line-height: 0.94;
+  }
+
+  .museum-chapter__description {
+    margin-top: 0.85rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .museum-chapter__metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .museum-chapter__art {
+    min-height: 8.75rem;
+    max-height: 9.5rem;
+    border-radius: 1.15rem;
+  }
+
+  .museum-chapter__art svg {
+    width: min(100%, 17rem);
+  }
+
+  .museum-chapter__metric {
+    min-width: 0;
+    width: 100%;
+    padding: 0.65rem 0.7rem 0.68rem;
+    border-radius: 0.85rem;
+  }
+
+  .museum-chapter__metric dt {
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+  }
+
+  .museum-chapter__metric dd {
+    font-size: 0.88rem;
+  }
+
+  .museum-chapter__footer {
+    right: 1.15rem;
+    bottom: 0.85rem;
+    left: 1.15rem;
+  }
+
+  .museum-chapter__footer > span:first-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .museum-chapter *,
+  .museum-chapter *::before,
+  .museum-chapter *::after {
+    animation: none !important;
+  }
+}

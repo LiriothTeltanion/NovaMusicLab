@@ -113,6 +113,21 @@ Arbitrary hex text colors (`text-[#...]`) will NOT be remapped — use
   never key by that shared value alone (`key={track}`) — React will warn and can
   silently drop/duplicate DOM nodes. Key by something that's actually unique per
   row (composite `${artist}-${title}`, or the array index for a static list).
+- **Bundle discipline is now ENFORCED**: `npm run build:check` (CI runs it)
+  fails if the entry chunk exceeds its budget, if the bundled dataset or the
+  offline knowledge base leak into the entry chunk, or if the vendor chunks
+  disappear. The default dataset loads via `loadDefaultDataset()`
+  (`src/data/defaultDataset.ts`, dynamic import — its own chunk); never import
+  `music_dna_compiled.json` statically from runtime app code. Vendor splitting
+  lives in `vite.config.ts` (`rolldownOptions.output.codeSplitting`).
+- **Shared motion language (chartKit)**: new charts spread `{...CHART_ANIMATION}`
+  into their `<Bar>/<Area>/<Radar>/<Line>` series; chart/panel swaps use
+  `<ChartSwap swapKey={...}>` (or `SWAP_POSES`/`SWAP_TRANSITION` when an
+  AnimatePresence exit is needed). Don't invent per-section timings.
+- **Tactile press feedback is global**: every `button`/`[role="button"]`
+  compresses via the CSS `scale` property on `:active` (see index.css) —
+  another reason clickable cards must carry `role="button"`, and no reason to
+  add per-component `active:scale-*` classes anymore.
 
 ## Visual asset system
 

@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
@@ -7,7 +7,7 @@ import {
   ChevronDown, Bot
 } from 'lucide-react';
 
-import defaultMusicData from './data/music_dna_compiled.json';
+import { loadDefaultDataset } from './data/defaultDataset';
 import { MusicDnaData } from './types';
 import { clearDataset, loadDataset, saveDataset } from './utils/datasetStorage';
 import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
@@ -15,6 +15,12 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
 import SectionNarrative from './components/SectionNarrative';
+import {
+  MobileMuseumRoomDock,
+  MuseumRoomProgressRail,
+  MuseumRoomTransition,
+  type MuseumRoomItem,
+} from './components/MuseumRoomNavigator';
 
 // Lazy: not needed for the very first paint (skipped entirely for returning
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
@@ -25,6 +31,11 @@ const OnboardingTour = lazy(() => import('./components/OnboardingTour'));
 // full offline_artist_knowledge.json + artist_enrichment.json (~800KB raw).
 // Eagerly importing this decorative background doubled the main bundle.
 const InteractiveBackdrop = lazy(() => import('./components/InteractiveBackdrop'));
+
+// Lazy: the cinematic prelude is deliberately absent from the hero. Keeping
+// its room-specific copy and SVG motifs in a separate chunk protects the
+// initial landing-page payload.
+const MuseumChapterHeader = lazy(() => import('./components/MuseumChapterHeader'));
 
 const HeroSection = lazy(() => import('./components/HeroSection'));
 const Dashboard = lazy(() => import('./components/Dashboard'));
@@ -308,15 +319,47 @@ function LoadingPanel() {
   );
 }
 
+// ─── Boot gate: resolve the initial dataset before mounting the app ───────────
+// The bundled archive is a dynamic import (its own chunk), and a returning
+// visitor's own IndexedDB dataset takes priority - so the app shell paints
+// immediately and the ~150KB default dataset is only fetched when needed.
+interface AppBoot {
+  data: MusicDnaData;
+  storedMeta: { savedAt: string; sourceLabel: string } | null;
+  restoredAt: string | null;
+}
+
+function AppDataGate() {
+  const [boot, setBoot] = useState<AppBoot | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadDataset()
+      .then((rec): Promise<AppBoot> | AppBoot => {
+        if (rec) {
+          return { data: rec.data, storedMeta: { savedAt: rec.savedAt, sourceLabel: rec.sourceLabel }, restoredAt: rec.savedAt };
+        }
+        return loadDefaultDataset().then((data): AppBoot => ({ data, storedMeta: null, restoredAt: null }));
+      })
+      .catch((): Promise<AppBoot> => loadDefaultDataset().then(data => ({ data, storedMeta: null, restoredAt: null })))
+      .then(resolved => { if (!cancelled && resolved) setBoot(resolved); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (!boot) return <LoadingPanel />;
+  return <AppInner boot={boot} />;
+}
+
 // ─── Inner app uses context ────────────────────────────────────────────────────
-function AppInner() {
+function AppInner({ boot }: { boot: AppBoot }) {
   const { t, theme, setTheme, tc, lang, setLang } = useApp();
+  const reduceMotion = Boolean(useReducedMotion());
   const activeTab = useApp().activeTab as Tab;
   const setActiveTab = useApp().setActiveTab as (t: Tab) => void;
-  const [musicData, setMusicData]   = useState<MusicDnaData>(() => defaultMusicData as MusicDnaData);
+  const [musicData, setMusicData]   = useState<MusicDnaData>(() => boot.data);
   const [showThemes, setShowThemes] = useState(false);
-  const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(null);
-  const [restoredAt, setRestoredAt] = useState<string | null>(null);
+  const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
+  const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
   const [showTour, setShowTour] = useState(() => {
     try { return window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true'; } catch { return true; }
   });
@@ -380,6 +423,16 @@ function AppInner() {
     { id: 'export', label: t.navGroups.export, color: '#10b981' },
   ], [t.navGroups, tc.c1]);
 
+  const roomNavigationItems: MuseumRoomItem[] = React.useMemo(() => menuItems.map(item => ({
+    id: item.id,
+    label: item.label,
+    groupLabel: navGroups.find(group => group.id === item.group)?.label ?? item.group,
+    color: item.color,
+    secondary: item.secondary,
+    icon: item.icon,
+    isChapter: item.id !== 'upload',
+  })), [menuItems, navGroups]);
+
   const toggleGroup = useCallback((groupId: NavGroupId) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   }, []);
@@ -393,22 +446,16 @@ function AppInner() {
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
   }, [menuItems, setActiveTab]);
 
+  const navigateRoom = useCallback((roomId: string) => {
+    goToTab(roomId as Tab);
+  }, [goToTab]);
+
   const closeTour = useCallback(() => {
     setShowTour(false);
     try { window.localStorage.setItem(TOUR_STORAGE_KEY, 'true'); } catch { /* private browsing */ }
   }, []);
 
-  // Restore the visitor's own dataset from IndexedDB (if they uploaded one before).
-  useEffect(() => {
-    let cancelled = false;
-    loadDataset().then(rec => {
-      if (cancelled || !rec) return;
-      setMusicData(rec.data);
-      setStoredMeta({ savedAt: rec.savedAt, sourceLabel: rec.sourceLabel });
-      setRestoredAt(rec.savedAt);
-    });
-    return () => { cancelled = true; };
-  }, []);
+  // (IndexedDB restore happens in AppDataGate before this component mounts.)
 
   // Auto-dismiss the restore toast.
   useEffect(() => {
@@ -430,7 +477,7 @@ function AppInner() {
     void clearDataset();
     setStoredMeta(null);
     setRestoredAt(null);
-    setMusicData(defaultMusicData as MusicDnaData);
+    void loadDefaultDataset().then(setMusicData);
   }, []);
 
   const renderNavItem = (item: typeof menuItems[number], group: typeof navGroups[number]) => {
@@ -581,7 +628,7 @@ function AppInner() {
       ) : (
         <div className="flex-1 flex flex-col md:flex-row z-10">
           {/* Sidebar */}
-          <aside className="w-full md:w-60 shrink-0 border-r p-3 md:p-4 md:sticky md:top-[68px] md:self-start md:max-h-[calc(100vh-68px)] md:overflow-y-auto"
+          <aside className="hidden md:block md:w-60 shrink-0 border-r md:p-4 md:sticky md:top-[68px] md:self-start md:max-h-[calc(100vh-68px)] md:overflow-y-auto"
             style={{ backgroundColor: `${tc.bg}60`, borderRightColor: `${tc.c1}10` }}>
             <nav className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-3 pb-2 md:pb-0">
               {navGroups.map(group => {
@@ -648,12 +695,18 @@ function AppInner() {
           </aside>
 
           {/* Content */}
-          <main className="flex-1 p-5 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+          <main className="relative flex-1 p-4 pb-28 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+            <MuseumRoomTransition items={roomNavigationItems} activeId={activeTab} />
+            <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} />
             <AnimatePresence mode="wait">
               <motion.div key={activeTab}
-                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }} transition={pageTransition}
+                initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+                exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -10 }}
+                transition={reduceMotion ? { duration: 0 } : pageTransition}
                 className="min-h-full">
+                <Suspense fallback={null}>
+                  <MuseumChapterHeader activeTab={activeTab} data={filteredData} lang={lang} />
+                </Suspense>
                 <ErrorBoundary key={activeTab}>
                   <Suspense fallback={<LoadingPanel />}>
                     {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
@@ -697,6 +750,13 @@ function AppInner() {
               </motion.div>
             </AnimatePresence>
           </main>
+
+          <MobileMuseumRoomDock
+            items={roomNavigationItems}
+            activeId={activeTab}
+            lang={lang}
+            onNavigate={navigateRoom}
+          />
         </div>
       )}
 
@@ -742,7 +802,7 @@ function AppInner() {
 export default function App() {
   return (
     <AppProvider>
-      <AppInner />
+      <AppDataGate />
     </AppProvider>
   );
 }

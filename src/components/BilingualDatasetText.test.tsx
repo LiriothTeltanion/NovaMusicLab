@@ -105,6 +105,8 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Construcción de mundos')).toBeInTheDocument();
   });
 
+  // This integration case mounts the full chart-heavy artist dossier twice.
+  // Keep its budget local so parallel full-suite runs do not become flaky.
   it('renders the enriched artist encyclopedia in Top Historico in both languages', () => {
     renderInLang(<TopHistorico data={data} />, 'en');
 
@@ -143,7 +145,7 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Artistas conectados en tu archivo')).toBeInTheDocument();
     expect(screen.getByText('Sheffield, Inglaterra')).toBeInTheDocument();
     expect(screen.queryByText('Artist Dossier')).not.toBeInTheDocument();
-  });
+  }, 15_000);
 
   it('renders the album dossier in Top Historico in both languages', async () => {
     const user = userEvent.setup();
