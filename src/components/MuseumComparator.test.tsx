@@ -1,4 +1,4 @@
-import { describe, expect, it, afterEach } from 'vitest';
+import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MuseumComparator from './MuseumComparator';
@@ -9,6 +9,12 @@ import type { MusicDnaData } from '../types';
 const primary = defaultMusicData as unknown as MusicDnaData;
 
 describe('MuseumComparator', () => {
+  // Assertions below are Spanish copy - pin the language explicitly instead
+  // of relying on whatever the app's default language happens to be.
+  beforeEach(() => {
+    window.localStorage.setItem('nml_lang', 'es');
+  });
+
   afterEach(() => {
     cleanup();
     window.localStorage.clear();

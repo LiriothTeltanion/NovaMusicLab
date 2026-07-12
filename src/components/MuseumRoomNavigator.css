@@ -38,12 +38,10 @@
   --room-secondary: #a78bfa;
   --room-progress: 0%;
   position: relative;
-  align-items: center;
-  gap: 0.7rem;
+  z-index: 40;
   min-height: 2.9rem;
   margin: 0 0 1rem;
   padding: 0.52rem 0.75rem;
-  overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--room-color) 22%, transparent);
   border-radius: 1rem;
   background:
@@ -61,6 +59,88 @@
   box-shadow: 0 0 12px var(--room-color);
   content: '';
   transition: width 300ms ease;
+}
+
+.museum-room-progress__row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.museum-room-progress__step {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.65rem;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.5);
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.museum-room-progress__step:not(:disabled):hover {
+  border-color: color-mix(in srgb, var(--room-color) 45%, transparent);
+  color: var(--room-color);
+}
+
+.museum-room-progress__step:disabled {
+  cursor: not-allowed;
+  opacity: 0.25;
+}
+
+.museum-room-progress__active {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.museum-room-progress__map-icon {
+  flex: 0 0 auto;
+  color: #64748b;
+  transition: color 160ms ease;
+}
+
+.museum-room-progress__active:hover .museum-room-progress__map-icon,
+.museum-room-progress__active[aria-expanded='true'] .museum-room-progress__map-icon {
+  color: var(--room-color);
+}
+
+.museum-room-map-desktop {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  left: 0;
+  max-height: 26rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--room-color) 30%, transparent);
+  border-radius: 1.1rem;
+  color: #e2e8f0;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--room-color) 14%, transparent), transparent 34%),
+    rgba(2, 6, 23, 0.97);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.72), 0 0 30px color-mix(in srgb, var(--room-color) 12%, transparent);
+  backdrop-filter: blur(22px) saturate(1.15);
+}
+
+.museum-room-map-desktop .museum-mobile-map__groups {
+  max-height: 26rem;
+  padding: 0.6rem;
+}
+
+.museum-room-map-desktop .museum-mobile-map__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .museum-room-progress__icon {

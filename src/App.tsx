@@ -806,7 +806,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           {/* Content */}
           <main ref={mainContentRef} tabIndex={-1} className="relative flex-1 p-4 pb-28 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto focus:outline-none">
             <MuseumRoomTransition items={roomNavigationItems} activeId={activeTab} />
-            <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} />
+            <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} onNavigate={navigateRoom} />
             <AnimatePresence mode="wait">
               <motion.div key={activeTab}
                 initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}

@@ -2892,7 +2892,7 @@ const AppContext = createContext<AppContextValue>({
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>(() => {
     const stored = localStorage.getItem('nml_lang');
-    return isLang(stored) ? stored : 'es';
+    return isLang(stored) ? stored : 'en';
   });
   const [theme, setThemeState] = useState<Theme>(() => {
     const stored = localStorage.getItem('nml_theme');

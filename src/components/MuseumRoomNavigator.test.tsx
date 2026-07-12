@@ -38,11 +38,31 @@ describe('MuseumRoomNavigator', () => {
   });
 
   it('shows desktop orientation with the active room and overall progress', () => {
-    render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" />);
+    render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
 
     expect(screen.getByTestId('room-progress')).toHaveAttribute('aria-label', 'Sala activa: Eras Musicales');
     expect(screen.getByText('CH-02')).toBeInTheDocument();
     expect(screen.getByText('Capítulo 2', { exact: false })).toBeInTheDocument();
+  });
+
+  it('navigates sequentially and opens a grouped room map on desktop', () => {
+    const onNavigate = vi.fn();
+    render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={onNavigate} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Sala siguiente: Top Histórico' }));
+    expect(onNavigate).toHaveBeenCalledWith('top');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' }));
+    expect(screen.getByRole('region', { name: 'Mapa de salas' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Archivo' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Dashboard' }));
+    expect(onNavigate).toHaveBeenLastCalledWith('dashboard');
+  });
+
+  it('disables the previous step at the first room on desktop', () => {
+    render(<MuseumRoomProgressRail items={rooms} activeId="dashboard" lang="es" onNavigate={vi.fn()} />);
+    expect(screen.getByRole('button', { name: 'Sala anterior' })).toBeDisabled();
   });
 
   it('navigates sequentially and opens a grouped room map on mobile', () => {

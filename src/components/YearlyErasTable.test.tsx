@@ -33,6 +33,7 @@ describe('YearlyErasTable', () => {
   });
 
   it('sorts by plays descending when the plays header is clicked', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup();
     render(
       <AppProvider>

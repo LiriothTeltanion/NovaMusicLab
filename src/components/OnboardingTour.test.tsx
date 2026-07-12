@@ -1,10 +1,16 @@
-import { describe, expect, it, vi, afterEach } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OnboardingTour from './OnboardingTour';
 import { AppProvider } from '../context/AppContext';
 
 describe('OnboardingTour', () => {
+  // Assertions below are Spanish copy - pin the language explicitly instead
+  // of relying on whatever the app's default language happens to be.
+  beforeEach(() => {
+    window.localStorage.setItem('nml_lang', 'es');
+  });
+
   afterEach(() => {
     cleanup();
     window.localStorage.clear();

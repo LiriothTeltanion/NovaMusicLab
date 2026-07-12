@@ -130,18 +130,93 @@ export function MuseumRoomTransition({ items, activeId }: Pick<RoomNavigatorProp
   );
 }
 
-/** Desktop orientation rail: chapter code, current room and whole-museum progress. */
-export function MuseumRoomProgressRail({ items, activeId, lang }: Omit<RoomNavigatorProps, 'onNavigate'>) {
-  const activeItem = items.find(item => item.id === activeId);
+/** The same grouped room grid used by the mobile map overlay, reused by the desktop dropdown below. */
+function RoomMapGrid({
+  groupedItems,
+  activeId,
+  items,
+  onNavigate,
+}: {
+  groupedItems: Array<[string, MuseumRoomItem[]]>;
+  activeId: string;
+  items: MuseumRoomItem[];
+  onNavigate: (id: string) => void;
+}) {
+  return (
+    <div className="museum-mobile-map__groups">
+      {groupedItems.map(([groupLabel, groupItems]) => (
+        <section key={groupLabel}>
+          <h2>{groupLabel}</h2>
+          <div className="museum-mobile-map__grid">
+            {groupItems.map(item => {
+              const ItemIcon = item.icon;
+              const active = item.id === activeId;
+              const itemProgress = getMuseumRoomProgress(items, item.id);
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => onNavigate(item.id)}
+                  aria-current={active ? 'page' : undefined}
+                  aria-label={item.label}
+                  style={{ '--item-color': item.color, '--item-secondary': item.secondary } as React.CSSProperties}
+                >
+                  <span className="museum-mobile-map__icon" aria-hidden="true">
+                    <ItemIcon className="h-3.5 w-3.5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="museum-mobile-map__code">{itemProgress.code}</span>
+                    <strong>{item.label}</strong>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function useGroupedRoomItems(items: MuseumRoomItem[]) {
+  return useMemo(() => {
+    const groups = new Map<string, MuseumRoomItem[]>();
+    items.forEach(item => {
+      const groupItems = groups.get(item.groupLabel) ?? [];
+      groupItems.push(item);
+      groups.set(item.groupLabel, groupItems);
+    });
+    return Array.from(groups.entries());
+  }, [items]);
+}
+
+/**
+ * Desktop orientation rail: chapter code, current room and whole-museum
+ * progress - same navigation the mobile dock offers (step to the previous/
+ * next room, or jump anywhere via the grouped room map), just laid out for
+ * a wide screen instead of a fixed bottom dock.
+ */
+export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: RoomNavigatorProps) {
+  const reduceMotion = Boolean(useReducedMotion());
+  const [mapOpen, setMapOpen] = useState(false);
+  const activeIndex = items.findIndex(item => item.id === activeId);
+  const activeItem = items[activeIndex];
   const progress = getMuseumRoomProgress(items, activeId);
+  const groupedItems = useGroupedRoomItems(items);
+
+  useEffect(() => {
+    setMapOpen(false);
+  }, [activeId]);
 
   if (!activeItem) return null;
 
   const Icon = activeItem.icon;
+  const previousItem = activeIndex > 0 ? items[activeIndex - 1] : null;
+  const nextItem = activeIndex < items.length - 1 ? items[activeIndex + 1] : null;
 
   return (
     <section
-      className="museum-room-progress hidden md:flex"
+      className="museum-room-progress hidden md:block"
       style={{
         '--room-color': activeItem.color,
         '--room-secondary': activeItem.secondary,
@@ -150,21 +225,69 @@ export function MuseumRoomProgressRail({ items, activeId, lang }: Omit<RoomNavig
       aria-label={`${copy[lang].active}: ${activeItem.label}`}
       data-testid="room-progress"
     >
-      <span className="museum-room-progress__icon" aria-hidden="true">
-        <Icon className="h-3.5 w-3.5" />
-      </span>
-      <span className="museum-room-progress__code">{progress.code}</span>
-      <span className="museum-room-progress__divider" aria-hidden="true" />
-      <span className="min-w-0">
-        <span className="museum-room-progress__group">{activeItem.groupLabel}</span>
-        <strong className="museum-room-progress__label">{activeItem.label}</strong>
-      </span>
-      <span className="museum-room-progress__track" aria-hidden="true">
-        <span />
-      </span>
-      <span className="museum-room-progress__count">
-        <RoomProgressText progress={progress} lang={lang} />
-      </span>
+      <div className="museum-room-progress__row">
+        <button
+          type="button"
+          className="museum-room-progress__step"
+          onClick={() => previousItem && onNavigate(previousItem.id)}
+          disabled={!previousItem}
+          aria-label={previousItem ? `${copy[lang].previous}: ${previousItem.label}` : copy[lang].previous}
+        >
+          <ChevronLeft className="h-3.5 w-3.5" />
+        </button>
+
+        <button
+          type="button"
+          className="museum-room-progress__active"
+          onClick={() => setMapOpen(open => !open)}
+          aria-expanded={mapOpen}
+          aria-controls="desktop-room-map"
+          aria-label={`${copy[lang].openMap}: ${activeItem.label}`}
+        >
+          <span className="museum-room-progress__icon" aria-hidden="true">
+            <Icon className="h-3.5 w-3.5" />
+          </span>
+          <span className="museum-room-progress__code">{progress.code}</span>
+          <span className="museum-room-progress__divider" aria-hidden="true" />
+          <span className="min-w-0">
+            <span className="museum-room-progress__group">{activeItem.groupLabel}</span>
+            <strong className="museum-room-progress__label">{activeItem.label}</strong>
+          </span>
+          <span className="museum-room-progress__track" aria-hidden="true">
+            <span />
+          </span>
+          <span className="museum-room-progress__count">
+            <RoomProgressText progress={progress} lang={lang} />
+          </span>
+          <MapIcon className="museum-room-progress__map-icon h-3.5 w-3.5" aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className="museum-room-progress__step"
+          onClick={() => nextItem && onNavigate(nextItem.id)}
+          disabled={!nextItem}
+          aria-label={nextItem ? `${copy[lang].next}: ${nextItem.label}` : copy[lang].next}
+        >
+          <ChevronRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {mapOpen && (
+          <motion.section
+            id="desktop-room-map"
+            className="museum-room-map-desktop"
+            initial={reduceMotion ? false : { opacity: 0, y: -8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.995 }}
+            transition={{ duration: reduceMotion ? 0 : 0.16, ease: 'easeOut' }}
+            aria-label={copy[lang].roomMap}
+          >
+            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={onNavigate} />
+          </motion.section>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
@@ -177,15 +300,7 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
   const activeItem = items[activeIndex];
   const progress = getMuseumRoomProgress(items, activeId);
 
-  const groupedItems = useMemo(() => {
-    const groups = new Map<string, MuseumRoomItem[]>();
-    items.forEach(item => {
-      const groupItems = groups.get(item.groupLabel) ?? [];
-      groupItems.push(item);
-      groups.set(item.groupLabel, groupItems);
-    });
-    return Array.from(groups.entries());
-  }, [items]);
+  const groupedItems = useGroupedRoomItems(items);
 
   useEffect(() => {
     setMapOpen(false);
@@ -227,38 +342,7 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
               </button>
             </header>
 
-            <div className="museum-mobile-map__groups">
-              {groupedItems.map(([groupLabel, groupItems]) => (
-                <section key={groupLabel}>
-                  <h2>{groupLabel}</h2>
-                  <div className="museum-mobile-map__grid">
-                    {groupItems.map(item => {
-                      const ItemIcon = item.icon;
-                      const active = item.id === activeId;
-                      const itemProgress = getMuseumRoomProgress(items, item.id);
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => onNavigate(item.id)}
-                          aria-current={active ? 'page' : undefined}
-                          aria-label={item.label}
-                          style={{ '--item-color': item.color, '--item-secondary': item.secondary } as React.CSSProperties}
-                        >
-                          <span className="museum-mobile-map__icon" aria-hidden="true">
-                            <ItemIcon className="h-3.5 w-3.5" />
-                          </span>
-                          <span className="min-w-0">
-                            <span className="museum-mobile-map__code">{itemProgress.code}</span>
-                            <strong>{item.label}</strong>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </section>
-              ))}
-            </div>
+            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={onNavigate} />
           </motion.section>
         )}
       </AnimatePresence>

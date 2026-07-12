@@ -48,6 +48,7 @@ describe('DataUploader', () => {
   });
 
   it('renders the drop-zone with the upload title and browse button', () => {
+    window.localStorage.setItem('nml_lang', 'es');
     render(
       <AppProvider>
         <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
@@ -72,6 +73,7 @@ describe('DataUploader', () => {
     // would). Disable that filtering so a file with the wrong extension
     // actually lands in e.target.files and exercises the component's own
     // extension-filter/error logic in processFiles/handleChange.
+    window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup({ applyAccept: false });
     render(
       <AppProvider>
@@ -89,6 +91,7 @@ describe('DataUploader', () => {
   });
 
   it('does not call onDataLoaded when an unsupported file extension is selected', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup({ applyAccept: false });
     const onDataLoaded = vi.fn();
     render(
@@ -106,6 +109,7 @@ describe('DataUploader', () => {
   });
 
   it('accepts YouTube Takeout HTML exports', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup();
     const onDataLoaded = vi.fn();
     render(
@@ -138,6 +142,7 @@ describe('DataUploader', () => {
   });
 
   it('accepts an Apple Music Play Activity CSV export', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup();
     const onDataLoaded = vi.fn();
     render(
@@ -206,16 +211,16 @@ describe('DataUploader', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders Spanish strings by default when no language is stored', () => {
+  it('renders English strings by default when no language is stored', () => {
     render(
       <AppProvider>
         <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
       </AppProvider>
     );
 
-    expect(screen.getByText(STRINGS.es.uploader.title)).toBeInTheDocument();
+    expect(screen.getByText(STRINGS.en.uploader.title)).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: STRINGS.es.uploader.browseButton })
+      screen.getByRole('button', { name: STRINGS.en.uploader.browseButton })
     ).toBeInTheDocument();
   });
 });
