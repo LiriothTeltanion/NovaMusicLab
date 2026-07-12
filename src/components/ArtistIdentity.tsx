@@ -3,7 +3,6 @@ import {
   AudioWaveform,
   Clapperboard,
   Disc,
-  Image as ImageIcon,
   Layers3,
   Mic2,
   Music,
@@ -15,8 +14,10 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import ExpandableInsightCard from './ExpandableInsightCard';
+import MoodArtCanvas from './MoodArtCanvas';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
+import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
 import { buildArtistProfile, buildDossierLineValues, buildSonicGenes, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 
 interface ArtistIdentityProps {
@@ -242,6 +243,9 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
   );
   const sonicGenes = useMemo(() => buildSonicGenes(data.top_artists, lang), [data.top_artists, lang]);
   const dossierValues = useMemo(() => buildDossierLineValues(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
+  // Same real-mood computation as MuseumPoster/HeroSection - the generated
+  // album cover reflects the archive's actual dominant mood, not a stock icon.
+  const dominantMood = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24).dominantMood, [data.top_artists]);
   const ep = profile.ep_concept;
   const copy = ARTIST_DOSSIER_COPY[lang];
   const colors = [tc.c1, tc.c2, tc.c3, tc.c4, '#10b981', '#fb923c'];
@@ -447,17 +451,24 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
               </div>
             </div>
           </div>
-          {/* Album art mockup */}
-          <div className="mt-6 p-6 rounded-2xl flex flex-col items-center justify-center text-center py-10 relative overflow-hidden group cursor-default"
-            style={{ background: `linear-gradient(135deg, #0a192f, ${tc.c3}30)`, border: `1px solid ${tc.c1}30` }}>
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `${tc.c1}08` }} />
-            <div className="relative z-10 space-y-2">
-              <div className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${tc.c1}20, ${tc.c3}20)`, border: `1px solid ${tc.c1}30` }}>
-                <ImageIcon className="w-8 h-8 animate-pulse" style={{ color: tc.c1 }} />
-              </div>
-              <p className="text-xs font-mono font-bold text-white tracking-widest uppercase">{ep.title}</p>
+          {/* Generated album cover: real generative art (same engine as the
+              Museum Poster/Hero backdrop) seeded by the alias + EP title, so
+              every archive gets its own distinct cover instead of a stock icon. */}
+          <div className="mt-6 rounded-2xl relative overflow-hidden group cursor-default aspect-square"
+            style={{ border: `1px solid ${tc.c1}30` }}>
+            <MoodArtCanvas
+              moodKey={dominantMood.key}
+              seed={`${profile.alias}::${ep.title}::cover`}
+              width={480}
+              height={480}
+              className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `${tc.c1}10` }} />
+            <div className="absolute inset-x-0 bottom-0 p-5 pt-14"
+              style={{ background: 'linear-gradient(to top, rgba(3,7,18,0.94) 0%, rgba(3,7,18,0.68) 45%, transparent 100%)' }}>
+              <p className="text-xs font-mono font-bold text-white tracking-widest uppercase truncate">{ep.title}</p>
               <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}>{profile.alias.toUpperCase()}</p>
-              <p className="text-[9px] text-gray-600 font-mono">{t.artistIdentity.albumArtConcept}</p>
+              <p className="text-[9px] text-gray-400 font-mono mt-0.5">{t.artistIdentity.albumArtConcept}</p>
             </div>
           </div>
         </div>
