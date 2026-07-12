@@ -25,10 +25,15 @@ export default function CountUp({
   className = '',
 }: CountUpProps) {
   const { lang } = useApp();
-  const [val, setVal] = useState(0);
+  const [val, setVal] = useState(duration <= 0 ? target : 0);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
+    if (duration <= 0) {
+      setVal(target);
+      return undefined;
+    }
+
     let startTime: number | null = null;
     const durationMs = duration * 1000;
 

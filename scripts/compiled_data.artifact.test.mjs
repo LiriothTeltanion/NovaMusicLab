@@ -8,17 +8,17 @@ const compiledDataset = JSON.parse(readFileSync(compiledDatasetPath, 'utf8'));
 describe('bundled compiled music dataset', () => {
   it('keeps the merged source totals and YouTube import coverage intact', () => {
     expect(compiledDataset.core_metrics).toMatchObject({
-      total_plays: 81604,
+      total_plays: 81615,
       unique_artists: 6418,
-      unique_tracks: 20871,
+      unique_tracks: 20878,
     });
 
     expect(compiledDataset.source_summary).toMatchObject({
       source_type: 'merged',
       lastfm_plays: 50476,
       spotify_plays: 161898,
-      youtube_plays: 1758,
-      merged_plays: 81604,
+      youtube_plays: 1769,
+      merged_plays: 81615,
       cross_source_duplicates: 34779,
     });
     expect(compiledDataset.source_summary.merged_plays).toBe(compiledDataset.core_metrics.total_plays);

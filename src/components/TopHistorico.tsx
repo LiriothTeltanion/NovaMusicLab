@@ -28,7 +28,6 @@ import CoverArt from './CoverArt';
 import GenreArt from './GenreArt';
 import FlagArt from './FlagArt';
 import MediaEmbedHub from './MediaEmbedHub';
-import SectionNarrative from './SectionNarrative';
 import { CHART_ANIMATION, SWAP_POSES, SWAP_TRANSITION } from './chartKit';
 import { localizeEraLabel } from '../utils/localeText';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
@@ -985,7 +984,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     const rowBody = (
       <>
         <div className="flex items-center space-x-3 truncate min-w-0">
-          <span className="w-7 h-7 shrink-0 flex items-center justify-center rounded-lg text-xs font-black font-mono"
+          <span className="type-metric w-7 h-7 shrink-0 flex items-center justify-center rounded-lg text-xs font-black"
             style={{ color, backgroundColor: `${color}18`, border: `1px solid ${color}40` }}>
             {rank}
           </span>
@@ -993,7 +992,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             ? <CoverArt artist={avatarName} title={coverTitle} kind={coverKind} size={36} />
             : avatarName && <ArtistAvatar name={avatarName} size={32} tooltip={false} />}
           <div className="truncate">
-            <p className="text-sm font-bold text-white truncate leading-tight flex items-center gap-1.5">
+            <p className="type-meta font-bold text-white truncate flex items-center gap-1.5">
               {moodColor && (
                 <span className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: moodColor, boxShadow: `0 0 6px ${moodColor}` }} />
@@ -1001,7 +1000,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               {main}
             </p>
             {sub && (
-              <p className="text-[11px] text-gray-400 truncate flex items-center gap-1.5">
+              <p className="type-meta text-gray-400 truncate flex items-center gap-1.5">
                 {flagCountry && <FlagArt country={flagCountry} size={15} />}
                 {moodKey && (
                   <MoodBadge moodKey={moodKey} confidence={moodConfidence} size="sm" className="shrink-0" />
@@ -1012,7 +1011,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0 ml-3">
-          <span className="text-xs font-mono font-bold px-3 py-1 rounded-full"
+          <span className="type-metric text-xs font-bold px-3 py-1 rounded-full"
             style={{ color, backgroundColor: `${color}15`, border: `1px solid ${color}30` }}>
             {fmtNum(plays)}
           </span>
@@ -1025,7 +1024,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
     const rowClassName = [
       'flex w-full items-center justify-between p-3 rounded-2xl transition-all group text-left',
-      onClick ? 'hover:bg-white/5 cursor-pointer' : 'hover:bg-white/3',
+      onClick ? 'nova-surface--interactive hover:bg-white/5 cursor-pointer' : 'hover:bg-white/3',
       active ? 'bg-white/7 shadow-lg' : '',
     ].join(' ');
 
@@ -1054,32 +1053,32 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const MoodFilterBar = () => (
-    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-4">
+    <div className="nova-surface nova-surface--utility relative overflow-hidden rounded-2xl p-3">
       <div className="absolute inset-0 pointer-events-none opacity-70"
         style={{
           background: `radial-gradient(circle at 8% 10%, ${tc.c1}18, transparent 28%), radial-gradient(circle at 90% 10%, ${tc.c3}14, transparent 26%)`,
         }} />
-      <div className="relative z-10 flex flex-col gap-4">
-        <div className="flex items-start gap-3">
+      <div className="relative z-10 flex flex-col gap-3">
+        <div className="flex items-start gap-3 max-w-3xl">
           <div className="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0"
             style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-xs font-mono font-black uppercase tracking-widest" style={{ color: tc.c1 }}>
+            <h3 className="type-kicker" style={{ color: tc.c1 }}>
               {artistCopy.moodFilter}
             </h3>
-            <p className="text-xs text-gray-500 leading-relaxed mt-1 max-w-4xl">
+            <p className="type-meta text-gray-500 mt-1 max-w-4xl">
               {artistCopy.moodFilterHint}
             </p>
           </div>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
           <button
             type="button"
             onClick={() => setSelectedMood('all')}
-            className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all shrink-0"
+            className="type-kicker nova-surface--interactive inline-flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 transition-all shrink-0"
             style={selectedMood === 'all'
               ? { color: '#020617', backgroundColor: tc.c1, borderColor: tc.c1, boxShadow: `0 0 18px ${tc.c1}28` }
               : { color: tc.c1, backgroundColor: `${tc.c1}10`, borderColor: `${tc.c1}30` }}>
@@ -1094,7 +1093,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 key={mood.key}
                 type="button"
                 onClick={() => setSelectedMood(active ? 'all' : mood.key)}
-                className="inline-flex items-center gap-2 rounded-2xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all shrink-0"
+                className="type-kicker nova-surface--interactive inline-flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 transition-all shrink-0"
                 style={active
                   ? { color: '#020617', backgroundColor: mood.color, borderColor: mood.color, boxShadow: `0 0 18px ${mood.color}32` }
                   : { color: mood.color, backgroundColor: `${mood.color}10`, borderColor: `${mood.color}32` }}
@@ -1114,18 +1113,18 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     <div className="rounded-2xl p-4 bg-white/[0.035] border border-white/8">
       <div className="flex items-center gap-2 mb-2">
         <Icon className="w-4 h-4" style={{ color }} />
-        <h4 className="text-[11px] font-mono uppercase tracking-widest font-bold" style={{ color }}>
+        <h4 className="type-kicker" style={{ color }}>
           {title}
         </h4>
       </div>
-      <p className="text-sm text-gray-300 leading-relaxed">{body}</p>
+      <p className="type-body text-gray-300">{body}</p>
     </div>
   );
 
   const EvidencePill = ({ label, value, color }: { label: string; value: string | number; color: string }) => (
     <div className="rounded-2xl bg-white/[0.035] border border-white/8 p-3 min-h-[76px]">
-      <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500 mb-1">{label}</p>
-      <p className="text-lg font-black font-mono text-white" style={{ color }}>{value}</p>
+      <p className="type-meta text-gray-500 mb-1">{label}</p>
+      <p className="type-metric text-lg font-black text-white" style={{ color }}>{value}</p>
     </div>
   );
 
@@ -1352,8 +1351,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const TrackDossier = () => {
     if (!selectedTrack) {
       return (
-        <div className="glass-panel p-6 rounded-3xl">
-          <p className="text-sm text-gray-400">{artistCopy.noTrackSelected}</p>
+        <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
+          <p className="type-body text-gray-400">{artistCopy.noTrackSelected}</p>
         </div>
       );
     }
@@ -1363,10 +1362,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     const trackFlagCountry = selectedTrackProfile?.country.en ?? selectedTrackArtist?.country ?? '';
 
     return (
-      <div className="glass-panel p-6 rounded-3xl space-y-6">
+      <div className="nova-surface nova-surface--analysis p-6 rounded-3xl space-y-6">
         <div className="flex items-center gap-2">
           <ListMusic className="w-5 h-5" style={{ color: tc.c2 }} />
-          <h3 className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: tc.c2 }}>
+          <h3 className="type-kicker" style={{ color: tc.c2 }}>
             {artistCopy.trackDossier}
           </h3>
         </div>
@@ -1399,7 +1398,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <MoodBadge moodKey={selectedTrackReading.moodKey} confidence={selectedTrackReading.moodConfidence} />
                 )}
               </div>
-              <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
+              <h3 className="type-title text-white">
                 {selectedTrack.title}
               </h3>
               <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
@@ -1605,10 +1604,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   const ArtistDossier = () => (
-    <div className="glass-panel p-6 rounded-3xl space-y-6">
+    <div className="nova-surface nova-surface--analysis p-6 rounded-3xl space-y-6">
       <div className="flex items-center gap-2">
         <BookOpen className="w-5 h-5" style={{ color: tc.c1 }} />
-        <h3 className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: tc.c1 }}>
+        <h3 className="type-kicker" style={{ color: tc.c1 }}>
           {artistCopy.dossier}
         </h3>
       </div>
@@ -1652,7 +1651,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <MoodBadge moodKey={selectedArtistMood.moodKey} confidence={selectedArtistMood.confidence} />
                     )}
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-black text-white leading-tight text-neon-glow">
+                  <h3 className="type-title text-white text-neon-glow">
                     {selectedProfile?.name ?? selectedArtist.name}
                   </h3>
                   <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
@@ -2224,8 +2223,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const AlbumDossier = () => {
     if (!selectedAlbum) {
       return (
-        <div className="glass-panel p-6 rounded-3xl">
-          <p className="text-sm text-gray-400">{artistCopy.noAlbums}</p>
+        <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
+          <p className="type-body text-gray-400">{artistCopy.noAlbums}</p>
         </div>
       );
     }
@@ -2238,10 +2237,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       : '-';
 
     return (
-      <div className="glass-panel p-6 rounded-3xl space-y-6">
+      <div className="nova-surface nova-surface--analysis p-6 rounded-3xl space-y-6">
         <div className="flex items-center gap-2">
           <Disc3 className="w-5 h-5" style={{ color: tc.c3 }} />
-          <h3 className="text-sm font-mono font-bold uppercase tracking-widest" style={{ color: tc.c3 }}>
+          <h3 className="type-kicker" style={{ color: tc.c3 }}>
             {artistCopy.albumDossier}
           </h3>
         </div>
@@ -2281,7 +2280,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     <MoodBadge moodKey={selectedAlbumReading.moodKey} confidence={selectedAlbumReading.moodConfidence} />
                   )}
                 </div>
-                <h3 className="text-3xl md:text-4xl font-black text-white leading-tight">
+                <h3 className="type-title text-white">
                   {selectedAlbum.title}
                 </h3>
                 <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
@@ -2463,54 +2462,50 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center space-x-3">
-          <Trophy className="w-6 h-6" style={{ color: tc.c1 }} />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {t.topHistorico.title}
-          </h2>
+    <div className="space-y-6 animate-fade-in">
+      {/* The museum chapter header owns the page title and narrative. This compact
+          control deck lets the ranking itself enter the viewport sooner. */}
+      <div className="nova-surface nova-surface--utility flex flex-col gap-2 rounded-2xl p-2 lg:flex-row lg:items-center">
+        <div className="flex min-w-0 flex-1 overflow-x-auto gap-1.5 pb-1 lg:pb-0" role="group"
+          aria-label={t.topHistorico.title}>
+          {tabs.map(tabItem => {
+            const Icon = tabItem.icon;
+            const active = tab === tabItem.id;
+            return (
+              <button key={tabItem.id} type="button" onClick={() => setTab(tabItem.id as TopTab)}
+                aria-pressed={active}
+                className="type-kicker nova-surface--interactive flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-4 py-2 transition-all"
+                style={active ? {
+                  background: `linear-gradient(135deg, ${tc.c1}20, ${tc.c3}10)`,
+                  borderColor: tc.c1, color: tc.c1,
+                  boxShadow: `0 0 15px ${tc.c1}20`,
+                } : { borderColor: 'rgba(255,255,255,0.08)', color: '#6b7280' }}>
+                <Icon className="w-3.5 h-3.5" />
+                <span>{tabItem.label}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Search bar */}
-        <div className="relative">
+        <div className="relative shrink-0">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder={t.topHistorico.searchPlaceholder}
-            className="bg-white/5 border rounded-xl pl-9 pr-8 py-2 text-sm font-mono text-white placeholder-gray-500 transition-all w-52"
+            aria-label={t.topHistorico.searchPlaceholder}
+            className="type-meta min-h-11 w-full rounded-xl border bg-white/5 py-2 pl-9 pr-11 text-white placeholder-gray-500 transition-all lg:w-56"
             style={{ borderColor: search ? tc.c1 : 'rgba(255,255,255,0.1)' }}
           />
           {search && (
-            <button onClick={() => setSearch('')} aria-label={lang === 'en' ? 'Clear search' : 'Limpiar búsqueda'} className="absolute right-3 top-1/2 -translate-y-1/2">
+            <button type="button" onClick={() => setSearch('')}
+              aria-label={lang === 'en' ? 'Clear search' : 'Limpiar búsqueda'}
+              className="nova-surface--interactive absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl">
               <X className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-colors" />
             </button>
           )}
         </div>
-      </div>
-
-      <SectionNarrative content={t.deepNarratives.top} accent="c2" />
-
-      {/* Tabs */}
-      <div className="flex overflow-x-auto space-x-2 pb-1">
-        {tabs.map(t => {
-          const Icon = t.icon;
-          const active = tab === t.id;
-          return (
-            <button key={t.id} onClick={() => setTab(t.id as TopTab)}
-              className="flex items-center space-x-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider shrink-0 transition-all border"
-              style={active ? {
-                background: `linear-gradient(135deg, ${tc.c1}20, ${tc.c3}10)`,
-                borderColor: tc.c1, color: tc.c1,
-                boxShadow: `0 0 15px ${tc.c1}20`,
-              } : { borderColor: 'rgba(255,255,255,0.08)', color: '#6b7280' }}>
-              <Icon className="w-3.5 h-3.5" />
-              <span>{t.label}</span>
-            </button>
-          );
-        })}
       </div>
 
       {(tab === 'artistas' || tab === 'canciones' || tab === 'albums') && (
@@ -2524,16 +2519,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
           {/* ARTISTAS */}
           {tab === 'artistas' && (
-            <div className="grid grid-cols-1 2xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] gap-8">
-              <div className="glass-panel p-6 rounded-3xl">
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] xl:items-start">
+              <div className="nova-surface nova-surface--utility p-5 rounded-3xl">
                 <div className="flex items-start justify-between gap-3 mb-5">
                   <div>
-                    <h3 className="text-sm font-mono font-bold uppercase tracking-widest"
-                      style={{ color: tc.c1 }}>
+                    <h3 className="type-kicker" style={{ color: tc.c1 }}>
                       {t.topHistorico.top50Artists}
                       {search && <span className="text-gray-400 ml-2">({t.topHistorico.resultsCount(filteredArtists.length)})</span>}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-2 leading-relaxed">{artistCopy.selectedHint}</p>
+                    <p className="type-meta text-gray-500 mt-2">{artistCopy.selectedHint}</p>
                   </div>
                   <BookOpen className="w-5 h-5 shrink-0" style={{ color: tc.c1 }} />
                 </div>
@@ -2557,12 +2551,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="space-y-6">
                 <ArtistDossier />
 
-                <div className="glass-panel p-6 rounded-3xl">
-                  <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
-                    style={{ color: tc.c2 }}>
-                    {artistCopy.topChart}
-                  </h3>
-                  <div className="h-[440px]">
+                <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
+                  <summary className="nova-surface--interactive flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                    <span className="flex items-center gap-2">
+                      <BarChart2 className="h-4 w-4" style={{ color: tc.c2 }} />
+                      <span className="type-kicker" style={{ color: tc.c2 }}>{artistCopy.topChart}</span>
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-90" />
+                  </summary>
+                  <div className="h-[440px] border-t border-white/5 px-4 pb-5 pt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={data.top_artists.slice(0, 20)} layout="vertical"
                         margin={{ left: 0, right: 32, top: 4, bottom: 4 }}>
@@ -2579,23 +2576,22 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
-                </div>
+                </details>
               </div>
             </div>
           )}
 
           {/* CANCIONES */}
           {tab === 'canciones' && (
-            <div className="grid grid-cols-1 2xl:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] gap-8">
-              <div className="glass-panel p-6 rounded-3xl">
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] xl:items-start">
+              <div className="nova-surface nova-surface--utility p-5 rounded-3xl">
                 <div className="flex items-start justify-between gap-3 mb-5">
                   <div>
-                    <h3 className="text-sm font-mono font-bold uppercase tracking-widest"
-                      style={{ color: tc.c2 }}>
+                    <h3 className="type-kicker" style={{ color: tc.c2 }}>
                       {t.topHistorico.top50Tracks}
                       {search && <span className="text-gray-400 ml-2">({filteredTracks.length})</span>}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-2 leading-relaxed">{artistCopy.selectedTrackHint}</p>
+                    <p className="type-meta text-gray-500 mt-2">{artistCopy.selectedTrackHint}</p>
                   </div>
                   <ListMusic className="w-5 h-5 shrink-0" style={{ color: tc.c2 }} />
                 </div>
@@ -2620,12 +2616,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <div className="space-y-6">
                 <TrackDossier />
 
-                <div className="glass-panel p-6 rounded-3xl">
-                  <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
-                    style={{ color: tc.c2 }}>
-                    {t.topHistorico.top20Chart}
-                  </h3>
-                  <div className="h-[440px]">
+                <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
+                  <summary className="nova-surface--interactive flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                    <span className="flex items-center gap-2">
+                      <BarChart2 className="h-4 w-4" style={{ color: tc.c2 }} />
+                      <span className="type-kicker" style={{ color: tc.c2 }}>{t.topHistorico.top20Chart}</span>
+                    </span>
+                    <ChevronRight className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-90" />
+                  </summary>
+                  <div className="h-[440px] border-t border-white/5 px-4 pb-5 pt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={data.top_tracks.slice(0, 20).map(track => ({ ...track, name: track.title }))}
                         layout="vertical" margin={{ left: 0, right: 32, top: 4, bottom: 4 }}>
@@ -2649,23 +2648,22 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
-                </div>
+                </details>
               </div>
             </div>
           )}
 
           {/* ALBUMS */}
           {tab === 'albums' && (
-            <div className="grid grid-cols-1 2xl:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] gap-8">
-              <div className="glass-panel p-6 rounded-3xl">
+            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] xl:items-start">
+              <div className="nova-surface nova-surface--utility p-5 rounded-3xl">
                 <div className="flex items-start justify-between gap-3 mb-5">
                   <div>
-                    <h3 className="text-sm font-mono font-bold uppercase tracking-widest"
-                      style={{ color: tc.c3 }}>
+                    <h3 className="type-kicker" style={{ color: tc.c3 }}>
                       {t.topHistorico.top50Albums}
                       {search && <span className="text-gray-400 ml-2">({filteredAlbums.length})</span>}
                     </h3>
-                    <p className="text-xs text-gray-500 mt-2 leading-relaxed">{artistCopy.selectedAlbumHint}</p>
+                    <p className="type-meta text-gray-500 mt-2">{artistCopy.selectedAlbumHint}</p>
                   </div>
                   <Disc3 className="w-5 h-5 shrink-0" style={{ color: tc.c3 }} />
                 </div>
@@ -2695,10 +2693,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
           {/* GÉNEROS */}
           {tab === 'generos' && (
-            <div className="space-y-8">
-              <div className="glass-panel p-6 rounded-3xl">
-                <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
-                  style={{ color: tc.c2 }}>
+            <div className="space-y-6">
+              <div className="nova-surface nova-surface--utility p-6 rounded-3xl">
+                <h3 className="type-kicker mb-5" style={{ color: tc.c2 }}>
                   {t.topHistorico.tabGenres}
                 </h3>
                 <div className="flex flex-wrap gap-5">
@@ -2708,9 +2705,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </div>
               </div>
 
-              <div className="glass-panel p-6 rounded-3xl">
-                <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
-                  style={{ color: tc.c1 }}>
+              <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
+                <h3 className="type-kicker mb-5" style={{ color: tc.c1 }}>
                   {t.topHistorico.genreTreemap}
                 </h3>
                 <div className="h-72">
@@ -2721,9 +2717,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </div>
               </div>
 
-              <div className="glass-panel p-6 rounded-3xl">
-                <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-5"
-                  style={{ color: tc.c4 }}>
+              <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
+                <h3 className="type-kicker mb-5" style={{ color: tc.c4 }}>
                   {t.topHistorico.genreBreakdown}
                 </h3>
                 <div className="h-[420px]">
@@ -2749,10 +2744,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
           {/* AÑOS */}
           {tab === 'anos' && (
-            <div className="space-y-8">
-              <div className="glass-panel p-6 rounded-3xl">
-                <h3 className="text-sm font-mono font-bold uppercase tracking-widest mb-6"
-                  style={{ color: tc.c1 }}>
+            <div className="space-y-6">
+              <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
+                <h3 className="type-kicker mb-6" style={{ color: tc.c1 }}>
                   {t.topHistorico.playsByYear}
                 </h3>
                 <div className="h-80">
@@ -2787,17 +2781,17 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 {data.yearly_eras.map((era, idx) => (
                   <motion.div key={era.year} variants={itemVariants} initial="initial" animate="animate"
                     transition={{ delay: idx * 0.05 }}
-                    className="glass-panel p-4 rounded-2xl space-y-2 border-t-2"
+                    className="nova-surface nova-surface--utility p-4 rounded-2xl space-y-2 border-t-2"
                     style={{ borderTopColor: COLORS[idx % COLORS.length] }}>
                     <div className="flex justify-between items-center">
-                      <span className="font-mono text-base font-black text-white">{era.year}</span>
-                      <span className="text-[10px] font-mono font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">
+                      <span className="type-metric text-base font-black text-white">{era.year}</span>
+                      <span className="type-metric text-xs font-bold text-gray-400 bg-white/5 px-2 py-0.5 rounded-full">
                         {fmtNum(era.plays)}
                       </span>
                     </div>
-                    <p className="text-[11px] font-bold text-gray-200 leading-tight">{localizeEraLabel(era.era_label, lang)}</p>
-                    <p className="text-[10px] text-gray-500 font-mono">♪ {era.top_artist}</p>
-                    <div className="pt-1 border-t border-white/5 text-[9px] text-gray-600 font-mono">
+                    <p className="type-meta font-bold text-gray-200">{localizeEraLabel(era.era_label, lang)}</p>
+                    <p className="type-meta text-gray-500">♪ {era.top_artist}</p>
+                    <div className="type-meta pt-1 border-t border-white/5 text-gray-600">
                       {t.topHistorico.eraDiversityLine(era.diversity_index, era.unique_artists)}
                     </div>
                   </motion.div>

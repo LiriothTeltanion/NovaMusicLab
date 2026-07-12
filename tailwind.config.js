@@ -17,8 +17,10 @@ export default {
         neonGlow: '0 0 20px rgba(0, 242, 254, 0.25)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['Space Grotesk', 'monospace'],
+        sans: ['var(--font-body)'],
+        body: ['var(--font-body)'],
+        display: ['var(--font-display)'],
+        mono: ['var(--font-mono)'],
       },
       boxShadow: {
         glass: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',

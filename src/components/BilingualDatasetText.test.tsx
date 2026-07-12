@@ -111,6 +111,8 @@ describe('bilingual dataset text', () => {
     renderInLang(<TopHistorico data={data} />, 'en');
 
     expect(screen.getByText('Artist Dossier')).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'All-Time Top' })).not.toBeInTheDocument();
+    expect(screen.getByText('Top 20 Comparison').closest('details')).not.toHaveAttribute('open');
     expect(screen.getByText('Emotional filter')).toBeInTheDocument();
     expect(screen.getByText('All')).toBeInTheDocument();
     expect(screen.getByText('Archive role')).toBeInTheDocument();
@@ -131,6 +133,7 @@ describe('bilingual dataset text', () => {
     renderInLang(<TopHistorico data={data} />, 'es');
 
     expect(screen.getByText('Dossier de artista')).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Top Histórico' })).not.toBeInTheDocument();
     expect(screen.getByText('Filtro emocional')).toBeInTheDocument();
     expect(screen.getByText('Todos')).toBeInTheDocument();
     expect(screen.getByText('Rol en el archivo')).toBeInTheDocument();

@@ -1,6 +1,6 @@
 /**
  * Query Wikidata API to fetch portraits, birthdates (age), and social/streaming links
- * for all band members of Kevin's top 30 artists.
+ * for all band members of Kevin's top 50 artists.
  *
  * Caches Wikidata responses under scripts/.cache/wikidata_members.
  *
@@ -55,9 +55,9 @@ if (existsSync(OUTPUT_PATH)) {
   }
 }
 
-// Find top 30 artist names
+// Find top 50 artist names
 const compiled = JSON.parse(readFileSync(COMPILED_PATH, 'utf8'));
-const topArtistNames = new Set(compiled.top_artists.slice(0, 30).map((a) => a.name.toLowerCase()));
+const topArtistNames = new Set(compiled.top_artists.slice(0, 50).map((a) => a.name.toLowerCase()));
 
 // Find unique band members
 const knowledge = JSON.parse(readFileSync(KNOWLEDGE_PATH, 'utf8'));

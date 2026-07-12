@@ -1,88 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">Nova Music Lab</title>
-  <desc id="desc">A luminous sonic orb with a waveform and Nova monogram.</desc>
+  <desc id="desc">A sonic N with a pulse point inside an open orbit.</desc>
   <defs>
-    <linearGradient id="bg" x1="64" y1="36" x2="448" y2="476" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#08111f"/>
-      <stop offset=".42" stop-color="#101038"/>
-      <stop offset=".72" stop-color="#221039"/>
-      <stop offset="1" stop-color="#030712"/>
+    <radialGradient id="surface" cx="0" cy="0" r="1" gradientTransform="translate(19 12) rotate(48) scale(62)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123454"/>
+      <stop offset=".43" stop-color="#0b1028"/>
+      <stop offset="1" stop-color="#050713"/>
+    </radialGradient>
+    <linearGradient id="orbit" x1="11" y1="13" x2="54" y2="49" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#83f3ff"/>
+      <stop offset=".55" stop-color="#6878ff"/>
+      <stop offset="1" stop-color="#b867ff"/>
     </linearGradient>
-    <radialGradient id="cyanGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(155 126) rotate(46) scale(318)">
-      <stop stop-color="#00f2fe" stop-opacity=".95"/>
-      <stop offset=".38" stop-color="#00f2fe" stop-opacity=".28"/>
-      <stop offset="1" stop-color="#00f2fe" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="magentaGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(374 154) rotate(124) scale(286)">
-      <stop stop-color="#f472b6" stop-opacity=".9"/>
-      <stop offset=".42" stop-color="#a855f7" stop-opacity=".32"/>
-      <stop offset="1" stop-color="#a855f7" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="goldGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(324 393) rotate(38) scale(238)">
-      <stop stop-color="#facc15" stop-opacity=".74"/>
-      <stop offset=".48" stop-color="#fb7185" stop-opacity=".22"/>
-      <stop offset="1" stop-color="#fb7185" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(246 238) rotate(61) scale(186)">
-      <stop stop-color="#e0faff"/>
-      <stop offset=".23" stop-color="#00f2fe"/>
-      <stop offset=".56" stop-color="#7c3aed"/>
-      <stop offset="1" stop-color="#070b1b"/>
-    </radialGradient>
-    <linearGradient id="ring" x1="112" y1="96" x2="399" y2="404" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#22d3ee"/>
-      <stop offset=".46" stop-color="#f472b6"/>
-      <stop offset="1" stop-color="#facc15"/>
+    <linearGradient id="signal" x1="18" y1="21" x2="47" y2="43" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8fdff"/>
+      <stop offset=".48" stop-color="#8cecff"/>
+      <stop offset="1" stop-color="#d9c1ff"/>
     </linearGradient>
-    <linearGradient id="wave" x1="117" y1="266" x2="395" y2="266" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#22d3ee"/>
-      <stop offset=".5" stop-color="#f8fafc"/>
-      <stop offset="1" stop-color="#facc15"/>
-    </linearGradient>
-    <filter id="softGlow" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="13" result="blur"/>
-      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1.18 0 0 0  0 0 1.35 0 0  0 0 0 .9 0" result="colored"/>
-      <feMerge>
-        <feMergeNode in="colored"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000814" flood-opacity=".65"/>
-      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="#22d3ee" flood-opacity=".38"/>
-    </filter>
-    <clipPath id="rounded">
-      <rect width="512" height="512" rx="112"/>
-    </clipPath>
+    <clipPath id="tile"><rect width="64" height="64" rx="15"/></clipPath>
   </defs>
-  <g clip-path="url(#rounded)">
-    <rect width="512" height="512" fill="url(#bg)"/>
-    <rect width="512" height="512" fill="url(#cyanGlow)"/>
-    <rect width="512" height="512" fill="url(#magentaGlow)"/>
-    <rect width="512" height="512" fill="url(#goldGlow)"/>
-    <path d="M39 119C126 75 185 64 256 94c88 37 151 16 221-32v390H39V119Z" fill="#030712" opacity=".26"/>
-    <path d="M64 402c88-43 169-55 251-33 49 13 93 36 133 68v75H64V402Z" fill="#020617" opacity=".48"/>
-    <g filter="url(#shadow)">
-      <circle cx="256" cy="256" r="166" fill="#050816" opacity=".86"/>
-      <circle cx="256" cy="256" r="148" fill="url(#core)"/>
-      <circle cx="256" cy="256" r="168" fill="none" stroke="url(#ring)" stroke-width="20" opacity=".96"/>
-      <circle cx="256" cy="256" r="198" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="12 18" opacity=".46"/>
-      <circle cx="256" cy="256" r="116" fill="none" stroke="#f8fafc" stroke-width="2" opacity=".2"/>
-    </g>
-    <g filter="url(#softGlow)">
-      <path d="M110 271h46l17-48 36 100 31-134 34 154 28-76h100" fill="none" stroke="url(#wave)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M174 342V170l164 172V170" fill="none" stroke="#f8fafc" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M174 342V170l164 172V170" fill="none" stroke="#facc15" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
-    </g>
-    <g fill="#f8fafc">
-      <circle cx="137" cy="135" r="7" opacity=".86"/>
-      <circle cx="385" cy="119" r="5" opacity=".7"/>
-      <circle cx="103" cy="319" r="4" opacity=".58"/>
-      <circle cx="409" cy="360" r="7" opacity=".72"/>
-      <circle cx="308" cy="78" r="4" opacity=".62"/>
-    </g>
-    <path d="M420 74l8 17 18 7-18 7-8 18-8-18-17-7 17-7 8-17Z" fill="#facc15" opacity=".9"/>
-    <path d="M89 92l5 11 12 5-12 5-5 12-5-12-12-5 12-5 5-11Z" fill="#22d3ee" opacity=".8"/>
-    <rect x="1.5" y="1.5" width="509" height="509" rx="110.5" fill="none" stroke="#ffffff" stroke-opacity=".12" stroke-width="3"/>
+  <g clip-path="url(#tile)">
+    <rect width="64" height="64" fill="#050713"/>
+    <rect width="64" height="64" fill="url(#surface)"/>
+    <circle cx="32" cy="32" r="18" fill="#080b1d" opacity=".42"/>
+    <path d="M15.03 15.03A24 24 0 1 1 9.45 40.21" fill="none" stroke="url(#orbit)" stroke-width="3.25" stroke-linecap="round"/>
+    <circle cx="15.03" cy="15.03" r="2.45" fill="#a8f7ff"/>
+    <path d="M18 43V21l13 14 6-8 9 16V21" fill="none" stroke="#02040d" stroke-opacity=".82" stroke-width="9.25" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18 43V21l13 14 6-8 9 16V21" fill="none" stroke="url(#signal)" stroke-width="5.75" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="37" cy="27" r="2.35" fill="#ffc857"/>
+    <rect x=".75" y=".75" width="62.5" height="62.5" rx="14.25" fill="none" stroke="#fff" stroke-opacity=".13" stroke-width="1.5"/>
   </g>
 </svg>

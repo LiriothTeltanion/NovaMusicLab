@@ -28,22 +28,32 @@ export function formatNumber(value: number, locale = 'es-ES') {
 
 export function normalizeGenre(raw = ''): string {
   const g = raw.toLowerCase();
+  // Honesty first: an unknown artist must NEVER be relabeled "Alternative" -
+  // the old fallback did exactly that and silently painted ~40K unresolved
+  // long-tail plays as Alternative in top_genres and the treemap.
+  if (!raw || g.includes('unclassified') || g === 'unknown') return 'Unclassified';
+
   if (g.includes('metalcore') || g.includes('deathcore')) return 'Metalcore';
   if (g.includes('post-hardcore') || g.includes('post hardcore')) return 'Post-Hardcore';
   if (g.includes('blackgaze') || g.includes('post-metal') || g.includes('shoegaze')) return 'Post-Metal / Blackgaze';
   if (g.includes('darksynth') || g.includes('synthwave') || g.includes('cyberpunk')) return 'Synthwave / Darksynth';
   if (g.includes('pop punk') || g.includes('emo pop')) return 'Pop Punk / Emo';
   if (g.includes('emo rap') || g.includes('melodic trap') || g.includes('trap')) return 'Emo Rap / Trap';
-  if (g.includes('hard rock') || g.includes('glam') || g.includes('aor')) return 'Hard Rock';
+  // Fine-grained metal families (real archive strings: Helloween/Enforcer/
+  // Saurom/Lost Society entered the top-100 with the honest-data recompile).
+  if (g.includes('folk metal') || g.includes('juglar')) return 'Folk Metal';
+  if (g.includes('power metal') || g.includes('speed metal') || g.includes('thrash')) return 'Power / Speed Metal';
+  if (g.includes('alt-metal') || g.includes('alt metal') || g.includes('nu metal') || g.includes('emo groove')) return 'Alt-Metal';
+  if (g.includes('hard rock') || g.includes('glam') || g.includes('aor') || g.includes('sleaze')) return 'Hard Rock';
   if (g.includes('progressive') || g.includes('djent') || g.includes('math rock')) return 'Progressive Metal';
-  if (g.includes('ambient') || g.includes('lo-fi') || g.includes('dream pop')) return 'Ambient / Lo-Fi';
+  if (g.includes('ambient') || g.includes('lo-fi') || g.includes('dream pop') || g.includes('dreampop')) return 'Ambient / Lo-Fi';
   if (g.includes('death metal') || g.includes('melodic death')) return 'Death Metal';
-  if (g.includes('pop rock') || g.includes('indie pop') || g.includes('synth-pop')) return 'Pop / Indie';
+  if (g.includes('pop rock') || g.includes('indie pop') || g.includes('synth-pop') || g.includes('synthpop')) return 'Pop / Indie';
   if (g.includes('israeli') || g.includes('hebrew')) return 'Israeli Rock';
   if (g.includes('hip hop') || g.includes('rap')) return 'Hip-Hop / Rap';
-  if (g.includes('heavy metal') || g.includes('occult rock')) return 'Heavy Metal';
+  if (g.includes('heavy metal') || g.includes('occult rock') || g.includes('nwobhm')) return 'Heavy Metal';
   if (g.includes('alternative rock') || g.includes('alt-rock')) return 'Alternative Rock';
-  return raw ? 'Alternative' : 'Unclassified';
+  return 'Alternative';
 }
 
 export function getPeakYear(data: MusicDnaData): YearlyEra | undefined {

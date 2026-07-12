@@ -67,7 +67,7 @@ if (existsSync(OUTPUT_PATH)) {
 
 // 2. Read top artists from the compiled music DNA
 const compiled = JSON.parse(readFileSync(COMPILED_PATH, 'utf8'));
-const topArtistNames = new Set(compiled.top_artists.slice(0, 30).map((a) => a.name.toLowerCase()));
+const topArtistNames = new Set(compiled.top_artists.slice(0, 50).map((a) => a.name.toLowerCase()));
 
 // 3. Find unique band members of these top artists
 const knowledge = JSON.parse(readFileSync(KNOWLEDGE_PATH, 'utf8'));
@@ -81,7 +81,7 @@ for (const artist of knowledge.artists) {
   }
 }
 
-console.log(`Found ${targetMembers.size} unique members across your top 30 artists.`);
+console.log(`Found ${targetMembers.size} unique members across your top 50 artists.`);
 
 // 4. Batch query Wikipedia PageImages API
 let fetched = 0, cached = 0, skipped = 0;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
-import { BrainCircuit, AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
+import { AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import { CHART_ANIMATION } from './chartKit';
 import { localizeArchetype, localizePersonalityTrait, localizeTraitAxis } from '../utils/localizedDatasetText';
 
 interface PersonalityRadarProps {
@@ -12,10 +13,11 @@ interface PersonalityRadarProps {
 
 export default function PersonalityRadar({ data }: PersonalityRadarProps) {
   const matrix = data.personality_matrix;
-  const [selectedKey, setSelectedKey] = useState<keyof typeof matrix>('sensibilidad_emocional');
+  type PersonalityKey = keyof typeof matrix;
+  const [selectedKey, setSelectedKey] = useState<PersonalityKey>('sensibilidad_emocional');
   const { tc, t, lang } = useApp();
 
-  const chartData = [
+  const chartData: Array<{ subject: string; value: number; key: PersonalityKey }> = [
     { subject: localizeTraitAxis('sensibilidad_emocional', lang), value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
     { subject: localizeTraitAxis('nostalgia', lang), value: matrix.nostalgia.score, key: 'nostalgia' },
     { subject: localizeTraitAxis('energia', lang), value: matrix.energia.score, key: 'energia' },
@@ -31,36 +33,31 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
   const traitLabels = t.personalityRadar.traitLabels;
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3 mb-6">
-        <BrainCircuit className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.personalityRadar.profileTitle}</h2>
-      </div>
-
+    <div className="animate-fade-in space-y-8">
       <SectionNarrative content={t.deepNarratives.personality} accent="c3" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Radar Chart */}
-        <div className="glass-panel p-6 rounded-3xl lg:col-span-5 flex flex-col items-center">
-          <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-4">
+        <div className="nova-surface nova-surface--analysis flex flex-col items-center rounded-3xl p-5 lg:col-span-5 lg:p-6">
+          <h3 className="type-section type-strong mb-4">
             {t.personalityRadar.radarTitle}</h3>
           
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={chartData}>
-                <PolarGrid stroke="#1e293b" />
+                <PolarGrid stroke={`${tc.c3}30`} />
                 <PolarAngleAxis 
                   dataKey="subject" 
-                  stroke="#9ca3af" 
+                  stroke="var(--type-ink-muted)"
                   fontSize={11}
                   tickFormatter={(val) => val}
                 />
                 <Radar
+                  {...CHART_ANIMATION}
                   name="Kevin"
                   dataKey="value"
-                  stroke="#00f2fe"
-                  fill="#00f2fe"
+                  stroke={tc.c1}
+                  fill={tc.c1}
                   fillOpacity={0.2}
                 />
               </RadarChart>
@@ -72,11 +69,11 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
             {chartData.map(item => (
               <button
                 key={item.key}
-                onClick={() => setSelectedKey(item.key as any)}
-                className={`px-3 py-1 font-mono text-[10px] font-bold rounded-full border transition-all ${
+                onClick={() => setSelectedKey(item.key)}
+                className={`nova-surface nova-surface--interactive type-caption min-h-11 rounded-full border px-3 py-2 font-semibold ${
                   selectedKey === item.key 
                     ? 'bg-cyberCyan/10 border-cyberCyan text-cyberCyan shadow-[0_0_10px_rgba(0,242,254,0.15)]' 
-                    : 'bg-[#0a0f1d] border-cyan-500/10 text-gray-400 hover:text-white'
+                    : 'nova-surface--utility border-cyan-500/10 type-muted hover:text-[var(--fg)]'
                 }`}
               >
                 {item.subject} ({item.value})
@@ -86,10 +83,10 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
         </div>
 
         {/* Right Side: Detailed Card */}
-        <div className="glass-panel p-8 rounded-3xl lg:col-span-7 space-y-6 border-l-4 border-l-cyberPink">
+        <div className="nova-surface nova-surface--featured space-y-6 rounded-3xl border-l-4 border-l-cyberPink p-5 sm:p-7 lg:col-span-7 lg:p-8">
           <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-black text-white">{traitLabels[selectedKey]}</h3>
-            <span className="text-2xl font-black text-cyberPink font-mono bg-cyberPink/10 px-3 py-1 rounded-2xl border border-cyberPink/20">
+            <h3 className="type-title type-strong text-2xl">{traitLabels[selectedKey]}</h3>
+            <span className="type-metric rounded-2xl border border-cyberPink/20 bg-cyberPink/10 px-3 py-1 text-2xl font-black text-cyberPink">
               {currentTrait.score}/100
             </span>
           </div>
@@ -97,15 +94,15 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
           <div className="space-y-4">
             {/* Evidencia */}
             <div className="space-y-1">
-            <span className="text-xs font-mono font-bold text-gray-400 uppercase tracking-wider block">
+            <span className="type-label type-muted block">
               {t.personalityRadar.evidenceLabel}</span>
-              <p className="text-sm text-gray-200">{currentTrait.evidence}</p>
+              <p className="type-body type-muted">{currentTrait.evidence}</p>
             </div>
 
             {/* Artistas de Apoyo */}
             <div className="flex flex-wrap gap-2 pt-1">
               {currentTrait.artists.map(art => (
-                <span key={art} className="px-2.5 py-1 bg-cyan-950/20 border border-cyan-500/20 text-cyberBlue rounded-full text-xs font-mono">
+                <span key={art} className="type-caption rounded-full border border-cyan-500/20 bg-cyan-950/20 px-2.5 py-1 text-cyberBlue">
                   {art}
                 </span>
               ))}
@@ -114,19 +111,19 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
             {/* Tres Secciones de Análisis */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-cyan-500/10">
               <div className="space-y-2 p-4 bg-green-950/5 border border-green-500/20 rounded-2xl">
-                <div className="flex items-center space-x-2 text-green-400 font-mono text-xs font-bold uppercase">
+                <div className="type-label flex items-center space-x-2 text-green-400">
                   <ShieldCheck className="w-4 h-4" />
                   <span>{t.personalityRadar.strengthLabel}</span>
                 </div>
-                <p className="text-xs text-gray-300 font-sans leading-relaxed">{currentTrait.positive}</p>
+                <p className="type-caption type-muted">{currentTrait.positive}</p>
               </div>
 
               <div className="space-y-2 p-4 bg-red-950/5 border border-red-500/20 rounded-2xl">
-                <div className="flex items-center space-x-2 text-red-400 font-mono text-xs font-bold uppercase">
+                <div className="type-label flex items-center space-x-2 text-red-400">
                   <AlertTriangle className="w-4 h-4 animate-pulse" />
                   <span>{t.personalityRadar.challengeLabel}</span>
                 </div>
-                <p className="text-xs text-gray-300 font-sans leading-relaxed">{currentTrait.shadow}</p>
+                <p className="type-caption type-muted">{currentTrait.shadow}</p>
               </div>
             </div>
 
@@ -134,9 +131,9 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
             <div className="p-4 bg-cyberCyan/5 border border-cyberCyan/20 rounded-2xl flex items-start space-x-3">
               <Heart className="w-5 h-5 text-cyberCyan shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <span className="text-xs font-mono font-bold text-[var(--fg)] uppercase">
+                <span className="type-label type-strong">
                 {t.personalityRadar.tipLabel}</span>
-                <p className="text-xs text-gray-300 font-sans leading-relaxed">{currentTrait.tip}</p>
+                <p className="type-caption type-muted">{currentTrait.tip}</p>
               </div>
             </div>
           </div>
@@ -145,25 +142,25 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
 
       {/* Archetypes Subsection */}
       <div className="space-y-6 pt-6">
-        <h3 className="text-lg font-bold font-mono uppercase tracking-wider text-white">
+        <h3 className="type-title type-strong">
           {t.personalityRadar.archetypesTitle}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {localizedArchetypes.map((arch) => (
             <div 
               key={arch.name} 
-              className={`glass-panel p-6 rounded-3xl border-t-4 transition-all duration-300 ${
+              className={`nova-surface nova-surface--analysis rounded-3xl border-t-4 p-5 sm:p-6 ${
                 arch.color === 'cyan' ? 'border-t-cyberCyan' : 'border-t-cyberPink'
               }`}
             >
-              <h4 className="text-xl font-bold text-white mb-2">{arch.name}</h4>
-              <p className="text-xs text-gray-400 font-mono mb-4">{arch.desc}</p>
+              <h4 className="type-section type-strong mb-2 text-xl">{arch.name}</h4>
+              <p className="type-caption type-muted mb-4">{arch.desc}</p>
               
-              <div className="space-y-3 text-xs text-gray-300">
+              <div className="type-caption type-muted space-y-3">
                 <p><strong className="text-gray-400">{t.personalityRadar.aestheticLabel}</strong> {arch.aesthetic}</p>
                 <p><strong className="text-gray-400">{t.personalityRadar.strengthColonLabel}</strong> {arch.strength}</p>
                 <p><strong className="text-gray-400">{t.personalityRadar.challengeColonLabel}</strong> {arch.wound}</p>
-                <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl mt-2 font-mono italic">
+                <div className="nova-surface nova-surface--utility mt-2 rounded-xl border border-cyan-500/10 p-3 italic">
                   "{arch.advice}"
                 </div>
               </div>

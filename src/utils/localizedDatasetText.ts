@@ -96,6 +96,10 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   'South Africa': 'Sudáfrica',
   'South Korea': 'Corea del Sur',
   Spain: 'España',
+  Egypt: 'Egipto',
+  Poland: 'Polonia',
+  Austria: 'Austria',
+  Denmark: 'Dinamarca',
   Unknown: 'Desconocido',
 };
 

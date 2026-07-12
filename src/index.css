@@ -48,6 +48,24 @@
   --bg: #050b14;
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
+
+  /* Three deliberate voices: editorial display, highly legible reading text,
+     and a real technical monospace. The remote font request stays unchanged;
+     the mono stack uses excellent platform fonts instead of faking mono with
+     Space Grotesk. */
+  --font-display: 'Space Grotesk', 'Segoe UI Variable Display', 'Avenir Next',
+    'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Menlo, Monaco,
+    Consolas, 'Liberation Mono', monospace;
+  --type-leading-body: 1.62;
+  --type-leading-title: 1.04;
+  --type-tracking-body: -0.008em;
+  --type-tracking-title: -0.04em;
+  --type-tracking-display: -0.06em;
+  --type-ink-strong: color-mix(in srgb, var(--fg) 96%, transparent);
+  --type-ink-muted: color-mix(in srgb, var(--fg) 67%, transparent);
   
   /* Smoothly transition theme variables */
   transition: --c1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
@@ -57,6 +75,12 @@
               --bg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               --fg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               --glass-bg 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-mode="light"] {
+  --type-leading-body: 1.64;
+  --type-ink-strong: #172033;
+  --type-ink-muted: #526177;
 }
 
 /* Smoothly transition background colors, text colors, and borders when the theme changes */
@@ -138,16 +162,287 @@ p, span, button, a, svg {
 }
 
 @layer base {
+  html {
+    font-family: var(--font-body);
+    font-kerning: normal;
+    font-optical-sizing: auto;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: var(--type-leading-body);
+    letter-spacing: var(--type-tracking-body);
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    text-rendering: optimizeLegibility;
     background-color: var(--bg);
     color: var(--fg);
     transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
                 color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: var(--type-leading-title);
+    letter-spacing: var(--type-tracking-title);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
     transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  h1 {
+    line-height: 0.96;
+    letter-spacing: var(--type-tracking-display);
+  }
+
+  p, li, blockquote, figcaption {
+    text-wrap: pretty;
+  }
+
+  button, input, textarea, select {
+    font: inherit;
+  }
+
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  data, time, output {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* ── Semantic typography ────────────────────────────────────────────────────
+ * These utilities are the contract for new screens. Existing heading markup
+ * also inherits the same display voice, including legacy headings that still
+ * carry `font-mono`; labels and metrics keep the true technical mono voice. */
+@layer utilities {
+  :where(.font-mono) {
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono:is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-display);
+  }
+
+  .type-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 7.5vw, 7.5rem);
+    font-weight: 700;
+    line-height: 0.88;
+    letter-spacing: var(--type-tracking-display);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .type-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 1.05rem + 1.5vw, 2.75rem);
+    font-weight: 700;
+    line-height: var(--type-leading-title);
+    letter-spacing: var(--type-tracking-title);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .type-section {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 0.94rem + 0.42vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .type-kicker {
+    font-family: var(--font-mono);
+    font-size: clamp(0.625rem, 0.58rem + 0.16vw, 0.75rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .type-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.6875rem, 0.66rem + 0.08vw, 0.75rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .type-body {
+    font-family: var(--font-body);
+    font-size: clamp(0.9375rem, 0.91rem + 0.12vw, 1rem);
+    font-weight: 400;
+    line-height: var(--type-leading-body);
+    letter-spacing: var(--type-tracking-body);
+    text-wrap: pretty;
+  }
+
+  .type-body-lg {
+    font-family: var(--font-body);
+    font-size: clamp(1.0625rem, 0.98rem + 0.34vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.58;
+    letter-spacing: -0.012em;
+    text-wrap: pretty;
+  }
+
+  .type-meta {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  .type-caption {
+    font-family: var(--font-body);
+    font-size: clamp(0.75rem, 0.73rem + 0.08vw, 0.8125rem);
+    font-weight: 450;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .type-metric,
+  .type-tabular,
+  .tabular-nums {
+    font-variant-numeric: tabular-nums lining-nums slashed-zero;
+    font-feature-settings: 'tnum' 1, 'lnum' 1, 'zero' 1;
+  }
+
+  .type-metric {
+    font-family: var(--font-mono);
+    letter-spacing: -0.035em;
+  }
+
+  .type-strong {
+    color: var(--type-ink-strong);
+  }
+
+  .type-muted {
+    color: var(--type-ink-muted);
+  }
+}
+
+@media (max-width: 640px) {
+  .type-display {
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .type-title {
+    letter-spacing: -0.032em;
+  }
+
+  .type-kicker {
+    letter-spacing: 0.14em;
+  }
+}
+
+/* ── Museum surface hierarchy ────────────────────────────────────────────────
+ * Surfaces are static by default. Interaction feedback is explicit so prose,
+ * charts and controls no longer compete for the same visual elevation. */
+.nova-surface {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--fg) 9%, transparent);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nova-surface--featured {
+  border-color: color-mix(in srgb, var(--c1) 24%, transparent);
+  background:
+    radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--c1) 13%, transparent), transparent 38%),
+    radial-gradient(circle at 92% 100%, color-mix(in srgb, var(--c3) 10%, transparent), transparent 42%),
+    color-mix(in srgb, var(--bg) 83%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--fg) 7%, transparent),
+    0 24px 64px color-mix(in srgb, #020617 38%, transparent);
+}
+
+.nova-surface--analysis {
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--fg) 2.5%, transparent), transparent 52%),
+    color-mix(in srgb, var(--bg) 76%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
+}
+
+.nova-surface--utility {
+  border-color: color-mix(in srgb, var(--fg) 8%, transparent);
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nova-surface--interactive {
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.nova-surface--interactive:hover {
+  border-color: color-mix(in srgb, var(--c1) 30%, transparent);
+  box-shadow: 0 14px 34px color-mix(in srgb, #020617 24%, transparent);
+  transform: translateY(-2px);
+}
+
+.nova-surface--interactive:focus-within {
+  border-color: color-mix(in srgb, var(--c1) 42%, transparent);
+}
+
+[data-mode='light'] .nova-surface {
+  border-color: color-mix(in srgb, #334155 14%, transparent);
+  background-color: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+[data-mode='light'] .nova-surface--featured {
+  border-color: color-mix(in srgb, var(--c1) 24%, transparent);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.09);
+}
+
+[data-mode='light'] .nova-surface--analysis {
+  background-color: rgba(255, 255, 255, 0.62);
+}
+
+[data-mode='light'] .nova-surface--utility {
+  background-color: rgba(255, 255, 255, 0.46);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-surface--interactive {
+    transition-duration: 0.01ms;
+  }
+
+  .nova-surface--interactive:hover {
+    transform: none;
   }
 }
 

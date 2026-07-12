@@ -26,10 +26,24 @@ describe('normalizeGenre', () => {
     expect(normalizeGenre('Israeli Rock / Metal')).toBe('Israeli Rock');
   });
 
-  it('falls back honestly instead of inventing a class', () => {
-    expect(normalizeGenre('Something Totally New')).toBe('Alternative');
+  it('resolves the finer metal families added with the honest-data recompile', () => {
+    expect(normalizeGenre('Power Metal / Speed Metal')).toBe('Power / Speed Metal');
+    expect(normalizeGenre('Speed Metal / Heavy Metal')).toBe('Power / Speed Metal'); // Enforcer
+    expect(normalizeGenre('Folk Metal / Power Metal')).toBe('Folk Metal'); // Saurom: folk wins over power
+    expect(normalizeGenre('Emo Groove / Alt-Metal')).toBe('Alt-Metal');
+    expect(normalizeGenre('Instrumental Rock / Heavy Metal')).toBe('Heavy Metal');
+    expect(normalizeGenre('Synthwave / Dreampop')).toBe('Synthwave / Darksynth');
+  });
+
+  it('never relabels unknown artists as Alternative (data honesty)', () => {
+    // The old fallback painted every Unclassified long-tail artist as
+    // "Alternative" - ~40K plays of fabricated genre attribution.
+    expect(normalizeGenre('Unclassified')).toBe('Unclassified');
+    expect(normalizeGenre('Unknown')).toBe('Unclassified');
     expect(normalizeGenre('')).toBe('Unclassified');
     expect(normalizeGenre()).toBe('Unclassified');
+    // A real-but-unmapped genre still groups as Alternative (a judgment, not a fabrication).
+    expect(normalizeGenre('Something Totally New')).toBe('Alternative');
   });
 });
 

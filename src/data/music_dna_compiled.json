@@ -1,17 +1,17 @@
 {
   "project": "Nova Music Lab - Datos Importados (Last.fm CSV + Spotify JSON + YouTube JSON/HTML)",
-  "generated_at": "2026-07-10T05:13:46.986Z",
+  "generated_at": "2026-07-12T03:57:41.074Z",
   "core_metrics": {
-    "total_plays": 81604,
+    "total_plays": 81615,
     "unique_artists": 6418,
-    "unique_tracks": 20871,
+    "unique_tracks": 20878,
     "unique_albums": 11239,
-    "listening_minutes": 259534,
-    "listening_hours": 4325.6,
-    "listening_days": 180.2,
+    "listening_minutes": 259570.7,
+    "listening_hours": 4326.2,
+    "listening_days": 180.3,
     "active_days": 2896,
     "max_year": 2021,
-    "match_rate_pct": 48.94
+    "match_rate_pct": 48.92
   },
   "top_artists": [
     {
@@ -896,7 +896,7 @@
       "artist": "Ollie Joseph",
       "title": "Sweatshirt",
       "plays": 94,
-      "genre": "Unclassified"
+      "genre": "Hip Hop / Rap"
     },
     {
       "artist": "Rain City Drive",
@@ -1094,7 +1094,7 @@
       "artist": "Too Close To Touch",
       "title": "F.I.N.E.",
       "plays": 74,
-      "genre": "Unclassified"
+      "genre": "Post-Hardcore / Emo"
     },
     {
       "artist": "Deafheaven",
@@ -1124,7 +1124,7 @@
       "artist": "Steve Aoki",
       "title": "Kong 2.0",
       "plays": 73,
-      "genre": "Unclassified"
+      "genre": "EDM / Electro House"
     },
     {
       "artist": "Ryan Caraveo",
@@ -1136,7 +1136,7 @@
       "artist": "Hot Milk",
       "title": "BREATHING UNDERWATER",
       "plays": 73,
-      "genre": "Unclassified"
+      "genre": "Pop Punk / Alternative Rock"
     },
     {
       "artist": "Bring Me The Horizon",
@@ -1721,40 +1721,44 @@
   ],
   "top_genres": [
     {
+      "name": "Unclassified",
+      "plays": 27221
+    },
+    {
       "name": "Alternative",
-      "plays": 49210
+      "plays": 16976
     },
     {
       "name": "Post-Hardcore",
-      "plays": 6846
+      "plays": 7356
     },
     {
       "name": "Metalcore",
-      "plays": 3889
+      "plays": 4171
     },
     {
       "name": "Post-Metal / Blackgaze",
-      "plays": 2972
+      "plays": 3233
     },
     {
       "name": "Pop Punk / Emo",
-      "plays": 2302
+      "plays": 2486
     },
     {
       "name": "Synthwave / Darksynth",
-      "plays": 2240
+      "plays": 2480
     },
     {
       "name": "Israeli Rock",
-      "plays": 2035
+      "plays": 2107
     },
     {
       "name": "Hard Rock",
-      "plays": 1952
+      "plays": 2053
     },
     {
       "name": "Progressive Metal",
-      "plays": 1631
+      "plays": 1906
     },
     {
       "name": "Emo Rap / Trap",
@@ -1762,27 +1766,39 @@
     },
     {
       "name": "Ambient / Lo-Fi",
-      "plays": 1387
+      "plays": 1493
     },
     {
       "name": "Pop / Indie",
-      "plays": 1317
+      "plays": 1481
+    },
+    {
+      "name": "Alt-Metal",
+      "plays": 1449
     },
     {
       "name": "Hip-Hop / Rap",
-      "plays": 1137
-    },
-    {
-      "name": "Heavy Metal",
-      "plays": 1131
-    },
-    {
-      "name": "Alternative Rock",
-      "plays": 999
+      "plays": 1345
     },
     {
       "name": "Death Metal",
-      "plays": 983
+      "plays": 1172
+    },
+    {
+      "name": "Alternative Rock",
+      "plays": 970
+    },
+    {
+      "name": "Power / Speed Metal",
+      "plays": 896
+    },
+    {
+      "name": "Heavy Metal",
+      "plays": 760
+    },
+    {
+      "name": "Folk Metal",
+      "plays": 487
     }
   ],
   "yearly_eras": [
@@ -1896,26 +1912,26 @@
     },
     {
       "year": 2024,
-      "plays": 3197,
+      "plays": 3204,
       "unique_artists": 386,
-      "unique_tracks": 649,
+      "unique_tracks": 656,
       "top_artist": "Bilmuri",
       "top_track": "First Person Shooter (feat. J. Cole)",
       "dominant_daypart": "Tarde 12-17",
       "era_label": "Era de Bilmuri",
-      "era_desc": "Un año marcado por Bilmuri, 3197 reproducciones y 386 artistas unicos.",
-      "diversity_index": 20.3
+      "era_desc": "Un año marcado por Bilmuri, 3204 reproducciones y 386 artistas unicos.",
+      "diversity_index": 20.5
     },
     {
       "year": 2025,
-      "plays": 6318,
+      "plays": 6322,
       "unique_artists": 963,
-      "unique_tracks": 2116,
+      "unique_tracks": 2118,
       "top_artist": "Bilmuri",
       "top_track": "2016 CAVALIERS (Ohio) (feat. Knox)",
       "dominant_daypart": "Mañana 06-11",
       "era_label": "Era de Bilmuri",
-      "era_desc": "Un año marcado por Bilmuri, 6318 reproducciones y 963 artistas unicos.",
+      "era_desc": "Un año marcado por Bilmuri, 6322 reproducciones y 963 artistas unicos.",
       "diversity_index": 33.5
     },
     {
@@ -1933,7 +1949,7 @@
   ],
   "sessions": [
     {
-      "id": 6213,
+      "id": 6214,
       "start": "2025-09-29T17:55:00.000Z",
       "end": "2025-09-30T07:07:21.000Z",
       "tracks_count": 486,
@@ -1943,7 +1959,7 @@
       "unique_artists": 20
     },
     {
-      "id": 6315,
+      "id": 6316,
       "start": "2025-12-02T05:03:05.000Z",
       "end": "2025-12-02T14:56:00.000Z",
       "tracks_count": 221,
@@ -1973,7 +1989,7 @@
       "unique_artists": 40
     },
     {
-      "id": 6616,
+      "id": 6617,
       "start": "2026-04-30T04:02:08.000Z",
       "end": "2026-04-30T13:36:38.000Z",
       "tracks_count": 195,
@@ -2073,7 +2089,7 @@
       "unique_artists": 32
     },
     {
-      "id": 6627,
+      "id": 6628,
       "start": "2026-05-04T04:01:34.000Z",
       "end": "2026-05-04T11:54:54.000Z",
       "tracks_count": 137,
@@ -2093,7 +2109,7 @@
       "unique_artists": 65
     },
     {
-      "id": 6605,
+      "id": 6606,
       "start": "2026-04-26T03:10:06.000Z",
       "end": "2026-04-26T10:32:33.000Z",
       "tracks_count": 129,
@@ -2133,7 +2149,7 @@
       "unique_artists": 63
     },
     {
-      "id": 6301,
+      "id": 6302,
       "start": "2025-11-20T05:04:04.000Z",
       "end": "2025-11-20T10:50:00.000Z",
       "tracks_count": 115,
@@ -2323,7 +2339,7 @@
       "unique_artists": 25
     },
     {
-      "id": 6312,
+      "id": 6313,
       "start": "2025-11-30T19:34:10.000Z",
       "end": "2025-11-30T23:50:05.000Z",
       "tracks_count": 92,
@@ -2413,7 +2429,7 @@
       "unique_artists": 22
     },
     {
-      "id": 6056,
+      "id": 6058,
       "start": "2025-08-05T06:41:00.000Z",
       "end": "2025-08-05T12:54:01.000Z",
       "tracks_count": 85,
@@ -2738,47 +2754,63 @@
   "artist_origin_countries": [
     {
       "country": "United States",
-      "plays": 33892
+      "plays": 35623
     },
     {
       "country": "United Kingdom",
-      "plays": 5893
+      "plays": 6256
     },
     {
       "country": "Sweden",
-      "plays": 2211
-    },
-    {
-      "country": "Finland",
-      "plays": 2098
+      "plays": 2310
     },
     {
       "country": "Israel",
-      "plays": 2078
+      "plays": 2262
+    },
+    {
+      "country": "Finland",
+      "plays": 2202
     },
     {
       "country": "France",
-      "plays": 1438
+      "plays": 1544
     },
     {
       "country": "Germany",
-      "plays": 1126
+      "plays": 1208
     },
     {
       "country": "Brazil",
       "plays": 827
     },
     {
+      "country": "Canada",
+      "plays": 330
+    },
+    {
       "country": "Spain",
       "plays": 207
+    },
+    {
+      "country": "Ireland",
+      "plays": 157
     },
     {
       "country": "Iceland",
       "plays": 147
     },
     {
-      "country": "Canada",
-      "plays": 145
+      "country": "Egypt",
+      "plays": 147
+    },
+    {
+      "country": "Poland",
+      "plays": 126
+    },
+    {
+      "country": "Italy",
+      "plays": 118
     },
     {
       "country": "Argentina",
@@ -2789,16 +2821,24 @@
       "plays": 112
     },
     {
+      "country": "Netherlands",
+      "plays": 105
+    },
+    {
+      "country": "Austria",
+      "plays": 97
+    },
+    {
       "country": "Australia",
+      "plays": 86
+    },
+    {
+      "country": "Denmark",
       "plays": 86
     },
     {
       "country": "Puerto Rico",
       "plays": 78
-    },
-    {
-      "country": "Ireland",
-      "plays": 71
     },
     {
       "country": "Venezuela",
@@ -2811,10 +2851,6 @@
     {
       "country": "Colombia",
       "plays": 12
-    },
-    {
-      "country": "Netherlands",
-      "plays": 9
     },
     {
       "country": "South Africa",
@@ -2854,7 +2890,7 @@
       416
     ],
     [
-      254,
+      256,
       310,
       306,
       232,
@@ -2863,7 +2899,7 @@
       323
     ],
     [
-      116,
+      119,
       230,
       179,
       248,
@@ -2892,7 +2928,7 @@
     [
       149,
       142,
-      87,
+      88,
       197,
       121,
       218,
@@ -2938,7 +2974,7 @@
       694,
       466,
       650,
-      693,
+      694,
       356,
       280,
       579
@@ -3001,7 +3037,7 @@
       581,
       509,
       630,
-      598,
+      599,
       760,
       741,
       688
@@ -3025,7 +3061,7 @@
       625
     ],
     [
-      439,
+      441,
       383,
       536,
       421,
@@ -3044,7 +3080,7 @@
     ],
     [
       657,
-      373,
+      374,
       501,
       547,
       411,
@@ -5477,7 +5513,7 @@
     "2024-11-26": 9,
     "2024-11-29": 1,
     "2024-12-01": 21,
-    "2024-12-02": 28,
+    "2024-12-02": 35,
     "2024-12-03": 4,
     "2024-12-04": 26,
     "2024-12-05": 1,
@@ -5498,7 +5534,7 @@
     "2025-01-02": 1,
     "2025-01-03": 1,
     "2025-01-05": 6,
-    "2025-01-09": 1,
+    "2025-01-09": 3,
     "2025-01-11": 28,
     "2025-01-12": 44,
     "2025-01-15": 8,
@@ -5696,8 +5732,8 @@
     "2025-08-30": 13,
     "2025-08-31": 4,
     "2025-09-01": 31,
-    "2025-09-02": 34,
-    "2025-09-03": 47,
+    "2025-09-02": 35,
+    "2025-09-03": 48,
     "2025-09-04": 76,
     "2025-09-05": 4,
     "2025-09-06": 2,
@@ -6538,12 +6574,12 @@
     {
       "year": 2024,
       "month": 11,
-      "plays": 281
+      "plays": 288
     },
     {
       "year": 2025,
       "month": 0,
-      "plays": 141
+      "plays": 143
     },
     {
       "year": 2025,
@@ -6583,7 +6619,7 @@
     {
       "year": 2025,
       "month": 8,
-      "plays": 899
+      "plays": 901
     },
     {
       "year": 2025,
@@ -6683,7 +6719,7 @@
     },
     {
       "platform": "YouTube Takeout HTML",
-      "plays": 1755
+      "plays": 1766
     },
     {
       "platform": "Windows 10 (10.0.15063; x64)",
@@ -6762,10 +6798,10 @@
     "source_type": "merged",
     "lastfm_plays": 50476,
     "spotify_plays": 161898,
-    "youtube_plays": 1758,
+    "youtube_plays": 1769,
     "apple_music_plays": 0,
     "listenbrainz_plays": 0,
-    "merged_plays": 81604,
+    "merged_plays": 81615,
     "spotify_skips": 39158,
     "spotify_skip_rate_pct": 24.19,
     "spotify_short_plays": 97749,
@@ -6776,12 +6812,12 @@
   },
   "knowledge_summary": {
     "source": "offline_artist_knowledge",
-    "generated_at": "2026-07-10T00:30:08.510Z",
+    "generated_at": "2026-07-11T12:22:44.636Z",
     "cache_artist_count": 100,
-    "wikidata_profile_count": 79,
-    "wikidata_description_count": 79,
-    "wikidata_website_count": 70,
-    "wikidata_image_count": 70,
+    "wikidata_profile_count": 80,
+    "wikidata_description_count": 80,
+    "wikidata_website_count": 71,
+    "wikidata_image_count": 71,
     "total_artists": 100,
     "matched_artists": 100,
     "unmatched_artists": 0,
@@ -7038,27 +7074,6 @@
         "hasImage": false
       },
       {
-        "name": "Rami Kleinstein",
-        "rank": 92,
-        "plays": 162,
-        "score": 104,
-        "priority": "critical",
-        "profileStatus": "matched",
-        "gaps": [
-          "missing_wikidata",
-          "missing_description",
-          "missing_member_or_role",
-          "missing_website",
-          "missing_image",
-          "missing_releases"
-        ],
-        "releaseGroupCount": 0,
-        "hasWikidata": false,
-        "hasMembersOrRoles": false,
-        "hasOfficialLinks": false,
-        "hasImage": false
-      },
-      {
         "name": "NIGHTBREAKERS",
         "rank": 96,
         "plays": 156,
@@ -7154,6 +7169,26 @@
           "missing_image"
         ],
         "releaseGroupCount": 5,
+        "hasWikidata": false,
+        "hasMembersOrRoles": false,
+        "hasOfficialLinks": false,
+        "hasImage": false
+      },
+      {
+        "name": "FM-84",
+        "rank": 67,
+        "plays": 212,
+        "score": 90,
+        "priority": "critical",
+        "profileStatus": "matched",
+        "gaps": [
+          "missing_wikidata",
+          "missing_description",
+          "missing_member_or_role",
+          "missing_website",
+          "missing_image"
+        ],
+        "releaseGroupCount": 1,
         "hasWikidata": false,
         "hasMembersOrRoles": false,
         "hasOfficialLinks": false,

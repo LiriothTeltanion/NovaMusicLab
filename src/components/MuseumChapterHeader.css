@@ -14,19 +14,19 @@
   --chapter-pulse-tempo: 4.5s;
   position: relative;
   isolation: isolate;
-  min-height: 17rem;
-  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 13.75rem;
+  margin-bottom: clamp(1rem, 2vw, 1.6rem);
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--chapter-primary) 34%, transparent);
-  border-radius: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: clamp(1.25rem, 2.4vw, 1.75rem);
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--chapter-primary) 20%, transparent), transparent 38%),
     radial-gradient(circle at 92% 18%, color-mix(in srgb, var(--chapter-secondary) 18%, transparent), transparent 36%),
     linear-gradient(118deg, color-mix(in srgb, var(--bg) 90%, var(--chapter-primary) 10%), color-mix(in srgb, var(--bg) 92%, var(--chapter-secondary) 8%));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.11),
-    inset 0 -50px 90px rgba(0, 0, 0, 0.13),
-    0 30px 80px color-mix(in srgb, var(--chapter-primary) 12%, transparent);
+    inset 0 -36px 70px rgba(0, 0, 0, 0.11),
+    0 22px 54px color-mix(in srgb, var(--chapter-primary) 10%, transparent);
 }
 
 .museum-chapter::before {
@@ -87,28 +87,29 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
+  grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 14rem) minmax(12rem, 17rem);
   align-items: center;
-  gap: clamp(1.25rem, 3vw, 3rem);
-  min-height: 15rem;
-  padding: clamp(1.5rem, 4vw, 3.25rem);
-  padding-bottom: clamp(2.6rem, 5vw, 3.5rem);
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  box-sizing: border-box;
+  min-height: 13.75rem;
+  padding: clamp(1.15rem, 2.3vw, 1.75rem);
+  padding-bottom: clamp(2rem, 2.8vw, 2.35rem);
 }
 
 .museum-chapter__copy {
   min-width: 0;
-  max-width: 48rem;
+  max-width: 42rem;
 }
 
 .museum-chapter__eyebrow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
-  margin: 0 0 0.85rem;
+  gap: 0.45rem;
+  margin: 0 0 0.58rem;
   color: var(--chapter-primary);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: clamp(0.64rem, 1.2vw, 0.74rem);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: clamp(0.68rem, 1vw, 0.73rem);
   font-weight: 900;
   letter-spacing: 0.18em;
   line-height: 1.4;
@@ -119,12 +120,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.72rem;
+  height: 1.72rem;
   border: 1px solid color-mix(in srgb, var(--chapter-primary) 42%, transparent);
-  border-radius: 0.75rem;
+  border-radius: 0.62rem;
   background: color-mix(in srgb, var(--chapter-primary) 12%, transparent);
-  font-size: 1rem;
+  font-size: 0.88rem;
   letter-spacing: 0;
   box-shadow: 0 0 18px color-mix(in srgb, var(--chapter-primary) 22%, transparent);
 }
@@ -134,67 +135,66 @@
 }
 
 .museum-chapter h1 {
-  max-width: 14ch;
+  max-width: 16ch;
   margin: 0;
   color: var(--fg);
-  font-size: clamp(2.25rem, 5.4vw, 4.8rem);
+  font-family: var(--font-display, "Space Grotesk", Inter, system-ui, sans-serif);
+  font-size: clamp(2.15rem, 4vw, 3.65rem);
   font-weight: 900;
   letter-spacing: -0.055em;
-  line-height: 0.92;
+  line-height: 0.94;
   text-wrap: balance;
   text-shadow: 0 8px 30px color-mix(in srgb, var(--chapter-primary) 18%, transparent);
 }
 
 .museum-chapter__description {
-  max-width: 45rem;
-  margin: 1.05rem 0 0;
+  max-width: 38rem;
+  margin: 0.62rem 0 0;
   color: color-mix(in srgb, var(--fg) 68%, transparent);
-  font-size: clamp(0.92rem, 1.8vw, 1.06rem);
-  line-height: 1.7;
-}
-
-.museum-chapter__description strong {
-  color: color-mix(in srgb, var(--chapter-primary) 80%, var(--fg));
-  font-weight: 700;
+  font-size: clamp(0.84rem, 1.25vw, 0.94rem);
+  line-height: 1.48;
 }
 
 .museum-chapter__metrics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin: 1.25rem 0 0;
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
 }
 
 .museum-chapter__metric {
-  min-width: 9rem;
-  max-width: min(100%, 18rem);
-  padding: 0.7rem 0.9rem 0.74rem;
+  display: grid;
+  min-width: 0;
+  padding: 0.62rem 0.75rem 0.66rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--chapter-primary) 25%, transparent);
-  border-radius: 1rem;
+  border-radius: 0.85rem;
   background: color-mix(in srgb, var(--bg) 62%, transparent);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(12px);
 }
 
 .museum-chapter__metric dt {
-  margin-bottom: 0.22rem;
+  grid-row: 2;
+  margin-top: 0.2rem;
   overflow: hidden;
-  color: color-mix(in srgb, var(--fg) 52%, transparent);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.57rem;
+  color: color-mix(in srgb, var(--fg) 64%, transparent);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 0.6875rem;
   font-weight: 800;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.09em;
+  line-height: 1.25;
   text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .museum-chapter__metric dd {
+  grid-row: 1;
   margin: 0;
   overflow: hidden;
   color: var(--fg);
-  font-size: clamp(0.86rem, 1.5vw, 1.05rem);
+  font-size: clamp(0.9rem, 1.3vw, 1.02rem);
   font-weight: 800;
   line-height: 1.25;
   text-overflow: ellipsis;
@@ -206,10 +206,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 13rem;
+  min-height: 10rem;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--chapter-secondary) 24%, transparent);
-  border-radius: clamp(1.25rem, 3vw, 2rem);
+  border-radius: clamp(1rem, 2vw, 1.35rem);
   background:
     radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--chapter-primary) 15%, transparent), transparent 60%),
     linear-gradient(150deg, color-mix(in srgb, var(--chapter-secondary) 10%, transparent), color-mix(in srgb, var(--bg) 48%, transparent));
@@ -228,7 +228,7 @@
 .museum-chapter__art svg {
   position: relative;
   z-index: 1;
-  width: min(100%, 23rem);
+  width: min(100%, 17rem);
   height: auto;
   overflow: visible;
   filter: drop-shadow(0 0 12px color-mix(in srgb, var(--chapter-primary) 30%, transparent));
@@ -323,7 +323,7 @@
   bottom: 0.75rem;
   z-index: 2;
   color: color-mix(in srgb, var(--chapter-primary) 56%, transparent);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 0.52rem;
   font-weight: 900;
   letter-spacing: 0.16em;
@@ -332,14 +332,14 @@
 .museum-chapter__footer {
   position: absolute;
   right: clamp(1.5rem, 4vw, 3.25rem);
-  bottom: 1rem;
+  bottom: 0.72rem;
   left: clamp(1.5rem, 4vw, 3.25rem);
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 0.8rem;
   color: color-mix(in srgb, var(--fg) 34%, transparent);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
   font-size: 0.5rem;
   font-weight: 800;
   letter-spacing: 0.15em;
@@ -352,7 +352,7 @@
 }
 
 [data-mode='light'] .museum-chapter {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 28px 70px color-mix(in srgb, var(--chapter-primary) 11%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 20px 52px color-mix(in srgb, var(--chapter-primary) 10%, transparent);
 }
 
 [data-mode='light'] .museum-chapter__metric {
@@ -391,82 +391,130 @@
   50% { opacity: 1; transform: scale(1.08); }
 }
 
+@media (max-width: 1120px) {
+  .museum-chapter__content {
+    grid-template-columns: minmax(0, 1fr) minmax(10.5rem, 12rem) minmax(11rem, 14rem);
+  }
+}
+
 @media (max-width: 920px) {
   .museum-chapter__content {
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem);
+    grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 15rem);
+    grid-template-rows: auto auto;
+    min-height: 14rem;
+  }
+
+  .museum-chapter__copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .museum-chapter__metrics {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0.2rem;
   }
 
   .museum-chapter__art {
-    min-height: 11rem;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: stretch;
+    min-height: 10rem;
   }
 }
 
 @media (max-width: 680px) {
   .museum-chapter {
     min-height: 0;
-    margin-bottom: 1.25rem;
-    border-radius: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 1.25rem;
   }
 
   .museum-chapter__content {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding: 1.25rem 1.15rem 2.9rem;
+    display: block;
+    min-height: 0;
+    padding: 1rem 1rem 2.35rem;
+  }
+
+  .museum-chapter__copy,
+  .museum-chapter__metrics {
+    position: relative;
+    z-index: 2;
   }
 
   .museum-chapter__eyebrow {
-    gap: 0.42rem;
-    margin-bottom: 0.75rem;
-    font-size: 0.61rem;
-    letter-spacing: 0.14em;
+    gap: 0.38rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.11em;
   }
 
   .museum-chapter__emoji {
-    width: 1.85rem;
-    height: 1.85rem;
-    border-radius: 0.68rem;
-    font-size: 0.9rem;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 0.58rem;
+    font-size: 0.82rem;
   }
 
   .museum-chapter h1 {
-    max-width: 11ch;
-    font-size: clamp(2.35rem, 12vw, 3.35rem);
-    line-height: 0.94;
+    max-width: 14ch;
+    font-size: clamp(2rem, 9.8vw, 2.75rem);
+    line-height: 0.96;
   }
 
   .museum-chapter__description {
-    margin-top: 0.85rem;
-    font-size: 0.9rem;
-    line-height: 1.55;
+    max-width: 34rem;
+    margin-top: 0.52rem;
+    font-size: 0.84rem;
+    line-height: 1.42;
   }
 
   .museum-chapter__metrics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 0.45rem;
+    max-width: 26rem;
+    margin-top: 0.72rem;
   }
 
   .museum-chapter__art {
-    min-height: 8.75rem;
-    max-height: 9.5rem;
-    border-radius: 1.15rem;
+    position: absolute;
+    top: -8%;
+    right: -10%;
+    bottom: 0;
+    z-index: 0;
+    width: 58%;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    opacity: 0.2;
+    mask-image: linear-gradient(90deg, transparent, black 48%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 48%);
   }
 
   .museum-chapter__art svg {
-    width: min(100%, 17rem);
+    width: min(100%, 14rem);
   }
 
   .museum-chapter__metric {
     min-width: 0;
     width: 100%;
-    padding: 0.65rem 0.7rem 0.68rem;
-    border-radius: 0.85rem;
+    min-height: 3.65rem;
+    padding: 0.58rem 0.65rem 0.62rem;
+    border-radius: 0.78rem;
+    background: color-mix(in srgb, var(--bg) 76%, transparent);
+    backdrop-filter: blur(16px);
   }
 
   .museum-chapter__metric dt {
-    font-size: 0.52rem;
-    letter-spacing: 0.1em;
+    min-height: 1.25em;
+    margin-top: 0.22rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.07em;
+    line-height: 1.18;
   }
 
   .museum-chapter__metric dd {
@@ -474,12 +522,16 @@
   }
 
   .museum-chapter__footer {
-    right: 1.15rem;
-    bottom: 0.85rem;
-    left: 1.15rem;
+    right: 1rem;
+    bottom: 0.65rem;
+    left: 1rem;
   }
 
   .museum-chapter__footer > span:first-child {
+    display: none;
+  }
+
+  .museum-chapter__art-caption {
     display: none;
   }
 }

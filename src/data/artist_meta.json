@@ -1,4 +1,8 @@
 {
+  "*shels": {
+    "genre": "Post-Metal / Post-Rock",
+    "country": "Unknown"
+  },
   "21 savage": {
     "genre": "Trap / Hip-Hop",
     "country": "United States"
@@ -31,6 +35,10 @@
     "genre": "Hip-Hop / Cloud Rap",
     "country": "United States"
   },
+  "abigail's ghost": {
+    "genre": "Progressive Rock",
+    "country": "United States"
+  },
   "ac/dc": {
     "genre": "Hard Rock / Rock and Roll",
     "country": "Australia"
@@ -49,6 +57,10 @@
   },
   "against the current": {
     "genre": "Pop Rock / Alternative",
+    "country": "United States"
+  },
+  "agalloch": {
+    "genre": "Atmospheric Black Metal / Folk",
     "country": "United States"
   },
   "alcest": {
@@ -74,6 +86,14 @@
   "amorphis": {
     "genre": "Progressive Metal / Melodic Death",
     "country": "Finland"
+  },
+  "amr diab": {
+    "genre": "Egyptian Pop / Mediterranean",
+    "country": "Egypt"
+  },
+  "an autumn for crippled children": {
+    "genre": "Blackgaze / Post-Metal",
+    "country": "Netherlands"
   },
   "anathema": {
     "genre": "Alternative",
@@ -123,6 +143,10 @@
     "genre": "Israeli Rock / Folk",
     "country": "Israel"
   },
+  "arizona zervas": {
+    "genre": "Rap Pop",
+    "country": "United States"
+  },
   "arrows in action": {
     "genre": "Alternative",
     "country": "United States"
@@ -145,6 +169,10 @@
   },
   "august burns red": {
     "genre": "Metalcore / Progressive",
+    "country": "United States"
+  },
+  "austrian death machine": {
+    "genre": "Thrash Metal / Comedy Metal",
     "country": "United States"
   },
   "avenged sevenfold": {
@@ -178,6 +206,10 @@
   "beartooth": {
     "genre": "Metalcore / Hardcore Punk",
     "country": "United States"
+  },
+  "behemoth": {
+    "genre": "Blackened Death Metal",
+    "country": "Poland"
   },
   "being as an ocean": {
     "genre": "Alternative",
@@ -303,6 +335,10 @@
     "genre": "Darksynth / Cyberpunk",
     "country": "France"
   },
+  "cauldron": {
+    "genre": "Heavy Metal",
+    "country": "Canada"
+  },
   "charlie puth": {
     "genre": "Pop / R&B",
     "country": "United States"
@@ -363,6 +399,10 @@
     "genre": "Metalcore / Hardcore",
     "country": "Japan"
   },
+  "cutting crew": {
+    "genre": "Pop Rock / New Wave",
+    "country": "United Kingdom"
+  },
   "daddy yankee": {
     "genre": "Reggaeton / Latin Hip-Hop",
     "country": "Puerto Rico"
@@ -374,6 +414,10 @@
   "dan terminus": {
     "genre": "Darksynth / Cyberpunk",
     "country": "France"
+  },
+  "dance gavin dance": {
+    "genre": "Post-Hardcore / Math Rock",
+    "country": "United States"
   },
   "dance with the dead": {
     "genre": "Darksynth / Cyberpunk",
@@ -401,6 +445,10 @@
   },
   "dayseeker": {
     "genre": "Post-Hardcore / Synth-Metal",
+    "country": "United States"
+  },
+  "dead lakes": {
+    "genre": "Post-Hardcore / Alternative",
     "country": "United States"
   },
   "deadmau5": {
@@ -475,6 +523,10 @@
     "genre": "Progressive Metal / Progressive Rock",
     "country": "United States"
   },
+  "droid bishop": {
+    "genre": "Synthwave",
+    "country": "Unknown"
+  },
   "dua lipa": {
     "genre": "Pop / Dance Pop",
     "country": "United Kingdom"
@@ -507,6 +559,10 @@
     "genre": "Symphonic Metal / Death Metal",
     "country": "Netherlands"
   },
+  "equilibrium": {
+    "genre": "Folk Metal",
+    "country": "Germany"
+  },
   "erra": {
     "genre": "Alternative",
     "country": "United States"
@@ -518,6 +574,14 @@
   "evanescence": {
     "genre": "Alternative Metal / Gothic Rock",
     "country": "United States"
+  },
+  "evergrey": {
+    "genre": "Progressive Metal",
+    "country": "Sweden"
+  },
+  "ex deo": {
+    "genre": "Symphonic Death Metal",
+    "country": "Canada"
   },
   "explosions in the sky": {
     "genre": "Post-Rock / Instrumental",
@@ -683,12 +747,20 @@
     "genre": "Post-Hardcore / Emo",
     "country": "United Kingdom"
   },
+  "hot milk": {
+    "genre": "Pop Punk / Alternative Rock",
+    "country": "United Kingdom"
+  },
   "hurtwave": {
     "genre": "Alternative",
     "country": "United States"
   },
   "i prevail": {
     "genre": "Metalcore / Post-Hardcore",
+    "country": "United States"
+  },
+  "i see stars": {
+    "genre": "Electronicore / Post-Hardcore",
     "country": "United States"
   },
   "iann dior": {
@@ -706,6 +778,10 @@
   "in flames": {
     "genre": "Melodic Death Metal / Alternative Metal",
     "country": "Sweden"
+  },
+  "in her own words": {
+    "genre": "Pop Punk",
+    "country": "United States"
   },
   "indighxst": {
     "genre": "Alternative",
@@ -919,6 +995,10 @@
     "genre": "Alternative",
     "country": "United States"
   },
+  "m83": {
+    "genre": "Dream Pop / Synth-Pop",
+    "country": "France"
+  },
   "mac demarco": {
     "genre": "Indie Rock / Slacker Rock",
     "country": "Canada"
@@ -934,6 +1014,10 @@
   "madeon": {
     "genre": "Electro Pop / French House",
     "country": "France"
+  },
+  "magic dance": {
+    "genre": "Synthwave / AOR",
+    "country": "United States"
   },
   "magnolia park": {
     "genre": "Pop Punk / Emo Pop",
@@ -987,6 +1071,14 @@
     "genre": "Hip-Hop / Trap",
     "country": "United States"
   },
+  "melechesh": {
+    "genre": "Black Metal / Mesopotamian Metal",
+    "country": "Israel"
+  },
+  "memphis may fire": {
+    "genre": "Metalcore",
+    "country": "United States"
+  },
   "meshuggah": {
     "genre": "Progressive Metal / Djent",
     "country": "Sweden"
@@ -1007,6 +1099,10 @@
     "genre": "Pop / Pop Rock",
     "country": "United States"
   },
+  "ministry": {
+    "genre": "Industrial Metal",
+    "country": "United States"
+  },
   "mitski": {
     "genre": "Indie Rock / Art Pop",
     "country": "United States"
@@ -1014,6 +1110,14 @@
   "modern baseball": {
     "genre": "Emo / Indie Rock",
     "country": "United States"
+  },
+  "modernlove.": {
+    "genre": "Indie Pop / Alternative",
+    "country": "Ireland"
+  },
+  "monica sex": {
+    "genre": "Israeli Rock",
+    "country": "Israel"
   },
   "mono": {
     "genre": "Post-Rock / Instrumental",
@@ -1139,6 +1243,10 @@
     "genre": "Emo Rap / Alternative Pop",
     "country": "United States"
   },
+  "novembre": {
+    "genre": "Doom Metal / Gothic Metal",
+    "country": "Italy"
+  },
   "oasis": {
     "genre": "Britpop / Rock",
     "country": "United Kingdom"
@@ -1157,6 +1265,10 @@
   },
   "olivia rodrigo": {
     "genre": "Pop / Pop Rock",
+    "country": "United States"
+  },
+  "ollie joseph": {
+    "genre": "Hip Hop / Rap",
     "country": "United States"
   },
   "omer adam": {
@@ -1351,6 +1463,10 @@
     "genre": "Rock / Garage Rock",
     "country": "United Kingdom"
   },
+  "russkaja": {
+    "genre": "Folk Metal / Ska Punk",
+    "country": "Austria"
+  },
   "ryan caraveo": {
     "genre": "Alternative",
     "country": "United States"
@@ -1358,6 +1474,10 @@
   "sabaton": {
     "genre": "Power Metal / Heavy Metal",
     "country": "Sweden"
+  },
+  "sammy boller": {
+    "genre": "Instrumental Rock",
+    "country": "United States"
   },
   "santa cruz": {
     "genre": "Hard Rock / Glam Metal",
@@ -1410,6 +1530,10 @@
   "sia": {
     "genre": "Pop / Electropop",
     "country": "Australia"
+  },
+  "siamese": {
+    "genre": "Alternative Rock / Metalcore",
+    "country": "Denmark"
   },
   "sigur rós": {
     "genre": "Post-Rock / Ambient",
@@ -1511,6 +1635,14 @@
     "genre": "Glam Metal / Comedy Rock",
     "country": "United States"
   },
+  "steve aoki": {
+    "genre": "EDM / Electro House",
+    "country": "United States"
+  },
+  "steven wilson": {
+    "genre": "Progressive Rock",
+    "country": "United Kingdom"
+  },
   "stray kids": {
     "genre": "K-Pop / Hip-Hop",
     "country": "South Korea"
@@ -1534,6 +1666,10 @@
   "sweezy": {
     "genre": "Alternative",
     "country": "United States"
+  },
+  "swervedriver": {
+    "genre": "Shoegaze / Alternative Rock",
+    "country": "United Kingdom"
   },
   "system of a down": {
     "genre": "Alternative Metal / Nu Metal",
@@ -1602,6 +1738,10 @@
   "the gazette": {
     "genre": "Visual Kei / Alternative Metal",
     "country": "Japan"
+  },
+  "the home team": {
+    "genre": "Pop Rock / Post-Hardcore",
+    "country": "United States"
   },
   "the kid laroi": {
     "genre": "Alternative",
@@ -1679,6 +1819,10 @@
     "genre": "Pop Punk / Alternative Rock",
     "country": "Australia"
   },
+  "too close to touch": {
+    "genre": "Post-Hardcore / Emo",
+    "country": "United States"
+  },
   "tool": {
     "genre": "Progressive Metal / Alternative Metal",
     "country": "United States"
@@ -1706,6 +1850,10 @@
   "tuna": {
     "genre": "Israeli Hip-Hop / Rap",
     "country": "Israel"
+  },
+  "turisas": {
+    "genre": "Folk Metal / Battle Metal",
+    "country": "Finland"
   },
   "twenty one pilots": {
     "genre": "Alternative Pop / Rap Rock",
@@ -1782,6 +1930,14 @@
   "whitesnake": {
     "genre": "Hard Rock / Blues Rock",
     "country": "United Kingdom"
+  },
+  "wind walkers": {
+    "genre": "Post-Hardcore / Metalcore",
+    "country": "United States"
+  },
+  "winger": {
+    "genre": "Hard Rock / Glam Metal",
+    "country": "United States"
   },
   "within temptation": {
     "genre": "Symphonic Metal / Gothic Metal",

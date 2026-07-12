@@ -1,10 +1,10 @@
-import React, { Suspense, lazy, useCallback, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
   Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users,
-  ChevronDown, Bot
+  ChevronDown, Bot, SlidersHorizontal
 } from 'lucide-react';
 
 import { loadDefaultDataset } from './data/defaultDataset';
@@ -14,6 +14,7 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
+import NovaMark from './components/NovaMark';
 import SectionNarrative from './components/SectionNarrative';
 import {
   MobileMuseumRoomDock,
@@ -259,18 +260,6 @@ function SidebarSignalIcon({ icon: Icon, color, secondary, motif, active, index 
   );
 }
 
-function NovaAppMark({ className = 'h-8 w-8' }: { className?: string }) {
-  return (
-    <img
-      src="/favicon.svg"
-      alt=""
-      aria-hidden="true"
-      draggable={false}
-      className={className}
-    />
-  );
-}
-
 function LoadingPanel() {
   const { tc, t } = useApp();
   return (
@@ -291,7 +280,7 @@ function LoadingPanel() {
               style={{ borderColor: `${tc.c1}55` }}
             />
             <span className="absolute inset-1.5 overflow-hidden rounded-2xl bg-black/30">
-              <NovaAppMark className="h-full w-full" />
+              <NovaMark className="h-full w-full" size="100%" />
             </span>
           </div>
           <div className="min-w-0">
@@ -358,11 +347,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const setActiveTab = useApp().setActiveTab as (t: Tab) => void;
   const [musicData, setMusicData]   = useState<MusicDnaData>(() => boot.data);
   const [showThemes, setShowThemes] = useState(false);
+  const [showMobileUtilities, setShowMobileUtilities] = useState(false);
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
+  const [isPersonalArchive, setIsPersonalArchive] = useState(Boolean(boot.storedMeta));
   const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
   const [showTour, setShowTour] = useState(() => {
     try { return window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true'; } catch { return true; }
   });
+  const mainContentRef = useRef<HTMLElement>(null);
+  const mobileUtilitiesButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileUtilitiesPanelRef = useRef<HTMLDivElement>(null);
 
   // Collapsible nav group state
   const [expandedGroups, setExpandedGroups] = useState<Record<NavGroupId, boolean>>({
@@ -388,6 +382,29 @@ function AppInner({ boot }: { boot: AppBoot }) {
     window.addEventListener('mousemove', handleMove);
     return () => window.removeEventListener('mousemove', handleMove);
   }, []);
+
+  useEffect(() => {
+    if (!showMobileUtilities) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (mobileUtilitiesButtonRef.current?.contains(target) || mobileUtilitiesPanelRef.current?.contains(target)) return;
+      setShowMobileUtilities(false);
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setShowMobileUtilities(false);
+      mobileUtilitiesButtonRef.current?.focus();
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showMobileUtilities]);
 
   const menuItems: MenuItem[] = React.useMemo(() => [
     { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
@@ -438,12 +455,18 @@ function AppInner({ boot }: { boot: AppBoot }) {
   }, []);
 
   const goToTab = useCallback((tab: Tab) => {
+    setShowThemes(false);
+    setShowMobileUtilities(false);
     setActiveTab(tab);
     const item = menuItems.find(i => i.id === tab);
     if (item) {
       setExpandedGroups(prev => ({ ...prev, [item.group]: true }));
     }
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: 'auto' }));
+    window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      mainContentRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      mainContentRef.current?.focus({ preventScroll: true });
+    });
   }, [menuItems, setActiveTab]);
 
   const navigateRoom = useCallback((roomId: string) => {
@@ -466,6 +489,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
   const handleDataLoaded = (newData: MusicDnaData, sourceLabel?: string) => {
     setMusicData(newData);
+    setIsPersonalArchive(true);
     goToTab('dashboard');
     const label = sourceLabel ?? 'Upload';
     void saveDataset(newData, label).then(ok => {
@@ -476,6 +500,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const handleClearStored = useCallback(() => {
     void clearDataset();
     setStoredMeta(null);
+    setIsPersonalArchive(false);
     setRestoredAt(null);
     void loadDefaultDataset().then(setMusicData);
   }, []);
@@ -523,26 +548,26 @@ function AppInner({ boot }: { boot: AppBoot }) {
       <DynamicMuseumBackground activeTab={activeTab} data={musicData} />
 
       {/* ── Navbar ── */}
-      <header className="sticky top-0 z-40 w-full backdrop-blur-md border-b px-4 py-3 flex items-center justify-between gap-3"
+      <header className="sticky top-0 z-40 flex w-full items-center justify-between gap-2 border-b px-3 py-2 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-3"
         style={{ backgroundColor: `${tc.bg}99`, borderBottomColor: `${tc.c1}18` }}>
         
         {/* Logo */}
         <button
-          className="flex items-center space-x-3 cursor-pointer shrink-0 text-left"
+          className="flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center space-x-3 text-left"
           onClick={() => goToTab('hero')}
           aria-label={t.homeAria}
         >
           <div className="relative h-10 w-10 overflow-hidden rounded-2xl border bg-black/35 shadow-cyber"
             style={{ borderColor: `${tc.c1}45`, boxShadow: `0 0 20px ${tc.c1}24` }}>
-            <NovaAppMark className="h-full w-full" />
+            <NovaMark className="h-full w-full" size="100%" />
           </div>
-          <span className="font-mono font-bold text-base text-white tracking-widest uppercase hidden sm:block">
+          <span className="font-display text-base font-bold uppercase tracking-[0.14em] text-white hidden sm:block">
             NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
           </span>
         </button>
 
         {/* Right controls */}
-        <div className="flex items-center gap-2 flex-wrap justify-end">
+        <div className="flex items-center justify-end gap-1 md:flex-wrap md:gap-2">
           {/* User badge */}
           <div className="hidden lg:flex items-center gap-1.5 text-xs font-mono text-gray-400 border px-3 py-1 rounded-full"
             style={{ borderColor: `${tc.c1}25`, backgroundColor: `${tc.c1}08` }}>
@@ -550,11 +575,17 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </div>
 
           {/* Language toggle */}
-          <div className="flex items-center rounded-full border overflow-hidden" style={{ borderColor: `${tc.c1}30` }}>
+          <div
+            className="flex items-center overflow-hidden rounded-full border"
+            style={{ borderColor: `${tc.c1}30` }}
+            role="group"
+            aria-label={lang === 'en' ? 'Interface language' : 'Idioma de la interfaz'}
+          >
             {(['es','en'] as const).map(l => (
               <button key={l} onClick={() => setLang(l)}
                 aria-label={l === 'en' ? 'Switch language to English' : 'Cambiar idioma a español'}
-                className="px-3 py-1.5 font-mono text-xs font-bold uppercase transition-all"
+                aria-pressed={lang === l}
+                className="min-h-11 min-w-11 px-2 font-mono text-xs font-bold uppercase transition-all sm:px-3"
                 style={lang === l
                   ? { backgroundColor: tc.c1, color: '#000' }
                   : { color: '#6b7280' }}>
@@ -564,12 +595,12 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </div>
 
           {/* Theme selector */}
-          <div className="relative">
-            <button onClick={() => setShowThemes(v => !v)}
+          <div className="relative hidden md:block">
+            <button onClick={() => { setShowMobileUtilities(false); setShowThemes(v => !v); }}
               aria-haspopup="menu"
               aria-expanded={showThemes}
               aria-label={t.themeAria}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border font-mono text-xs font-bold transition-all"
+              className="flex min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all"
               style={{ borderColor: `${tc.c1}40`, color: tc.c1, backgroundColor: `${tc.c1}10` }}>
               <Sun className="w-3.5 h-3.5" />
               <span className="hidden sm:block">{THEMES[theme].label}</span>
@@ -584,7 +615,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                   {(Object.keys(THEMES) as Theme[]).map(th => (
                     <button key={th} onClick={() => { setTheme(th); setShowThemes(false); }}
                       role="menuitem"
-                      className="flex items-center gap-2 w-full px-4 py-2.5 font-mono text-xs font-bold transition-all text-left"
+                      className="flex min-h-11 w-full items-center gap-2 px-4 py-2.5 text-left font-mono text-xs font-bold transition-all"
                       style={theme === th ? { color: THEMES[th].c1, backgroundColor: `${THEMES[th].c1}15` } : { color: '#9ca3af' }}>
                       <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: THEMES[th].c1 }} />
                       {THEMES[th].label}
@@ -598,7 +629,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           {/* Reopen welcome tour */}
           <button onClick={() => setShowTour(true)}
             aria-label={t.onboarding.reopenAria}
-            className="flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs font-bold rounded-full transition-all"
+            className="hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all md:flex"
             style={{ borderColor: `${tc.c3}35`, color: tc.c3 }}>
             <Compass className="w-3.5 h-3.5" />
             <span className="hidden sm:block">{t.onboarding.reopenLabel}</span>
@@ -607,11 +638,84 @@ function AppInner({ boot }: { boot: AppBoot }) {
           {/* Load data button */}
           <button onClick={() => goToTab('upload')}
             aria-label={t.loadDataAria}
-            className="flex items-center gap-1.5 px-3 py-1.5 border font-mono text-xs font-bold rounded-full transition-all"
+            className="hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all md:flex"
             style={{ borderColor: `${tc.c1}40`, color: tc.c1 }}>
             <Upload className="w-3 h-3" />
             <span className="hidden sm:block">{t.loadData}</span>
           </button>
+
+          {/* Mobile: theme, tour and data live in one calm utility surface. */}
+          <div className="relative md:hidden">
+            <button
+              ref={mobileUtilitiesButtonRef}
+              type="button"
+              onClick={() => { setShowThemes(false); setShowMobileUtilities(open => !open); }}
+              aria-haspopup="dialog"
+              aria-expanded={showMobileUtilities}
+              aria-controls="mobile-utilities"
+              aria-label={lang === 'en' ? 'Open quick controls' : 'Abrir controles rápidos'}
+              className="grid min-h-11 min-w-11 place-items-center rounded-full border transition-all"
+              style={{ borderColor: `${tc.c1}40`, color: tc.c1, backgroundColor: `${tc.c1}10` }}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+            </button>
+
+            <AnimatePresence>
+              {showMobileUtilities && (
+                <motion.div
+                  ref={mobileUtilitiesPanelRef}
+                  id="mobile-utilities"
+                  initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.15 }}
+                  role="dialog"
+                  aria-label={lang === 'en' ? 'Quick controls' : 'Controles rápidos'}
+                  className="absolute right-0 top-full z-50 mt-2 w-[min(18rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border p-2 shadow-cyber"
+                  style={{ backgroundColor: `${tc.bg}f5`, borderColor: `${tc.c1}30`, backdropFilter: 'blur(18px)' }}
+                >
+                  <label className="flex min-h-11 items-center gap-3 rounded-xl px-3 font-mono text-xs font-bold" style={{ color: 'var(--fg)' }}>
+                    <Sun className="h-4 w-4 shrink-0" style={{ color: tc.c1 }} />
+                    <span className="flex-1">{t.themeAria}</span>
+                    <select
+                      value={theme}
+                      onChange={event => {
+                        setTheme(event.target.value as Theme);
+                        setShowMobileUtilities(false);
+                      }}
+                      aria-label={t.themeAria}
+                      className="min-h-11 max-w-32 rounded-xl border bg-transparent px-2 text-right font-mono text-xs font-bold"
+                      style={{ borderColor: `${tc.c1}35`, color: tc.c1 }}
+                    >
+                      {(Object.keys(THEMES) as Theme[]).map(th => (
+                        <option key={th} value={th}>{THEMES[th].label}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={() => { setShowMobileUtilities(false); setShowTour(true); }}
+                    className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left font-mono text-xs font-bold transition-colors hover:bg-white/5"
+                    style={{ color: tc.c3 }}
+                  >
+                    <Compass className="h-4 w-4 shrink-0" />
+                    <span>{t.onboarding.reopenLabel}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => goToTab('upload')}
+                    className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left font-mono text-xs font-bold transition-colors hover:bg-white/5"
+                    style={{ color: tc.c1 }}
+                  >
+                    <Upload className="h-4 w-4 shrink-0" />
+                    <span>{t.loadData}</span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </header>
 
@@ -622,6 +726,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             data={musicData}
             onEnter={() => goToTab('dashboard')}
             onUpload={() => goToTab('upload')}
+            isPersonalArchive={isPersonalArchive}
             onOpenAssistant={() => goToTab('aiassistant')}
           />
         </Suspense>
@@ -695,7 +800,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </aside>
 
           {/* Content */}
-          <main className="relative flex-1 p-4 pb-28 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto">
+          <main ref={mainContentRef} tabIndex={-1} className="relative flex-1 p-4 pb-28 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto focus:outline-none">
             <MuseumRoomTransition items={roomNavigationItems} activeId={activeTab} />
             <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} />
             <AnimatePresence mode="wait">
@@ -769,7 +874,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.3, ease: 'easeOut' as const }}
             onClick={() => setRestoredAt(null)}
-            className="fixed bottom-4 right-4 z-50 glass-panel flex items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-cyber"
+            className={`nova-restore-toast fixed z-[60] glass-panel flex min-h-11 items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-cyber ${activeTab === 'hero' ? '' : 'nova-restore-toast--above-dock'}`}
             style={{ borderColor: `${tc.c1}40` }}
             aria-live="polite"
           >

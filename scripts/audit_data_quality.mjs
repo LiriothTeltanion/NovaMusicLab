@@ -210,7 +210,9 @@ const countries = [...new Set([
   ...Object.values(artistMeta).map(meta => meta.country),
   ...knowledgeArtists.map(artist => artist.archive?.country),
 ].filter(Boolean))].sort();
-const missingFlags = countries.filter(country => !flagCountries.has(country));
+// 'Unknown' is a deliberate pseudo-country (artists whose base is genuinely
+// unverified) - FlagArt renders its globe/generated fallback for it by design.
+const missingFlags = countries.filter(country => country !== 'Unknown' && !flagCountries.has(country));
 if (missingFlags.length) {
   errors.push(`Missing hand-authored flags: ${missingFlags.join(', ')}`);
 }

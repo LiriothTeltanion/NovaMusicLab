@@ -16,9 +16,11 @@ describe('MuseumChapterHeader', () => {
     const chapter = screen.getByTestId('museum-chapter');
     expect(chapter).toHaveAttribute('data-chapter', 'dashboard');
     expect(chapter).toHaveAttribute('data-motif', 'atlas');
+    expect(chapter).toHaveAttribute('data-density', 'compact');
     expect(screen.getByRole('heading', { name: 'Sala de Control', level: 1 })).toBeInTheDocument();
-    expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('es-ES'))).not.toHaveLength(0);
+    expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('es-ES'))).toHaveLength(1);
     expect(screen.getByText(data.core_metrics.unique_artists.toLocaleString('es-ES'))).toBeInTheDocument();
+    expect(screen.getAllByRole('definition')).toHaveLength(2);
   });
 
   it('changes its language, palette identity and data focus with the active chapter', () => {

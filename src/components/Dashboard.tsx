@@ -534,7 +534,7 @@ export default function Dashboard({ data }: DashboardProps) {
         initial={reduceMotion ? false : { opacity: 0, y: 22 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.4, 0, 0.2, 1] }}
-        className="glass-panel relative isolate overflow-hidden rounded-[1.5rem] p-4 min-[420px]:p-5 sm:rounded-[2rem] md:p-9 lg:p-11"
+        className="nova-surface nova-surface--featured relative isolate rounded-[1.5rem] p-4 min-[420px]:p-5 sm:rounded-[2rem] md:p-9 lg:p-11"
       >
         <div
           aria-hidden="true"
@@ -553,33 +553,33 @@ export default function Dashboard({ data }: DashboardProps) {
                 <div className="flex min-w-0 items-center gap-3">
                   <DashboardSignalIcon icon={Sparkles} color={tc.c1} secondary={tc.c2} motif="burst" size="sm" />
                   <div>
-                    <p className="text-[10px] font-mono font-black uppercase tracking-[0.28em]" style={{ color: tc.c1 }}>
+                    <p className="type-label" style={{ color: tc.c1 }}>
                       01 · {editorialCopy.archiveEyebrow}
                     </p>
                     <p className="mt-1 text-xs text-gray-500">{yearRange}</p>
                   </div>
                 </div>
-                <span className="rounded-full border border-white/10 bg-white/3 px-3 py-1.5 text-[9px] font-mono uppercase tracking-widest text-gray-400 sm:text-[10px]">
+                <span className="type-label type-muted rounded-full border border-white/10 bg-white/3 px-3 py-1.5">
                   ✦ Nova Music DNA
                 </span>
               </div>
 
-              <h2 id="dashboard-protagonist-heading" className="max-w-3xl text-[clamp(2rem,10.5vw,3rem)] font-black leading-[0.96] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
+              <h2 id="dashboard-protagonist-heading" className="type-title type-strong max-w-3xl text-[clamp(2rem,10.5vw,3rem)] sm:text-5xl lg:text-6xl">
                 {editorialCopy.archiveTitle}
               </h2>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed text-gray-400 md:text-base">
+              <p className="type-body type-muted mt-4 max-w-xl">
                 {editorialCopy.archiveNote}
               </p>
             </div>
 
             <div className="mt-8 min-w-0 border-l-2 pl-4 sm:mt-10 sm:pl-5 md:mt-14 md:pl-7" style={{ borderColor: tc.c1 }}>
-              <p className="text-xs font-mono font-black uppercase tracking-[0.22em] text-gray-400">
+              <p className="type-label type-muted">
                 {t.dashboard.kpiTotalPlays}
               </p>
-              <p className="mt-2 max-w-full font-mono text-[clamp(2.65rem,14vw,4.5rem)] font-black leading-none tracking-[-0.075em] text-white tabular-nums sm:text-7xl lg:text-[6.5rem]">
+              <p className="type-metric type-strong mt-2 max-w-full text-[clamp(2.65rem,14vw,4.5rem)] font-black leading-none sm:text-7xl lg:text-[6.5rem]">
                 <CountUp target={metrics.total_plays} duration={reduceMotion ? 0.001 : 1.9} />
               </p>
-              <p className="mt-4 text-xs text-gray-500 md:text-sm">{t.dashboard.kpiTotalPlaysSub}</p>
+              <p className="type-caption type-muted mt-4">{t.dashboard.kpiTotalPlaysSub}</p>
             </div>
           </div>
 
@@ -591,10 +591,10 @@ export default function Dashboard({ data }: DashboardProps) {
             />
             <div className="relative z-10 flex items-center justify-between gap-4">
               <div>
-                <p className="text-[10px] font-mono font-black uppercase tracking-[0.24em]" style={{ color: topArtist?.moodColor ?? tc.c2 }}>
+                <p className="type-label" style={{ color: topArtist?.moodColor ?? tc.c2 }}>
                   {editorialCopy.dominantSignal}
                 </p>
-                <p className="mt-1 text-xs text-gray-500">{editorialCopy.topArtist}</p>
+                <p className="type-caption type-muted mt-1">{editorialCopy.topArtist}</p>
               </div>
               <AudioWaveform className="h-6 w-6" aria-hidden="true" style={{ color: topArtist?.moodColor ?? tc.c2 }} />
             </div>
@@ -611,8 +611,8 @@ export default function Dashboard({ data }: DashboardProps) {
                   <ArtistAvatar name={topArtist.name} size={92} tooltip={false} className="relative ring-2 ring-white/20 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
                 </div>
                 <div className="min-w-0 max-w-full flex-1 pr-8 sm:pr-0">
-                  <p className="break-words text-xl font-black leading-tight text-white [overflow-wrap:anywhere] md:text-2xl">{topArtist.name}</p>
-                  <p className="mt-2 max-w-full truncate text-xs font-mono uppercase tracking-wider text-gray-400">{topArtist.genre}</p>
+                  <p className="type-section type-strong break-words text-xl [overflow-wrap:anywhere] md:text-2xl">{topArtist.name}</p>
+                  <p className="type-caption type-muted mt-2 max-w-full truncate">{topArtist.genre}</p>
                 </div>
                 <ArrowUpRight className="absolute right-1 top-1 h-5 w-5 shrink-0 text-gray-500 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white motion-reduce:transform-none sm:static" aria-hidden="true" />
               </button>
@@ -620,14 +620,14 @@ export default function Dashboard({ data }: DashboardProps) {
 
             <div className="relative z-10 grid grid-cols-2 gap-3 border-t border-white/10 pt-5">
               <div>
-                <p className="font-mono text-xl font-black text-white">{formatNum(topArtist?.plays ?? 0)}</p>
-                <p className="mt-1 text-[10px] font-mono uppercase tracking-wider text-gray-500">{t.dashboard.playsLegend}</p>
+                <p className="type-metric type-strong text-xl font-black">{formatNum(topArtist?.plays ?? 0)}</p>
+                <p className="type-label type-muted mt-1">{t.dashboard.playsLegend}</p>
               </div>
               <div className="border-l border-white/10 pl-4">
-                <p className="font-mono text-xl font-black" style={{ color: topArtist?.moodColor ?? tc.c2 }}>
+                <p className="type-metric text-xl font-black" style={{ color: topArtist?.moodColor ?? tc.c2 }}>
                   {topArtistShare.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES', { maximumFractionDigits: 1 })}%
                 </p>
-                <p className="mt-1 text-[10px] font-mono uppercase tracking-wider text-gray-500">{editorialCopy.archiveShare}</p>
+                <p className="type-label type-muted mt-1">{editorialCopy.archiveShare}</p>
               </div>
             </div>
           </div>
@@ -638,7 +638,7 @@ export default function Dashboard({ data }: DashboardProps) {
       <section aria-labelledby="dashboard-supporting-signals">
         <div className="mb-5 flex items-center gap-3">
           <span className="h-px w-10" style={{ backgroundColor: tc.c1 }} />
-          <h2 id="dashboard-supporting-signals" className="text-[10px] font-mono font-black uppercase tracking-[0.28em] text-gray-400">
+          <h2 id="dashboard-supporting-signals" className="type-label type-muted">
             {editorialCopy.supportingSignals}
           </h2>
         </div>
@@ -650,20 +650,20 @@ export default function Dashboard({ data }: DashboardProps) {
               variants={cardVariants}
               initial={reduceMotion ? false : 'initial'}
               animate="animate"
-              className={`glass-panel group relative overflow-hidden rounded-3xl border-b-2 p-4 sm:min-h-[168px] sm:p-5 md:p-6 ${i === 0 ? 'col-span-2 min-h-[150px] sm:col-span-1' : 'min-h-[164px]'}`}
+              className={`nova-surface nova-surface--analysis group relative rounded-3xl border-b-2 p-4 sm:min-h-[168px] sm:p-5 md:p-6 ${i === 0 ? 'col-span-2 min-h-[150px] sm:col-span-1' : 'min-h-[164px]'}`}
               style={{ borderBottomColor: `${color}75` }}
             >
               <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-10 blur-2xl transition-opacity group-hover:opacity-20" style={{ backgroundColor: color }} />
               <div className="relative z-10 flex items-start justify-between gap-4">
                 <DashboardSignalIcon icon={icon} color={color} secondary={secondary} motif={motif} size="md" />
-                <span className="text-[10px] font-mono font-black tracking-[0.22em]" style={{ color }}>0{i + 2}</span>
+                <span className="type-label" style={{ color }}>0{i + 2}</span>
               </div>
               <div className="relative z-10 mt-5">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-400">{label}</p>
-                <p className="mt-1 font-mono text-3xl font-black leading-none text-white">
+                <p className="type-label type-muted">{label}</p>
+                <p className="type-metric type-strong mt-1 text-3xl font-black leading-none">
                   <CountUp target={val} duration={reduceMotion ? 0.001 : 1.8} delay={reduceMotion ? 0 : delay} decimals={label === t.dashboard.kpiHoursListened ? 1 : 0} />
                 </p>
-                <p className="mt-2 text-[11px] leading-snug text-gray-500">{sub}</p>
+                <p className="type-caption type-muted mt-2">{sub}</p>
               </div>
             </motion.div>
           ))}
@@ -675,7 +675,7 @@ export default function Dashboard({ data }: DashboardProps) {
           {advancedKpis.map(({ icon, label, val, numericTarget, suffix, sub, color, secondary, motif, numeric }, i) => (
             <div
               key={label}
-              className="glass-panel relative min-h-[150px] overflow-hidden rounded-2xl border-b-2 p-4"
+              className="nova-surface nova-surface--utility relative min-h-[150px] rounded-2xl border-b-2 p-4"
               style={{ borderBottomColor: color }}
             >
               <div className="absolute inset-0 rounded-2xl" aria-hidden="true" style={{ background: `radial-gradient(circle at top right, ${color}0c, transparent 70%)` }} />
@@ -711,7 +711,7 @@ export default function Dashboard({ data }: DashboardProps) {
       />
       <div className="grid min-w-0 grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-3">
         {/* Top Artists */}
-        <div className="glass-panel min-w-0 rounded-3xl p-4 sm:p-6 lg:col-span-2">
+        <div className="nova-surface nova-surface--analysis min-w-0 rounded-3xl p-4 sm:p-6 lg:col-span-2">
           <div className="mb-5 flex min-w-0 items-center space-x-3 sm:mb-6">
             <DashboardSignalIcon icon={Trophy} color={tc.c1} secondary="#facc15" motif="crown" size="sm" />
             <h3 className="min-w-0 break-words text-base font-bold font-mono uppercase tracking-wider text-white sm:text-lg">
@@ -818,7 +818,7 @@ export default function Dashboard({ data }: DashboardProps) {
         </div>
 
         {/* Genre DNA */}
-        <div className="glass-panel flex min-w-0 flex-col justify-between rounded-3xl p-4 sm:p-6">
+        <div className="nova-surface nova-surface--analysis flex min-w-0 flex-col justify-between rounded-3xl p-4 sm:p-6">
           <div>
             <div className="mb-5 flex min-w-0 items-center space-x-3 sm:mb-6">
               <DashboardSignalIcon icon={Star} color={tc.c2} secondary={tc.c3} motif="burst" size="sm" />
@@ -871,7 +871,7 @@ export default function Dashboard({ data }: DashboardProps) {
         motif="calendar"
       />
       <div className="grid min-w-0 gap-6 sm:gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
-      <div className="glass-panel min-w-0 rounded-3xl p-4 sm:p-6">
+      <div className="nova-surface nova-surface--analysis min-w-0 rounded-3xl p-4 sm:p-6">
         <div className="mb-5 flex flex-col justify-between gap-4 sm:mb-6 md:flex-row md:items-center">
           <div className="flex min-w-0 items-center space-x-3">
             <DashboardSignalIcon icon={CalendarClock} color={tc.c1} secondary={tc.c2} motif="calendar" size="sm" />
@@ -962,7 +962,7 @@ export default function Dashboard({ data }: DashboardProps) {
           {t.dashboard.heatmapFooter}
         </p>
       </div>
-      <div className="glass-panel min-w-0 overflow-hidden rounded-3xl p-4 sm:p-6">
+      <div className="nova-surface nova-surface--analysis min-w-0 rounded-3xl p-4 sm:p-6">
         <div className="mb-5 flex min-w-0 items-center space-x-3 sm:mb-6">
           <DashboardSignalIcon icon={Clock} color={tc.c4} secondary="#10b981" motif="clock" size="sm" />
           <h3 className="min-w-0 break-words text-base font-bold font-mono uppercase tracking-wider text-white sm:text-lg">
@@ -1013,7 +1013,7 @@ export default function Dashboard({ data }: DashboardProps) {
         secondary={tc.c1}
         motif="pulse"
       />
-      <div className="glass-panel min-w-0 overflow-hidden rounded-3xl p-4 sm:p-6">
+      <div className="nova-surface nova-surface--analysis min-w-0 rounded-3xl p-4 sm:p-6">
         <div className="mb-5 flex min-w-0 items-center space-x-3 sm:mb-6">
           <DashboardSignalIcon icon={TrendingUp} color={tc.c1} secondary={tc.c3} motif="pulse" size="sm" />
           <h3 className="min-w-0 break-words text-base font-bold font-mono uppercase tracking-wider text-white sm:text-lg">
@@ -1071,7 +1071,7 @@ export default function Dashboard({ data }: DashboardProps) {
           secondary="#fb923c"
           motif="flame"
         />
-        <div className="glass-panel overflow-hidden rounded-3xl p-4 sm:p-5 md:p-7">
+        <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-5 md:p-7">
           <div className="mb-5 flex items-center gap-3">
             <span className="h-px flex-1 bg-white/10" />
             <h3 className="text-center text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-white sm:text-xs sm:tracking-[0.22em]">

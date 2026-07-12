@@ -37,10 +37,13 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>
     );
 
+    expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
     expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
+    expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Archive Snapshot')).toBeInTheDocument();
-    expect(screen.getByText('Anchor artist')).toBeInTheDocument();
+    expect(screen.getAllByText('Anchor artist').length).toBeGreaterThan(1);
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
     expect(screen.getByText(/AI MUSIC PROFILE/i)).toBeInTheDocument();
     expect(screen.getByText(/Data trust/i)).toBeInTheDocument();
@@ -55,13 +58,40 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>
     );
 
+    expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
     expect(screen.getByRole('button', { name: /entrar al museo sonoro/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /subir mis datos/i })).toBeInTheDocument();
+    expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Instantánea del Archivo')).toBeInTheDocument();
-    expect(screen.getByText('Artista ancla')).toBeInTheDocument();
+    expect(screen.getAllByText('Artista ancla').length).toBeGreaterThan(1);
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
     expect(screen.getByText(/EXPEDIENTE DE MÚSICA IA/i)).toBeInTheDocument();
     expect(screen.getByText(/Confianza de datos/i)).toBeInTheDocument();
+  });
+
+  it('removes Kevin-specific copy for an uploaded personal archive', () => {
+    localStorage.setItem('nml_lang', 'en');
+    const oneYearArchive = {
+      ...data,
+      yearly_eras: [data.yearly_eras[0]],
+    } as MusicDnaData;
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={oneYearArchive}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          isPersonalArchive
+        />
+      </AppProvider>
+    );
+
+    expect(screen.getByText('✨ 1 Year in Your Archive')).toBeInTheDocument();
+    expect(screen.getByText('✧ Your Musical Universe ✧')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /YOUR ARCHIVE/i })).toBeInTheDocument();
+    expect(screen.queryByText(/KEVIN CUSNIR/i)).not.toBeInTheDocument();
   });
 
   it('renders every raw source on a normalized telemetry bar', () => {
@@ -89,8 +119,8 @@ describe('HeroSection intro rebalance', () => {
       .map(id => Number.parseFloat(screen.getByTestId(`source-segment-${id}`).style.width));
 
     expect(screen.getByText('Raw Source Ingestion')).toBeInTheDocument();
-    expect(screen.getByText('Apple Music:')).toBeInTheDocument();
-    expect(screen.getByText('ListenBrainz:')).toBeInTheDocument();
+    expect(screen.getByText('Apple Music')).toBeInTheDocument();
+    expect(screen.getByText('ListenBrainz')).toBeInTheDocument();
     expect(widths.every(width => width >= 0 && width <= 100)).toBe(true);
     expect(widths.reduce((sum, width) => sum + width, 0)).toBeCloseTo(100, 8);
     expect(screen.getByText(/Counted after dedupe:/i)).toBeInTheDocument();

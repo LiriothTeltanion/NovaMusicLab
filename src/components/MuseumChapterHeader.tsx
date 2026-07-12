@@ -494,6 +494,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
       data-testid="museum-chapter"
       data-chapter={activeTab}
       data-motif={definition.motif}
+      data-density="compact"
     >
       <div className="museum-chapter__ambient" aria-hidden="true">
         <span className="museum-chapter__beam" />
@@ -510,22 +511,17 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
           </p>
 
           <h1 id={headingId}>{copy('title') as string}</h1>
-          <p className="museum-chapter__description">
-            {copy('description') as string}{' '}
-            <strong>
-              {lang === 'es' ? 'Señal viva' : 'Live signal'}: {primaryMetric.value} · {primaryMetric.label}.
-            </strong>
-          </p>
-
-          <dl className="museum-chapter__metrics" aria-label={lang === 'es' ? 'Señales del archivo' : 'Archive signals'}>
-            {[primaryMetric, secondaryMetric].map(metric => (
-              <div className="museum-chapter__metric" key={`${metric.label}-${metric.value}`}>
-                <dt>{metric.label}</dt>
-                <dd title={metric.value}>{metric.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <p className="museum-chapter__description">{copy('description') as string}</p>
         </div>
+
+        <dl className="museum-chapter__metrics" aria-label={lang === 'es' ? 'Señales del archivo' : 'Archive signals'}>
+          {[primaryMetric, secondaryMetric].map(metric => (
+            <div className="museum-chapter__metric" key={`${metric.label}-${metric.value}`}>
+              <dt>{metric.label}</dt>
+              <dd title={metric.value}>{metric.value}</dd>
+            </div>
+          ))}
+        </dl>
 
         <ChapterArtwork motif={definition.motif} />
       </div>

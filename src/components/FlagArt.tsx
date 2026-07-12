@@ -118,6 +118,35 @@ const FLAGS: Record<string, React.ReactNode> = {
       <rect y="13.33" width="30" height="6.67" fill="#FFCE00" />
     </>
   ),
+  'Austria': (
+    <>
+      <rect width="30" height="6.67" fill="#ED2939" />
+      <rect y="6.67" width="30" height="6.67" fill="#fff" />
+      <rect y="13.33" width="30" height="6.67" fill="#ED2939" />
+    </>
+  ),
+  'Poland': (
+    <>
+      <rect width="30" height="10" fill="#fff" />
+      <rect y="10" width="30" height="10" fill="#DC143C" />
+    </>
+  ),
+  'Denmark': (
+    <>
+      <rect width="30" height="20" fill="#C8102E" />
+      <rect x="8" width="3" height="20" fill="#fff" />
+      <rect y="8.5" width="30" height="3" fill="#fff" />
+    </>
+  ),
+  'Egypt': (
+    <>
+      <rect width="30" height="6.67" fill="#CE1126" />
+      <rect y="6.67" width="30" height="6.67" fill="#fff" />
+      <rect y="13.33" width="30" height="6.67" fill="#000" />
+      {/* Simplified golden Eagle of Saladin mark */}
+      <circle cx="15" cy="10" r="1.8" fill="#C09300" />
+    </>
+  ),
   'Netherlands': (
     <>
       <rect width="30" height="6.67" fill="#AE1C28" />

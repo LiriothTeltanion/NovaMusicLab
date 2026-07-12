@@ -96,7 +96,8 @@ const ICON_PATHS: Record<string, React.ReactNode> = {
 };
 
 export default function GenreIcon({ genre, size = 20, className = '' }: GenreIconProps) {
-  const path = ICON_PATHS[genre] ?? ICON_PATHS['Unclassified'];
+  const ICON_ALIASES: Record<string, string> = { 'Power / Speed Metal': 'Heavy Metal', 'Folk Metal': 'Heavy Metal', 'Alt-Metal': 'Metalcore' };
+  const path = ICON_PATHS[ICON_ALIASES[genre] ?? genre] ?? ICON_PATHS['Unclassified'];
   return (
     <svg
       width={size}

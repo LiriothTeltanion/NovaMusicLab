@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpenText, ChevronDown, Info, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import Surface from './Surface';
 
 interface NarrativeInsight {
   readonly title: string;
@@ -44,29 +45,31 @@ export default function SectionNarrative({
   const toggleHint = expanded ? t.collapsible.hideReading : t.collapsible.readIntro;
 
   return (
-    <section
-      className={`glass-panel rounded-3xl border-l-4 overflow-hidden ${compact ? 'p-5' : 'p-5 md:p-6'} ${className}`}
+    <Surface
+      as="section"
+      variant="utility"
+      className={`rounded-2xl border-l-2 ${compact ? 'p-4' : 'p-4 md:p-5'} ${className}`}
       style={{ borderLeftColor: color }}
     >
       <button
         type="button"
         onClick={() => setExpanded(v => !v)}
         aria-expanded={expanded}
-        className="w-full flex items-center justify-between gap-3 text-left group"
+        className="group flex min-h-11 w-full items-center justify-between gap-3 text-left"
       >
         <div className="space-y-1.5 min-w-0">
           <div className="flex items-center gap-2">
             <BookOpenText className="w-4 h-4 shrink-0" style={{ color }} />
-            <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color }}>
+            <p className="type-label" style={{ color }}>
               {content.eyebrow}
             </p>
           </div>
-          <h3 className="text-base md:text-lg font-black text-white leading-tight">
+          <h3 className="type-section type-strong">
             {content.title}
           </h3>
         </div>
         <span className="flex items-center gap-2 shrink-0">
-          <span className="hidden sm:inline text-[10px] font-mono uppercase tracking-wider text-gray-500 group-hover:text-gray-300 transition-colors">
+          <span className="type-label type-muted hidden transition-colors group-hover:text-[var(--fg)] sm:inline">
             {toggleHint}
           </span>
           <ChevronDown
@@ -77,8 +80,8 @@ export default function SectionNarrative({
       </button>
 
       {expanded && (
-        <div className="space-y-5 pt-4 animate-fade-in">
-          <p className="text-sm text-gray-300 leading-relaxed">
+        <div className="animate-fade-in space-y-5 border-t border-white/5 pt-4">
+          <p className="type-body type-muted">
             {content.body}
           </p>
 
@@ -86,21 +89,22 @@ export default function SectionNarrative({
             {content.insights.map((insight, index) => {
               const insightColor = [color, secondary, tc.c3, tc.c4][index % 4];
               return (
-                <div
+                <Surface
                   key={insight.title}
-                  className="rounded-2xl border bg-white/3 p-4"
+                  variant="analysis"
+                  className="rounded-2xl p-4"
                   style={{ borderColor: `${insightColor}24` }}
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Sparkles className="w-3.5 h-3.5 shrink-0" style={{ color: insightColor }} />
-                    <p className="text-xs font-mono font-black uppercase tracking-wider" style={{ color: insightColor }}>
+                    <p className="type-label" style={{ color: insightColor }}>
                       {insight.title}
                     </p>
                   </div>
-                  <p className="text-xs text-gray-300 leading-relaxed">
+                  <p className="type-caption type-muted">
                     {insight.body}
                   </p>
-                </div>
+                </Surface>
               );
             })}
           </div>
@@ -110,7 +114,7 @@ export default function SectionNarrative({
               {content.dataNote && (
                 <div className="flex items-start gap-3 rounded-2xl border bg-white/2 p-4" style={{ borderColor: `${color}20` }}>
                   <Info className="w-4 h-4 shrink-0 mt-0.5" style={{ color }} />
-                  <p className="text-xs text-gray-400 leading-relaxed">
+                  <p className="type-caption type-muted">
                     {content.dataNote}
                   </p>
                 </div>
@@ -118,11 +122,11 @@ export default function SectionNarrative({
 
               {content.deepDive && (
                 <details className="group/deep rounded-2xl border bg-white/2 p-4" style={{ borderColor: `${secondary}20` }}>
-                  <summary className="cursor-pointer list-none text-xs font-mono font-black uppercase tracking-wider" style={{ color: secondary }}>
+                  <summary className="type-label cursor-pointer list-none" style={{ color: secondary }}>
                     <span className="group-open/deep:hidden">+ {deepDiveLabel}</span>
                     <span className="hidden group-open/deep:inline">- {deepDiveLabel}</span>
                   </summary>
-                  <p className="mt-3 text-xs text-gray-300 leading-relaxed">
+                  <p className="type-caption type-muted mt-3">
                     {content.deepDive}
                   </p>
                 </details>
@@ -131,6 +135,6 @@ export default function SectionNarrative({
           )}
         </div>
       )}
-    </section>
+    </Surface>
   );
 }

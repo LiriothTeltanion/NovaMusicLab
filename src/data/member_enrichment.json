@@ -490,5 +490,522 @@
     "links": {
       "twitter": "https://twitter.com/zaherzorgati"
     }
+  },
+  "josh silver": {
+    "name": "Josh Silver",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Josh%20Silver.jpg?width=300",
+    "birthDate": "1962-11-14",
+    "age": 64,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Josh_Silver"
+    }
+  },
+  "sal abruscato": {
+    "name": "Sal Abruscato",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Sal%20Abruscato.jpg?width=300",
+    "birthDate": "1970-07-18",
+    "age": 56,
+    "links": {
+      "instagram": "https://instagram.com/salabruscato",
+      "wikipedia": "https://en.wikipedia.org/wiki/Sal_Abruscato"
+    }
+  },
+  "peter steele": {
+    "name": "Peter Steele",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Type%20O%20Negative%20-%20Coliseu%20dos%20Recreios3.jpg?width=300",
+    "birthDate": "1962-01-04",
+    "age": 64,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Peter_Steele"
+    }
+  },
+  "jared warth": {
+    "name": "Jared Warth",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Jared%20Warth%20in%20Berlin%202011.jpg?width=300",
+    "birthDate": "1986-00-00",
+    "age": 40,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Jared_Warth"
+    }
+  },
+  "eric lambert": {
+    "name": "Eric Lambert",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/2014-06-05%20Vainsteam%20Blessthefall%20Eric%20Lambert%2001.jpg?width=300",
+    "birthDate": "1989-02-14",
+    "age": 37,
+    "links": {
+      "instagram": "https://instagram.com/ericthefall"
+    }
+  },
+  "beau bokan": {
+    "name": "Beau Bokan",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/2014-06-05%20Vainsteam%20Blessthefall%20Beau%20Bokan%2005.jpg?width=300",
+    "birthDate": "1981-11-30",
+    "age": 45,
+    "links": {
+      "instagram": "https://instagram.com/beauknows",
+      "twitter": "https://twitter.com/beaubokan",
+      "wikipedia": "https://en.wikipedia.org/wiki/Beau_Bokan"
+    }
+  },
+  "mike frisby": {
+    "name": "Mike Frisby",
+    "photo": "",
+    "birthDate": "1987-08-12",
+    "age": 39,
+    "links": {}
+  },
+  "matt traynor": {
+    "name": "Matt Traynor",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Blessthefall%20-%20With%20Full%20Force%202014%2005.jpg?width=300",
+    "birthDate": "1987-06-24",
+    "age": 39,
+    "links": {
+      "instagram": "https://instagram.com/matttraynor",
+      "twitter": "https://twitter.com/matt_traynor",
+      "wikipedia": "https://en.wikipedia.org/wiki/Matt_Traynor"
+    }
+  },
+  "jeff waters": {
+    "name": "Jeff Waters",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Jeff%20Waters%20at%20Wacken%20Open%20Air%202013.jpg?width=300",
+    "birthDate": "1966-02-13",
+    "age": 60,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Jeff_Waters"
+    }
+  },
+  "big john bates": {
+    "name": "Big John Bates",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Bigjohnbates%20frankwesp%20(cropped).jpg?width=300",
+    "birthDate": "1963-01-01",
+    "age": 63,
+    "links": {
+      "instagram": "https://instagram.com/bigjohnbates",
+      "wikipedia": "https://en.wikipedia.org/wiki/Big_John_Bates"
+    }
+  },
+  "ray hartmann": {
+    "name": "Ray Hartmann",
+    "photo": "",
+    "birthDate": "1965-00-00",
+    "age": 61,
+    "links": {}
+  },
+  "randy rampage": {
+    "name": "Randy Rampage",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Randyrampage2007.jpg?width=300",
+    "birthDate": "1960-02-21",
+    "age": 66,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Randy_Rampage"
+    }
+  },
+  "coburn pharr": {
+    "name": "Coburn Pharr",
+    "photo": "",
+    "birthDate": "1962-08-27",
+    "age": 64,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Coburn_Pharr"
+    }
+  },
+  "mike mangini": {
+    "name": "Mike Mangini",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/2004-11-25%20Mike%20Mangini%20in%20Singapore%20(Clinic).JPG?width=300",
+    "birthDate": "1963-04-18",
+    "age": 63,
+    "links": {
+      "instagram": "https://instagram.com/ManginiMike",
+      "wikipedia": "https://en.wikipedia.org/wiki/Mike_Mangini"
+    }
+  },
+  "joe comeau": {
+    "name": "Joe Comeau",
+    "photo": "",
+    "birthDate": "1964-05-02",
+    "age": 62,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Joe_Comeau_(musician)"
+    }
+  },
+  "curran murphy": {
+    "name": "Curran Murphy",
+    "photo": "",
+    "birthDate": "1974-00-00",
+    "age": 52,
+    "links": {}
+  },
+  "dave padden": {
+    "name": "Dave Padden",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Annihilator%20%40%2070000%20tons%20of%20metal%202015%2001.jpg?width=300",
+    "birthDate": "1976-02-13",
+    "age": 50,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Dave_Padden"
+    }
+  },
+  "joe elliott": {
+    "name": "Joe Elliott",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/JoeElliott.JPG?width=300",
+    "birthDate": "1959-08-01",
+    "age": 67,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/5Nbg0g30EwMpYD6jQ2xcfX",
+      "wikipedia": "https://en.wikipedia.org/wiki/Joe_Elliott"
+    }
+  },
+  "rick savage": {
+    "name": "Rick Savage",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Rick%20Savage.jpg?width=300",
+    "birthDate": "1960-12-02",
+    "age": 66,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Rick_Savage"
+    }
+  },
+  "phil collen": {
+    "name": "Phil Collen",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Phil%20Collen%20in%20Australia.jpg?width=300",
+    "birthDate": "1957-12-08",
+    "age": 69,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/5ZedcFUHfB6ejLwD668YpN",
+      "wikipedia": "https://en.wikipedia.org/wiki/Phil_Collen"
+    }
+  },
+  "vivian campbell": {
+    "name": "Vivian Campbell",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Vivian%20Campbell%20guitarist%20(cropped).jpg?width=300",
+    "birthDate": "1962-08-25",
+    "age": 64,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Vivian_Campbell"
+    }
+  },
+  "pete willis": {
+    "name": "Pete Willis",
+    "photo": "",
+    "birthDate": "1960-02-16",
+    "age": 66,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Pete_Willis"
+    }
+  },
+  "steve clark": {
+    "name": "Steve Clark",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Steve%20Clark.jpeg?width=300",
+    "birthDate": "1960-04-23",
+    "age": 66,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Steve_Clark"
+    }
+  },
+  "jared leto": {
+    "name": "Jared Leto",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Jared%20Leto%2C%20San%20Diego%20Comic%20Con%202016%20(2).jpg?width=300",
+    "birthDate": "1971-12-26",
+    "age": 55,
+    "links": {
+      "instagram": "https://instagram.com/JaredLeto",
+      "twitter": "https://twitter.com/jaredleto",
+      "wikipedia": "https://en.wikipedia.org/wiki/Jared_Leto"
+    }
+  },
+  "shannon leto": {
+    "name": "Shannon Leto",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Thrity%20Seconds%20to%20Mars%20-%202018152231538%202018-06-01%20Rock%20am%20Ring%20-%201D%20X%20MK%20II%20-%201833%20-%20AK8I3702%20(cropped).jpg?width=300",
+    "birthDate": "1970-03-09",
+    "age": 56,
+    "links": {
+      "instagram": "https://instagram.com/ShannonLeto",
+      "wikipedia": "https://en.wikipedia.org/wiki/Shannon_Leto"
+    }
+  },
+  "solon bixler": {
+    "name": "Solon Bixler",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Solon%20bixler%20aug%2007.jpg?width=300",
+    "birthDate": "1977-01-04",
+    "age": 49,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Solon_Bixler"
+    }
+  },
+  "tomo miličević": {
+    "name": "Tomo Miličević",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Tomo%20Mili%C4%8Devi%C4%87%2030%20Seconds%20to%20Mars.jpg?width=300",
+    "birthDate": "1979-09-03",
+    "age": 47,
+    "links": {
+      "instagram": "https://instagram.com/tomofromearth",
+      "twitter": "https://twitter.com/tomofromearth",
+      "wikipedia": "https://en.wikipedia.org/wiki/Tomo_Mili%C4%8Devi%C4%87"
+    }
+  },
+  "matt wachter": {
+    "name": "Matt Wachter",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Angels%26Airwaves%20Hansaring%2002%20Matt%20Wachter.jpg?width=300",
+    "birthDate": "1976-01-05",
+    "age": 50,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Matt_Wachter"
+    }
+  },
+  "daniel cavanagh": {
+    "name": "Daniel Cavanagh",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Daniel%20Cavanagh.jpg?width=300",
+    "birthDate": "1972-10-06",
+    "age": 54,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/5HAculFU4ScJVhfwXKK0hr",
+      "wikipedia": "https://en.wikipedia.org/wiki/Daniel_Cavanagh"
+    }
+  },
+  "vincent cavanagh": {
+    "name": "Vincent Cavanagh",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Vincent%20Cavanagh.jpg?width=300",
+    "birthDate": "1973-08-29",
+    "age": 53,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Vincent_Cavanagh"
+    }
+  },
+  "lee douglas": {
+    "name": "Lee Douglas",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Anathema%20headline%20Prog%20in%20the%20Park%20at%20Ramblin'%20man%20Fair%202019%20-%2049101412578.jpg?width=300",
+    "birthDate": "1975-10-10",
+    "age": 51,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Lee_Douglas"
+    }
+  },
+  "daniel cardoso": {
+    "name": "Daniel Cardoso",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/DaniHCS1.jpg?width=300",
+    "birthDate": "1981-03-28",
+    "age": 45,
+    "links": {}
+  },
+  "darren white": {
+    "name": "Darren White",
+    "photo": "",
+    "birthDate": "",
+    "age": null,
+    "links": {
+      "instagram": "https://instagram.com/dBridge",
+      "twitter": "https://twitter.com/dbridge",
+      "spotify": "https://open.spotify.com/artist/4G1BTcGLvvsItegHSvBH0y",
+      "wikipedia": "https://en.wikipedia.org/wiki/DBridge"
+    }
+  },
+  "duncan patterson": {
+    "name": "Duncan Patterson",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Duncan%20Patterson.jpg?width=300",
+    "birthDate": "1975-06-05",
+    "age": 51,
+    "links": {
+      "instagram": "https://instagram.com/drstrangelight",
+      "twitter": "https://twitter.com/duncanpattersonmusic",
+      "wikipedia": "https://en.wikipedia.org/wiki/Duncan_Patterson"
+    }
+  },
+  "dave pybus": {
+    "name": "Dave Pybus",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Dave%20Pybus.jpg?width=300",
+    "birthDate": "1970-06-04",
+    "age": 56,
+    "links": {
+      "instagram": "https://instagram.com/davepybus",
+      "twitter": "https://twitter.com/davepybus",
+      "wikipedia": "https://en.wikipedia.org/wiki/Dave_Pybus"
+    }
+  },
+  "les smith": {
+    "name": "Les Smith",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Les%20Smith.jpg?width=300",
+    "birthDate": "1967-03-05",
+    "age": 59,
+    "links": {
+      "instagram": "https://instagram.com/lessmithFOX13",
+      "wikipedia": "https://en.wikipedia.org/wiki/Les_Smith"
+    }
+  },
+  "rachel bolan": {
+    "name": "Rachel Bolan",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Rachel%20Bolan%20%E2%80%93%20Wacken%20Open%20Air%202014%2004.jpg?width=300",
+    "birthDate": "1964-02-09",
+    "age": 62,
+    "links": {
+      "instagram": "https://instagram.com/rachelbolan",
+      "twitter": "https://twitter.com/rachelbolanfans",
+      "wikipedia": "https://en.wikipedia.org/wiki/Rachel_Bolan"
+    }
+  },
+  "dave “the snake” sabo": {
+    "name": "Dave “The Snake” Sabo",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Skid%20Row%20-%20Dave%20%22Snake%22%20Sabo%20(cropped).jpg?width=300",
+    "birthDate": "1964-09-16",
+    "age": 62,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Dave_Sabo"
+    }
+  },
+  "scotti hill": {
+    "name": "Scotti Hill",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Scotti%20Hill.jpg?width=300",
+    "birthDate": "1964-05-31",
+    "age": 62,
+    "links": {
+      "instagram": "https://instagram.com/scottihill",
+      "twitter": "https://twitter.com/scottihill",
+      "wikipedia": "https://en.wikipedia.org/wiki/Scotti_Hill"
+    }
+  },
+  "zp theart": {
+    "name": "ZP Theart",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/ZP%20Theart.jpg?width=300",
+    "birthDate": "1975-05-27",
+    "age": 51,
+    "links": {
+      "instagram": "https://instagram.com/ZPTOfficial",
+      "twitter": "https://twitter.com/zptheart",
+      "wikipedia": "https://en.wikipedia.org/wiki/ZP_Theart"
+    }
+  },
+  "taime downe": {
+    "name": "Taime Downe",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Taime%20Downe%20Faster%20Pussycat%202010.jpg?width=300",
+    "birthDate": "1964-09-29",
+    "age": 62,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Taime_Downe"
+    }
+  },
+  "alex grossi": {
+    "name": "Alex Grossi",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/ALEX%20GROSSI.jpg?width=300",
+    "birthDate": "1976-11-22",
+    "age": 50,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Alex_Grossi"
+    }
+  },
+  "rob halford": {
+    "name": "Rob Halford",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Rob%20Halford%20of%20Judas%20Priest.jpg?width=300",
+    "birthDate": "1951-08-25",
+    "age": 75,
+    "links": {
+      "twitter": "https://twitter.com/robhalfordlegacy",
+      "spotify": "https://open.spotify.com/artist/7CTjkl9M3enzBBfm1u10Sy",
+      "wikipedia": "https://en.wikipedia.org/wiki/Rob_Halford"
+    }
+  },
+  "keri kelli": {
+    "name": "Keri Kelli",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Keri%20Kelli%20Night%20Ranger%202022%20(cropped).jpg?width=300",
+    "birthDate": "1971-09-07",
+    "age": 55,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Keri_Kelli"
+    }
+  },
+  "matt fallon": {
+    "name": "Matt Fallon",
+    "photo": "",
+    "birthDate": "1965-09-30",
+    "age": 61,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Matt_Fallon"
+    }
+  },
+  "sebastian bach": {
+    "name": "Sebastian Bach",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Sebastian%20Bach%202012.jpg?width=300",
+    "birthDate": "1968-04-03",
+    "age": 58,
+    "links": {
+      "instagram": "https://instagram.com/sebastianbach",
+      "twitter": "https://twitter.com/sebastianbach",
+      "spotify": "https://open.spotify.com/artist/2D2svlzUpyTfcEEq0t3dgV",
+      "wikipedia": "https://en.wikipedia.org/wiki/Sebastian_Bach"
+    }
+  },
+  "shawn mars": {
+    "name": "Shawn Mars",
+    "photo": "",
+    "birthDate": "",
+    "age": null,
+    "links": {}
+  },
+  "johnny solinger": {
+    "name": "Johnny Solinger",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Johnny%20Solinger%20%E2%80%93%20Wacken%20Open%20Air%202014%2002.jpg?width=300",
+    "birthDate": "1965-08-07",
+    "age": 61,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Johnny_Solinger"
+    }
+  },
+  "dave gara": {
+    "name": "Dave Gara",
+    "photo": "",
+    "birthDate": "2000-00-00",
+    "age": 26,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Dave_Gara"
+    }
+  },
+  "tony harnell": {
+    "name": "Tony Harnell",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Kille%2012%20SV%20copy.jpg?width=300",
+    "birthDate": "1962-09-18",
+    "age": 64,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/6alD2yMb2cpw8pQs4iR6DE",
+      "wikipedia": "https://en.wikipedia.org/wiki/Tony_Harnell"
+    }
+  },
+  "jonas renkse": {
+    "name": "Jonas Renkse",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Concierto%20de%20Katatonia%20en%20Barcelona%2C%20Razz2.jpg?width=300",
+    "birthDate": "1975-05-19",
+    "age": 51,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Jonas_Renkse"
+    }
+  },
+  "anders nyström": {
+    "name": "Anders Nyström",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Katatonia%20-%20Kuopio%20Rockcock%2001.JPG?width=300",
+    "birthDate": "1975-04-22",
+    "age": 51,
+    "links": {
+      "spotify": "https://open.spotify.com/artist/25fkvfCtqO9pXh7J73f2G6",
+      "wikipedia": "https://en.wikipedia.org/wiki/Anders_Nystr%C3%B6m"
+    }
+  },
+  "fredrik norrman": {
+    "name": "Fredrik Norrman",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Katatonia%202005%20-%20Fred%20Norrman.jpg?width=300",
+    "birthDate": "1974-12-07",
+    "age": 52,
+    "links": {}
+  },
+  "mikael åkerfeldt": {
+    "name": "Mikael Åkerfeldt",
+    "photo": "https://commons.wikimedia.org/wiki/Special:FilePath/Mikael%20Akerfeldt%202024.jpg?width=300",
+    "birthDate": "1974-04-17",
+    "age": 52,
+    "links": {
+      "wikipedia": "https://en.wikipedia.org/wiki/Mikael_%C3%85kerfeldt"
+    }
+  },
+  "per eriksson": {
+    "name": "Per Eriksson",
+    "photo": "",
+    "birthDate": "1982-04-02",
+    "age": 44,
+    "links": {}
   }
 }

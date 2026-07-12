@@ -5,7 +5,7 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar, AreaChart, Area, CartesianGrid,
   Treemap,
 } from 'recharts';
-import { Activity, Calendar, Zap, TrendingUp, Award, Target } from 'lucide-react';
+import { Calendar, Zap, TrendingUp, Award, Target } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import CountUp from './CountUp';
@@ -145,51 +145,44 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
   };
 
   return (
-    <div className="space-y-10 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <Activity className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.statsDeepDive.title}
-        </h2>
-      </div>
-
+    <div className="animate-fade-in space-y-8 md:space-y-10">
       <SectionNarrative content={t.deepNarratives.statsdeep} accent="c1" />
 
       {/* ── KPI Cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         {[
           { label: t.statsDeepDive.kpiConsistency,  val: consistencyScore,  suffix: '%', icon: Target,   color: tc.c1, desc: t.statsDeepDive.kpiConsistencyDesc },
           { label: t.statsDeepDive.kpiExploration,    val: explorationScore,  suffix: '/1k', icon: TrendingUp, color: tc.c2, desc: t.statsDeepDive.kpiExplorationDesc },
           { label: t.statsDeepDive.kpiObsession,       val: obsessionScore,    suffix: '%', icon: Zap,     color: tc.c3, desc: t.statsDeepDive.kpiObsessionDesc },
           { label: t.statsDeepDive.kpiPeakYear,    val: peakYear?.year ?? 0, numOnly: true, icon: Award,   color: tc.c4, desc: t.statsDeepDive.kpiPeakYearDesc(fmtNum(peakYear?.plays ?? 0)) },
         ].map(({ label, val, suffix, icon: Icon, color, desc, numOnly }) => (
-          <div key={label} className="glass-panel p-5 rounded-2xl border-l-4 relative overflow-hidden"
+          <div key={label} className="nova-surface nova-surface--analysis relative rounded-2xl border-l-4 p-4 sm:p-5"
             style={{ borderLeftColor: color }}>
             <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at top right, ${color}08, transparent 70%)` }} />
             <Icon className="w-5 h-5 mb-2 relative z-10" style={{ color }} />
-            <p className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest relative z-10">{label}</p>
-            <p className="text-2xl font-black font-mono mt-1 relative z-10" style={{ color }}>
+            <p className="type-label type-muted relative z-10">{label}</p>
+            <p className="type-metric relative z-10 mt-1 text-2xl font-black" style={{ color }}>
               {numOnly ? val : <CountUp target={val} duration={1.5} delay={0.1} suffix={suffix ?? ''} />}
             </p>
-            <p className="text-[10px] text-gray-500 mt-1 relative z-10">{desc}</p>
+            <p className="type-caption type-muted relative z-10 mt-1">{desc}</p>
           </div>
         ))}
       </div>
 
       {/* ── Annual Activity Calendar (Month × Year grid) ── */}
-      <div className="glass-panel p-6 rounded-3xl">
+      <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-5">
           <Calendar className="w-5 h-5" style={{ color: tc.c1 }} />
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+          <h3 className="type-section type-strong">
             {t.statsDeepDive.heatmapTitle} (2015–2026)
           </h3>
           {monthlyActivity.estimated && (
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border"
+            <span className="type-label rounded-full border px-2 py-0.5"
               style={{ color: tc.c2, borderColor: `${tc.c2}40`, backgroundColor: `${tc.c2}10` }}>
               {t.statsDeepDive.estimatedMonths}
             </span>
           )}
-          <div className="ml-auto flex items-center gap-1.5 text-xs font-mono text-gray-500">
+          <div className="type-caption type-muted ml-auto flex items-center gap-1.5">
             <span>{t.statsDeepDive.less}</span>
             {[0.1, 0.3, 0.55, 0.8, 1.0].map(o => (
               <div key={o} className="w-3 h-3 rounded-sm" style={{ backgroundColor: tc.c1, opacity: o }} />
@@ -203,13 +196,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             {/* Month headers */}
             <div className="flex ml-10 mb-1">
               {MONTHS.map(m => (
-                <div key={m} className="flex-1 text-center text-[10px] font-mono text-gray-500">{m}</div>
+                <div key={m} className="type-caption type-muted flex-1 text-center">{m}</div>
               ))}
             </div>
             {/* Year rows */}
             {years.map(year => (
               <div key={year} className="flex items-center mb-1">
-                <span className="w-10 text-[10px] font-mono text-gray-500 text-right pr-2">{year}</span>
+                <span className="type-caption type-muted w-10 pr-2 text-right">{year}</span>
                 <div className="flex flex-1 gap-1">
                   {Array.from({ length: 12 }, (_, m) => {
                     const plays = monthlyMatrix.find(d => d.year === year && d.month === m)?.plays ?? 0;
@@ -236,7 +229,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             ))}
           </div>
         </div>
-        <p className="text-[10px] text-gray-500 font-mono mt-2 text-center">
+        <p className="type-caption type-muted mt-2 text-center">
           {t.statsDeepDive.clickYearHint}
         </p>
       </div>
@@ -247,22 +240,22 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
       {/* ── Monthly Breakdown + Weekday Radar ── */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         {/* Monthly bar */}
-        <div className="glass-panel p-6 rounded-3xl">
+        <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+            <h3 className="type-section type-strong">
               {t.statsDeepDive.monthlyBreakdown} {selectedYear}
             </h3>
-            <div className="flex gap-1">
+            <div className="flex max-w-[58%] gap-1 overflow-x-auto pb-1">
               {years.map(y => (
                 <button key={y} onClick={() => setSelectedYear(y)}
-                  className="text-[10px] font-mono px-2 py-1 rounded-lg transition-all"
+                  className="type-label min-h-9 rounded-lg px-2 py-1 transition-all"
                   style={selectedYear === y ? { backgroundColor: tc.c1, color: '#000', fontWeight: 'bold' } : { color: '#6b7280' }}>
                   {y}
                 </button>
               ))}
             </div>
           </div>
-          <div className="mb-2 text-xs text-gray-400 font-mono">
+          <div className="type-caption type-muted mb-2">
             {t.statsDeepDive.peakLabel}<span style={{ color: tc.c2 }}>{peakMonth.month}</span>
             {' — '}{t.statsDeepDive.playsCount(fmtNum(peakMonth.plays))}
           </div>
@@ -284,8 +277,8 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         </div>
 
         {/* Weekday Radar */}
-        <div className="glass-panel p-6 rounded-3xl">
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest mb-5">
+        <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
+          <h3 className="type-section type-strong mb-5">
             {t.statsDeepDive.weekdayPatternTitle}
           </h3>
           <div className="h-52">
@@ -309,7 +302,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
                       initial={{ width: 0 }} animate={{ width: `${ratio * 100}%` }}
                       transition={{ duration: 0.8, delay: i * 0.05 }} />
                   </div>
-                  <span className="text-[9px] font-mono text-gray-500">{day}</span>
+                  <span className="type-caption type-muted">{day}</span>
                 </div>
               );
             })}
@@ -325,10 +318,10 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
       />
 
       {/* ── Genre Treemap ── */}
-      <div className="glass-panel p-6 rounded-3xl">
+      <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-5">
           <Zap className="w-5 h-5" style={{ color: tc.c2 }} />
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+          <h3 className="type-section type-strong">
             {t.statsDeepDive.genreTreemapTitle}
           </h3>
         </div>
@@ -346,10 +339,10 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
       </div>
 
       {/* ── Genre Evolution Area Chart ── */}
-      <div className="glass-panel p-6 rounded-3xl">
+      <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-5">
           <TrendingUp className="w-5 h-5" style={{ color: tc.c4 }} />
-          <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
+          <h3 className="type-section type-strong">
             {t.statsDeepDive.genreEvolutionTitle}
           </h3>
         </div>
