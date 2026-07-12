@@ -70,7 +70,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText(/Confianza de datos/i)).toBeInTheDocument();
   });
 
-  it('removes Kevin-specific copy for an uploaded personal archive', () => {
+  it('removes the fixed archive-owner copy for an uploaded personal archive', () => {
     localStorage.setItem('nml_lang', 'en');
     const oneYearArchive = {
       ...data,
@@ -91,7 +91,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('✨ 1 Year in Your Archive')).toBeInTheDocument();
     expect(screen.getByText('✧ Your Musical Universe ✧')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: /YOUR ARCHIVE/i })).toBeInTheDocument();
-    expect(screen.queryByText(/KEVIN CUSNIR/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/DEMO ARCHIVE/i)).not.toBeInTheDocument();
   });
 
   it('renders every raw source on a normalized telemetry bar', () => {

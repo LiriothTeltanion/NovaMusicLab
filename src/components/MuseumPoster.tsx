@@ -4,6 +4,7 @@ import { Download, Loader2, Shuffle, Image as ImageIcon, AlertCircle } from 'luc
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
+import { buildArtistProfile } from '../utils/identityEngine';
 import MoodArtCanvas from './MoodArtCanvas';
 import { MOOD_ICONS } from './MoodBadge';
 
@@ -32,7 +33,7 @@ export default function MuseumPoster({ data }: MuseumPosterProps) {
   const yearSpan = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '—';
   const fmt = (n: number) => n.toLocaleString(locale);
   const seed = `${data.top_artists.slice(0, 5).map(a => a.name).join('|')}::poster::v${variation}`;
-  const alias = data.artist_profile?.alias ?? 'Nova';
+  const alias = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang).alias, [data.top_artists, data.top_tracks, lang]);
   const DominantIcon = MOOD_ICONS[dominant.icon];
 
   const stats = [

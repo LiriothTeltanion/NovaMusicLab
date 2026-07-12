@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
 import { AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
 import { CHART_ANIMATION } from './chartKit';
-import { localizeArchetype, localizePersonalityTrait, localizeTraitAxis } from '../utils/localizedDatasetText';
+import { localizeTraitAxis } from '../utils/localizedDatasetText';
+import { buildArchetypes, buildPersonalityMatrix } from '../utils/identityEngine';
 
 interface PersonalityRadarProps {
   data: MusicDnaData;
 }
 
 export default function PersonalityRadar({ data }: PersonalityRadarProps) {
-  const matrix = data.personality_matrix;
+  const { tc, t, lang } = useApp();
+  // Derived live from the real top_artists, per current language - never
+  // pre-baked, so the radar always matches the archive actually on screen.
+  const matrix = useMemo(() => buildPersonalityMatrix(data.top_artists, lang), [data.top_artists, lang]);
   type PersonalityKey = keyof typeof matrix;
   const [selectedKey, setSelectedKey] = useState<PersonalityKey>('sensibilidad_emocional');
-  const { tc, t, lang } = useApp();
 
   const chartData: Array<{ subject: string; value: number; key: PersonalityKey }> = [
     { subject: localizeTraitAxis('sensibilidad_emocional', lang), value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
@@ -27,8 +30,8 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
     { subject: localizeTraitAxis('futurismo', lang), value: matrix.futurismo.score, key: 'futurismo' }
   ];
 
-  const currentTrait = localizePersonalityTrait(selectedKey, matrix[selectedKey], lang);
-  const localizedArchetypes = data.archetypes.map(arch => localizeArchetype(arch, lang));
+  const currentTrait = matrix[selectedKey];
+  const archetypes = useMemo(() => buildArchetypes(data.top_artists, lang), [data.top_artists, lang]);
 
   const traitLabels = t.personalityRadar.traitLabels;
 
@@ -54,7 +57,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
                 />
                 <Radar
                   {...CHART_ANIMATION}
-                  name="Kevin"
+                  name={t.personalityRadar.yourProfileLabel}
                   dataKey="value"
                   stroke={tc.c1}
                   fill={tc.c1}
@@ -146,7 +149,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
           {t.personalityRadar.archetypesTitle}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {localizedArchetypes.map((arch) => (
+          {archetypes.map((arch) => (
             <div 
               key={arch.name} 
               className={`nova-surface nova-surface--analysis rounded-3xl border-t-4 p-5 sm:p-6 ${

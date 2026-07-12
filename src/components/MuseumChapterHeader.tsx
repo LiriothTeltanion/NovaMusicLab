@@ -527,7 +527,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
       </div>
 
       <div className="museum-chapter__footer" aria-hidden="true">
-        <span>KEVIN CUSNIR / LIRIOTH TELTANION</span>
+        <span>NOVA MUSIC LAB</span>
         <span className="museum-chapter__footer-line" />
         <span>{definition.number} / {MUSEUM_CHAPTER_TABS.length}</span>
       </div>

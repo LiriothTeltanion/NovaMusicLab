@@ -59,18 +59,18 @@ describe('bilingual dataset text', () => {
 
     cleanup();
     renderInLang(<PersonalityRadar data={data} />, 'en');
-    expect(screen.getByText('Sensitivity (92)')).toBeInTheDocument();
-    expect(screen.getByText(/Strong presence of Deafheaven/i)).toBeInTheDocument();
-    expect(screen.queryByText(/Gran presencia de Deafheaven/i)).not.toBeInTheDocument();
+    expect(screen.getByText('Sensitivity (41)')).toBeInTheDocument();
+    expect(screen.getByText(/Recurring listening of dense emotional textures, led by Deafheaven/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Escucha recurrente de texturas emocionales densas/i)).not.toBeInTheDocument();
 
     cleanup();
     renderInLang(<ArtistIdentity data={data} />, 'en');
-    expect(screen.getByText(/A fusion of blackgaze/i)).toBeInTheDocument();
-    expect(screen.getByText(/Highway of Forgetting/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/A fusion of Post-Hardcore and Melodic Metalcore/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Noise Portal/i)).toBeInTheDocument();
     expect(screen.getByText('Sonic Gene Matrix')).toBeInTheDocument();
     expect(screen.getByText('Expandable Artist Dossier')).toBeInTheDocument();
-    expect(screen.queryByText(/Fusión de Blackgaze/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Autopista del Olvido/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Fusión de Post-Hardcore/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Portal de Ruido/i)).not.toBeInTheDocument();
   });
 
   it('renders the expanded artist dossier in Spanish', () => {

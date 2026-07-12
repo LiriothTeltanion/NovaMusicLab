@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, Headphones, Heart, Printer, Music, Star, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYearPeak } from '../utils/analytics';
+import { buildArtistProfile } from '../utils/identityEngine';
 import MuseumPoster from './MuseumPoster';
 import SectionNarrative from './SectionNarrative';
 
@@ -51,8 +52,11 @@ export default function FinalReport({ data }: FinalReportProps) {
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
   const tr = t.finalReport;
   const m = data.core_metrics;
-  const topArtist = data.top_artists[0]?.name ?? 'Bring Me the Horizon';
-  const topTrack  = data.top_tracks[0]?.title  ?? 'In Blur';
+  const topArtist = data.top_artists[0]?.name ?? (lang === 'en' ? 'Unknown Artist' : 'Artista Desconocido');
+  const topTrack  = data.top_tracks[0]?.title  ?? (lang === 'en' ? 'Unknown Track' : 'Canción Desconocida');
+  // Derived live from the real top_artists/top_tracks, per current language -
+  // the alias and sound description always match the archive on screen.
+  const profile = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
   const nr = getNightRatio(data);
   const records = getRecords(data);
   const peakPair = getTwoYearPeak(data.yearly_eras);
@@ -105,7 +109,7 @@ export default function FinalReport({ data }: FinalReportProps) {
             <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
               {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight}</span>{' '}<br/>{tr.coverHeadlinePost}
             </h3>
-            <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<span className="text-cyberCyan font-semibold">{tr.coverSubtitleName}</span></p>
+            <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<span className="text-cyberCyan font-semibold">{profile.alias}</span></p>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x divide-white/5 bg-white/2">
@@ -172,7 +176,7 @@ export default function FinalReport({ data }: FinalReportProps) {
         <motion.section variants={paraVariants} className="space-y-4">
           <SectionHeading roman={tr.s4Roman} title={tr.s4Title} color="#10b981" />
           <p className="text-sm md:text-base">
-            {tr.s4Pre} <strong className="text-white">{tr.s4AliasLabel}</strong> {tr.s4Post}
+            {tr.s4Pre} <strong className="text-white">{profile.alias}</strong> {tr.s4Post(profile.sound)}
           </p>
           <PullQuote text={tr.s4Quote} color="#10b981" />
         </motion.section>
@@ -210,10 +214,10 @@ export default function FinalReport({ data }: FinalReportProps) {
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">
           <Heart className="w-6 h-6 text-cyberPink fill-cyberPink animate-pulse-slow" />
-          <p className="font-mono text-sm font-bold text-white tracking-widest">{tr.footerName}</p>
+          <p className="font-mono text-sm font-bold text-white tracking-widest">✧ {profile.alias} ✧</p>
           <p className="text-xs text-gray-500 font-mono">{tr.footerSubtitle}</p>
           <div className="flex flex-wrap justify-center gap-2 pt-2">
-            {[topArtist, 'Deafheaven', 'Bilmuri', 'The Midnight', 'nothingnowhere.'].map(a => (
+            {data.top_artists.slice(0, 5).map(a => a.name).map(a => (
               <span key={a} className="text-[10px] px-2 py-0.5 rounded-full bg-cyberCyan/5 border border-cyberCyan/15 text-gray-400 font-mono">{a}</span>
             ))}
           </div>

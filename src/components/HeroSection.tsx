@@ -22,6 +22,7 @@ import CoverArt from './CoverArt';
 import NovaMark from './NovaMark';
 import { paintMoodArt } from './MoodArtCanvas';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
+import { buildArchetypes } from '../utils/identityEngine';
 import { deriveSourceSummary, getSourceTelemetry, type SourceTelemetryId } from '../utils/analytics';
 import './HeroSection.css';
 
@@ -29,7 +30,7 @@ interface HeroSectionProps {
   data: MusicDnaData;
   onEnter: () => void;
   onUpload: () => void;
-  /** Distinguishes an uploaded/restored archive from Kevin's bundled museum. */
+  /** Distinguishes an uploaded/restored archive from the bundled demo museum. */
   isPersonalArchive?: boolean;
   /** Opens the AI Assistant tab; the welcome card's "Launch Chat Console" CTA needs it. */
   onOpenAssistant?: () => void;
@@ -113,8 +114,8 @@ export default function HeroSection({
       };
 
   const dossierOwner = isPersonalArchive
-    ? lang === 'en' ? 'YOUR ARCHIVE' : 'TU ARCHIVO'
-    : 'KEVIN CUSNIR';
+    ? (lang === 'en' ? 'YOUR ARCHIVE' : 'TU ARCHIVO')
+    : (lang === 'en' ? 'DEMO ARCHIVE' : 'ARCHIVO DEMO');
 
   const dominantMood = useMemo(() => {
     const list = data?.top_artists || [];
@@ -142,6 +143,13 @@ export default function HeroSection({
     return canvas.toDataURL('image/png');
   }, [dominantMood.key, topArtist?.name]);
 
+  // Derived live from the real top_artists, per current language - matches
+  // whichever archive (bundled demo or a visitor's own upload) is on screen.
+  const heroArchetype = useMemo(() => {
+    const list = data?.top_artists || [];
+    return buildArchetypes(list, lang)[0]?.name || (lang === 'en' ? 'Sonic Explorer' : 'Explorador Sónico');
+  }, [data?.top_artists, lang]);
+
   // Custom offline AI dossier compiler
   const aiMusicProfile = useMemo(() => {
     if (!topArtist) return null;
@@ -149,8 +157,8 @@ export default function HeroSection({
     const hours = metrics.listening_hours;
     const topGenre = topArtist.genre || data?.top_genres?.[0]?.name || 'Alternative';
     const moodLabel = dominantMood.name;
-    const archetype = data?.archetypes?.[0]?.name || (lang === 'en' ? 'Sonic Explorer' : 'Explorador Sónico');
-    
+    const archetype = heroArchetype;
+
     if (lang === 'en') {
       return {
         title: `AI MUSIC PROFILE: ${dossierOwner} [${topGenre.toUpperCase().split(' / ')[0]} CLASS]`,
@@ -162,7 +170,7 @@ export default function HeroSection({
         report: `La auditoría neural de tu biblioteca revela una firma sonora altamente estructurada. A lo largo de ${scrobbles.toLocaleString()} reproducciones y ${hours.toLocaleString()} horas, tu perfil resuena bajo el arquetipo "${archetype}". Tu espectro emocional está dominado por la resonancia "${moodLabel}" (intensidad ${Math.round(dominantMood.percentage)}%). En el núcleo de tu biblioteca destaca ${topArtist.name}, representando tu obsesión principal con ${topArtist.plays} scrobbles. La era pico se centra en el año ${peakYear?.year || 2026} con un ${metrics.match_rate_pct}% de integridad de datos.`
       };
     }
-  }, [data, metrics, topArtist, dominantMood, lang, peakYear, dossierOwner]);
+  }, [data, metrics, topArtist, dominantMood, lang, peakYear, dossierOwner, heroArchetype]);
 
   const archiveCards = [
     {

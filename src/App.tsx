@@ -568,12 +568,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
         {/* Right controls */}
         <div className="flex items-center justify-end gap-1 md:flex-wrap md:gap-2">
-          {/* User badge */}
-          <div className="hidden lg:flex items-center gap-1.5 text-xs font-mono text-gray-400 border px-3 py-1 rounded-full"
-            style={{ borderColor: `${tc.c1}25`, backgroundColor: `${tc.c1}08` }}>
-            <span style={{ color: tc.c1 }} className="font-bold">Kevin Cusnir (Lirioth)</span>
-          </div>
-
           {/* Language toggle */}
           <div
             className="flex items-center overflow-hidden rounded-full border"
@@ -795,7 +789,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
             <div className="hidden md:flex flex-col items-center pt-4 mt-2 border-t gap-1"
               style={{ borderTopColor: `${tc.c1}12` }}>
               <span className="font-mono text-[9px] text-gray-600">Nova Music Lab</span>
-              <span className="font-mono text-[9px] font-bold" style={{ color: tc.c3 }}>✧ LIRIOTH TELTANION ✧</span>
             </div>
           </aside>
 

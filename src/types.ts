@@ -253,7 +253,14 @@ export interface MusicDnaData {
   source_summary?: SourceSummary;
   knowledge_summary?: ArtistKnowledgeSummary;
   records?: RecordsSummary;
-  personality_matrix: PersonalityMatrix;
-  archetypes: Archetype[];
-  artist_profile: ArtistProfile;
+  /**
+   * These three are no longer written by the parser - Personality Radar,
+   * Artist Identity, Museum Poster and Hero Section derive them live from
+   * top_artists/top_tracks via identityEngine.ts instead, so the content
+   * reflects whichever archive is actually loaded. Kept optional only so
+   * datasets saved to IndexedDB before this change still deserialize.
+   */
+  personality_matrix?: PersonalityMatrix;
+  archetypes?: Archetype[];
+  artist_profile?: ArtistProfile;
 }

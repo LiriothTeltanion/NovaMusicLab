@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   AudioWaveform,
   Clapperboard,
@@ -17,7 +17,7 @@ import ArtistAvatar from './ArtistAvatar';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
-import { localizeArtistProfile } from '../utils/localizedDatasetText';
+import { buildArtistProfile, buildSonicGenes } from '../utils/identityEngine';
 
 interface ArtistIdentityProps {
   data: MusicDnaData;
@@ -30,7 +30,7 @@ const ARTIST_DOSSIER_COPY = {
       thesisTitle: 'Blackgaze luminoso + synthwave cyberpunk + post-hardcore melódico',
       thesisBody: 'La identidad no copia a tus artistas favoritos: combina sus funciones emocionales para imaginar un proyecto propio, intenso y visual.',
       personaLabel: 'Personaje',
-      personaTitle: 'Lirioth como arquitecto emocional digital',
+      personaTitle: 'Tu alter-ego como arquitecto emocional digital',
       personaBody: 'El alias funciona como una figura entre exilio, reconstrucción y diseño de mundos: vulnerable, futurista y dramática sin perder groove.',
       stageLabel: 'Escenario',
       stageTitle: 'Un show de luces, batería real y visuales reactivos',
@@ -122,7 +122,7 @@ const ARTIST_DOSSIER_COPY = {
       'Portal de entrada: sintetizadores, carretera y sensación de dejar atrás una versión anterior de ti.',
       'El choque central: blackgaze y groove emocional se encuentran con una voz más abierta y directa.',
       'La canción pesada del EP: ciudad, migración emocional y guitarras como arquitectura en ruinas.',
-      'La pista nocturna: synthwave retro, memoria venezolana y pulso de carretera a medianoche.',
+      'La pista nocturna: synthwave retro, una memoria personal y pulso de carretera a medianoche.',
       'El loop psicológico: post-hardcore vulnerable para hablar de repetición, ansiedad y reconstrucción.',
       'Cierre instrumental: el alias deja de ser fantasía y aparece como nueva identidad artística.',
     ],
@@ -133,7 +133,7 @@ const ARTIST_DOSSIER_COPY = {
       thesisTitle: 'Luminous blackgaze + cyberpunk synthwave + melodic post-hardcore',
       thesisBody: 'The identity does not copy your favorite artists: it combines their emotional functions into a personal, intense and visual project.',
       personaLabel: 'Persona',
-      personaTitle: 'Lirioth as a digital emotional architect',
+      personaTitle: 'Your alter-ego as a digital emotional architect',
       personaBody: 'The alias works as a figure between exile, reconstruction and world-building: vulnerable, futuristic and dramatic without losing groove.',
       stageLabel: 'Stage',
       stageTitle: 'A light-driven show with live drums and reactive visuals',
@@ -225,7 +225,7 @@ const ARTIST_DOSSIER_COPY = {
       'Opening portal: synthesizers, highway imagery and the feeling of leaving an older self behind.',
       'The central collision: blackgaze and emotional groove meet a more open, direct vocal identity.',
       'The heavy song of the EP: city, emotional migration and guitars as ruined architecture.',
-      'The nocturnal track: retro synthwave, Venezuelan memory and a midnight-highway pulse.',
+      'The nocturnal track: retro synthwave, a personal memory and a midnight-highway pulse.',
       'The psychological loop: vulnerable post-hardcore about repetition, anxiety and reconstruction.',
       'Instrumental ending: the alias stops being fantasy and appears as a new artistic identity.',
     ],
@@ -234,7 +234,10 @@ const ARTIST_DOSSIER_COPY = {
 
 export default function ArtistIdentity({ data }: ArtistIdentityProps) {
   const { tc, t, lang } = useApp();
-  const profile = localizeArtistProfile(data.artist_profile, lang);
+  // Derived live from the real top_artists/top_tracks, per current language -
+  // the alias, sound and influences always match the archive on screen.
+  const profile = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
+  const sonicGenes = useMemo(() => buildSonicGenes(data.top_artists, lang), [data.top_artists, lang]);
   const ep = profile.ep_concept;
   const copy = ARTIST_DOSSIER_COPY[lang];
   const colors = [tc.c1, tc.c2, tc.c3, tc.c4, '#10b981', '#fb923c'];
@@ -244,11 +247,26 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
   }));
   const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 
+  // Layer 05 ("Collaboration DNA") keeps its generic per-slot function copy
+  // but swaps in the real top artists from this archive instead of a fixed
+  // name list, so it never claims a fixed lineup for every visitor.
+  const realCollaborators = data.top_artists.slice(0, 4).map(a => a.name);
+  const cards = copy.cards.map((card, index) => {
+    if (index !== 4) return card;
+    return {
+      ...card,
+      lines: card.lines.map((line, lineIndex) => ({
+        ...line,
+        label: realCollaborators[lineIndex] ?? line.label,
+      })),
+    };
+  });
+
   const quickReadItems = [
     {
       icon: <AudioWaveform className="w-4 h-4" />,
       label: copy.quick.thesisLabel,
-      title: copy.quick.thesisTitle,
+      title: profile.sound,
       body: copy.quick.thesisBody,
       color: tc.c1,
     },
@@ -394,7 +412,7 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
                 <ImageIcon className="w-8 h-8 animate-pulse" style={{ color: tc.c1 }} />
               </div>
               <p className="text-xs font-mono font-bold text-white tracking-widest uppercase">{ep.title}</p>
-              <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}>LIRIOTH TELTANION</p>
+              <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}>{profile.alias.toUpperCase()}</p>
               <p className="text-[9px] text-gray-600 font-mono">{t.artistIdentity.albumArtConcept}</p>
             </div>
           </div>
@@ -409,7 +427,7 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
           </h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {copy.sonicGenes.map((gene, index) => {
+          {sonicGenes.map((gene, index) => {
             const color = colors[index % colors.length];
             return (
               <article key={gene.label} className="glass-panel p-5 rounded-2xl border relative overflow-hidden group"
@@ -446,7 +464,7 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {copy.cards.map((card, index) => (
+          {cards.map((card, index) => (
             <ExpandableInsightCard
               key={card.title}
               eyebrow={card.eyebrow}

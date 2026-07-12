@@ -1,7 +1,7 @@
 import type { MusicDnaData } from '../types';
 
 /**
- * The bundled Kevin/Lirioth archive, loaded on demand so the ~150KB dataset
+ * The bundled demo archive, loaded on demand so the ~150KB dataset
  * ships as its own cacheable chunk instead of inflating the app entry bundle.
  * Returning visitors with their own IndexedDB dataset never download it at all.
  */

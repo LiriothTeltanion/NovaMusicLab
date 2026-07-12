@@ -10,7 +10,7 @@ interface AIAssistantProps {
 
 interface Message {
   id: string;
-  sender: 'user' | 'lirioth';
+  sender: 'user' | 'assistant';
   text: string;
   timestamp: Date;
 }
@@ -24,10 +24,10 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: 'welcome',
-      sender: 'lirioth',
+      sender: 'assistant',
       text: L
-        ? `Hello Kevin! I am **Lirioth**, your AI Music Assistant. 🌌\n\nI can analyze your compiled history (*${data.project}*) and provide deep musical insights. Ask me anything, or configure your personal Gemini API Key below to unlock advanced reasoning!`
-        : `¡Hola Kevin! Soy **Lirioth**, tu asistente musical de IA. 🌌\n\nPuedo analizar tu historial compilado (*${data.project}*) y darte análisis profundos. ¡Pregúntame lo que quieras, o configura tu API Key personal de Gemini abajo para desbloquear razonamiento avanzado!`,
+        ? `Hello! I am **Nova**, your AI Music Assistant. 🌌\n\nI can analyze your compiled history (*${data.project}*) and provide deep musical insights. Ask me anything, or configure your personal Gemini API Key below to unlock advanced reasoning!`
+        : `¡Hola! Soy **Nova**, tu asistente musical de IA. 🌌\n\nPuedo analizar tu historial compilado (*${data.project}*) y darte análisis profundos. ¡Pregúntame lo que quieras, o configura tu API Key personal de Gemini abajo para desbloquear razonamiento avanzado!`,
       timestamp: new Date(),
     },
   ]);
@@ -67,7 +67,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
     setMessages([
       {
         id: 'welcome-reset',
-        sender: 'lirioth',
+        sender: 'assistant',
         text: L
           ? "Conversation cleared. Ready for your next query!"
           : "Conversación reiniciada. ¡Listo para tu siguiente pregunta!",
@@ -108,8 +108,8 @@ export default function AIAssistant({ data }: AIAssistantProps) {
 
     if (q.includes('genre') || q.includes('género') || q.includes('style') || q.includes('estilo')) {
       return isEn
-        ? `### 📊 Lirioth's Genre Breakdown\n\nYour primary musical universe is shaped by:\n- Top Genres: ${topGenresStr}\n- Dominant Focus: **Metalcore & Post-Hardcore** accounts for over 45% of your listening. This shows a high affinity for energetic guitar riffs, contrasting clean/screaming vocals, and emotional melodies.\n- Secondary Sphere: **Synthwave / Darksynth**, suggesting a deep connection to visual cyberpunk themes and nocturnal retro-escapism.`
-        : `### 📊 Desglose de Géneros de Lirioth\n\nTu universo musical principal está moldeado por:\n- Géneros principales: ${topGenresStr}\n- Enfoque dominante: **Metalcore y Post-Hardcore** representan más del 45% de tus escuchas. Esto muestra una gran afinidad por riffs de guitarra enérgicos, contraste de voces limpias/guturales y melodías emotivas.\n- Esfera secundaria: **Synthwave / Darksynth**, sugiriendo una conexión profunda con estéticas visuales cyberpunk y escapismo retro nocturno.`;
+        ? `### 📊 Nova's Genre Breakdown\n\nYour primary musical universe is shaped by:\n- Top Genres: ${topGenresStr}\n- Dominant Focus: **Metalcore & Post-Hardcore** accounts for over 45% of your listening. This shows a high affinity for energetic guitar riffs, contrasting clean/screaming vocals, and emotional melodies.\n- Secondary Sphere: **Synthwave / Darksynth**, suggesting a deep connection to visual cyberpunk themes and nocturnal retro-escapism.`
+        : `### 📊 Desglose de Géneros de Nova\n\nTu universo musical principal está moldeado por:\n- Géneros principales: ${topGenresStr}\n- Enfoque dominante: **Metalcore y Post-Hardcore** representan más del 45% de tus escuchas. Esto muestra una gran afinidad por riffs de guitarra enérgicos, contraste de voces limpias/guturales y melodías emotivas.\n- Esfera secundaria: **Synthwave / Darksynth**, sugiriendo una conexión profunda con estéticas visuales cyberpunk y escapismo retro nocturno.`;
     }
 
     if (q.includes('obsession') || q.includes('obsesión') || q.includes('track') || q.includes('canción')) {
@@ -127,8 +127,8 @@ export default function AIAssistant({ data }: AIAssistantProps) {
 
     // Default Sandbox Response
     return isEn
-      ? `### 🌌 Lirioth Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some of your metrics:\n- **Total scrobbles**: ${data.core_metrics.total_plays.toLocaleString()} plays\n- **Unique artists**: ${data.core_metrics.unique_artists.toLocaleString()} unique creators\n- **Top Artists**: ${topArtsStr}\n\n*🔧 **How to enable Live AI Reasoning?***\n1. Get a free API Key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key and click **Save**.\n4. Ask me anything! I will analyze your data in real-time using **Gemini 2.5 Flash**.`
-      : `### 🌌 Modo Sandbox de Lirioth\n\nProcesé tu consulta: *"${query}"*\n\nAquí tienes algunas de tus métricas clave:\n- **Total de reproducciones**: ${data.core_metrics.total_plays.toLocaleString()} escuchas\n- **Artistas únicos**: ${data.core_metrics.unique_artists.toLocaleString()} creadores\n- **Artistas principales**: ${topArtsStr}\n\n*🔧 **¿Cómo activar el razonamiento en vivo con IA?***\n1. Consigue una API Key gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** abajo.\n3. Pega tu clave y dale a **Guardar**.\n4. ¡Pregúntame lo que quieras! Analizaré tus datos en tiempo real usando **Gemini 2.5 Flash**.`;
+      ? `### 🌌 Nova Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some of your metrics:\n- **Total scrobbles**: ${data.core_metrics.total_plays.toLocaleString()} plays\n- **Unique artists**: ${data.core_metrics.unique_artists.toLocaleString()} unique creators\n- **Top Artists**: ${topArtsStr}\n\n*🔧 **How to enable Live AI Reasoning?***\n1. Get a free API Key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key and click **Save**.\n4. Ask me anything! I will analyze your data in real-time using **Gemini 2.5 Flash**.`
+      : `### 🌌 Modo Sandbox de Nova\n\nProcesé tu consulta: *"${query}"*\n\nAquí tienes algunas de tus métricas clave:\n- **Total de reproducciones**: ${data.core_metrics.total_plays.toLocaleString()} escuchas\n- **Artistas únicos**: ${data.core_metrics.unique_artists.toLocaleString()} creadores\n- **Artistas principales**: ${topArtsStr}\n\n*🔧 **¿Cómo activar el razonamiento en vivo con IA?***\n1. Consigue una API Key gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** abajo.\n3. Pega tu clave y dale a **Guardar**.\n4. ¡Pregúntame lo que quieras! Analizaré tus datos en tiempo real usando **Gemini 2.5 Flash**.`;
   };
 
   // Chat Submission handler
@@ -155,15 +155,16 @@ export default function AIAssistant({ data }: AIAssistantProps) {
         const reply = getSandboxResponse(prompt);
         setMessages(prev => [...prev, {
           id: Math.random().toString(36).substring(7),
-          sender: 'lirioth',
+          sender: 'assistant',
           text: reply,
           timestamp: new Date(),
         }]);
       } else {
-        // Build prompt context with Kevin's compiled music summary
+        // Build prompt context with this visitor's compiled music summary -
+        // never a fixed name, since anyone can upload their own archive here.
         const promptContext = `
-You are Lirioth, Kevin's personal AI Music Assistant. Address the user as Kevin.
-Here is a summary of Kevin's music listening history:
+You are Nova, this listener's personal AI Music Assistant. Do not assume the user's name; address them naturally without inventing one.
+Here is a summary of this listener's music listening history:
 - Project: ${data.project}
 - Total plays: ${data.core_metrics.total_plays}
 - Unique artists: ${data.core_metrics.unique_artists}
@@ -177,10 +178,10 @@ Here is a summary of Kevin's music listening history:
 - Listening Countries: ${data.countries.slice(0, 5).map(c => `${c.country} (${c.plays} plays)`).join(', ')}
 - Top Eras: ${data.yearly_eras.map(e => `Year ${e.year}: Top Artist ${e.top_artist}, Top Track ${e.top_track}, Label: ${e.era_label}`).join('\n')}
 
-Kevin's visual style preference: Cyberpunk, neon accents, dark theme, futuristic, glassmorphism, sci-fi.
-Keep your responses structured, beautiful, detailed, using markdown, emojis, bullet points, code blocks, and high information density. Maintain a friendly, supportive, and encouraging tone. Answer in the same language as Kevin's query.
+Preferred visual style for responses: Cyberpunk, neon accents, dark theme, futuristic, glassmorphism, sci-fi.
+Keep your responses structured, beautiful, detailed, using markdown, emojis, bullet points, code blocks, and high information density. Maintain a friendly, supportive, and encouraging tone. Answer in the same language as the user's query.
 
-Kevin asks: "${prompt}"
+The user asks: "${prompt}"
 `;
 
         const response = await fetch(
@@ -222,7 +223,7 @@ Kevin asks: "${prompt}"
 
         setMessages(prev => [...prev, {
           id: Math.random().toString(36).substring(7),
-          sender: 'lirioth',
+          sender: 'assistant',
           text,
           timestamp: new Date(),
         }]);
@@ -231,7 +232,7 @@ Kevin asks: "${prompt}"
       console.error(err);
       setMessages(prev => [...prev, {
         id: Math.random().toString(36).substring(7),
-        sender: 'lirioth',
+        sender: 'assistant',
         text: L
           ? `❌ **Error**: ${err.message || 'Failed to connect. Please check your network and API Key.'}`
           : `❌ **Error**: ${err.message || 'Fallo de conexión. Por favor verifica tu red y tu API Key.'}`,
@@ -249,7 +250,7 @@ Kevin asks: "${prompt}"
         <div className="flex items-center space-x-3">
           <Bot className="w-6 h-6 text-purple-400" />
           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {L ? 'Lirioth AI Lab' : 'Laboratorio IA Lirioth'}
+            {L ? 'Nova AI Lab' : 'Laboratorio IA Nova'}
           </h2>
         </div>
         <button
@@ -335,7 +336,7 @@ Kevin asks: "${prompt}"
                 <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex items-center space-x-2">
                   <Loader2 className="w-4 h-4 text-purple-400 animate-spin" />
                   <span className="text-xs text-gray-400 font-mono">
-                    {L ? 'Lirioth is thinking...' : 'Lirioth está analizando...'}
+                    {L ? 'Nova is thinking...' : 'Nova está analizando...'}
                   </span>
                 </div>
               </div>
