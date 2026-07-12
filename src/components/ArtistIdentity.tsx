@@ -17,10 +17,12 @@ import ArtistAvatar from './ArtistAvatar';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
-import { buildArtistProfile, buildSonicGenes } from '../utils/identityEngine';
+import { buildArtistProfile, buildDossierLineValues, buildSonicGenes, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 
 interface ArtistIdentityProps {
   data: MusicDnaData;
+  /** True for a visitor's own uploaded archive; false for the bundled demo archive. */
+  isPersonalArchive?: boolean;
 }
 
 const ARTIST_DOSSIER_COPY = {
@@ -120,11 +122,9 @@ const ARTIST_DOSSIER_COPY = {
     trackLoreTitle: 'Lectura track por track',
     trackNotes: [
       'Portal de entrada: sintetizadores, carretera y sensación de dejar atrás una versión anterior de ti.',
-      'El choque central: blackgaze y groove emocional se encuentran con una voz más abierta y directa.',
+      'El choque central: esta pista es la real más escuchada del archivo, ahora reimaginada con eco.',
       'La canción pesada del EP: ciudad, migración emocional y guitarras como arquitectura en ruinas.',
-      'La pista nocturna: synthwave retro, una memoria personal y pulso de carretera a medianoche.',
-      'El loop psicológico: post-hardcore vulnerable para hablar de repetición, ansiedad y reconstrucción.',
-      'Cierre instrumental: el alias deja de ser fantasía y aparece como nueva identidad artística.',
+      'Cierre sintético: el alias deja de ser fantasía y aparece como nueva identidad artística.',
     ],
   },
   en: {
@@ -223,21 +223,25 @@ const ARTIST_DOSSIER_COPY = {
     trackLoreTitle: 'Track-By-Track Reading',
     trackNotes: [
       'Opening portal: synthesizers, highway imagery and the feeling of leaving an older self behind.',
-      'The central collision: blackgaze and emotional groove meet a more open, direct vocal identity.',
+      'The central collision: this is the real most-played track in the archive, reimagined with echo.',
       'The heavy song of the EP: city, emotional migration and guitars as ruined architecture.',
-      'The nocturnal track: retro synthwave, a personal memory and a midnight-highway pulse.',
-      'The psychological loop: vulnerable post-hardcore about repetition, anxiety and reconstruction.',
-      'Instrumental ending: the alias stops being fantasy and appears as a new artistic identity.',
+      'Synthetic closer: the alias stops being fantasy and appears as a new artistic identity.',
     ],
   },
 };
 
-export default function ArtistIdentity({ data }: ArtistIdentityProps) {
+export default function ArtistIdentity({ data, isPersonalArchive = false }: ArtistIdentityProps) {
   const { tc, t, lang } = useApp();
   // Derived live from the real top_artists/top_tracks, per current language -
-  // the alias, sound and influences always match the archive on screen.
-  const profile = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
+  // the alias, sound and influences always match the archive on screen. Only
+  // the bundled demo archive pins a fixed alias, since that one is a real
+  // fact about that specific dataset rather than a fabricated stand-in.
+  const profile = useMemo(
+    () => buildArtistProfile(data.top_artists, data.top_tracks, lang, isPersonalArchive ? undefined : { fixedAlias: DEMO_ARCHIVE_ALIAS }),
+    [data.top_artists, data.top_tracks, lang, isPersonalArchive]
+  );
   const sonicGenes = useMemo(() => buildSonicGenes(data.top_artists, lang), [data.top_artists, lang]);
+  const dossierValues = useMemo(() => buildDossierLineValues(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
   const ep = profile.ep_concept;
   const copy = ARTIST_DOSSIER_COPY[lang];
   const colors = [tc.c1, tc.c2, tc.c3, tc.c4, '#10b981', '#fb923c'];
@@ -247,19 +251,59 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
   }));
   const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
 
-  // Layer 05 ("Collaboration DNA") keeps its generic per-slot function copy
-  // but swaps in the real top artists from this archive instead of a fixed
-  // name list, so it never claims a fixed lineup for every visitor.
+  // Every dossier layer's line VALUES are swapped for real-data-driven text
+  // (genre/trait/aesthetic-derived, real influences, real top track); the
+  // line LABELS (Guitars/Drums/...) and card eyebrow/title/summary stay
+  // fixed structural labels, not claims about the archive. Layer 05
+  // ("Collaboration DNA") additionally swaps its line LABELS for the real
+  // top artists instead of a fixed name list.
   const realCollaborators = data.top_artists.slice(0, 4).map(a => a.name);
   const cards = copy.cards.map((card, index) => {
-    if (index !== 4) return card;
-    return {
-      ...card,
-      lines: card.lines.map((line, lineIndex) => ({
-        ...line,
-        label: realCollaborators[lineIndex] ?? line.label,
-      })),
-    };
+    if (index === 0) {
+      return { ...card, lines: [
+        { ...card.lines[0], value: dossierValues.layer1.guitars },
+        { ...card.lines[1], value: dossierValues.layer1.drums },
+        { ...card.lines[2], value: dossierValues.layer1.synths },
+        { ...card.lines[3], value: dossierValues.layer1.voice },
+      ] };
+    }
+    if (index === 1) {
+      return { ...card, lines: [
+        { ...card.lines[0], value: dossierValues.layer2.palette },
+        { ...card.lines[1], value: dossierValues.layer2.wardrobe },
+        { ...card.lines[2], value: dossierValues.layer2.world },
+        { ...card.lines[3], value: dossierValues.layer2.covers },
+      ] };
+    }
+    if (index === 2) {
+      return { ...card, lines: card.lines.map((line, i) => i === 1 ? { ...line, value: dossierValues.layer3.act2 } : line) };
+    }
+    if (index === 3) {
+      return { ...card, lines: [
+        { ...card.lines[0], value: dossierValues.layer4.screen },
+        { ...card.lines[1], value: dossierValues.layer4.lights },
+        { ...card.lines[2], value: dossierValues.layer4.band },
+        { ...card.lines[3], value: dossierValues.layer4.audience },
+      ] };
+    }
+    if (index === 4) {
+      return {
+        ...card,
+        lines: card.lines.map((line, lineIndex) => ({
+          ...line,
+          label: realCollaborators[lineIndex] ?? line.label,
+        })),
+      };
+    }
+    if (index === 5) {
+      return { ...card, lines: [
+        { ...card.lines[0], value: dossierValues.layer6.single1 },
+        { ...card.lines[1], value: dossierValues.layer6.single2 },
+        { ...card.lines[2], value: dossierValues.layer6.art },
+        card.lines[3],
+      ] };
+    }
+    return card;
   });
 
   const quickReadItems = [
@@ -338,7 +382,7 @@ export default function ArtistIdentity({ data }: ArtistIdentityProps) {
               </span>
               <p className="text-xs text-gray-400 font-sans leading-relaxed">
                 <strong className="text-white">{t.artistIdentity.outfitAndLights}</strong>{' '}
-                {t.artistIdentity.outfitAndLightsDesc}
+                {dossierValues.layer2.wardrobe}
               </p>
               <p className="text-xs text-gray-400 font-sans leading-relaxed">
                 <strong className="text-white">{t.artistIdentity.concertConcept}</strong>{' '}

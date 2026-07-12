@@ -21,6 +21,14 @@ import { hashSeed } from './seededRandom';
  * fixed but which one applies to you is not.
  */
 
+/**
+ * The real artist alias for the bundled demo archive (Kevin/Lirioth's own
+ * curated dataset) - a genuine fact about that one specific archive, not a
+ * fabricated default. Every other archive (any visitor's own upload) gets
+ * a freshly generated alias via buildArtistProfile's ArtistProfileOptions.
+ */
+export const DEMO_ARCHIVE_ALIAS = 'Lirioth Teltanion';
+
 const GENRE_WEIGHTS: Record<string, Partial<Record<keyof PersonalityMatrix, number>>> = {
   'Post-Metal / Blackgaze': { sensibilidad_emocional: 1, oscuridad_estetica: 0.5 },
   'Ambient / Lo-Fi': { sensibilidad_emocional: 0.7, futurismo: 0.2 },
@@ -339,7 +347,46 @@ export function buildSonicGenes(topArtists: TopArtist[], lang: 'es' | 'en' = 'es
     }));
 }
 
-export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[], lang: 'es' | 'en' = 'es'): ArtistProfile {
+export interface ArtistProfileOptions {
+  /**
+   * Pins the alias to a fixed value instead of the seeded generator - used
+   * only for the bundled demo archive (the app's own real, curated dataset),
+   * where the alias is a genuine fact about that specific archive rather
+   * than a fabricated stand-in. Any visitor-uploaded archive always gets
+   * the generated alias, never this one.
+   */
+  fixedAlias?: string;
+}
+
+type AestheticKey = 'cyberpunk' | 'gothic' | 'warm';
+type TempoKey = 'fast' | 'mid' | 'slow';
+
+interface DossierAestheticFacets {
+  synths: string;
+  palette: string;
+  wardrobe: string;
+  world: string;
+  screen: string;
+  lights: string;
+  band: string;
+  audience: string;
+}
+
+interface IdentitySignals {
+  primaryGenre?: string;
+  secondaryGenre?: string;
+  sound1?: string;
+  sound2?: string;
+  scores: Record<keyof PersonalityMatrix, { pct: number; topArtist?: TopArtist }>;
+  dominantTrait: keyof PersonalityMatrix;
+  aestheticKey: AestheticKey;
+  tempoKey: TempoKey;
+  influences: string[];
+  seed: number;
+}
+
+/** Shared by buildArtistProfile and buildDossierLineValues so genre-ranking and trait-scoring logic never drifts between the two. */
+function computeIdentitySignals(topArtists: TopArtist[], lang: 'es' | 'en'): IdentitySignals {
   const genrePlays: Record<string, number> = {};
   topArtists.forEach(a => {
     const g = normalizeGenre(a.genre);
@@ -359,26 +406,135 @@ export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[
 
   const sound1 = primaryGenre ? SOUND_TEMPLATES[primaryGenre]?.[lang] : undefined;
   const sound2 = secondaryGenre ? SOUND_TEMPLATES[secondaryGenre]?.[lang] : undefined;
+
+  const aestheticKey: AestheticKey = scores.futurismo.pct > 0.4
+    ? 'cyberpunk'
+    : scores.oscuridad_estetica.pct > 0.4
+      ? 'gothic'
+      : 'warm';
+
+  const tempoKey: TempoKey = scores.energia.pct > 0.55 ? 'fast' : scores.energia.pct > 0.3 ? 'mid' : 'slow';
+
+  return { primaryGenre, secondaryGenre, sound1, sound2, scores, dominantTrait, aestheticKey, tempoKey, influences, seed };
+}
+
+const TEMPO_BPM: Record<TempoKey, string> = { fast: '140-160 BPM', mid: '110-130 BPM', slow: '80-100 BPM' };
+
+const AESTHETIC_LABEL: Record<AestheticKey, { es: string; en: string }> = {
+  cyberpunk: { es: 'Cyberpunk / Glassmorphic', en: 'Cyberpunk / Glassmorphic' },
+  gothic: { es: 'Gótico Atmosférico', en: 'Atmospheric Gothic' },
+  warm: { es: 'Cálido Analógico', en: 'Warm Analog' },
+};
+
+const AESTHETIC_LIVE_SHOW: Record<AestheticKey, { es: string; en: string }> = {
+  cyberpunk: { es: 'Hologramas reactivos', en: 'Reactive holograms' },
+  gothic: { es: 'Niebla y luz estroboscópica', en: 'Fog and strobing light' },
+  warm: { es: 'Luces cálidas y cuerdas en vivo', en: 'Warm stage lighting and live strings' },
+};
+
+/** Per-aesthetic-bucket facets reused across the Sound Architecture, Visual Identity and Live Show dossier layers. */
+const AESTHETIC_STYLE: Record<AestheticKey, { es: DossierAestheticFacets; en: DossierAestheticFacets }> = {
+  cyberpunk: {
+    es: {
+      synths: 'Pads oscuros, arpegios cyberpunk y bajos nocturnos',
+      palette: 'Cian, rosa neón, negro profundo y blanco frío',
+      wardrobe: 'Ropa técnica negra, detalles reflectantes y accesorios cromados',
+      world: 'carreteras nocturnas, ruinas digitales y pantallas holográficas con lluvia de datos',
+      screen: 'Visuales 3D reactivos con montañas geométricas y lluvia digital',
+      lights: 'Gradientes cian/rosa sincronizados a golpes de batería',
+      band: 'Sintetizadores como centro atmosférico junto a batería real',
+      audience: 'Momentos de movimiento colectivo bajo luces de neón',
+    },
+    en: {
+      synths: 'Dark pads, cyberpunk arpeggios and nocturnal basses',
+      palette: 'Cyan, neon pink, deep black and cold white',
+      wardrobe: 'Technical black clothing, reflective details and chrome accessories',
+      world: 'nocturnal highways, digital ruins and holographic screens under data rain',
+      screen: 'Reactive 3D visuals with geometric mountains and digital rain',
+      lights: 'Cyan/pink gradients synchronized to the drum hits',
+      band: 'Synthesizers as the atmospheric center alongside live drums',
+      audience: 'Collective movement under neon light',
+    },
+  },
+  gothic: {
+    es: {
+      synths: 'Texturas atmosféricas oscuras y drones de fondo',
+      palette: 'Negro profundo, rojo óxido y grises de piedra',
+      wardrobe: 'Capas largas, texturas desgastadas y siluetas ceremoniales',
+      world: 'catedrales en ruinas, niebla baja y vitrales rotos',
+      screen: 'Proyecciones de humo, vitrales fracturados y contraluces',
+      lights: 'Niebla espesa y luz estroboscópica puntual',
+      band: 'Percusión ritual al frente y guitarras como coro de fondo',
+      audience: 'Silencio tenso que estalla en momentos puntuales',
+    },
+    en: {
+      synths: 'Dark atmospheric textures and background drones',
+      palette: 'Deep black, oxide red and stone greys',
+      wardrobe: 'Long layers, worn textures and ceremonial silhouettes',
+      world: 'ruined cathedrals, low fog and shattered stained glass',
+      screen: 'Smoke projections, fractured stained glass and backlighting',
+      lights: 'Thick fog and pointed strobing light',
+      band: 'Ritual percussion upfront with guitars as a background choir',
+      audience: 'Tense silence that breaks in sharp bursts',
+    },
+  },
+  warm: {
+    es: {
+      synths: 'Capas cálidas, casi ausentes, dejando espacio a la banda',
+      palette: 'Ocre, marrón cálido y blanco hueso',
+      wardrobe: 'Telas naturales, capas sencillas y accesorios artesanales',
+      world: 'habitaciones iluminadas por lámparas, madera y luz de tarde',
+      screen: 'Proyecciones mínimas, casi documentales, sin exceso digital',
+      lights: 'Luces cálidas de escenario y velas reales',
+      band: 'Cuerdas en vivo y batería acústica sin procesar',
+      audience: 'Cercanía física, coros compartidos y calma',
+    },
+    en: {
+      synths: 'Warm layers, almost absent, leaving room for the band',
+      palette: 'Ochre, warm brown and bone white',
+      wardrobe: 'Natural fabrics, simple layers and handmade accessories',
+      world: 'lamp-lit rooms, wood and afternoon light',
+      screen: 'Minimal, almost documentary projections, no digital excess',
+      lights: 'Warm stage lighting and real candles',
+      band: 'Live strings and unprocessed acoustic drums',
+      audience: 'Physical closeness, shared singalongs and calm',
+    },
+  },
+};
+
+const VOICE_STYLE: Record<keyof PersonalityMatrix, { es: string; en: string }> = {
+  sensibilidad_emocional: { es: 'Voz limpia y frontal, cerca del micrófono para que la emoción tenga rostro humano.', en: 'Clean, forward vocals close to the mic so the emotion has a human face.' },
+  nostalgia: { es: 'Voz cálida con eco suave, como si llegara desde otra década.', en: 'Warm vocals with a soft echo, as if arriving from another decade.' },
+  energia: { es: 'Voz proyectada con fuerza, casi gritada en los estribillos.', en: 'Vocals pushed hard, almost shouted through the choruses.' },
+  oscuridad_estetica: { es: 'Voz grave y contenida, con susurros que se rompen en momentos puntuales.', en: 'Low, restrained vocals that break into whispers at key moments.' },
+  creatividad: { es: 'Voz cambiante, que salta de registro limpio a experimental sin aviso.', en: 'A shifting voice that jumps from a clean register to experimental without warning.' },
+  rebeldia: { es: 'Voz que alterna entre limpia y gritada, catártica en los puentes.', en: 'Vocals that shift between clean and screamed, cathartic through the bridges.' },
+  futurismo: { es: 'Voz procesada con capas digitales, casi vocoder en los coros.', en: 'Vocals processed with digital layers, almost vocoder-like in the choruses.' },
+};
+
+const TEMPO_STYLE: Record<TempoKey, { es: string; en: string }> = {
+  fast: { es: 'Pulso rápido y directo, con fills que empujan cada estribillo hacia adelante.', en: 'A fast, direct pulse, with fills that push every chorus forward.' },
+  mid: { es: 'Pulso medio con groove marcado, ni frenético ni relajado.', en: 'A mid-tempo groove, neither frantic nor relaxed.' },
+  slow: { es: 'Pulso relajado y espacioso, dejando que cada golpe respire.', en: 'A relaxed, spacious pulse that lets every hit breathe.' },
+};
+
+function joinTwo(a: string | undefined, b: string | undefined, lang: 'es' | 'en'): string {
+  if (a && b) return lang === 'en' ? `${a} and ${b}` : `${a} y ${b}`;
+  return a ?? b ?? '';
+}
+
+export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[], lang: 'es' | 'en' = 'es', options?: ArtistProfileOptions): ArtistProfile {
+  const { sound1, sound2, dominantTrait, aestheticKey, tempoKey, influences, seed } = computeIdentitySignals(topArtists, lang);
+
   const sound = sound1 && sound2
     ? (lang === 'en' ? `A fusion of ${sound1} and ${sound2}` : `Fusión de ${sound1} y ${sound2}`)
     : sound1
       ? sound1
       : (lang === 'en' ? 'An eclectic personal blend' : 'Una mezcla personal ecléctica');
 
-  const highEnergy = scores.energia.pct;
-  const tempo = highEnergy > 0.55 ? '140-160 BPM' : highEnergy > 0.3 ? '110-130 BPM' : '80-100 BPM';
-
-  const aesthetic = scores.futurismo.pct > 0.4
-    ? 'Cyberpunk / Glassmorphic'
-    : scores.oscuridad_estetica.pct > 0.4
-      ? (lang === 'en' ? 'Atmospheric Gothic' : 'Gótico Atmosférico')
-      : (lang === 'en' ? 'Warm Analog' : 'Cálido Analógico');
-
-  const liveShow = scores.futurismo.pct > 0.4
-    ? (lang === 'en' ? 'Reactive holograms' : 'Hologramas reactivos')
-    : scores.oscuridad_estetica.pct > 0.4
-      ? (lang === 'en' ? 'Fog and strobing light' : 'Niebla y luz estroboscópica')
-      : (lang === 'en' ? 'Warm stage lighting and live strings' : 'Luces cálidas y cuerdas en vivo');
+  const tempo = TEMPO_BPM[tempoKey];
+  const aesthetic = AESTHETIC_LABEL[aestheticKey][lang];
+  const liveShow = AESTHETIC_LIVE_SHOW[aestheticKey][lang];
 
   const idx = Math.abs(seed) % EP_TITLES.length;
   const title = EP_TITLES[idx];
@@ -400,13 +556,82 @@ export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[
     ];
 
   return {
-    alias: pickAlias(seed, dominantTrait),
+    alias: options?.fixedAlias ?? pickAlias(seed, dominantTrait),
     sound,
     tempo,
     influences,
     aesthetic,
     ep_concept: { title, description, tracklist },
     live_show: liveShow,
+  };
+}
+
+export interface DossierLineValues {
+  layer1: { guitars: string; drums: string; synths: string; voice: string };
+  layer2: { palette: string; wardrobe: string; world: string; covers: string };
+  layer3: { act2: string };
+  layer4: { screen: string; lights: string; band: string; audience: string };
+  layer6: { single1: string; single2: string; art: string };
+}
+
+/**
+ * Fills in the descriptive "value" text for the ArtistIdentity dossier's
+ * expandable layer cards, driven by the same real signals as
+ * buildArtistProfile (dominant genre/trait/aesthetic/tempo, real influences,
+ * real top track) instead of one fixed set of sentences naming specific real
+ * artists ("The Midnight and Carpenter Brut") for every visitor. Card
+ * eyebrow/title/summary and the line labels (Guitars/Drums/...) stay fixed
+ * in ArtistIdentity.tsx - they're structural section labels, not claims
+ * about the archive.
+ */
+export function buildDossierLineValues(topArtists: TopArtist[], topTracks: TopTrack[], lang: 'es' | 'en' = 'es'): DossierLineValues {
+  const { sound1, sound2, dominantTrait, aestheticKey, tempoKey, influences } = computeIdentitySignals(topArtists, lang);
+  const style = AESTHETIC_STYLE[aestheticKey][lang];
+  const topTrackTitle = topTracks[0]?.title;
+  const influencePair = joinTwo(influences[0], influences[1], lang);
+
+  const guitars = lang === 'en'
+    ? `Guitar textures shaped by ${sound1 ?? 'your dominant sound'}${influencePair ? `, colored by what ${influencePair} bring to your rotation` : ''}.`
+    : `Texturas de guitarra marcadas por ${sound1 ?? 'tu sonido dominante'}${influencePair ? `, coloreadas por lo que ${influencePair} traen a tu rotación` : ''}.`;
+
+  const synths = influences[0]
+    ? (lang === 'en' ? `${style.synths}, in the spirit of ${influences[0]}.` : `${style.synths}, en la línea de ${influences[0]}.`)
+    : `${style.synths}.`;
+
+  const covers = lang === 'en'
+    ? `The alias as silhouette or avatar, set against ${style.world}.`
+    : `El alias en primer plano como silueta o avatar, sobre ${style.world}.`;
+
+  const world = lang === 'en'
+    ? `The imagined setting: ${style.world}.`
+    : `El escenario imaginado: ${style.world}.`;
+
+  const act2 = lang === 'en'
+    ? `Sound collision: ${sound1 ?? 'your lead genre'}${sound2 ? ` and ${sound2}` : ''} fight until they become a personal language.`
+    : `Choque de sonidos: ${sound1 ?? 'tu género principal'}${sound2 ? ` y ${sound2}` : ''} pelean hasta convertirse en idioma propio.`;
+
+  const single1 = topTrackTitle
+    ? (lang === 'en'
+      ? `Choose "${topTrackTitle}" as the anchor single: the hook is already there, it just needs a visualizer that matches it.`
+      : `Elegir "${topTrackTitle}" como sencillo ancla: el gancho ya existe, solo falta un visualizer a su altura.`)
+    : (lang === 'en'
+      ? 'Choose an anchor song: the most direct one, with a strong hook and a visualizer that matches it.'
+      : 'Elegir una canción ancla: la más directa, con un gancho fuerte y un visualizer a su altura.');
+
+  const single2 = sound2
+    ? (lang === 'en' ? `Release a more atmospheric piece leaning into ${sound2}, to show depth and not only energy.` : `Publicar una pieza más atmosférica cerca de ${sound2}, para mostrar profundidad y no solo energía.`)
+    : (lang === 'en' ? 'Release a more atmospheric piece to show depth, not only energy.' : 'Publicar una pieza más atmosférica para mostrar profundidad, no solo energía.');
+
+  const art = lang === 'en'
+    ? `Define cover, photos and visualizers around the ${style.palette.toLowerCase()} palette so everything belongs to the same universe.`
+    : `Definir portada, fotos y visualizers alrededor de la paleta ${style.palette.toLowerCase()} para que todo pertenezca al mismo universo.`;
+
+  return {
+    layer1: { guitars, drums: TEMPO_STYLE[tempoKey][lang], synths, voice: VOICE_STYLE[dominantTrait][lang] },
+    layer2: { palette: `${style.palette}.`, wardrobe: `${style.wardrobe}.`, world, covers },
+    layer3: { act2 },
+    layer4: { screen: `${style.screen}.`, lights: `${style.lights}.`, band: `${style.band}.`, audience: `${style.audience}.` },
+    layer6: { single1, single2, art },
   };
 }
 

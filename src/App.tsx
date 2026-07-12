@@ -568,6 +568,14 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
         {/* Right controls */}
         <div className="flex items-center justify-end gap-1 md:flex-wrap md:gap-2">
+          {/* Demo-archive signature - only for the bundled Kevin/Lirioth
+              archive; never shown once a visitor loads their own data. */}
+          {!isPersonalArchive && (
+            <div className="hidden lg:flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs text-gray-400"
+              style={{ borderColor: `${tc.c1}25` }}>
+              <span style={{ color: tc.c1 }} className="font-bold">Kevin Cusnir (Lirioth)</span>
+            </div>
+          )}
           {/* Language toggle */}
           <div
             className="flex items-center overflow-hidden rounded-full border"
@@ -789,6 +797,9 @@ function AppInner({ boot }: { boot: AppBoot }) {
             <div className="hidden md:flex flex-col items-center pt-4 mt-2 border-t gap-1"
               style={{ borderTopColor: `${tc.c1}12` }}>
               <span className="font-mono text-[9px] text-gray-600">Nova Music Lab</span>
+              {!isPersonalArchive && (
+                <span className="font-mono text-[9px] font-bold" style={{ color: tc.c3 }}>✧ LIRIOTH TELTANION ✧</span>
+              )}
             </div>
           </aside>
 
@@ -822,12 +833,12 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     {activeTab === 'obsessions'  && <ObsessionDetector data={filteredData} />}
                     {activeTab === 'cultural'    && <CulturalMap data={filteredData} />}
                     {activeTab === 'inner'       && <InnerWorld data={filteredData} />}
-                    {activeTab === 'artist'      && <ArtistIdentity data={filteredData} />}
+                    {activeTab === 'artist'      && <ArtistIdentity data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'insights'    && <HiddenInsights data={filteredData} />}
                     {activeTab === 'timecapsule' && <TimeCapsule data={filteredData} />}
                     {activeTab === 'wrapped'     && <WrappedCard data={filteredData} />}
                     {activeTab === 'pulse'       && <RecentPulse data={filteredData} />}
-                    {activeTab === 'report'      && <FinalReport data={filteredData} />}
+                    {activeTab === 'report'      && <FinalReport data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'upload' && (
                       <div className="space-y-6 animate-fade-in">
                         <div className="flex items-center gap-3 mb-6">

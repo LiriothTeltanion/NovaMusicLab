@@ -115,7 +115,7 @@ export default function HeroSection({
 
   const dossierOwner = isPersonalArchive
     ? (lang === 'en' ? 'YOUR ARCHIVE' : 'TU ARCHIVO')
-    : (lang === 'en' ? 'DEMO ARCHIVE' : 'ARCHIVO DEMO');
+    : 'KEVIN CUSNIR';
 
   const dominantMood = useMemo(() => {
     const list = data?.top_artists || [];

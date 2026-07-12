@@ -91,7 +91,19 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('✨ 1 Year in Your Archive')).toBeInTheDocument();
     expect(screen.getByText('✧ Your Musical Universe ✧')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: /YOUR ARCHIVE/i })).toBeInTheDocument();
-    expect(screen.queryByText(/DEMO ARCHIVE/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/KEVIN CUSNIR/i)).not.toBeInTheDocument();
+  });
+
+  it('names the real archive owner for the bundled demo archive only', () => {
+    localStorage.setItem('nml_lang', 'en');
+
+    render(
+      <AppProvider>
+        <HeroSection data={data} onEnter={vi.fn()} onUpload={vi.fn()} isPersonalArchive={false} />
+      </AppProvider>
+    );
+
+    expect(screen.getByRole('heading', { level: 3, name: /KEVIN CUSNIR/i })).toBeInTheDocument();
   });
 
   it('renders every raw source on a normalized telemetry bar', () => {

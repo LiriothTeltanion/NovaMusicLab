@@ -5,11 +5,15 @@ import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYearPeak } from '../utils/analytics';
-import { buildArtistProfile } from '../utils/identityEngine';
+import { buildArchetypes, buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MuseumPoster from './MuseumPoster';
 import SectionNarrative from './SectionNarrative';
 
-interface FinalReportProps { data: MusicDnaData; }
+interface FinalReportProps {
+  data: MusicDnaData;
+  /** True for a visitor's own uploaded archive; false for the bundled demo archive. */
+  isPersonalArchive?: boolean;
+}
 
 const sectionVariants = { animate: { transition: { staggerChildren: 0.15 } } };
 const paraVariants = {
@@ -47,7 +51,7 @@ function InlineStat({ label, value, color = '#00f2fe' }: { label: string; value:
   );
 }
 
-export default function FinalReport({ data }: FinalReportProps) {
+export default function FinalReport({ data, isPersonalArchive = false }: FinalReportProps) {
   const { t, lang } = useApp();
   const locale = lang === 'en' ? 'en-US' : 'es-ES';
   const tr = t.finalReport;
@@ -55,8 +59,25 @@ export default function FinalReport({ data }: FinalReportProps) {
   const topArtist = data.top_artists[0]?.name ?? (lang === 'en' ? 'Unknown Artist' : 'Artista Desconocido');
   const topTrack  = data.top_tracks[0]?.title  ?? (lang === 'en' ? 'Unknown Track' : 'Canción Desconocida');
   // Derived live from the real top_artists/top_tracks, per current language -
-  // the alias and sound description always match the archive on screen.
-  const profile = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang), [data.top_artists, data.top_tracks, lang]);
+  // the alias and sound description always match the archive on screen. Only
+  // the bundled demo archive pins a fixed alias.
+  const profile = useMemo(
+    () => buildArtistProfile(data.top_artists, data.top_tracks, lang, isPersonalArchive ? undefined : { fixedAlias: DEMO_ARCHIVE_ALIAS }),
+    [data.top_artists, data.top_tracks, lang, isPersonalArchive]
+  );
+  // The essay's "origin era" (Section II) and "archetype" (Section III) used
+  // to cite one fixed artist/year/label for every archive - now both are
+  // read straight from this archive's own real yearly_eras/top_artists.
+  const earliestEra = useMemo(
+    () => [...data.yearly_eras].sort((a, b) => a.year - b.year)[0],
+    [data.yearly_eras]
+  );
+  const originYear = earliestEra?.year ?? (lang === 'en' ? 'the start' : 'el inicio');
+  const originArtist = earliestEra?.top_artist ?? topArtist;
+  const heroArchetype = useMemo(
+    () => buildArchetypes(data.top_artists, lang)[0]?.name ?? tr.s3Archetype,
+    [data.top_artists, lang, tr.s3Archetype]
+  );
   const nr = getNightRatio(data);
   const records = getRecords(data);
   const peakPair = getTwoYearPeak(data.yearly_eras);
@@ -139,7 +160,7 @@ export default function FinalReport({ data }: FinalReportProps) {
           <p className="text-sm md:text-base">
             {tr.s1Pre}
             <InlineStat label={tr.s1ScrobblesLabel} value={m.total_plays.toLocaleString(locale)} color="#00f2fe" />
-            {tr.s1Mid}{' '}
+            {tr.s1Mid(originYear)}{' '}
             <InlineStat label={tr.s1HoursLabel} value={Math.round(m.listening_hours).toLocaleString(locale)} color="#f72585" />
             {tr.s1Post}
           </p>
@@ -151,11 +172,11 @@ export default function FinalReport({ data }: FinalReportProps) {
         <motion.section variants={paraVariants} className="space-y-4">
           <SectionHeading roman={tr.s2Roman} title={tr.s2Title} color="#f72585" />
           <p className="text-sm md:text-base">
-            {tr.s2Pre} <strong className="text-white">{tr.s2ArtistName}</strong> {tr.s2ArtistIntro}{' '}
+            {tr.s2Pre(originYear)} <strong className="text-white">{originArtist}</strong> {tr.s2ArtistIntro}{' '}
             <InlineStat label={tr.s2StreakLabel} value={records.longest_streak_days || 'N/D'} color="#fb923c" /> {tr.s2Mid(peakPair.label)}
             <InlineStat label={tr.s2CombinedLabel} value={peakPair.plays.toLocaleString(locale)} color="#f72585" />.
           </p>
-          <PullQuote text={tr.s2Quote} color="#f72585" />
+          <PullQuote text={tr.s2Quote(topTrack)} color="#f72585" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-cyberPink/20 to-transparent" />
@@ -165,7 +186,7 @@ export default function FinalReport({ data }: FinalReportProps) {
           <p className="text-sm md:text-base">
             {tr.s3Pre} <InlineStat label={tr.s3ArtistsLabel} value={m.unique_artists.toLocaleString(locale)} color="#7209b7" />
             {tr.s3Mid} <InlineStat label={tr.s3TracksLabel} value={m.unique_tracks.toLocaleString(locale)} color="#a78bfa" />
-            {tr.s3ArchetypeIntro} <strong className="text-white">{tr.s3Archetype}</strong>. {tr.s3NightIntro} <strong className="text-white">{tr.s3NightLabel(nr)}</strong>{' '}
+            {tr.s3ArchetypeIntro} <strong className="text-white">{heroArchetype}</strong>. {tr.s3NightIntro} <strong className="text-white">{tr.s3NightLabel(nr)}</strong>{' '}
             {tr.s3Post}
           </p>
           <PullQuote text={tr.s3Quote} color="#7209b7" />
@@ -209,7 +230,7 @@ export default function FinalReport({ data }: FinalReportProps) {
         <div className="h-px bg-gradient-to-r from-transparent via-cyberCyan/20 to-transparent" />
 
         <motion.div variants={paraVariants}>
-          <MuseumPoster data={data} />
+          <MuseumPoster data={data} isPersonalArchive={isPersonalArchive} />
         </motion.div>
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">

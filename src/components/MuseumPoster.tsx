@@ -4,12 +4,14 @@ import { Download, Loader2, Shuffle, Image as ImageIcon, AlertCircle } from 'luc
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
-import { buildArtistProfile } from '../utils/identityEngine';
+import { buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MoodArtCanvas from './MoodArtCanvas';
 import { MOOD_ICONS } from './MoodBadge';
 
 interface MuseumPosterProps {
   data: MusicDnaData;
+  /** True for a visitor's own uploaded archive; false for the bundled demo archive. */
+  isPersonalArchive?: boolean;
 }
 
 /**
@@ -17,7 +19,7 @@ interface MuseumPosterProps {
  * archive numbers and the permanent collection on top. Everything drawn is
  * same-origin (generated canvas + text), so the PNG export never taints.
  */
-export default function MuseumPoster({ data }: MuseumPosterProps) {
+export default function MuseumPoster({ data, isPersonalArchive = false }: MuseumPosterProps) {
   const { tc, t, lang } = useApp();
   const copy = t.museumPoster;
   const posterRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,10 @@ export default function MuseumPoster({ data }: MuseumPosterProps) {
   const yearSpan = years.length ? `${Math.min(...years)}–${Math.max(...years)}` : '—';
   const fmt = (n: number) => n.toLocaleString(locale);
   const seed = `${data.top_artists.slice(0, 5).map(a => a.name).join('|')}::poster::v${variation}`;
-  const alias = useMemo(() => buildArtistProfile(data.top_artists, data.top_tracks, lang).alias, [data.top_artists, data.top_tracks, lang]);
+  const alias = useMemo(
+    () => buildArtistProfile(data.top_artists, data.top_tracks, lang, isPersonalArchive ? undefined : { fixedAlias: DEMO_ARCHIVE_ALIAS }).alias,
+    [data.top_artists, data.top_tracks, lang, isPersonalArchive]
+  );
   const DominantIcon = MOOD_ICONS[dominant.icon];
 
   const stats = [
