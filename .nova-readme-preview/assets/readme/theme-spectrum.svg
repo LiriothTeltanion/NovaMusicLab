@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="360" viewBox="0 0 1300 360" role="img" aria-labelledby="title desc">
+<title id="title">Nova Music Lab theme spectrum</title>
+<desc id="desc">Fourteen animated theme panels and multilingual signals.</desc>
+<defs><linearGradient id="spectrum" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22d3ee"/><stop offset="35%" stop-color="#6366f1"/><stop offset="68%" stop-color="#d946ef"/><stop offset="100%" stop-color="#fb7185"><animate attributeName="offset" values=".82;1;.82" dur="5s" repeatCount="indefinite"/></stop></linearGradient></defs>
+<rect width="1300" height="360" rx="28" fill="#081120"/>
+<text x="650" y="52" text-anchor="middle" fill="#e0f2fe" font-family="Segoe UI,Arial" font-size="25" font-weight="850">14 MUSEUM THEMES • DARK + LIGHT • ENGLISH + ESPAÑOL + עברית</text>
+<g transform="translate(92 94)">
+<rect width="1116" height="154" rx="22" fill="#0f172a" stroke="#334155"/>
+<g>
+<rect x="24" y="24" width="58" height="106" rx="12" fill="#081120"/><rect x="98" y="24" width="58" height="106" rx="12" fill="#12233f"/>
+<rect x="172" y="24" width="58" height="106" rx="12" fill="#1e1b4b"/><rect x="246" y="24" width="58" height="106" rx="12" fill="#3b164a"/>
+<rect x="320" y="24" width="58" height="106" rx="12" fill="#471827"/><rect x="394" y="24" width="58" height="106" rx="12" fill="#16362f"/>
+<rect x="468" y="24" width="58" height="106" rx="12" fill="#2f2a16"/>
+<rect x="590" y="24" width="58" height="106" rx="12" fill="#f8fafc"/><rect x="664" y="24" width="58" height="106" rx="12" fill="#e0f2fe"/>
+<rect x="738" y="24" width="58" height="106" rx="12" fill="#ede9fe"/><rect x="812" y="24" width="58" height="106" rx="12" fill="#fae8ff"/>
+<rect x="886" y="24" width="58" height="106" rx="12" fill="#ffe4e6"/><rect x="960" y="24" width="58" height="106" rx="12" fill="#dcfce7"/>
+<rect x="1034" y="24" width="58" height="106" rx="12" fill="#fef9c3"/>
+</g>
+<rect x="18" y="18" width="1080" height="118" rx="15" fill="none" stroke="url(#spectrum)" stroke-width="4" stroke-dasharray="15 18"><animate attributeName="stroke-dashoffset" values="0;-240" dur="9s" repeatCount="indefinite"/></rect>
+</g>
+<text x="650" y="302" text-anchor="middle" fill="#67e8f9" font-family="Segoe UI,Arial" font-size="18" font-weight="700"><animate attributeName="opacity" values=".45;1;.45" dur="4s" repeatCount="indefinite"/>MOTION, COLOR, LANGUAGE, AND DATA ALL RESPOND TO THE VISITOR</text>
+</svg>
