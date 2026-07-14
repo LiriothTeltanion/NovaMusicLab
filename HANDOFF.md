@@ -25,7 +25,9 @@ constraints (from `.github/agents/nova-music-scan.agent.md`):
   With no key configured it runs a fully local template-based "sandbox mode" with
   zero network calls. Never widen this exception elsewhere without calling it out
   here first.
-- Bilingual **ES/EN** everywhere, cyberpunk/glassmorphism aesthetic, 14 themes.
+- Trilingual **ES/EN/HE** everywhere, including full Hebrew RTL behavior,
+  `he-IL` number/date formatting and Hebrew typography; cyberpunk/glassmorphism
+  aesthetic, 14 themes.
 - **Never fabricate data.** If a real number/attribution isn't available, show an
   honest gap (placeholder, "unresolved", lower confidence badge) instead of
   synthesizing a plausible-looking fake one. This bit the project once already:
@@ -40,11 +42,14 @@ canvas-confetti, html-to-image. Lint: oxlint. Tests: Vitest 4 + React Testing Li
 
 ```
 npm run dev              # Vite dev server (PORT env respected; .claude/launch.json exists)
+npm run verify           # canonical CI gate: lint + strict data/link audits + tests + budgeted build
 npm run lint              # oxlint — clean (dev scripts keep intentional no-console warnings)
-npm run test              # 146 tests, 23 files — all pass
-npm run build             # tsc -b && vite build — clean
+npm run test              # full Vitest suite
+npm run build:check       # tsc + Vite + entry/vendor/dataset bundle budgets
 npm run audit:data        # read-only coverage report across every data layer (see below)
 npm run audit:data:strict # same, but exits non-zero on real errors (duplicates, invalid rows, missing flags...)
+npm run audit:links       # offline strict URL/profile/Spotify/YouTube coverage contract
+npm run i18n:hebrew       # regenerate HE seeds, then HUMAN-REVIEW the Hebrew diff
 ```
 
 **Always run `npm run audit:data` before trusting any coverage number in a doc,
@@ -65,19 +70,45 @@ yet — blocked on installing/authing the `gh` CLI locally, not a code issue).
 ## Architecture conventions (FOLLOW THESE)
 
 ### i18n — the single most important convention
-ALL user-visible strings live in the `STRINGS` object in
-`src/context/AppContext.tsx`, split into `es:`/`en:` mirrors with per-component
-groups (`t.dashboard.*`, `t.wrapped.*`, `t.timeCapsule.*`, …). Strings needing
-interpolation are **function-valued keys**:
+Shared user-visible strings live in the `STRINGS` object in
+`src/context/AppContext.tsx`: canonical `es:`/`en:` mirrors plus the generated,
+human-reviewed `HE_STRINGS` catalog in `src/i18n/heStrings.ts`. Per-component
+copy may live beside a component only when all three `es`/`en`/`he` branches are
+typed with `Lang`. Groups remain component-scoped (`t.dashboard.*`,
+`t.wrapped.*`, `t.timeCapsule.*`, …). Strings needing interpolation are
+**function-valued keys**:
 `subtitle: (count: number) => \`${count} logros...\``.
-Never add inline `lang === 'en' ? 'x' : 'y'` ternaries for static chrome — that
-pattern was purged (261 occurrences removed). Exception: genuinely per-item
-generated bilingual data may live next to the data (`label_es`/`label_en` pairs,
-`EMOTION_DETAILS` es/en sub-objects).
+Never add inline binary `lang === 'en' ? 'x' : 'y'` ternaries — Hebrew would
+silently fall back to Spanish. Use `pickLanguage(lang, { es, en, he })`, a typed
+`Record<Lang, ...>`, or `t.*`. Genuinely per-item localized data may live next to
+the data only with all three branches (`es`/`en`/`he`). `scripts/hebrew_i18n.test.mjs`
+guards catalog shape, localized JSON completeness and regressions to binary
+language selectors.
 
-Locale formatting: numbers/dates always via
-`toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')` (or `formatNumber` /
-`getMonthNames` / `getWeekdayNames` in `src/utils/analytics.ts`, which use Intl).
+Locale formatting: numbers/dates always use `localeFor(lang)` from
+`src/utils/i18n.ts` (`es-ES`, `en-US`, `he-IL`) or the Intl-backed analytics
+helpers. `AppContext` persists `nml_lang`, updates `<html lang dir data-language>`,
+and synchronizes the document title/description. `index.html` mirrors the saved
+language before first paint so Hebrew never flashes in LTR.
+
+Hebrew is also a lazy language boundary: `src/i18n/loadHebrewExperience.ts`
+loads the reviewed UI catalog and `artist_enrichment_he.json` overlay together
+before mounting the Hebrew app. The small RTL loading gate prevents an ES/EN
+copy flash; ES/EN visits never download either Hebrew payload. Artist dossiers
+keep their ES/EN base in `artist_enrichment.json`, while
+`artistEnrichmentHebrew.ts` installs the Hebrew overlay idempotently and also
+handles the case where Top Histórico is opened after the language switch.
+`scripts/check_bundle_budget.mjs` guards these three lazy chunks and rejects any
+regression that leaks them into the landing closure or pulls artist dossiers
+into unrelated rooms.
+
+Hebrew generation is a maintenance helper, not a runtime dependency. The app
+stays offline: `scripts/generate_hebrew_ui.mjs` writes committed assets and uses
+a local cache. `--central-only` refreshes `heStrings.ts`; `--json-only` refreshes
+localized JSON without overwriting manually reviewed component copy. **Always
+review generated Hebrew manually**, preserve artist/track/album/brand names, and
+run `npm run verify` afterward. For mixed-direction UI, reuse the `.nova-bidi-*`,
+`.nova-number-ltr`, `.nova-data-ltr` and `.nova-mirror-rtl` helpers in `index.css`.
 
 ### Theming
 `THEMES` in AppContext: 14 themes (7 dark + 7 light), each
@@ -97,7 +128,7 @@ Arbitrary hex text colors (`text-[#...]`) will NOT be remapped — use
   (`ease: 'easeOut' as const` — plain strings fail TS with framer-motion v12).
 - Every section renders inside a shared `ErrorBoundary` keyed by tab in `App.tsx`.
 - Tabs/nav: `App.tsx` `Tab` union + `menuItems` + lazy imports + render slot +
-  `t.nav.*` keys (both languages). ~23 nav items now, grouped into 6 collapsible
+  `t.nav.*` keys (all three languages). ~23 nav items now, grouped into 6 collapsible
   sidebar groups (`NavGroupId`: overview/archive/identity/listening/data/export).
 - **Every routed section component must be `React.lazy()`-imported.** One
   component (`InteractiveBackdrop.tsx`, a persistent decorative canvas rendered
@@ -153,7 +184,7 @@ Arbitrary hex text colors (`text-[#...]`) will NOT be remapped — use
 | `offline_artist_knowledge.json` | 100/100 artists have a row; 77/100 have a Wikidata profile (confirmed ceiling); 67/100 have band-member data | MusicBrainz + Wikidata, cached under `scripts/.cache/offline_artist_knowledge` |
 | `member_enrichment.json` + `member_images.json` | ~48 / ~25 individual band members (top 30 artists only) | Wikidata + Wikipedia PageImages, per-member photo/age/socials. See "known gotchas" below for two real bugs found and fixed here. |
 | `recent_pulse.json` | snapshot 2026-07-02 | user's REAL current Spotify top artists/tracks via connector; powers the Current Pulse section |
-| `artist_enrichment.json` | 100/100 top artists | curated bilingual bios grounded in each artist's real MusicBrainz/archive data (release groups, formation info) — not generic filler. Artists with a weak public footprint got short, evidence-based reads instead of inflated biographies. |
+| `artist_enrichment.json` | 100/100 top artists | curated trilingual bios grounded in each artist's real MusicBrainz/archive data (release groups, formation info) — not generic filler. Artists with a weak public footprint got short, evidence-based reads instead of inflated biographies. |
 | `artist_media_links.json` | 100/100 have a profile; 90/100 Spotify-verified; 100/100 YouTube-verified and embeddable | Spotify/YouTube/Wikipedia, `mediaConfidence: verified\|partial\|search`. YouTube embeds are individually oEmbed-verified (author_name/title checked against the artist) before being accepted. |
 
 ### Reproducible extraction scripts (`scripts/`)
@@ -211,6 +242,39 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
 
 ## Full change log (recent waves, newest first)
 
+- **2026-07-13 Wave 5 — complete Hebrew third language + RTL architecture**:
+  added עברית beside ES/EN across the shell, every museum room,
+  charts, controls, accessible names, metadata and 105 artist dossiers. Mixed
+  Hebrew/Latin music names use explicit bidi isolation; chronological charts
+  retain LTR geometry while page composition, navigation and directional icons
+  mirror correctly. `Noto Sans Hebrew`, `he-IL` formatting and pre-paint
+  `lang="he" dir="rtl"` remove typography/layout flashes. The generated seed was
+  manually reviewed (with an especially deep top-30 dossier pass), and the
+  generator now supports central-only/data-only maintenance. The complete HE UI
+  and artist overlay are lazy chunks (28.8 / 45.4KB gzip): entry returned to
+  227KB raw and the landing shell to 258KB gzip without raising budgets. A
+  data-free catalog-name normalizer also removed accidental enrichment imports,
+  cutting `offlineArtistKnowledge` 763→333KB raw and restoring large room
+  margins. Dedicated RTL/i18n tests plus async language-gate tests protect the
+  experience.
+- **2026-07-13 Wave 4 — evidence-first graphs + visual identity + shareable rooms**:
+  generated sonic-cartography artwork now sits above the reactive canvas but
+  behind all content; app/favicons gained grooves, waveform, orbit halo and
+  deterministic constellation dust with size/byte regression tests. Every
+  Recharts surface has keyboard accessibility and reduced-motion behavior;
+  `ChartFrame` adds denominator/context, exact/estimated/YTD badges, an
+  accessible takeaway, exact-value table and CSV export (formula-safe for user
+  uploads). The fake Spotify/Last.fm annual scaling and hardcoded radar were
+  replaced by a reconciling raw→short→dedup→final waterfall; platform shares use
+  the full denominator after privacy-safe family normalization; yearly metrics
+  use independent scales; genre views now use archive-wide `top_genres` with an
+  explicit Other bucket. Daily/calendar views distinguish unobserved future
+  dates from zero, expose 2015-03-01→2026-07-03 YTD in Asia/Jerusalem, and the
+  quality room always derives current offline-knowledge coverage rather than a
+  stale embedded snapshot. Friendly hash routes, Back/Forward restoration,
+  Top-dossier query state and desktop/mobile Copy Link controls make every room
+  shareable on GitHub Pages. `npm run verify` is the canonical CI guard and now
+  includes the strict media-link audit.
 - **2026-07-10 reconciliation pass 2 + honest-data recompile**: Antigravity landed
   a second large uncommitted wave (InteractiveGlobe wired into CulturalMap with a
   real world-border dataset + per-country dossier, generative cyber-avatars/flags,
@@ -311,9 +375,10 @@ headers) and convert to a base64 data URL before capture, so it doesn't need the
    should be sanity-checked against it.
 6. **Single-photo galleries**: Enforcer, Girafot (source-availability limits so
    far, not script gaps).
-7. **`AppContext-*.js` chunk is ~170KB minified** (STRINGS for both languages
-   ship eagerly) — splitting per-language would cut the critical path, but it's
-   an architectural change; don't do it casually.
+7. **Top Histórico has only ~4KB gzip of room-budget headroom** because opening
+   the room loads the complete ES/EN artist-dossier base. The next bundle pass
+   should lazy-load that base when the first dossier opens; do not raise the
+   360KB guard just to make copy growth fit.
 8. **Era narratives in `EraExplorer.tsx` embed specific stat numbers as prose**
    (13,011 plays for 2021, etc., updated 2026-07-10 to match the deduped
    dataset). If the bundled dataset is ever recompiled again, re-check those

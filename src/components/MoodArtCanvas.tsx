@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { EMOTIONAL_MOOD_TAXONOMY, type EmotionalMoodKey } from '../engines/emotionalEngine';
+import { useApp } from '../context/AppContext';
+import { EMOTIONAL_MOOD_TAXONOMY, type EmotionalMoodKey } from '../engines/moodCore';
+import { pickLanguage } from '../utils/i18n';
 import { randomFromString } from '../utils/seededRandom';
 
 /**
@@ -333,7 +335,15 @@ export function paintMoodArt(
 }
 
 export default function MoodArtCanvas({ moodKey, seed, width, height, className = '' }: MoodArtCanvasProps) {
+  const { lang } = useApp();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mood = EMOTIONAL_MOOD_TAXONOMY[moodKey];
+  const moodTitle = pickLanguage(lang, mood.title);
+  const ariaLabel = pickLanguage(lang, {
+    es: `Arte generativo: ${moodTitle}`,
+    en: `Generative art: ${moodTitle}`,
+    he: `אמנות גנרטיבית: ${moodTitle}`,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -353,7 +363,7 @@ export default function MoodArtCanvas({ moodKey, seed, width, height, className 
       className={className}
       style={{ width: '100%', height: '100%', display: 'block' }}
       role="img"
-      aria-label={`${moodKey} generative art`}
+      aria-label={ariaLabel}
     />
   );
 }

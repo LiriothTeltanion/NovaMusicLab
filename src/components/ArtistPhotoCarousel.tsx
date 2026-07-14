@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import { getArtistGallery, getDailyPhotoIndex } from '../utils/artistGallery';
+import { useContinuousMotion } from '../hooks/useContinuousMotion';
 
 interface ArtistPhotoCarouselProps {
   name: string;
@@ -18,6 +19,7 @@ interface ArtistPhotoCarouselProps {
  */
 export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000 }: ArtistPhotoCarouselProps) {
   const { tc } = useApp();
+  const continuousMotion = useContinuousMotion();
   const [failed, setFailed] = useState<Set<string>>(() => new Set());
   const photos = useMemo(
     () => getArtistGallery(name).filter(p => !failed.has(p.url)),
@@ -31,10 +33,10 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
   }, [name]);
 
   useEffect(() => {
-    if (photos.length < 2 || !intervalMs) return;
+    if (!continuousMotion || photos.length < 2 || !intervalMs) return;
     const id = window.setInterval(() => setIndex(i => (i + 1) % photos.length), intervalMs);
     return () => window.clearInterval(id);
-  }, [photos.length, intervalMs]);
+  }, [continuousMotion, photos.length, intervalMs]);
 
   if (photos.length < 2) {
     return <ArtistAvatar name={name} size={size} />;

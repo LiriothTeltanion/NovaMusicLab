@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Hourglass, Waves, BookOpen } from 'lucide-react';
 import { MusicDnaData, TopArtist } from '../types';
 import { useApp } from '../context/AppContext';
@@ -9,6 +9,7 @@ import {
 } from '../engines/emotionalEngine';
 import ArtistAvatar from './ArtistAvatar';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
+import { directionFor, localeFor } from '../utils/i18n';
 
 interface EmotionalTimelineProps {
   data: MusicDnaData;
@@ -21,6 +22,7 @@ interface EmotionalTimelineProps {
  * river, not a fake per-play distribution.
  */
 export default function EmotionalTimeline({ data }: EmotionalTimelineProps) {
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const { tc, t, lang } = useApp();
   const copy = t.emotionalTimeline;
 
@@ -60,12 +62,13 @@ export default function EmotionalTimeline({ data }: EmotionalTimelineProps) {
 
   if (!yearMoods.length) return null;
 
-  const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const formatNum = (value: number) => value.toLocaleString(localeFor(lang));
   const firstYear = yearMoods[0].era.year;
   const lastYear = yearMoods[yearMoods.length - 1].era.year;
+  const selected = yearMoods.find(item => item.era.year === selectedYear) ?? yearMoods[yearMoods.length - 1];
 
   return (
-    <section className="glass-panel p-5 md:p-6 rounded-3xl border border-white/10 space-y-6">
+    <section data-testid="emotional-timeline" className="glass-panel min-w-0 overflow-hidden rounded-3xl border border-white/10 p-5 md:p-6 space-y-6" dir={directionFor(lang)}>
       <div>
         <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c2 }}>
           {copy.eyebrow}
@@ -91,39 +94,68 @@ export default function EmotionalTimeline({ data }: EmotionalTimelineProps) {
           className="h-14 rounded-2xl border border-white/10"
           style={{ background: riverGradient, boxShadow: `0 0 32px ${summary.dominant.mood.color}30 inset, 0 0 24px ${summary.dominant.mood.color}18` }}
         />
-        <div className="mt-1.5 flex justify-between px-1">
-          {yearMoods.map(ym => (
-            <span key={ym.era.year} className="text-[9px] font-mono font-bold text-gray-500">
-              {ym.era.year}
-            </span>
-          ))}
+        <div className="mt-1.5 flex justify-between px-1 text-[9px] font-mono font-bold text-gray-500" dir="ltr">
+          <span>{firstYear}</span>
+          <span>{lastYear}</span>
         </div>
       </div>
 
-      {/* Year cards */}
-      <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-3 overflow-x-auto pb-2">
+      {/* Compact year nodes: the selected year owns the single detailed card. */}
+      <div
+        data-testid="emotional-timeline-track"
+        className="grid grid-cols-[repeat(auto-fit,minmax(4.5rem,1fr))] gap-2"
+        role="group"
+        aria-label={copy.title}
+        dir="ltr"
+      >
         {yearMoods.map(({ era, mood, profile }) => (
-          <article
+          <button
             key={era.year}
-            className="rounded-2xl border bg-white/[0.035] p-4 transition-transform hover:scale-[1.02]"
-            style={{ borderColor: `${mood.color}30`, boxShadow: `0 0 18px ${mood.color}12` }}
+            type="button"
+            data-year={era.year}
+            aria-pressed={selected.era.year === era.year}
+            aria-label={`${era.year} · ${era.top_artist} · ${mood.shortLabel[lang]}`}
+            onClick={() => setSelectedYear(era.year)}
+            className="nova-on-dark flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-xl border px-2 py-2 text-center transition-colors"
+            style={{
+              color: selected.era.year === era.year ? mood.color : '#94a3b8',
+              borderColor: `${mood.color}${selected.era.year === era.year ? '70' : '28'}`,
+              backgroundColor: selected.era.year === era.year ? `${mood.color}16` : 'rgba(255,255,255,0.025)',
+              boxShadow: selected.era.year === era.year ? `0 0 18px ${mood.color}20` : undefined,
+            }}
           >
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xl font-black font-mono" style={{ color: mood.color }}>{era.year}</span>
-              <MoodBadge moodKey={profile.moodKey} size="sm" />
-            </div>
-            <p className="mt-2 text-[11px] font-bold text-white leading-snug">{era.era_label}</p>
-            <div className="mt-3 flex items-center gap-2">
-              <ArtistAvatar name={era.top_artist} size={30} />
-              <div className="min-w-0">
-                <p className="text-[9px] font-mono uppercase tracking-widest text-gray-500">{copy.yearArtistLabel}</p>
-                <p className="truncate text-xs font-bold text-white">{era.top_artist}</p>
-              </div>
-            </div>
-            <p className="mt-2 text-[10px] font-mono text-gray-500">{copy.playsLabel(formatNum(era.plays))}</p>
-          </article>
+            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: mood.color }} aria-hidden="true" />
+            <span className="text-xs font-black font-mono">{era.year}</span>
+            <span className="sr-only">{profile.moodKey}</span>
+          </button>
         ))}
       </div>
+
+      <article
+        data-testid="emotional-timeline-detail"
+        data-selected-year={selected.era.year}
+        className="rounded-2xl border bg-black/20 p-4"
+        style={{ borderColor: `${selected.mood.color}35`, boxShadow: `0 0 24px ${selected.mood.color}10 inset` }}
+        aria-live="polite"
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-3">
+            <ArtistAvatar name={selected.era.top_artist} size={42} />
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xl font-black font-mono" style={{ color: selected.mood.color }}>{selected.era.year}</span>
+                <MoodBadge moodKey={selected.profile.moodKey} size="sm" />
+              </div>
+              <p className="mt-1 break-words text-sm font-black text-white"><bdi dir="auto">{selected.era.era_label}</bdi></p>
+            </div>
+          </div>
+          <div className="min-w-0 sm:text-end">
+            <p className="text-[9px] font-mono uppercase tracking-widest text-gray-500">{copy.yearArtistLabel}</p>
+            <p className="mt-1 break-words text-xs font-bold text-white"><bdi dir="auto">{selected.era.top_artist}</bdi></p>
+            <p className="mt-1 text-[10px] font-mono text-gray-500">{copy.playsLabel(formatNum(selected.era.plays))}</p>
+          </div>
+        </div>
+      </article>
 
       {/* Journey reading */}
       <div className="rounded-2xl border border-white/8 bg-black/20 p-4">

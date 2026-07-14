@@ -1578,5 +1578,47 @@
       "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Insomnium_John_Smith_2019_%283%29.jpg/960px-Insomnium_John_Smith_2019_%283%29.jpg",
       "source": "wikimedia"
     }
+  ],
+  "amr diab": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Amr_Abdul_Baset_Diab.jpg/330px-Amr_Abdul_Baset_Diab.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Amr_Diab_at_World_Music_Awards_2007.jpg/960px-Amr_Diab_at_World_Music_Awards_2007.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Amr_Diab_with_Guinness_Record_.jpg/960px-Amr_Diab_with_Guinness_Record_.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "sigur rós": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Sigur_R%C3%B3s_at_the_Orpheum_Theatre%2C_San_Francisco.jpg/330px-Sigur_R%C3%B3s_at_the_Orpheum_Theatre%2C_San_Francisco.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Sigur_R%C3%B3s_at_the_Wang_Theater_in_Boston_%2852132146447%29.jpg/960px-Sigur_R%C3%B3s_at_the_Wang_Theater_in_Boston_%2852132146447%29.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Sigur_R%C3%B3s%2C_J%C3%B3nsi_and_Goggi.jpg/960px-Sigur_R%C3%B3s%2C_J%C3%B3nsi_and_Goggi.jpg",
+      "source": "wikimedia"
+    }
+  ],
+  "aviv geffen": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/AvivGeffen.jpg/330px-AvivGeffen.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Aviv_Geffen_AG.jpg/960px-Aviv_Geffen_AG.jpg",
+      "source": "wikimedia"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/%D7%90%D7%91%D7%99%D7%91_%D7%92%D7%A4%D7%9F_-_%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%A0%D7%99%D7%A8_%D7%A8%D7%95%D7%99%D7%98%D7%9E%D7%9F_%281%29.jpg/960px-%D7%90%D7%91%D7%99%D7%91_%D7%92%D7%A4%D7%9F_-_%D7%A6%D7%99%D7%9C%D7%95%D7%9D_%D7%A0%D7%99%D7%A8_%D7%A8%D7%95%D7%99%D7%98%D7%9E%D7%9F_%281%29.jpg",
+      "source": "wikimedia"
+    }
   ]
 }

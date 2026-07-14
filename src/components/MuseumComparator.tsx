@@ -9,6 +9,7 @@ import { parseExport } from '../utils/datasetStorage';
 import { compareArtistOverlap, compareCoreMetrics, compareMoodProfiles, type CoreMetricKey } from '../utils/museumCompare';
 import ArtistAvatar from './ArtistAvatar';
 import MoodBadge from './MoodBadge';
+import { directionFor, localeFor } from '../utils/i18n';
 
 interface MuseumComparatorProps {
   data: MusicDnaData;
@@ -22,6 +23,7 @@ const METRIC_HERO_KEYS: Record<CoreMetricKey, 'scrobbles' | 'artists' | 'tracks'
   listening_hours: 'hours',
   active_days: 'days',
 };
+const bidiIsolate = (value: string) => `\u2068${value}\u2069`;
 
 function readFileAsText(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -35,7 +37,7 @@ function readFileAsText(file: File): Promise<string> {
 export default function MuseumComparator({ data, primaryLabel }: MuseumComparatorProps) {
   const { t, tc, lang } = useApp();
   const copy = t.museumCompare;
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
 
   const [secondary, setSecondary] = useState<MusicDnaData | null>(null);
@@ -130,11 +132,7 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
     t.dataQuality.sourceTypes[museum.source_summary?.source_type ?? 'unknown'];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3 mb-2">
-        <Users className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{copy.title}</h2>
-      </div>
+    <div className="space-y-8 animate-fade-in" dir={directionFor(lang)}>
       <p className="max-w-3xl text-sm leading-relaxed text-gray-400">{copy.intro}</p>
 
       {/* Museum header cards */}
@@ -143,18 +141,18 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
           <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c1 }}>
             {copy.primaryMuseumLabel}
           </p>
-          <h3 className="mt-1 truncate text-lg font-black text-white">{primaryLabel}</h3>
+          <h3 className="mt-1 truncate text-lg font-black text-white"><bdi dir="auto">{primaryLabel}</bdi></h3>
           <p className="mt-1 text-xs font-mono text-gray-500">{sourceTypeLabel(data)}</p>
           <div className="mt-4 flex items-center gap-3">
             <ArtistAvatar name={data.top_artists[0]?.name ?? '?'} size={40} tooltip={false} />
             <div className="min-w-0">
               <p className="text-[10px] font-mono uppercase tracking-wider text-gray-500">{copy.topArtistLabel}</p>
-              <p className="truncate text-sm font-bold text-white">{data.top_artists[0]?.name ?? '—'}</p>
+              <p className="truncate text-sm font-bold text-white"><bdi dir="auto">{data.top_artists[0]?.name ?? '—'}</bdi></p>
             </div>
           </div>
           <p className="mt-3 text-2xl font-black font-mono" style={{ color: tc.c1 }}>
             {fmtNum(data.core_metrics.total_plays)}
-            <span className="ml-2 text-xs font-normal text-gray-500">{copy.totalPlaysLabel}</span>
+            <span className="ms-2 text-xs font-normal text-gray-500">{copy.totalPlaysLabel}</span>
           </p>
         </article>
 
@@ -165,7 +163,7 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
                 <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c2 }}>
                   {copy.secondaryMuseumLabel}
                 </p>
-                <h3 className="mt-1 truncate text-lg font-black text-white">{secondaryLabel}</h3>
+                <h3 className="mt-1 truncate text-lg font-black text-white"><bdi dir="auto">{secondaryLabel}</bdi></h3>
                 <p className="mt-1 text-xs font-mono text-gray-500">{sourceTypeLabel(secondary)}</p>
               </div>
               <button
@@ -181,12 +179,12 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
               <ArtistAvatar name={secondary.top_artists[0]?.name ?? '?'} size={40} tooltip={false} />
               <div className="min-w-0">
                 <p className="text-[10px] font-mono uppercase tracking-wider text-gray-500">{copy.topArtistLabel}</p>
-                <p className="truncate text-sm font-bold text-white">{secondary.top_artists[0]?.name ?? '—'}</p>
+                <p className="truncate text-sm font-bold text-white"><bdi dir="auto">{secondary.top_artists[0]?.name ?? '—'}</bdi></p>
               </div>
             </div>
             <p className="mt-3 text-2xl font-black font-mono" style={{ color: tc.c2 }}>
               {fmtNum(secondary.core_metrics.total_plays)}
-              <span className="ml-2 text-xs font-normal text-gray-500">{copy.totalPlaysLabel}</span>
+              <span className="ms-2 text-xs font-normal text-gray-500">{copy.totalPlaysLabel}</span>
             </p>
           </article>
         ) : (
@@ -249,10 +247,10 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
             <p className="text-sm text-gray-300">{copy.overlapBody(overlap.overlapPct, overlap.sharedCount)}</p>
             <div className="flex flex-wrap gap-3 text-xs font-mono text-gray-400">
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
-                {copy.onlyInA(primaryLabel, overlap.onlyA.length)}
+                {copy.onlyInA(bidiIsolate(primaryLabel), overlap.onlyA.length)}
               </span>
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">
-                {copy.onlyInB(secondaryLabel, overlap.onlyB.length)}
+                {copy.onlyInB(bidiIsolate(secondaryLabel), overlap.onlyB.length)}
               </span>
             </div>
             {overlap.shared.length ? (
@@ -262,9 +260,9 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {overlap.shared.map(artist => (
-                    <span key={artist.name} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] py-1 pl-1 pr-3">
+                    <span key={artist.name} className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] py-1 ps-1 pe-3">
                       <ArtistAvatar name={artist.name} size={24} tooltip={false} />
-                      <span className="text-xs font-bold text-white">{artist.name}</span>
+                      <bdi dir="auto" className="text-xs font-bold text-white">{artist.name}</bdi>
                       <span className="font-mono text-[10px] text-gray-500">
                         {fmtNum(artist.playsA)} / {fmtNum(artist.playsB)}
                       </span>
@@ -285,11 +283,11 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                <p className="mb-2 text-[10px] font-mono uppercase tracking-widest text-gray-500">{primaryLabel}</p>
+                <p className="mb-2 text-[10px] font-mono uppercase tracking-widest text-gray-500"><bdi dir="auto">{primaryLabel}</bdi></p>
                 <MoodBadge moodKey={moods.profileA.dominantMood.key} />
               </div>
               <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
-                <p className="mb-2 text-[10px] font-mono uppercase tracking-widest text-gray-500">{secondaryLabel}</p>
+                <p className="mb-2 text-[10px] font-mono uppercase tracking-widest text-gray-500"><bdi dir="auto">{secondaryLabel}</bdi></p>
                 <MoodBadge moodKey={moods.profileB.dominantMood.key} />
               </div>
             </div>

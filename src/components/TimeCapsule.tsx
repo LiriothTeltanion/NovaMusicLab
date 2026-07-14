@@ -8,6 +8,7 @@ import CoverArt from './CoverArt';
 import MethodologyPanel from './MethodologyPanel';
 import SectionNarrative from './SectionNarrative';
 import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
+import { localeFor, pickLanguage } from '../utils/i18n';
 
 interface TimeCapsuleProps {
   data: MusicDnaData;
@@ -21,7 +22,7 @@ interface Capsule {
 
 export default function TimeCapsule({ data }: TimeCapsuleProps) {
   const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
-  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(localeFor(lang));
 
   const eras = data.yearly_eras;
   const currentMaxYear = eras.length > 0 ? Math.max(...eras.map(e => e.year)) : 0;
@@ -48,15 +49,16 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
   const recentStart = recentYears.length > 0 ? Math.min(...recentYears) : currentMaxYear;
   const recentEnd = recentYears.length > 0 ? Math.max(...recentYears) : currentMaxYear;
 
+  const openCapsuleDossier = (capsule: Capsule) => {
+    setSelectedArtistName(capsule.era.top_artist);
+    setSelectedTrackKey(`${capsule.era.top_artist.toLowerCase()}|||${capsule.era.top_track.toLowerCase()}`);
+    setTopSubTab('tracks');
+    setActiveTab('top');
+  };
+
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Header */}
-      <div className="flex items-center space-x-3 mb-2">
-        <Hourglass className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.timeCapsule.title}</h2>
-      </div>
-      <p className="text-sm text-gray-400 leading-relaxed font-sans max-w-3xl">
+      <p className="max-w-3xl text-sm leading-relaxed text-gray-400 font-sans">
         {t.timeCapsule.subtitle}
       </p>
 
@@ -161,25 +163,9 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                       style={{ borderColor: accent, backgroundColor: `${accent}30`, boxShadow: `0 0 10px ${accent}80` }}
                     />
 
-                    <div
-                      className="glass-panel p-6 rounded-3xl transition-all hover:scale-[1.01] cursor-pointer hover:border-white/20"
+                    <article
+                      className="glass-panel p-6 rounded-3xl transition-all hover:scale-[1.01] hover:border-white/20"
                       style={{ borderColor: `${accent}25` }}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={(e) => {
-                        if (e.key !== 'Enter' && e.key !== ' ') return;
-                        e.preventDefault();
-                        setSelectedArtistName(cap.era.top_artist);
-                        setSelectedTrackKey(`${cap.era.top_artist.toLowerCase()}|||${cap.era.top_track.toLowerCase()}`);
-                        setTopSubTab('tracks');
-                        setActiveTab('top');
-                      }}
-                      onClick={() => {
-                        setSelectedArtistName(cap.era.top_artist);
-                        setSelectedTrackKey(`${cap.era.top_artist.toLowerCase()}|||${cap.era.top_track.toLowerCase()}`);
-                        setTopSubTab('tracks');
-                        setActiveTab('top');
-                      }}
                     >
                       <div className="flex flex-col md:flex-row md:items-center gap-5">
                         {/* Year badge + avatar */}
@@ -222,18 +208,34 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                           </div>
                         </div>
 
-                        {/* Listen again pill */}
-                        <a
-                          href={spotifyUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full border font-mono text-xs font-bold uppercase tracking-wider transition-all hover:scale-105"
-                          style={{ color: accent, borderColor: `${accent}50`, backgroundColor: `${accent}10` }}
-                        >
-                          <Music className="w-3.5 h-3.5" />
-                          {t.timeCapsule.listenAgain}
-                          <ExternalLink className="w-3 h-3 opacity-70" />
-                        </a>
+                        <div className="flex shrink-0 flex-wrap gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openCapsuleDossier(cap)}
+                            aria-label={pickLanguage(lang, {
+                              en: `Open ${cap.era.top_artist} — ${cap.era.top_track} in All-Time Top`,
+                              es: `Abrir ${cap.era.top_artist} — ${cap.era.top_track} en Top Histórico`,
+                              he: `פתיחת ${cap.era.top_artist} — ${cap.era.top_track} בדירוג של כל הזמנים`,
+                            })}
+                            className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all hover:scale-105"
+                            style={{ color: accent, borderColor: `${accent}50`, backgroundColor: `${accent}10` }}
+                          >
+                            <Crown className="w-3.5 h-3.5" />
+                            {pickLanguage(lang, { en: 'Open dossier', es: 'Abrir expediente', he: 'פתיחת התיק' })}
+                          </button>
+                          <a
+                            href={spotifyUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${t.timeCapsule.listenAgain}: ${cap.era.top_artist} — ${cap.era.top_track} (${pickLanguage(lang, { en: 'opens in a new tab', es: 'abre en una pestaña nueva', he: 'נפתח בכרטיסייה חדשה' })})`}
+                            className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all hover:scale-105"
+                            style={{ color: accent, borderColor: `${accent}50`, backgroundColor: `${accent}10` }}
+                          >
+                            <Music className="w-3.5 h-3.5" />
+                            {t.timeCapsule.listenAgain}
+                            <ExternalLink className="nova-mirror-rtl w-3 h-3 opacity-70" />
+                          </a>
+                        </div>
                       </div>
 
                       {/* Stats row */}
@@ -268,7 +270,7 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </article>
                   </motion.div>
                 );
               })}

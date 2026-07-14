@@ -39,7 +39,7 @@ describe('SectionNarrative collapse behavior', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByText('Test narrative title')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Test narrative title', level: 2 })).toBeInTheDocument();
     expect(screen.getByRole('button', { expanded: false })).toBeInTheDocument();
     expect(screen.queryByText('The long interpretive body text.')).not.toBeInTheDocument();
     expect(screen.queryByText('Insight A')).not.toBeInTheDocument();

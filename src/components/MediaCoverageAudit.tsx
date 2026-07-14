@@ -13,6 +13,7 @@ import type { MusicDnaData } from '../types';
 import { formatNumber } from '../utils/analytics';
 import { buildMediaCoverageReport, type MediaCoverageRow } from '../utils/mediaCoverage';
 import { useApp } from '../context/AppContext';
+import { localeFor } from '../utils/i18n';
 
 interface MediaCoverageAuditProps {
   data: MusicDnaData;
@@ -74,7 +75,7 @@ function MissingList({ rows, emptyLabel }: { rows: MediaCoverageRow[]; emptyLabe
 export default function MediaCoverageAudit({ data }: MediaCoverageAuditProps) {
   const { t, tc, lang } = useApp();
   const copy = t.dataQuality.mediaCoverage;
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const report = useMemo(() => buildMediaCoverageReport(data, 100), [data]);
 
   const statCards = [

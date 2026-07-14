@@ -23,10 +23,14 @@ import {
   Upload,
   Zap,
 } from 'lucide-react';
-import type { MusicDnaData, PlaySource, PlatformPlay } from '../types';
+import { localeFor, pickLanguage } from '../utils/i18n';
+import { localizePlatformName } from '../utils/localizedDatasetText';
+import type { MusicDnaData, PlaySource } from '../types';
 import { deriveSourceSummary, formatNumber } from '../utils/analytics';
+import { normalizePlatformBreakdown, type NormalizedPlatformRow } from '../utils/chartIntegrity';
 import { useApp, type ThemeColors } from '../context/AppContext';
 import SectionNarrative from './SectionNarrative';
+import { axisProps, ChartCanvas, ChartFrame, gridStroke, useChartAnimation } from './chartKit';
 
 interface PlatformsDevicesProps {
   data: MusicDnaData;
@@ -34,17 +38,13 @@ interface PlatformsDevicesProps {
 
 type ConfidenceKind = 'exact' | 'estimated' | 'inferred' | 'unavailable';
 
-interface PlatformChartRow extends PlatformPlay {
-  share: number;
-}
-
 interface TooltipPayload {
   value?: number;
   color?: string;
-  payload?: PlatformChartRow;
+  payload?: NormalizedPlatformRow;
 }
 
-const CHART_COLORS = ['#38bdf8', '#10b981', '#a78bfa', '#f59e0b', '#fb7185', '#22d3ee', '#f472b6'];
+const CHART_COLORS = ['#38bdf8', '#10b981', '#a78bfa', '#f59e0b', '#fb7185', '#64748b'];
 
 function sourceLabel(sourceType: PlaySource, sourceTypes: Record<PlaySource, string>) {
   return sourceTypes[sourceType] ?? sourceTypes.unknown;
@@ -80,13 +80,13 @@ function PlatformTooltip({
   const plays = Number(payload[0]?.value ?? 0);
 
   return (
-    <div className="rounded-xl border border-white/10 bg-[#070e1c] px-4 py-3 text-xs font-mono shadow-lg">
-      <p className="font-black text-white">{label}</p>
+    <div className="nova-chart-tooltip rounded-xl border px-4 py-3 text-xs font-mono shadow-lg">
+      <p className="font-black">{label}</p>
       <p className="mt-1" style={{ color: payload[0]?.color ?? '#38bdf8' }}>
         {copy.plays(formatNumber(plays, locale))}
       </p>
       {row && (
-        <p className="mt-1 text-gray-400">
+        <p className="mt-1 text-gray-500">
           {copy.shareLabel(row.share)}
         </p>
       )}
@@ -97,25 +97,27 @@ function PlatformTooltip({
 export default function PlatformsDevices({ data }: PlatformsDevicesProps) {
   const { t, tc, lang } = useApp();
   const copy = t.platforms;
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const source = deriveSourceSummary(data);
+  const chartAnimation = useChartAnimation();
   const directSpotify = (source.source_type === 'spotify' || source.source_type === 'merged') && source.spotify_plays > 0;
 
-  const platformRows = useMemo<PlatformChartRow[]>(() => {
-    const rows = [...(data.platform_breakdown ?? [])]
-      .filter(row => row.platform && row.plays > 0)
-      .sort((a, b) => b.plays - a.plays)
-      .slice(0, 10);
-    const total = rows.reduce((sum, row) => sum + row.plays, 0) || 1;
-
-    return rows.map(row => ({
+  const normalizedPlatforms = useMemo(
+    () => normalizePlatformBreakdown(data.platform_breakdown ?? [], 5),
+    [data.platform_breakdown],
+  );
+  const platformRows = useMemo(
+    () => normalizedPlatforms.rows.map(row => ({
       ...row,
-      share: Math.round((row.plays / total) * 1000) / 10,
-    }));
-  }, [data.platform_breakdown]);
+      canonicalPlatform: row.platform,
+      platform: localizePlatformName(row.platform, lang),
+    })),
+    [lang, normalizedPlatforms.rows],
+  );
 
   const hasPlatformData = platformRows.length > 0;
-  const totalPlatformPlays = platformRows.reduce((sum, row) => sum + row.plays, 0);
+  const totalPlatformPlays = normalizedPlatforms.totalPlays;
+  const platformFamilyCount = normalizedPlatforms.familyCount;
   const dominantPlatform = platformRows[0];
   const skipRate = Math.round((source.spotify_skip_rate_pct || 0) * 10) / 10;
   const shortPlayRate = Math.round((source.spotify_short_play_rate_pct || 0) * 10) / 10;
@@ -132,7 +134,7 @@ export default function PlatformsDevices({ data }: PlatformsDevicesProps) {
     {
       icon: TabletSmartphone,
       label: copy.cards.platforms.label,
-      value: hasPlatformData ? formatNumber(platformRows.length, locale) : copy.notAvailable,
+      value: hasPlatformData ? formatNumber(platformFamilyCount, locale) : copy.notAvailable,
       sub: hasPlatformData
         ? copy.cards.platforms.withData(formatNumber(totalPlatformPlays, locale))
         : copy.cards.platforms.noData,
@@ -193,7 +195,7 @@ export default function PlatformsDevices({ data }: PlatformsDevicesProps) {
   const analysisPoints = hasPlatformData
     ? [
       copy.analysis.withPlatform(dominantPlatform.platform, dominantPlatform.share),
-      copy.analysis.platformDepth(formatNumber(totalPlatformPlays, locale), formatNumber(platformRows.length, locale)),
+      copy.analysis.platformDepth(formatNumber(totalPlatformPlays, locale), formatNumber(platformFamilyCount, locale)),
       directSpotify ? copy.analysis.directSpotify : copy.analysis.estimatedSpotify,
     ]
     : [
@@ -204,13 +206,6 @@ export default function PlatformsDevices({ data }: PlatformsDevicesProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <TabletSmartphone className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {copy.title}
-        </h2>
-      </div>
-
       <SectionNarrative content={t.deepNarratives.platforms} accent="c2" />
 
       <section className="glass-panel rounded-3xl overflow-hidden border border-white/10">
@@ -284,60 +279,59 @@ export default function PlatformsDevices({ data }: PlatformsDevicesProps) {
 
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
         <div className="xl:col-span-2 glass-panel rounded-3xl p-6">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <Activity className="w-5 h-5" style={{ color: tc.c1 }} />
-              <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
-                {copy.chartTitle}
-              </h3>
-            </div>
-            {dominantPlatform && (
-              <span className="rounded-full border px-3 py-1 text-[10px] font-mono font-black uppercase tracking-widest"
-                style={{ color: tc.c2, borderColor: `${tc.c2}35`, backgroundColor: `${tc.c2}10` }}>
-                {copy.dominantPlatform}: {dominantPlatform.platform}
-              </span>
-            )}
-          </div>
-
           {hasPlatformData ? (
-            <div className="h-[340px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={platformRows} layout="vertical" margin={{ left: 16, right: 20, top: 4, bottom: 4 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" horizontal={false} />
-                  <XAxis type="number" stroke="#64748b" fontSize={10} tickFormatter={value => formatNumber(Number(value), locale)} />
-                  <YAxis
-                    dataKey="platform"
-                    type="category"
-                    width={130}
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <Tooltip content={<PlatformTooltip locale={locale} copy={copy} />} cursor={{ fill: `${tc.c1}08` }} />
-                  <Bar dataKey="plays" radius={[0, 10, 10, 0]} barSize={22}>
-                    {platformRows.map((row, index) => (
-                      <Cell key={row.platform} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+            <ChartFrame
+              title={`🎛️ ${copy.chartTitle}`}
+              subtitle={pickLanguage(lang, {
+                en: `${formatNumber(totalPlatformPlays, locale)} events · all ${platformFamilyCount} normalized families · top 5 + Other.`,
+                es: `${formatNumber(totalPlatformPlays, locale)} eventos · ${platformFamilyCount} familias normalizadas · top 5 + Otros.`,
+                he: `${formatNumber(totalPlatformPlays, locale)} אירועים · כל ${platformFamilyCount} משפחות הפלטפורמה המנורמלות · חמש המובילות + אחר.`,
+              })}
+              summary={dominantPlatform
+                ? copy.analysis.withPlatform(dominantPlatform.platform, dominantPlatform.share)
+                : copy.noPlatformBody}
+              status="exact"
+              tableRows={platformRows.map(({ platform, plays, share }) => ({ platform, plays, share: `${share}%` }))}
+              fileName="nova-platform-families.csv"
+            >
+              <ChartCanvas className="h-[340px]">
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                  <BarChart accessibilityLayer data={platformRows} layout="vertical" margin={{ left: 16, right: 20, top: 4, bottom: 4 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1, tc.mode)} horizontal={false} />
+                    <XAxis type="number" {...axisProps(tc.mode)} tickFormatter={value => formatNumber(Number(value), locale)} />
+                    <YAxis
+                      dataKey="platform"
+                      type="category"
+                      width={130}
+                      {...axisProps(tc.mode)}
+                    />
+                    <Tooltip content={<PlatformTooltip locale={locale} copy={copy} />} cursor={{ fill: `${tc.c1}08` }} />
+                    <Bar {...chartAnimation} dataKey="plays" radius={[0, 10, 10, 0]} barSize={22}>
+                      {platformRows.map((row, index) => (
+                        <Cell key={row.canonicalPlatform} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartCanvas>
+            </ChartFrame>
           ) : (
-            <div className="rounded-3xl border border-dashed p-6 md:p-8 text-center"
-              style={{ borderColor: `${tc.c1}28`, backgroundColor: `${tc.c1}06` }}>
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl border"
-                style={{ borderColor: `${tc.c1}35`, background: `linear-gradient(135deg, ${tc.c1}18, ${tc.c3}12)` }}>
-                <Upload className="h-7 w-7" style={{ color: tc.c1 }} />
+            <>
+              <div className="mb-6 flex items-center gap-2">
+                <Activity className="w-5 h-5" style={{ color: tc.c1 }} />
+                <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">{copy.chartTitle}</h3>
               </div>
-              <h4 className="text-lg font-black text-white">{copy.noPlatformTitle}</h4>
-              <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">
-                {copy.noPlatformBody}
-              </p>
-              <p className="mx-auto mt-4 max-w-2xl rounded-2xl border border-white/10 bg-black/20 p-4 text-xs leading-relaxed text-gray-300">
-                {copy.uploadHint}
-              </p>
-            </div>
+              <div className="rounded-3xl border border-dashed p-6 md:p-8 text-center"
+                style={{ borderColor: `${tc.c1}28`, backgroundColor: `${tc.c1}06` }}>
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl border"
+                  style={{ borderColor: `${tc.c1}35`, background: `linear-gradient(135deg, ${tc.c1}18, ${tc.c3}12)` }}>
+                  <Upload className="h-7 w-7" style={{ color: tc.c1 }} />
+                </div>
+                <h4 className="text-lg font-black text-white">{copy.noPlatformTitle}</h4>
+                <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-gray-400">{copy.noPlatformBody}</p>
+                <p className="mx-auto mt-4 max-w-2xl rounded-2xl border border-white/10 bg-black/20 p-4 text-xs leading-relaxed text-gray-300">{copy.uploadHint}</p>
+              </div>
+            </>
           )}
         </div>
 

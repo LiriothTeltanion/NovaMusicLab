@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "matching_policy": "Exact NFC-normalized and trimmed names only. No punctuation, token, transliteration, or fuzzy matching.",
+  "identities": [
+    {
+      "canonical": "Bring Me the Horizon",
+      "aliases": [
+        "Bring Me The Horizon"
+      ],
+      "evidence": {
+        "musicbrainz": {
+          "id": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "name": "Bring Me the Horizon"
+        },
+        "wikidata": {
+          "id": "Q494784",
+          "label": "Bring Me the Horizon"
+        }
+      }
+    },
+    {
+      "canonical": "Hayehudim",
+      "aliases": [
+        "היהודים"
+      ],
+      "evidence": {
+        "musicbrainz": {
+          "id": "bc45bdfb-bd29-4213-aa92-be527cdcf424",
+          "name": "היהודים"
+        },
+        "wikidata": {
+          "id": "Q5636415",
+          "label": "HaYehudim"
+        }
+      }
+    },
+    {
+      "canonical": "Slaves",
+      "aliases": [
+        "SLAVES"
+      ],
+      "evidence": {
+        "musicbrainz": {
+          "id": "bd0f203c-6d4b-4c44-89d1-63be9c60acc3",
+          "name": "Rain City Drive",
+          "matched_alias": "Slaves"
+        },
+        "wikidata": {
+          "id": "Q17088326",
+          "label": "Slaves"
+        }
+      }
+    },
+    {
+      "canonical": "mgk",
+      "aliases": [
+        "Machine Gun Kelly"
+      ],
+      "evidence": {
+        "musicbrainz": {
+          "id": "f6af669a-56ea-448a-a044-de76181ada33",
+          "name": "mgk",
+          "matched_alias": "Machine Gun Kelly"
+        },
+        "wikidata": {
+          "id": "Q1354843",
+          "label": "Machine Gun Kelly"
+        }
+      }
+    },
+    {
+      "canonical": "nothing,nowhere.",
+      "aliases": [
+        "nothingnowhere."
+      ],
+      "evidence": {
+        "musicbrainz": {
+          "id": "90e8bc57-78b0-4992-8784-898d5122d3b3",
+          "name": "nothing,nowhere."
+        },
+        "wikidata": {
+          "id": "Q42336667",
+          "label": "Nothing,Nowhere"
+        }
+      }
+    }
+  ]
+}

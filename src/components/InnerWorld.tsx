@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Palette, Eye, Moon, Film, Gamepad2, Landmark, Music, Zap, Star, Orbit } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import { pickLanguage, type Lang } from '../utils/i18n';
 import SectionNarrative from './SectionNarrative';
 import GenreConstellation from './GenreConstellation';
 
@@ -13,10 +14,82 @@ const cardVariants = {
   animate: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
 };
 
+interface InnerWorldLocalCopy {
+  identityTab: string;
+  constellationTab: string;
+  gamerTags: string[];
+  lyricalThemes: Array<{ tag: string; color: string }>;
+  creativePaths: string[];
+  moodTags: string[];
+}
+
+const INNER_WORLD_LOCAL_COPY: Record<Lang, InnerWorldLocalCopy> = {
+  es: {
+    identityTab: 'Identidad Artística',
+    constellationTab: 'Constelación',
+    gamerTags: ['🎮 Cyberpunk', '⚔️ Fantasía oscura', '🌌 Ciencia ficción', '🤖 Retrowave', '🎸 Cultura emo'],
+    lyricalThemes: [
+      { tag: '💔 Amor perdido', color: '#f72585' }, { tag: '🌙 Noche urbana', color: '#7209b7' },
+      { tag: '⚡ Transformación', color: '#00f2fe' }, { tag: '🌊 Melancolía', color: '#4cc9f0' },
+      { tag: '🔥 Catarsis', color: '#fb923c' }, { tag: '✨ Esperanza', color: '#34d399' },
+      { tag: '🎮 Escape digital', color: '#a78bfa' }, { tag: '🧬 Identidad', color: '#facc15' },
+      { tag: '🌌 Nostalgia', color: '#06b6d4' }, { tag: '⚔️ Resiliencia', color: '#ef4444' },
+    ],
+    creativePaths: [
+      '🎵 Producción musical propia con raíces en metalcore y synthwave',
+      '🎨 Arte digital oscuro con estética glassmorphism',
+      '🎮 Diseño de sonido para videojuegos de fantasía futurista',
+      '📖 Storytelling con universos inspirados en Deafheaven/TesseracT',
+      '🎤 Letras que mezclan vulnerabilidad y épica personal',
+    ],
+    moodTags: ['🌌 Oscuro', '✨ Catártico', '🔮 Nostálgico', '⚡ Intenso', '🎧 Profundo', '🌱 Esperanzador'],
+  },
+  en: {
+    identityTab: 'Artistic Identity',
+    constellationTab: 'Genre Constellation',
+    gamerTags: ['🎮 Cyberpunk', '⚔️ Dark Fantasy', '🌌 Sci-Fi', '🤖 Retrowave', '🎸 Emo Culture'],
+    lyricalThemes: [
+      { tag: '💔 Lost Love', color: '#f72585' }, { tag: '🌙 Urban Night', color: '#7209b7' },
+      { tag: '⚡ Transformation', color: '#00f2fe' }, { tag: '🌊 Melancholy', color: '#4cc9f0' },
+      { tag: '🔥 Catharsis', color: '#fb923c' }, { tag: '✨ Hope', color: '#34d399' },
+      { tag: '🎮 Digital Escape', color: '#a78bfa' }, { tag: '🧬 Identity', color: '#facc15' },
+      { tag: '🌌 Nostalgia', color: '#06b6d4' }, { tag: '⚔️ Resilience', color: '#ef4444' },
+    ],
+    creativePaths: [
+      '🎵 Own music production with metalcore and synthwave roots',
+      '🎨 Dark digital art with glassmorphism aesthetic',
+      '🎮 Sound design for futuristic fantasy games',
+      '📖 Storytelling with Deafheaven/TesseracT-inspired universes',
+      '🎤 Lyrics mixing vulnerability and personal epic',
+    ],
+    moodTags: ['🌌 Dark', '✨ Cathartic', '🔮 Nostalgic', '⚡ Intense', '🎧 Deep', '🌱 Hopeful'],
+  },
+  he: {
+    identityTab: 'זהות אמנותית',
+    constellationTab: 'מפת הז׳אנרים',
+    gamerTags: ['🎮 Cyberpunk', '⚔️ פנטזיה אפלה', '🌌 מדע בדיוני', '🤖 Retrowave', '🎸 תרבות Emo'],
+    lyricalThemes: [
+      { tag: '💔 אהבה שאבדה', color: '#f72585' }, { tag: '🌙 לילה עירוני', color: '#7209b7' },
+      { tag: '⚡ שינוי', color: '#00f2fe' }, { tag: '🌊 מלנכוליה', color: '#4cc9f0' },
+      { tag: '🔥 קתרזיס', color: '#fb923c' }, { tag: '✨ תקווה', color: '#34d399' },
+      { tag: '🎮 בריחה דיגיטלית', color: '#a78bfa' }, { tag: '🧬 זהות', color: '#facc15' },
+      { tag: '🌌 נוסטלגיה', color: '#06b6d4' }, { tag: '⚔️ חוסן', color: '#ef4444' },
+    ],
+    creativePaths: [
+      '🎵 הפקת מוזיקה מקורית עם שורשים ב־metalcore וב־synthwave',
+      '🎨 אמנות דיגיטלית אפלה באסתטיקת glassmorphism',
+      '🎮 עיצוב סאונד למשחקי פנטזיה עתידניים',
+      '📖 סיפור עולמות בהשראת Deafheaven ו־TesseracT',
+      '🎤 כתיבת מילים שמחברות בין חשיפה רגשית לאפוס אישי',
+    ],
+    moodTags: ['🌌 אפל', '✨ קתרזי', '🔮 נוסטלגי', '⚡ עוצמתי', '🎧 עמוק', '🌱 מלא תקווה'],
+  },
+};
+
 export default function InnerWorld({ data }: InnerWorldProps) {
   const [viewMode, setViewMode] = useState<'identity' | 'constellation'>('identity');
   const { lang, tc, t } = useApp();
-  const L = lang === 'en';
+  const localCopy = pickLanguage(lang, INNER_WORLD_LOCAL_COPY);
 
   const CARDS = [
     {
@@ -27,7 +100,7 @@ export default function InnerWorld({ data }: InnerWorldProps) {
           <p className="text-xs text-gray-300 leading-relaxed">
             {t.innerWorld.colorPaletteIntro}
           </p>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-3">
             {[
               { color: '#00f2fe', label: t.innerWorld.colorNeonCyan,     glow: 'rgba(0,242,254,0.5)' },
               { color: '#f72585', label: t.innerWorld.colorCyberPink,    glow: 'rgba(247,37,133,0.5)' },
@@ -65,8 +138,8 @@ export default function InnerWorld({ data }: InnerWorldProps) {
           ].map(({ v, s, a, c, d }) => (
             <div key={v} className="p-2 rounded-xl border border-white/5 bg-white/3">
               <span className="text-[10px] font-mono font-bold uppercase" style={{ color: c }}>{v}</span>
-              <p className="font-semibold text-white">{s}</p>
-              <p className="text-gray-400 text-[10px]">{a} · {d}</p>
+              <p className="font-semibold text-white"><bdi dir="auto">{s}</bdi></p>
+              <p className="text-gray-400 text-[10px]" dir="auto"><bdi dir="auto">{a}</bdi> · {d}</p>
             </div>
           ))}
         </div>
@@ -91,7 +164,7 @@ export default function InnerWorld({ data }: InnerWorldProps) {
             {t.innerWorld.gamerDnaBody}
           </p>
           <div className="flex flex-wrap gap-1 pt-1">
-            {['🎮 Cyberpunk', '⚔️ Dark Fantasy', '🌌 Sci-Fi', '🤖 Retrowave', '🎸 Emo Culture'].map(tag => (
+            {localCopy.gamerTags.map(tag => (
               <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-orange-950/30 border border-orange-500/20 text-orange-300 font-mono">{tag}</span>
             ))}
           </div>
@@ -109,9 +182,9 @@ export default function InnerWorld({ data }: InnerWorldProps) {
             { name: t.innerWorld.archetypeArchitectName,desc: t.innerWorld.archetypeArchitectDesc,color: '#a78bfa' },
             { name: t.innerWorld.archetypeFuturistName, desc: t.innerWorld.archetypeFuturistDesc, color: '#34d399' },
           ].map(({ name, desc, color }) => (
-            <div key={name} className="flex items-center space-x-2">
+            <div key={name} className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: color }} />
-              <div><span className="text-xs font-bold text-white">{name}</span><span className="text-[10px] text-gray-400 ml-1">— {desc}</span></div>
+              <div><span className="text-xs font-bold text-white">{name}</span><span className="text-[10px] text-gray-400 ms-1">— {desc}</span></div>
             </div>
           ))}
         </div>
@@ -122,21 +195,9 @@ export default function InnerWorld({ data }: InnerWorldProps) {
       title: t.innerWorld.lyricalThemesTitle,
       body: () => (
         <div className="flex flex-wrap gap-1.5">
-          {(L ? [
-            { tag: '💔 Lost Love', c: '#f72585' }, { tag: '🌙 Urban Night', c: '#7209b7' },
-            { tag: '⚡ Transformation', c: '#00f2fe' }, { tag: '🌊 Melancholy', c: '#4cc9f0' },
-            { tag: '🔥 Catharsis', c: '#fb923c' }, { tag: '✨ Hope', c: '#34d399' },
-            { tag: '🎮 Digital Escape', c: '#a78bfa' }, { tag: '🧬 Identity', c: '#facc15' },
-            { tag: '🌌 Nostalgia', c: '#06b6d4' }, { tag: '⚔️ Resilience', c: '#ef4444' },
-          ] : [
-            { tag: '💔 Amor perdido', c: '#f72585' }, { tag: '🌙 Noche urbana', c: '#7209b7' },
-            { tag: '⚡ Transformación', c: '#00f2fe' }, { tag: '🌊 Melancolía', c: '#4cc9f0' },
-            { tag: '🔥 Catarsis', c: '#fb923c' }, { tag: '✨ Esperanza', c: '#34d399' },
-            { tag: '🎮 Escape digital', c: '#a78bfa' }, { tag: '🧬 Identidad', c: '#facc15' },
-            { tag: '🌌 Nostalgia', c: '#06b6d4' }, { tag: '⚔️ Resiliencia', c: '#ef4444' },
-          ]).map(({ tag, c }) => (
+          {localCopy.lyricalThemes.map(({ tag, color }) => (
             <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full font-mono font-bold"
-              style={{ color: c, backgroundColor: `${c}15`, border: `1px solid ${c}30` }}>{tag}</span>
+              style={{ color, backgroundColor: `${color}15`, border: `1px solid ${color}30` }}>{tag}</span>
           ))}
         </div>
       ),
@@ -148,21 +209,9 @@ export default function InnerWorld({ data }: InnerWorldProps) {
         <div className="space-y-2 text-xs text-gray-300">
           <p>{t.innerWorld.creativeIdentityIntro}</p>
           <ul className="space-y-1">
-            {(L ? [
-              '🎵 Own music production with metalcore and synthwave roots',
-              '🎨 Dark digital art with glassmorphism aesthetic',
-              '🎮 Sound design for futuristic fantasy games',
-              '📖 Storytelling with Deafheaven/TesseracT-inspired universes',
-              '🎤 Lyrics mixing vulnerability and personal epic',
-            ] : [
-              '🎵 Producción musical propia con roots en metalcore y synthwave',
-              '🎨 Arte digital oscuro con estética glassmorphism',
-              '🎮 Diseño de sonido para videojuegos de fantasía futurista',
-              '📖 Storytelling con universos inspirados en Deafheaven/TesseracT',
-              '🎤 Letras que mezclan vulnerabilidad y épica personal',
-            ]).map(item => (
-              <li key={item} className="flex items-start space-x-1.5">
-                <span className="text-[10px] leading-relaxed">{item}</span>
+            {localCopy.creativePaths.map(item => (
+              <li key={item} className="flex items-start gap-1.5">
+                <span className="text-[10px] leading-relaxed" dir="auto">{item}</span>
               </li>
             ))}
           </ul>
@@ -171,43 +220,42 @@ export default function InnerWorld({ data }: InnerWorldProps) {
     },
   ];
 
-  const moodTags = L
-    ? ['🌌 Dark', '✨ Cathartic', '🔮 Nostalgic', '⚡ Intense', '🎧 Deep', '🌱 Hopeful']
-    : ['🌌 Oscuro', '✨ Catártico', '🔮 Nostálgico', '⚡ Intenso', '🎧 Profundo', '🌱 Esperanzador'];
+  const moodTags = localCopy.moodTags;
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center space-x-3">
-          <Palette className="w-6 h-6" style={{ color: tc.c2 }} />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {t.innerWorld.pageTitle}
-          </h2>
-        </div>
-
+      <div className="flex justify-end">
         {/* View Toggle Tabs */}
-        <div className="flex bg-black/40 border border-white/10 p-1 rounded-2xl w-fit self-start md:self-auto z-10">
+        <div
+          className="nova-on-dark flex w-fit rounded-2xl border border-white/10 bg-black/40 p-1 z-10"
+          role="group"
+          aria-label={t.innerWorld.pageTitle}
+        >
           <button
+            type="button"
             onClick={() => setViewMode('identity')}
-            className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+            aria-pressed={viewMode === 'identity'}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
               viewMode === 'identity'
                 ? 'bg-purple-600/20 text-purple-300 border border-purple-500/35 font-extrabold'
                 : 'text-gray-400 hover:text-white border border-transparent'
             }`}
           >
             <Palette className="w-3.5 h-3.5" />
-            <span>{L ? 'Artistic Identity' : 'Identidad Artística'}</span>
+            <span>{localCopy.identityTab}</span>
           </button>
           <button
+            type="button"
             onClick={() => setViewMode('constellation')}
-            className={`flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
+            aria-pressed={viewMode === 'constellation'}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all ${
               viewMode === 'constellation'
                 ? 'bg-purple-600/20 text-purple-300 border border-purple-500/35 font-extrabold'
                 : 'text-gray-400 hover:text-white border border-transparent'
             }`}
           >
             <Orbit className="w-3.5 h-3.5" />
-            <span>{L ? 'Genre Constellation' : 'Constelación'}</span>
+            <span>{localCopy.constellationTab}</span>
           </button>
         </div>
       </div>
@@ -252,7 +300,10 @@ export default function InnerWorld({ data }: InnerWorldProps) {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+          <div
+            className="grid gap-5"
+            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))' }}
+          >
             {CARDS.map((card, i) => {
               const Icon = card.icon;
               const Body = card.body;
@@ -260,7 +311,7 @@ export default function InnerWorld({ data }: InnerWorldProps) {
                 <motion.div key={card.title} custom={i} variants={cardVariants} initial="initial" animate="animate"
                   className="glass-panel p-5 rounded-2xl space-y-3 border-t-2 hover:border-t-4 transition-all"
                   style={{ borderTopColor: card.color }}>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center gap-2">
                     <Icon className="w-4 h-4 shrink-0" style={{ color: card.color }} />
                     <h4 className="font-mono text-xs font-bold uppercase tracking-wide text-white leading-tight">{card.title}</h4>
                   </div>

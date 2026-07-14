@@ -1,4 +1,5 @@
 import type { YearlyEra } from '../types';
+import { localeFor, type Lang } from './i18n';
 import { hashSeed } from './seededRandom';
 
 export type EraMotif = 'orbit' | 'waveform' | 'prism' | 'grid';
@@ -12,10 +13,7 @@ export interface EraPalette {
   deep: string;
 }
 
-export interface LocalizedSignal {
-  es: string;
-  en: string;
-}
+export type LocalizedSignal = Record<Lang, string>;
 
 export interface EraVisualIdentity {
   palette: EraPalette;
@@ -42,42 +40,67 @@ function normalizedHue(value: number) {
   return ((Math.round(value) % 360) + 360) % 360;
 }
 
+type DaypartKey = 'morning' | 'afternoon' | 'lateNight' | 'night' | 'unknown';
+
+function classifyDaypart(daypart: string): DaypartKey {
+  const normalized = daypart.toLocaleLowerCase(localeFor('he'));
+  // Check late night before morning/night because the Hebrew phrase
+  // "לפנות בוקר" contains the word for morning and English "late night"
+  // contains night.
+  if (
+    normalized.includes('madrugada')
+    || normalized.includes('late night')
+    || normalized.includes('לפנות בוקר')
+    || normalized.includes('השעות הקטנות')
+  ) return 'lateNight';
+  if (normalized.includes('mañana') || normalized.includes('morning') || normalized.includes('בוקר')) return 'morning';
+  if (normalized.includes('tarde') || normalized.includes('afternoon') || normalized.includes('אחר הצהריים')) return 'afternoon';
+  if (
+    normalized.includes('noche')
+    || normalized.includes('night')
+    || normalized.includes('לילה')
+    || normalized.includes('ערב')
+  ) return 'night';
+  return 'unknown';
+}
+
 function daypartHue(daypart: string) {
-  const normalized = daypart.toLocaleLowerCase('es');
-  if (normalized.includes('mañana') || normalized.includes('morning')) return 34;
-  if (normalized.includes('tarde') || normalized.includes('afternoon')) return 184;
-  if (normalized.includes('madrugada') || normalized.includes('late night')) return 226;
-  if (normalized.includes('noche') || normalized.includes('night')) return 286;
+  const daypartKey = classifyDaypart(daypart);
+  if (daypartKey === 'morning') return 34;
+  if (daypartKey === 'afternoon') return 184;
+  if (daypartKey === 'lateNight') return 226;
+  if (daypartKey === 'night') return 286;
   return 198;
 }
 
 function buildMood(daypart: string, exploration: number): LocalizedSignal {
-  const normalized = daypart.toLocaleLowerCase('es');
-  const timeMood = normalized.includes('mañana') || normalized.includes('morning')
-    ? { es: 'Amanecer eléctrico', en: 'Electric dawn' }
-    : normalized.includes('tarde') || normalized.includes('afternoon')
-      ? { es: 'Horizonte solar', en: 'Solar horizon' }
-      : normalized.includes('madrugada') || normalized.includes('late night')
-        ? { es: 'Deriva liminal', en: 'Liminal drift' }
-        : { es: 'Voltaje nocturno', en: 'Nocturnal voltage' };
+  const daypartKey = classifyDaypart(daypart);
+  const timeMood: LocalizedSignal = daypartKey === 'morning'
+    ? { es: 'Amanecer eléctrico', en: 'Electric dawn', he: 'שחר חשמלי' }
+    : daypartKey === 'afternoon'
+      ? { es: 'Horizonte solar', en: 'Solar horizon', he: 'אופק שמשי' }
+      : daypartKey === 'lateNight'
+        ? { es: 'Deriva liminal', en: 'Liminal drift', he: 'שיטוט על הסף' }
+        : { es: 'Voltaje nocturno', en: 'Nocturnal voltage', he: 'מתח לילי' };
 
-  const listeningMode = exploration >= 42
-    ? { es: 'exploración abierta', en: 'open exploration' }
+  const listeningMode: LocalizedSignal = exploration >= 42
+    ? { es: 'exploración abierta', en: 'open exploration', he: 'חקירה פתוחה' }
     : exploration <= 26
-      ? { es: 'órbita obsesiva', en: 'obsessive orbit' }
-      : { es: 'foco expansivo', en: 'expansive focus' };
+      ? { es: 'órbita obsesiva', en: 'obsessive orbit', he: 'מסלול אובססיבי' }
+      : { es: 'foco expansivo', en: 'expansive focus', he: 'מיקוד מתרחב' };
 
   return {
     es: `${timeMood.es} · ${listeningMode.es}`,
     en: `${timeMood.en} · ${listeningMode.en}`,
+    he: `${timeMood.he} · ${listeningMode.he}`,
   };
 }
 
 function buildEnergyBand(energy: number): LocalizedSignal {
-  if (energy >= 80) return { es: 'Pico monumental', en: 'Monumental peak' };
-  if (energy >= 62) return { es: 'Alto voltaje', en: 'High voltage' };
-  if (energy >= 44) return { es: 'Corriente sostenida', en: 'Sustained current' };
-  return { es: 'Resplandor íntimo', en: 'Intimate afterglow' };
+  if (energy >= 80) return { es: 'Pico monumental', en: 'Monumental peak', he: 'שיא מונומנטלי' };
+  if (energy >= 62) return { es: 'Alto voltaje', en: 'High voltage', he: 'מתח גבוה' };
+  if (energy >= 44) return { es: 'Corriente sostenida', en: 'Sustained current', he: 'זרם מתמשך' };
+  return { es: 'Resplandor íntimo', en: 'Intimate afterglow', he: 'זוהר אינטימי' };
 }
 
 function buildTexture(motif: EraMotif, hue: number, secondaryHue: number) {

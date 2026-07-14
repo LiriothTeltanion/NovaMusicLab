@@ -29,6 +29,18 @@
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Alcest"
   },
   {
+    "artist": "Amr Diab",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-13",
+    "sourceNote": "Spotify artist and YouTube channel identifiers verified against Wikidata Q477461; oEmbed-verified AUC Concert Recap 2026 via the official Amr Diab channel.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCpui0-2JqcAcII4ybpB1q3w",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=OWR3glmAPBE",
+    "officialSiteUrl": "https://amrdiab.net/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Amr_Diab",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Amr_Diab"
+  },
+  {
     "artist": "Anathema",
     "spotifyArtistUrl": "https://open.spotify.com/artist/0ZXKT0FCsLWkSLCjoBJgBX",
     "mediaConfidence": "partial",
@@ -79,6 +91,17 @@
     "sourceNote": "Official Atzmus video for No Hay Mundo Sin Amor.",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=5qq94_BWxY0",
     "officialSiteUrl": "http://www.atzmus.com/"
+  },
+  {
+    "artist": "Aviv Geffen",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-13",
+    "sourceNote": "Spotify artist and YouTube channel identifiers verified against Wikidata Q733103; oEmbed-verified official video for אנשי הגשם via Aviv Geffen Official.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/73ieysHN7XpJYEnEAYsO3K",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCem7pt_OUc85xKNQz1jH8JQ",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=9jzkV95zV90",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Aviv_Geffen",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Aviv_Geffen"
   },
   {
     "artist": "Being as an Ocean",
@@ -863,6 +886,18 @@
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Silverstein_(band)",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Silverstein",
     "officialAudioUrl": "https://www.youtube.com/watch?v=caUEmhq6itU"
+  },
+  {
+    "artist": "Sigur Rós",
+    "mediaConfidence": "verified",
+    "checkedAt": "2026-07-13",
+    "sourceNote": "Spotify artist and YouTube channel identifiers verified against Wikidata Q483828; oEmbed-verified official Hoppípolla performance via the Sigur Rós channel.",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6UUrUCIZtQeOf8tC0WuzRy",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCAmt29QykFXnuIqQoEEnEFg",
+    "youtubeVideoUrl": "https://www.youtube.com/watch?v=QzcvbmIn2Lk",
+    "officialSiteUrl": "https://sigurros.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Sigur_R%C3%B3s",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Sigur_R%C3%B3s"
   },
   {
     "artist": "Skid Row",

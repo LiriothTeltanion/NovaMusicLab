@@ -1,4 +1,5 @@
 import {
+  ArtistGenreCatalogEntry,
   MusicDnaData,
   PlatformPlay,
   RecordsSummary,
@@ -13,6 +14,7 @@ import {
 import { countryCodeToName, normalizeGenre } from './analytics';
 import artistMetaJson from '../data/artist_meta.json';
 import { buildOfflineArtistKnowledgeSummary } from './offlineArtistKnowledge';
+import { canonicalArtistName } from './artistIdentity';
 
 type RawSource = Exclude<PlaySource, 'merged' | 'unknown'>;
 
@@ -71,12 +73,23 @@ function isPlausiblePlayYear(year: number): boolean {
  */
 const KNOWN_ARTIST_META = artistMetaJson as Record<string, ArtistMeta>;
 
+function artistMetadataKey(artist: string): string {
+  return artist.normalize('NFC').trim().toLowerCase();
+}
+
+function artistCatalogKey(artist: string): string {
+  // Keep the parser's deliberately exact identity policy: registered aliases
+  // are canonicalized before aggregation, while casing and punctuation remain
+  // distinct for names that are not in that evidence-backed registry.
+  return artist.normalize('NFC').trim();
+}
+
 function metaForArtist(artist: string): ArtistMeta {
   // normalize('NFC') matters: macOS/some exporters emit decomposed (NFD)
   // Unicode, and "Sigur Rós" in NFD is a different string than the NFC key
   // stored in artist_meta.json - without this, every accented/non-Latin
   // artist from such an export silently falls back to Unclassified.
-  return KNOWN_ARTIST_META[artist.normalize('NFC').trim().toLowerCase()] ?? {
+  return KNOWN_ARTIST_META[artistMetadataKey(artist)] ?? {
     genre: 'Unclassified',
     country: 'Unknown',
   };
@@ -96,11 +109,18 @@ export function parseMusicSources(options: {
   spotifyJsonTexts?: string[];
   youtubeHtmlTexts?: string[];
 }): MusicDnaData {
-  const plays = [
+  const parsedPlays = [
     ...(options.csvTexts ?? []).flatMap(parseCsvSourceRows),
     ...parseStreamingJsonRows(options.spotifyJsonTexts ?? []),
     ...parseYoutubeHtmlRows(options.youtubeHtmlTexts ?? []),
   ];
+  // Canonicalize only evidence-backed, explicitly registered aliases. This
+  // happens before both cross-source dedupe and every downstream aggregation,
+  // so tracks, albums, eras, sessions and obsessions share one identity.
+  const plays = parsedPlays.map(play => {
+    const artist = canonicalArtistName(play.artist);
+    return artist === play.artist ? play : { ...play, artist };
+  });
   // Spotify's export logs every track START, including 2-second skips; a
   // "play" here follows Spotify's own stream-counting rule (>=30s listened).
   // Raw events are still passed through for skip/short-play transparency stats.
@@ -738,6 +758,22 @@ export function aggregateData(
     const { artist, title } = splitAlbumKey(key);
     return { artist, title, plays };
   });
+  const artistGenreCatalog: ArtistGenreCatalogEntry[] = entriesByCount(
+    artistCounts,
+    Object.keys(artistCounts).length,
+  ).map(([name, plays]) => {
+    const meta = metaForArtist(name);
+    const source = KNOWN_ARTIST_META[artistMetadataKey(name)] ? 'catalog' : 'unclassified';
+    return {
+      artistKey: artistCatalogKey(name),
+      name,
+      plays,
+      automaticGenre: meta.genre,
+      automaticFamily: normalizeGenre(meta.genre),
+      country: meta.country,
+      source,
+    };
+  });
   const knowledgeSummary = buildOfflineArtistKnowledgeSummary(topArtists);
 
   const countries = entriesByCount(countryCounts, 50)
@@ -778,6 +814,7 @@ export function aggregateData(
     top_tracks: topTracks,
     top_albums: topAlbums,
     top_genres: entriesByCount(genreCounts, 20).map(([name, plays]) => ({ name, plays })),
+    artist_genre_catalog: artistGenreCatalog,
     yearly_eras: yearlyEras,
     sessions: sessions.slice(0, 50),
     obsessions: buildObsessions(sortedItems),
@@ -1155,4 +1192,3 @@ function round1(value: number) {
 function round2(value: number) {
   return Number(value.toFixed(2));
 }
-

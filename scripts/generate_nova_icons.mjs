@@ -8,7 +8,9 @@ const publicDir = join(root, '..', 'public');
 
 // This file is the source of truth for every Nova Music Lab app icon. The mark
 // is intentionally made from three durable ideas: an N, a signal pulse, and an
-// open orbit. The essential shape stays inside the maskable 80% safe zone.
+// open orbit. Large icons add a spectral atlas, grooves and constellation dust,
+// while small favicons keep the same strong silhouette. The essential shape
+// stays inside the maskable 80% safe zone.
 const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">Nova Music Lab</title>
   <desc id="desc">A sonic N with a pulse point inside an open orbit.</desc>
@@ -28,16 +30,32 @@ const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" 
       <stop offset=".48" stop-color="#8cecff"/>
       <stop offset="1" stop-color="#d9c1ff"/>
     </linearGradient>
+    <radialGradient id="pulse" cx="0" cy="0" r="1" gradientTransform="translate(37 27) scale(8)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffc857" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#ffc857" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="1.6"/>
+    </filter>
     <clipPath id="tile"><rect width="64" height="64" rx="15"/></clipPath>
   </defs>
   <g clip-path="url(#tile)">
     <rect width="64" height="64" fill="#050713"/>
     <rect width="64" height="64" fill="url(#surface)"/>
+    <path d="M4 37c6-8 10 8 16 0s10-8 16 0 10 8 24-1" fill="none" stroke="#75e8ff" stroke-opacity=".12" stroke-width=".8"/>
+    <g fill="none" stroke="#8beeff" stroke-opacity=".08" stroke-width=".6">
+      <circle cx="32" cy="32" r="12.5"/><circle cx="32" cy="32" r="15.5"/><circle cx="32" cy="32" r="18.5"/>
+    </g>
+    <g fill="#d9f9ff" opacity=".32">
+      <circle cx="11" cy="27" r=".55"/><circle cx="51" cy="16" r=".45"/><circle cx="53" cy="44" r=".6"/><circle cx="24" cy="10" r=".4"/>
+    </g>
     <circle cx="32" cy="32" r="18" fill="#080b1d" opacity=".42"/>
+    <path d="M15.03 15.03A24 24 0 1 1 9.45 40.21" fill="none" stroke="#7feeff" stroke-opacity=".2" stroke-width="7" filter="url(#glow)"/>
     <path d="M15.03 15.03A24 24 0 1 1 9.45 40.21" fill="none" stroke="url(#orbit)" stroke-width="3.25" stroke-linecap="round"/>
     <circle cx="15.03" cy="15.03" r="2.45" fill="#a8f7ff"/>
     <path d="M18 43V21l13 14 6-8 9 16V21" fill="none" stroke="#02040d" stroke-opacity=".82" stroke-width="9.25" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M18 43V21l13 14 6-8 9 16V21" fill="none" stroke="url(#signal)" stroke-width="5.75" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="37" cy="27" r="8" fill="url(#pulse)"/>
     <circle cx="37" cy="27" r="2.35" fill="#ffc857"/>
     <rect x=".75" y=".75" width="62.5" height="62.5" rx="14.25" fill="none" stroke="#fff" stroke-opacity=".13" stroke-width="1.5"/>
   </g>
@@ -91,6 +109,7 @@ function encodePng(width, height, rgba) {
 }
 
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+const fract = (value) => value - Math.floor(value);
 const smoothstep = (edge0, edge1, value) => {
   const amount = clamp((value - edge0) / (edge1 - edge0));
   return amount * amount * (3 - 2 * amount);
@@ -162,6 +181,7 @@ function drawIcon(size, { maskable = false } = {}) {
   ].map(([x, y]) => [x * scale, y * scale]);
   const orbitStart = normalizeAngle(-Math.PI * 0.75);
   const orbitSweep = (295 * Math.PI) / 180;
+  const detailLevel = size >= 128 ? 1 : size >= 48 ? 0.55 : 0;
 
   for (let y = 0; y < size; y += 1) {
     for (let x = 0; x < size; x += 1) {
@@ -176,6 +196,33 @@ function drawIcon(size, { maskable = false } = {}) {
       composite(color, [36, 16, 70], violetGlow * 0.28);
       composite(color, [8, 11, 29], (1 - smoothstep(0.24, 0.3, centerDistance)) * 0.42);
 
+      // Large launcher icons carry a quiet sonic-atlas texture. These details
+      // intentionally disappear from 16/32px favicons to preserve legibility.
+      if (detailLevel > 0) {
+        const edgeVignette = smoothstep(0.4, 0.72, centerDistance);
+        composite(color, [1, 3, 12], edgeVignette * 0.58);
+
+        const grooveRadius = Math.hypot(px - size / 2, py - size / 2);
+        const groove = Math.max(
+          strokeCoverage(Math.abs(grooveRadius - 12.5 * scale), 0.52 * scale, antialias),
+          strokeCoverage(Math.abs(grooveRadius - 15.5 * scale), 0.46 * scale, antialias),
+          strokeCoverage(Math.abs(grooveRadius - 18.5 * scale), 0.4 * scale, antialias),
+        );
+        composite(color, [114, 227, 255], groove * 0.095 * detailLevel);
+
+        const waveY = size * (0.57 + Math.sin(u * Math.PI * 8) * 0.025 + Math.sin(u * Math.PI * 18) * 0.009);
+        const wave = strokeCoverage(Math.abs(py - waveY), 0.52 * scale, antialias);
+        composite(color, [126, 235, 255], wave * 0.11 * detailLevel);
+
+        const dust = fract(Math.sin((x + 17) * 12.9898 + (y + 31) * 78.233) * 43758.5453);
+        if (dust > 0.9982 && centerDistance > 0.28) {
+          composite(color, dust > 0.9994 ? [255, 202, 101] : [190, 246, 255], 0.52 * detailLevel);
+        }
+
+        const glassSheen = (1 - smoothstep(0.05, 0.5, Math.hypot(u - 0.24, v - 0.13))) * 0.16;
+        composite(color, [189, 244, 255], glassSheen * detailLevel);
+      }
+
       const dx = px - size / 2;
       const dy = py - size / 2;
       const orbitDistance = Math.abs(Math.hypot(dx, dy) - 24 * scale);
@@ -184,6 +231,10 @@ function drawIcon(size, { maskable = false } = {}) {
         ? strokeCoverage(orbitDistance, orbitWidth, antialias)
         : 0;
       const orbitColor = mix([131, 243, 255], [184, 103, 255], clamp((u - 0.16) / 0.68));
+      const orbitHalo = angleFromStart <= orbitSweep
+        ? strokeCoverage(orbitDistance, orbitWidth * 3.6, antialias)
+        : 0;
+      composite(color, orbitColor, orbitHalo * 0.12);
       composite(color, orbitColor, orbitCoverage * 0.92);
 
       const orbitNodeDistance = Math.hypot(px - 15.03 * scale, py - 15.03 * scale);
@@ -202,6 +253,8 @@ function drawIcon(size, { maskable = false } = {}) {
 
       const pulseDistance = Math.hypot(px - 37 * scale, py - 27 * scale);
       const pulseRadius = size <= 16 ? 1.05 : Math.max(1.25, 2.35 * scale);
+      const pulseHalo = 1 - smoothstep(2.2 * scale, 8.5 * scale, pulseDistance);
+      composite(color, [255, 181, 68], pulseHalo * 0.28);
       const pulse = 1 - smoothstep(pulseRadius - antialias, pulseRadius + antialias, pulseDistance);
       composite(color, [255, 200, 87], pulse);
 

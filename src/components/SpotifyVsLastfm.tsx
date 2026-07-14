@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip,
-  RadarChart, PolarGrid, PolarAngleAxis, Radar, Legend,
-} from 'recharts';
-import { GitCompare, CheckCircle2, AlertTriangle, Eye, Music, Users, Disc } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Eye, Music, GitMerge, TableProperties } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { deriveSourceSummary, getNightRatio, getTwoYearPeak } from '../utils/analytics';
+import { buildSourceReconciliation } from '../utils/chartIntegrity';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import SectionNarrative from './SectionNarrative';
 import { localizeSourceNote } from '../utils/localizedDatasetText';
+import { ChartCanvas, ChartFrame } from './chartKit';
+import { localeFor, pickLanguage } from '../utils/i18n';
 
 interface SpotifyVsLastfmProps {
   data: MusicDnaData;
@@ -24,57 +23,88 @@ interface Insight {
   avatarNames?: string[];
 }
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-  const { lang } = useApp();
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="bg-[#070e1c] border border-cyberCyan/30 rounded-xl px-4 py-3 text-xs font-mono shadow-cyber">
-      <p className="text-white font-bold mb-1">{label}</p>
-      {payload.map((p: any, i: number) => (
-        <p key={i} style={{ color: p.color }}>
-          {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
-        </p>
-      ))}
-    </div>
-  );
-};
-
 export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
   const [activeInsight, setActiveInsight] = useState(0);
   const { t, lang, setActiveTab, setSelectedArtistName, setTopSubTab } = useApp();
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
   const source = deriveSourceSummary(data);
   const sourceNote = localizeSourceNote(source, lang);
   const lastfmTotal = source.lastfm_plays;
   const spotifyDirectTotal = source.spotify_plays;
   const matchRate = data.core_metrics.match_rate_pct;
-  const spotifyEstimatedTotal = spotifyDirectTotal || (lastfmTotal && matchRate > 0 && matchRate < 100
-    ? Math.round(lastfmTotal / (matchRate / 100))
-    : 0);
-  const spotifyOnlyApprox = source.spotify_short_plays || Math.max(0, spotifyEstimatedTotal - lastfmTotal);
+  const reconciliation = buildSourceReconciliation(source);
+  const spotifyOnlyApprox = source.spotify_short_plays;
   const topArtist = data.top_artists[0];
   const topConsciousArtist = data.top_artists.find(artist => artist.name !== topArtist?.name) ?? data.top_artists[1];
   const twoYearPeak = getTwoYearPeak(data.yearly_eras);
   const night = getNightRatio(data);
-  const spotifyScale = lastfmTotal > 0 && spotifyEstimatedTotal > 0 ? spotifyEstimatedTotal / lastfmTotal : (spotifyDirectTotal ? 1 : 0);
-  const comparisonLabel = spotifyDirectTotal ? 'Spotify' : 'Spotify (est.)';
+  const copy = pickLanguage(lang, {
+    en: {
+        reconciliationTitle: 'Source reconciliation',
+        reconciliationSubtitle: 'Raw inbound events → countability filters → deduplicated listens. Every value comes from the active source summary.',
+        reconciliationSummary: reconciliation.reconcilesExactly
+          ? `${fmtNum(reconciliation.rawEvents)} raw events reconcile exactly to ${fmtNum(reconciliation.finalListens)} counted listens.`
+          : `The source summary needs a visible ${fmtNum(Math.abs(reconciliation.adjustment))}-event adjustment to reconcile.`,
+        raw: 'Raw source events', short: 'Under 30 seconds', duplicate: 'Cross-source duplicates',
+        adjustment: 'Other declared filters', final: 'Final counted listens',
+        capabilitiesTitle: 'Measured capability matrix',
+        capabilitiesSubtitle: 'Qualitative availability only—no synthetic scores.',
+        metric: 'Signal', direct: '✅ Direct', unavailable: '— Unavailable', conditional: '◐ Export-dependent',
+        timestamp: 'Timestamp', album: 'Album metadata', skips: 'Skip / short-play flag',
+        context: 'Playlist context', device: 'Device / platform',
+      },
+    es: {
+        reconciliationTitle: 'Reconciliación de fuentes',
+        reconciliationSubtitle: 'Eventos crudos → filtros de conteo → escuchas deduplicadas. Cada valor viene del resumen de la fuente activa.',
+        reconciliationSummary: reconciliation.reconcilesExactly
+          ? `${fmtNum(reconciliation.rawEvents)} eventos crudos reconcilian exactamente con ${fmtNum(reconciliation.finalListens)} escuchas contadas.`
+          : `El resumen necesita un ajuste visible de ${fmtNum(Math.abs(reconciliation.adjustment))} eventos para reconciliar.`,
+        raw: 'Eventos crudos por fuente', short: 'Menos de 30 segundos', duplicate: 'Duplicados entre fuentes',
+        adjustment: 'Otros filtros declarados', final: 'Escuchas finales contadas',
+        capabilitiesTitle: 'Matriz de capacidades medidas',
+        capabilitiesSubtitle: 'Disponibilidad cualitativa, sin puntuaciones sintéticas.',
+        metric: 'Señal', direct: '✅ Directo', unavailable: '— Ausente', conditional: '◐ Depende del export',
+        timestamp: 'Timestamp', album: 'Metadatos de álbum', skips: 'Skip / reproducción corta',
+        context: 'Contexto de playlist', device: 'Dispositivo / plataforma',
+      },
+    he: {
+        reconciliationTitle: 'התאמת מקורות',
+        reconciliationSubtitle: 'אירועי מקור גולמיים ← מסנני ספירה ← השמעות לאחר הסרת כפילויות. כל ערך מגיע מסיכום המקור הפעיל.',
+        reconciliationSummary: reconciliation.reconcilesExactly
+          ? `${fmtNum(reconciliation.rawEvents)} אירועים גולמיים מתאימים בדיוק ל-${fmtNum(reconciliation.finalListens)} השמעות שנספרו.`
+          : `כדי להשלים את ההתאמה נדרש תיקון גלוי של ${fmtNum(Math.abs(reconciliation.adjustment))} אירועים.`,
+        raw: 'אירועי מקור גולמיים', short: 'פחות מ-30 שניות', duplicate: 'כפילויות בין מקורות',
+        adjustment: 'מסננים מוצהרים נוספים', final: 'השמעות סופיות שנספרו',
+        capabilitiesTitle: 'מטריצת יכולות נמדדות',
+        capabilitiesSubtitle: 'זמינות איכותנית בלבד, ללא ציונים מלאכותיים.',
+        metric: 'אות', direct: '✅ ישיר', unavailable: '— לא זמין', conditional: '◐ תלוי בקובץ הייצוא',
+        timestamp: 'חותמת זמן', album: 'מטא-נתוני אלבום', skips: 'דילוג / השמעה קצרה',
+        context: 'הקשר של פלייליסט', device: 'מכשיר / פלטפורמה',
+      },
+  });
 
-  /* ── Overlap bar data using yearly eras ── */
-  const yearlyComparison = data.yearly_eras.map(e => ({
-    year: String(e.year),
-    lastfm: source.source_type === 'spotify' ? 0 : e.plays,
-    spotify: spotifyScale ? Math.round(e.plays * spotifyScale) : 0,
-  }));
-
-  /* ── Radar comparison ── */
-  const radarData = [
-    { metric: t.spotifyVsLastfm.radarHistory,  lastfm: 95, spotify: 88 },
-    { metric: t.spotifyVsLastfm.radarAccuracy, lastfm: 92, spotify: 78 },
-    { metric: t.spotifyVsLastfm.radarCoverage, lastfm: 88, spotify: 96 },
-    { metric: t.spotifyVsLastfm.radarMetadata, lastfm: 72, spotify: 90 },
-    { metric: t.spotifyVsLastfm.radarSkips,    lastfm: 40, spotify: 82 },
-    { metric: t.spotifyVsLastfm.radarContext,  lastfm: 60, spotify: 85 },
+  const waterfallRows = [
+    { stage: copy.raw, delta: reconciliation.rawEvents, runningTotal: reconciliation.rawEvents, start: 0, end: reconciliation.rawEvents, tone: 'anchor' },
+    { stage: copy.short, delta: -reconciliation.shortEvents, runningTotal: reconciliation.afterShort, start: reconciliation.afterShort, end: reconciliation.rawEvents, tone: 'remove' },
+    { stage: copy.duplicate, delta: -reconciliation.duplicateEvents, runningTotal: reconciliation.afterDeduplication, start: reconciliation.afterDeduplication, end: reconciliation.afterShort, tone: 'remove' },
+    ...(reconciliation.adjustment !== 0 ? [{
+      stage: copy.adjustment,
+      delta: reconciliation.adjustment,
+      runningTotal: reconciliation.finalListens,
+      start: Math.min(reconciliation.afterDeduplication, reconciliation.finalListens),
+      end: Math.max(reconciliation.afterDeduplication, reconciliation.finalListens),
+      tone: reconciliation.adjustment > 0 ? 'add' : 'remove',
+    }] : []),
+    { stage: copy.final, delta: reconciliation.finalListens, runningTotal: reconciliation.finalListens, start: 0, end: reconciliation.finalListens, tone: 'final' },
+  ];
+  const waterfallMax = Math.max(1, reconciliation.rawEvents, reconciliation.finalListens);
+  const capabilityRows = [
+    { metric: copy.timestamp, lastfm: lastfmTotal ? copy.direct : copy.unavailable, spotify: spotifyDirectTotal ? copy.direct : copy.unavailable },
+    { metric: copy.album, lastfm: lastfmTotal ? copy.direct : copy.unavailable, spotify: spotifyDirectTotal ? copy.direct : copy.unavailable },
+    { metric: copy.skips, lastfm: copy.unavailable, spotify: source.spotify_skips || source.spotify_short_plays ? copy.direct : copy.unavailable },
+    { metric: copy.context, lastfm: copy.unavailable, spotify: spotifyDirectTotal ? copy.conditional : copy.unavailable },
+    { metric: copy.device, lastfm: copy.unavailable, spotify: data.platform_breakdown?.length ? copy.direct : copy.conditional },
   ];
 
   const insights: Insight[] = [
@@ -117,32 +147,34 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
 
   const statCards = [
     {
-      label: 'Last.fm Scrobbles',
-      value: fmtNum(lastfmTotal),
-      sub: t.spotifyVsLastfm.primaryScrobbleSource,
-      color: '#e8334a',
-      icon: '◉',
+      label: copy.raw,
+      value: fmtNum(reconciliation.rawEvents),
+      sub: pickLanguage(lang, { en: 'All inbound source counters', es: 'Todos los contadores de entrada', he: 'כל מוני האירועים שנקלטו' }),
+      color: '#38bdf8',
+      icon: 'Σ',
     },
     {
-      label: spotifyDirectTotal ? 'Spotify Plays' : 'Spotify Plays (est.)',
-      value: fmtNum(spotifyEstimatedTotal),
-      sub: spotifyDirectTotal ? t.spotifyVsLastfm.measuredFromExport : t.spotifyVsLastfm.estimatedFromMatchRate,
-      color: '#1DB954',
-      icon: '▶',
+      label: copy.short,
+      value: fmtNum(reconciliation.shortEvents),
+      sub: pickLanguage(lang, { en: 'Excluded from counted listens', es: 'Excluidos de escuchas contadas', he: 'לא נכללו בהשמעות שנספרו' }),
+      color: '#f59e0b',
+      icon: '−',
     },
     {
-      label: t.spotifyVsLastfm.matchRateLabel,
-      value: `${matchRate}%`,
-      sub: t.spotifyVsLastfm.normalizedSourceOverlap,
-      color: '#00f2fe',
-      icon: '⌥',
+      label: copy.duplicate,
+      value: fmtNum(reconciliation.duplicateEvents),
+      sub: pickLanguage(lang, { en: 'Collapsed to one listen', es: 'Colapsados a una escucha', he: 'אוחדו להשמעה אחת' }),
+      color: '#f72585',
+      icon: '≋',
     },
     {
-      label: t.spotifyVsLastfm.shortExtraPlaysLabel,
-      value: fmtNum(spotifyOnlyApprox),
-      sub: t.spotifyVsLastfm.shortExtraPlaysSub,
-      color: '#a78bfa',
-      icon: '◈',
+      label: copy.final,
+      value: fmtNum(reconciliation.finalListens),
+      sub: reconciliation.reconcilesExactly
+        ? pickLanguage(lang, { en: 'Exact reconciliation', es: 'Reconciliación exacta', he: 'התאמה מדויקת' })
+        : pickLanguage(lang, { en: 'Includes visible adjustment', es: 'Incluye ajuste visible', he: 'כולל תיקון גלוי' }),
+      color: '#10b981',
+      icon: '✓',
     },
   ];
 
@@ -156,13 +188,6 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <GitCompare className="w-6 h-6 text-cyberCyan" />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.spotifyVsLastfm.pageTitle}
-        </h2>
-      </div>
-
       <SectionNarrative content={t.deepNarratives.compare} accent="c4" />
 
       {/* Hero comparison banner */}
@@ -208,9 +233,13 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#1DB954]/10 border border-[#1DB954]/30">
               <span className="text-[#1DB954] font-mono text-xs font-bold">▶ SPOTIFY</span>
             </div>
-            <p className="text-4xl font-black text-white font-mono">{fmtNum(spotifyEstimatedTotal)}</p>
+            <p className="text-4xl font-black text-white font-mono">
+              {spotifyDirectTotal ? fmtNum(spotifyDirectTotal) : '—'}
+            </p>
             <p className="text-xs text-gray-400 font-mono">
-              {spotifyDirectTotal ? t.spotifyVsLastfm.measuredPlaysIncludesSkips : t.spotifyVsLastfm.estimatedPlays}
+              {spotifyDirectTotal
+                ? t.spotifyVsLastfm.measuredPlaysIncludesSkips
+                : pickLanguage(lang, { en: 'No direct Spotify export', es: 'Sin export directo de Spotify', he: 'אין ייצוא ישיר מ-Spotify' })}
             </p>
             <div className="space-y-1 text-xs text-gray-300 flex flex-col md:items-end">
               <p className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-green-400" />{t.spotifyVsLastfm.spotifySkipDataIncluded}</p>
@@ -249,51 +278,82 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
         ))}
       </motion.div>
 
-      {/* Charts row */}
+      {/* Evidence-first reconciliation + qualitative capability matrix */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {/* Yearly comparison */}
         <div className="glass-panel p-6 rounded-3xl">
-          <div className="flex items-center space-x-2 mb-5">
-            <Disc className="w-5 h-5 text-cyberCyan" />
-            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {t.spotifyVsLastfm.playsByYearTitle(comparisonLabel)}
-            </h3>
-          </div>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={yearlyComparison} margin={{ left: 0, right: 8, top: 4, bottom: 0 }}>
-                <XAxis dataKey="year" stroke="#4b5563" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                <YAxis stroke="#4b5563" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend
-                  wrapperStyle={{ fontSize: 11, color: '#9ca3af', fontFamily: 'monospace' }}
-                />
-                <Bar dataKey="lastfm" name="Last.fm" fill="#e8334a" radius={[4, 4, 0, 0]} opacity={0.85} />
-                <Bar dataKey="spotify" name="Spotify" fill="#1DB954" radius={[4, 4, 0, 0]} opacity={0.7} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          <ChartFrame
+            title={copy.reconciliationTitle}
+            subtitle={copy.reconciliationSubtitle}
+            summary={copy.reconciliationSummary}
+            status={reconciliation.reconcilesExactly ? 'exact' : 'estimated'}
+            tableRows={waterfallRows.map(({ stage, delta, runningTotal }) => ({ stage, delta, runningTotal }))}
+            fileName="nova-source-reconciliation.csv"
+          >
+            <ChartCanvas className="space-y-3" data-testid="source-reconciliation-waterfall">
+              {waterfallRows.map((row) => {
+                const color = row.tone === 'final' ? '#10b981'
+                  : row.tone === 'remove' ? '#f59e0b'
+                    : row.tone === 'add' ? '#38bdf8' : '#64748b';
+                return (
+                  <div key={row.stage} className="grid grid-cols-[minmax(7.5rem,0.9fr)_minmax(8rem,1.5fr)_auto] items-center gap-3">
+                    <span className="text-[10px] font-mono font-bold leading-tight text-gray-400">{row.stage}</span>
+                    <div className="relative h-7 overflow-hidden rounded-lg bg-white/5" aria-hidden="true">
+                      <span
+                        className="absolute inset-y-1 rounded-md border"
+                        style={{
+                          left: `${(Math.min(row.start, row.end) / waterfallMax) * 100}%`,
+                          width: `${Math.max(1.2, (Math.abs(row.end - row.start) / waterfallMax) * 100)}%`,
+                          backgroundColor: `${color}38`,
+                          borderColor: `${color}90`,
+                        }}
+                      />
+                    </div>
+                    <span className="min-w-[5.25rem] text-right text-xs font-mono font-black" style={{ color }}>
+                      {row.tone === 'remove' ? '−' : row.tone === 'add' ? '+' : ''}{fmtNum(Math.abs(row.delta))}
+                    </span>
+                  </div>
+                );
+              })}
+            </ChartCanvas>
+          </ChartFrame>
         </div>
 
-        {/* Radar comparison */}
         <div className="glass-panel p-6 rounded-3xl">
-          <div className="flex items-center space-x-2 mb-5">
-            <Users className="w-5 h-5 text-cyberPink" />
-            <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {t.spotifyVsLastfm.capabilitiesComparisonTitle}
-            </h3>
+          <div className="mb-4 flex items-center gap-2">
+            <TableProperties className="h-5 w-5 text-cyberPink" />
+            <div>
+              <h3 className="type-section type-strong">{copy.capabilitiesTitle}</h3>
+              <p className="type-caption type-muted mt-1">{copy.capabilitiesSubtitle}</p>
+            </div>
           </div>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={radarData}>
-                <PolarGrid stroke="#1e293b" />
-                <PolarAngleAxis dataKey="metric" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <Radar name="Last.fm" dataKey="lastfm" stroke="#e8334a" fill="#e8334a" fillOpacity={0.2} />
-                <Radar name="Spotify" dataKey="spotify" stroke="#1DB954" fill="#1DB954" fillOpacity={0.2} />
-                <Legend wrapperStyle={{ fontSize: 11, color: '#9ca3af', fontFamily: 'monospace' }} />
-              </RadarChart>
-            </ResponsiveContainer>
+          <div data-testid="source-capability-matrix" className="overflow-x-auto rounded-2xl border border-white/10">
+            <table className="w-full min-w-[420px] text-left text-xs">
+              <thead className="bg-white/5 font-mono uppercase tracking-wider text-gray-400">
+                <tr>
+                  <th className="px-4 py-3">{copy.metric}</th>
+                  <th className="px-4 py-3 text-[#e8334a]">Last.fm</th>
+                  <th className="px-4 py-3 text-[#1DB954]">Spotify</th>
+                </tr>
+              </thead>
+              <tbody>
+                {capabilityRows.map((row) => (
+                  <tr key={row.metric} className="border-t border-white/5">
+                    <th className="px-4 py-3 font-medium text-gray-300">{row.metric}</th>
+                    <td className="px-4 py-3 font-mono text-gray-400">{row.lastfm}</td>
+                    <td className="px-4 py-3 font-mono text-gray-400">{row.spotify}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-gray-500">
+            <GitMerge className="mt-0.5 h-4 w-4 shrink-0 text-cyberCyan" />
+            {pickLanguage(lang, {
+              en: 'Availability describes fields present in the active archive; it is not a platform quality ranking.',
+              es: 'La disponibilidad describe campos presentes en el archivo activo; no es un ranking de calidad entre plataformas.',
+              he: 'הזמינות מתארת אילו שדות קיימים בארכיון הפעיל; היא אינה דירוג איכות של הפלטפורמות.',
+            })}
+          </p>
         </div>
       </div>
 
@@ -372,8 +432,8 @@ export default function SpotifyVsLastfm({ data }: SpotifyVsLastfmProps) {
             </p>
             <p className="text-xs text-gray-300 font-sans leading-relaxed">
               {sourceNote}
-              {!spotifyDirectTotal && spotifyEstimatedTotal > 0 && (
-                <span> {t.spotifyVsLastfm.estimatedValuesDisclaimer}</span>
+              {!spotifyDirectTotal && (
+                <span> {pickLanguage(lang, { en: 'No Spotify count has been estimated.', es: 'No se ha estimado ningún conteo de Spotify.', he: 'לא הוערך מספר השמעות עבור Spotify.' })}</span>
               )}
             </p>
           </div>

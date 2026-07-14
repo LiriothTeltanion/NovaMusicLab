@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   BarChart2,
-  Calendar,
   ChevronLeft,
   ChevronRight,
   Compass,
@@ -20,6 +19,7 @@ import SectionNarrative from './SectionNarrative';
 import { SWAP_TRANSITION } from './chartKit';
 import { localizeDaypart, localizeEraLabel } from '../utils/localeText';
 import { localizeEraDescription } from '../utils/localizedDatasetText';
+import { directionFor, localeFor, pickLanguage, type Lang } from '../utils/i18n';
 import {
   deriveEraVisualIdentity,
   type EraMotif,
@@ -30,34 +30,49 @@ interface EraExplorerProps {
   data: MusicDnaData;
 }
 
-const ERA_INTERPRETATIONS: Record<number, string> = {
-  2015: 'Los cimientos: synthwave oscuro y metal técnico como primer lenguaje musical propio. Carpenter Brut abrió un portal hacia una estética cyberpunk que nunca abandonarías.',
-  2016: 'Un año de melodías pegajosas y glam. H.E.A.T y Tokio Hotel representan la búsqueda de conexión emocional a través de canciones brillantes y melancólicas.',
-  2017: 'El misterio domina. Ghost y The Midnight construyen un año de rock cinematográfico donde la atmósfera cuenta más que el riff.',
-  2018: 'Integración cultural y hard rock. El rock israelí local convive con la energía glam de Santa Cruz. Tu racha más larga: 68 días consecutivos empieza aquí.',
-  2019: 'Post-hardcore vulnerable. The Word Alive y Emarosa traen voces que sangran. Un año de catarsis emocional profunda.',
-  2020: 'Pandemia + caos musical. Bring Me the Horizon y Bilmuri mezclan metal con pop en bucles intensos. La diversidad baja: escuchas lo que te ancla.',
-  2021: 'El año cumbre. Post-hardcore y Blackgaze se cruzan en guitarras que brillan como heridas sanadas. Un capítulo de máxima intensidad.',
-  2022: 'La era Deafheaven se consolida. Las mañanas se vuelven el momento de mayor intensidad musical y la melancolía funciona como impulso.',
-  2023: 'Reinvención: pop-punk digital, energía renovada y sonidos más modernos. La exploración regresa y abre una nueva arquitectura emocional.',
-  2024: 'Intimidad y groove. Bilmuri guía un año de madurez reconstructiva: menos volumen, más profundidad y una fijación más concentrada.',
-  2025: 'Emo rap e introspección. Una búsqueda lírica intensa marca la recuperación y la reconstrucción artística del capítulo.',
-  2026: 'Energía fresca. The Kid LAROI y la nueva generación de rap-pop alternativo marcan el presente y el futuro de tu universo sonoro.',
-};
-
-const ERA_INTERPRETATIONS_EN: Record<number, string> = {
-  2015: 'The foundations: dark synthwave and technical metal as the first personal musical language. Carpenter Brut opened a portal toward a cyberpunk aesthetic you would never leave.',
-  2016: 'A year of catchy melodies and glam. H.E.A.T and Tokio Hotel represent the search for emotional connection through bright and melancholic songs.',
-  2017: 'Mystery dominates. Ghost and The Midnight build a year of cinematic rock where atmosphere matters more than the riff.',
-  2018: 'Cultural integration and hard rock. Local Israeli rock coexists with the glam energy of Santa Cruz. Your longest streak begins here.',
-  2019: 'Vulnerable post-hardcore. The Word Alive and Emarosa bring bleeding voices. A year of deep emotional catharsis.',
-  2020: 'Pandemic plus musical chaos. Bring Me the Horizon and Bilmuri blend metal with pop in intense loops. Diversity drops: you listen to what anchors you.',
-  2021: 'The peak chapter. Post-hardcore and Blackgaze meet in guitars that shine like healed wounds. A year of maximum archive intensity.',
-  2022: 'The Deafheaven era solidifies. Mornings become the moment of greatest musical intensity and melancholy becomes momentum.',
-  2023: 'Reinvention: digital pop-punk, renewed energy and more modern sounds. Exploration returns and opens a new emotional architecture.',
-  2024: 'Intimacy and groove. Bilmuri guides a year of reconstructive maturity: less volume, more depth and tighter fixation.',
-  2025: 'Emo rap and introspection. An intense lyrical search shapes a chapter of recovery and artistic reconstruction.',
-  2026: 'Fresh energy. The Kid LAROI and a new generation of modern alt-pop mark the present and future of your sonic universe.',
+const ERA_INTERPRETATIONS: Record<Lang, Record<number, string>> = {
+  es: {
+    2015: 'Los cimientos: synthwave oscuro y metal técnico como primer lenguaje musical propio. Carpenter Brut abrió un portal hacia una estética cyberpunk que nunca abandonarías.',
+    2016: 'Un año de melodías pegajosas y glam. H.E.A.T y Tokio Hotel representan la búsqueda de conexión emocional a través de canciones brillantes y melancólicas.',
+    2017: 'El misterio domina. Ghost y The Midnight construyen un año de rock cinematográfico donde la atmósfera cuenta más que el riff.',
+    2018: 'Integración cultural y hard rock. El rock israelí local convive con la energía glam de Santa Cruz. Tu racha más larga: 68 días consecutivos empieza aquí.',
+    2019: 'Post-hardcore vulnerable. The Word Alive y Emarosa traen voces que sangran. Un año de catarsis emocional profunda.',
+    2020: 'Pandemia + caos musical. Bring Me the Horizon y Bilmuri mezclan metal con pop en bucles intensos. La diversidad baja: escuchas lo que te ancla.',
+    2021: 'El año cumbre. Post-hardcore y Blackgaze se cruzan en guitarras que brillan como heridas sanadas. Un capítulo de máxima intensidad.',
+    2022: 'La era Deafheaven se consolida. Las mañanas se vuelven el momento de mayor intensidad musical y la melancolía funciona como impulso.',
+    2023: 'Reinvención: pop-punk digital, energía renovada y sonidos más modernos. La exploración regresa y abre una nueva arquitectura emocional.',
+    2024: 'Intimidad y groove. Bilmuri guía un año de madurez reconstructiva: menos volumen, más profundidad y una fijación más concentrada.',
+    2025: 'Emo rap e introspección. Una búsqueda lírica intensa marca la recuperación y la reconstrucción artística del capítulo.',
+    2026: 'Energía fresca. The Kid LAROI y la nueva generación de rap-pop alternativo marcan el presente y el futuro de tu universo sonoro.',
+  },
+  en: {
+    2015: 'The foundations: dark synthwave and technical metal as the first personal musical language. Carpenter Brut opened a portal toward a cyberpunk aesthetic you would never leave.',
+    2016: 'A year of catchy melodies and glam. H.E.A.T and Tokio Hotel represent the search for emotional connection through bright and melancholic songs.',
+    2017: 'Mystery dominates. Ghost and The Midnight build a year of cinematic rock where atmosphere matters more than the riff.',
+    2018: 'Cultural integration and hard rock. Local Israeli rock coexists with the glam energy of Santa Cruz. Your longest streak begins here.',
+    2019: 'Vulnerable post-hardcore. The Word Alive and Emarosa bring bleeding voices. A year of deep emotional catharsis.',
+    2020: 'Pandemic plus musical chaos. Bring Me the Horizon and Bilmuri blend metal with pop in intense loops. Diversity drops: you listen to what anchors you.',
+    2021: 'The peak chapter. Post-hardcore and Blackgaze meet in guitars that shine like healed wounds. A year of maximum archive intensity.',
+    2022: 'The Deafheaven era solidifies. Mornings become the moment of greatest musical intensity and melancholy becomes momentum.',
+    2023: 'Reinvention: digital pop-punk, renewed energy and more modern sounds. Exploration returns and opens a new emotional architecture.',
+    2024: 'Intimacy and groove. Bilmuri guides a year of reconstructive maturity: less volume, more depth and tighter fixation.',
+    2025: 'Emo rap and introspection. An intense lyrical search shapes a chapter of recovery and artistic reconstruction.',
+    2026: 'Fresh energy. The Kid LAROI and a new generation of modern alt-pop mark the present and future of your sonic universe.',
+  },
+  he: {
+    2015: 'היסודות: סינת׳ווייב אפל ומטאל טכני כשפה המוזיקלית האישית הראשונה שלך. Carpenter Brut פתח שער לאסתטיקת סייברפאנק שלא עזבת מאז.',
+    2016: 'שנה של מלודיות קליטות וגלאם. H.E.A.T ו־Tokio Hotel מייצגים את החיפוש אחר חיבור רגשי דרך שירים זוהרים ומלנכוליים.',
+    2017: 'המסתורין שולט. Ghost ו־The Midnight בונים שנה של רוק קולנועי, שבה האווירה חשובה יותר מהריף.',
+    2018: 'שילוב תרבויות והארד רוק. רוק ישראלי מקומי חי לצד אנרגיית הגלאם של Santa Cruz. כאן מתחיל הרצף הארוך ביותר שלך: 68 ימים ברציפות.',
+    2019: 'פוסט־הארדקור חשוף ופגיע. The Word Alive ו־Emarosa מביאים קולות מדממים. שנה של קתרזיס רגשי עמוק.',
+    2020: 'מגפה וכאוס מוזיקלי. Bring Me the Horizon ו־Bilmuri מערבבים מטאל ופופ בלופים אינטנסיביים. המגוון מצטמצם: אתה חוזר למה שמייצב אותך.',
+    2021: 'שנת השיא. פוסט־הארדקור ובלאקגייז נפגשים בגיטרות שזוהרות כמו פצעים שהחלימו. פרק בעוצמה מרבית.',
+    2022: 'עידן Deafheaven מתבסס. הבקרים הופכים לזמן ההאזנה העוצמתי ביותר, והמלנכוליה נהפכת לכוח מניע.',
+    2023: 'המצאה מחדש: פופ־פאנק דיגיטלי, אנרגיה מחודשת וצלילים עכשוויים יותר. הסקרנות חוזרת ופותחת מבנה רגשי חדש.',
+    2024: 'אינטימיות וגרוב. Bilmuri מוביל שנה של בגרות משקמת: פחות עוצמה, יותר עומק ומיקוד הדוק יותר.',
+    2025: 'אימו־ראפ והתבוננות פנימית. חיפוש לירי אינטנסיבי מעצב פרק של התאוששות ובנייה אמנותית מחדש.',
+    2026: 'אנרגיה רעננה. The Kid LAROI ודור חדש של ראפ־פופ אלטרנטיבי מסמנים את ההווה ואת העתיד של היקום הצלילי שלך.',
+  },
 };
 
 const VISUAL_COPY = {
@@ -80,6 +95,8 @@ const VISUAL_COPY = {
     navigation: 'Navegación anual',
     previous: 'Anterior',
     next: 'Siguiente',
+    previousAria: 'Era anterior',
+    nextAria: 'Era siguiente',
     swipe: 'Desliza para viajar entre eras',
   },
   en: {
@@ -101,15 +118,40 @@ const VISUAL_COPY = {
     navigation: 'Year navigation',
     previous: 'Previous',
     next: 'Next',
+    previousAria: 'Previous era',
+    nextAria: 'Next era',
     swipe: 'Swipe to travel across eras',
+  },
+  he: {
+    poster: 'פוסטר התקופה האישי',
+    archive: 'הארכיון המוזיקלי האישי',
+    atmosphere: 'אווירה',
+    pulse: 'דופק הארכיון',
+    intensity: 'עוצמת השנה',
+    exploration: 'חקר וגילוי',
+    fixation: 'מיקוד חוזר',
+    signal: 'האות הרגשי של התקופה',
+    signalNote: 'נגזר מנפח ההאזנה היחסי, מהמגוון ומשעות ההאזנה הדומיננטיות שלך. אינו מייצג BPM או מאפיינים אקוסטיים.',
+    artist: 'אמן הפרק',
+    track: 'שיר הדגל',
+    journey: 'מפת הפרקים',
+    empty: 'עדיין אין מספיק שנים כדי לבנות זהות חזותית לכל תקופה.',
+    selectEra: (year: number) => `בחירת התקופה של ${year}`,
+    timeline: 'בחירת פרק מציר הזמן',
+    navigation: 'ניווט בין שנים',
+    previous: 'הקודמת',
+    next: 'הבאה',
+    previousAria: 'התקופה הקודמת',
+    nextAria: 'התקופה הבאה',
+    swipe: 'החלק כדי לעבור בין תקופות',
   },
 };
 
 function daypartEmoji(daypart: string) {
-  const normalized = daypart.toLocaleLowerCase('es');
-  if (normalized.includes('mañana') || normalized.includes('morning')) return '🌅';
-  if (normalized.includes('tarde') || normalized.includes('afternoon')) return '🌞';
-  if (normalized.includes('madrugada') || normalized.includes('late night')) return '🌌';
+  const normalized = daypart.toLocaleLowerCase();
+  if (normalized.includes('לפנות בוקר') || normalized.includes('madrugada') || normalized.includes('late night')) return '🌌';
+  if (normalized.includes('mañana') || normalized.includes('morning') || normalized.includes('בוקר')) return '🌅';
+  if (normalized.includes('tarde') || normalized.includes('afternoon') || normalized.includes('אחר הצהריים')) return '🌞';
   return '🌙';
 }
 
@@ -258,10 +300,11 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const timelineScrollRef = useRef<HTMLDivElement | null>(null);
   const timelineTabsRef = useRef<Array<HTMLButtonElement | null>>([]);
   const touchOriginRef = useRef<{ x: number; y: number } | null>(null);
-  const { lang, tc, t } = useApp();
+  const { lang, t } = useApp();
   const reducedMotion = Boolean(useReducedMotion());
-  const L = lang === 'en';
-  const copy = L ? VISUAL_COPY.en : VISUAL_COPY.es;
+  const copy = pickLanguage(lang, VISUAL_COPY);
+  const locale = localeFor(lang);
+  const isRtl = directionFor(lang) === 'rtl';
   const maxPlays = useMemo(() => Math.max(0, ...eras.map(era => era.plays)), [eras]);
   const visualIdentities = useMemo(
     () => eras.map(era => deriveEraVisualIdentity(era, maxPlays)),
@@ -290,20 +333,17 @@ export default function EraExplorer({ data }: EraExplorerProps) {
       + activeRect.left
       - timelineRect.left
       - (timeline.clientWidth - activeRect.width) / 2;
+    const targetLeft = isRtl ? Math.min(0, left) : Math.max(0, left);
     if (typeof timeline.scrollTo === 'function') {
-      timeline.scrollTo({ left: Math.max(0, left), behavior: reducedMotion ? 'auto' : 'smooth' });
+      timeline.scrollTo({ left: targetLeft, behavior: reducedMotion ? 'auto' : 'smooth' });
     } else {
-      timeline.scrollLeft = Math.max(0, left);
+      timeline.scrollLeft = targetLeft;
     }
-  }, [reducedMotion, selectedIdx]);
+  }, [isRtl, reducedMotion, selectedIdx]);
 
   if (!currentEra || !identity) {
     return (
       <div className="space-y-6 animate-fade-in">
-        <div className="flex items-center gap-3">
-          <Calendar className="h-6 w-6" style={{ color: tc.c1 }} />
-          <h2 className="font-mono text-2xl font-bold uppercase tracking-wider text-white">{t.eraExplorer.title}</h2>
-        </div>
         <div className="glass-panel rounded-3xl border border-white/10 p-8 text-center text-sm text-gray-400">
           {copy.empty}
         </div>
@@ -311,11 +351,11 @@ export default function EraExplorer({ data }: EraExplorerProps) {
     );
   }
 
-  const fmtNum = (value: number) => Math.round(value).toLocaleString(L ? 'en-US' : 'es-ES');
+  const fmtNum = (value: number) => Math.round(value).toLocaleString(locale);
   const currentEraLabel = localizeEraLabel(currentEra.era_label, lang);
   const currentDaypartLabel = localizeDaypart(currentEra.dominant_daypart, lang);
-  const currentEraDescription = localizeEraDescription(currentEra, lang, L ? 'en-US' : 'es-ES');
-  const interpretation = (L ? ERA_INTERPRETATIONS_EN[currentEra.year] : ERA_INTERPRETATIONS[currentEra.year])
+  const currentEraDescription = localizeEraDescription(currentEra, lang, locale);
+  const interpretation = ERA_INTERPRETATIONS[lang][currentEra.year]
     ?? t.eraExplorer.fallbackInterpretation(
       currentEra.year,
       currentEra.top_artist,
@@ -323,8 +363,8 @@ export default function EraExplorer({ data }: EraExplorerProps) {
       currentEra.unique_artists,
       currentDaypartLabel.toLowerCase(),
     );
-  const localizedMood = L ? identity.mood.en : identity.mood.es;
-  const localizedEnergyBand = L ? identity.energyBand.en : identity.energyBand.es;
+  const localizedMood = identity.mood[lang];
+  const localizedEnergyBand = identity.energyBand[lang];
   // Rides the app-wide shared swap timing (chartKit) so era changes feel like
   // every other chart/panel swap in the museum.
   const posterTransition = reducedMotion ? { duration: 0 } : SWAP_TRANSITION;
@@ -335,9 +375,11 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   };
 
   const handleTimelineKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, idx: number) => {
-    const targetIdx = event.key === 'ArrowLeft'
+    const previousKey = isRtl ? 'ArrowRight' : 'ArrowLeft';
+    const nextKey = isRtl ? 'ArrowLeft' : 'ArrowRight';
+    const targetIdx = event.key === previousKey
       ? Math.max(0, idx - 1)
-      : event.key === 'ArrowRight'
+      : event.key === nextKey
         ? Math.min(eras.length - 1, idx + 1)
         : event.key === 'Home'
           ? 0
@@ -371,7 +413,8 @@ export default function EraExplorer({ data }: EraExplorerProps) {
     const deltaX = destination.clientX - origin.x;
     const deltaY = destination.clientY - origin.y;
     if (Math.abs(deltaX) < 52 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
-    selectRelativeEra(deltaX < 0 ? 1 : -1);
+    const relativeDirection = deltaX < 0 ? 1 : -1;
+    selectRelativeEra(isRtl ? -relativeDirection : relativeDirection);
   };
 
   const previousEra = eras[selectedIdx - 1];
@@ -380,13 +423,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Calendar className="h-6 w-6" style={{ color: tc.c1 }} />
-          <div>
-            <p className="mb-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-gray-500">{copy.journey}</p>
-            <h2 className="font-mono text-xl font-bold uppercase tracking-wider text-white sm:text-2xl">{t.eraExplorer.title}</h2>
-          </div>
-        </div>
+        <p className="type-label type-muted">🗓️ {copy.journey}</p>
         <nav
           aria-label={copy.navigation}
           className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch gap-2 sm:w-auto sm:min-w-[340px]"
@@ -395,11 +432,13 @@ export default function EraExplorer({ data }: EraExplorerProps) {
             type="button"
             onClick={() => selectRelativeEra(-1)}
             disabled={selectedIdx === 0}
-            aria-label={L ? 'Previous era' : 'Era anterior'}
+            aria-label={copy.previousAria}
             data-testid="era-previous"
-            className="flex min-h-11 min-w-0 touch-manipulation items-center justify-start gap-1.5 rounded-xl border border-cyan-500/20 bg-cyan-950/20 px-2.5 py-2 text-left text-cyberCyan transition-colors hover:border-cyberCyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-30 sm:px-3"
+            className="flex min-h-11 min-w-0 touch-manipulation items-center justify-start gap-1.5 rounded-xl border border-cyan-500/20 bg-cyan-950/20 px-2.5 py-2 text-start text-cyberCyan transition-colors hover:border-cyberCyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-30 sm:px-3"
           >
-            <ChevronLeft className="h-4 w-4 shrink-0" />
+            {isRtl
+              ? <ChevronRight className="h-4 w-4 shrink-0" />
+              : <ChevronLeft className="h-4 w-4 shrink-0" />}
             <span className="min-w-0 leading-none">
               <span className="block font-mono text-[7px] font-bold uppercase tracking-wider text-gray-500">{copy.previous}</span>
               <span className="mt-1 block truncate font-mono text-[11px] font-black">{previousEra?.year ?? '—'}</span>
@@ -415,15 +454,17 @@ export default function EraExplorer({ data }: EraExplorerProps) {
             type="button"
             onClick={() => selectRelativeEra(1)}
             disabled={selectedIdx === eras.length - 1}
-            aria-label={L ? 'Next era' : 'Era siguiente'}
+            aria-label={copy.nextAria}
             data-testid="era-next"
-            className="flex min-h-11 min-w-0 touch-manipulation items-center justify-end gap-1.5 rounded-xl border border-cyan-500/20 bg-cyan-950/20 px-2.5 py-2 text-right text-cyberCyan transition-colors hover:border-cyberCyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-30 sm:px-3"
+            className="flex min-h-11 min-w-0 touch-manipulation items-center justify-end gap-1.5 rounded-xl border border-cyan-500/20 bg-cyan-950/20 px-2.5 py-2 text-end text-cyberCyan transition-colors hover:border-cyberCyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 disabled:opacity-30 sm:px-3"
           >
             <span className="min-w-0 leading-none">
               <span className="block font-mono text-[7px] font-bold uppercase tracking-wider text-gray-500">{copy.next}</span>
               <span className="mt-1 block truncate font-mono text-[11px] font-black">{nextEra?.year ?? '—'}</span>
             </span>
-            <ChevronRight className="h-4 w-4 shrink-0" />
+            {isRtl
+              ? <ChevronLeft className="h-4 w-4 shrink-0" />
+              : <ChevronRight className="h-4 w-4 shrink-0" />}
           </button>
         </nav>
       </div>
@@ -491,7 +532,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={reducedMotion ? { opacity: 1 } : { opacity: 0, y: -12, scale: 0.99 }}
           transition={posterTransition}
-          className="relative isolate touch-pan-y overflow-hidden rounded-[1.5rem] border border-white/10 shadow-2xl sm:rounded-[2rem]"
+          className="nova-on-dark relative isolate touch-pan-y overflow-hidden rounded-[1.5rem] border border-white/10 shadow-2xl sm:rounded-[2rem]"
           style={{
             backgroundColor: identity.palette.deep,
             backgroundImage: [
@@ -538,12 +579,12 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                   <p className="font-mono text-[clamp(4.5rem,24vw,6.5rem)] font-black leading-[0.78] tracking-[-0.075em] text-white sm:text-[clamp(4rem,13vw,8.5rem)]">
                     {currentEra.year}
                   </p>
-                  <h3 id={`era-title-${currentEra.year}`} className="mt-4 max-w-3xl break-words text-[2rem] font-black leading-[0.95] tracking-tight text-white sm:mt-5 sm:text-5xl lg:text-6xl">
+                  <h3 id={`era-title-${currentEra.year}`} className="mt-4 max-w-3xl break-words text-[2rem] font-black leading-[0.95] tracking-tight text-white sm:mt-5 sm:text-5xl lg:text-6xl" dir="auto">
                     {currentEraLabel}
                   </h3>
                 </div>
 
-                <p className="max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base">{currentEraDescription}</p>
+                <p className="max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base" dir="auto">{currentEraDescription}</p>
 
                 <div className="flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1.5 text-xs font-bold text-gray-200 backdrop-blur-sm">
@@ -602,15 +643,15 @@ export default function EraExplorer({ data }: EraExplorerProps) {
 
                   <div className="absolute bottom-[3%] left-[25%] right-0 z-10 min-w-0 rounded-xl border border-white/10 bg-black/65 p-2.5 backdrop-blur-xl sm:left-[27%] sm:rounded-2xl sm:p-3">
                     <p className="font-mono text-[8px] font-black uppercase tracking-[0.16em] text-gray-500">{copy.track}</p>
-                    <p className="mt-1 truncate text-sm font-black text-white">{currentEra.top_track}</p>
-                    <p className="mt-0.5 truncate text-[11px] font-semibold" style={{ color: identity.palette.primary }}>{currentEra.top_artist}</p>
+                    <p className="mt-1 truncate text-sm font-black text-white" dir="auto">{currentEra.top_track}</p>
+                    <p className="mt-0.5 truncate text-[11px] font-semibold" dir="auto" style={{ color: identity.palette.primary }}>{currentEra.top_artist}</p>
                   </div>
                 </div>
 
                 <div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3 sm:gap-3">
                   <div className="rounded-2xl border border-white/10 bg-black/25 p-3 backdrop-blur-sm">
                     <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-gray-500">{copy.artist}</p>
-                    <p className="mt-1 truncate text-sm font-black text-white">{currentEra.top_artist}</p>
+                    <p className="mt-1 truncate text-sm font-black text-white" dir="auto">{currentEra.top_artist}</p>
                   </div>
                   <div className="rounded-2xl border border-white/10 bg-black/25 p-3 backdrop-blur-sm">
                     <p className="font-mono text-[8px] font-bold uppercase tracking-[0.16em] text-gray-500">{t.eraExplorer.statPlays}</p>
@@ -635,12 +676,12 @@ export default function EraExplorer({ data }: EraExplorerProps) {
       </AnimatePresence>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)]">
-        <div className="glass-panel rounded-3xl border-l-4 p-6 sm:p-8" style={{ borderLeftColor: identity.palette.primary }}>
+        <div className="glass-panel rounded-3xl border-s-4 p-6 sm:p-8" style={{ borderInlineStartColor: identity.palette.primary }}>
           <h4 className="mb-3 flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider" style={{ color: identity.palette.primary }}>
             <Sparkles className="h-4 w-4" />
             {t.eraExplorer.interpretiveReading}
           </h4>
-          <p className="text-sm italic leading-relaxed text-gray-300 sm:text-base">“{interpretation}”</p>
+          <p className="text-sm italic leading-relaxed text-gray-300 sm:text-base" dir="auto">“{interpretation}”</p>
           <div className="mt-6 flex items-center justify-between gap-4 border-t border-white/5 pt-4">
             <span className="font-mono text-[9px] uppercase tracking-widest text-gray-500">{t.eraExplorer.chapterOf(selectedIdx + 1, eras.length, currentEra.year)}</span>
             <SunMedium className="h-4 w-4" style={{ color: identity.palette.secondary }} />
@@ -690,7 +731,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                 onClick={() => setSelectedYear(era.year)}
                 aria-label={copy.selectEra(era.year)}
                 aria-pressed={active}
-                className="group relative min-h-28 overflow-hidden rounded-2xl border p-3 text-left transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 motion-reduce:transform-none"
+                className="group relative min-h-28 overflow-hidden rounded-2xl border p-3 text-start transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 motion-reduce:transform-none"
                 style={{
                   borderColor: active ? eraIdentity.palette.primary : 'rgba(255,255,255,0.07)',
                   backgroundColor: eraIdentity.palette.deep,
@@ -703,7 +744,7 @@ export default function EraExplorer({ data }: EraExplorerProps) {
                 <p className="relative font-mono text-sm font-black" style={{ color: eraIdentity.palette.primary }}>{era.year}</p>
                 <p className="relative mt-1 line-clamp-2 text-[10px] font-bold leading-tight text-gray-200">{localizeEraLabel(era.era_label, lang)}</p>
                 <div className="relative mt-3 flex items-center justify-between gap-2">
-                  <span className="truncate font-mono text-[8px] text-gray-500">{era.top_artist}</span>
+                  <span className="truncate font-mono text-[8px] text-gray-500" dir="auto">{era.top_artist}</span>
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: eraIdentity.palette.secondary, boxShadow: `0 0 8px ${eraIdentity.palette.secondary}` }} />
                 </div>
               </button>

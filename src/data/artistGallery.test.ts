@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import gallery from './artist_gallery.json';
+import artistImages from './artist_images.json';
 import knowledge from './offline_artist_knowledge.json';
 import { getDailyPhotoIndex } from '../utils/artistGallery';
 
 const entries = gallery as Record<string, Array<{ url: string; source: string }>>;
+const primaryEntries = artistImages as Record<string, { thumb: string; source: string }>;
 const VALID_SOURCES = new Set(['wikipedia', 'spotify', 'deezer', 'wikimedia']);
 
 /**
@@ -81,6 +83,31 @@ describe('artist_gallery.json stability', () => {
     expect(slaves[0]?.url).toContain('Slaves_American_band.jpg');
     for (const photo of slaves) {
       expect(photo.url).not.toMatch(/fileicon|Newly_released_Slaves|Cargo_of_Newly_released_Slaves|Slavery/i);
+    }
+  });
+
+  it('keeps the newly canonicalized artists backed by verified Commons media', () => {
+    const verifiedPrimaryFiles = {
+      'amr diab': 'Amr_Abdul_Baset_Diab.jpg',
+      'sigur rós': 'Sigur_R%C3%B3s_at_the_Orpheum_Theatre',
+      'aviv geffen': 'AvivGeffen.jpg',
+    };
+
+    for (const [artist, fileToken] of Object.entries(verifiedPrimaryFiles)) {
+      const primary = primaryEntries[artist];
+      const photos = entries[artist] ?? [];
+
+      expect(primary, `${artist} primary image`).toBeDefined();
+      expect(primary.source, `${artist} primary source`).toBe('wikimedia');
+      expect(primary.thumb, `${artist} verified Commons file`).toContain(fileToken);
+      expect(photos.length, `${artist} gallery depth`).toBeGreaterThanOrEqual(3);
+      expect(photos[0], `${artist} gallery continuity`).toEqual({
+        url: primary.thumb,
+        source: primary.source,
+      });
+      for (const photo of photos) {
+        expect(new URL(photo.url).hostname, `${artist} open-media host`).toBe('upload.wikimedia.org');
+      }
     }
   });
 });

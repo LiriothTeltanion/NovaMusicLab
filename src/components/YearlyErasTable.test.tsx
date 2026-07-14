@@ -61,4 +61,28 @@ describe('YearlyErasTable', () => {
     await user.click(screen.getByText('Artista B'));
     expect(onSelectYear).toHaveBeenCalledWith(2021);
   });
+
+  it('exposes the selected row and supports Enter and Space selection', async () => {
+    const user = userEvent.setup();
+    const onSelectYear = vi.fn();
+    render(
+      <AppProvider>
+        <YearlyErasTable eras={eras} selectedYear={2020} onSelectYear={onSelectYear} />
+      </AppProvider>
+    );
+
+    const selectedRow = screen.getByRole('row', { name: /2020/ });
+    const nextRow = screen.getByRole('row', { name: /2021/ });
+    expect(selectedRow).toHaveAttribute('aria-selected', 'true');
+    expect(nextRow).toHaveAttribute('aria-selected', 'false');
+
+    nextRow.focus();
+    await user.keyboard('{Enter}');
+    expect(onSelectYear).toHaveBeenLastCalledWith(2021);
+
+    const lastRow = screen.getByRole('row', { name: /2022/ });
+    lastRow.focus();
+    await user.keyboard(' ');
+    expect(onSelectYear).toHaveBeenLastCalledWith(2022);
+  });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import Surface from './Surface';
 
 export interface QuickReadItem {
   icon: React.ReactNode;
@@ -13,34 +14,43 @@ interface SectionQuickReadProps {
   items: QuickReadItem[];
 }
 
+const MotionSurface = motion.create(Surface);
+
 export default function SectionQuickRead({ items }: SectionQuickReadProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <section role="list" className="grid grid-cols-1 gap-3 md:grid-cols-3 sm:gap-4">
       {items.map((item, index) => (
-        <motion.article
+        <MotionSurface
+          as="article"
+          role="listitem"
+          variant="analysis"
           key={`${item.label}-${item.title}`}
-          initial={{ opacity: 0, y: 14 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: index * 0.06 }}
-          className="glass-panel rounded-2xl border p-5 relative overflow-hidden group"
+          transition={{ duration: reduceMotion ? 0 : 0.3, delay: reduceMotion ? 0 : index * 0.05 }}
+          className="relative overflow-hidden rounded-xl p-4 sm:rounded-2xl sm:p-5"
           style={{ borderColor: `${item.color}25` }}
         >
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-            style={{ background: `radial-gradient(circle at top right, ${item.color}12, transparent 68%)` }} />
-          <div className="relative z-10 space-y-3">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-50"
+            style={{ background: `radial-gradient(circle at top right, ${item.color}12, transparent 68%)` }}
+          />
+          <div className="relative z-10 space-y-2.5">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border"
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg border sm:h-8 sm:w-8 sm:rounded-xl"
                 style={{ color: item.color, borderColor: `${item.color}35`, backgroundColor: `${item.color}10` }}>
                 {item.icon}
               </span>
-              <p className="text-[10px] font-mono font-black uppercase tracking-widest" style={{ color: item.color }}>
+              <p className="type-label" style={{ color: item.color }}>
                 {item.label}
               </p>
             </div>
-            <h3 className="text-base font-black text-white leading-tight">{item.title}</h3>
-            <p className="text-xs text-gray-400 leading-relaxed">{item.body}</p>
+            <h3 className="type-body type-strong font-bold leading-snug">{item.title}</h3>
+            <p className="type-caption type-muted">{item.body}</p>
           </div>
-        </motion.article>
+        </MotionSurface>
       ))}
     </section>
   );

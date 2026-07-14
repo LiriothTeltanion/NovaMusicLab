@@ -8,6 +8,7 @@ import FlagArt from './FlagArt';
 import InteractiveGlobe from './InteractiveGlobe';
 import { getCulturalSceneTags, localizeCountryName } from '../utils/localizedDatasetText';
 import { getArtistOriginGeography } from '../utils/analytics';
+import { directionFor, localeFor, pickLanguage, type Lang } from '../utils/i18n';
 
 interface CulturalMapProps {
   data: MusicDnaData;
@@ -18,81 +19,98 @@ interface CountryMetaLocale {
   scene: string;
 }
 
-const COUNTRY_META: Record<string, { flag: string; color: string; es: CountryMetaLocale; en: CountryMetaLocale }> = {
+type CountryMeta = { flag: string; color: string } & Record<Lang, CountryMetaLocale>;
+
+const COUNTRY_META: Record<string, CountryMeta> = {
   'United States': {
     flag: '🇺🇸 US', color: '#3b82f6',
     es: { lang: 'Inglés', scene: 'Post-Hardcore · Metalcore · Emo Rap' },
     en: { lang: 'English', scene: 'Post-Hardcore · Metalcore · Emo Rap' },
+    he: { lang: 'אנגלית', scene: 'פוסט־הארדקור · מטאלקור · אימו־ראפ' },
   },
   'United Kingdom': {
     flag: '🇬🇧 UK', color: '#ef4444',
     es: { lang: 'Inglés', scene: 'Metalcore · Alt-Rock · Shoegaze' },
     en: { lang: 'English', scene: 'Metalcore · Alt-Rock · Shoegaze' },
+    he: { lang: 'אנגלית', scene: 'מטאלקור · אלט־רוק · שוגייז' },
   },
   'Sweden': {
     flag: '🇸🇪 SE', color: '#facc15',
     es: { lang: 'Inglés/Sueco', scene: 'Hard Rock · AOR · Death Melódico' },
     en: { lang: 'English/Swedish', scene: 'Hard Rock · AOR · Melodic Death' },
+    he: { lang: 'אנגלית/שוודית', scene: "הארד רוק · AOR · דת' מטאל מלודי" },
   },
   'Finland': {
     flag: '🇫🇮 FI', color: '#06b6d4',
     es: { lang: 'Finés/Inglés', scene: 'Glam Rock · Death Metal Melódico' },
     en: { lang: 'Finnish/English', scene: 'Glam Rock · Melodic Death Metal' },
+    he: { lang: 'פינית/אנגלית', scene: "גלאם רוק · דת' מטאל מלודי" },
   },
   'Germany': {
     flag: '🇩🇪 DE', color: '#f97316',
     es: { lang: 'Alemán/Inglés', scene: 'Power Metal · Synth-Pop · Industrial' },
     en: { lang: 'German/English', scene: 'Power Metal · Synth-Pop · Industrial' },
+    he: { lang: 'גרמנית/אנגלית', scene: "פאוור מטאל · סינת'־פופ · אינדסטריאל" },
   },
   'France': {
     flag: '🇫🇷 FR', color: '#8b5cf6',
     es: { lang: 'Francés/Inglés', scene: 'Darksynth · Shoegaze · Ambient' },
     en: { lang: 'French/English', scene: 'Darksynth · Shoegaze · Ambient' },
+    he: { lang: 'צרפתית/אנגלית', scene: "דארקסינת' · שוגייז · אמביינט" },
   },
   'Israel': {
     flag: '🇮🇱 IL', color: '#10b981',
     es: { lang: 'Hebreo/Inglés', scene: 'Rock Israelí · Hip-Hop · Punk' },
     en: { lang: 'Hebrew/English', scene: 'Israeli Rock · Hip-Hop · Punk' },
+    he: { lang: 'עברית/אנגלית', scene: 'רוק ישראלי · היפ־הופ · פאנק' },
   },
   'Norway': {
     flag: '🇳🇴 NO', color: '#a78bfa',
     es: { lang: 'Noruego/Inglés', scene: 'EDM · Metal · Black Metal' },
     en: { lang: 'Norwegian/English', scene: 'EDM · Metal · Black Metal' },
+    he: { lang: 'נורווגית/אנגלית', scene: 'EDM · מטאל · בלאק מטאל' },
   },
   'New Zealand': {
     flag: '🇳🇿 NZ', color: '#34d399',
     es: { lang: 'Inglés', scene: 'Indie · Phonk · Pop de Internet' },
     en: { lang: 'English', scene: 'Indie · Phonk · Internet Pop' },
+    he: { lang: 'אנגלית', scene: 'אינדי · Phonk · פופ אינטרנטי' },
   },
   'Puerto Rico': {
     flag: '🇵🇷 PR', color: '#fb923c',
     es: { lang: 'Español', scene: 'Trap Latino · Reggaeton' },
     en: { lang: 'Spanish', scene: 'Latin Trap · Reggaeton' },
+    he: { lang: 'ספרדית', scene: 'טראפ לטיני · רגאטון' },
   },
   'Venezuela': {
     flag: '🇻🇪 VE', color: '#f43f5e',
     es: { lang: 'Español', scene: 'Rock Venezolano · Pop Latino' },
     en: { lang: 'Spanish', scene: 'Venezuelan Rock · Latin Pop' },
+    he: { lang: 'ספרדית', scene: 'רוק ונצואלי · פופ לטיני' },
   },
   'Dominican Republic': {
     flag: '🇩🇴 DO', color: '#ec4899',
     es: { lang: 'Español', scene: 'Ritmos Caribeños' },
     en: { lang: 'Spanish', scene: 'Caribbean Rhythms' },
+    he: { lang: 'ספרדית', scene: 'מקצבים קריביים' },
   },
   'Romania': {
     flag: '🇷🇴 RO', color: '#fb923c',
     es: { lang: 'Rumano/Inglés', scene: 'Metal/Rock Alternativo · Electro-Pop' },
     en: { lang: 'Romanian/English', scene: 'Metal/Alternative Rock · Electro-Pop' },
+    he: { lang: 'רומנית/אנגלית', scene: 'מטאל/רוק אלטרנטיבי · אלקטרו־פופ' },
   },
   'Brazil': {
     flag: '🇧🇷 BR', color: '#34d399',
     es: { lang: 'Portugués/Inglés', scene: 'Post-Hardcore Digital · Rock Alternativo' },
     en: { lang: 'Portuguese/English', scene: 'Digital Post-Hardcore · Alternative Rock' },
+    he: { lang: 'פורטוגזית/אנגלית', scene: 'פוסט־הארדקור דיגיטלי · רוק אלטרנטיבי' },
   },
   'Spain': {
     flag: '🇪🇸 ES', color: '#f59e0b',
     es: { lang: 'Español', scene: 'Folk Metal · Metal Juglaresco' },
     en: { lang: 'Spanish', scene: 'Folk Metal · Minstrel Metal' },
+    he: { lang: 'ספרדית', scene: 'פולק מטאל · מטאל מינסטרלים' },
   },
 };
 
@@ -110,7 +128,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
   const listeningCountries = data.countries.filter(c => c.country && c.country !== 'Unknown' && c.plays > 0);
   const maxPlays = Math.max(...countries.map(c => c.plays), 1);
   const sceneTags = getCulturalSceneTags(lang);
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const originScopeNote = originGeography.isCompleteHistory
     ? t.cultural.originScopeFull(
         originGeography.knownOriginPlays.toLocaleString(locale),
@@ -129,7 +147,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
 
     countries.forEach(c => {
       const meta = COUNTRY_META[c.country];
-      const langStr = meta ? meta[lang].lang : (lang === 'es' ? 'Otros' : 'Other');
+      const langStr = meta
+        ? meta[lang].lang
+        : pickLanguage(lang, { es: 'Otros', en: 'Other', he: 'אחר' });
       langGroup[langStr] = (langGroup[langStr] || 0) + c.plays;
     });
 
@@ -158,12 +178,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
   };
 
   return (
-    <div className="space-y-10 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <Globe className="w-6 h-6 text-cyberCyan" />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.cultural.title}</h2>
-      </div>
-
+    <div data-testid="cultural-map" className="min-w-0 space-y-10 animate-fade-in" dir={directionFor(lang)}>
       <SectionNarrative content={t.deepNarratives.cultural} accent="c4" />
 
       {/* Hero narrative */}
@@ -200,12 +215,17 @@ export default function CulturalMap({ data }: CulturalMapProps) {
           {originScopeNote}
         </p>
         {countries.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div
+            data-testid="cultural-country-grid"
+            className="grid min-w-0 gap-4"
+            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 166px), 1fr))' }}
+          >
             {countries.map((c, idx) => {
               const meta = COUNTRY_META[c.country] ?? {
                 flag: '🌐', color: '#6b7280',
                 es: { lang: 'Varios', scene: 'Variado' },
                 en: { lang: 'Various', scene: 'Varied' },
+                he: { lang: 'מגוון', scene: 'סצנה מגוונת' },
               };
               const localeMeta = meta[lang];
               const pct = Math.round((c.plays / maxPlays) * 100);
@@ -213,12 +233,15 @@ export default function CulturalMap({ data }: CulturalMapProps) {
               return (
                 <motion.button
                   key={c.country}
+                  data-testid="cultural-country-card"
                   custom={idx}
                   variants={cardVariants}
                   initial="initial"
                   animate="animate"
                   onClick={() => setSelected(isSelected ? null : c.country)}
-                  className={`glass-panel p-4 rounded-2xl text-left transition-all border-2 w-full ${isSelected ? 'scale-[1.02]' : ''}`}
+                  aria-pressed={isSelected}
+                  aria-label={`${localizeCountryName(c.country, lang)} · ${c.plays.toLocaleString(locale)} · ${localeMeta.lang} · ${localeMeta.scene}`}
+                  className={`glass-panel min-h-32 min-w-0 w-full rounded-2xl border-2 p-4 text-start transition-all ${isSelected ? 'scale-[1.015]' : ''}`}
                   style={{ borderColor: isSelected ? meta.color : 'transparent' }}
                 >
                   <div className="flex items-center justify-between mb-3">
@@ -228,11 +251,11 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                     </div>
                     <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full"
                       style={{ color: meta.color, backgroundColor: `${meta.color}15` }}>
-                      {c.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}
+                      {c.plays.toLocaleString(locale)}
                     </span>
                   </div>
-                  <p className="text-sm font-bold text-white leading-tight">{localizeCountryName(c.country, lang)}</p>
-                  <p className="text-[10px] text-gray-500 font-mono mt-0.5">{localeMeta.lang}</p>
+                  <p className="break-words text-sm font-bold leading-tight text-white [overflow-wrap:anywhere]">{localizeCountryName(c.country, lang)}</p>
+                  <p className="mt-0.5 break-words text-xs font-mono text-gray-500 [overflow-wrap:anywhere]">{localeMeta.lang}</p>
                   <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
                     <motion.div className="h-full rounded-full"
                       style={{ backgroundColor: meta.color }}
@@ -241,10 +264,6 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                       transition={{ duration: 0.8, delay: idx * 0.05, ease: 'easeOut' }}
                     />
                   </div>
-                  {isSelected && (
-                    <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                      className="text-[10px] text-gray-300 mt-2.5 leading-relaxed">{localeMeta.scene}</motion.p>
-                  )}
                 </motion.button>
               );
             })}
@@ -257,9 +276,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
       </div>
 
       {/* Interactive Globe & Language distribution side-by-side */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1.5fr)] gap-6 items-stretch">
+      <div data-testid="cultural-analysis-grid" className="grid min-w-0 grid-cols-1 items-stretch gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1.5fr)]">
         {/* Globe Widget */}
-        <div className="glass-panel p-6 rounded-3xl flex flex-col items-center justify-center relative overflow-hidden">
+        <div className="glass-panel relative flex min-w-0 flex-col items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6">
           <div className="absolute top-0 right-0 w-32 h-32 bg-cyberCyan/5 blur-[50px] rounded-full pointer-events-none" />
           <div className="flex items-center gap-2 mb-4 self-start">
             <Globe className="w-5 h-5 text-cyberCyan" />
@@ -277,7 +296,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         </div>
 
         {/* Language distribution */}
-        <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between">
+        <div className="glass-panel flex min-w-0 flex-col justify-between rounded-3xl p-4 sm:p-6">
           <div>
             <div className="flex items-center gap-2 mb-5">
               <Languages className="w-5 h-5 text-cyberPink" />
@@ -286,8 +305,8 @@ export default function CulturalMap({ data }: CulturalMapProps) {
             <div className="space-y-4">
               {languageData.map(({ label, pct, pctLabel, color }, i) => (
                 <div key={label} className="space-y-1.5">
-                  <div className="flex justify-between text-xs font-mono">
-                    <span className="text-gray-300 font-bold">{label}</span>
+                  <div className="flex min-w-0 justify-between gap-3 text-xs font-mono">
+                    <span className="min-w-0 break-words font-bold text-gray-300 [overflow-wrap:anywhere]">{label}</span>
                     <span style={{ color }} className="font-bold">{pctLabel}</span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">

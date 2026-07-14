@@ -6,6 +6,7 @@ import { createServer } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const defaultOutputPath = path.join(repoRoot, 'src', 'data', 'music_dna_compiled.json');
+const defaultGenreCatalogOutputPath = path.join(repoRoot, 'src', 'data', 'music_dna_genre_catalog.json');
 
 function writeLine(message = '') {
   process.stdout.write(`${message}\n`);
@@ -14,7 +15,7 @@ function writeLine(message = '') {
 function printUsage() {
   writeLine(`
 Usage:
-  npm run compile:data -- --source-dir <export-directory> [--output <dataset-path>]
+  npm run compile:data -- --source-dir <export-directory> [--output <dataset-path>] [--catalog-output <catalog-path>]
 
 The export directory can contain any combination of:
   kevincusnir.csv
@@ -38,6 +39,9 @@ function parseArguments(args) {
 
   let sourceDir = '';
   let outputPath = defaultOutputPath;
+  let genreCatalogOutputPath = defaultGenreCatalogOutputPath;
+  let outputWasCustomized = false;
+  let catalogOutputWasCustomized = false;
 
   for (let index = 0; index < args.length; index += 1) {
     const argument = args[index];
@@ -47,6 +51,11 @@ function parseArguments(args) {
       index += 1;
     } else if (argument === '--output') {
       outputPath = path.resolve(process.cwd(), optionValue(args, index, argument));
+      outputWasCustomized = true;
+      index += 1;
+    } else if (argument === '--catalog-output') {
+      genreCatalogOutputPath = path.resolve(process.cwd(), optionValue(args, index, argument));
+      catalogOutputWasCustomized = true;
       index += 1;
     } else {
       throw new Error(`Unknown option: ${argument}`);
@@ -61,7 +70,13 @@ function parseArguments(args) {
     throw new Error(`Source directory does not exist or is not a directory: ${sourceDir}`);
   }
 
-  return { help: false, sourceDir, outputPath };
+  if (outputWasCustomized && !catalogOutputWasCustomized) {
+    const extension = path.extname(outputPath);
+    const basename = path.basename(outputPath, extension);
+    genreCatalogOutputPath = path.join(path.dirname(outputPath), `${basename}_genre_catalog${extension || '.json'}`);
+  }
+
+  return { help: false, sourceDir, outputPath, genreCatalogOutputPath };
 }
 
 function readOptionalFile(filePath, label) {
@@ -129,6 +144,26 @@ async function compileData(options) {
 
   const compiledData = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
   const metrics = compiledData.core_metrics;
+  const genreCatalog = compiledData.artist_genre_catalog;
+  if (!Array.isArray(genreCatalog)) {
+    throw new Error('The shared parser did not produce artist_genre_catalog.');
+  }
+
+  const catalogKeys = new Set(genreCatalog.map(artist => artist.artistKey));
+  const catalogPlays = genreCatalog.reduce((sum, artist) => sum + artist.plays, 0);
+  if (genreCatalog.length !== metrics.unique_artists || catalogKeys.size !== genreCatalog.length) {
+    throw new Error(`Genre catalog identity invariant failed: ${genreCatalog.length} rows, ${catalogKeys.size} unique keys, ${metrics.unique_artists} expected artists.`);
+  }
+  if (catalogPlays !== metrics.total_plays) {
+    throw new Error(`Genre catalog play invariant failed: ${catalogPlays} catalog plays, ${metrics.total_plays} expected.`);
+  }
+
+  // The full catalog is intentionally emitted as its own lazy asset. Keeping it
+  // out of music_dna_compiled.json prevents every dashboard consumer from
+  // parsing thousands of long-tail artist rows before the genre studio opens.
+  const { artist_genre_catalog: _catalog, ...dashboardData } = compiledData;
+  const unclassified = genreCatalog.filter(artist => artist.source === 'unclassified');
+  const unclassifiedPlays = unclassified.reduce((sum, artist) => sum + artist.plays, 0);
 
   writeLine('\n=== COMPILATION SUMMARY ===');
   writeLine(`- Project Name:       ${compiledData.project}`);
@@ -139,10 +174,15 @@ async function compileData(options) {
   writeLine(`- Listening Hours:    ${Math.round(metrics.listening_hours).toLocaleString()} hours`);
   writeLine(`- Top Artist:         ${compiledData.top_artists[0]?.name ?? 'N/A'} (${compiledData.top_artists[0]?.plays ?? 0} plays)`);
   writeLine(`- Top Track:          ${compiledData.top_tracks[0]?.title ?? 'N/A'} by ${compiledData.top_tracks[0]?.artist ?? 'N/A'} (${compiledData.top_tracks[0]?.plays ?? 0} plays)`);
+  writeLine(`- Genre Catalog:      ${genreCatalog.length.toLocaleString()} artists (${catalogPlays.toLocaleString()} plays)`);
+  writeLine(`- Unclassified:       ${unclassified.length.toLocaleString()} artists (${unclassifiedPlays.toLocaleString()} plays)`);
 
   fs.mkdirSync(path.dirname(options.outputPath), { recursive: true });
-  fs.writeFileSync(options.outputPath, `${JSON.stringify(compiledData, null, 2)}\n`, 'utf8');
+  fs.mkdirSync(path.dirname(options.genreCatalogOutputPath), { recursive: true });
+  fs.writeFileSync(options.outputPath, `${JSON.stringify(dashboardData, null, 2)}\n`, 'utf8');
+  fs.writeFileSync(options.genreCatalogOutputPath, `${JSON.stringify(genreCatalog, null, 2)}\n`, 'utf8');
   writeLine(`\n[SUCCESS] Compiled dataset written to: ${options.outputPath}`);
+  writeLine(`[SUCCESS] Genre catalog written to: ${options.genreCatalogOutputPath}`);
 }
 
 async function main() {

@@ -51,6 +51,31 @@ describe('MuseumChapterHeader', () => {
     expect(screen.queryByText('Listenerland')).not.toBeInTheDocument();
   });
 
+  it('renders the chapter, metrics and accessibility copy in Hebrew RTL', () => {
+    render(<MuseumChapterHeader activeTab="dashboard" data={data} lang="he" />);
+
+    const chapter = screen.getByTestId('museum-chapter');
+    expect(chapter).toHaveAttribute('dir', 'rtl');
+    expect(screen.getByRole('heading', { name: 'חדר הבקרה', level: 1 })).toBeInTheDocument();
+    expect(screen.getByText('פרק 01', { exact: false })).toBeInTheDocument();
+    expect(screen.getByLabelText('אותות מהארכיון')).toBeInTheDocument();
+    expect(screen.getByText('סך ההשמעות')).toBeInTheDocument();
+    expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('he-IL'))).toHaveLength(1);
+  });
+
+  it('localizes a synthetic dominant genre without changing the dataset key', () => {
+    const fixture: MusicDnaData = {
+      ...data,
+      top_genres: [{ name: 'Unclassified', plays: data.core_metrics.total_plays }],
+    };
+
+    render(<MuseumChapterHeader activeTab="personality" data={fixture} lang="he" />);
+
+    expect(screen.getByText('לא מסווג')).toBeInTheDocument();
+    expect(screen.queryByText('Unclassified')).not.toBeInTheDocument();
+    expect(fixture.top_genres[0].name).toBe('Unclassified');
+  });
+
   it('keeps every museum room visually distinct and leaves hero/upload unduplicated', () => {
     const motifs = new Set<string>();
     const { rerender } = render(<MuseumChapterHeader activeTab={MUSEUM_CHAPTER_TABS[0]} data={data} lang="es" />);

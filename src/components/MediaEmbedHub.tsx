@@ -22,7 +22,6 @@ const COPY = {
     officialPlayer: 'Reproductor oficial',
     noEmbedTitle: 'Sin embed verificado todavía',
     noEmbedBody: 'La app no aloja audio ni descarga música. Usa botones oficiales para abrir Spotify o YouTube y, cuando añadamos una URL verificada, aquí aparecerá el reproductor embebido.',
-    launch: 'Abrir',
     legalNote: 'Legal: solo iframes oficiales, enlaces públicos y búsquedas externas. Nova Music Lab no guarda ni redistribuye audio.',
     quickActions: 'Accesos rápidos',
     sourceStatus: 'Estado de fuentes',
@@ -40,6 +39,10 @@ const COPY = {
     liveSearch: 'Live',
     verifiedSeed: 'fuente curada',
     universalCoverage: 'cobertura para todos',
+    launchProvider: (provider: string) => `Abrir ${provider}`,
+    playerTitle: (artist: string, provider: string) => `${artist} — reproductor oficial de ${provider}`,
+    openActionLabel: (action: string, artist: string, provider: string) =>
+      `Abrir ${action} de ${artist} en ${provider} (pestaña nueva)`,
   },
   en: {
     title: 'Legal listening station',
@@ -51,7 +54,6 @@ const COPY = {
     officialPlayer: 'Official player',
     noEmbedTitle: 'No verified embed yet',
     noEmbedBody: 'The app does not host audio or download music. Use the official buttons to open Spotify or YouTube; once a verified URL is added, the embedded player appears here.',
-    launch: 'Open',
     legalNote: 'Legal: official iframes, public links and external searches only. Nova Music Lab does not store or redistribute audio.',
     quickActions: 'Quick actions',
     sourceStatus: 'Source status',
@@ -69,18 +71,54 @@ const COPY = {
     liveSearch: 'Live',
     verifiedSeed: 'curated source',
     universalCoverage: 'coverage for all',
+    launchProvider: (provider: string) => `Open ${provider}`,
+    playerTitle: (artist: string, provider: string) => `${artist} — official ${provider} player`,
+    openActionLabel: (action: string, artist: string, provider: string) =>
+      `Open ${artist} ${action} on ${provider} (new tab)`,
+  },
+  he: {
+    title: 'תחנת האזנה חוקית',
+    subtitle: 'מפעילה נגנים רשמיים כשהם זמינים, ופותחת חיפושים חוקיים כשעדיין אין קישור מאומת.',
+    spotify: 'Spotify',
+    youtube: 'YouTube',
+    verifiedEmbed: 'נגן מאומת',
+    legalFallback: 'חיפוש חוקי',
+    officialPlayer: 'נגן רשמי',
+    noEmbedTitle: 'עדיין אין נגן מאומת',
+    noEmbedBody: 'האפליקציה אינה מארחת קובצי שמע ואינה מורידה מוזיקה. אפשר להשתמש בכפתורים הרשמיים כדי לפתוח את Spotify או YouTube; כשיתווסף קישור מאומת, הנגן יופיע כאן.',
+    legalNote: 'שימוש חוקי בלבד: נגנים רשמיים, קישורים ציבוריים וחיפושים חיצוניים. Nova Music Lab אינה שומרת או מפיצה קובצי שמע.',
+    quickActions: 'פעולות מהירות',
+    sourceStatus: 'מצב המקורות',
+    spotifySource: 'מקור ב־Spotify',
+    youtubeSource: 'מקור ב־YouTube',
+    actionCoverage: 'פעולות זמינות',
+    embedPolicy: 'מדיניות הנגנים',
+    verifiedLink: 'קישור מאומת',
+    searchOnly: 'חיפוש בלבד',
+    officialIframe: 'נגן רשמי',
+    artistSearch: 'אמן',
+    trackSearch: 'שיר מוביל',
+    albumSearch: 'אלבום',
+    officialSearch: 'אתר רשמי',
+    liveSearch: 'הופעה חיה',
+    verifiedSeed: 'מקור שנבדק',
+    universalCoverage: 'חיפוש זמין לכל אמן',
+    launchProvider: (provider: string) => `פתיחה ב־${provider}`,
+    playerTitle: (artist: string, provider: string) => `${artist} — נגן רשמי של ${provider}`,
+    openActionLabel: (action: string, artist: string, provider: string) =>
+      `פתיחת ${action} של ${artist} ב־${provider} (לשונית חדשה)`,
   },
 } as const;
 
 const ACTION_LABELS = {
-  artist: { es: 'Artista', en: 'Artist' },
-  track: { es: 'Top canción', en: 'Top track' },
-  album: { es: 'Álbum', en: 'Album' },
-  official: { es: 'Oficial', en: 'Official' },
-  live: { es: 'Live', en: 'Live' },
-  channel: { es: 'Canal', en: 'Channel' },
-  search: { es: 'Buscar', en: 'Search' },
-  wiki: { es: 'Biografía en Wikipedia', en: 'Wikipedia biography' },
+  artist: { es: 'Artista', en: 'Artist', he: 'אמן' },
+  track: { es: 'Top canción', en: 'Top track', he: 'שיר מוביל' },
+  album: { es: 'Álbum', en: 'Album', he: 'אלבום' },
+  official: { es: 'Oficial', en: 'Official', he: 'אתר רשמי' },
+  live: { es: 'Live', en: 'Live', he: 'הופעה חיה' },
+  channel: { es: 'Canal', en: 'Channel', he: 'ערוץ' },
+  search: { es: 'Buscar', en: 'Search', he: 'חיפוש' },
+  wiki: { es: 'Biografía en Wikipedia', en: 'Wikipedia biography', he: 'ביוגרפיה' },
 } as const;
 
 function providerName(provider: MediaProvider | 'web', copy: { spotify: string; youtube: string }) {
@@ -196,7 +234,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                 <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
                   {copy.title}
                 </h3>
-                <p className="text-lg font-black text-white leading-tight mt-1">{profile.artistName}</p>
+                <p className="text-lg font-black text-white leading-tight mt-1" dir="auto">{profile.artistName}</p>
                 <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-3xl">{copy.subtitle}</p>
               </div>
             </div>
@@ -208,11 +246,11 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                 backgroundColor: hasAnyVerified ? '#1DB95418' : `${tc.c2}14`,
                 borderColor: hasAnyVerified ? '#1DB95440' : `${tc.c2}35`,
               }}>
-              <BadgeCheck className="w-3 h-3 inline mr-1" />
+              <BadgeCheck className="w-3 h-3 inline me-1" />
               {hasAnyVerified ? copy.verifiedSeed : copy.universalCoverage}
             </span>
             <span className="text-[10px] font-mono font-black uppercase tracking-widest px-2.5 py-1 rounded-full border text-gray-400 border-white/10 bg-white/5">
-              <ShieldCheck className="w-3 h-3 inline mr-1" />
+              <ShieldCheck className="w-3 h-3 inline me-1" />
               {copy.legalFallback}
             </span>
           </div>
@@ -251,6 +289,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                       key={tab.id}
                       type="button"
                       onClick={() => setProvider(tab.id)}
+                      aria-pressed={selected}
                       className="h-9 px-3 rounded-xl border font-mono text-[10px] font-black uppercase tracking-widest flex items-center gap-2 transition-all"
                       style={selected
                         ? { color, backgroundColor: `${color}18`, borderColor: `${color}55` }
@@ -268,15 +307,15 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
 
             {active.embedUrl ? (
               <div className="relative bg-[#050812] p-2">
-                <div className="absolute left-4 top-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-mono font-black uppercase tracking-widest"
+                <div className="absolute start-4 top-4 z-10 rounded-full px-2.5 py-1 text-[10px] font-mono font-black uppercase tracking-widest"
                   style={{ color: accent, backgroundColor: '#030712cc', border: `1px solid ${accent}40` }}>
-                  <Radio className="w-3 h-3 inline mr-1" />
+                  <Radio className="w-3 h-3 inline me-1" />
                   {copy.officialPlayer}
                 </div>
                 <div className="absolute inset-x-8 bottom-0 h-24 pointer-events-none blur-2xl opacity-30"
                   style={{ backgroundColor: accent }} />
                 <iframe
-                  title={`${profile.artistName} ${provider} player`}
+                  title={copy.playerTitle(profile.artistName, providerName(provider, copy))}
                   src={active.embedUrl}
                   className="relative z-10 w-full h-[352px] border-0 rounded-2xl"
                   loading="lazy"
@@ -298,11 +337,16 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                     href={active.externalUrl}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={copy.openActionLabel(
+                      copy.artistSearch,
+                      profile.artistName,
+                      providerName(provider, copy),
+                    )}
                     className="inline-flex items-center gap-2 mt-4 rounded-xl px-4 py-2 text-xs font-mono font-black uppercase tracking-widest border transition-all hover:bg-white/10"
                     style={{ color: accent, borderColor: `${accent}55`, backgroundColor: `${accent}14` }}
                   >
                     <PlayCircle className="w-4 h-4" />
-                    {copy.launch} {provider === 'spotify' ? copy.spotify : copy.youtube}
+                    {copy.launchProvider(providerName(provider, copy))}
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -320,12 +364,15 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-2">
               {allActions.map(action => {
                 const color = providerColor(action.provider);
+                const actionLabel = ACTION_LABELS[action.kind][lang];
+                const actionProvider = providerName(action.provider, copy);
                 return (
                   <a
                     key={`${action.provider}-${action.kind}-${action.url}`}
                     href={action.url}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={copy.openActionLabel(actionLabel, profile.artistName, actionProvider)}
                     className="group rounded-2xl border bg-black/15 px-3 py-3 flex items-center gap-3 transition-all hover:-translate-y-0.5 hover:bg-white/[0.07]"
                     style={{ borderColor: `${color}26` }}
                   >
@@ -334,9 +381,9 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                       <ActionIcon action={action} />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-bold text-white truncate">{ACTION_LABELS[action.kind][lang]}</span>
+                      <span className="block text-sm font-bold text-white truncate">{actionLabel}</span>
                       <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-500 truncate">
-                        {providerName(action.provider, copy)}
+                        {actionProvider}
                       </span>
                     </span>
                     <ExternalLink className="w-3.5 h-3.5 text-gray-500 group-hover:text-white transition-colors shrink-0" />

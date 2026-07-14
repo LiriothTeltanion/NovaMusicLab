@@ -22,6 +22,8 @@ interface ArtistAvatarProps {
   /** Rich hover tooltip with genre/country/flag (default on; disable in dense exports). */
   tooltip?: boolean;
   overrideSrc?: string;
+  /** Marks an above-the-fold portrait as an eager, high-priority image. */
+  priority?: boolean;
 }
 
 
@@ -52,7 +54,14 @@ function hiResVariant(url: string): string | null {
  * fade in on load; larger renders try a hi-res variant first and degrade
  * gracefully (hi-res -> standard -> initials) via onError stages.
  */
-export default function ArtistAvatar({ name, size = 40, className = '', tooltip = true, overrideSrc }: ArtistAvatarProps) {
+export default function ArtistAvatar({
+  name,
+  size = 40,
+  className = '',
+  tooltip = true,
+  overrideSrc,
+  priority = false,
+}: ArtistAvatarProps) {
   const { tc } = useApp();
   // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
   // uploaded export can be NFD (macOS) - byte-different, visually identical.
@@ -86,7 +95,9 @@ export default function ArtistAvatar({ name, size = 40, className = '', tooltip 
           <img
             src={src}
             alt={name}
-            loading="lazy"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchPriority={priority ? 'high' : 'auto'}
+            decoding="async"
             width={size}
             height={size}
             onLoad={() => setLoaded(true)}

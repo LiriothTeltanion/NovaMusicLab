@@ -3,6 +3,7 @@ import GenreIcon from './GenreIcon';
 
 interface GenreArtProps {
   genre: string;
+  label?: string;
   size?: number;
   showLabel?: boolean;
   className?: string;
@@ -103,7 +104,7 @@ function patternFor(pattern: GenrePalette['pattern']) {
  * top. Distinct from GenreIcon (a plain flat icon) - this is meant to read
  * as a genuine picture/badge, e.g. for genre headers or treemap legends.
  */
-export default function GenreArt({ genre, size = 64, showLabel = false, className = '' }: GenreArtProps) {
+export default function GenreArt({ genre, label = genre, size = 64, showLabel = false, className = '' }: GenreArtProps) {
   const palette = PALETTES[genre] ?? PALETTES['Unclassified'];
   const gradId = `genre-grad-${genre.replace(/[^a-zA-Z0-9]/g, '')}`;
 
@@ -128,7 +129,7 @@ export default function GenreArt({ genre, size = 64, showLabel = false, classNam
       </div>
       {showLabel && (
         <span className="text-[10px] font-mono font-bold text-gray-300 text-center leading-tight max-w-[90px] truncate">
-          {genre}
+          <bdi dir="auto">{label}</bdi>
         </span>
       )}
     </div>

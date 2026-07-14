@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Headphones, Heart, Printer, Music, Star, Zap } from 'lucide-react';
+import { Headphones, Heart, Printer, Music, Star, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import { useApp } from '../context/AppContext';
@@ -8,6 +8,7 @@ import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYear
 import { buildArchetypes, buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MuseumPoster from './MuseumPoster';
 import SectionNarrative from './SectionNarrative';
+import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
 
 interface FinalReportProps {
   data: MusicDnaData;
@@ -20,11 +21,12 @@ const paraVariants = {
   initial: { opacity: 0, y: 16 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
+const bidiIsolate = (value: string) => `\u2068${value}\u2069`;
 
 function SectionHeading({ roman, title, color }: { roman: string; title: string; color: string }) {
   return (
     <div className="flex items-center gap-4 pb-3 border-b border-white/5">
-      <span className="font-mono text-3xl font-black opacity-20" style={{ color }}>{roman}</span>
+      <bdi dir="ltr" className="font-mono text-3xl font-black opacity-20" style={{ color }}>{roman}</bdi>
       <h4 className="text-lg md:text-xl font-bold text-white font-mono uppercase tracking-wider"
           style={{ textShadow: `0 0 20px ${color}40` }}>{title}</h4>
     </div>
@@ -33,8 +35,8 @@ function SectionHeading({ roman, title, color }: { roman: string; title: string;
 
 function PullQuote({ text, color = '#00f2fe' }: { text: string; color?: string }) {
   return (
-    <div className="my-2 pl-5 border-l-4 py-2 rounded-r-xl"
-         style={{ borderLeftColor: color, backgroundColor: `${color}08` }}>
+    <div className="my-2 ps-5 border-s-4 py-2 rounded-e-xl"
+         style={{ borderInlineStartColor: color, backgroundColor: `${color}08` }}>
       <p className="text-base md:text-lg font-sans italic font-light leading-relaxed"
          style={{ color: `${color}dd` }}>{text}</p>
     </div>
@@ -45,7 +47,7 @@ function InlineStat({ label, value, color = '#00f2fe' }: { label: string; value:
   return (
     <span className="inline-flex items-center gap-1 px-3 py-0.5 rounded-full font-mono text-sm font-bold mx-0.5"
           style={{ color, backgroundColor: `${color}15`, border: `1px solid ${color}30` }}>
-      <span>{value}</span>
+      <bdi dir="auto">{value}</bdi>
       <span className="text-gray-400 font-normal text-xs">{label}</span>
     </span>
   );
@@ -53,11 +55,11 @@ function InlineStat({ label, value, color = '#00f2fe' }: { label: string; value:
 
 export default function FinalReport({ data, isPersonalArchive = false }: FinalReportProps) {
   const { t, lang } = useApp();
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const tr = t.finalReport;
   const m = data.core_metrics;
-  const topArtist = data.top_artists[0]?.name ?? (lang === 'en' ? 'Unknown Artist' : 'Artista Desconocido');
-  const topTrack  = data.top_tracks[0]?.title  ?? (lang === 'en' ? 'Unknown Track' : 'Canción Desconocida');
+  const topArtist = data.top_artists[0]?.name ?? pickLanguage(lang, { en: 'Unknown Artist', es: 'Artista Desconocido', he: 'אמן לא ידוע' });
+  const topTrack  = data.top_tracks[0]?.title  ?? pickLanguage(lang, { en: 'Unknown Track', es: 'Canción Desconocida', he: 'שיר לא ידוע' });
   // Derived live from the real top_artists/top_tracks, per current language -
   // the alias and sound description always match the archive on screen. Only
   // the bundled demo archive pins a fixed alias.
@@ -72,7 +74,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
     () => [...data.yearly_eras].sort((a, b) => a.year - b.year)[0],
     [data.yearly_eras]
   );
-  const originYear = earliestEra?.year ?? (lang === 'en' ? 'the start' : 'el inicio');
+  const originYear = earliestEra?.year ?? pickLanguage(lang, { en: 'the start', es: 'el inicio', he: 'ההתחלה' });
   const originArtist = earliestEra?.top_artist ?? topArtist;
   const heroArchetype = useMemo(
     () => buildArchetypes(data.top_artists, lang)[0]?.name ?? tr.s3Archetype,
@@ -99,12 +101,8 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
         : 62;
 
   return (
-    <div className="space-y-8 animate-fade-in max-w-3xl mx-auto">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <FileText className="w-6 h-6 text-cyberCyan" />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{tr.pageTitle}</h2>
-        </div>
+    <div className="space-y-8 animate-fade-in max-w-3xl mx-auto" dir={directionFor(lang)}>
+      <div className="flex justify-end">
         <button onClick={() => window.print()}
           className="flex items-center gap-2 px-4 py-2 bg-cyberCyan/10 border border-cyberCyan/30 hover:border-cyberCyan text-cyberCyan font-mono text-xs font-bold rounded-xl transition-all print:hidden">
           <Printer className="w-3.5 h-3.5" />{tr.printButton}
@@ -130,7 +128,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
             <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
               {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight}</span>{' '}<br/>{tr.coverHeadlinePost}
             </h3>
-            <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<span className="text-cyberCyan font-semibold">{profile.alias}</span></p>
+            <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<bdi dir="auto" className="text-cyberCyan font-semibold">{profile.alias}</bdi></p>
           </div>
         </div>
         <div className="grid grid-cols-4 divide-x divide-white/5 bg-white/2">
@@ -172,11 +170,11 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
         <motion.section variants={paraVariants} className="space-y-4">
           <SectionHeading roman={tr.s2Roman} title={tr.s2Title} color="#f72585" />
           <p className="text-sm md:text-base">
-            {tr.s2Pre(originYear)} <strong className="text-white">{originArtist}</strong> {tr.s2ArtistIntro}{' '}
+            {tr.s2Pre(originYear)} <strong className="text-white"><bdi dir="auto">{originArtist}</bdi></strong> {tr.s2ArtistIntro}{' '}
             <InlineStat label={tr.s2StreakLabel} value={records.longest_streak_days || 'N/D'} color="#fb923c" /> {tr.s2Mid(peakPair.label)}
             <InlineStat label={tr.s2CombinedLabel} value={peakPair.plays.toLocaleString(locale)} color="#f72585" />.
           </p>
-          <PullQuote text={tr.s2Quote(topTrack)} color="#f72585" />
+          <PullQuote text={tr.s2Quote(bidiIsolate(topTrack))} color="#f72585" />
         </motion.section>
 
         <div className="h-px bg-gradient-to-r from-transparent via-cyberPink/20 to-transparent" />
@@ -186,7 +184,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
           <p className="text-sm md:text-base">
             {tr.s3Pre} <InlineStat label={tr.s3ArtistsLabel} value={m.unique_artists.toLocaleString(locale)} color="#7209b7" />
             {tr.s3Mid} <InlineStat label={tr.s3TracksLabel} value={m.unique_tracks.toLocaleString(locale)} color="#a78bfa" />
-            {tr.s3ArchetypeIntro} <strong className="text-white">{heroArchetype}</strong>. {tr.s3NightIntro} <strong className="text-white">{tr.s3NightLabel(nr)}</strong>{' '}
+            {tr.s3ArchetypeIntro} <strong className="text-white"><bdi dir="auto">{heroArchetype}</bdi></strong>. {tr.s3NightIntro} <strong className="text-white">{tr.s3NightLabel(nr)}</strong>{' '}
             {tr.s3Post}
           </p>
           <PullQuote text={tr.s3Quote} color="#7209b7" />
@@ -197,7 +195,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
         <motion.section variants={paraVariants} className="space-y-4">
           <SectionHeading roman={tr.s4Roman} title={tr.s4Title} color="#10b981" />
           <p className="text-sm md:text-base">
-            {tr.s4Pre} <strong className="text-white">{profile.alias}</strong> {tr.s4Post(profile.sound)}
+            {tr.s4Pre} <strong className="text-white"><bdi dir="auto">{profile.alias}</bdi></strong> {tr.s4Post(profile.sound)}
           </p>
           <PullQuote text={tr.s4Quote} color="#10b981" />
         </motion.section>
@@ -209,7 +207,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
           <p className="text-sm md:text-base">
             {tr.s5Pre}{' '}
             <InlineStat label={tr.s5DaysLabel} value={m.active_days.toLocaleString(locale)} color="#facc15" />{' '}
-            {tr.s5Post(topArtist, topTrack)}
+            {tr.s5Post(bidiIsolate(topArtist), bidiIsolate(topTrack))}
           </p>
         </motion.section>
 
@@ -235,11 +233,11 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
 
         <motion.div variants={paraVariants} className="pt-8 border-t border-white/5 flex flex-col items-center space-y-3 text-center">
           <Heart className="w-6 h-6 text-cyberPink fill-cyberPink animate-pulse-slow" />
-          <p className="font-mono text-sm font-bold text-white tracking-widest">✧ {profile.alias} ✧</p>
+          <p className="font-mono text-sm font-bold text-white tracking-widest">✧ <bdi dir="auto">{profile.alias}</bdi> ✧</p>
           <p className="text-xs text-gray-500 font-mono">{tr.footerSubtitle}</p>
           <div className="flex flex-wrap justify-center gap-2 pt-2">
             {data.top_artists.slice(0, 5).map(a => a.name).map(a => (
-              <span key={a} className="text-[10px] px-2 py-0.5 rounded-full bg-cyberCyan/5 border border-cyberCyan/15 text-gray-400 font-mono">{a}</span>
+              <span key={a} className="text-[10px] px-2 py-0.5 rounded-full bg-cyberCyan/5 border border-cyberCyan/15 text-gray-400 font-mono"><bdi dir="auto">{a}</bdi></span>
             ))}
           </div>
         </motion.div>

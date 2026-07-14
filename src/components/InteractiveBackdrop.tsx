@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { MusicDnaData } from '../types';
-import { buildArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/emotionalEngine';
+import { buildCoreArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/moodCore';
 
 interface InteractiveBackdropProps {
   data: MusicDnaData;
 }
+
+const SONIC_CARTOGRAPHY_URL = `${import.meta.env.BASE_URL}visuals/sonic-cartography-bg-v2.jpg`;
 
 interface Blob {
   x: number;
@@ -60,20 +62,20 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
     const match = data.top_tracks.find(t => `${t.artist.toLowerCase()}|||${t.title.toLowerCase()}` === selectedTrackKey);
     if (match) {
       const artMatch = data.top_artists.find(a => a.name.toLowerCase() === match.artist.toLowerCase());
-      const profile = buildArtistMoodProfile({ name: match.artist, plays: match.plays, genre: artMatch?.genre || '', country: '' });
+      const profile = buildCoreArtistMoodProfile({ name: match.artist, plays: match.plays, genre: artMatch?.genre || '', country: '' });
       primaryDossierColor = EMOTIONAL_MOOD_TAXONOMY[profile.moodKey].color;
     }
   } else if (selectedAlbumKey && data.top_albums) {
     const match = data.top_albums.find(a => `${a.artist.toLowerCase()}|||${a.title.toLowerCase()}` === selectedAlbumKey);
     if (match) {
       const artMatch = data.top_artists.find(a => a.name.toLowerCase() === match.artist.toLowerCase());
-      const profile = buildArtistMoodProfile({ name: match.artist, plays: match.plays, genre: artMatch?.genre || '', country: '' });
+      const profile = buildCoreArtistMoodProfile({ name: match.artist, plays: match.plays, genre: artMatch?.genre || '', country: '' });
       primaryDossierColor = EMOTIONAL_MOOD_TAXONOMY[profile.moodKey].color;
     }
   } else if (selectedArtistName && data.top_artists) {
     const match = data.top_artists.find(a => a.name === selectedArtistName);
     if (match) {
-      const profile = buildArtistMoodProfile(match);
+      const profile = buildCoreArtistMoodProfile(match);
       primaryDossierColor = EMOTIONAL_MOOD_TAXONOMY[profile.moodKey].color;
     }
   }
@@ -90,14 +92,14 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Render at 50% scale for optimal performance
+    // Half-resolution is enough behind the 75px blur. The loop is capped at
+    // 30fps and fully pauses while the tab is hidden or motion is reduced.
     const scale = 0.5;
     const resize = () => {
-      canvas.width = window.innerWidth * scale;
-      canvas.height = window.innerHeight * scale;
+      canvas.width = Math.max(1, Math.round(window.innerWidth * scale));
+      canvas.height = Math.max(1, Math.round(window.innerHeight * scale));
     };
     resize();
-    window.addEventListener('resize', resize);
 
     // Initial setup for blobs
     const blobs: Blob[] = targetPalette.map((color) => ({
@@ -117,13 +119,16 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
         y: e.clientY * scale,
       };
     };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    let animationId: number;
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let reduceMotion = motionQuery.matches;
+    let animationId: number | null = null;
+    let lastFrame = 0;
     let time = 0;
+    const frameInterval = 1000 / 30;
 
-    const animate = () => {
-      time += 0.002;
+    const paint = (elapsedMs: number) => {
+      const step = Math.min(elapsedMs / (1000 / 60), 2);
+      time += elapsedMs * 0.00006;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Render flat base background
@@ -140,8 +145,8 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
         }
 
         // Autonomous drift
-        blob.x += blob.vx + Math.sin(time + idx) * 0.1;
-        blob.y += blob.vy + Math.cos(time - idx) * 0.1;
+        blob.x += (blob.vx + Math.sin(time + idx) * 0.1) * step;
+        blob.y += (blob.vy + Math.cos(time - idx) * 0.1) * step;
 
         // Bounce from boundaries
         if (blob.x < -blob.radius) blob.x = canvas.width + blob.radius;
@@ -177,27 +182,109 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
         ctx.fill();
       });
 
+    };
+
+    const stop = () => {
+      if (animationId === null) return;
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    };
+
+    const animate = (timestamp: number) => {
+      animationId = null;
+      if (document.hidden || reduceMotion) return;
+
+      if (!lastFrame) lastFrame = timestamp;
+      const elapsed = timestamp - lastFrame;
+      if (elapsed >= frameInterval) {
+        paint(elapsed);
+        lastFrame = timestamp - (elapsed % frameInterval);
+      }
       animationId = requestAnimationFrame(animate);
     };
 
-    animate();
+    const start = () => {
+      if (animationId !== null || document.hidden || reduceMotion) return;
+      lastFrame = 0;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
+    const handleMotionPreference = (event: MediaQueryListEvent) => {
+      reduceMotion = event.matches;
+      if (reduceMotion) {
+        window.removeEventListener('mousemove', handleMouseMove);
+        stop();
+        paint(0);
+      } else {
+        window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        start();
+      }
+    };
+
+    const handleResize = () => {
+      resize();
+      paint(0);
+    };
+
+    // Always paint a useful static backdrop before deciding whether to animate.
+    paint(0);
+    window.addEventListener('resize', handleResize);
+    if (!reduceMotion) window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    motionQuery.addEventListener('change', handleMotionPreference);
+    start();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animationId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      motionQuery.removeEventListener('change', handleMotionPreference);
+      stop();
     };
   }, [tc, targetPalette]); // Re-run effect only when theme or target palette changes
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none z-0"
-      style={{
-        filter: 'blur(75px)',
-        mixBlendMode: tc.mode === 'light' ? 'multiply' : 'screen',
-        transition: 'background-color 0.4s ease',
-      }}
-    />
+    <>
+      <div
+        aria-hidden="true"
+        data-testid="sonic-cartography-backdrop"
+        className="fixed inset-0 z-[1] pointer-events-none"
+        style={{
+          backgroundImage: [
+            `linear-gradient(180deg, ${tc.bg}18 0%, ${tc.bg}72 72%, ${tc.bg}e8 100%)`,
+            `radial-gradient(circle at 50% 20%, transparent 0%, ${tc.bg}18 46%, ${tc.bg}a8 100%)`,
+            `url(${SONIC_CARTOGRAPHY_URL})`,
+          ].join(', '),
+          backgroundPosition: 'center, center, center top',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover, cover, cover',
+          filter: tc.mode === 'light'
+            ? 'saturate(0.72) contrast(0.92) brightness(1.18)'
+            : 'saturate(1.08) contrast(1.04)',
+          mixBlendMode: tc.mode === 'light' ? 'multiply' : 'screen',
+          opacity: tc.mode === 'light' ? 0.075 : 0.28,
+          transition: 'filter 500ms ease, opacity 500ms ease',
+        }}
+      />
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="fixed inset-0 w-full h-full pointer-events-none z-0"
+        style={{
+          filter: 'blur(75px)',
+          mixBlendMode: tc.mode === 'light' ? 'multiply' : 'screen',
+          // A full-strength multiply layer turns every light museum theme into a
+          // dark veil. Keep just enough pigment for atmosphere while preserving
+          // the intended paper-like luminance and text contrast.
+          opacity: tc.mode === 'light' ? 0.22 : 1,
+          transition: 'background-color 0.4s ease, opacity 0.4s ease',
+        }}
+      />
+    </>
   );
 }

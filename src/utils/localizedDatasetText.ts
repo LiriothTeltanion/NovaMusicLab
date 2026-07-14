@@ -1,4 +1,4 @@
-import type { Lang } from '../context/AppContext';
+import { localeFor, pickLanguage, type Lang } from './i18n';
 import type {
   PersonalityMatrix,
   SourceSummary,
@@ -39,6 +39,33 @@ const ERA_DESC_EN: Record<string, string> = {
     'The Kid LAROI, alternative rap-pop and modern high-energy sounds.',
 };
 
+const ERA_DESC_HE: Record<string, string> = {
+  'Synthwave oscuro, metal técnico, Carpenter Brut y descubrimientos progresivos.':
+    "סינת'ווייב אפל, מטאל טכני, Carpenter Brut ותגליות פרוגרסיביות.",
+  'H.E.A.T, Tokio Hotel, vibras synthwave nocturnas y estéticas melódicas.':
+    "H.E.A.T, Tokio Hotel, אווירת סינת'ווייב לילית ואסתטיקה מלודית.",
+  'Ghost, The Midnight, mística rock, misterio y sonidos cinematográficos.':
+    'Ghost, The Midnight, מיסטיקה של רוק, מסתורין וצלילים קולנועיים.',
+  'Santa Cruz, rock local e integración en nuevas escenas vitales.':
+    'Santa Cruz, רוק מקומי והשתלבות בסצנות חיים חדשות.',
+  'The Word Alive, Emarosa, voz vulnerable y búsquedas emocionales profundas.':
+    'The Word Alive, Emarosa, שירה חשופה וחיפוש רגשי עמוק.',
+  'Bring Me the Horizon, Bilmuri, mezcla de pop, metal y catarsis en pandemia.':
+    'Bring Me the Horizon, Bilmuri, שילוב של פופ, מטאל וקתרזיס בתקופת המגפה.',
+  'Slaves, Deafheaven, Alcest, fusión gigante de post-hardcore y guitarras celestiales.':
+    'Slaves, Deafheaven, Alcest, מיזוג אדיר של פוסט־הארדקור וגיטרות שמימיות.',
+  'Deafheaven (In Blur), melancolía intensa y nostalgia activa en las mañanas.':
+    'Deafheaven (In Blur), מלנכוליה עזה ונוסטלגיה פעילה בשעות הבוקר.',
+  'Nevertel, Magnolia Park, pop-punk digital y rap-rock enérgico.':
+    'Nevertel, Magnolia Park, פופ־פאנק דיגיטלי וראפ־רוק אנרגטי.',
+  'Bilmuri, Corbin Karasu, groove reconstructivo y madurez musical.':
+    'Bilmuri, Corbin Karasu, גרוב של בנייה מחדש ובשלות מוזיקלית.',
+  'nothingnowhere., introspección lírica profunda y reconstrucción artística.':
+    'nothingnowhere., התבוננות לירית עמוקה ובנייה אמנותית מחדש.',
+  'The Kid LAROI, rap-pop alternativo, sonidos modernos de alta energía.':
+    'The Kid LAROI, ראפ־פופ אלטרנטיבי וצלילים מודרניים עתירי אנרגיה.',
+};
+
 const CULTURAL_SCENE_TAGS: Record<Lang, CulturalSceneTag[]> = {
   es: [
     { tag: '🤘 Post-Hardcore USA', color: '#3b82f6' },
@@ -60,6 +87,16 @@ const CULTURAL_SCENE_TAGS: Record<Lang, CulturalSceneTag[]> = {
     { tag: '🔥 Metalcore UK/USA', color: '#ef4444' },
     { tag: '🌙 Cyberpunk Darksynth', color: '#f72585' },
   ],
+  he: [
+    { tag: '🤘 פוסט־הארדקור מארה״ב', color: '#3b82f6' },
+    { tag: "⚡ סינת'ווייב מצרפת/ארה״ב", color: '#8b5cf6' },
+    { tag: '🎸 גלאם רוק סקנדינבי', color: '#facc15' },
+    { tag: '🌌 בלאקגייז גלובלי', color: '#00f2fe' },
+    { tag: '🎮 תרבות אינטרנט', color: '#10b981' },
+    { tag: '🇮🇱 רוק ישראלי', color: '#34d399' },
+    { tag: '🔥 מטאלקור מבריטניה/ארה״ב', color: '#ef4444' },
+    { tag: "🌙 דארקסינת' סייברפאנקי", color: '#f72585' },
+  ],
 };
 
 // Must cover every country value in artist_meta.json (the origin map surfaces
@@ -71,6 +108,7 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   Finland: 'Finlandia',
   Germany: 'Alemania',
   France: 'Francia',
+  India: 'India',
   Israel: 'Israel',
   Norway: 'Noruega',
   'New Zealand': 'Nueva Zelanda',
@@ -93,6 +131,8 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   'South Africa': 'Sudáfrica',
   'South Korea': 'Corea del Sur',
   Spain: 'España',
+  Tunisia: 'Túnez',
+  Wales: 'Gales',
   Egypt: 'Egipto',
   Poland: 'Polonia',
   Austria: 'Austria',
@@ -100,31 +140,114 @@ const COUNTRY_NAMES_ES: Record<string, string> = {
   Unknown: 'Desconocido',
 };
 
-const TRAIT_AXIS_LABELS: Record<PersonalityKey, Record<Lang, string>> = {
-  sensibilidad_emocional: { es: 'Sensibilidad', en: 'Sensitivity' },
-  nostalgia: { es: 'Nostalgia', en: 'Nostalgia' },
-  energia: { es: 'Energía', en: 'Energy' },
-  oscuridad_estetica: { es: 'Oscuridad', en: 'Darkness' },
-  creatividad: { es: 'Creatividad', en: 'Creativity' },
-  rebeldia: { es: 'Rebeldía', en: 'Rebellion' },
-  futurismo: { es: 'Futurismo', en: 'Futurism' },
+const COUNTRY_NAMES_HE: Record<string, string> = {
+  'United States': 'ארצות הברית',
+  'United Kingdom': 'הממלכה המאוחדת',
+  Sweden: 'שוודיה',
+  Finland: 'פינלנד',
+  Germany: 'גרמניה',
+  France: 'צרפת',
+  India: 'הודו',
+  Israel: 'ישראל',
+  Norway: 'נורווגיה',
+  'New Zealand': 'ניו זילנד',
+  'Puerto Rico': 'פוארטו ריקו',
+  Venezuela: 'ונצואלה',
+  'Dominican Republic': 'הרפובליקה הדומיניקנית',
+  Romania: 'רומניה',
+  Argentina: 'ארגנטינה',
+  Australia: 'אוסטרליה',
+  Barbados: 'ברבדוס',
+  Brazil: 'ברזיל',
+  Canada: 'קנדה',
+  Colombia: 'קולומביה',
+  Iceland: 'איסלנד',
+  Ireland: 'אירלנד',
+  Italy: 'איטליה',
+  Japan: 'יפן',
+  Mexico: 'מקסיקו',
+  Netherlands: 'הולנד',
+  'South Africa': 'דרום אפריקה',
+  'South Korea': 'קוריאה הדרומית',
+  Spain: 'ספרד',
+  Tunisia: 'תוניסיה',
+  Wales: 'ויילס',
+  Egypt: 'מצרים',
+  Poland: 'פולין',
+  Austria: 'אוסטריה',
+  Denmark: 'דנמרק',
+  Unknown: 'לא ידוע',
 };
 
-export function localizeEraDescription(era: YearlyEra, lang: Lang, locale = lang === 'en' ? 'en-US' : 'es-ES') {
+const TRAIT_AXIS_LABELS: Record<PersonalityKey, Record<Lang, string>> = {
+  sensibilidad_emocional: { es: 'Sensibilidad', en: 'Sensitivity', he: 'רגישות' },
+  nostalgia: { es: 'Nostalgia', en: 'Nostalgia', he: 'נוסטלגיה' },
+  energia: { es: 'Energía', en: 'Energy', he: 'אנרגיה' },
+  oscuridad_estetica: { es: 'Oscuridad', en: 'Darkness', he: 'אפלוליות' },
+  creatividad: { es: 'Creatividad', en: 'Creativity', he: 'יצירתיות' },
+  rebeldia: { es: 'Rebeldía', en: 'Rebellion', he: 'מרדנות' },
+  futurismo: { es: 'Futurismo', en: 'Futurism', he: 'עתידנות' },
+};
+
+const GENERIC_GENRE_LABELS: Record<string, Record<Lang, string>> = {
+  'Alternative / Miscellaneous': { es: 'Alternativo / Miscelánea', en: 'Alternative / Miscellaneous', he: 'אלטרנטיבי / שונות' },
+  Unclassified: { es: 'Sin clasificar', en: 'Unclassified', he: 'לא מסווג' },
+  Other: { es: 'Otros', en: 'Other', he: 'אחר' },
+};
+
+const PLATFORM_FAMILY_LABELS: Record<string, Record<Lang, string>> = {
+  'Smart TV': { es: 'Televisor inteligente', en: 'Smart TV', he: 'טלוויזיה חכמה' },
+  'YouTube import': { es: 'Importación de YouTube', en: 'YouTube import', he: 'ייבוא מ־YouTube' },
+  'Android tablet': { es: 'Tablet Android', en: 'Android tablet', he: 'טאבלט Android' },
+  'Android phone': { es: 'Teléfono Android', en: 'Android phone', he: 'טלפון Android' },
+  'Windows desktop': { es: 'Escritorio Windows', en: 'Windows desktop', he: 'מחשב Windows' },
+  'Apple mobile': { es: 'Apple móvil', en: 'Apple mobile', he: 'מכשיר Apple נייד' },
+  'Web player': { es: 'Reproductor web', en: 'Web player', he: 'נגן רשת' },
+  Other: { es: 'Otros', en: 'Other', he: 'אחר' },
+};
+
+export function localizeEraDescription(era: YearlyEra, lang: Lang, locale = localeFor(lang)) {
   if (/^Un año marcado por /i.test(era.era_desc)) {
     const plays = era.plays.toLocaleString(locale);
     const artists = era.unique_artists.toLocaleString(locale);
-    return lang === 'en'
-      ? `A year shaped by ${era.top_artist}, ${plays} plays and ${artists} unique artists.`
-      : `Un año marcado por ${era.top_artist}, ${plays} reproducciones y ${artists} artistas únicos.`;
+    return pickLanguage(lang, {
+      es: `Un año marcado por ${era.top_artist}, ${plays} reproducciones y ${artists} artistas únicos.`,
+      en: `A year shaped by ${era.top_artist}, ${plays} plays and ${artists} unique artists.`,
+      he: `שנה שעוצבה בידי ${era.top_artist}, עם ${plays} השמעות ו־${artists} אמנים ייחודיים.`,
+    });
   }
 
-  return lang === 'en'
-    ? ERA_DESC_EN[era.era_desc] ?? era.era_desc
-    : era.era_desc;
+  if (lang === 'en') return ERA_DESC_EN[era.era_desc] ?? era.era_desc;
+  if (lang === 'he') return ERA_DESC_HE[era.era_desc] ?? era.era_desc;
+  return era.era_desc;
 }
 
 export function localizeSourceNote(source: SourceSummary, lang: Lang) {
+  if (lang === 'he') {
+    if (source.source_type === 'merged') {
+      return 'העלאה משולבת: הסכומים כוללים את כל האירועים שיובאו. החפיפה נמדדת לפי שמות מנורמלים של אמן ושיר.';
+    }
+    if (source.source_type === 'spotify') {
+      return 'העלאת Spotify בלבד: דילוגים, פלטפורמה ומדינה נמדדים ישירות מקובץ הייצוא.';
+    }
+    if (source.source_type === 'youtube') {
+      return 'העלאת YouTube בלבד: זמני הצפייה נלקחים ישירות, ואילו שמות האמן והשיר מוסקים מכותרות הסרטונים ומהערוצים.';
+    }
+    if (source.source_type === 'apple_music') {
+      return 'העלאת Apple Music בלבד: חותמות הזמן של Play Activity נלקחות ישירות; שורות ללא אמן שניתן לזהות מושמטות במקום לנחש.';
+    }
+    if (source.source_type === 'listenbrainz') {
+      return 'העלאת ListenBrainz בלבד: ההאזנות נלקחות ישירות, כולל שדות האמן, השיר והאלבום שכבר תיעדת שם.';
+    }
+    if (source.source_type === 'lastfm' && (source.spotify_plays > 0 || source.spotify_short_plays > 0)) {
+      return 'ניתוח ההדגמה המובנה: Last.fm הוא ציר הזמן המאומת העיקרי; נתוני Spotify הם אומדנים ברמת הדוח, אלא אם מעלים ייצוא עדכני של Spotify.';
+    }
+    if (source.source_type === 'lastfm') {
+      return 'העלאת Last.fm בלבד: חותמות הזמן וההשמעות נלקחות ישירות; נתוני דילוגים ופלטפורמה אינם זמינים.';
+    }
+    return 'מקור לא מזוהה: תצוגה זו משתמשת באירועים המיובאים הזמינים ביותר ומסמנת בנפרד שדות שאינם זמינים.';
+  }
+
   if (lang === 'en') {
     if (source.source_type === 'merged') {
       return 'Merged upload: totals include all imported events. Overlap is measured by normalized artist + track names.';
@@ -179,12 +302,29 @@ export function getCulturalSceneTags(lang: Lang) {
 }
 
 export function localizeCountryName(country: string, lang: Lang) {
-  return lang === 'es' ? COUNTRY_NAMES_ES[country] ?? country : country;
+  if (lang === 'es') return COUNTRY_NAMES_ES[country] ?? country;
+  if (lang === 'he') return COUNTRY_NAMES_HE[country] ?? country;
+  return country;
 }
 
 export function localizeProjectLabel(project: string, lang: Lang) {
   if (lang === 'en') return project.replace('Datos Importados', 'Imported Data');
+  if (lang === 'he') {
+    return project
+      .replace('Datos Importados', 'נתונים מיובאים')
+      .replace('Imported Data', 'נתונים מיובאים');
+  }
   return project.replace('Imported Data', 'Datos Importados');
+}
+
+/** Localizes only synthetic genre buckets while preserving real genre names. */
+export function localizeGenreName(genre: string, lang: Lang) {
+  return GENERIC_GENRE_LABELS[genre]?.[lang] ?? genre;
+}
+
+/** Localizes descriptive platform families while preserving product brands. */
+export function localizePlatformName(platform: string, lang: Lang) {
+  return PLATFORM_FAMILY_LABELS[platform]?.[lang] ?? platform;
 }
 
 export function localizeTraitAxis(key: PersonalityKey, lang: Lang) {

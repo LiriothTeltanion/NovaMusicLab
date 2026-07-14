@@ -3,6 +3,9 @@ import { useApp } from '../context/AppContext';
 import { WORLD_MAP_DATA } from '../data/worldMapData';
 import FlagArt from './FlagArt';
 import ArtistAvatar from './ArtistAvatar';
+import { useContinuousMotion } from '../hooks/useContinuousMotion';
+import { localizeCountryName } from '../utils/localizedDatasetText';
+import { directionFor, localeFor, type Lang } from '../utils/i18n';
 
 interface CountryConfig {
   name: string;
@@ -16,9 +19,43 @@ interface InteractiveGlobeProps {
   countries: { country: string; plays: number }[];
   selectedCountry: string | null;
   onSelectCountry: (country: string | null) => void;
-  lang: 'es' | 'en';
+  lang: Lang;
   topArtists?: { name: string; plays: number; country: string }[];
 }
+
+const GLOBE_COPY: Record<Lang, {
+  plays: string;
+  dragHint: string;
+  globeLabel: string;
+  closeCountry: string;
+  topArtists: string;
+  noArtists: string;
+}> = {
+  es: {
+    plays: 'reproducciones',
+    dragHint: 'Arrastra en cualquier dirección para girar',
+    globeLabel: 'Globo interactivo de países de origen',
+    closeCountry: 'Cerrar detalles del país',
+    topArtists: 'Artistas principales',
+    noArtists: 'Sin artistas catalogados',
+  },
+  en: {
+    plays: 'plays',
+    dragHint: 'Drag in any direction to spin',
+    globeLabel: 'Interactive globe of artist origin countries',
+    closeCountry: 'Close country details',
+    topArtists: 'Top artists',
+    noArtists: 'No cataloged artists',
+  },
+  he: {
+    plays: 'השמעות',
+    dragHint: 'גררו לכל כיוון כדי לסובב',
+    globeLabel: 'גלובוס אינטראקטיבי של מדינות מוצא האמנים',
+    closeCountry: 'סגירת פרטי המדינה',
+    topArtists: 'האמנים המובילים',
+    noArtists: 'לא נמצאו אמנים מקוטלגים',
+  },
+};
 
 const COUNTRY_COORDS: Record<string, { lat: number; lon: number; color: string }> = {
   // Original top countries
@@ -137,7 +174,10 @@ export default function InteractiveGlobe({
   topArtists = [],
 }: InteractiveGlobeProps) {
   const { tc } = useApp();
+  const copy = GLOBE_COPY[lang];
+  const locale = localeFor(lang);
   const containerRef = useRef<HTMLDivElement>(null);
+  const continuousMotion = useContinuousMotion(containerRef);
   
   // Ejes de rotación: Y (rotation/yaw) y X (tilt/pitch)
   const [rotation, setRotation] = useState(0);
@@ -197,9 +237,17 @@ export default function InteractiveGlobe({
       // Convert target lat/lon to target angles to bring it to the center front (0, 0, R)
       targetRotationRef.current = -(coords.lon * Math.PI) / 180;
       targetTiltRef.current = (coords.lat * Math.PI) / 180;
-      setIsCentering(true);
+      if (continuousMotion) {
+        setIsCentering(true);
+      } else {
+        // Reduced-motion visitors still get the selected country centered,
+        // but without a continuous interpolation loop.
+        setRotation(targetRotationRef.current);
+        setTilt(targetTiltRef.current);
+        setIsCentering(false);
+      }
     }
-  }, [selectedCountry]);
+  }, [continuousMotion, selectedCountry]);
 
   // Latest angles readable from inside the animation loop without listing the
   // state values as effect deps - otherwise the effect tears down and restarts
@@ -211,82 +259,85 @@ export default function InteractiveGlobe({
 
   // Frame tick animation loop
   useEffect(() => {
-    let animId: number;
-    const tick = () => {
-      if (isDragging) {
-        // No auto-movement during dragging
-      } else if (isCentering) {
-        // Smoothly interpolate (LERP) angles to focus selected country
-        setRotation(r => {
-          let diff = targetRotationRef.current - r;
-          // Normalize diff to [-PI, PI] for shortest rotation path
-          diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-          if (Math.abs(diff) < 0.005) {
-            return targetRotationRef.current;
-          }
-          return r + diff * 0.075;
-        });
+    if (!continuousMotion || isDragging) return;
+    let animId: number | null = null;
+    let lastFrame = 0;
+    const frameInterval = 1000 / 30;
 
-        setTilt(t => {
-          const diff = targetTiltRef.current - t;
-          if (Math.abs(diff) < 0.005) {
-            return targetTiltRef.current;
-          }
-          return t + diff * 0.075;
-        });
+    const tick = (timestamp: number) => {
+      const elapsed = lastFrame ? timestamp - lastFrame : frameInterval;
+      if (elapsed >= frameInterval) {
+        const frameScale = Math.min(elapsed / (1000 / 60), 2);
+        const centeringWeight = 1 - Math.pow(1 - 0.075, frameScale);
+        lastFrame = timestamp - (elapsed % frameInterval);
 
-        // Release lock if aligned
-        const rotDiff = Math.abs(targetRotationRef.current - rotationRef.current);
-        const tiltDiff = Math.abs(targetTiltRef.current - tiltRef.current);
-        if (rotDiff < 0.01 && tiltDiff < 0.01) {
-          setIsCentering(false);
+        if (isCentering) {
+          // Smoothly interpolate (LERP) angles to focus selected country.
+          setRotation(r => {
+            let diff = targetRotationRef.current - r;
+            // Normalize diff to [-PI, PI] for shortest rotation path.
+            diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+            if (Math.abs(diff) < 0.005) {
+              return targetRotationRef.current;
+            }
+            return r + diff * centeringWeight;
+          });
+
+          setTilt(t => {
+            const diff = targetTiltRef.current - t;
+            if (Math.abs(diff) < 0.005) {
+              return targetTiltRef.current;
+            }
+            return t + diff * centeringWeight;
+          });
+
+          // Release lock if aligned.
+          const rotDiff = Math.abs(targetRotationRef.current - rotationRef.current);
+          const tiltDiff = Math.abs(targetTiltRef.current - tiltRef.current);
+          if (rotDiff < 0.01 && tiltDiff < 0.01) {
+            setIsCentering(false);
+          }
+        } else {
+          // Slow automatic idle spin, time-normalized at the 30fps paint cap.
+          setRotation(r => r + 0.0028 * frameScale);
         }
-      } else {
-        // Slow automatic idle spin around Y-axis
-        setRotation(r => r + 0.0028);
       }
       animId = requestAnimationFrame(tick);
     };
     animId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animId);
-  }, [isDragging, isCentering]);
+    return () => {
+      if (animId !== null) cancelAnimationFrame(animId);
+    };
+  }, [continuousMotion, isDragging, isCentering]);
 
   // Drag handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== 'touch' && e.button !== 0) return;
+    e.currentTarget.setPointerCapture?.(e.pointerId);
     setIsDragging(true);
     setIsCentering(false); // Instantly release auto-centering lock
     dragStartX.current = e.clientX;
     dragStartY.current = e.clientY;
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      const deltaX = e.clientX - dragStartX.current;
-      const deltaY = e.clientY - dragStartY.current;
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStartX.current;
+    const deltaY = e.clientY - dragStartY.current;
 
-      setRotation(r => r + deltaX * 0.006);
-      // Constrain tilt to prevent flipping over poles
-      setTilt(t => Math.max(-Math.PI / 3, Math.min(Math.PI / 3, t + deltaY * 0.006)));
+    setRotation(r => r + deltaX * 0.006);
+    // Constrain tilt to prevent flipping over poles.
+    setTilt(t => Math.max(-Math.PI / 3, Math.min(Math.PI / 3, t + deltaY * 0.006)));
+    dragStartX.current = e.clientX;
+    dragStartY.current = e.clientY;
+  };
 
-      dragStartX.current = e.clientX;
-      dragStartY.current = e.clientY;
-    };
-
-    const handleMouseUp = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
+  const handlePointerEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.currentTarget.hasPointerCapture?.(e.pointerId)) {
+      e.currentTarget.releasePointerCapture?.(e.pointerId);
     }
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging]);
+    setIsDragging(false);
+  };
 
   // Latitude grid lines
   const latitudeRings = [];
@@ -407,12 +458,30 @@ export default function InteractiveGlobe({
   }, [selectedCountry, topArtists]);
 
   return (
-    <div className="flex flex-col items-center select-none w-full" ref={containerRef}>
+    <div
+      data-testid="interactive-globe"
+      data-motion={continuousMotion ? 'running' : 'paused'}
+      className="flex w-full min-w-0 select-none flex-col items-center"
+      ref={containerRef}
+      dir={directionFor(lang)}
+    >
       <div
-        className={`relative cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`}
-        onMouseDown={handleMouseDown}
+        data-testid="interactive-globe-canvas"
+        data-dragging={isDragging ? 'true' : 'false'}
+        className={`relative aspect-square w-full max-w-[300px] touch-none cursor-grab ${isDragging ? 'cursor-grabbing' : ''}`}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerEnd}
+        onPointerCancel={handlePointerEnd}
       >
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="overflow-visible">
+        <svg
+          data-testid="interactive-globe-svg"
+          viewBox={`0 0 ${size} ${size}`}
+          className="h-full w-full overflow-hidden"
+          style={{ direction: 'ltr' }}
+          role="group"
+          aria-label={copy.globeLabel}
+        >
           <defs>
             {/* Shading gradients */}
             <radialGradient id="globeSphere" cx="35%" cy="35%" r="65%">
@@ -496,14 +565,14 @@ export default function InteractiveGlobe({
                 return (
                   <g key={`sonar-${config.name}`}>
                     {/* Ripple 1 */}
-                    <circle cx={x} cy={y} fill="none" stroke={config.color} strokeWidth={1}>
-                      <animate attributeName="r" values="3;24" dur="2.2s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="1;0" dur="2.2s" repeatCount="indefinite" />
+                    <circle cx={x} cy={y} r={continuousMotion ? undefined : 12} fill="none" stroke={config.color} strokeWidth={1} opacity={continuousMotion ? undefined : 0.45}>
+                      {continuousMotion && <animate attributeName="r" values="3;24" dur="2.2s" repeatCount="indefinite" />}
+                      {continuousMotion && <animate attributeName="opacity" values="1;0" dur="2.2s" repeatCount="indefinite" />}
                     </circle>
                     {/* Ripple 2 (offset) */}
-                    <circle cx={x} cy={y} fill="none" stroke={config.color} strokeWidth={1}>
-                      <animate attributeName="r" values="3;24" dur="2.2s" begin="1.1s" repeatCount="indefinite" />
-                      <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1.1s" repeatCount="indefinite" />
+                    <circle cx={x} cy={y} r={continuousMotion ? undefined : 20} fill="none" stroke={config.color} strokeWidth={1} opacity={continuousMotion ? undefined : 0.2}>
+                      {continuousMotion && <animate attributeName="r" values="3;24" dur="2.2s" begin="1.1s" repeatCount="indefinite" />}
+                      {continuousMotion && <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1.1s" repeatCount="indefinite" />}
                     </circle>
                     {/* Sweep Line from Center */}
                     <line
@@ -538,10 +607,12 @@ export default function InteractiveGlobe({
                   }}
                   role="button"
                   tabIndex={isFront ? 0 : -1}
-                  aria-label={`${config.name}: ${config.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')} plays`}
+                  aria-label={`${localizeCountryName(config.name, lang)}: ${config.plays.toLocaleString(locale)} ${copy.plays}`}
                   aria-pressed={isSelected}
                   onMouseEnter={() => isFront && setHoveredCountry(config)}
                   onMouseLeave={() => setHoveredCountry(null)}
+                  onFocus={() => isFront && setHoveredCountry(config)}
+                  onBlur={() => setHoveredCountry(null)}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (!isFront) return;
@@ -554,6 +625,10 @@ export default function InteractiveGlobe({
                     onSelectCountry(isSelected ? null : config.name);
                   }}
                 >
+                  {/* The visual dot stays precise while this transparent halo
+                      provides a 44 px pointer target on the 300 px design grid. */}
+                  <circle data-hit-target="true" cx="0" cy="0" r={22} fill="transparent" />
+
                   {/* Glowing ring for active hover nodes */}
                   {isFront && (isSelected || hoveredCountry?.name === config.name) && (
                     <circle
@@ -563,7 +638,7 @@ export default function InteractiveGlobe({
                       fill="none"
                       stroke={config.color}
                       strokeWidth={1.5}
-                      className="animate-pulse opacity-75"
+                      className={continuousMotion ? 'animate-pulse opacity-75' : 'opacity-75'}
                     />
                   )}
 
@@ -612,30 +687,30 @@ export default function InteractiveGlobe({
           <div
             className="absolute z-20 pointer-events-none glass-panel p-2.5 rounded-lg border border-white/20 text-xs font-mono select-none"
             style={{
-              // Position tooltip dynamically based on projected 3D coordinates
-              left: `${center + projectPoint(hoveredCountry.lat, hoveredCountry.lon, R).x - 60}px`,
-              top: `${center + projectPoint(hoveredCountry.lat, hoveredCountry.lon, R).y - 55}px`,
+              // Percent positioning follows the responsive SVG instead of its 300 px design grid.
+              left: `clamp(4.5rem, ${((center + projectPoint(hoveredCountry.lat, hoveredCountry.lon, R).x) / size) * 100}%, calc(100% - 4.5rem))`,
+              top: `clamp(4rem, ${((center + projectPoint(hoveredCountry.lat, hoveredCountry.lon, R).y) / size) * 100}%, calc(100% - 1rem))`,
+              transform: 'translate(-50%, calc(-100% - 0.75rem))',
               boxShadow: `0 0 15px ${hoveredCountry.color}35`,
             }}
           >
-            <p className="font-bold text-white leading-tight">{hoveredCountry.name}</p>
+            <p className="font-bold text-white leading-tight">{localizeCountryName(hoveredCountry.name, lang)}</p>
             <p className="text-[10px] text-gray-400 mt-0.5">
-              {hoveredCountry.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')} plays
+              {hoveredCountry.plays.toLocaleString(locale)} {copy.plays}
             </p>
           </div>
         )}
       </div>
 
       <p className="text-[10px] font-mono text-gray-500 mt-2 uppercase tracking-widest text-center">
-        {lang === 'en' 
-          ? ' Drag in any direction to spin' 
-          : ' Arrastra en cualquier dirección para girar'}
+        {copy.dragHint}
       </p>
 
       {/* Sticky Country Intelligence Dossier Card */}
       {selectedCountry && countryStats && (
         <div
-          className="mt-4 w-full max-w-[280px] glass-panel p-4 rounded-2xl border relative overflow-hidden transition-all duration-300 pointer-events-auto"
+          data-testid="country-dossier"
+          className="glass-panel pointer-events-auto relative mt-4 w-full max-w-[360px] min-w-0 overflow-hidden rounded-2xl border p-4 transition-all duration-300"
           style={{
             borderColor: `${COUNTRY_COORDS[selectedCountry]?.color || '#ffffff'}40`,
             boxShadow: `0 8px 32px ${COUNTRY_COORDS[selectedCountry]?.color || '#ffffff'}15`,
@@ -643,28 +718,30 @@ export default function InteractiveGlobe({
         >
           <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 blur-2xl rounded-full pointer-events-none" />
           <button
+            type="button"
             onClick={() => onSelectCountry(null)}
-            aria-label={lang === 'en' ? 'Close country details' : 'Cerrar detalles del país'}
-            className="absolute top-3 right-3 text-gray-400 hover:text-white font-mono text-xs font-bold w-5 h-5 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
+            aria-label={copy.closeCountry}
+            className="absolute top-1.5 flex h-11 w-11 items-center justify-center rounded-full bg-white/5 font-mono text-base font-bold text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
+            style={{ insetInlineEnd: '0.375rem' }}
           >
             ×
           </button>
           
           <div className="flex items-center gap-3">
-            <FlagArt country={selectedCountry} size={28} />
+            <FlagArt country={selectedCountry} size={28} title={localizeCountryName(selectedCountry, lang)} />
             <div className="min-w-0">
-              <h4 className="text-sm font-black text-white leading-tight truncate pr-4">
-                {selectedCountry}
+              <h4 className="text-sm font-black text-white leading-tight truncate" style={{ paddingInlineEnd: '1rem' }}>
+                {localizeCountryName(selectedCountry, lang)}
               </h4>
-              <p className="text-[9px] font-mono text-gray-400 mt-0.5 uppercase tracking-wider">
-                {countryStats.plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')} plays
+              <p className="mt-0.5 text-[11px] font-mono uppercase tracking-wider text-gray-400">
+                {countryStats.plays.toLocaleString(locale)} {copy.plays}
               </p>
             </div>
           </div>
 
           <div className="mt-3.5 space-y-2">
-            <p className="text-[9px] font-mono font-bold text-cyberCyan uppercase tracking-wider">
-              {lang === 'en' ? 'Top Artists' : 'Artistas Principales'}
+            <p className="text-xs font-mono font-bold uppercase tracking-wider text-cyberCyan">
+              {copy.topArtists}
             </p>
             {countryTopArtists.length > 0 ? (
               <div className="space-y-1.5">
@@ -675,19 +752,19 @@ export default function InteractiveGlobe({
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <ArtistAvatar name={artist.name} size={20} tooltip={false} />
-                      <span className="text-[11px] font-semibold text-gray-200 truncate font-mono">
+                      <span className="truncate font-mono text-xs font-semibold text-gray-200">
                         {idx + 1}. {artist.name}
                       </span>
                     </div>
-                    <span className="text-[9px] font-mono text-gray-400 shrink-0 pr-1">
-                      {artist.plays}
+                    <span className="shrink-0 font-mono text-[11px] text-gray-400" style={{ paddingInlineEnd: '0.25rem' }}>
+                      {artist.plays.toLocaleString(locale)}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-[9px] text-gray-500 italic">
-                {lang === 'en' ? 'No cataloged artists' : 'Sin artistas catalogados'}
+              <p className="text-xs italic text-gray-500">
+                {copy.noArtists}
               </p>
             )}
           </div>

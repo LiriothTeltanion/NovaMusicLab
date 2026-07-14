@@ -140,6 +140,30 @@ export interface TopGenre {
   plays: number;
 }
 
+/**
+ * Archive-wide artist grain used by the genre review studio. Unlike
+ * `top_artists`, this catalog keeps every counted artist so long-tail
+ * Unclassified plays remain attributable and safely editable.
+ */
+export interface ArtistGenreCatalogEntry {
+  artistKey: string;
+  name: string;
+  plays: number;
+  automaticGenre: string;
+  automaticFamily: string;
+  country: string;
+  source: 'catalog' | 'unclassified';
+}
+
+/** A user-authored genre correction, kept separate from automatic metadata. */
+export interface GenreAssignment {
+  artistKey: string;
+  artistName: string;
+  family: string;
+  tags: string[];
+  updatedAt: string;
+}
+
 export interface YearlyEra {
   year: number;
   plays: number;
@@ -231,6 +255,11 @@ export interface MusicDnaData {
   top_tracks: TopTrack[];
   top_albums: TopAlbum[];
   top_genres: TopGenre[];
+  /**
+   * Present for freshly parsed uploads. The bundled default archive stores the
+   * same rows in a separate lazy JSON chunk to keep its main dataset compact.
+   */
+  artist_genre_catalog?: ArtistGenreCatalogEntry[];
   yearly_eras: YearlyEra[];
   sessions: Session[];
   obsessions: Obsession[];

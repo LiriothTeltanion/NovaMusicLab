@@ -4,6 +4,7 @@ import { YearlyEra } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import { buildArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/emotionalEngine';
+import { localeFor } from '../utils/i18n';
 
 type SortKey = 'year' | 'plays' | 'unique_artists' | 'unique_tracks' | 'diversity_index';
 
@@ -23,7 +24,7 @@ export default function YearlyErasTable({ eras, selectedYear, onSelectYear }: Ye
   const copy = t.statsDeepDive;
   const [sortKey, setSortKey] = useState<SortKey>('year');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const fmt = (n: number) => Math.round(n).toLocaleString(locale);
 
   const moodColors = useMemo(() => {
@@ -91,8 +92,8 @@ export default function YearlyErasTable({ eras, selectedYear, onSelectYear }: Ye
                     <button
                       onClick={() => toggleSort(col.key)}
                       aria-label={copy.erasTableSortAria(col.label)}
-                      className="inline-flex items-center gap-1.5 text-[10px] font-mono font-black uppercase tracking-widest transition-colors hover:text-white"
-                      style={{ color: active ? tc.c1 : '#6b7280' }}
+                      className="inline-flex items-center gap-1.5 text-[10px] font-mono font-black uppercase tracking-widest transition-colors hover:text-[var(--fg)]"
+                      style={{ color: active ? tc.c1 : 'var(--type-ink-muted)' }}
                     >
                       {col.label}
                       <Arrow className="h-3 w-3" style={{ opacity: active ? 1 : 0.45 }} />
@@ -101,12 +102,12 @@ export default function YearlyErasTable({ eras, selectedYear, onSelectYear }: Ye
                 );
               })}
               <th className="px-3 pb-1 text-left">
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-[var(--type-ink-muted)]">
                   {copy.erasTableTopArtist}
                 </span>
               </th>
               <th className="px-3 pb-1 text-left">
-                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
+                <span className="text-[10px] font-mono font-black uppercase tracking-widest text-[var(--type-ink-muted)]">
                   {copy.erasTableDaypart}
                 </span>
               </th>
@@ -121,29 +122,37 @@ export default function YearlyErasTable({ eras, selectedYear, onSelectYear }: Ye
                 <tr
                   key={era.year}
                   onClick={() => onSelectYear?.(era.year)}
+                  onKeyDown={(event) => {
+                    if (!onSelectYear || (event.key !== 'Enter' && event.key !== ' ')) return;
+                    event.preventDefault();
+                    onSelectYear(era.year);
+                  }}
+                  tabIndex={onSelectYear ? 0 : undefined}
                   aria-label={copy.erasTableRowAria(era.year)}
-                  className={`group ${onSelectYear ? 'cursor-pointer' : ''}`}
+                  aria-selected={isSelected}
+                  className={`group outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${onSelectYear ? 'cursor-pointer' : ''}`}
+                  style={{ outlineColor: tc.c1 }}
                 >
                   <td className="rounded-l-xl border-y border-l px-3 py-2.5 transition-colors"
                     style={{
-                      borderColor: isSelected ? `${tc.c1}45` : 'rgba(255,255,255,0.06)',
-                      backgroundColor: isSelected ? `${tc.c1}10` : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? `${tc.c1}45` : 'color-mix(in srgb, var(--fg) 8%, transparent)',
+                      backgroundColor: isSelected ? `${tc.c1}10` : 'color-mix(in srgb, var(--fg) 2%, transparent)',
                     }}>
-                    <span className="font-mono text-sm font-black" style={{ color: isSelected ? tc.c1 : '#fff' }}>
+                    <span className="font-mono text-sm font-black" style={{ color: isSelected ? tc.c1 : 'var(--fg)' }}>
                       {era.year}
                     </span>
                   </td>
                   <td className="border-y px-3 py-2.5"
                     style={{
-                      borderColor: isSelected ? `${tc.c1}45` : 'rgba(255,255,255,0.06)',
-                      backgroundColor: isSelected ? `${tc.c1}10` : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? `${tc.c1}45` : 'color-mix(in srgb, var(--fg) 8%, transparent)',
+                      backgroundColor: isSelected ? `${tc.c1}10` : 'color-mix(in srgb, var(--fg) 2%, transparent)',
                     }}>
                     <div className="min-w-[120px]">
                       <span className="font-mono text-xs font-bold"
-                        style={{ color: era.plays === maxima.plays ? tc.c1 : '#e5e7eb' }}>
+                        style={{ color: era.plays === maxima.plays ? tc.c1 : 'var(--fg)' }}>
                         {fmt(era.plays)}
                       </span>
-                      <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-white/8">
+                      <div className="mt-1 h-1 w-full overflow-hidden rounded-full" style={{ backgroundColor: 'color-mix(in srgb, var(--fg) 8%, transparent)' }}>
                         <div className="h-full rounded-full"
                           style={{ width: `${playsPct}%`, background: `linear-gradient(90deg, ${tc.c1}70, ${tc.c1})` }} />
                       </div>
@@ -152,32 +161,32 @@ export default function YearlyErasTable({ eras, selectedYear, onSelectYear }: Ye
                   {(['unique_artists', 'unique_tracks', 'diversity_index'] as const).map(key => (
                     <td key={key} className="border-y px-3 py-2.5"
                       style={{
-                        borderColor: isSelected ? `${tc.c1}45` : 'rgba(255,255,255,0.06)',
-                        backgroundColor: isSelected ? `${tc.c1}10` : 'rgba(255,255,255,0.02)',
+                        borderColor: isSelected ? `${tc.c1}45` : 'color-mix(in srgb, var(--fg) 8%, transparent)',
+                        backgroundColor: isSelected ? `${tc.c1}10` : 'color-mix(in srgb, var(--fg) 2%, transparent)',
                       }}>
                       <span className="font-mono text-xs font-bold"
-                        style={{ color: era[key] === maxima[key] ? tc.c1 : '#9ca3af' }}>
+                        style={{ color: era[key] === maxima[key] ? tc.c1 : 'var(--type-ink-muted)' }}>
                         {key === 'diversity_index' ? era[key].toFixed(1) : fmt(era[key])}
                       </span>
                     </td>
                   ))}
                   <td className="border-y px-3 py-2.5"
                     style={{
-                      borderColor: isSelected ? `${tc.c1}45` : 'rgba(255,255,255,0.06)',
-                      backgroundColor: isSelected ? `${tc.c1}10` : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? `${tc.c1}45` : 'color-mix(in srgb, var(--fg) 8%, transparent)',
+                      backgroundColor: isSelected ? `${tc.c1}10` : 'color-mix(in srgb, var(--fg) 2%, transparent)',
                     }}>
                     <span className="flex items-center gap-2 min-w-0">
                       <ArtistAvatar name={era.top_artist} size={24} tooltip={false} />
                       <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: moodColor, boxShadow: `0 0 6px ${moodColor}` }} />
-                      <span className="truncate text-xs font-bold text-white max-w-[160px]">{era.top_artist}</span>
+                      <span className="max-w-[160px] truncate text-xs font-bold text-[var(--fg)]">{era.top_artist}</span>
                     </span>
                   </td>
                   <td className="rounded-r-xl border-y border-r px-3 py-2.5"
                     style={{
-                      borderColor: isSelected ? `${tc.c1}45` : 'rgba(255,255,255,0.06)',
-                      backgroundColor: isSelected ? `${tc.c1}10` : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? `${tc.c1}45` : 'color-mix(in srgb, var(--fg) 8%, transparent)',
+                      backgroundColor: isSelected ? `${tc.c1}10` : 'color-mix(in srgb, var(--fg) 2%, transparent)',
                     }}>
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-gray-400">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--type-ink-muted)]">
                       {era.dominant_daypart}
                     </span>
                   </td>

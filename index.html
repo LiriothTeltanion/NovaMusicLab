@@ -1,7 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr" data-language="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Apply the saved writing direction before styles or React paint. This
+         prevents a Hebrew session from briefly rendering in English/LTR. -->
+    <script id="nova-language-prepaint">
+      (() => {
+        try {
+          const storedLanguage = localStorage.getItem('nml_lang');
+          const language = storedLanguage === 'es' || storedLanguage === 'en' || storedLanguage === 'he'
+            ? storedLanguage
+            : 'en';
+          const root = document.documentElement;
+          root.lang = language;
+          root.dir = language === 'he' ? 'rtl' : 'ltr';
+          root.dataset.language = language;
+        } catch {
+          // The safe defaults on <html> remain active when storage is blocked.
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16.png" />
@@ -15,11 +33,11 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Nova Music Lab ✧ Your Musical DNA</title>
     <meta name="description" content="An ornamental, statistical and emotional dashboard that explores your Spotify and Last.fm listening history." />
-    <!-- One request, two variable weight ranges: fewer font files without a
+    <!-- One request, three variable families: fewer font round-trips without a
          flash-prone async stylesheet swap. `display=swap` keeps text visible. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=Noto+Sans+Hebrew:wght@300..900&family=Space+Grotesk:wght@400..700&display=swap" rel="stylesheet" />
   </head>
   <body class="bg-[#030712] text-gray-100 overflow-x-hidden antialiased selection:bg-[#00f2fe]/30 selection:text-white">
     <div id="root"></div>

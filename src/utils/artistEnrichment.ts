@@ -1,14 +1,27 @@
 import artistProfiles from '../data/artist_enrichment.json';
 import type { MusicDnaData, TopAlbum, TopArtist, TopTrack, YearlyEra } from '../types';
+import {
+  subscribeToHebrewArtistEnrichment,
+  type HebrewArtistEnrichment,
+} from './artistEnrichmentHebrew';
+import { normalizeCatalogName } from './catalogName';
+
+export {
+  isHebrewArtistEnrichmentLoaded,
+  loadHebrewArtistEnrichment,
+} from './artistEnrichmentHebrew';
+export { normalizeCatalogName } from './catalogName';
 
 export type LocalizedText = {
   es: string;
   en: string;
+  he: string;
 };
 
 export type LocalizedList = {
   es: string[];
   en: string[];
+  he: string[];
 };
 
 export interface ArtistAlbumEnrichment {
@@ -40,19 +53,104 @@ export interface RelatedArchiveArtist {
   score: number;
 }
 
-const profiles = artistProfiles as ArtistEnrichment[];
+type BaseLocalizedText = Omit<LocalizedText, 'he'>;
+type BaseLocalizedList = Omit<LocalizedList, 'he'>;
 
-export function normalizeCatalogName(value: string) {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[’']/g, '')
-    .replace(/&/g, 'and')
-    .replace(/\([^)]*\)/g, '')
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
-    .trim()
-    .toLowerCase();
+interface BaseArtistAlbumEnrichment extends Omit<ArtistAlbumEnrichment, 'description'> {
+  description: BaseLocalizedText;
 }
+
+interface BaseArtistEnrichment extends Omit<
+  ArtistEnrichment,
+  | 'origin'
+  | 'country'
+  | 'status'
+  | 'bio'
+  | 'archive_role'
+  | 'sound_evolution'
+  | 'why_it_matters'
+  | 'signature_moods'
+  | 'key_albums'
+> {
+  origin: BaseLocalizedText;
+  country: BaseLocalizedText;
+  status: BaseLocalizedText;
+  bio: BaseLocalizedText;
+  archive_role: BaseLocalizedText;
+  sound_evolution: BaseLocalizedText;
+  why_it_matters: BaseLocalizedText;
+  signature_moods: BaseLocalizedList;
+  key_albums: BaseArtistAlbumEnrichment[];
+}
+
+const withEnglishFallback = (text: BaseLocalizedText): LocalizedText => ({
+  ...text,
+  // AppProvider preloads the Hebrew overlay before rendering HE. Keeping this
+  // fallback makes the synchronous API safe for tests and non-React callers.
+  he: text.en,
+});
+
+const profiles = (artistProfiles as BaseArtistEnrichment[]).map<ArtistEnrichment>(profile => ({
+  ...profile,
+  origin: withEnglishFallback(profile.origin),
+  country: withEnglishFallback(profile.country),
+  status: withEnglishFallback(profile.status),
+  bio: withEnglishFallback(profile.bio),
+  archive_role: withEnglishFallback(profile.archive_role),
+  sound_evolution: withEnglishFallback(profile.sound_evolution),
+  why_it_matters: withEnglishFallback(profile.why_it_matters),
+  signature_moods: {
+    ...profile.signature_moods,
+    he: profile.signature_moods.en,
+  },
+  key_albums: profile.key_albums.map(album => ({
+    ...album,
+    description: withEnglishFallback(album.description),
+  })),
+}));
+
+function installHebrewArtistEnrichment(overlay: HebrewArtistEnrichment[]) {
+  const overlayByName = new Map(overlay.map(profile => [profile.name, profile]));
+  if (overlayByName.size !== profiles.length) {
+    throw new Error(
+      `Hebrew artist enrichment profile mismatch: expected ${profiles.length}, received ${overlayByName.size}.`,
+    );
+  }
+
+  const validatedProfiles = profiles.map(profile => {
+    const hebrew = overlayByName.get(profile.name);
+    if (!hebrew) throw new Error(`Missing Hebrew artist enrichment for ${profile.name}.`);
+    const albumOverlayByTitle = new Map(
+      hebrew.key_albums.map(album => [album.title, album.description]),
+    );
+    if (albumOverlayByTitle.size !== profile.key_albums.length) {
+      throw new Error(`Hebrew album enrichment mismatch for ${profile.name}.`);
+    }
+    for (const album of profile.key_albums) {
+      const description = albumOverlayByTitle.get(album.title);
+      if (!description) {
+        throw new Error(`Missing Hebrew enrichment for ${profile.name} / ${album.title}.`);
+      }
+    }
+    return { profile, hebrew, albumOverlayByTitle };
+  });
+
+  for (const { profile, hebrew, albumOverlayByTitle } of validatedProfiles) {
+    profile.origin.he = hebrew.origin;
+    profile.country.he = hebrew.country;
+    profile.status.he = hebrew.status;
+    profile.bio.he = hebrew.bio;
+    profile.archive_role.he = hebrew.archive_role;
+    profile.sound_evolution.he = hebrew.sound_evolution;
+    profile.why_it_matters.he = hebrew.why_it_matters;
+    profile.signature_moods.he = hebrew.signature_moods;
+    for (const album of profile.key_albums) {
+      album.description.he = albumOverlayByTitle.get(album.title)!;
+    }
+  }
+}
+
+subscribeToHebrewArtistEnrichment(installHebrewArtistEnrichment);
 
 function profileNames(profile: ArtistEnrichment) {
   return [profile.name, ...profile.aliases].filter(Boolean);

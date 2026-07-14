@@ -25,6 +25,9 @@ describe('EraExplorer visual identity', () => {
   afterEach(() => {
     cleanup();
     localStorage.clear();
+    document.documentElement.lang = 'es';
+    document.documentElement.dir = 'ltr';
+    delete document.documentElement.dataset.language;
   });
 
   it('renders the newest real chapter as a data-derived poster', () => {
@@ -114,6 +117,36 @@ describe('EraExplorer visual identity', () => {
     });
     expect(screen.getByRole('tab', { name: `Seleccionar era ${previousEra.year}` })).toHaveFocus();
     expect(activeTab).toHaveAttribute('tabindex', '-1');
+  });
+
+  it('renders idiomatic Hebrew in RTL and reverses timeline arrow-key semantics', async () => {
+    localStorage.setItem('nml_lang', 'he');
+    renderExplorer();
+    const latestEra = data.yearly_eras.at(-1)!;
+    const previousEra = data.yearly_eras.at(-2)!;
+
+    const archivePulse = await screen.findByRole('progressbar', { name: 'דופק הארכיון' });
+
+    expect(document.documentElement).toHaveAttribute('lang', 'he');
+    expect(document.documentElement).toHaveAttribute('dir', 'rtl');
+    expect(archivePulse).toHaveAttribute('aria-valuenow');
+    expect(screen.getByText(/אינו מייצג BPM או מאפיינים אקוסטיים/)).toBeInTheDocument();
+    expect(screen.getByTestId('era-previous')).toHaveAccessibleName('התקופה הקודמת');
+
+    const activeTab = screen.getByRole('tab', { name: `בחירת התקופה של ${latestEra.year}` });
+    fireEvent.keyDown(activeTab, { key: 'ArrowRight' });
+
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: `בחירת התקופה של ${previousEra.year}` })).toHaveAttribute('aria-selected', 'true');
+    });
+    expect(screen.getByRole('tab', { name: `בחירת התקופה של ${previousEra.year}` })).toHaveFocus();
+    const poster = await waitFor(() => {
+      const candidate = screen.getAllByTestId('era-poster').find(node => node.dataset.era === String(previousEra.year));
+      expect(candidate).toBeDefined();
+      return candidate!;
+    });
+    expect(within(poster).getAllByText(previousEra.top_artist).some(node => node.getAttribute('dir') === 'auto')).toBe(true);
+    expect(within(poster).getAllByText(previousEra.top_track).some(node => node.getAttribute('dir') === 'auto')).toBe(true);
   });
 
   it('centers the active year horizontally without moving the document', async () => {

@@ -1,6 +1,7 @@
 import offlineKnowledge from '../data/offline_artist_knowledge.json';
 import type { ArtistEnrichmentGap, ArtistEnrichmentPriority, ArtistEnrichmentQueueItem, ArtistKnowledgeSummary, TopArtist } from '../types';
-import { normalizeCatalogName } from './artistEnrichment';
+import { normalizeCatalogName } from './catalogName';
+import { canonicalArtistName } from './artistIdentity';
 
 export interface OfflineArtistReleaseGroup {
   id: string;
@@ -125,7 +126,7 @@ function hasOfflineProfile(knowledge?: OfflineArtistKnowledge): knowledge is Off
 }
 
 export function getOfflineArtistKnowledge(artistName: string) {
-  return artistMap.get(normalizeCatalogName(artistName));
+  return artistMap.get(normalizeCatalogName(canonicalArtistName(artistName)));
 }
 
 /** Band lineup from MusicBrainz artist-rels (empty for solo artists). */

@@ -48,25 +48,25 @@ export default function SectionNarrative({
     <Surface
       as="section"
       variant="utility"
-      className={`rounded-2xl border-l-2 ${compact ? 'p-4' : 'p-4 md:p-5'} ${className}`}
+      className={`rounded-xl border-l-2 sm:rounded-2xl ${compact ? 'p-3 sm:p-4' : 'p-3 sm:p-4 md:p-4'} ${className}`}
       style={{ borderLeftColor: color }}
     >
       <button
         type="button"
         onClick={() => setExpanded(v => !v)}
         aria-expanded={expanded}
-        className="group flex min-h-11 w-full items-center justify-between gap-3 text-left"
+        className="group flex min-h-11 w-full items-center justify-between gap-2.5 text-left"
       >
-        <div className="space-y-1.5 min-w-0">
+        <div className="min-w-0 space-y-1">
           <div className="flex items-center gap-2">
             <BookOpenText className="w-4 h-4 shrink-0" style={{ color }} />
             <p className="type-label" style={{ color }}>
               {content.eyebrow}
             </p>
           </div>
-          <h3 className="type-section type-strong">
+          <h2 className="type-section type-strong">
             {content.title}
-          </h3>
+          </h2>
         </div>
         <span className="flex items-center gap-2 shrink-0">
           <span className="type-label type-muted hidden transition-colors group-hover:text-[var(--fg)] sm:inline">
@@ -80,19 +80,19 @@ export default function SectionNarrative({
       </button>
 
       {expanded && (
-        <div className="animate-fade-in space-y-5 border-t border-white/5 pt-4">
+        <div className="animate-fade-in space-y-4 border-t border-white/5 pt-3 sm:pt-4">
           <p className="type-body type-muted">
             {content.body}
           </p>
 
-          <div className={`grid gap-3 ${compact ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}`}>
+          <div className={`grid gap-2.5 sm:gap-3 ${compact ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-3'}`}>
             {content.insights.map((insight, index) => {
               const insightColor = [color, secondary, tc.c3, tc.c4][index % 4];
               return (
                 <Surface
                   key={insight.title}
                   variant="analysis"
-                  className="rounded-2xl p-4"
+                  className="rounded-xl p-3.5 sm:rounded-2xl sm:p-4"
                   style={{ borderColor: `${insightColor}24` }}
                 >
                   <div className="flex items-center gap-2 mb-2">
@@ -112,7 +112,7 @@ export default function SectionNarrative({
           {(content.dataNote || content.deepDive) && (
             <div className="space-y-3 pt-1">
               {content.dataNote && (
-                <div className="flex items-start gap-3 rounded-2xl border bg-white/2 p-4" style={{ borderColor: `${color}20` }}>
+                <div className="flex items-start gap-3 rounded-xl border bg-white/2 p-3.5 sm:rounded-2xl sm:p-4" style={{ borderColor: `${color}20` }}>
                   <Info className="w-4 h-4 shrink-0 mt-0.5" style={{ color }} />
                   <p className="type-caption type-muted">
                     {content.dataNote}
@@ -121,7 +121,7 @@ export default function SectionNarrative({
               )}
 
               {content.deepDive && (
-                <details className="group/deep rounded-2xl border bg-white/2 p-4" style={{ borderColor: `${secondary}20` }}>
+                <details className="group/deep rounded-xl border bg-white/2 p-3.5 sm:rounded-2xl sm:p-4" style={{ borderColor: `${secondary}20` }}>
                   <summary className="type-label cursor-pointer list-none" style={{ color: secondary }}>
                     <span className="group-open/deep:hidden">+ {deepDiveLabel}</span>
                     <span className="hidden group-open/deep:inline">- {deepDiveLabel}</span>

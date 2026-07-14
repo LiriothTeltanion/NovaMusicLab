@@ -114,7 +114,8 @@ describe('bilingual dataset text', () => {
     expect(screen.queryByRole('heading', { name: 'All-Time Top' })).not.toBeInTheDocument();
     expect(screen.getByText('Top 20 Comparison').closest('details')).not.toHaveAttribute('open');
     expect(screen.getByText('Emotional filter')).toBeInTheDocument();
-    expect(screen.getByText('All')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Artists', level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByText('Archive role')).toBeInTheDocument();
     expect(screen.getByText('Emotional engine')).toBeInTheDocument();
     expect(screen.getByText('Extended emotional biography')).toBeInTheDocument();
@@ -135,7 +136,8 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Dossier de artista')).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Top Histórico' })).not.toBeInTheDocument();
     expect(screen.getByText('Filtro emocional')).toBeInTheDocument();
-    expect(screen.getByText('Todos')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Artistas', level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Todos' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByText('Rol en el archivo')).toBeInTheDocument();
     expect(screen.getByText('Motor emocional')).toBeInTheDocument();
     expect(screen.getByText('Biografía emocional extendida')).toBeInTheDocument();

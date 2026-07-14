@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
-  RadarChart, PolarGrid, PolarAngleAxis, Radar, AreaChart, Area, CartesianGrid,
+  AreaChart, Area, CartesianGrid,
   Treemap,
 } from 'recharts';
 import { Calendar, Zap, TrendingUp, Award, Target } from 'lucide-react';
@@ -17,11 +17,13 @@ import {
   getPeakYear,
   getWeekdayNames,
   getWeekdayTotals,
-  normalizeGenre,
 } from '../utils/analytics';
+import { buildGenreDistribution, getDatasetCoverage } from '../utils/chartIntegrity';
 import SectionNarrative from './SectionNarrative';
 import YearlyErasTable from './YearlyErasTable';
-import { CHART_ANIMATION, ChartSwap } from './chartKit';
+import { axisProps, ChartCanvas, ChartFrame, ChartSwap, gridStroke, useChartAnimation } from './chartKit';
+import { localeFor, pickLanguage } from '../utils/i18n';
+import { localizeGenreName } from '../utils/localizedDatasetText';
 
 interface StatsDeepDiveProps { data: MusicDnaData; }
 
@@ -29,12 +31,12 @@ const CustomTooltip = ({ active, payload, label, tc }: any) => {
   const { lang } = useApp();
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl px-4 py-3 text-xs font-mono shadow-lg"
-      style={{ backgroundColor: '#070e1c', border: `1px solid ${tc?.c1 ?? '#00f2fe'}40` }}>
-      <p className="text-white font-bold mb-1">{label}</p>
+    <div className="nova-chart-tooltip rounded-xl px-4 py-3 text-xs font-mono shadow-lg"
+      style={{ border: `1px solid ${tc?.c1 ?? '#00f2fe'}40` }}>
+      <p className="font-bold mb-1">{label}</p>
       {payload.map((p: any, i: number) => (
         <p key={i} style={{ color: p.color ?? tc?.c1 }}>
-          {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
+          {p.name}: <span className="nova-chart-tooltip__value">{Number(p.value).toLocaleString(localeFor(lang))}</span>
         </p>
       ))}
     </div>
@@ -43,18 +45,22 @@ const CustomTooltip = ({ active, payload, label, tc }: any) => {
 
 export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
   const { tc, lang, t } = useApp();
+  const chartAnimation = useChartAnimation();
   const peakYear = useMemo(() => getPeakYear(data), [data]);
   const [selectedYear, setSelectedYear] = useState<number>(() => peakYear?.year ?? data.yearly_eras[0]?.year ?? new Date().getFullYear());
+  const [yearMetric, setYearMetric] = useState<'plays' | 'artistas' | 'diversidad'>('plays');
 
   useEffect(() => {
     if (peakYear?.year) setSelectedYear(peakYear.year);
   }, [peakYear?.year]);
 
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const MONTHS  = useMemo(() => getMonthNames(locale), [locale]);
   const WEEKDAYS = useMemo(() => getWeekdayNames(locale), [locale]);
 
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
+  const coverage = useMemo(() => getDatasetCoverage(data), [data]);
+  const selectedYearIsYtd = coverage.isPartialYear && coverage.maxYear === selectedYear;
 
   /* ── Monthly matrix ── */
   const monthlyActivity = useMemo(() => buildMonthlyActivity(data), [data]);
@@ -86,18 +92,18 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
 
   /* ── Genre Treemap ── */
   const treemapData = useMemo(() => {
-    const genreMap: Record<string, number> = {};
-    data.top_artists.forEach(a => {
-      const g = normalizeGenre(a.genre ?? '');
-      genreMap[g] = (genreMap[g] || 0) + a.plays;
-    });
+    const distribution = buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 10);
     return {
       name: 'root',
-      children: Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([name, plays]) => ({
-        name, plays, size: plays,
+      totalPlays: distribution.totalPlays,
+      children: distribution.rows.map(row => ({
+        ...row,
+        genre: row.name,
+        name: localizeGenreName(row.name, lang),
+        size: row.plays,
       })),
     };
-  }, [data.top_artists]);
+  }, [data.core_metrics.total_plays, data.top_genres, lang]);
 
   /* ── Genre evolution area data ── */
   const genreEvolution = useMemo(
@@ -109,6 +115,27 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
     })),
     [data.yearly_eras]
   );
+  const yearMetricConfig = {
+    plays: {
+      label: t.statsDeepDive.plays,
+      color: tc.c1,
+      unit: pickLanguage(lang, { en: 'counted listens', es: 'escuchas contadas', he: 'השמעות שנספרו' }),
+    },
+    artistas: {
+      label: t.statsDeepDive.uniqueArtists,
+      color: tc.c3,
+      unit: pickLanguage(lang, { en: 'unique artists', es: 'artistas únicos', he: 'אמנים ייחודיים' }),
+    },
+    diversidad: {
+      label: t.statsDeepDive.diversityPct,
+      color: tc.c4,
+      unit: '%',
+    },
+  } as const;
+  const activeYearMetric = yearMetricConfig[yearMetric];
+  const peakMetricRow = genreEvolution.reduce((best, row) =>
+    row[yearMetric] > best[yearMetric] ? row : best,
+  genreEvolution[0] ?? { year: '—', plays: 0, artistas: 0, diversidad: 0 });
 
   /* ── Advanced metrics ── */
   const consistencyScore = useMemo(() => Math.round(
@@ -200,8 +227,35 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
               ))}
             </div>
             {/* Year rows */}
-            {years.map(year => (
-              <div key={year} className="flex items-center mb-1">
+            {years.map(year => {
+              const monthDescriptions = Array.from({ length: 12 }, (_, month) => {
+                const plays = monthlyMatrix.find(d => d.year === year && d.month === month)?.plays ?? 0;
+                return t.statsDeepDive.monthCellTitle(year, MONTHS[month], fmtNum(plays));
+              });
+              const descriptionId = `monthly-activity-${year}`;
+
+              return (
+              <div
+                key={year}
+                role="button"
+                tabIndex={0}
+                aria-pressed={selectedYear === year}
+                aria-label={pickLanguage(lang, {
+                  en: `Show ${year} monthly breakdown`,
+                  es: `Ver desglose mensual de ${year}`,
+                  he: `הצגת הפירוט החודשי של ${year}`,
+                })}
+                aria-describedby={descriptionId}
+                onClick={() => setSelectedYear(year)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    setSelectedYear(year);
+                  }
+                }}
+                className="mb-1 flex min-h-6 items-center rounded-md outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                style={{ '--tw-ring-color': tc.c1 } as React.CSSProperties}
+              >
                 <span className="type-caption type-muted w-10 pr-2 text-right">{year}</span>
                 <div className="flex flex-1 gap-1">
                   {Array.from({ length: 12 }, (_, m) => {
@@ -209,24 +263,21 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
                     const opacity = 0.08 + (plays / maxMonthlyPlays) * 0.92;
                     return (
                       <motion.div key={m}
-                        className="flex-1 h-5 rounded-sm cursor-pointer"
+                        className="h-6 flex-1 cursor-pointer rounded-sm"
                         style={{ backgroundColor: tc.c1, opacity }}
-                        whileHover={{ scale: 1.2, opacity: 1 }}
+                        whileHover={{ scale: 1.12, opacity: 1 }}
                         title={t.statsDeepDive.monthCellTitle(year, MONTHS[m], fmtNum(plays))}
-                        role="button"
-                        // One tab stop per row would be ideal, but plain cells
-                        // are at least reachable this way; -1 would hide them
-                        // from keyboards entirely.
-                        tabIndex={0}
-                        aria-label={t.statsDeepDive.monthCellTitle(year, MONTHS[m], fmtNum(plays))}
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setSelectedYear(year); } }}
-                        onClick={() => setSelectedYear(year)}
+                        aria-hidden="true"
                       />
                     );
                   })}
                 </div>
+                <span id={descriptionId} className="sr-only">
+                  {monthDescriptions.join('. ')}
+                </span>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
         <p className="type-caption type-muted mt-2 text-center">
@@ -242,14 +293,29 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
         {/* Monthly bar */}
         <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="type-section type-strong">
-              {t.statsDeepDive.monthlyBreakdown} {selectedYear}
-            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="type-section type-strong">
+                {t.statsDeepDive.monthlyBreakdown} {selectedYear}
+              </h3>
+              {selectedYearIsYtd && (
+                <span className="rounded-full border border-amber-400/35 bg-amber-400/10 px-2 py-1 text-xs font-mono font-black uppercase tracking-wider text-amber-500">
+                  ⏳ YTD · {coverage.maxDate}
+                </span>
+              )}
+            </div>
             <div className="flex max-w-[58%] gap-1 overflow-x-auto pb-1">
               {years.map(y => (
                 <button key={y} onClick={() => setSelectedYear(y)}
-                  className="type-label min-h-9 rounded-lg px-2 py-1 transition-all"
-                  style={selectedYear === y ? { backgroundColor: tc.c1, color: '#000', fontWeight: 'bold' } : { color: '#6b7280' }}>
+                  aria-pressed={selectedYear === y}
+                  className="type-label min-h-11 rounded-lg border px-2 py-1 transition-all"
+                  style={selectedYear === y
+                    ? {
+                        backgroundColor: `${tc.c1}18`,
+                        borderColor: `${tc.c1}55`,
+                        color: 'color-mix(in srgb, var(--c1) 58%, var(--fg))',
+                        fontWeight: 'bold',
+                      }
+                    : { borderColor: 'transparent', color: 'var(--type-ink-muted)' }}>
                   {y}
                 </button>
               ))}
@@ -260,13 +326,13 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             {' — '}{t.statsDeepDive.playsCount(fmtNum(peakMonth.plays))}
           </div>
           <ChartSwap swapKey={selectedYear} className="h-52">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={selectedYearMonths} margin={{ left: 0, right: 8, top: 4, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" />
-                <XAxis dataKey="month" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                <YAxis stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+              <BarChart accessibilityLayer data={selectedYearMonths} margin={{ left: 0, right: 8, top: 4, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1, tc.mode)} />
+                <XAxis dataKey="month" {...axisProps(tc.mode)} fontSize={10} />
+                <YAxis {...axisProps(tc.mode)} fontSize={10} />
                 <Tooltip content={<CustomTooltip tc={tc} />} />
-                <Bar dataKey="plays" name={t.statsDeepDive.plays} radius={[4, 4, 0, 0]} {...CHART_ANIMATION}>
+                <Bar dataKey="plays" name={t.statsDeepDive.plays} radius={[4, 4, 0, 0]} {...chartAnimation}>
                   {selectedYearMonths.map((d, i) => (
                     <Cell key={i} fill={d.plays === peakMonth.plays ? tc.c2 : tc.c1} fillOpacity={d.plays === peakMonth.plays ? 1 : 0.65} />
                   ))}
@@ -276,37 +342,37 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
           </ChartSwap>
         </div>
 
-        {/* Weekday Radar */}
+        {/* Weekday comparison */}
         <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
           <h3 className="type-section type-strong mb-5">
             {t.statsDeepDive.weekdayPatternTitle}
           </h3>
-          <div className="h-52">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={radarData}>
-                <PolarGrid stroke="#1e293b" />
-                <PolarAngleAxis dataKey="day" stroke="#9ca3af" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                <Radar {...CHART_ANIMATION} name={t.statsDeepDive.plays} dataKey="plays"
-                  stroke={tc.c1} fill={tc.c1} fillOpacity={0.2} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="grid grid-cols-7 gap-1 mt-3">
-            {WEEKDAYS.map((day, i) => {
-              const ratio = wdTotals[i] / maxWd;
+          <ol data-testid="weekday-comparison" className="space-y-2.5" aria-label={t.statsDeepDive.weekdayPatternTitle}>
+            {radarData.map(({ day, plays }, index) => {
+              const ratio = maxWd > 0 ? plays / maxWd : 0;
               return (
-                <div key={day} className="flex flex-col items-center gap-1">
-                  <div className="w-full h-1.5 rounded-full bg-white/5">
-                    <motion.div className="h-full rounded-full"
-                      style={{ backgroundColor: tc.c1, width: `${ratio * 100}%` }}
-                      initial={{ width: 0 }} animate={{ width: `${ratio * 100}%` }}
-                      transition={{ duration: 0.8, delay: i * 0.05 }} />
-                  </div>
-                  <span className="type-caption type-muted">{day}</span>
-                </div>
+                <li
+                  key={day}
+                  className="grid min-h-11 grid-cols-[minmax(4.5rem,auto)_minmax(0,1fr)_auto] items-center gap-3"
+                  aria-label={`${day}: ${fmtNum(plays)} ${t.statsDeepDive.plays}`}
+                >
+                  <span className="type-caption type-strong min-w-0 break-words"><bdi dir="auto">{day}</bdi></span>
+                  <span className="nova-data-ltr h-2.5 overflow-hidden rounded-full bg-white/5" dir="ltr" aria-hidden="true">
+                    <motion.span
+                      className="block h-full origin-left rounded-full"
+                      style={{ background: `linear-gradient(90deg, ${tc.c1}, ${tc.c3})` }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${ratio * 100}%` }}
+                      transition={{ duration: 0.8, delay: index * 0.05 }}
+                    />
+                  </span>
+                  <span className="type-metric min-w-14 text-end text-xs font-black" style={{ color: tc.c1 }}>
+                    {fmtNum(plays)}
+                  </span>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </div>
       </div>
 
@@ -325,60 +391,90 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             {t.statsDeepDive.genreTreemapTitle}
           </h3>
         </div>
+        <p className="type-caption type-muted -mt-3 mb-5">
+          🧭 {pickLanguage(lang, { en: 'Whole archive', es: 'Archivo completo', he: 'כל הארכיון' })} · {treemapData.totalPlays.toLocaleString(locale)} {pickLanguage(lang, { en: 'counted listens · includes Other', es: 'escuchas contadas · incluye Otros', he: 'השמעות שנספרו · כולל אחר' })}
+        </p>
         <div className="flex flex-wrap gap-4 mb-6">
-          {treemapData.children.slice(0, 8).map((g: { name: string; plays: number }) => (
-            <GenreArt key={g.name} genre={g.name} size={52} showLabel />
+          {treemapData.children.slice(0, 8).map(g => (
+            <GenreArt key={g.genre} genre={g.genre} label={g.name} size={52} showLabel />
           ))}
         </div>
         <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <Treemap data={treemapData.children} dataKey="size"
-              content={<CustomTreemapContent />} isAnimationActive />
+              content={<CustomTreemapContent />} {...chartAnimation} />
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* ── Genre Evolution Area Chart ── */}
       <div className="nova-surface nova-surface--analysis rounded-3xl p-4 sm:p-6">
-        <div className="flex items-center gap-3 mb-5">
-          <TrendingUp className="w-5 h-5" style={{ color: tc.c4 }} />
-          <h3 className="type-section type-strong">
-            {t.statsDeepDive.genreEvolutionTitle}
-          </h3>
-        </div>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={genreEvolution} margin={{ left: 0, right: 20, top: 8, bottom: 0 }}>
-              <defs>
-                <linearGradient id="gPlays" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={tc.c1} stopOpacity={0.4} />
-                  <stop offset="95%" stopColor={tc.c1} stopOpacity={0.02} />
-                </linearGradient>
-                <linearGradient id="gArtistas" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={tc.c3} stopOpacity={0.4} />
-                  <stop offset="95%" stopColor={tc.c3} stopOpacity={0.02} />
-                </linearGradient>
-                <linearGradient id="gDiversity" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={tc.c4} stopOpacity={0.35} />
-                  <stop offset="95%" stopColor={tc.c4} stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" />
-              <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-              <Tooltip content={<CustomTooltip tc={tc} />} />
-              <Area {...CHART_ANIMATION} type="monotone" dataKey="plays" name={t.statsDeepDive.plays}
-                stroke={tc.c1} strokeWidth={2.5} fill="url(#gPlays)"
-                dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-              <Area {...CHART_ANIMATION} type="monotone" dataKey="artistas" name={t.statsDeepDive.uniqueArtists}
-                stroke={tc.c3} strokeWidth={2} fill="url(#gArtistas)"
-                dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
-              <Area {...CHART_ANIMATION} type="monotone" dataKey="diversidad" name={t.statsDeepDive.diversityPct}
-                stroke={tc.c4} strokeWidth={1.5} fill="url(#gDiversity)"
-                dot={false} activeDot={{ r: 5 }} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <ChartFrame
+          title={`📈 ${t.statsDeepDive.genreEvolutionTitle}`}
+          subtitle={`${activeYearMetric.label} · ${activeYearMetric.unit}${coverage.maxDate ? ` · ${pickLanguage(lang, { en: 'observed through', es: 'observado hasta', he: 'נצפה עד' })} ${coverage.maxDate}` : ''}`}
+          summary={pickLanguage(lang, {
+            en: `${peakMetricRow.year} has the highest ${activeYearMetric.label.toLowerCase()} value in this view: ${fmtNum(peakMetricRow[yearMetric])}${yearMetric === 'diversidad' ? '%' : ''}. Metrics use separate scales.`,
+            es: `${peakMetricRow.year} tiene el valor más alto de ${activeYearMetric.label.toLowerCase()} en esta vista: ${fmtNum(peakMetricRow[yearMetric])}${yearMetric === 'diversidad' ? '%' : ''}. Las métricas usan escalas separadas.`,
+            he: `${peakMetricRow.year} היא השנה עם הערך הגבוה ביותר של ${activeYearMetric.label}: ${fmtNum(peakMetricRow[yearMetric])}${yearMetric === 'diversidad' ? '%' : ''}. לכל מדד מוצג קנה מידה נפרד.`,
+          })}
+          status={coverage.isPartialYear ? ['exact', 'ytd'] : 'exact'}
+          tableRows={genreEvolution.map((row) => ({
+            year: coverage.isPartialYear && Number(row.year) === coverage.maxYear ? `${row.year} YTD` : row.year,
+            value: row[yearMetric],
+            metric: activeYearMetric.label,
+          }))}
+          fileName={`nova-yearly-${yearMetric}.csv`}
+        >
+          <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={pickLanguage(lang, { en: 'Yearly metric', es: 'Métrica anual', he: 'מדד שנתי' })}>
+            {(Object.keys(yearMetricConfig) as Array<keyof typeof yearMetricConfig>).map((metric) => (
+              <button
+                key={metric}
+                type="button"
+                aria-pressed={yearMetric === metric}
+                onClick={() => setYearMetric(metric)}
+                className="min-h-11 rounded-xl border px-3 py-2 text-[10px] font-mono font-black uppercase tracking-wider transition-colors"
+                style={yearMetric === metric
+                  ? { color: yearMetricConfig[metric].color, borderColor: `${yearMetricConfig[metric].color}65`, backgroundColor: `${yearMetricConfig[metric].color}12` }
+                  : { color: 'var(--type-ink-muted)', borderColor: 'rgba(148,163,184,.18)' }}
+              >
+                {yearMetricConfig[metric].label}
+              </button>
+            ))}
+          </div>
+          <ChartCanvas>
+            <ChartSwap swapKey={yearMetric} className="h-64">
+              <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+              <AreaChart accessibilityLayer data={genreEvolution} margin={{ left: 0, right: 20, top: 8, bottom: 0 }}>
+                <defs>
+                  <linearGradient id={`yearMetric-${yearMetric}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor={activeYearMetric.color} stopOpacity={0.4} />
+                    <stop offset="95%" stopColor={activeYearMetric.color} stopOpacity={0.02} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(activeYearMetric.color, tc.mode)} />
+                <XAxis dataKey="year" {...axisProps(tc.mode)} />
+                <YAxis
+                  {...axisProps(tc.mode)}
+                  domain={yearMetric === 'diversidad' ? [0, 100] : [0, 'auto']}
+                  tickFormatter={(value) => yearMetric === 'diversidad' ? `${value}%` : fmtNum(Number(value))}
+                />
+                <Tooltip content={<CustomTooltip tc={tc} />} />
+                <Area
+                  {...chartAnimation}
+                  type="monotone"
+                  dataKey={yearMetric}
+                  name={activeYearMetric.label}
+                  stroke={activeYearMetric.color}
+                  strokeWidth={2.5}
+                  fill={`url(#yearMetric-${yearMetric})`}
+                  dot={{ fill: activeYearMetric.color, r: 4, strokeWidth: 0 }}
+                  activeDot={{ r: 7 }}
+                />
+              </AreaChart>
+              </ResponsiveContainer>
+            </ChartSwap>
+          </ChartCanvas>
+        </ChartFrame>
       </div>
     </div>
   );

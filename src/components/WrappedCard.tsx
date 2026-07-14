@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { toPng } from 'html-to-image';
-import { Share2, Sparkles, Mic2, Music2, Clock, Download, Loader2 } from 'lucide-react';
+import { Sparkles, Mic2, Music2, Clock, Download, Loader2 } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
@@ -14,6 +14,7 @@ import { fetchBase64Image } from '../utils/imageLoader';
 import artistImages from '../data/artist_images.json';
 import albumImages from '../data/album_images.json';
 import trackImages from '../data/track_images.json';
+import { localeFor } from '../utils/i18n';
 
 type ArtMap = Record<string, { thumb: string; source: string }>;
 const ARTISTS = artistImages as Record<string, { thumb: string; source: string }>;
@@ -30,7 +31,7 @@ export default function WrappedCard({ data }: WrappedCardProps) {
   const eras = data.yearly_eras;
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
 
   // Default = year with most plays
@@ -139,22 +140,6 @@ export default function WrappedCard({ data }: WrappedCardProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      {/* Section header */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="space-y-2"
-      >
-        <div className="flex items-center space-x-3">
-          <Share2 className="w-6 h-6" style={{ color: tc.c1 }} />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {t.wrapped.title}
-          </h2>
-        </div>
-        <p className="text-sm text-gray-400 font-sans max-w-2xl">{t.wrapped.subtitle}</p>
-      </motion.div>
-
       <SectionNarrative content={t.deepNarratives.wrapped} accent="c1" />
 
       {/* Year selector pills */}

@@ -1,22 +1,22 @@
 {
   "project": "Nova Music Lab - Datos Importados (Last.fm CSV + Spotify JSON + YouTube JSON/HTML)",
-  "generated_at": "2026-07-12T09:09:05.654Z",
+  "generated_at": "2026-07-14T01:13:06.127Z",
   "core_metrics": {
-    "total_plays": 81615,
-    "unique_artists": 6418,
-    "unique_tracks": 20878,
-    "unique_albums": 11239,
-    "listening_minutes": 259570.7,
-    "listening_hours": 4326.2,
-    "listening_days": 180.3,
+    "total_plays": 80550,
+    "unique_artists": 6413,
+    "unique_tracks": 20551,
+    "unique_albums": 11167,
+    "listening_minutes": 256020.7,
+    "listening_hours": 4267,
+    "listening_days": 177.8,
     "active_days": 2896,
     "max_year": 2021,
-    "match_rate_pct": 48.92
+    "match_rate_pct": 50.95
   },
   "top_artists": [
     {
-      "name": "Bring Me The Horizon",
-      "plays": 2053,
+      "name": "Bring Me the Horizon",
+      "plays": 2593,
       "genre": "Metalcore / Alternative",
       "country": "United Kingdom"
     },
@@ -48,7 +48,7 @@
       "name": "Jonny Craig",
       "plays": 1030,
       "genre": "Post-Hardcore / Soul",
-      "country": "United States"
+      "country": "Canada"
     },
     {
       "name": "Santa Cruz",
@@ -64,9 +64,15 @@
     },
     {
       "name": "Hayehudim",
-      "plays": 863,
+      "plays": 926,
       "genre": "Israeli Rock / Metal",
       "country": "Israel"
+    },
+    {
+      "name": "Slaves",
+      "plays": 853,
+      "genre": "Post-Hardcore / R&B",
+      "country": "United States"
     },
     {
       "name": "Normandie",
@@ -129,9 +135,9 @@
       "country": "United States"
     },
     {
-      "name": "Slaves",
-      "plays": 662,
-      "genre": "Post-Hardcore / R&B",
+      "name": "mgk",
+      "plays": 678,
+      "genre": "Pop Punk / Emo Rap",
       "country": "United States"
     },
     {
@@ -159,70 +165,46 @@
       "country": "Sweden"
     },
     {
-      "name": "mgk",
-      "plays": 579,
-      "genre": "Pop Punk / Emo Rap",
-      "country": "United States"
-    },
-    {
       "name": "Carpenter Brut",
       "plays": 549,
       "genre": "Darksynth / Cyberpunk",
       "country": "France"
     },
     {
-      "name": "Bring Me the Horizon",
-      "plays": 540,
-      "genre": "Metalcore / Alternative",
-      "country": "United Kingdom"
-    },
-    {
-      "name": "Machine Gun Kelly",
-      "plays": 493,
-      "genre": "Pop Punk / Emo Rap",
+      "name": "nothing,nowhere.",
+      "plays": 497,
+      "genre": "Emo Rap / Alternative",
       "country": "United States"
     },
     {
       "name": "Myrath",
       "plays": 475,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Progressive Metal / Oriental Metal",
+      "country": "Tunisia"
     },
     {
       "name": "Primal Fear",
       "plays": 469,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Power Metal / Heavy Metal",
+      "country": "Germany"
     },
     {
       "name": "Type O Negative",
       "plays": 450,
-      "genre": "Alternative",
-      "country": "United States"
-    },
-    {
-      "name": "nothingnowhere.",
-      "plays": 445,
-      "genre": "Emo Rap / Alternative Pop",
+      "genre": "Gothic Metal / Doom Metal",
       "country": "United States"
     },
     {
       "name": "Perturbator",
       "plays": 443,
-      "genre": "Alternative",
-      "country": "United States"
-    },
-    {
-      "name": "nothing,nowhere.",
-      "plays": 436,
-      "genre": "Emo Rap / Alternative",
-      "country": "United States"
+      "genre": "Synthwave / Darksynth",
+      "country": "France"
     },
     {
       "name": "Crazy Lixx",
       "plays": 394,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Glam Metal / Hard Rock",
+      "country": "Sweden"
     },
     {
       "name": "Dayseeker",
@@ -233,20 +215,20 @@
     {
       "name": "blessthefall",
       "plays": 381,
-      "genre": "Alternative",
+      "genre": "Metalcore / Post-Hardcore",
       "country": "United States"
     },
     {
       "name": "Annihilator",
       "plays": 377,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Thrash Metal / Heavy Metal",
+      "country": "Canada"
     },
     {
       "name": "Def Leppard",
       "plays": 374,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Hard Rock / Glam Metal",
+      "country": "United Kingdom"
     },
     {
       "name": "The Story So Far",
@@ -258,13 +240,7 @@
       "name": "Roosevelt",
       "plays": 362,
       "genre": "Alternative",
-      "country": "United States"
-    },
-    {
-      "name": "היהודים",
-      "plays": 350,
-      "genre": "Israeli Rock / Metal",
-      "country": "Israel"
+      "country": "Germany"
     },
     {
       "name": "Jordyne",
@@ -275,7 +251,7 @@
     {
       "name": "Thirty Seconds To Mars",
       "plays": 342,
-      "genre": "Alternative",
+      "genre": "Alternative Rock / Progressive Rock",
       "country": "United States"
     },
     {
@@ -287,8 +263,8 @@
     {
       "name": "Anathema",
       "plays": 325,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Progressive Rock / Death-Doom Metal",
+      "country": "United Kingdom"
     },
     {
       "name": "Ghost",
@@ -299,19 +275,19 @@
     {
       "name": "Skid Row",
       "plays": 306,
-      "genre": "Alternative",
+      "genre": "Glam Metal / Heavy Metal",
       "country": "United States"
     },
     {
       "name": "Katatonia",
       "plays": 286,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Doom Metal / Gothic Metal",
+      "country": "Sweden"
     },
     {
       "name": "Drake",
       "plays": 280,
-      "genre": "Alternative",
+      "genre": "Hip-Hop / Contemporary R&B",
       "country": "United States"
     },
     {
@@ -329,14 +305,14 @@
     {
       "name": "Teenage Wrist",
       "plays": 276,
-      "genre": "Alternative",
+      "genre": "Indie Rock / Alternative Rock",
       "country": "United States"
     },
     {
       "name": "Silverstein",
       "plays": 271,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Post-Hardcore / Emo",
+      "country": "Canada"
     },
     {
       "name": "Diversify",
@@ -347,25 +323,25 @@
     {
       "name": "The Killers",
       "plays": 266,
-      "genre": "Alternative",
+      "genre": "Alternative Rock / Indie Rock",
       "country": "United States"
     },
     {
       "name": "Crown The Empire",
       "plays": 266,
-      "genre": "Alternative",
+      "genre": "Post-Hardcore / Metalcore",
       "country": "United States"
     },
     {
       "name": "Landon Tewers",
       "plays": 266,
-      "genre": "Alternative",
+      "genre": "Post-Hardcore / Alternative Rock",
       "country": "United States"
     },
     {
       "name": "Firehouse",
       "plays": 253,
-      "genre": "Alternative",
+      "genre": "Glam Metal / Hard Rock",
       "country": "United States"
     },
     {
@@ -377,7 +353,7 @@
     {
       "name": "Trevor Something",
       "plays": 242,
-      "genre": "Alternative",
+      "genre": "Synthwave / Synth-Pop",
       "country": "United States"
     },
     {
@@ -389,44 +365,44 @@
     {
       "name": "The Kid LAROI",
       "plays": 236,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Emo Rap / Pop Rap",
+      "country": "Australia"
     },
     {
       "name": "ERRA",
       "plays": 232,
-      "genre": "Alternative",
+      "genre": "Progressive Metalcore / Djent",
       "country": "United States"
     },
     {
       "name": "Entwine",
       "plays": 228,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Gothic Metal",
+      "country": "Finland"
     },
     {
       "name": "Blackfield",
       "plays": 216,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Progressive Rock / Art Rock",
+      "country": "United Kingdom"
     },
     {
       "name": "FM-84",
       "plays": 212,
-      "genre": "Alternative",
+      "genre": "Synthwave / Synth-Pop",
       "country": "United States"
     },
     {
       "name": "Neck Deep",
       "plays": 212,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Pop Punk / Punk Rock",
+      "country": "Wales"
     },
     {
       "name": "Lost Society",
       "plays": 211,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Thrash Metal",
+      "country": "Finland"
     },
     {
       "name": "Thekidszn",
@@ -443,7 +419,7 @@
     {
       "name": "Polyphia",
       "plays": 204,
-      "genre": "Alternative",
+      "genre": "Math Rock / Progressive Metal",
       "country": "United States"
     },
     {
@@ -455,14 +431,14 @@
     {
       "name": "Sebastian Gampl",
       "plays": 202,
-      "genre": "Alternative",
+      "genre": "Synthwave",
       "country": "United States"
     },
     {
       "name": "Scar Symmetry",
       "plays": 201,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Melodic Death Metal / Groove Metal",
+      "country": "Sweden"
     },
     {
       "name": "Helloween",
@@ -473,7 +449,7 @@
     {
       "name": "Nine Inch Nails",
       "plays": 194,
-      "genre": "Alternative",
+      "genre": "Industrial Rock / Industrial Metal",
       "country": "United States"
     },
     {
@@ -489,21 +465,15 @@
       "country": "United States"
     },
     {
-      "name": "SLAVES",
-      "plays": 191,
-      "genre": "Post-Hardcore / R&B",
-      "country": "United States"
-    },
-    {
       "name": "Treat",
       "plays": 188,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Hard Rock",
+      "country": "Sweden"
     },
     {
       "name": "Issues",
       "plays": 187,
-      "genre": "Alternative",
+      "genre": "Metalcore / Electronicore",
       "country": "United States"
     },
     {
@@ -515,8 +485,8 @@
     {
       "name": "Asking Alexandria",
       "plays": 183,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Metalcore / Post-Hardcore",
+      "country": "United Kingdom"
     },
     {
       "name": "Arrows in Action",
@@ -527,7 +497,7 @@
     {
       "name": "boy pablo",
       "plays": 173,
-      "genre": "Alternative",
+      "genre": "Indie Pop / Indie Rock",
       "country": "United States"
     },
     {
@@ -545,7 +515,7 @@
     {
       "name": "Being As An Ocean",
       "plays": 166,
-      "genre": "Alternative",
+      "genre": "Post-Hardcore / Melodic Hardcore",
       "country": "United States"
     },
     {
@@ -557,20 +527,20 @@
     {
       "name": "The 1975",
       "plays": 165,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Indie Pop / Indie Rock",
+      "country": "United Kingdom"
     },
     {
       "name": "Rami Kleinstein",
       "plays": 162,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Israeli Rock",
+      "country": "Israel"
     },
     {
       "name": "Skyharbor",
       "plays": 161,
-      "genre": "Alternative",
-      "country": "United States"
+      "genre": "Progressive Metal / Djent",
+      "country": "India"
     },
     {
       "name": "Ryan Caraveo",
@@ -581,7 +551,7 @@
     {
       "name": "SOM",
       "plays": 158,
-      "genre": "Alternative",
+      "genre": "Post-Metal / Shoegaze",
       "country": "United States"
     },
     {
@@ -613,6 +583,36 @@
       "plays": 151,
       "genre": "Progressive Metal / Math Rock",
       "country": "Germany"
+    },
+    {
+      "name": "Amr Diab",
+      "plays": 147,
+      "genre": "Egyptian Pop / Mediterranean",
+      "country": "Egypt"
+    },
+    {
+      "name": "Hurtwave",
+      "plays": 147,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Sigur Rós",
+      "plays": 146,
+      "genre": "Post-Rock / Ambient",
+      "country": "Iceland"
+    },
+    {
+      "name": "Indighxst",
+      "plays": 142,
+      "genre": "Alternative",
+      "country": "United States"
+    },
+    {
+      "name": "Aviv Geffen",
+      "plays": 138,
+      "genre": "Israeli Rock / Alternative",
+      "country": "Israel"
     }
   ],
   "top_tracks": [
@@ -689,6 +689,12 @@
       "genre": "Blackgaze / Post-Metal"
     },
     {
+      "artist": "Bring Me the Horizon",
+      "title": "MANTRA",
+      "plays": 157,
+      "genre": "Metalcore / Alternative"
+    },
+    {
       "artist": "Rain City Drive",
       "title": "Cutting It Close",
       "plays": 152,
@@ -704,7 +710,7 @@
       "artist": "Drake",
       "title": "First Person Shooter (feat. J. Cole)",
       "plays": 147,
-      "genre": "Alternative"
+      "genre": "Hip-Hop / Contemporary R&B"
     },
     {
       "artist": "Odeon",
@@ -728,7 +734,7 @@
       "artist": "Perturbator",
       "title": "Venger (feat. Greta Link)",
       "plays": 134,
-      "genre": "Alternative"
+      "genre": "Synthwave / Darksynth"
     },
     {
       "artist": "Rain City Drive",
@@ -743,16 +749,16 @@
       "genre": "Post-Hardcore / Soul"
     },
     {
+      "artist": "Bring Me the Horizon",
+      "title": "Follow You",
+      "plays": 130,
+      "genre": "Metalcore / Alternative"
+    },
+    {
       "artist": "Corbin Karasu",
       "title": "The Journey",
       "plays": 126,
       "genre": "Lo-Fi / R&B"
-    },
-    {
-      "artist": "Bring Me The Horizon",
-      "title": "MANTRA",
-      "plays": 124,
-      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "Diversify",
@@ -791,6 +797,12 @@
       "genre": "Alternative"
     },
     {
+      "artist": "Bring Me the Horizon",
+      "title": "medicine",
+      "plays": 116,
+      "genre": "Metalcore / Alternative"
+    },
+    {
       "artist": "Slaves",
       "title": "Prayers",
       "plays": 116,
@@ -812,7 +824,7 @@
       "artist": "ERRA",
       "title": "Alpha Seed",
       "plays": 112,
-      "genre": "Alternative"
+      "genre": "Progressive Metalcore / Djent"
     },
     {
       "artist": "Slaves",
@@ -827,16 +839,16 @@
       "genre": "Hard Rock / Glam Metal"
     },
     {
-      "artist": "Bring Me The Horizon",
-      "title": "Follow You",
-      "plays": 108,
-      "genre": "Metalcore / Alternative"
-    },
-    {
       "artist": "Dance With the Dead",
       "title": "Waves",
       "plays": 107,
       "genre": "Darksynth / Cyberpunk"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "Can You Feel My Heart",
+      "plays": 107,
+      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "Rain City Drive",
@@ -848,7 +860,7 @@
       "artist": "Landon Tewers",
       "title": "Sink With Me",
       "plays": 103,
-      "genre": "Alternative"
+      "genre": "Post-Hardcore / Alternative Rock"
     },
     {
       "artist": "Acres",
@@ -872,19 +884,25 @@
       "artist": "FM-84",
       "title": "Running in the Night",
       "plays": 97,
-      "genre": "Alternative"
+      "genre": "Synthwave / Synth-Pop"
     },
     {
       "artist": "Trevor Something",
       "title": "Summer Love",
       "plays": 96,
-      "genre": "Alternative"
+      "genre": "Synthwave / Synth-Pop"
     },
     {
       "artist": "Deafheaven",
       "title": "Mombasa",
       "plays": 96,
       "genre": "Blackgaze / Post-Metal"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "in the dark",
+      "plays": 95,
+      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "Deafheaven",
@@ -897,6 +915,12 @@
       "title": "Sweatshirt",
       "plays": 94,
       "genre": "Hip Hop / Rap"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "mother tongue",
+      "plays": 93,
+      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "Rain City Drive",
@@ -935,6 +959,12 @@
       "genre": "Melodic Trap / Emo Rap"
     },
     {
+      "artist": "Bring Me the Horizon",
+      "title": "Throne",
+      "plays": 90,
+      "genre": "Metalcore / Alternative"
+    },
+    {
       "artist": "The Midnight",
       "title": "Endless Summer",
       "plays": 90,
@@ -945,12 +975,6 @@
       "title": "Old Love / New Love",
       "plays": 90,
       "genre": "Indie Pop / Synth-Pop"
-    },
-    {
-      "artist": "Bring Me The Horizon",
-      "title": "medicine",
-      "plays": 89,
-      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "44phantom",
@@ -974,7 +998,7 @@
       "artist": "Neck Deep",
       "title": "In Bloom",
       "plays": 87,
-      "genre": "Alternative"
+      "genre": "Pop Punk / Punk Rock"
     },
     {
       "artist": "Dayseeker",
@@ -1010,7 +1034,7 @@
       "artist": "Drake",
       "title": "Circadian Rhythm",
       "plays": 84,
-      "genre": "Alternative"
+      "genre": "Hip-Hop / Contemporary R&B"
     },
     {
       "artist": "Bilmuri",
@@ -1025,9 +1049,15 @@
       "genre": "Alternative Rock / Rap Rock"
     },
     {
-      "artist": "Bring Me The Horizon",
-      "title": "Can You Feel My Heart",
-      "plays": 80,
+      "artist": "Bring Me the Horizon",
+      "title": "nihilist blues (feat. Grimes)",
+      "plays": 81,
+      "genre": "Metalcore / Alternative"
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "title": "i apologise if you feel something",
+      "plays": 81,
       "genre": "Metalcore / Alternative"
     },
     {
@@ -1088,7 +1118,7 @@
       "artist": "Myrath",
       "title": "Believer",
       "plays": 76,
-      "genre": "Alternative"
+      "genre": "Progressive Metal / Oriental Metal"
     },
     {
       "artist": "Too Close To Touch",
@@ -1101,12 +1131,6 @@
       "title": "The Gnashing",
       "plays": 74,
       "genre": "Blackgaze / Post-Metal"
-    },
-    {
-      "artist": "Bring Me The Horizon",
-      "title": "in the dark",
-      "plays": 73,
-      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "The Story So Far",
@@ -1139,22 +1163,10 @@
       "genre": "Pop Punk / Alternative Rock"
     },
     {
-      "artist": "Bring Me The Horizon",
-      "title": "Throne",
-      "plays": 72,
-      "genre": "Metalcore / Alternative"
-    },
-    {
       "artist": "The Midnight",
       "title": "Sunset",
       "plays": 72,
       "genre": "Synthwave / Dreampop"
-    },
-    {
-      "artist": "Bring Me The Horizon",
-      "title": "i apologise if you feel something",
-      "plays": 72,
-      "genre": "Metalcore / Alternative"
     },
     {
       "artist": "Holding Absence",
@@ -1163,15 +1175,21 @@
       "genre": "Post-Hardcore / Emo"
     },
     {
+      "artist": "nothing,nowhere.",
+      "title": "lights (4444)",
+      "plays": 72,
+      "genre": "Emo Rap / Alternative"
+    },
+    {
       "artist": "Jordyne",
       "title": "Like A Drug",
       "plays": 72,
       "genre": "Alternative"
     },
     {
-      "artist": "Bring Me The Horizon",
-      "title": "mother tongue",
-      "plays": 71,
+      "artist": "Bring Me the Horizon",
+      "title": "Oh No",
+      "plays": 70,
       "genre": "Metalcore / Alternative"
     },
     {
@@ -1184,7 +1202,7 @@
       "artist": "Asking Alexandria",
       "title": "Alone In A Room",
       "plays": 70,
-      "genre": "Alternative"
+      "genre": "Metalcore / Post-Hardcore"
     },
     {
       "artist": "Kiremi",
@@ -1197,24 +1215,6 @@
       "title": "A Shot At Redemption",
       "plays": 69,
       "genre": "Hard Rock / AOR"
-    },
-    {
-      "artist": "Kiremi",
-      "title": "OBLIVION",
-      "plays": 69,
-      "genre": "Lo-Fi / Dream Pop"
-    },
-    {
-      "artist": "Bad Omens",
-      "title": "Impose",
-      "plays": 69,
-      "genre": "Metalcore / Alternative"
-    },
-    {
-      "artist": "Carpenter Brut",
-      "title": "Le Perv",
-      "plays": 68,
-      "genre": "Darksynth / Cyberpunk"
     }
   ],
   "top_albums": [
@@ -1229,9 +1229,9 @@
       "plays": 896
     },
     {
-      "artist": "Bring Me The Horizon",
+      "artist": "Bring Me the Horizon",
       "title": "amo",
-      "plays": 671
+      "plays": 848
     },
     {
       "artist": "Slaves",
@@ -1239,7 +1239,7 @@
       "plays": 594
     },
     {
-      "artist": "Bring Me The Horizon",
+      "artist": "Bring Me the Horizon",
       "title": "That's The Spirit",
       "plays": 562
     },
@@ -1344,9 +1344,9 @@
       "plays": 288
     },
     {
-      "artist": "Bring Me The Horizon",
+      "artist": "Bring Me the Horizon",
       "title": "Sempiternal",
-      "plays": 276
+      "plays": 285
     },
     {
       "artist": "Roosevelt",
@@ -1409,11 +1409,6 @@
       "plays": 224
     },
     {
-      "artist": "היהודים",
-      "title": "Unplugged (Live)",
-      "plays": 222
-    },
-    {
       "artist": "ERRA",
       "title": "Augment",
       "plays": 212
@@ -1464,9 +1459,9 @@
       "plays": 183
     },
     {
-      "artist": "Bring Me the Horizon",
-      "title": "amo",
-      "plays": 177
+      "artist": "Hayehudim",
+      "title": "יותר לא",
+      "plays": 181
     },
     {
       "artist": "Emarosa",
@@ -1484,9 +1479,9 @@
       "plays": 171
     },
     {
-      "artist": "Hayehudim",
-      "title": "יותר לא",
-      "plays": 166
+      "artist": "mgk",
+      "title": "Hotel Diablo",
+      "plays": 167
     },
     {
       "artist": "Deafheaven",
@@ -1506,6 +1501,11 @@
     {
       "artist": "Def Leppard",
       "title": "Def Leppard",
+      "plays": 155
+    },
+    {
+      "artist": "Slaves",
+      "title": "Revision",
       "plays": 155
     },
     {
@@ -1529,11 +1529,6 @@
       "plays": 147
     },
     {
-      "artist": "Machine Gun Kelly",
-      "title": "Hotel Diablo",
-      "plays": 145
-    },
-    {
       "artist": "Crown The Empire",
       "title": "07102010",
       "plays": 144
@@ -1544,11 +1539,6 @@
       "plays": 142
     },
     {
-      "artist": "SLAVES",
-      "title": "Revision",
-      "plays": 142
-    },
-    {
       "artist": "Magnolia Park",
       "title": "Tokyo",
       "plays": 141
@@ -1556,6 +1546,11 @@
     {
       "artist": "Skid Row",
       "title": "Slave to the Grind",
+      "plays": 140
+    },
+    {
+      "artist": "nothing,nowhere.",
+      "title": "Trauma Factory",
       "plays": 140
     },
     {
@@ -1577,16 +1572,6 @@
       "artist": "Magnolia Park",
       "title": "Halloween Mixtape II",
       "plays": 136
-    },
-    {
-      "artist": "mgk",
-      "title": "Hotel Diablo",
-      "plays": 132
-    },
-    {
-      "artist": "nothingnowhere.",
-      "title": "Trauma Factory",
-      "plays": 131
     },
     {
       "artist": "Enforcer",
@@ -1636,6 +1621,11 @@
     {
       "artist": "Sebastian Gampl",
       "title": "City Hunter",
+      "plays": 123
+    },
+    {
+      "artist": "mgk",
+      "title": "mainstream sellout",
       "plays": 123
     },
     {
@@ -1717,6 +1707,16 @@
       "artist": "boy pablo",
       "title": "Soy Pablo",
       "plays": 113
+    },
+    {
+      "artist": "Unprocessed",
+      "title": "Gold",
+      "plays": 113
+    },
+    {
+      "artist": "Skyharbor",
+      "title": "Guiding Lights",
+      "plays": 111
     }
   ],
   "top_genres": [
@@ -1725,72 +1725,72 @@
       "plays": 27221
     },
     {
-      "name": "Alternative",
-      "plays": 16976
+      "name": "Post-Hardcore",
+      "plays": 8086
     },
     {
-      "name": "Post-Hardcore",
-      "plays": 7356
+      "name": "Alternative",
+      "plays": 7642
     },
     {
       "name": "Metalcore",
-      "plays": 4171
-    },
-    {
-      "name": "Post-Metal / Blackgaze",
-      "plays": 3233
-    },
-    {
-      "name": "Pop Punk / Emo",
-      "plays": 2486
-    },
-    {
-      "name": "Synthwave / Darksynth",
-      "plays": 2480
-    },
-    {
-      "name": "Israeli Rock",
-      "plays": 2107
-    },
-    {
-      "name": "Hard Rock",
-      "plays": 2053
+      "plays": 5495
     },
     {
       "name": "Progressive Metal",
-      "plays": 1906
+      "plays": 3647
     },
     {
-      "name": "Emo Rap / Trap",
-      "plays": 1573
+      "name": "Synthwave / Darksynth",
+      "plays": 3579
+    },
+    {
+      "name": "Hard Rock",
+      "plays": 3568
+    },
+    {
+      "name": "Post-Metal / Blackgaze",
+      "plays": 3410
+    },
+    {
+      "name": "Pop Punk / Emo",
+      "plays": 2304
+    },
+    {
+      "name": "Israeli Rock",
+      "plays": 1982
+    },
+    {
+      "name": "Power / Speed Metal",
+      "plays": 1953
+    },
+    {
+      "name": "Pop / Indie",
+      "plays": 1819
+    },
+    {
+      "name": "Alternative Rock",
+      "plays": 1512
     },
     {
       "name": "Ambient / Lo-Fi",
       "plays": 1493
     },
     {
-      "name": "Pop / Indie",
-      "plays": 1481
-    },
-    {
       "name": "Alt-Metal",
       "plays": 1449
     },
     {
-      "name": "Hip-Hop / Rap",
-      "plays": 1345
+      "name": "Emo Rap / Trap",
+      "plays": 1425
     },
     {
       "name": "Death Metal",
-      "plays": 1172
+      "plays": 1373
     },
     {
-      "name": "Alternative Rock",
-      "plays": 970
-    },
-    {
-      "name": "Power / Speed Metal",
-      "plays": 896
+      "name": "Hip-Hop / Rap",
+      "plays": 1345
     },
     {
       "name": "Heavy Metal",
@@ -1805,161 +1805,161 @@
     {
       "year": 2015,
       "plays": 5933,
-      "unique_artists": 885,
+      "unique_artists": 884,
       "unique_tracks": 2640,
       "top_artist": "Carpenter Brut",
       "top_track": "Le Perv",
       "dominant_daypart": "Noche 18-23",
       "era_label": "Era de Carpenter Brut",
-      "era_desc": "Un año marcado por Carpenter Brut, 5933 reproducciones y 885 artistas unicos.",
+      "era_desc": "Un año marcado por Carpenter Brut, 5933 reproducciones y 884 artistas unicos.",
       "diversity_index": 44.5
     },
     {
       "year": 2016,
       "plays": 7148,
-      "unique_artists": 873,
+      "unique_artists": 872,
       "unique_tracks": 2839,
       "top_artist": "Tokio Hotel",
       "top_track": "Love Who Loves You Back",
       "dominant_daypart": "Noche 18-23",
       "era_label": "Era de Tokio Hotel",
-      "era_desc": "Un año marcado por Tokio Hotel, 7148 reproducciones y 873 artistas unicos.",
+      "era_desc": "Un año marcado por Tokio Hotel, 7148 reproducciones y 872 artistas unicos.",
       "diversity_index": 39.7
     },
     {
       "year": 2017,
       "plays": 4115,
-      "unique_artists": 605,
+      "unique_artists": 604,
       "unique_tracks": 1769,
       "top_artist": "Alcest",
       "top_track": "Vampires",
       "dominant_daypart": "Tarde 12-17",
       "era_label": "Era de Alcest",
-      "era_desc": "Un año marcado por Alcest, 4115 reproducciones y 605 artistas unicos.",
+      "era_desc": "Un año marcado por Alcest, 4115 reproducciones y 604 artistas unicos.",
       "diversity_index": 43
     },
     {
       "year": 2018,
-      "plays": 11417,
-      "unique_artists": 1425,
-      "unique_tracks": 4532,
+      "plays": 11162,
+      "unique_artists": 1423,
+      "unique_tracks": 4531,
       "top_artist": "Hayehudim",
-      "top_track": "ליפול",
+      "top_track": "Breathe",
       "dominant_daypart": "Noche 18-23",
       "era_label": "Era de Hayehudim",
-      "era_desc": "Un año marcado por Hayehudim, 11.417 reproducciones y 1425 artistas unicos.",
-      "diversity_index": 39.7
+      "era_desc": "Un año marcado por Hayehudim, 11.162 reproducciones y 1423 artistas unicos.",
+      "diversity_index": 40.6
     },
     {
       "year": 2019,
-      "plays": 4081,
-      "unique_artists": 687,
+      "plays": 4055,
+      "unique_artists": 685,
       "unique_tracks": 1841,
       "top_artist": "The Word Alive",
       "top_track": "Red Clouds",
       "dominant_daypart": "Noche 18-23",
       "era_label": "Era de The Word Alive",
-      "era_desc": "Un año marcado por The Word Alive, 4081 reproducciones y 687 artistas unicos.",
-      "diversity_index": 45.1
+      "era_desc": "Un año marcado por The Word Alive, 4055 reproducciones y 685 artistas unicos.",
+      "diversity_index": 45.4
     },
     {
       "year": 2020,
       "plays": 4420,
-      "unique_artists": 453,
+      "unique_artists": 452,
       "unique_tracks": 1187,
-      "top_artist": "Bring Me The Horizon",
+      "top_artist": "Bring Me the Horizon",
       "top_track": "Givin' Up",
       "dominant_daypart": "Noche 18-23",
-      "era_label": "Era de Bring Me The Horizon",
-      "era_desc": "Un año marcado por Bring Me The Horizon, 4420 reproducciones y 453 artistas unicos.",
+      "era_label": "Era de Bring Me the Horizon",
+      "era_desc": "Un año marcado por Bring Me the Horizon, 4420 reproducciones y 452 artistas unicos.",
       "diversity_index": 26.9
     },
     {
       "year": 2021,
-      "plays": 13011,
-      "unique_artists": 980,
+      "plays": 13007,
+      "unique_artists": 977,
       "unique_tracks": 3086,
-      "top_artist": "Rain City Drive",
+      "top_artist": "Slaves",
       "top_track": "Prayers",
       "dominant_daypart": "Tarde 12-17",
-      "era_label": "Era de Rain City Drive",
-      "era_desc": "Un año marcado por Rain City Drive, 13.011 reproducciones y 980 artistas unicos.",
+      "era_label": "Era de Slaves",
+      "era_desc": "Un año marcado por Slaves, 13.007 reproducciones y 977 artistas unicos.",
       "diversity_index": 23.7
     },
     {
       "year": 2022,
-      "plays": 10728,
-      "unique_artists": 1185,
-      "unique_tracks": 2677,
+      "plays": 10351,
+      "unique_artists": 1181,
+      "unique_tracks": 2673,
       "top_artist": "Deafheaven",
       "top_track": "Honeycomb",
       "dominant_daypart": "Tarde 12-17",
       "era_label": "Era de Deafheaven",
-      "era_desc": "Un año marcado por Deafheaven, 10.728 reproducciones y 1185 artistas unicos.",
-      "diversity_index": 25
+      "era_desc": "Un año marcado por Deafheaven, 10.351 reproducciones y 1181 artistas unicos.",
+      "diversity_index": 25.8
     },
     {
       "year": 2023,
-      "plays": 6559,
-      "unique_artists": 1001,
-      "unique_tracks": 1579,
+      "plays": 6453,
+      "unique_artists": 997,
+      "unique_tracks": 1575,
       "top_artist": "Nevertel",
       "top_track": "Tokyo",
       "dominant_daypart": "Tarde 12-17",
       "era_label": "Era de Nevertel",
-      "era_desc": "Un año marcado por Nevertel, 6559 reproducciones y 1001 artistas unicos.",
-      "diversity_index": 24.1
+      "era_desc": "Un año marcado por Nevertel, 6453 reproducciones y 997 artistas unicos.",
+      "diversity_index": 24.4
     },
     {
       "year": 2024,
-      "plays": 3204,
-      "unique_artists": 386,
-      "unique_tracks": 656,
+      "plays": 3160,
+      "unique_artists": 383,
+      "unique_tracks": 653,
       "top_artist": "Bilmuri",
       "top_track": "First Person Shooter (feat. J. Cole)",
       "dominant_daypart": "Tarde 12-17",
       "era_label": "Era de Bilmuri",
-      "era_desc": "Un año marcado por Bilmuri, 3204 reproducciones y 386 artistas unicos.",
-      "diversity_index": 20.5
+      "era_desc": "Un año marcado por Bilmuri, 3160 reproducciones y 383 artistas unicos.",
+      "diversity_index": 20.7
     },
     {
       "year": 2025,
-      "plays": 6322,
-      "unique_artists": 963,
-      "unique_tracks": 2118,
+      "plays": 6088,
+      "unique_artists": 961,
+      "unique_tracks": 2075,
       "top_artist": "Bilmuri",
       "top_track": "2016 CAVALIERS (Ohio) (feat. Knox)",
       "dominant_daypart": "Mañana 06-11",
       "era_label": "Era de Bilmuri",
-      "era_desc": "Un año marcado por Bilmuri, 6322 reproducciones y 963 artistas unicos.",
-      "diversity_index": 33.5
+      "era_desc": "Un año marcado por Bilmuri, 6088 reproducciones y 961 artistas unicos.",
+      "diversity_index": 34.1
     },
     {
       "year": 2026,
-      "plays": 4677,
-      "unique_artists": 841,
-      "unique_tracks": 1664,
+      "plays": 4658,
+      "unique_artists": 839,
+      "unique_tracks": 1663,
       "top_artist": "The Kid LAROI",
       "top_track": "Impose",
       "dominant_daypart": "Mañana 06-11",
       "era_label": "Era de The Kid LAROI",
-      "era_desc": "Un año marcado por The Kid LAROI, 4677 reproducciones y 841 artistas unicos.",
-      "diversity_index": 35.6
+      "era_desc": "Un año marcado por The Kid LAROI, 4658 reproducciones y 839 artistas unicos.",
+      "diversity_index": 35.7
     }
   ],
   "sessions": [
     {
-      "id": 6214,
-      "start": "2025-09-29T17:55:00.000Z",
+      "id": 6215,
+      "start": "2025-09-29T17:55:11.000Z",
       "end": "2025-09-30T07:07:21.000Z",
-      "tracks_count": 486,
-      "duration_min": 1561.3,
-      "top_artist": "nothingnowhere.",
-      "top_track": "All Star",
-      "unique_artists": 20
+      "tracks_count": 262,
+      "duration_min": 814.6,
+      "top_artist": "nothing,nowhere.",
+      "top_track": "M1SERY_SYNDROME (feat. BUDDY NIELSEN)",
+      "unique_artists": 19
     },
     {
-      "id": 6316,
+      "id": 6317,
       "start": "2025-12-02T05:03:05.000Z",
       "end": "2025-12-02T14:56:00.000Z",
       "tracks_count": 221,
@@ -1979,27 +1979,27 @@
       "unique_artists": 80
     },
     {
-      "id": 4577,
-      "start": "2022-08-29T05:18:00.000Z",
-      "end": "2022-08-29T16:32:22.000Z",
-      "tracks_count": 195,
-      "duration_min": 674.4,
-      "top_artist": "Odeon",
-      "top_track": "Candy (feat. Trippie Redd)",
-      "unique_artists": 40
-    },
-    {
-      "id": 6617,
+      "id": 6618,
       "start": "2026-04-30T04:02:08.000Z",
       "end": "2026-04-30T13:36:38.000Z",
-      "tracks_count": 195,
-      "duration_min": 627.4,
+      "tracks_count": 193,
+      "duration_min": 620.7,
       "top_artist": "Dayseeker",
       "top_track": "Tidus's Theme",
-      "unique_artists": 129
+      "unique_artists": 128
     },
     {
-      "id": 2425,
+      "id": 4578,
+      "start": "2022-08-29T05:18:00.000Z",
+      "end": "2022-08-29T16:32:22.000Z",
+      "tracks_count": 171,
+      "duration_min": 674.4,
+      "top_artist": "Odeon",
+      "top_track": "In Circles",
+      "unique_artists": 39
+    },
+    {
+      "id": 2426,
       "start": "2019-05-31T22:45:00.000Z",
       "end": "2019-06-01T00:08:21.000Z",
       "tracks_count": 166,
@@ -2019,17 +2019,7 @@
       "unique_artists": 49
     },
     {
-      "id": 4554,
-      "start": "2022-08-18T20:07:00.000Z",
-      "end": "2022-08-19T03:18:03.000Z",
-      "tracks_count": 162,
-      "duration_min": 523.8,
-      "top_artist": "mgk",
-      "top_track": "make up sex (feat. blackbear)",
-      "unique_artists": 27
-    },
-    {
-      "id": 3662,
+      "id": 3663,
       "start": "2021-07-26T10:11:04.000Z",
       "end": "2021-07-26T13:18:00.000Z",
       "tracks_count": 159,
@@ -2039,7 +2029,7 @@
       "unique_artists": 25
     },
     {
-      "id": 4724,
+      "id": 4725,
       "start": "2022-11-13T21:03:38.000Z",
       "end": "2022-11-14T03:40:00.000Z",
       "tracks_count": 150,
@@ -2049,7 +2039,7 @@
       "unique_artists": 112
     },
     {
-      "id": 3829,
+      "id": 3830,
       "start": "2021-10-06T10:25:00.000Z",
       "end": "2021-10-06T15:01:30.000Z",
       "tracks_count": 147,
@@ -2059,7 +2049,7 @@
       "unique_artists": 30
     },
     {
-      "id": 3836,
+      "id": 3837,
       "start": "2021-10-10T18:27:14.000Z",
       "end": "2021-10-10T18:44:33.000Z",
       "tracks_count": 141,
@@ -2069,27 +2059,7 @@
       "unique_artists": 4
     },
     {
-      "id": 4586,
-      "start": "2022-08-31T04:10:00.000Z",
-      "end": "2022-08-31T15:20:02.000Z",
-      "tracks_count": 137,
-      "duration_min": 670,
-      "top_artist": "Odeon",
-      "top_track": "dream",
-      "unique_artists": 18
-    },
-    {
-      "id": 4623,
-      "start": "2022-09-18T05:44:03.000Z",
-      "end": "2022-09-18T15:34:26.000Z",
-      "tracks_count": 137,
-      "duration_min": 590.4,
-      "top_artist": "Odeon",
-      "top_track": "swipe up",
-      "unique_artists": 32
-    },
-    {
-      "id": 6628,
+      "id": 6629,
       "start": "2026-05-04T04:01:34.000Z",
       "end": "2026-05-04T11:54:54.000Z",
       "tracks_count": 137,
@@ -2099,7 +2069,17 @@
       "unique_artists": 36
     },
     {
-      "id": 1906,
+      "id": 4624,
+      "start": "2022-09-18T05:44:03.000Z",
+      "end": "2022-09-18T15:34:26.000Z",
+      "tracks_count": 135,
+      "duration_min": 590.4,
+      "top_artist": "Odeon",
+      "top_track": "swipe up",
+      "unique_artists": 31
+    },
+    {
+      "id": 1907,
       "start": "2018-09-13T19:33:51.000Z",
       "end": "2018-09-13T22:37:24.000Z",
       "tracks_count": 134,
@@ -2109,7 +2089,17 @@
       "unique_artists": 65
     },
     {
-      "id": 6606,
+      "id": 4587,
+      "start": "2022-08-31T04:10:52.000Z",
+      "end": "2022-08-31T15:20:02.000Z",
+      "tracks_count": 129,
+      "duration_min": 669.2,
+      "top_artist": "Odeon",
+      "top_track": "dream",
+      "unique_artists": 17
+    },
+    {
+      "id": 6607,
       "start": "2026-04-26T03:10:06.000Z",
       "end": "2026-04-26T10:32:33.000Z",
       "tracks_count": 129,
@@ -2119,37 +2109,37 @@
       "unique_artists": 61
     },
     {
-      "id": 4552,
-      "start": "2022-08-18T09:56:00.000Z",
-      "end": "2022-08-18T15:27:53.000Z",
-      "tracks_count": 125,
-      "duration_min": 396.8,
-      "top_artist": "mgk",
-      "top_track": "bloody valentine",
-      "unique_artists": 19
-    },
-    {
-      "id": 4746,
+      "id": 4747,
       "start": "2022-11-23T15:31:54.000Z",
       "end": "2022-11-23T21:37:00.000Z",
       "tracks_count": 124,
       "duration_min": 368.9,
       "top_artist": "Dayseeker",
       "top_track": "Homesick",
-      "unique_artists": 63
+      "unique_artists": 62
     },
     {
-      "id": 5126,
+      "id": 5127,
       "start": "2023-03-30T04:09:45.000Z",
       "end": "2023-03-30T11:07:00.000Z",
-      "tracks_count": 123,
+      "tracks_count": 122,
       "duration_min": 417.3,
       "top_artist": "All Time Low",
       "top_track": "Sleepwalking",
-      "unique_artists": 63
+      "unique_artists": 62
     },
     {
-      "id": 6302,
+      "id": 4555,
+      "start": "2022-08-18T20:07:26.000Z",
+      "end": "2022-08-19T03:18:03.000Z",
+      "tracks_count": 116,
+      "duration_min": 430.6,
+      "top_artist": "mgk",
+      "top_track": "maybe (feat. Bring Me The Horizon)",
+      "unique_artists": 26
+    },
+    {
+      "id": 6303,
       "start": "2025-11-20T05:04:04.000Z",
       "end": "2025-11-20T10:50:00.000Z",
       "tracks_count": 115,
@@ -2159,7 +2149,7 @@
       "unique_artists": 77
     },
     {
-      "id": 3865,
+      "id": 3866,
       "start": "2021-10-18T05:57:00.000Z",
       "end": "2021-10-18T13:35:00.000Z",
       "tracks_count": 112,
@@ -2169,7 +2159,7 @@
       "unique_artists": 7
     },
     {
-      "id": 3301,
+      "id": 3302,
       "start": "2021-03-03T12:36:00.000Z",
       "end": "2021-03-03T17:29:26.000Z",
       "tracks_count": 109,
@@ -2179,7 +2169,7 @@
       "unique_artists": 16
     },
     {
-      "id": 4749,
+      "id": 4750,
       "start": "2022-11-24T06:44:50.000Z",
       "end": "2022-11-24T13:47:22.000Z",
       "tracks_count": 104,
@@ -2189,27 +2179,7 @@
       "unique_artists": 65
     },
     {
-      "id": 5255,
-      "start": "2023-05-24T03:00:00.000Z",
-      "end": "2023-05-24T05:39:00.000Z",
-      "tracks_count": 103,
-      "duration_min": 326.1,
-      "top_artist": "Arrows in Action",
-      "top_track": "love or chemistry",
-      "unique_artists": 46
-    },
-    {
-      "id": 5552,
-      "start": "2024-04-01T08:42:37.000Z",
-      "end": "2024-04-01T12:35:32.000Z",
-      "tracks_count": 102,
-      "duration_min": 281.3,
-      "top_artist": "nothing,nowhere.",
-      "top_track": "Dark Magic",
-      "unique_artists": 62
-    },
-    {
-      "id": 3253,
+      "id": 3254,
       "start": "2021-02-05T16:53:43.000Z",
       "end": "2021-02-06T01:22:20.000Z",
       "tracks_count": 101,
@@ -2217,6 +2187,16 @@
       "top_artist": "Blut Aus Nord",
       "top_track": "Epitome XVIII",
       "unique_artists": 10
+    },
+    {
+      "id": 5256,
+      "start": "2023-05-24T03:00:00.000Z",
+      "end": "2023-05-24T05:29:39.000Z",
+      "tracks_count": 98,
+      "duration_min": 309.4,
+      "top_artist": "Arrows in Action",
+      "top_track": "love or chemistry",
+      "unique_artists": 44
     },
     {
       "id": 335,
@@ -2229,17 +2209,7 @@
       "unique_artists": 55
     },
     {
-      "id": 1506,
-      "start": "2018-04-16T12:49:39.000Z",
-      "end": "2018-04-16T16:16:27.000Z",
-      "tracks_count": 97,
-      "duration_min": 348.6,
-      "top_artist": "Type O Negative",
-      "top_track": "Shanim Chasumot",
-      "unique_artists": 11
-    },
-    {
-      "id": 3303,
+      "id": 3304,
       "start": "2021-03-05T09:50:00.000Z",
       "end": "2021-03-05T12:33:38.000Z",
       "tracks_count": 97,
@@ -2249,17 +2219,7 @@
       "unique_artists": 40
     },
     {
-      "id": 2008,
-      "start": "2018-10-21T14:57:00.000Z",
-      "end": "2018-10-21T19:01:58.000Z",
-      "tracks_count": 95,
-      "duration_min": 334.4,
-      "top_artist": "Hammock",
-      "top_track": "Wherever You Will Go",
-      "unique_artists": 26
-    },
-    {
-      "id": 3529,
+      "id": 3530,
       "start": "2021-06-10T10:17:19.000Z",
       "end": "2021-06-10T18:42:00.000Z",
       "tracks_count": 95,
@@ -2269,17 +2229,7 @@
       "unique_artists": 9
     },
     {
-      "id": 5596,
-      "start": "2024-07-16T09:55:26.000Z",
-      "end": "2024-07-16T16:09:24.000Z",
-      "tracks_count": 95,
-      "duration_min": 374,
-      "top_artist": "Bilmuri",
-      "top_track": "Dark Magic",
-      "unique_artists": 36
-    },
-    {
-      "id": 3885,
+      "id": 3886,
       "start": "2021-10-25T06:44:09.000Z",
       "end": "2021-10-25T12:08:00.000Z",
       "tracks_count": 94,
@@ -2289,17 +2239,27 @@
       "unique_artists": 16
     },
     {
-      "id": 4629,
-      "start": "2022-09-21T13:55:09.000Z",
-      "end": "2022-09-21T17:14:27.000Z",
-      "tracks_count": 94,
-      "duration_min": 279.1,
-      "top_artist": "Odeon",
-      "top_track": "CAN WE GO? (With Myth)",
-      "unique_artists": 18
+      "id": 1507,
+      "start": "2018-04-16T12:49:39.000Z",
+      "end": "2018-04-16T16:16:27.000Z",
+      "tracks_count": 93,
+      "duration_min": 335.3,
+      "top_artist": "Type O Negative",
+      "top_track": "Shanim Chasumot",
+      "unique_artists": 10
     },
     {
-      "id": 2697,
+      "id": 2009,
+      "start": "2018-10-21T14:57:00.000Z",
+      "end": "2018-10-21T19:01:58.000Z",
+      "tracks_count": 93,
+      "duration_min": 327.7,
+      "top_artist": "Hammock",
+      "top_track": "Wherever You Will Go",
+      "unique_artists": 25
+    },
+    {
+      "id": 2698,
       "start": "2020-01-29T20:22:12.000Z",
       "end": "2020-01-29T21:26:13.000Z",
       "tracks_count": 93,
@@ -2307,6 +2267,16 @@
       "top_artist": "TesseracT",
       "top_track": "Orbital",
       "unique_artists": 14
+    },
+    {
+      "id": 5597,
+      "start": "2024-07-16T09:55:26.000Z",
+      "end": "2024-07-16T16:09:24.000Z",
+      "tracks_count": 93,
+      "duration_min": 374,
+      "top_artist": "Bilmuri",
+      "top_track": "Ctrl Alt Delete",
+      "unique_artists": 35
     },
     {
       "id": 904,
@@ -2319,7 +2289,7 @@
       "unique_artists": 24
     },
     {
-      "id": 3550,
+      "id": 3551,
       "start": "2021-06-17T13:09:24.000Z",
       "end": "2021-06-17T16:49:01.000Z",
       "tracks_count": 92,
@@ -2329,7 +2299,7 @@
       "unique_artists": 28
     },
     {
-      "id": 5028,
+      "id": 5029,
       "start": "2023-02-28T09:11:30.000Z",
       "end": "2023-02-28T13:50:50.000Z",
       "tracks_count": 92,
@@ -2339,7 +2309,17 @@
       "unique_artists": 25
     },
     {
-      "id": 6313,
+      "id": 5553,
+      "start": "2024-04-01T08:42:37.000Z",
+      "end": "2024-04-01T12:35:32.000Z",
+      "tracks_count": 92,
+      "duration_min": 247.9,
+      "top_artist": "nothing,nowhere.",
+      "top_track": "BLINDSIDED",
+      "unique_artists": 61
+    },
+    {
+      "id": 6314,
       "start": "2025-11-30T19:34:10.000Z",
       "end": "2025-11-30T23:50:05.000Z",
       "tracks_count": 92,
@@ -2349,27 +2329,17 @@
       "unique_artists": 46
     },
     {
-      "id": 4607,
-      "start": "2022-09-11T11:32:51.000Z",
-      "end": "2022-09-11T15:58:51.000Z",
-      "tracks_count": 91,
-      "duration_min": 278.7,
-      "top_artist": "mgk",
-      "top_track": "bloody valentine",
-      "unique_artists": 15
-    },
-    {
-      "id": 5385,
+      "id": 5386,
       "start": "2023-10-15T11:14:00.000Z",
       "end": "2023-10-15T14:08:00.000Z",
       "tracks_count": 91,
       "duration_min": 255.6,
       "top_artist": "Ryan Caraveo",
       "top_track": "HOLLYWOOD HEARTBREAK",
-      "unique_artists": 52
+      "unique_artists": 51
     },
     {
-      "id": 3922,
+      "id": 3923,
       "start": "2021-11-08T07:41:52.000Z",
       "end": "2021-11-08T08:42:49.000Z",
       "tracks_count": 90,
@@ -2379,7 +2349,27 @@
       "unique_artists": 2
     },
     {
-      "id": 4845,
+      "id": 4553,
+      "start": "2022-08-18T09:56:00.000Z",
+      "end": "2022-08-18T15:27:53.000Z",
+      "tracks_count": 90,
+      "duration_min": 331.9,
+      "top_artist": "mgk",
+      "top_track": "Cutting It Close",
+      "unique_artists": 18
+    },
+    {
+      "id": 4630,
+      "start": "2022-09-21T13:55:09.000Z",
+      "end": "2022-09-21T17:14:27.000Z",
+      "tracks_count": 90,
+      "duration_min": 265.7,
+      "top_artist": "Odeon",
+      "top_track": "CAN WE GO? (With Myth)",
+      "unique_artists": 17
+    },
+    {
+      "id": 4846,
       "start": "2022-12-19T13:17:00.000Z",
       "end": "2022-12-19T18:15:50.000Z",
       "tracks_count": 89,
@@ -2399,14 +2389,14 @@
       "unique_artists": 21
     },
     {
-      "id": 5424,
+      "id": 5425,
       "start": "2023-12-12T10:57:11.000Z",
       "end": "2023-12-12T13:06:28.000Z",
       "tracks_count": 86,
       "duration_min": 232.7,
       "top_artist": "Odeon",
       "top_track": "(des)amor",
-      "unique_artists": 31
+      "unique_artists": 30
     },
     {
       "id": 458,
@@ -2419,17 +2409,17 @@
       "unique_artists": 28
     },
     {
-      "id": 2753,
+      "id": 2754,
       "start": "2020-03-28T13:58:55.000Z",
       "end": "2020-03-28T21:16:32.000Z",
       "tracks_count": 85,
       "duration_min": 437.6,
       "top_artist": "Bring Me the Horizon",
       "top_track": "Star Crossed",
-      "unique_artists": 22
+      "unique_artists": 21
     },
     {
-      "id": 6058,
+      "id": 6059,
       "start": "2025-08-05T06:41:00.000Z",
       "end": "2025-08-05T12:54:01.000Z",
       "tracks_count": 85,
@@ -2439,7 +2429,7 @@
       "unique_artists": 51
     },
     {
-      "id": 1545,
+      "id": 1546,
       "start": "2018-04-27T11:40:35.000Z",
       "end": "2018-04-27T16:56:17.000Z",
       "tracks_count": 84,
@@ -2447,6 +2437,16 @@
       "top_artist": "Santa Cruz",
       "top_track": "Ever-Frost",
       "unique_artists": 15
+    },
+    {
+      "id": 3388,
+      "start": "2021-04-16T10:52:28.000Z",
+      "end": "2021-04-16T11:43:00.000Z",
+      "tracks_count": 84,
+      "duration_min": 257.5,
+      "top_artist": "blessthefall",
+      "top_track": "In Circles",
+      "unique_artists": 37
     }
   ],
   "obsessions": [
@@ -2556,6 +2556,12 @@
       "artist": "Tokio Hotel",
       "track": "Love Who Loves You Back",
       "date": "2016-11-25",
+      "count": 13
+    },
+    {
+      "artist": "Bring Me the Horizon",
+      "track": "MANTRA",
+      "date": "2018-08-23",
       "count": 13
     },
     {
@@ -2743,54 +2749,64 @@
       "track": "On My Own",
       "date": "2021-07-07",
       "count": 10
-    },
-    {
-      "artist": "Chief",
-      "track": "No Cares",
-      "date": "2021-07-22",
-      "count": 10
     }
   ],
   "artist_origin_countries": [
     {
       "country": "United States",
-      "plays": 35623
+      "plays": 27876
     },
     {
       "country": "United Kingdom",
-      "plays": 6256
+      "plays": 7519
     },
     {
       "country": "Sweden",
-      "plays": 2310
-    },
-    {
-      "country": "Israel",
-      "plays": 2262
+      "plays": 3379
     },
     {
       "country": "Finland",
-      "plays": 2202
+      "plays": 2641
     },
     {
-      "country": "France",
-      "plays": 1544
+      "country": "Israel",
+      "plays": 2137
     },
     {
       "country": "Germany",
-      "plays": 1208
+      "plays": 2039
+    },
+    {
+      "country": "Canada",
+      "plays": 2008
+    },
+    {
+      "country": "France",
+      "plays": 1987
     },
     {
       "country": "Brazil",
       "plays": 827
     },
     {
-      "country": "Canada",
-      "plays": 330
+      "country": "Tunisia",
+      "plays": 475
+    },
+    {
+      "country": "Australia",
+      "plays": 322
+    },
+    {
+      "country": "Wales",
+      "plays": 212
     },
     {
       "country": "Spain",
       "plays": 207
+    },
+    {
+      "country": "India",
+      "plays": 161
     },
     {
       "country": "Ireland",
@@ -2827,10 +2843,6 @@
     {
       "country": "Austria",
       "plays": 97
-    },
-    {
-      "country": "Australia",
-      "plays": 86
     },
     {
       "country": "Denmark",
@@ -2881,44 +2893,44 @@
   ],
   "heatmap": [
     [
-      368,
-      286,
+      367,
+      267,
       211,
-      227,
-      402,
-      329,
-      416
+      221,
+      381,
+      324,
+      411
     ],
     [
       256,
-      310,
-      306,
-      232,
-      424,
+      288,
+      304,
+      231,
+      410,
       295,
       323
     ],
     [
-      119,
-      230,
+      116,
+      214,
       179,
-      248,
-      205,
+      237,
+      202,
       427,
       201
     ],
     [
-      166,
-      251,
+      165,
+      233,
       190,
       198,
       132,
       152,
-      182
+      181
     ],
     [
       250,
-      152,
+      134,
       73,
       216,
       86,
@@ -2927,7 +2939,7 @@
     ],
     [
       149,
-      142,
+      132,
       88,
       197,
       121,
@@ -2935,166 +2947,166 @@
       101
     ],
     [
-      193,
-      323,
-      301,
+      190,
+      311,
+      298,
       244,
       217,
       218,
       159
     ],
     [
-      512,
-      683,
-      769,
-      708,
-      493,
-      176,
-      829
-    ],
-    [
-      477,
-      621,
-      593,
-      585,
-      426,
-      210,
-      842
-    ],
-    [
-      570,
-      624,
-      541,
-      567,
-      513,
-      257,
-      607
-    ],
-    [
-      694,
-      466,
-      650,
-      694,
-      356,
-      280,
-      579
-    ],
-    [
-      891,
-      764,
-      691,
-      754,
-      579,
-      347,
-      658
-    ],
-    [
-      698,
-      673,
-      720,
-      652,
-      497,
-      420,
-      756
-    ],
-    [
-      744,
-      852,
-      654,
-      701,
-      591,
-      410,
-      740
-    ],
-    [
-      925,
-      864,
-      887,
-      973,
-      621,
-      380,
-      815
-    ],
-    [
-      944,
-      888,
-      882,
-      676,
-      623,
       490,
-      694
+      666,
+      751,
+      707,
+      489,
+      176,
+      821
     ],
     [
-      733,
-      629,
-      732,
-      636,
-      706,
-      580,
-      568
+      460,
+      597,
+      584,
+      585,
+      425,
+      210,
+      828
     ],
     [
-      581,
-      509,
-      630,
-      599,
-      760,
-      741,
-      688
-    ],
-    [
-      544,
-      617,
-      665,
-      500,
-      708,
+      560,
       606,
-      549
+      533,
+      567,
+      510,
+      255,
+      595
     ],
     [
-      506,
-      406,
-      641,
-      360,
+      688,
+      460,
+      643,
+      693,
+      355,
+      276,
+      558
+    ],
+    [
+      880,
+      762,
+      687,
+      748,
+      570,
+      346,
+      642
+    ],
+    [
+      686,
+      669,
+      714,
+      639,
+      490,
+      416,
+      742
+    ],
+    [
+      737,
+      846,
+      652,
+      690,
+      583,
+      405,
+      733
+    ],
+    [
+      900,
+      859,
+      877,
+      961,
+      619,
+      371,
+      802
+    ],
+    [
+      918,
+      884,
+      878,
+      665,
+      617,
+      477,
+      676
+    ],
+    [
+      719,
+      629,
+      724,
+      625,
+      691,
+      579,
+      567
+    ],
+    [
+      580,
+      504,
+      626,
+      583,
+      755,
+      736,
+      674
+    ],
+    [
+      540,
+      615,
+      663,
+      491,
+      705,
+      602,
+      545
+    ],
+    [
+      499,
+      405,
+      635,
+      357,
       726,
       589,
-      625
-    ],
-    [
-      441,
-      383,
-      536,
-      421,
-      609,
-      495,
-      634
+      623
     ],
     [
       436,
-      489,
-      569,
+      381,
+      535,
+      421,
+      609,
+      494,
+      628
+    ],
+    [
+      414,
+      485,
+      566,
       524,
       448,
-      531,
+      526,
       643
     ],
     [
-      657,
-      374,
-      501,
+      631,
+      371,
+      497,
       547,
-      411,
-      659,
-      495
+      407,
+      650,
+      489
     ],
     [
-      243,
+      221,
       321,
-      443,
-      445,
-      471,
-      566,
-      477
+      435,
+      433,
+      453,
+      553,
+      475
     ]
   ],
   "daily_plays": {
@@ -3714,8 +3726,8 @@
     "2018-02-26": 25,
     "2018-02-27": 32,
     "2018-03-01": 10,
-    "2018-03-02": 26,
-    "2018-03-05": 7,
+    "2018-03-02": 19,
+    "2018-03-05": 4,
     "2018-03-07": 1,
     "2018-03-12": 10,
     "2018-03-13": 14,
@@ -3736,7 +3748,7 @@
     "2018-03-30": 34,
     "2018-03-31": 35,
     "2018-04-01": 67,
-    "2018-04-03": 50,
+    "2018-04-03": 48,
     "2018-04-04": 62,
     "2018-04-05": 17,
     "2018-04-06": 35,
@@ -3746,47 +3758,47 @@
     "2018-04-11": 21,
     "2018-04-12": 90,
     "2018-04-13": 160,
-    "2018-04-14": 147,
-    "2018-04-15": 146,
-    "2018-04-16": 109,
+    "2018-04-14": 127,
+    "2018-04-15": 126,
+    "2018-04-16": 105,
     "2018-04-17": 1,
-    "2018-04-18": 116,
-    "2018-04-19": 36,
+    "2018-04-18": 87,
+    "2018-04-19": 31,
     "2018-04-20": 99,
-    "2018-04-21": 100,
-    "2018-04-22": 134,
-    "2018-04-23": 54,
-    "2018-04-24": 53,
+    "2018-04-21": 97,
+    "2018-04-22": 111,
+    "2018-04-23": 45,
+    "2018-04-24": 41,
     "2018-04-25": 91,
     "2018-04-26": 34,
     "2018-04-27": 117,
     "2018-04-28": 68,
-    "2018-04-29": 57,
+    "2018-04-29": 55,
     "2018-05-01": 11,
     "2018-05-02": 73,
-    "2018-05-03": 62,
-    "2018-05-05": 50,
-    "2018-05-06": 149,
-    "2018-05-07": 115,
+    "2018-05-03": 60,
+    "2018-05-05": 44,
+    "2018-05-06": 148,
+    "2018-05-07": 106,
     "2018-05-08": 57,
     "2018-05-09": 88,
     "2018-05-10": 68,
     "2018-05-11": 31,
-    "2018-05-12": 110,
-    "2018-05-13": 8,
-    "2018-05-14": 28,
-    "2018-05-15": 76,
+    "2018-05-12": 106,
+    "2018-05-13": 6,
+    "2018-05-14": 27,
+    "2018-05-15": 74,
     "2018-05-16": 44,
     "2018-05-17": 102,
-    "2018-05-18": 90,
-    "2018-05-19": 37,
-    "2018-05-20": 14,
+    "2018-05-18": 85,
+    "2018-05-19": 36,
+    "2018-05-20": 13,
     "2018-05-22": 30,
     "2018-05-23": 36,
     "2018-05-24": 107,
     "2018-05-25": 32,
     "2018-05-26": 22,
-    "2018-05-27": 89,
+    "2018-05-27": 79,
     "2018-05-28": 15,
     "2018-05-29": 2,
     "2018-05-30": 17,
@@ -3813,7 +3825,7 @@
     "2018-06-24": 19,
     "2018-06-25": 4,
     "2018-06-26": 23,
-    "2018-06-27": 39,
+    "2018-06-27": 38,
     "2018-06-28": 24,
     "2018-06-29": 58,
     "2018-06-30": 8,
@@ -3826,7 +3838,7 @@
     "2018-07-07": 41,
     "2018-07-08": 24,
     "2018-07-09": 20,
-    "2018-07-10": 16,
+    "2018-07-10": 15,
     "2018-07-11": 78,
     "2018-07-12": 14,
     "2018-07-13": 67,
@@ -3843,7 +3855,7 @@
     "2018-07-24": 23,
     "2018-07-25": 109,
     "2018-07-26": 4,
-    "2018-07-27": 104,
+    "2018-07-27": 102,
     "2018-07-28": 21,
     "2018-07-29": 4,
     "2018-07-30": 24,
@@ -3877,13 +3889,13 @@
     "2018-08-29": 17,
     "2018-08-30": 12,
     "2018-08-31": 35,
-    "2018-09-01": 97,
-    "2018-09-02": 23,
-    "2018-09-03": 29,
+    "2018-09-01": 93,
+    "2018-09-02": 14,
+    "2018-09-03": 26,
     "2018-09-04": 29,
-    "2018-09-05": 51,
-    "2018-09-06": 38,
-    "2018-09-07": 27,
+    "2018-09-05": 47,
+    "2018-09-06": 34,
+    "2018-09-07": 26,
     "2018-09-08": 53,
     "2018-09-09": 34,
     "2018-09-10": 24,
@@ -3891,14 +3903,14 @@
     "2018-09-12": 40,
     "2018-09-13": 144,
     "2018-09-14": 46,
-    "2018-09-15": 54,
-    "2018-09-16": 26,
-    "2018-09-17": 74,
+    "2018-09-15": 52,
+    "2018-09-16": 25,
+    "2018-09-17": 61,
     "2018-09-18": 19,
-    "2018-09-19": 41,
-    "2018-09-20": 22,
-    "2018-09-21": 71,
-    "2018-09-22": 35,
+    "2018-09-19": 40,
+    "2018-09-20": 18,
+    "2018-09-21": 68,
+    "2018-09-22": 34,
     "2018-09-23": 51,
     "2018-09-24": 16,
     "2018-09-25": 25,
@@ -3926,7 +3938,7 @@
     "2018-10-18": 9,
     "2018-10-19": 42,
     "2018-10-20": 16,
-    "2018-10-21": 126,
+    "2018-10-21": 124,
     "2018-10-22": 17,
     "2018-10-23": 75,
     "2018-10-24": 87,
@@ -3934,11 +3946,11 @@
     "2018-10-26": 25,
     "2018-10-27": 7,
     "2018-10-28": 17,
-    "2018-10-29": 8,
+    "2018-10-29": 6,
     "2018-10-30": 4,
-    "2018-10-31": 33,
+    "2018-10-31": 25,
     "2018-11-01": 11,
-    "2018-11-02": 21,
+    "2018-11-02": 20,
     "2018-11-03": 26,
     "2018-11-04": 27,
     "2018-11-05": 27,
@@ -3981,8 +3993,8 @@
     "2018-12-13": 21,
     "2018-12-14": 39,
     "2018-12-15": 10,
-    "2018-12-16": 56,
-    "2018-12-17": 33,
+    "2018-12-16": 55,
+    "2018-12-17": 29,
     "2018-12-18": 28,
     "2018-12-19": 12,
     "2018-12-20": 6,
@@ -4075,7 +4087,7 @@
     "2019-04-06": 2,
     "2019-04-07": 8,
     "2019-04-10": 6,
-    "2019-04-11": 40,
+    "2019-04-11": 28,
     "2019-04-16": 14,
     "2019-04-18": 5,
     "2019-04-19": 2,
@@ -4137,10 +4149,10 @@
     "2019-08-08": 4,
     "2019-08-09": 5,
     "2019-08-10": 59,
-    "2019-08-14": 7,
+    "2019-08-14": 4,
     "2019-08-15": 18,
     "2019-08-16": 1,
-    "2019-08-17": 74,
+    "2019-08-17": 69,
     "2019-08-20": 7,
     "2019-08-21": 6,
     "2019-08-23": 33,
@@ -4159,13 +4171,13 @@
     "2019-09-10": 18,
     "2019-09-11": 2,
     "2019-09-13": 31,
-    "2019-09-14": 93,
+    "2019-09-14": 92,
     "2019-09-15": 10,
     "2019-09-16": 7,
     "2019-09-17": 1,
     "2019-09-18": 2,
     "2019-09-19": 4,
-    "2019-09-21": 13,
+    "2019-09-21": 11,
     "2019-09-22": 13,
     "2019-09-23": 17,
     "2019-09-24": 1,
@@ -4219,7 +4231,7 @@
     "2019-12-28": 5,
     "2019-12-29": 2,
     "2019-12-30": 11,
-    "2019-12-31": 11,
+    "2019-12-31": 8,
     "2020-01-03": 14,
     "2020-01-07": 5,
     "2020-01-08": 1,
@@ -4596,7 +4608,7 @@
     "2021-06-04": 26,
     "2021-06-05": 27,
     "2021-06-06": 3,
-    "2021-06-07": 50,
+    "2021-06-07": 48,
     "2021-06-08": 87,
     "2021-06-09": 54,
     "2021-06-10": 104,
@@ -4652,10 +4664,10 @@
     "2021-08-02": 30,
     "2021-08-03": 53,
     "2021-08-04": 86,
-    "2021-08-05": 41,
+    "2021-08-05": 40,
     "2021-08-06": 26,
     "2021-08-08": 6,
-    "2021-08-09": 35,
+    "2021-08-09": 34,
     "2021-08-11": 73,
     "2021-08-12": 30,
     "2021-08-13": 5,
@@ -4836,7 +4848,7 @@
     "2022-02-20": 45,
     "2022-02-21": 67,
     "2022-02-22": 16,
-    "2022-02-23": 27,
+    "2022-02-23": 25,
     "2022-02-24": 9,
     "2022-02-25": 50,
     "2022-02-26": 24,
@@ -4973,70 +4985,70 @@
     "2022-07-29": 35,
     "2022-07-30": 36,
     "2022-07-31": 48,
-    "2022-08-01": 27,
-    "2022-08-02": 29,
-    "2022-08-03": 19,
-    "2022-08-04": 5,
+    "2022-08-01": 22,
+    "2022-08-02": 24,
+    "2022-08-03": 14,
+    "2022-08-04": 4,
     "2022-08-05": 1,
     "2022-08-06": 24,
     "2022-08-07": 2,
     "2022-08-08": 2,
-    "2022-08-09": 33,
-    "2022-08-10": 24,
-    "2022-08-11": 26,
-    "2022-08-12": 49,
+    "2022-08-09": 32,
+    "2022-08-10": 23,
+    "2022-08-11": 24,
+    "2022-08-12": 47,
     "2022-08-13": 15,
-    "2022-08-14": 6,
+    "2022-08-14": 5,
     "2022-08-15": 13,
     "2022-08-16": 4,
-    "2022-08-18": 173,
-    "2022-08-19": 214,
-    "2022-08-20": 19,
-    "2022-08-21": 24,
-    "2022-08-22": 86,
+    "2022-08-18": 129,
+    "2022-08-19": 167,
+    "2022-08-20": 14,
+    "2022-08-21": 14,
+    "2022-08-22": 64,
     "2022-08-23": 20,
-    "2022-08-24": 20,
-    "2022-08-25": 59,
-    "2022-08-26": 84,
-    "2022-08-27": 70,
-    "2022-08-29": 200,
+    "2022-08-24": 19,
+    "2022-08-25": 49,
+    "2022-08-26": 62,
+    "2022-08-27": 53,
+    "2022-08-29": 176,
     "2022-08-30": 15,
-    "2022-08-31": 138,
+    "2022-08-31": 130,
     "2022-09-01": 10,
     "2022-09-02": 9,
     "2022-09-03": 2,
-    "2022-09-04": 33,
+    "2022-09-04": 27,
     "2022-09-05": 19,
     "2022-09-06": 38,
     "2022-09-07": 9,
     "2022-09-08": 46,
-    "2022-09-09": 67,
-    "2022-09-11": 93,
+    "2022-09-09": 65,
+    "2022-09-11": 68,
     "2022-09-12": 44,
-    "2022-09-13": 55,
-    "2022-09-14": 68,
-    "2022-09-15": 33,
-    "2022-09-16": 47,
-    "2022-09-17": 21,
-    "2022-09-18": 138,
-    "2022-09-19": 49,
-    "2022-09-20": 44,
-    "2022-09-21": 94,
+    "2022-09-13": 51,
+    "2022-09-14": 62,
+    "2022-09-15": 30,
+    "2022-09-16": 34,
+    "2022-09-17": 20,
+    "2022-09-18": 136,
+    "2022-09-19": 43,
+    "2022-09-20": 43,
+    "2022-09-21": 90,
     "2022-09-22": 59,
     "2022-09-23": 6,
-    "2022-09-24": 35,
-    "2022-09-25": 30,
-    "2022-09-27": 6,
-    "2022-09-28": 74,
-    "2022-09-29": 78,
-    "2022-09-30": 39,
+    "2022-09-24": 32,
+    "2022-09-25": 19,
+    "2022-09-27": 4,
+    "2022-09-28": 70,
+    "2022-09-29": 65,
+    "2022-09-30": 36,
     "2022-10-02": 59,
     "2022-10-03": 42,
     "2022-10-04": 12,
     "2022-10-06": 32,
     "2022-10-07": 11,
     "2022-10-09": 51,
-    "2022-10-10": 33,
+    "2022-10-10": 23,
     "2022-10-11": 28,
     "2022-10-13": 1,
     "2022-10-14": 6,
@@ -5048,7 +5060,7 @@
     "2022-10-21": 11,
     "2022-10-22": 21,
     "2022-10-23": 24,
-    "2022-10-24": 75,
+    "2022-10-24": 66,
     "2022-10-25": 27,
     "2022-10-26": 55,
     "2022-10-28": 10,
@@ -5067,7 +5079,7 @@
     "2022-11-12": 10,
     "2022-11-13": 30,
     "2022-11-14": 175,
-    "2022-11-15": 88,
+    "2022-11-15": 87,
     "2022-11-17": 21,
     "2022-11-18": 9,
     "2022-11-19": 6,
@@ -5086,14 +5098,14 @@
     "2022-12-02": 87,
     "2022-12-03": 5,
     "2022-12-04": 62,
-    "2022-12-05": 52,
+    "2022-12-05": 51,
     "2022-12-06": 56,
     "2022-12-07": 18,
     "2022-12-08": 84,
     "2022-12-09": 73,
     "2022-12-10": 88,
-    "2022-12-11": 97,
-    "2022-12-12": 42,
+    "2022-12-11": 89,
+    "2022-12-12": 41,
     "2022-12-13": 28,
     "2022-12-14": 71,
     "2022-12-15": 90,
@@ -5107,7 +5119,7 @@
     "2022-12-23": 37,
     "2022-12-24": 2,
     "2022-12-25": 35,
-    "2022-12-26": 37,
+    "2022-12-26": 34,
     "2022-12-28": 30,
     "2022-12-29": 30,
     "2022-12-30": 30,
@@ -5117,15 +5129,15 @@
     "2023-01-04": 54,
     "2023-01-05": 50,
     "2023-01-06": 10,
-    "2023-01-07": 9,
+    "2023-01-07": 8,
     "2023-01-08": 41,
     "2023-01-10": 6,
     "2023-01-11": 7,
     "2023-01-12": 2,
     "2023-01-15": 28,
     "2023-01-16": 39,
-    "2023-01-17": 16,
-    "2023-01-18": 21,
+    "2023-01-17": 15,
+    "2023-01-18": 20,
     "2023-01-19": 25,
     "2023-01-20": 56,
     "2023-01-21": 26,
@@ -5171,7 +5183,7 @@
     "2023-03-05": 105,
     "2023-03-06": 42,
     "2023-03-07": 70,
-    "2023-03-08": 38,
+    "2023-03-08": 35,
     "2023-03-09": 80,
     "2023-03-10": 64,
     "2023-03-12": 16,
@@ -5190,40 +5202,40 @@
     "2023-03-25": 8,
     "2023-03-26": 29,
     "2023-03-27": 64,
-    "2023-03-28": 91,
+    "2023-03-28": 90,
     "2023-03-29": 60,
-    "2023-03-30": 152,
+    "2023-03-30": 150,
     "2023-03-31": 8,
     "2023-04-01": 28,
-    "2023-04-02": 65,
+    "2023-04-02": 62,
     "2023-04-03": 60,
-    "2023-04-04": 61,
+    "2023-04-04": 59,
     "2023-04-05": 52,
     "2023-04-06": 51,
     "2023-04-07": 42,
     "2023-04-08": 54,
-    "2023-04-09": 80,
+    "2023-04-09": 78,
     "2023-04-10": 24,
-    "2023-04-11": 120,
+    "2023-04-11": 116,
     "2023-04-12": 8,
     "2023-04-13": 20,
-    "2023-04-14": 24,
+    "2023-04-14": 22,
     "2023-04-15": 19,
     "2023-04-16": 35,
     "2023-04-17": 5,
     "2023-04-18": 37,
     "2023-04-19": 20,
     "2023-04-21": 24,
-    "2023-04-22": 77,
+    "2023-04-22": 76,
     "2023-04-23": 24,
-    "2023-04-24": 85,
+    "2023-04-24": 73,
     "2023-04-25": 2,
-    "2023-04-26": 66,
+    "2023-04-26": 63,
     "2023-04-27": 12,
     "2023-04-28": 5,
     "2023-04-29": 15,
     "2023-04-30": 33,
-    "2023-05-01": 23,
+    "2023-05-01": 22,
     "2023-05-02": 14,
     "2023-05-03": 1,
     "2023-05-04": 3,
@@ -5231,47 +5243,47 @@
     "2023-05-06": 2,
     "2023-05-07": 49,
     "2023-05-08": 8,
-    "2023-05-09": 18,
+    "2023-05-09": 17,
     "2023-05-10": 24,
-    "2023-05-11": 23,
+    "2023-05-11": 18,
     "2023-05-12": 1,
     "2023-05-13": 5,
-    "2023-05-14": 17,
+    "2023-05-14": 13,
     "2023-05-15": 4,
     "2023-05-16": 7,
     "2023-05-18": 15,
-    "2023-05-19": 9,
+    "2023-05-19": 8,
     "2023-05-20": 3,
-    "2023-05-22": 56,
+    "2023-05-22": 53,
     "2023-05-23": 7,
-    "2023-05-24": 103,
+    "2023-05-24": 98,
     "2023-05-25": 4,
-    "2023-05-26": 33,
+    "2023-05-26": 29,
     "2023-05-27": 11,
-    "2023-05-28": 23,
-    "2023-05-29": 37,
-    "2023-05-30": 21,
-    "2023-05-31": 10,
+    "2023-05-28": 21,
+    "2023-05-29": 36,
+    "2023-05-30": 20,
+    "2023-05-31": 9,
     "2023-06-01": 58,
-    "2023-06-02": 60,
+    "2023-06-02": 59,
     "2023-06-03": 14,
     "2023-06-04": 3,
-    "2023-06-05": 43,
+    "2023-06-05": 39,
     "2023-06-06": 25,
-    "2023-06-07": 14,
-    "2023-06-08": 53,
+    "2023-06-07": 13,
+    "2023-06-08": 48,
     "2023-06-09": 5,
     "2023-06-10": 7,
-    "2023-06-11": 26,
+    "2023-06-11": 25,
     "2023-06-12": 6,
-    "2023-06-14": 10,
+    "2023-06-14": 9,
     "2023-06-18": 9,
     "2023-06-20": 41,
     "2023-06-21": 1,
-    "2023-06-22": 30,
-    "2023-06-25": 26,
-    "2023-06-26": 11,
-    "2023-06-27": 36,
+    "2023-06-22": 28,
+    "2023-06-25": 25,
+    "2023-06-26": 10,
+    "2023-06-27": 35,
     "2023-06-28": 1,
     "2023-06-29": 10,
     "2023-06-30": 7,
@@ -5283,16 +5295,16 @@
     "2023-07-07": 8,
     "2023-07-08": 4,
     "2023-07-09": 2,
-    "2023-07-10": 16,
+    "2023-07-10": 14,
     "2023-07-11": 5,
     "2023-07-12": 9,
     "2023-07-13": 2,
     "2023-07-14": 2,
-    "2023-07-16": 33,
-    "2023-07-17": 13,
-    "2023-07-21": 46,
-    "2023-07-25": 50,
-    "2023-07-26": 21,
+    "2023-07-16": 31,
+    "2023-07-17": 12,
+    "2023-07-21": 42,
+    "2023-07-25": 49,
+    "2023-07-26": 20,
     "2023-07-27": 9,
     "2023-07-28": 24,
     "2023-07-29": 33,
@@ -5300,7 +5312,7 @@
     "2023-08-01": 28,
     "2023-08-06": 14,
     "2023-08-07": 4,
-    "2023-08-08": 38,
+    "2023-08-08": 36,
     "2023-08-09": 21,
     "2023-08-10": 11,
     "2023-08-11": 2,
@@ -5311,7 +5323,7 @@
     "2023-08-20": 39,
     "2023-08-23": 14,
     "2023-08-29": 13,
-    "2023-09-04": 21,
+    "2023-09-04": 20,
     "2023-09-06": 1,
     "2023-09-12": 1,
     "2023-09-16": 1,
@@ -5321,7 +5333,7 @@
     "2023-09-28": 25,
     "2023-10-02": 15,
     "2023-10-04": 14,
-    "2023-10-10": 63,
+    "2023-10-10": 62,
     "2023-10-15": 91,
     "2023-10-24": 19,
     "2023-10-25": 12,
@@ -5334,8 +5346,8 @@
     "2023-11-08": 12,
     "2023-11-09": 19,
     "2023-11-10": 31,
-    "2023-11-12": 57,
-    "2023-11-13": 5,
+    "2023-11-12": 54,
+    "2023-11-13": 4,
     "2023-11-15": 30,
     "2023-11-17": 52,
     "2023-11-20": 30,
@@ -5348,14 +5360,14 @@
     "2023-11-30": 3,
     "2023-12-03": 1,
     "2023-12-07": 21,
-    "2023-12-10": 34,
+    "2023-12-10": 33,
     "2023-12-11": 1,
     "2023-12-12": 86,
     "2023-12-14": 4,
     "2023-12-15": 51,
     "2023-12-17": 70,
     "2023-12-18": 13,
-    "2023-12-19": 43,
+    "2023-12-19": 42,
     "2023-12-21": 45,
     "2023-12-22": 14,
     "2023-12-26": 7,
@@ -5377,7 +5389,7 @@
     "2024-01-19": 8,
     "2024-01-21": 25,
     "2024-01-22": 31,
-    "2024-01-24": 123,
+    "2024-01-24": 118,
     "2024-01-25": 22,
     "2024-01-26": 11,
     "2024-01-28": 14,
@@ -5394,12 +5406,12 @@
     "2024-02-19": 8,
     "2024-02-20": 25,
     "2024-02-21": 13,
-    "2024-02-22": 18,
-    "2024-02-23": 2,
+    "2024-02-22": 15,
+    "2024-02-23": 1,
     "2024-02-25": 56,
     "2024-02-26": 12,
-    "2024-02-27": 18,
-    "2024-02-28": 54,
+    "2024-02-27": 17,
+    "2024-02-28": 53,
     "2024-02-29": 1,
     "2024-03-03": 28,
     "2024-03-04": 6,
@@ -5416,31 +5428,31 @@
     "2024-03-21": 17,
     "2024-03-22": 16,
     "2024-03-24": 36,
-    "2024-03-25": 38,
-    "2024-03-26": 5,
+    "2024-03-25": 35,
+    "2024-03-26": 4,
     "2024-03-28": 19,
-    "2024-03-29": 6,
+    "2024-03-29": 5,
     "2024-03-31": 19,
-    "2024-04-01": 109,
-    "2024-04-02": 13,
+    "2024-04-01": 99,
+    "2024-04-02": 11,
     "2024-04-03": 2,
     "2024-04-06": 1,
     "2024-04-07": 9,
-    "2024-04-10": 47,
+    "2024-04-10": 46,
     "2024-04-11": 14,
     "2024-04-14": 4,
-    "2024-04-16": 34,
+    "2024-04-16": 32,
     "2024-04-17": 2,
     "2024-04-19": 1,
-    "2024-04-21": 33,
+    "2024-04-21": 32,
     "2024-04-23": 1,
-    "2024-04-24": 16,
+    "2024-04-24": 15,
     "2024-04-25": 4,
-    "2024-04-26": 3,
-    "2024-05-02": 17,
+    "2024-04-26": 2,
+    "2024-05-02": 16,
     "2024-05-05": 2,
     "2024-05-06": 3,
-    "2024-05-13": 10,
+    "2024-05-13": 9,
     "2024-06-12": 9,
     "2024-06-15": 4,
     "2024-06-20": 16,
@@ -5450,7 +5462,7 @@
     "2024-06-28": 4,
     "2024-06-30": 28,
     "2024-07-02": 9,
-    "2024-07-16": 110,
+    "2024-07-16": 108,
     "2024-07-17": 33,
     "2024-07-18": 22,
     "2024-07-19": 9,
@@ -5458,12 +5470,12 @@
     "2024-07-21": 21,
     "2024-07-22": 22,
     "2024-07-23": 8,
-    "2024-07-24": 20,
+    "2024-07-24": 19,
     "2024-07-25": 9,
     "2024-07-29": 11,
     "2024-08-01": 1,
     "2024-08-02": 16,
-    "2024-08-04": 74,
+    "2024-08-04": 73,
     "2024-08-05": 15,
     "2024-08-09": 1,
     "2024-08-11": 10,
@@ -5480,7 +5492,7 @@
     "2024-08-29": 3,
     "2024-09-01": 23,
     "2024-09-08": 38,
-    "2024-09-12": 14,
+    "2024-09-12": 13,
     "2024-09-14": 1,
     "2024-09-15": 20,
     "2024-09-16": 7,
@@ -5499,7 +5511,7 @@
     "2024-10-22": 1,
     "2024-10-23": 10,
     "2024-10-25": 17,
-    "2024-10-28": 21,
+    "2024-10-28": 20,
     "2024-10-30": 29,
     "2024-10-31": 9,
     "2024-11-01": 26,
@@ -5509,7 +5521,7 @@
     "2024-11-10": 6,
     "2024-11-12": 8,
     "2024-11-13": 24,
-    "2024-11-19": 29,
+    "2024-11-19": 28,
     "2024-11-26": 9,
     "2024-11-29": 1,
     "2024-12-01": 21,
@@ -5520,7 +5532,7 @@
     "2024-12-06": 1,
     "2024-12-07": 33,
     "2024-12-09": 14,
-    "2024-12-11": 22,
+    "2024-12-11": 21,
     "2024-12-12": 4,
     "2024-12-13": 20,
     "2024-12-14": 6,
@@ -5535,7 +5547,7 @@
     "2025-01-03": 1,
     "2025-01-05": 6,
     "2025-01-09": 3,
-    "2025-01-11": 28,
+    "2025-01-11": 27,
     "2025-01-12": 44,
     "2025-01-15": 8,
     "2025-01-17": 24,
@@ -5567,7 +5579,7 @@
     "2025-02-26": 13,
     "2025-02-27": 1,
     "2025-02-28": 1,
-    "2025-03-02": 77,
+    "2025-03-02": 75,
     "2025-03-03": 44,
     "2025-03-04": 72,
     "2025-03-05": 15,
@@ -5634,16 +5646,16 @@
     "2025-05-09": 7,
     "2025-05-10": 2,
     "2025-05-11": 2,
-    "2025-05-12": 45,
+    "2025-05-12": 43,
     "2025-05-13": 34,
-    "2025-05-14": 57,
+    "2025-05-14": 55,
     "2025-05-15": 1,
     "2025-05-16": 1,
     "2025-05-17": 1,
     "2025-05-18": 2,
     "2025-05-19": 2,
     "2025-05-20": 2,
-    "2025-05-21": 14,
+    "2025-05-21": 13,
     "2025-05-22": 24,
     "2025-05-23": 2,
     "2025-05-25": 43,
@@ -5756,8 +5768,8 @@
     "2025-09-25": 18,
     "2025-09-27": 2,
     "2025-09-28": 10,
-    "2025-09-29": 139,
-    "2025-09-30": 351,
+    "2025-09-29": 70,
+    "2025-09-30": 196,
     "2025-10-01": 1,
     "2025-10-02": 7,
     "2025-10-03": 3,
@@ -5767,7 +5779,7 @@
     "2025-10-08": 77,
     "2025-10-09": 13,
     "2025-10-11": 7,
-    "2025-10-12": 7,
+    "2025-10-12": 6,
     "2025-10-13": 2,
     "2025-10-14": 3,
     "2025-10-15": 11,
@@ -5780,7 +5792,7 @@
     "2025-10-28": 41,
     "2025-10-29": 33,
     "2025-10-30": 121,
-    "2025-10-31": 62,
+    "2025-10-31": 61,
     "2025-11-01": 1,
     "2025-11-02": 4,
     "2025-11-03": 6,
@@ -5850,7 +5862,7 @@
     "2026-01-15": 3,
     "2026-01-18": 40,
     "2026-01-19": 30,
-    "2026-01-20": 5,
+    "2026-01-20": 4,
     "2026-01-21": 48,
     "2026-01-22": 23,
     "2026-01-23": 3,
@@ -5864,7 +5876,7 @@
     "2026-02-02": 18,
     "2026-02-03": 5,
     "2026-02-04": 5,
-    "2026-02-05": 12,
+    "2026-02-05": 11,
     "2026-02-06": 2,
     "2026-02-07": 2,
     "2026-02-08": 1,
@@ -5931,7 +5943,7 @@
     "2026-04-27": 12,
     "2026-04-28": 10,
     "2026-04-29": 59,
-    "2026-04-30": 196,
+    "2026-04-30": 194,
     "2026-05-01": 4,
     "2026-05-02": 4,
     "2026-05-03": 32,
@@ -5944,13 +5956,13 @@
     "2026-05-10": 12,
     "2026-05-11": 23,
     "2026-05-12": 71,
-    "2026-05-13": 109,
-    "2026-05-14": 29,
+    "2026-05-13": 106,
+    "2026-05-14": 28,
     "2026-05-15": 2,
-    "2026-05-16": 65,
+    "2026-05-16": 62,
     "2026-05-17": 6,
     "2026-05-18": 34,
-    "2026-05-19": 16,
+    "2026-05-19": 15,
     "2026-05-20": 29,
     "2026-05-21": 24,
     "2026-05-23": 89,
@@ -5961,9 +5973,9 @@
     "2026-05-28": 7,
     "2026-05-29": 12,
     "2026-05-30": 3,
-    "2026-05-31": 147,
+    "2026-05-31": 146,
     "2026-06-01": 100,
-    "2026-06-02": 115,
+    "2026-06-02": 113,
     "2026-06-03": 76,
     "2026-06-04": 21,
     "2026-06-05": 21,
@@ -5975,7 +5987,7 @@
     "2026-06-11": 115,
     "2026-06-12": 36,
     "2026-06-13": 1,
-    "2026-06-14": 90,
+    "2026-06-14": 86,
     "2026-06-15": 43,
     "2026-06-16": 51,
     "2026-06-17": 39,
@@ -6169,27 +6181,27 @@
     {
       "year": 2018,
       "month": 2,
-      "plays": 694
+      "plays": 684
     },
     {
       "year": 2018,
       "month": 3,
-      "plays": 2057
+      "plays": 1928
     },
     {
       "year": 2018,
       "month": 4,
-      "plays": 1563
+      "plays": 1519
     },
     {
       "year": 2018,
       "month": 5,
-      "plays": 779
+      "plays": 778
     },
     {
       "year": 2018,
       "month": 6,
-      "plays": 1048
+      "plays": 1045
     },
     {
       "year": 2018,
@@ -6199,22 +6211,22 @@
     {
       "year": 2018,
       "month": 8,
-      "plays": 1246
+      "plays": 1196
     },
     {
       "year": 2018,
       "month": 9,
-      "plays": 1086
+      "plays": 1074
     },
     {
       "year": 2018,
       "month": 10,
-      "plays": 849
+      "plays": 848
     },
     {
       "year": 2018,
       "month": 11,
-      "plays": 730
+      "plays": 725
     },
     {
       "year": 2019,
@@ -6234,7 +6246,7 @@
     {
       "year": 2019,
       "month": 3,
-      "plays": 216
+      "plays": 204
     },
     {
       "year": 2019,
@@ -6254,12 +6266,12 @@
     {
       "year": 2019,
       "month": 7,
-      "plays": 325
+      "plays": 317
     },
     {
       "year": 2019,
       "month": 8,
-      "plays": 379
+      "plays": 376
     },
     {
       "year": 2019,
@@ -6274,7 +6286,7 @@
     {
       "year": 2019,
       "month": 11,
-      "plays": 280
+      "plays": 277
     },
     {
       "year": 2020,
@@ -6364,7 +6376,7 @@
     {
       "year": 2021,
       "month": 5,
-      "plays": 1367
+      "plays": 1365
     },
     {
       "year": 2021,
@@ -6374,7 +6386,7 @@
     {
       "year": 2021,
       "month": 7,
-      "plays": 1143
+      "plays": 1141
     },
     {
       "year": 2021,
@@ -6404,7 +6416,7 @@
     {
       "year": 2022,
       "month": 1,
-      "plays": 721
+      "plays": 719
     },
     {
       "year": 2022,
@@ -6434,32 +6446,32 @@
     {
       "year": 2022,
       "month": 7,
-      "plays": 1401
+      "plays": 1168
     },
     {
       "year": 2022,
       "month": 8,
-      "plays": 1246
+      "plays": 1137
     },
     {
       "year": 2022,
       "month": 9,
-      "plays": 692
+      "plays": 673
     },
     {
       "year": 2022,
       "month": 10,
-      "plays": 1188
+      "plays": 1187
     },
     {
       "year": 2022,
       "month": 11,
-      "plays": 1447
+      "plays": 1434
     },
     {
       "year": 2023,
       "month": 0,
-      "plays": 605
+      "plays": 602
     },
     {
       "year": 2023,
@@ -6469,77 +6481,77 @@
     {
       "year": 2023,
       "month": 2,
-      "plays": 1310
+      "plays": 1304
     },
     {
       "year": 2023,
       "month": 3,
-      "plays": 1148
+      "plays": 1119
     },
     {
       "year": 2023,
       "month": 4,
-      "plays": 547
+      "plays": 518
     },
     {
       "year": 2023,
       "month": 5,
-      "plays": 496
+      "plays": 478
     },
     {
       "year": 2023,
       "month": 6,
-      "plays": 323
+      "plays": 312
     },
     {
       "year": 2023,
       "month": 7,
-      "plays": 290
+      "plays": 288
     },
     {
       "year": 2023,
       "month": 8,
-      "plays": 116
+      "plays": 115
     },
     {
       "year": 2023,
       "month": 9,
-      "plays": 228
+      "plays": 227
     },
     {
       "year": 2023,
       "month": 10,
-      "plays": 411
+      "plays": 407
     },
     {
       "year": 2023,
       "month": 11,
-      "plays": 452
+      "plays": 450
     },
     {
       "year": 2024,
       "month": 0,
-      "plays": 706
+      "plays": 701
     },
     {
       "year": 2024,
       "month": 1,
-      "plays": 396
+      "plays": 390
     },
     {
       "year": 2024,
       "month": 2,
-      "plays": 444
+      "plays": 439
     },
     {
       "year": 2024,
       "month": 3,
-      "plays": 293
+      "plays": 275
     },
     {
       "year": 2024,
       "month": 4,
-      "plays": 32
+      "plays": 30
     },
     {
       "year": 2024,
@@ -6549,37 +6561,37 @@
     {
       "year": 2024,
       "month": 6,
-      "plays": 285
+      "plays": 282
     },
     {
       "year": 2024,
       "month": 7,
-      "plays": 191
+      "plays": 190
     },
     {
       "year": 2024,
       "month": 8,
-      "plays": 178
+      "plays": 177
     },
     {
       "year": 2024,
       "month": 9,
-      "plays": 164
+      "plays": 163
     },
     {
       "year": 2024,
       "month": 10,
-      "plays": 146
+      "plays": 145
     },
     {
       "year": 2024,
       "month": 11,
-      "plays": 288
+      "plays": 287
     },
     {
       "year": 2025,
       "month": 0,
-      "plays": 143
+      "plays": 142
     },
     {
       "year": 2025,
@@ -6589,7 +6601,7 @@
     {
       "year": 2025,
       "month": 2,
-      "plays": 462
+      "plays": 460
     },
     {
       "year": 2025,
@@ -6599,7 +6611,7 @@
     {
       "year": 2025,
       "month": 4,
-      "plays": 421
+      "plays": 416
     },
     {
       "year": 2025,
@@ -6619,12 +6631,12 @@
     {
       "year": 2025,
       "month": 8,
-      "plays": 901
+      "plays": 677
     },
     {
       "year": 2025,
       "month": 9,
-      "plays": 539
+      "plays": 537
     },
     {
       "year": 2025,
@@ -6639,12 +6651,12 @@
     {
       "year": 2026,
       "month": 0,
-      "plays": 677
+      "plays": 676
     },
     {
       "year": 2026,
       "month": 1,
-      "plays": 260
+      "plays": 259
     },
     {
       "year": 2026,
@@ -6654,17 +6666,17 @@
     {
       "year": 2026,
       "month": 3,
-      "plays": 896
+      "plays": 894
     },
     {
       "year": 2026,
       "month": 4,
-      "plays": 1171
+      "plays": 1162
     },
     {
       "year": 2026,
       "month": 5,
-      "plays": 1214
+      "plays": 1208
     },
     {
       "year": 2026,
@@ -6801,33 +6813,33 @@
     "youtube_plays": 1769,
     "apple_music_plays": 0,
     "listenbrainz_plays": 0,
-    "merged_plays": 81615,
+    "merged_plays": 80550,
     "spotify_skips": 39158,
     "spotify_skip_rate_pct": 24.19,
     "spotify_short_plays": 97749,
     "spotify_short_play_rate_pct": 60.38,
-    "overlap_unique_tracks": 9877,
+    "overlap_unique_tracks": 10145,
     "source_note": "Merged upload: the same listen reported by two services (e.g. Last.fm auto-scrobbling Spotify) is counted once, and Spotify events under 30s are tracked as skips/short plays rather than counted as plays.",
-    "cross_source_duplicates": 34779
+    "cross_source_duplicates": 35844
   },
   "knowledge_summary": {
     "source": "offline_artist_knowledge",
-    "generated_at": "2026-07-11T12:22:44.636Z",
+    "generated_at": "2026-07-13T18:37:51.880Z",
     "cache_artist_count": 100,
-    "wikidata_profile_count": 80,
-    "wikidata_description_count": 80,
-    "wikidata_website_count": 71,
-    "wikidata_image_count": 71,
+    "wikidata_profile_count": 78,
+    "wikidata_description_count": 78,
+    "wikidata_website_count": 70,
+    "wikidata_image_count": 69,
     "total_artists": 100,
     "matched_artists": 100,
     "unmatched_artists": 0,
     "match_rate_pct": 100,
-    "matched_plays": 43288,
+    "matched_plays": 42943,
     "matched_play_rate_pct": 100,
     "top_matches": [
       {
-        "name": "Bring Me The Horizon",
-        "plays": 2053,
+        "name": "Bring Me the Horizon",
+        "plays": 2593,
         "rank": 1,
         "matchedName": "Bring Me the Horizon",
         "mbid": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
@@ -6950,9 +6962,9 @@
     "enrichment_queue": [
       {
         "name": "Jordyne",
-        "rank": 43,
+        "rank": 39,
         "plays": 350,
-        "score": 114,
+        "score": 115,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -6971,9 +6983,9 @@
       },
       {
         "name": "Mooki",
-        "rank": 45,
+        "rank": 41,
         "plays": 341,
-        "score": 113,
+        "score": 114,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -6992,7 +7004,7 @@
       },
       {
         "name": "Sweezy",
-        "rank": 60,
+        "rank": 56,
         "plays": 253,
         "score": 110,
         "priority": "critical",
@@ -7013,9 +7025,9 @@
       },
       {
         "name": "Thekidszn",
-        "rank": 70,
+        "rank": 66,
         "plays": 210,
-        "score": 107,
+        "score": 108,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -7034,7 +7046,7 @@
       },
       {
         "name": "Normandie",
-        "rank": 10,
+        "rank": 11,
         "plays": 849,
         "score": 105,
         "priority": "critical",
@@ -7054,7 +7066,7 @@
       },
       {
         "name": "Naits",
-        "rank": 90,
+        "rank": 85,
         "plays": 166,
         "score": 104,
         "priority": "critical",
@@ -7075,7 +7087,7 @@
       },
       {
         "name": "NIGHTBREAKERS",
-        "rank": 96,
+        "rank": 91,
         "plays": 156,
         "score": 104,
         "priority": "critical",
@@ -7095,10 +7107,31 @@
         "hasImage": false
       },
       {
+        "name": "Indighxst",
+        "rank": 99,
+        "plays": 142,
+        "score": 104,
+        "priority": "critical",
+        "profileStatus": "matched",
+        "gaps": [
+          "missing_wikidata",
+          "missing_description",
+          "missing_member_or_role",
+          "missing_website",
+          "missing_image",
+          "missing_releases"
+        ],
+        "releaseGroupCount": 0,
+        "hasWikidata": false,
+        "hasMembersOrRoles": false,
+        "hasOfficialLinks": false,
+        "hasImage": false
+      },
+      {
         "name": "Don Vedda",
-        "rank": 19,
+        "rank": 20,
         "plays": 714,
-        "score": 103,
+        "score": 102,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -7116,7 +7149,7 @@
       },
       {
         "name": "Magnolia Park",
-        "rank": 23,
+        "rank": 24,
         "plays": 581,
         "score": 101,
         "priority": "critical",
@@ -7136,9 +7169,9 @@
       },
       {
         "name": "Kiremi",
-        "rank": 51,
+        "rank": 47,
         "plays": 280,
-        "score": 94,
+        "score": 95,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -7156,9 +7189,9 @@
       },
       {
         "name": "Diversify",
-        "rank": 55,
+        "rank": 51,
         "plays": 267,
-        "score": 93,
+        "score": 94,
         "priority": "critical",
         "profileStatus": "matched",
         "gaps": [
@@ -7173,26 +7206,6 @@
         "hasMembersOrRoles": false,
         "hasOfficialLinks": false,
         "hasImage": false
-      },
-      {
-        "name": "FM-84",
-        "rank": 67,
-        "plays": 212,
-        "score": 90,
-        "priority": "critical",
-        "profileStatus": "matched",
-        "gaps": [
-          "missing_wikidata",
-          "missing_description",
-          "missing_member_or_role",
-          "missing_website",
-          "missing_image"
-        ],
-        "releaseGroupCount": 1,
-        "hasWikidata": false,
-        "hasMembersOrRoles": false,
-        "hasOfficialLinks": false,
-        "hasImage": false
       }
     ]
   },
@@ -7200,12 +7213,12 @@
     "longest_streak_days": 68,
     "longest_streak_start": "2018-06-18",
     "longest_streak_end": "2018-08-24",
-    "max_day_plays": 351,
-    "max_day_date": "2025-09-30",
-    "longest_session_minutes": 1561.3,
-    "longest_session_tracks": 486,
-    "longest_session_start": "2025-09-29T17:55:00.000Z",
-    "best_session_tracks": 486,
-    "best_session_start": "2025-09-29T17:55:00.000Z"
+    "max_day_plays": 221,
+    "max_day_date": "2025-12-02",
+    "longest_session_minutes": 814.6,
+    "longest_session_tracks": 262,
+    "longest_session_start": "2025-09-29T17:55:11.000Z",
+    "best_session_tracks": 262,
+    "best_session_start": "2025-09-29T17:55:11.000Z"
   }
 }

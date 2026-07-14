@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, ScatterChart, Scatter, XAxis, YAxis, Tooltip, Cell, ZAxis } from 'recharts';
-import { Activity, BrainCircuit, Compass, ExternalLink, Flame, Gauge, Heart, Moon, Orbit, Radio, Shield, Sparkles, Sun, Zap } from 'lucide-react';
+import { Activity, BrainCircuit, Compass, ExternalLink, Flame, Gauge, Moon, Orbit, Radio, Shield, Sparkles, Sun, Zap } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { inferMoodCoordinates } from '../utils/analytics';
@@ -12,20 +12,94 @@ import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 import MoodArtCanvas from './MoodArtCanvas';
-import { GlassTooltip } from './chartKit';
+import { axisProps, useChartAnimation } from './chartKit';
 import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, getWikipediaUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
   buildEmotionalMapEngineProfile,
   emotionalAxisLabels,
   EMOTIONAL_MOOD_TAXONOMY,
+  type ArtistMoodProfile,
   type EmotionalMoodKey,
 } from '../engines/emotionalEngine';
+import { directionFor, localeFor } from '../utils/i18n';
+import {
+  layoutEmotionalScatterPoints,
+  type EmotionalScatterCoordinate,
+  type EmotionalScatterPoint,
+} from '../utils/emotionalScatterLayout';
 
 interface EmotionalMapProps {
   data: MusicDnaData;
 }
 
 type EmotionKey = EmotionalMoodKey;
+
+interface GalaxyArtistDatum extends EmotionalScatterCoordinate {
+  plays: number;
+  genre: string;
+  type: string;
+  engine?: ArtistMoodProfile;
+  moodKey: EmotionalMoodKey;
+  moodColor: string;
+  moodLabel: string;
+}
+
+type GalaxyArtistPoint = EmotionalScatterPoint<GalaxyArtistDatum>;
+
+interface EmotionalScatterTooltipProps {
+  active?: boolean;
+  payload?: Array<{ payload?: GalaxyArtistPoint }>;
+  accent: string;
+  locale: string;
+  playsLabel: string;
+  rawCoordinatesLabel: string;
+  separatedClusterLabel: (count: number) => string;
+}
+
+function EmotionalScatterTooltip({
+  active,
+  payload,
+  accent,
+  locale,
+  playsLabel,
+  rawCoordinatesLabel,
+  separatedClusterLabel,
+}: EmotionalScatterTooltipProps) {
+  const point = payload?.[0]?.payload;
+  if (!active || !point) return null;
+  const format = (value: number, maximumFractionDigits = 0) => value.toLocaleString(locale, { maximumFractionDigits });
+
+  return (
+    <div className="nova-chart-tooltip max-w-64 rounded-2xl border px-3.5 py-3 shadow-2xl backdrop-blur-md"
+      style={{ borderColor: `${accent}55` }}>
+      <div className="flex items-center gap-2.5">
+        <ArtistAvatar name={point.name} size={28} />
+        <div className="min-w-0">
+          <p className="truncate text-xs font-black text-white"><bdi dir="auto">{point.name}</bdi></p>
+          <p className="truncate text-[10px] text-gray-400"><bdi dir="auto">{point.genre}</bdi></p>
+        </div>
+      </div>
+      <div className="mt-2.5 grid grid-cols-2 gap-2 text-[10px]">
+        <div className="rounded-xl bg-white/5 px-2.5 py-2">
+          <p className="font-mono uppercase tracking-wider text-gray-500">{playsLabel}</p>
+          <p className="mt-1 font-mono font-black text-white">{format(point.plays)}</p>
+        </div>
+        <div className="rounded-xl bg-white/5 px-2.5 py-2">
+          <p className="font-mono uppercase tracking-wider text-gray-500">{rawCoordinatesLabel}</p>
+          <p className="mt-1 font-mono font-black text-white" dir="ltr">
+            {format(point.rawValence, 2)} · {format(point.rawEnergy, 2)}
+          </p>
+        </div>
+      </div>
+      <p className="mt-2 text-[10px] font-bold" style={{ color: point.moodColor }}>{point.moodLabel}</p>
+      {point.overlapCount > 1 ? (
+        <p className="mt-1.5 text-[10px] leading-relaxed text-gray-400">
+          {separatedClusterLabel(point.overlapCount)}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 const EMOTION_DETAILS = {
   melancolia: {
@@ -51,11 +125,23 @@ const EMOTION_DETAILS = {
       ritual: "Listen to 3 intense songs, then close with one luminous track to turn weight into clarity.",
       evidence: "Deafheaven, Alcest and nothingnowhere. appear as anchors of luminous grief and lyrical introspection.",
     },
+    he: {
+      tab: "מלנכוליה",
+      title: "מלנכוליה / התבוננות פנימית",
+      desc: "אווירת שוגייז, פוסט־מטאל אטמוספרי וטראפ רגשי. המוזיקה משמשת זרז להתבוננות ולעיבוד פצעים או מעברי חיים שקטים.",
+      time: "שעות הלילה המאוחרות 00–05 והערב 18–23",
+      bodyState: "שקט פנימי, מבט פנימה ורצון ללכת, לכתוב או לשהות בתוך דימוי מנטלי.",
+      strength: "הופכת עצב לרגישות אסתטית, לסבלנות ולבניית משמעות.",
+      shadow: "עלולה להפוך למחשבות מעגליות אם לא מסיימים בשיר יציאה או בפעולה מוחשית.",
+      ritual: "האזן לשלושה שירים עוצמתיים, וסיים בשיר מואר אחד כדי להפוך את הכובד לבהירות.",
+      evidence: "Deafheaven, Alcest ו-nothingnowhere. משמשים עוגנים של אבל מואר והתבוננות לירית פנימה.",
+    },
     artists: ["Deafheaven", "Alcest", "nothingnowhere.", "Hammock"],
     tracks: ["In Blur", "Kodama", "Trauma Factory", "The Journey"],
     trackNotes: {
       es: ["Duelo luminoso y reparación de identidad.", "Peso de espíritu del bosque vuelto luz.", "Trauma convertido en confesión y ruido.", "Pasaje ambient sin palabras a través del duelo."],
       en: ["Luminous grief and identity repair.", "Forest-spirit weight turned into light.", "Trauma turned into confession and noise.", "Wordless ambient passage through grief."],
+      he: ["אבל מואר ושיקום הזהות.", "כובד של רוח היער שהופך לאור.", "טראומה שהופכת לווידוי ולרעש.", "מסע אמביינט נטול מילים דרך האבל."],
     },
     color: "#00f2fe",
   },
@@ -82,11 +168,23 @@ const EMOTION_DETAILS = {
       ritual: "Use it before training, cleaning, solving tasks or breaking a mental block.",
       evidence: "BMTH, The Word Alive, Slaves and Odeon work as emotional armor and ignition.",
     },
+    he: {
+      tab: "קתרזיס",
+      title: "עוצמה / קתרזיס של מטאלקור",
+      desc: "מטאלקור אגרסיבי ופוסט־הארדקור מהיר. הכעס והעוצמה האינסטרומנטלית פועלים גם כמגן וגם כדלק.",
+      time: "הבוקר 06–11 ואחר הצהריים 12–17",
+      bodyState: "גוף דרוך, לסת קפוצה וצורך לנוע או להשיב לעצמך שליטה.",
+      strength: "מתעלת מתח לכיוון, למשמעת ולפעולה.",
+      shadow: "בלי הפסקות היא עלולה להזין עצבנות או גירוי יתר.",
+      ritual: "האזן לה לפני אימון, ניקיון, פתרון משימות או שבירת מחסום מנטלי.",
+      evidence: "BMTH, The Word Alive, Slaves ו-Odeon פועלים כשריון רגשי וכמנוע התנעה.",
+    },
     artists: ["Bring Me the Horizon", "The Word Alive", "Slaves", "Odeon"],
     tracks: ["MANTRA", "Red Clouds", "To Better Days", "loop"],
     trackNotes: {
       es: ["Declaración de control y energía combativa.", "Cielo rojo y empuje metalcore frontal.", "Empuje post-hardcore hacia la recuperación.", "Loop digital para activar el cuerpo."],
       en: ["Statement of control and combative energy.", "Red-sky frontal metalcore push.", "Post-hardcore push toward recovery.", "Digital loop to activate the body."],
+      he: ["הצהרת שליטה ואנרגיה לוחמנית.", "שמיים אדומים ודחיפה ישירה של מטאלקור.", "דחיפה של פוסט־הארדקור לעבר התאוששות.", "לופ דיגיטלי שמפעיל את הגוף."],
     },
     color: "#f72585",
   },
@@ -113,11 +211,23 @@ const EMOTION_DETAILS = {
       ritual: "Use it as a 20-minute launch block for a task you have been avoiding.",
       evidence: "Bilmuri, Magnolia Park, The Story So Far and Neck Deep appear as playful energy resets, pop-punk and emotional groove.",
     },
+    he: {
+      tab: "דופמין",
+      title: "דופמין / כיף של אימו־גרוב",
+      desc: "ריפים שמחים של גיטרה, שילוב של פופ משנות האלפיים, סינתיסייזרים וכלי הקשה מהירים. צלילים אופטימיים שנועדו להניע אותך.",
+      time: "הבוקר 06–11",
+      bodyState: "קלילות, תנועה מהירה, הומור מוזר ותחושת איפוס.",
+      strength: "מרימה אנרגיה בלי להכביד; גורמת לפרודוקטיביות להרגיש כמו משחק.",
+      shadow: "עלולה להפוך לחיפוש מתמיד אחר גירוי אם לא משלבים אותה עם מקטעי מיקוד.",
+      ritual: "השתמש בה כמקטע התנעה של 20 דקות למשימה שאתה דוחה.",
+      evidence: "Bilmuri, Magnolia Park, The Story So Far ו-Neck Deep משמשים איפוסי אנרגיה שובבים של פופ־פאנק וגרוב רגשי.",
+    },
     artists: ["Bilmuri", "Magnolia Park", "The Story So Far", "Neck Deep"],
     tracks: ["2016 CAVALIERS (Ohio)", "Tokyo", "Upside Down", "In Bloom"],
     trackNotes: {
       es: ["Groove absurdo y reconstrucción con sonrisa.", "Energía moderna de pop-punk digital.", "Pop-punk de memoria con pulso brillante.", "Explosión melódica para reiniciar ánimo."],
       en: ["Absurd groove and rebuilding with a smile.", "Modern digital pop-punk energy.", "Memory pop-punk with bright pulse.", "Melodic burst for mood reset."],
+      he: ["גרוב אבסורדי ובנייה מחדש עם חיוך.", "אנרגיה מודרנית של פופ־פאנק דיגיטלי.", "פופ־פאנק נוסטלגי עם דופק מואר.", "פרץ מלודי שמאפס את מצב הרוח."],
     },
     color: "#ffb703",
   },
@@ -144,11 +254,23 @@ const EMOTION_DETAILS = {
       ritual: "Define one task, play 45 minutes of focus music and close with a warmer song.",
       evidence: "TesseracT, Hammock, Corbin Karasu and Unprocessed connect precision, atmosphere, lo-fi/R&B and workflow.",
     },
+    he: {
+      tab: "מיקוד",
+      title: "רוגע / מיקוד טכני",
+      desc: "אמביינט, לואו־פיי רך ומטאל פרוגרסיבי מורכב בקצב איטי. המוזיקה משמשת ערוץ להיפר־מיקוד בזמן עיצוב או תכנות.",
+      time: "אחר הצהריים 12–17 והערב 18–23",
+      bodyState: "נשימה איטית יותר, קשב מתמשך, חשיבה טכנית ורצון לבנות.",
+      strength: "מסדרת את האנרגיה המנטלית בלי לכבות את הדמיון.",
+      shadow: "עלולה לבודד אותך יותר מדי אם למקטע המיקוד אין נקודת סיום ברורה.",
+      ritual: "הגדר משימה אחת, האזן במשך 45 דקות וסיים בשיר חם יותר.",
+      evidence: "TesseracT, Hammock, Corbin Karasu ו-Unprocessed מחברים דיוק, אווירה, lo-fi/R&B וזרימת עבודה.",
+    },
     artists: ["TesseracT", "Hammock", "Corbin Karasu", "Unprocessed"],
     tracks: ["Of Matter - Proxy", "The Journey", "The Journey", "Gold"],
     trackNotes: {
       es: ["Precisión progresiva para hiperenfoque.", "Ambient para respirar y sostener espacio.", "Lo-fi/R&B para ruta interior y baja luz.", "Metal matemático para foco brillante."],
       en: ["Progressive precision for hyperfocus.", "Ambient breathing room and held space.", "Lo-fi/R&B for inner route and low light.", "Mathematical metal for bright focus."],
+      he: ["דיוק פרוגרסיבי להיפר־מיקוד.", "אמביינט שנותן מרחב לנשום ולהישאר.", "לואו־פיי ו-R&B למסע פנימי באור חלש.", "מטאל מתמטי למיקוד חד ומואר."],
     },
     color: "#10b981",
   },
@@ -175,11 +297,23 @@ const EMOTION_DETAILS = {
       ritual: "Make playlists by era, then always end with a new song to bring the past forward.",
       evidence: "The Midnight, Tokio Hotel and Emarosa appear as capsules of emotional memory.",
     },
+    he: {
+      tab: "זיכרון",
+      title: "נוסטלגיה / זיכרון קולנועי",
+      desc: "סינת׳ווייב, פופ אפל ושירים שמרגישים כמו סצנה על כביש לילי. זו לא רק היזכרות: המוזיקה הופכת את העבר לאסתטיקה שימושית.",
+      time: "הערב 18–23",
+      bodyState: "מבט לאחור אל תמונות של עיר, כבישים, גיל ההתבגרות ומקומות שכבר השתנו.",
+      strength: "מחברת אותך להמשכיות האישית שלך: מי היית ומה עדיין מהדהד בך.",
+      shadow: "עלולה לייפות תקופות קודמות אם ההווה נמדד תמיד מול גרסה ערוכה של העבר.",
+      ritual: "צור פלייליסט לכל תקופה, וסיים תמיד בשיר חדש כדי להוביל את העבר אל העתיד.",
+      evidence: "The Midnight, Tokio Hotel ו-Emarosa מופיעים כקפסולות של זיכרון רגשי.",
+    },
     artists: ["The Midnight", "Tokio Hotel", "Emarosa", "H.E.A.T"],
     tracks: ["Vampires", "Love Who Loves You Back", "Givin' Up", "Back to Life"],
     trackNotes: {
       es: ["Noche de neón y memoria en movimiento.", "Pop romántico como fotografía emocional.", "Vulnerabilidad melódica de regreso.", "AOR luminoso para reanimar el ánimo."],
       en: ["Neon night and memory in motion.", "Romantic pop as emotional photograph.", "Melodic vulnerability returning.", "Luminous AOR to revive the mood."],
+      he: ["ליל ניאון וזיכרון בתנועה.", "פופ רומנטי כתצלום רגשי.", "פגיעות מלודית שחוזרת הביתה.", "AOR מואר שמחזיר את מצב הרוח לחיים."],
     },
     color: "#a78bfa",
   },
@@ -206,11 +340,23 @@ const EMOTION_DETAILS = {
       ritual: "Listen to the intense block while walking or training, not sitting in a loop.",
       evidence: "Post-hardcore, metalcore and emo punk appear as a language of emotional defense.",
     },
+    he: {
+      tab: "מרדנות",
+      title: "מרדנות / הישרדות",
+      desc: "שירים של חיכוך, שבר ועמדה. כאן המוזיקה מציבה גבולות: לא הכול חייב להתעבד בשקט.",
+      time: "הבוקר 06–11 והערב 18–23",
+      bodyState: "דחף לומר לא, לחסום רעש חיצוני ולהחזיר לעצמך כוח אישי.",
+      strength: "מגנה על הזהות, מסמנת גבולות והופכת עייפות להחלטה.",
+      shadow: "עלולה להחזיק מתח מעבר לנדרש אם לא נותנים לו מוצא גופני.",
+      ritual: "האזן למקטע העוצמתי בזמן הליכה או אימון, ולא בישיבה חוזרת בלופ.",
+      evidence: "פוסט־הארדקור, מטאלקור ואימו־פאנק משמשים שפה של הגנה רגשית.",
+    },
     artists: ["Bring Me the Horizon", "The Word Alive", "Bad Omens", "Falling In Reverse"],
     tracks: ["Can You Feel My Heart", "Red Clouds", "Just Pretend", "Popular Monster"],
     trackNotes: {
       es: ["Herida convertida en símbolo.", "Rabia melódica y cielo rojo.", "Drama moderno con coro catártico.", "Confesión explosiva de supervivencia."],
       en: ["Wound turned into symbol.", "Melodic rage and red sky.", "Modern drama with cathartic chorus.", "Explosive survival confession."],
+      he: ["פצע שהופך לסמל.", "זעם מלודי ושמיים אדומים.", "דרמה מודרנית עם פזמון קתרזי.", "וידוי הישרדות מתפרץ."],
     },
     color: "#ef4444",
   },
@@ -237,11 +383,23 @@ const EMOTION_DETAILS = {
       ritual: "Use it to design, code or plan, then walk outside without music.",
       evidence: "Carpenter Brut, Dance With the Dead and The Midnight sustain the cyberpunk axis of the archive.",
     },
+    he: {
+      tab: "עתיד",
+      title: "עתידנות / נסיעת לילה",
+      desc: "דארקסינת׳, סייברפאנק והפקה מודרנית. הרגש פונה קדימה: אל טכנולוגיה, מהירות, ממשק ויעד.",
+      time: "הלילה 18–23 והשעות המאוחרות 00–05",
+      bodyState: "תחושה של מהירות, מסך פתוח, עיר עתידית ושליטה יצירתית.",
+      strength: "מפעילה חזון, עיצוב, תכנות ותכנון של עולמות.",
+      shadow: "עלולה לנתק אותך מהגוף אם הכול מתרחש בתוך מסכים ואוזניות.",
+      ritual: "השתמש בה לעיצוב, לתכנות או לתכנון, ואז צא להליכה בלי מוזיקה.",
+      evidence: "Carpenter Brut, Dance With the Dead ו-The Midnight מחזיקים את ציר הסייברפאנק של הארכיון.",
+    },
     artists: ["Carpenter Brut", "Dance With the Dead", "The Midnight", "Perturbator"],
     tracks: ["Turbo Killer", "Near Dark", "Vampires", "Venger"],
     trackNotes: {
       es: ["Velocidad cyberpunk y persecución mental.", "Crepúsculo vampírico en autopista synth analógica.", "Carretera nocturna con corazón nostálgico.", "Darksynth urbano con pulso de amenaza."],
       en: ["Cyberpunk speed and mental chase.", "Vampiric dusk on an analog synth highway.", "Nocturnal highway with nostalgic heart.", "Urban darksynth with threat pulse."],
+      he: ["מהירות סייברפאנק ומרדף מנטלי.", "דמדומים ערפדיים על כביש של סינת׳ אנלוגי.", "כביש לילי עם לב נוסטלגי.", "דארקסינת׳ עירוני עם דופק מאיים."],
     },
     color: "#7209b7",
   },
@@ -268,17 +426,30 @@ const EMOTION_DETAILS = {
       ritual: "Use it for writing, character design or closing the day softly.",
       evidence: "Tokio Hotel, Emarosa and The Midnight connect romanticism, nostalgia and visual scene.",
     },
+    he: {
+      tab: "רומנטיקה",
+      title: "רומנטיקה אפלה / רגש קולנועי",
+      desc: "בלדות, פופ אפל ומנגינות דרמטיות שבהן הרגש הופך לסצנה. פגיעות בתאורה חלשה.",
+      time: "הערב 18–23",
+      bodyState: "לב פתוח, זיכרון רגשי ורצון להיכנס לסצנה גדולה יותר מן היום עצמו.",
+      strength: "מאפשרת רוך, יופי וביטוי רגשי בלי לוותר על האסתטיקה.",
+      shadow: "עלולה להעצים דרמה בקשרים או להפוך מרחק לפנטזיה מושלמת מדי.",
+      ritual: "האזן לה כשאתה רוצה לכתוב, לעצב דמויות או לסיים את היום ברכות.",
+      evidence: "Tokio Hotel, Emarosa ו-The Midnight מחברים רומנטיקה, נוסטלגיה ושפה חזותית.",
+    },
     artists: ["Tokio Hotel", "Emarosa", "The Midnight", "Holding Absence"],
     tracks: ["Love Who Loves You Back", "Givin' Up", "Vampires", "Wilt"],
     trackNotes: {
       es: ["Romance brillante con impulso de noche.", "Voz vulnerable y despedida emocional.", "Amor como cine retro nocturno.", "Dolor bello con alcance vocal."],
       en: ["Bright romance with night-drive motion.", "Vulnerable voice and emotional farewell.", "Love as nocturnal retro cinema.", "Beautiful pain with vocal reach."],
+      he: ["רומנטיקה מוארת עם תנופה של נסיעת לילה.", "קול פגיע ופרידה רגשית.", "אהבה כקולנוע רטרו לילי.", "כאב יפה עם טווח קולי מרשים."],
     },
     color: "#ec4899",
   },
 };
 
 const EMOTION_KEYS: EmotionKey[] = ['melancolia', 'energia', 'dopamina', 'calma', 'nostalgia', 'rebeldia', 'futurismo', 'romanticismo'];
+const isolateBidi = (value: string) => `\u2068${value}\u2069`;
 
 const EMOTIONAL_MAP_COPY = {
   es: {
@@ -303,6 +474,17 @@ const EMOTIONAL_MAP_COPY = {
       confidence: 'confianza',
       artistMode: 'modo del motor',
     },
+    scatter: {
+      visibleVsAnalyzed: (visible: number, analyzed: number) => `${visible} visibles · ${analyzed} analizados`,
+      readingTitle: 'Cómo leer esta constelación',
+      xEncoding: 'X · positividad',
+      yEncoding: 'Y · energía',
+      sizeEncoding: 'Tamaño · reproducciones',
+      colorEncoding: 'Color · mood del motor',
+      rawCoordinates: 'Coordenadas originales',
+      separationNote: 'Los artistas que comparten coordenadas inferidas se separan sólo de forma visual; el tooltip conserva el valor original.',
+      separatedCluster: (count: number) => `${count} artistas comparten esta coordenada original; se separaron visualmente para que todos sean descubribles.`,
+    },
     quadrantTitle: 'Guía de cuadrantes emocionales',
     quadrantIntro: 'El mapa se lee mejor como clima emocional: no mide sentimientos exactos, ubica texturas de energía y brillo.',
     quadrants: [
@@ -312,6 +494,7 @@ const EMOTIONAL_MAP_COPY = {
       { title: 'Brillante + bajo pulso', tag: 'Foco', body: 'Música para ordenar la mente, trabajar y sostener calma creativa.', color: '#10b981' },
     ],
     dossierTitle: 'Dossier emocional seleccionado',
+    emotionSelector: 'Selector de estado emocional',
     artistRolesTitle: 'Roles emocionales de artistas',
     ritualsTitle: 'Rituales recomendados',
     methodologyTitle: 'Lectura y metodología',
@@ -372,6 +555,17 @@ const EMOTIONAL_MAP_COPY = {
       confidence: 'confidence',
       artistMode: 'engine mode',
     },
+    scatter: {
+      visibleVsAnalyzed: (visible: number, analyzed: number) => `${visible} visible · ${analyzed} analyzed`,
+      readingTitle: 'How to read this constellation',
+      xEncoding: 'X · positivity',
+      yEncoding: 'Y · energy',
+      sizeEncoding: 'Size · plays',
+      colorEncoding: 'Color · engine mood',
+      rawCoordinates: 'Original coordinates',
+      separationNote: 'Artists sharing inferred coordinates are separated only for presentation; the tooltip preserves the original value.',
+      separatedCluster: (count: number) => `${count} artists share this original coordinate; they are separated visually so every artist remains discoverable.`,
+    },
     quadrantTitle: 'Emotional Quadrant Guide',
     quadrantIntro: 'The map works best as emotional weather: it does not measure exact feelings, it places textures of energy and brightness.',
     quadrants: [
@@ -381,6 +575,7 @@ const EMOTIONAL_MAP_COPY = {
       { title: 'Bright + low pulse', tag: 'Focus', body: 'Music for organizing the mind, working and sustaining creative calm.', color: '#10b981' },
     ],
     dossierTitle: 'Selected Emotional Dossier',
+    emotionSelector: 'Emotional state selector',
     artistRolesTitle: 'Artist Emotional Roles',
     ritualsTitle: 'Recommended Rituals',
     methodologyTitle: 'Reading and Methodology',
@@ -419,25 +614,134 @@ const EMOTIONAL_MAP_COPY = {
       variationHint: 'Each variation repaints all eight pieces with a new seed.',
     },
   },
+  he: {
+    quick: {
+      intensityLabel: 'עוצמה ממוצעת',
+      intensityTitle: (pct: number) => `${pct}% אנרגיה רגשית משוערת`,
+      intensityBody: 'האמנים המובילים אינם מתרכזים ברוגע מוחלט: הארכיון נוטה למוזיקה שיש בה תנועה, מתח ותפקיד מווסת.',
+      contrastLabel: 'ניגוד',
+      contrastTitle: (dark: number, total: number) => `${dark} מתוך ${total} אמנים נמצאים בצד האפל יותר`,
+      contrastBody: 'האפלוליות אינה שולטת לבדה; היא מתקיימת לצד דופמין, מיקוד, נוסטלגיה ועתידנות.',
+      anchorLabel: 'עוגן רגשי',
+      anchorTitle: (artist: string) => artist,
+      anchorBody: 'האמן בעל המשקל הרב ביותר בארכיון משמש שער מהיר אל המצב הרגשי שחוזר בתדירות הגבוהה ביותר.',
+    },
+    engine: {
+      title: 'תמהיל המנוע הרגשי',
+      subtitle: 'אותה שכבה שמפעילה את התיקים קוראת את האמנים המובילים שלך ומחשבת אילו מצבים רגשיים שולטים בארכיון הפעיל.',
+      dominant: 'מצב מוביל',
+      analyzedArtists: 'אמנים שנותחו',
+      moodMix: 'התפלגות מצבי הרוח',
+      averageAxis: 'ממוצע הצירים',
+      confidence: 'רמת ביטחון',
+      artistMode: 'מצב לפי המנוע',
+    },
+    scatter: {
+      visibleVsAnalyzed: (visible: number, analyzed: number) => `${visible} מוצגים · ${analyzed} נותחו`,
+      readingTitle: 'איך לקרוא את הקונסטלציה',
+      xEncoding: 'X · חיוביות',
+      yEncoding: 'Y · אנרגיה',
+      sizeEncoding: 'גודל · השמעות',
+      colorEncoding: 'צבע · מצב לפי המנוע',
+      rawCoordinates: 'קואורדינטות מקוריות',
+      separationNote: 'אמנים בעלי קואורדינטות משוערות זהות מופרדים רק לצורך התצוגה; ה־tooltip שומר על הערך המקורי.',
+      separatedCluster: (count: number) => `${count} אמנים חולקים את אותה קואורדינטה מקורית; הם הופרדו חזותית כדי שאפשר יהיה לגלות כל אחד מהם.`,
+    },
+    quadrantTitle: 'מדריך לרבעים הרגשיים',
+    quadrantIntro: 'כדאי לקרוא את המפה כמזג אוויר רגשי: היא אינה מודדת רגשות מדויקים, אלא ממקמת מרקמים של אנרגיה ובהירות.',
+    quadrants: [
+      { title: 'אפל + דופק נמוך', tag: 'התבוננות', body: 'מוזיקה לעיבוד רגשות, להיזכרות, לכתיבה או להנמכת עוצמת הרעש של העולם.', color: '#00f2fe' },
+      { title: 'אפל + דופק גבוה', tag: 'קתרזיס', body: 'מוזיקה לפריקת מתח, להשבת הכוח ולהצבת גבולות.', color: '#f72585' },
+      { title: 'מואר + דופק גבוה', tag: 'דופמין', body: 'מוזיקה להפעלה, לתנועה, לביטחון ולאיפוס מהיר.', color: '#ffb703' },
+      { title: 'מואר + דופק נמוך', tag: 'מיקוד', body: 'מוזיקה שמסדרת את המחשבות, תומכת בעבודה ושומרת על רוגע יצירתי.', color: '#10b981' },
+    ],
+    dossierTitle: 'התיק הרגשי שנבחר',
+    emotionSelector: 'בחירת מצב רגשי',
+    artistRolesTitle: 'התפקידים הרגשיים של האמנים',
+    ritualsTitle: 'טקסי האזנה מומלצים',
+    methodologyTitle: 'קריאה ומתודולוגיה',
+    methodologyBody: 'הקואורדינטות הרגשיות הן קריאה אמנותית שמוסקת מן הז׳אנר, האמן, תדירות ההאזנה והאוצרות הפנימית. הן אינן אבחנה קלינית; מטרתן להסביר כיצד הארכיון שלך מארגן אנרגיה, זיכרון וויסות.',
+    labels: {
+      meaning: 'מה זה אומר',
+      evidence: 'למה זה מופיע',
+      body: 'מצב גופני / מנטלי',
+      strength: 'חוזקה',
+      shadow: 'הצד המאתגר',
+      ritual: 'טקס מומלץ',
+      artists: 'אמנים מרכזיים',
+      tracks: 'שירי מפלט',
+      time: 'שעות דומיננטיות',
+      plays: 'השמעות',
+      role: 'תפקיד רגשי',
+    },
+    rituals: [
+      { title: 'התנעת הבוקר', body: 'השתמש בקתרזיס או בדופמין כדי להניע את הגוף לפני שאתה פונה למסכים.', emotion: 'energia' as EmotionKey },
+      { title: 'מקטע מיקוד', body: 'השתמש ברוגע טכני כדי לתכנת, לעצב או לסדר משימות בלי לכבות את הדמיון.', emotion: 'calma' as EmotionKey },
+      { title: 'עיבוד לילי', body: 'השתמש במלנכוליה או ברומנטיקה אפלה כדי לסגור רגשות בלי להיתקע בתוכם.', emotion: 'melancolia' as EmotionKey },
+      { title: 'בניית עולמות', body: 'השתמש בעתידנות ובנוסטלגיה כדי להפוך זיכרון לאסתטיקה, לאמנות או לסיפור.', emotion: 'futurismo' as EmotionKey },
+    ],
+    stations: {
+      title: 'תחנות מצבי רוח',
+      intro: 'כל רגש פועל כתחנת רדיו שנאצרה מתוך הארכיון שלך. הקישורים פותחים עמודים רשמיים או חיפושים ציבוריים ב-Spotify וב-YouTube — שום דבר אינו מתנגן בתוך האפליקציה.',
+      spotifyAria: (artist: string) => `פתח את ${artist} ב-Spotify`,
+      youtubeAria: (artist: string) => `פתח את ${artist} ב-YouTube`,
+      wikipediaAria: (artist: string) => `קרא את הביוגרפיה של ${artist} בוויקיפדיה`,
+      verifiedNote: 'קישורים שמסומנים בנקודה מובילים לעמודים רשמיים מאומתים; היתר פותחים חיפוש ציבורי.',
+    },
+    gallery: {
+      title: 'גלריה גנרטיבית',
+      intro: 'שמונה יצירות שנוצרו בקוד מתוך הארכיון שלך: כל מצב רגשי מייצר יצירה עם זרע דטרמיניסטי שמבוסס על האמנים שלך. אותו ארכיון יוצר אותה גלריה; ארכיון אחר יוצר מוזיאון אחר.',
+      variation: 'וריאציה חדשה',
+      variationHint: 'כל וריאציה מציירת מחדש את שמונה היצירות באמצעות זרע חדש.',
+    },
+  },
 };
 
 export default function EmotionalMap({ data }: EmotionalMapProps) {
   const [selectedEmotion, setSelectedEmotion] = useState<EmotionKey>('melancolia');
   const [artVariation, setArtVariation] = useState(0);
   const { tc, t, lang } = useApp();
+  const chartAnimation = useChartAnimation();
+  const axisLabelColor = tc.mode === 'light' ? '#475569' : '#9ca3af';
   const engineProfile = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24), [data.top_artists]);
   const engineArtistMap = useMemo(
     () => new Map(engineProfile.artists.map(profile => [profile.artist.name, profile])),
     [engineProfile],
   );
 
-  const galaxyArtists = useMemo(() => data.top_artists.slice(0, 14).map(artist => ({
-    name: artist.name,
-    plays: artist.plays,
-    genre: artist.genre,
-    engine: engineArtistMap.get(artist.name),
-    ...inferMoodCoordinates(artist.genre, artist.name),
-  })), [data.top_artists, engineArtistMap]);
+  const galaxyArtists = useMemo(() => layoutEmotionalScatterPoints(
+    data.top_artists.slice(0, 14).map(artist => {
+      const engine = engineArtistMap.get(artist.name);
+      const mood = engine ? EMOTIONAL_MOOD_TAXONOMY[engine.moodKey] : engineProfile.dominantMood;
+      return {
+        name: artist.name,
+        plays: artist.plays,
+        genre: artist.genre,
+        engine,
+        moodKey: mood.key,
+        moodColor: mood.color,
+        moodLabel: mood.shortLabel[lang],
+        ...inferMoodCoordinates(artist.genre, artist.name),
+      };
+    }),
+  ), [data.top_artists, engineArtistMap, engineProfile.dominantMood, lang]);
+
+  const moodArtistsByKey = useMemo(() => {
+    const groups = Object.fromEntries(
+      EMOTION_KEYS.map(key => [key, [] as ArtistMoodProfile[]]),
+    ) as Record<EmotionKey, ArtistMoodProfile[]>;
+    engineProfile.artists.forEach(profile => groups[profile.moodKey].push(profile));
+    return groups;
+  }, [engineProfile.artists]);
+
+  const visibleMoodLegend = useMemo(() => {
+    const seen = new Set<EmotionalMoodKey>();
+    return galaxyArtists.filter(artist => {
+      if (seen.has(artist.moodKey)) return false;
+      seen.add(artist.moodKey);
+      return true;
+    });
+  }, [galaxyArtists]);
 
   const copy = EMOTIONAL_MAP_COPY[lang];
   const emotionDetails = Object.fromEntries(
@@ -467,7 +771,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
     ? Math.round((galaxyArtists.reduce((sum, artist) => sum + artist.energy, 0) / galaxyArtists.length) * 100)
     : 0;
   const darkArtists = galaxyArtists.filter(artist => artist.valence < 0.46).length;
-  const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const formatNum = (value: number) => value.toLocaleString(localeFor(lang));
   const DominantMoodIcon = MOOD_ICONS[engineProfile.dominantMood.icon];
 
   const quickReadItems = [
@@ -488,16 +792,22 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
     {
       icon: <Shield className="w-4 h-4" />,
       label: copy.quick.anchorLabel,
-      title: copy.quick.anchorTitle(topArtist?.name ?? 'N/A'),
+      title: copy.quick.anchorTitle(isolateBidi(topArtist?.name ?? 'N/A')),
       body: copy.quick.anchorBody,
       color: tc.c3,
     },
   ];
 
-  const selectedArtistEvidence = currentEmotion.artists.map(name => ({
-    name,
-    plays: data.top_artists.find(artist => artist.name === name)?.plays,
-  }));
+  const personalizedArtistEvidence = moodArtistsByKey[selectedEmotion].slice(0, 4);
+  const selectedArtistEvidence = personalizedArtistEvidence.length
+    ? personalizedArtistEvidence.map(profile => ({
+        name: profile.artist.name,
+        plays: profile.artist.plays,
+      }))
+    : currentEmotion.artists.map(name => ({
+        name,
+        plays: data.top_artists.find(artist => artist.name === name)?.plays,
+      }));
 
   const emotionDossierLines = [
     { label: copy.labels.meaning, value: currentEmotion.desc },
@@ -509,18 +819,229 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   ];
 
   return (
-    <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3 mb-6">
-        <Heart className="w-6 h-6" style={{ color: tc.c2 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.sections.emotionalMap}</h2>
-      </div>
-
+    <div data-testid="emotional-map" className="min-w-0 space-y-6 animate-fade-in md:space-y-8" dir={directionFor(lang)}>
       <SectionNarrative content={t.deepNarratives.emotions} accent="c2" />
 
       <SectionQuickRead items={quickReadItems} />
 
-      <section className="glass-panel p-5 md:p-6 rounded-3xl border border-white/10 overflow-hidden relative">
+      <section
+        data-testid="emotional-scatter-workspace"
+        aria-label={t.emotionalMap.artistCoordinates}
+        className="grid min-w-0 grid-cols-[repeat(auto-fit,minmax(min(100%,32rem),1fr))] items-start gap-6"
+      >
+        <div className="nova-surface nova-surface--analysis min-w-0 rounded-3xl p-4 sm:p-5 md:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h3 className="text-sm font-mono font-bold text-gray-300 uppercase tracking-widest">
+                {t.emotionalMap.artistCoordinates}
+              </h3>
+              <p className="mt-1 text-xs leading-relaxed text-gray-500">{t.emotionalMap.axesLabel}</p>
+            </div>
+            <span
+              data-visible-artists={galaxyArtists.length}
+              data-analyzed-artists={engineProfile.artists.length}
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[10px] font-mono font-black text-gray-300"
+            >
+              {copy.scatter.visibleVsAnalyzed(galaxyArtists.length, engineProfile.artists.length)}
+            </span>
+          </div>
+
+          <div
+            data-testid="emotional-scatter-plot"
+            className="nova-data-ltr mt-4 h-[clamp(22rem,46dvh,30rem)] min-h-[22rem] w-full min-w-0"
+            dir="ltr"
+          >
+            <ResponsiveContainer width="100%" height="100%" minWidth={0} debounce={80}>
+              <ScatterChart accessibilityLayer margin={{ top: 20, right: 18, bottom: 28, left: 0 }}>
+                <XAxis
+                  {...axisProps(tc.mode)}
+                  type="number"
+                  dataKey="plotValence"
+                  name={t.emotionalMap.positivityName}
+                  domain={[0, 1]}
+                  label={{ value: t.emotionalMap.positivityAxis, position: 'insideBottom', offset: -16, fill: axisLabelColor, fontSize: 10 }}
+                />
+                <YAxis
+                  {...axisProps(tc.mode)}
+                  type="number"
+                  dataKey="plotEnergy"
+                  name={t.emotionalMap.energyAxis}
+                  domain={[0, 1]}
+                  width={42}
+                  label={{ value: t.emotionalMap.energyAxis, angle: -90, position: 'insideLeft', fill: axisLabelColor, fontSize: 10 }}
+                />
+                <ZAxis type="number" dataKey="plays" range={[70, 440]} />
+                <Tooltip
+                  cursor={{ strokeDasharray: '3 3' }}
+                  content={
+                    <EmotionalScatterTooltip
+                      accent={tc.c1}
+                      locale={localeFor(lang)}
+                      playsLabel={copy.labels.plays}
+                      rawCoordinatesLabel={copy.scatter.rawCoordinates}
+                      separatedClusterLabel={copy.scatter.separatedCluster}
+                    />
+                  }
+                />
+                <Scatter
+                  data-testid="emotional-scatter-series"
+                  name={t.emotionalMap.artistsLegend}
+                  data={galaxyArtists}
+                  fill={tc.c1}
+                  {...chartAnimation}
+                >
+                  {galaxyArtists.map(entry => (
+                    <Cell
+                      key={entry.name}
+                      fill={entry.moodColor}
+                      stroke="#f8fafc"
+                      strokeOpacity={0.72}
+                      strokeWidth={2}
+                    />
+                  ))}
+                </Scatter>
+              </ScatterChart>
+            </ResponsiveContainer>
+          </div>
+          <ul className="sr-only" aria-label={t.emotionalMap.artistsLegend}>
+            {galaxyArtists.map(artist => (
+              <li key={artist.name}>
+                {artist.name} · {artist.moodLabel} · {formatNum(artist.plays)} {copy.labels.plays}
+              </li>
+            ))}
+          </ul>
+
+          <div className="nova-data-ltr mt-2 flex w-full justify-between gap-4 px-2 text-[10px] font-mono text-gray-500" dir="ltr">
+            <span>{t.emotionalMap.darkSide}</span>
+            <span className="text-end">{t.emotionalMap.brightSide}</span>
+          </div>
+
+          <div className="mt-5 space-y-3">
+            <h4 className="text-[11px] font-mono font-black uppercase tracking-widest text-white">
+              {copy.scatter.readingTitle}
+            </h4>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {[
+                { icon: Compass, label: copy.scatter.xEncoding, color: tc.c1 },
+                { icon: Activity, label: copy.scatter.yEncoding, color: tc.c2 },
+                { icon: Orbit, label: copy.scatter.sizeEncoding, color: tc.c3 },
+                { icon: Sparkles, label: copy.scatter.colorEncoding, color: tc.c4 },
+              ].map(item => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className="flex min-w-0 items-center gap-2 rounded-xl border border-white/8 bg-white/[0.035] px-3 py-2.5">
+                    <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: item.color }} />
+                    <span className="text-[10px] font-bold leading-tight text-gray-300">{item.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {visibleMoodLegend.map(mood => (
+                <span key={mood.moodKey} className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold"
+                  style={{ color: mood.moodColor, borderColor: `${mood.moodColor}35`, backgroundColor: `${mood.moodColor}10` }}>
+                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: mood.moodColor }} />
+                  {mood.moodLabel}
+                </span>
+              ))}
+            </div>
+            <p className="text-[10px] leading-relaxed text-gray-500">{copy.scatter.separationNote}</p>
+          </div>
+
+          <details className="mt-5 rounded-2xl border border-white/8 bg-black/15">
+            <summary className="min-h-11 cursor-pointer px-4 py-3 text-xs font-mono font-black uppercase tracking-wider text-white">
+              {copy.quadrantTitle}
+            </summary>
+            <div className="border-t border-white/8 p-4">
+              <p className="text-xs leading-relaxed text-gray-400">{copy.quadrantIntro}</p>
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {copy.quadrants.map(quad => (
+                  <div key={quad.title} className="rounded-2xl border bg-white/3 p-4"
+                    style={{ borderColor: `${quad.color}25` }}>
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <h4 className="text-sm font-black text-white">{quad.title}</h4>
+                      <span className="rounded-full px-2 py-1 text-[9px] font-mono font-black uppercase"
+                        style={{ color: quad.color, backgroundColor: `${quad.color}12`, border: `1px solid ${quad.color}28` }}>
+                        {quad.tag}
+                      </span>
+                    </div>
+                    <p className="text-xs leading-relaxed text-gray-400">{quad.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div className="nova-surface nova-surface--analysis flex min-w-0 flex-col justify-between rounded-3xl p-5 md:p-6">
+          <div>
+            <div
+              className="mb-6 grid grid-cols-[repeat(auto-fit,minmax(6.5rem,1fr))] gap-2"
+              role="group"
+              aria-label={copy.emotionSelector}
+            >
+              {EMOTION_KEYS.map(key => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setSelectedEmotion(key)}
+                  aria-pressed={selectedEmotion === key}
+                  className={`nova-on-dark min-h-11 whitespace-normal break-words rounded-xl border px-2 py-2 font-mono text-[10px] font-bold uppercase leading-tight transition-all ${
+                    selectedEmotion === key
+                      ? 'bg-cyberPink/10 border-cyberPink text-cyberPink'
+                      : 'bg-[#0a0f1d] border-cyan-500/10 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {emotionDetails[key].tab}
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="flex items-start gap-2 text-xl font-bold text-white">
+                <span className="mt-1.5 h-3 w-3 shrink-0 rounded-full" style={{ backgroundColor: currentEmotion.color }} />
+                <span>{currentEmotion.title}</span>
+              </h3>
+              <p className="text-xs leading-relaxed text-gray-300">{currentEmotion.desc}</p>
+
+              <div className="space-y-1.5">
+                <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">{copy.labels.artists}</span>
+                <div className="flex flex-wrap gap-2">
+                  {selectedArtistEvidence.map(({ name, plays }) => (
+                    <span key={name} className="flex items-center gap-1.5 rounded-full border border-cyan-500/10 bg-[#0a0f1d] py-1 ps-1 pe-2.5 text-xs font-semibold text-white">
+                      <ArtistAvatar name={name} size={20} />
+                      <bdi dir="auto">{name}</bdi>
+                      {plays ? <span className="text-[9px] text-gray-500">· {formatNum(plays)}</span> : null}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-1.5 pt-2">
+                <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">{copy.labels.tracks}</span>
+                <div className="space-y-1">
+                  {currentEmotion.tracks.map((track, index) => (
+                    <div key={`${currentEmotion.artists[index] ?? index}-${track}`} className="flex items-start gap-2.5 rounded-lg border border-cyan-500/10 bg-[#0a0f1d] px-3 py-2 text-xs">
+                      <CoverArt artist={currentEmotion.artists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
+                      <div className="min-w-0">
+                        <p className="break-words font-mono text-gray-200"><bdi dir="auto">{track}</bdi></p>
+                        <p className="mt-1 text-[10px] leading-relaxed text-gray-500">{currentEmotion.trackNotes[index]}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-wrap items-start justify-between gap-3 border-t border-cyan-500/10 pt-5 text-xs">
+            <span className="text-gray-400">{t.emotionalMap.dominantTimeLabel}</span>
+            <span className="max-w-full break-words text-end font-mono text-white">{currentEmotion.time}</span>
+          </div>
+        </div>
+      </section>
+
+      <section data-testid="emotional-engine-summary" className="nova-surface nova-surface--featured relative overflow-hidden rounded-3xl p-5 md:p-6">
         <div className="absolute inset-0 pointer-events-none opacity-70"
           style={{
             background: `radial-gradient(circle at 12% 10%, ${engineProfile.dominantMood.color}24, transparent 34%), radial-gradient(circle at 88% 10%, ${tc.c2}18, transparent 30%)`,
@@ -539,7 +1060,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
               </p>
             </div>
 
-            <div className="rounded-2xl border bg-black/20 px-4 py-3 min-w-[220px]"
+            <div className="w-full min-w-0 rounded-2xl border bg-black/20 px-4 py-3 sm:w-auto sm:min-w-[220px]"
               style={{ borderColor: `${engineProfile.dominantMood.color}35` }}>
               <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
                 {copy.engine.dominant}
@@ -563,7 +1084,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.55fr)] gap-4">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-4">
             <div className="rounded-2xl border border-white/8 bg-black/20 p-4">
               <div className="flex items-center gap-2 mb-4">
                 <Orbit className="w-4 h-4" style={{ color: tc.c1 }} />
@@ -621,164 +1142,6 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
 
       <EmotionalTimeline data={data} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Side: Scatter Chart "Galaxia Emocional" */}
-        <div className="glass-panel p-6 rounded-3xl lg:col-span-7 flex flex-col items-center">
-          <div className="w-full flex items-center justify-between mb-4">
-            <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest">{t.emotionalMap.artistCoordinates}</h3>
-            <span className="text-[10px] font-mono text-gray-500">{t.emotionalMap.axesLabel}</span>
-          </div>
-
-          <div className="h-80 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <ScatterChart margin={{ top: 20, right: 30, bottom: 20, left: 10 }}>
-                <XAxis
-                  type="number"
-                  dataKey="valence"
-                  name={t.emotionalMap.positivityName}
-                  domain={[0, 1]}
-                  stroke="#4b5563"
-                  label={{ value: t.emotionalMap.positivityAxis, position: 'insideBottom', offset: -10, fill: '#9ca3af', fontSize: 10 }}
-                />
-                <YAxis
-                  type="number"
-                  dataKey="energy"
-                  name={t.emotionalMap.energyAxis}
-                  domain={[0, 1]}
-                  stroke="#4b5563"
-                  label={{ value: t.emotionalMap.energyAxis, angle: -90, position: 'insideLeft', fill: '#9ca3af', fontSize: 10 }}
-                />
-                <ZAxis type="number" dataKey="plays" range={[50, 450]} />
-                <Tooltip
-                  cursor={{ strokeDasharray: '3 3' }}
-                  content={
-                    <GlassTooltip
-                      accent={tc.c1}
-                      renderHeader={(row) => (
-                        <div className="flex items-center gap-2">
-                          <ArtistAvatar name={String(row.name)} size={26} />
-                          <div className="min-w-0">
-                            <p className="truncate text-xs font-black text-white">{String(row.name)}</p>
-                            <p className="text-[9px] font-mono uppercase tracking-wider text-gray-400">{String(row.genre ?? '')}</p>
-                          </div>
-                        </div>
-                      )}
-                    />
-                  }
-                />
-                <Scatter name={t.emotionalMap.artistsLegend} data={galaxyArtists} fill="#00f2fe">
-                  {galaxyArtists.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.valence > 0.5 ? '#ffb703' : '#00f2fe'} 
-                      stroke={entry.energy > 0.7 ? '#f72585' : '#7209b7'}
-                      strokeWidth={2}
-                    />
-                  ))}
-                </Scatter>
-              </ScatterChart>
-            </ResponsiveContainer>
-          </div>
-
-          <div className="w-full flex justify-between text-xs font-mono text-gray-500 mt-2 px-6">
-            <span>{t.emotionalMap.darkSide}</span>
-            <span>{t.emotionalMap.brightSide}</span>
-          </div>
-
-          <div className="w-full mt-6 space-y-3">
-            <div className="space-y-1">
-              <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
-                {copy.quadrantTitle}
-              </h3>
-              <p className="text-xs text-gray-400 leading-relaxed">{copy.quadrantIntro}</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {copy.quadrants.map(quad => (
-              <div key={quad.title} className="rounded-2xl border bg-white/3 p-4"
-                style={{ borderColor: `${quad.color}25` }}>
-                <div className="flex items-center justify-between gap-3 mb-2">
-                  <h4 className="text-sm font-black text-white">{quad.title}</h4>
-                  <span className="text-[9px] font-mono font-black uppercase px-2 py-1 rounded-full"
-                    style={{ color: quad.color, backgroundColor: `${quad.color}12`, border: `1px solid ${quad.color}28` }}>
-                    {quad.tag}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-400 leading-relaxed">{quad.body}</p>
-              </div>
-            ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Side: Tabbed Details */}
-        <div className="glass-panel p-8 rounded-3xl lg:col-span-5 flex flex-col justify-between h-full">
-          <div>
-            {/* Tab selector buttons */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
-              {EMOTION_KEYS.map(key => (
-                <button
-                  key={key}
-                  onClick={() => setSelectedEmotion(key)}
-                  className={`py-2 font-mono text-[9px] font-bold rounded-xl border uppercase transition-all truncate ${
-                    selectedEmotion === key 
-                      ? 'bg-cyberPink/10 border-cyberPink text-cyberPink' 
-                      : 'bg-[#0a0f1d] border-cyan-500/10 text-gray-400 hover:text-white'
-                  }`}
-                >
-                  {emotionDetails[key].tab}
-                </button>
-              ))}
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: currentEmotion.color }}></span>
-                {currentEmotion.title}
-              </h3>
-              
-              <p className="text-xs text-gray-300 font-sans leading-relaxed">
-                {currentEmotion.desc}
-              </p>
-
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{copy.labels.artists}</span>
-                <div className="flex flex-wrap gap-2">
-                  {selectedArtistEvidence.map(({ name, plays }) => (
-                    <span key={name} className="flex items-center gap-1.5 pl-1 pr-2.5 py-1 bg-[#0a0f1d] border border-cyan-500/10 rounded-full text-xs text-white font-semibold font-mono">
-                      <ArtistAvatar name={name} size={20} />
-                      <span>{name}</span>
-                      {plays && <span className="text-[9px] text-gray-500">· {formatNum(plays)}</span>}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1.5 pt-2">
-                <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest block">{copy.labels.tracks}</span>
-                <div className="space-y-1">
-                  {currentEmotion.tracks.map((track, index) => (
-                    <div key={`${currentEmotion.artists[index] ?? index}-${track}`} className="px-3 py-2 bg-[#0a0f1d] border border-cyan-500/10 rounded-lg text-xs flex items-start gap-2.5">
-                      <CoverArt artist={currentEmotion.artists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
-                      <div className="min-w-0">
-                        <p className="font-mono text-gray-200 truncate">{track}</p>
-                        <p className="text-[10px] text-gray-500 leading-relaxed mt-1">{currentEmotion.trackNotes[index]}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-6 border-t border-cyan-500/10 space-y-1 mt-6 text-xs">
-            <div className="flex justify-between">
-              <span className="text-gray-400">{t.emotionalMap.dominantTimeLabel}</span>
-              <span className="font-mono text-white">{currentEmotion.time}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <BrainCircuit className="w-5 h-5" style={{ color: tc.c2 }} />
@@ -810,12 +1173,12 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
             const Icon = MOOD_ICONS[mood.icon];
             const color = mood.color;
             return (
-              <article key={artist.name} className="glass-panel p-4 rounded-2xl border hover:scale-[1.01] transition-transform"
+              <article key={artist.name} className="nova-surface nova-surface--analysis rounded-2xl p-4"
                 style={{ borderColor: `${color}25` }}>
                 <div className="flex items-center gap-3">
                   <ArtistAvatar name={artist.name} size={38} />
                   <div className="min-w-0">
-                    <h4 className="text-sm font-black text-white truncate">{artist.name}</h4>
+                    <h4 className="text-sm font-black text-white truncate"><bdi dir="auto">{artist.name}</bdi></h4>
                     <p className="text-[10px] text-gray-500 font-mono">{formatNum(artist.plays)} {copy.labels.plays}</p>
                   </div>
                 </div>
@@ -858,8 +1221,10 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
             return (
               <button
                 key={ritual.title}
+                type="button"
                 onClick={() => setSelectedEmotion(ritual.emotion)}
-                className="glass-panel p-5 rounded-2xl border text-left hover:scale-[1.02] transition-transform"
+                aria-pressed={selectedEmotion === ritual.emotion}
+                className="nova-surface nova-surface--utility nova-surface--interactive rounded-2xl p-5 text-start"
                 style={{ borderColor: `${emotion.color}25` }}
               >
                 <div className="flex items-center gap-2 mb-3">
@@ -887,12 +1252,13 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
           </h3>
         </div>
         <p className="text-xs text-gray-400 leading-relaxed max-w-3xl">{copy.stations.intro}</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          {EMOTION_KEYS.map(key => {
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,17rem),1fr))] gap-4">
+          {EMOTION_KEYS.filter(key => moodArtistsByKey[key].length > 0).map(key => {
             const emotion = emotionDetails[key];
             const Icon = MOOD_ICONS[EMOTIONAL_MOOD_TAXONOMY[key].icon];
+            const stationArtists = moodArtistsByKey[key].slice(0, 4).map(profile => profile.artist.name);
             return (
-              <article key={key} className="glass-panel rounded-2xl border p-4" style={{ borderColor: `${emotion.color}28` }}>
+              <article key={key} className="nova-surface nova-surface--analysis rounded-2xl p-4" style={{ borderColor: `${emotion.color}28` }}>
                 <div className="flex items-center gap-2 mb-3">
                   <span className="flex h-8 w-8 items-center justify-center rounded-xl border"
                     style={{ color: emotion.color, borderColor: `${emotion.color}38`, backgroundColor: `${emotion.color}10` }}>
@@ -903,34 +1269,35 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                   </h4>
                 </div>
                 <div className="space-y-2">
-                  {emotion.artists.map(name => {
+                  {stationArtists.map(name => {
+                    const accessibleName = isolateBidi(name);
                     const curated = getCuratedArtistMedia(name);
                     const spotifyUrl = getPrimarySpotifyUrl(curated) ?? buildSpotifySearchUrl(name);
                     const youtubeUrl = getPrimaryYoutubeUrl(curated) ?? buildYoutubeSearchUrl(`${name} official`);
                     const wikipediaUrl = getWikipediaUrl(curated, lang);
                     const verified = Boolean(curated);
                     return (
-                      <div key={name} className="flex items-center gap-2">
+                      <div key={name} className="flex flex-wrap items-center gap-2 rounded-xl border border-white/5 bg-black/10 p-2">
                         <ArtistAvatar name={name} size={24} />
-                        <span className="min-w-0 flex-1 truncate text-xs font-semibold text-white">
-                          {name}
-                          {verified && <span className="ml-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: emotion.color }} />}
+                        <span className="min-w-[7rem] flex-1 break-words text-xs font-semibold text-white">
+                          <bdi dir="auto">{name}</bdi>
+                          {verified && <span className="ms-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ backgroundColor: emotion.color }} />}
                         </span>
                         <a href={spotifyUrl} target="_blank" rel="noopener noreferrer"
-                          aria-label={copy.stations.spotifyAria(name)} title={copy.stations.spotifyAria(name)}
-                          className="flex h-6 w-6 items-center justify-center rounded-full border border-[#1DB954]/40 bg-[#1DB954]/10 text-[#1DB954] transition-transform hover:scale-110">
-                          <ExternalLink className="h-3 w-3" />
+                          aria-label={copy.stations.spotifyAria(accessibleName)} title={copy.stations.spotifyAria(accessibleName)}
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#1DB954]/40 bg-[#1DB954]/10 text-[#1DB954] transition-transform hover:scale-105">
+                          <ExternalLink className="h-4 w-4" />
                         </a>
                         <a href={youtubeUrl} target="_blank" rel="noopener noreferrer"
-                          aria-label={copy.stations.youtubeAria(name)} title={copy.stations.youtubeAria(name)}
-                          className="flex h-6 w-6 items-center justify-center rounded-full border border-[#ff0033]/40 bg-[#ff0033]/10 text-[#ff4d6a] transition-transform hover:scale-110">
-                          <ExternalLink className="h-3 w-3" />
+                          aria-label={copy.stations.youtubeAria(accessibleName)} title={copy.stations.youtubeAria(accessibleName)}
+                          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ff0033]/40 bg-[#ff0033]/10 text-[#ff4d6a] transition-transform hover:scale-105">
+                          <ExternalLink className="h-4 w-4" />
                         </a>
                         {wikipediaUrl && (
                           <a href={wikipediaUrl} target="_blank" rel="noopener noreferrer"
-                            aria-label={copy.stations.wikipediaAria(name)} title={copy.stations.wikipediaAria(name)}
-                            className="flex h-6 w-6 items-center justify-center rounded-full border border-[#38bdf8]/40 bg-[#38bdf8]/10 text-[#38bdf8] transition-transform hover:scale-110">
-                            <ExternalLink className="h-3 w-3" />
+                            aria-label={copy.stations.wikipediaAria(accessibleName)} title={copy.stations.wikipediaAria(accessibleName)}
+                            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#38bdf8]/40 bg-[#38bdf8]/10 text-[#38bdf8] transition-transform hover:scale-105">
+                            <ExternalLink className="h-4 w-4" />
                           </a>
                         )}
                       </div>
@@ -966,9 +1333,11 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {EMOTION_KEYS.map(key => {
             const emotion = emotionDetails[key];
-            const seed = `${emotion.artists.join('|')}::${data.top_artists[0]?.name ?? ''}::v${artVariation}`;
+            const moodArtistNames = moodArtistsByKey[key].map(profile => profile.artist.name);
+            const seedArtists = moodArtistNames.length ? moodArtistNames : data.top_artists.slice(0, 3).map(artist => artist.name);
+            const seed = `${seedArtists.join('|')}::${data.top_artists[0]?.name ?? ''}::v${artVariation}`;
             return (
-              <figure key={key} className="glass-panel rounded-2xl border overflow-hidden group"
+              <figure key={key} className="nova-surface nova-surface--analysis group overflow-hidden rounded-2xl"
                 style={{ borderColor: `${emotion.color}28` }}>
                 <div className="aspect-[4/3] overflow-hidden">
                   <MoodArtCanvas moodKey={key} seed={seed} width={340} height={255}
@@ -984,7 +1353,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
         </div>
       </section>
 
-      <section className="glass-panel p-5 rounded-2xl border border-white/10 flex items-start gap-3">
+      <section className="nova-surface nova-surface--utility flex items-start gap-3 rounded-2xl p-5">
         <Flame className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c2 }} />
         <div className="space-y-1">
           <p className="text-xs font-mono font-black uppercase tracking-widest text-white">

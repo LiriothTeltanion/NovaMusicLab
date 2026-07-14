@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
@@ -40,12 +40,13 @@ describe('MuseumRoomNavigator', () => {
   it('shows desktop orientation with the active room and overall progress', () => {
     render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
 
-    expect(screen.getByTestId('room-progress')).toHaveAttribute('aria-label', 'Sala activa: Eras Musicales');
+    const progress = screen.getByTestId('room-progress');
+    expect(progress).toHaveAttribute('aria-label', 'Sala activa: Eras Musicales');
     expect(screen.getByText('CH-02')).toBeInTheDocument();
-    expect(screen.getByText('Capítulo 2', { exact: false })).toBeInTheDocument();
+    expect(progress).toHaveTextContent('Capítulo 2 / 3');
   });
 
-  it('navigates sequentially and opens a grouped room map on desktop', () => {
+  it('navigates sequentially and opens a grouped room map on desktop', async () => {
     const onNavigate = vi.fn();
     render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={onNavigate} />);
 
@@ -53,8 +54,9 @@ describe('MuseumRoomNavigator', () => {
     expect(onNavigate).toHaveBeenCalledWith('top');
 
     fireEvent.click(screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' }));
-    expect(screen.getByRole('region', { name: 'Mapa de salas' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Mapa de salas' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Archivo' })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
 
     fireEvent.click(screen.getByRole('button', { name: 'Dashboard' }));
     expect(onNavigate).toHaveBeenLastCalledWith('dashboard');
@@ -65,7 +67,7 @@ describe('MuseumRoomNavigator', () => {
     expect(screen.getByRole('button', { name: 'Sala anterior' })).toBeDisabled();
   });
 
-  it('navigates sequentially and opens a grouped room map on mobile', () => {
+  it('navigates sequentially and opens a grouped room map on mobile', async () => {
     const onNavigate = vi.fn();
     render(<MobileMuseumRoomDock items={rooms} activeId="eras" lang="es" onNavigate={onNavigate} />);
 
@@ -73,11 +75,47 @@ describe('MuseumRoomNavigator', () => {
     expect(onNavigate).toHaveBeenCalledWith('top');
 
     fireEvent.click(screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' }));
-    expect(screen.getByRole('region', { name: 'Mapa de salas' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Mapa de salas' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Archivo' })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
 
     fireEvent.click(screen.getByRole('button', { name: 'Dashboard' }));
     expect(onNavigate).toHaveBeenLastCalledWith('dashboard');
+  });
+
+  it('closes the desktop map on Escape and restores focus to its trigger', async () => {
+    render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
+    const trigger = screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' });
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mapa de salas' })).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('closes the mobile map on Escape and restores focus to its trigger', async () => {
+    render(<MobileMuseumRoomDock items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
+    const trigger = screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' });
+
+    fireEvent.click(trigger);
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mapa de salas' })).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('renders idiomatic Hebrew navigation with RTL direction', () => {
+    render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="he" onNavigate={vi.fn()} />);
+
+    const progress = screen.getByTestId('room-progress');
+    expect(progress).toHaveAttribute('dir', 'rtl');
+    expect(progress).toHaveAttribute('aria-label', 'החדר הפעיל: Eras Musicales');
+    expect(progress).toHaveTextContent('פרק 2 / 3');
+    expect(screen.getByRole('button', { name: 'החדר הבא: Top Histórico' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'פתיחת מפת החדרים: Eras Musicales' })).toBeInTheDocument();
   });
 
 });

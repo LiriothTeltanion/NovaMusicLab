@@ -438,5 +438,17 @@
   "my vitriol": {
     "thumb": "https://cdn-images.dzcdn.net/images/artist/e020a590f9567317369f5d47f71fa301/1000x1000-000000-80-0-0.jpg",
     "source": "deezer"
+  },
+  "amr diab": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Amr_Abdul_Baset_Diab.jpg/330px-Amr_Abdul_Baset_Diab.jpg",
+    "source": "wikimedia"
+  },
+  "sigur rós": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Sigur_R%C3%B3s_at_the_Orpheum_Theatre%2C_San_Francisco.jpg/330px-Sigur_R%C3%B3s_at_the_Orpheum_Theatre%2C_San_Francisco.jpg",
+    "source": "wikimedia"
+  },
+  "aviv geffen": {
+    "thumb": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/AvivGeffen.jpg/330px-AvivGeffen.jpg",
+    "source": "wikimedia"
   }
 }

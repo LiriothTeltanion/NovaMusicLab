@@ -1,6 +1,7 @@
 import mediaLinks from '../data/artist_media_links.json';
 import type { TopAlbum, TopTrack } from '../types';
-import { normalizeCatalogName } from './artistEnrichment';
+import { normalizeCatalogName } from './catalogName';
+import type { Lang } from './i18n';
 
 export type MediaProvider = 'spotify' | 'youtube';
 
@@ -35,10 +36,15 @@ export interface MediaAction {
  * the other language's article. Never falls back to a search URL: a wrong
  * or noisy wiki link is worse than no link.
  */
-export function getWikipediaUrl(entry: CuratedArtistMedia | undefined, lang: 'es' | 'en') {
+export function getWikipediaUrl(entry: CuratedArtistMedia | undefined, lang: Lang) {
   if (!entry) return undefined;
   return lang === 'es'
     ? entry.wikipediaEsUrl ?? entry.wikipediaEnUrl
+    : lang === 'he'
+      // The curated dataset has no verified Hebrew article field yet. Prefer
+      // the English canonical article, then Spanish, instead of fabricating a
+      // search result or presenting an incorrect language URL.
+      ? entry.wikipediaEnUrl ?? entry.wikipediaEsUrl
     : entry.wikipediaEnUrl ?? entry.wikipediaEsUrl;
 }
 

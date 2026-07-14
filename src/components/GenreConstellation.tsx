@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Orbit, HelpCircle, Star } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import { localeFor, pickLanguage, type Lang } from '../utils/i18n';
 
 interface GenreConstellationProps {
   data: MusicDnaData;
@@ -40,10 +41,50 @@ const GENRE_COLORS: Record<string, { from: string; to: string }> = {
   'Unclassified':           { from: '#1f2937', to: '#9ca3af' },
 };
 
+interface GenreConstellationCopy {
+  title: string;
+  subtitle: string;
+  plays: string;
+  idle: string;
+  footer: string;
+  chartAria: string;
+  nodeAria: (genre: string, plays: string) => string;
+}
+
+const GENRE_CONSTELLATION_COPY: Record<Lang, GenreConstellationCopy> = {
+  es: {
+    title: 'La Constelación de Géneros',
+    subtitle: 'Mapa orbital concéntrico de tus géneros más escuchados',
+    plays: 'Escuchas',
+    idle: 'Pasa el cursor por las estrellas',
+    footer: 'El mapa estelar grafica los 13 géneros principales',
+    chartAria: 'Mapa interactivo de tus géneros principales',
+    nodeAria: (genre, plays) => `${genre}: ${plays} escuchas`,
+  },
+  en: {
+    title: 'The Genre Constellation',
+    subtitle: 'Concentric orbital map of your top listening genres',
+    plays: 'Plays',
+    idle: 'Hover or focus a star to decode data',
+    footer: 'Interactive star-scale maps top 13 genres',
+    chartAria: 'Interactive map of your top genres',
+    nodeAria: (genre, plays) => `${genre}: ${plays} plays`,
+  },
+  he: {
+    title: 'קונסטלציית הז׳אנרים',
+    subtitle: 'מפה מסלולית קונצנטרית של הז׳אנרים המושמעים ביותר שלך',
+    plays: 'השמעות',
+    idle: 'רחף מעל כוכב או התמקד בו כדי לפענח את הנתונים',
+    footer: 'מפת הכוכבים מציגה בקנה מידה את 13 הז׳אנרים המובילים',
+    chartAria: 'מפה אינטראקטיבית של הז׳אנרים המובילים שלך',
+    nodeAria: (genre, plays) => `${genre}: ${plays} השמעות`,
+  },
+};
+
 export default function GenreConstellation({ data }: GenreConstellationProps) {
   const { lang } = useApp();
-  const L = lang === 'en';
-  const locale = L ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
+  const copy = pickLanguage(lang, GENRE_CONSTELLATION_COPY);
 
   const [hoveredNode, setHoveredNode] = useState<ConstellationNode | null>(null);
 
@@ -122,14 +163,14 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
       
       {/* Title block */}
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-3">
           <Orbit className="w-5 h-5 text-purple-400" />
           <div>
             <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">
-              {L ? 'The Genre Constellation' : 'La Constelación de Géneros'}
+              {copy.title}
             </h3>
             <p className="text-[10px] text-gray-500 font-mono mt-0.5">
-              {L ? 'Concentric orbital map of your top listening genres' : 'Mapa orbital concéntrico de tus géneros más escuchados'}
+              {copy.subtitle}
             </p>
           </div>
         </div>
@@ -137,7 +178,12 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
 
       {/* SVG Viewport */}
       <div className="w-full max-w-[480px] aspect-square relative select-none">
-        <svg viewBox="0 0 500 500" className="w-full h-full relative z-10 overflow-visible">
+        <svg
+          viewBox="0 0 500 500"
+          className="nova-data-ltr w-full h-full relative z-10 overflow-visible"
+          role="list"
+          aria-label={copy.chartAria}
+        >
           {/* Gradients declarations */}
           <defs>
             {nodes.map(n => {
@@ -182,8 +228,13 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
               <g
                 key={`node-${i}`}
                 className="cursor-pointer"
+                role="listitem"
+                tabIndex={0}
+                aria-label={copy.nodeAria(n.name, n.plays.toLocaleString(locale))}
                 onMouseEnter={() => setHoveredNode(n)}
                 onMouseLeave={() => setHoveredNode(null)}
+                onFocus={() => setHoveredNode(n)}
+                onBlur={() => setHoveredNode(null)}
               >
                 {/* Floating glow ring on hover */}
                 <AnimatePresence>
@@ -247,13 +298,13 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
                 >
                   <Star className="w-4 h-4 mb-1" style={{ color: hoveredNode.colorTo }} />
                   <p className="text-[10px] font-mono font-bold text-white leading-tight uppercase max-h-[48px] overflow-hidden truncate w-28">
-                    {hoveredNode.name}
+                    <bdi dir="auto">{hoveredNode.name}</bdi>
                   </p>
-                  <p className="text-xs font-mono font-black mt-1" style={{ color: hoveredNode.colorTo }}>
+                  <p className="nova-number-ltr text-xs font-mono font-black mt-1" dir="ltr" style={{ color: hoveredNode.colorTo }}>
                     {hoveredNode.plays.toLocaleString(locale)}
                   </p>
                   <span className="text-[9px] font-mono text-gray-500 uppercase mt-0.5">
-                    {L ? 'Plays' : 'Escuchas'}
+                    {copy.plays}
                   </span>
                 </motion.div>
               ) : (
@@ -266,7 +317,7 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
                 >
                   <Orbit className="w-5 h-5 text-gray-600 animate-spin" style={{ animationDuration: '24s' }} />
                   <span className="text-[8px] font-mono text-gray-500 uppercase mt-2 w-24 leading-relaxed">
-                    {L ? 'Hover nodes to decode data' : 'Pasa el cursor por las estrellas'}
+                    {copy.idle}
                   </span>
                 </motion.div>
               )}
@@ -280,7 +331,7 @@ export default function GenreConstellation({ data }: GenreConstellationProps) {
         <div className="flex items-center gap-1.5">
           <HelpCircle className="w-3.5 h-3.5" />
           <span>
-            {L ? 'Interactive star-scale maps top 13 genres' : 'El mapa estelar grafica los 13 géneros principales'}
+            {copy.footer}
           </span>
         </div>
       </div>

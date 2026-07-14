@@ -85,6 +85,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__brand-mark {
@@ -184,6 +186,8 @@
   letter-spacing: -0.078em;
   line-height: 0.78;
   text-wrap: nowrap;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__title > span {
@@ -234,11 +238,11 @@
 }
 
 .nova-hero__stats > div:first-child {
-  padding-left: 0;
+  padding-inline-start: 0;
 }
 
 .nova-hero__stats > div + div {
-  border-left: 1px solid color-mix(in srgb, var(--fg) 9%, transparent);
+  border-inline-start: 1px solid color-mix(in srgb, var(--fg) 9%, transparent);
 }
 
 .nova-hero__stats dt {
@@ -261,6 +265,8 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums lining-nums;
   letter-spacing: -0.045em;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__actions {
@@ -317,7 +323,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.48rem;
-  margin-top: 0.85rem;
   color: var(--type-ink-muted);
   font-size: 0.78rem;
   font-weight: 600;
@@ -325,6 +330,39 @@
 
 .nova-hero__assistant-link:hover {
   color: color-mix(in srgb, var(--hero-pink) 76%, var(--fg));
+}
+
+.nova-hero__utility-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem 1rem;
+  margin-top: 0.85rem;
+}
+
+.nova-hero__cv-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.48rem;
+  border: 1px solid color-mix(in srgb, var(--hero-cyan) 24%, transparent);
+  border-radius: 999px;
+  padding: 0.55rem 0.82rem;
+  color: color-mix(in srgb, var(--hero-cyan) 76%, var(--fg));
+  background: color-mix(in srgb, var(--hero-cyan) 6%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, scale 120ms ease;
+}
+
+.nova-hero__cv-link:hover {
+  border-color: color-mix(in srgb, var(--hero-cyan) 54%, transparent);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--hero-cyan) 11%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--hero-cyan) 12%, transparent);
 }
 
 .nova-hero__visual {
@@ -369,7 +407,7 @@
 .nova-hero__visual-index {
   position: absolute;
   top: 8%;
-  right: 8%;
+  inset-inline-end: 8%;
   color: color-mix(in srgb, var(--hero-cyan) 60%, transparent);
   font-size: 0.52rem;
   font-weight: 800;
@@ -441,7 +479,7 @@
 
 .nova-hero__pulse-control {
   position: absolute;
-  right: 7%;
+  inset-inline-end: 7%;
   bottom: 10%;
   display: grid;
   width: 3.1rem;
@@ -456,14 +494,14 @@
 
 .nova-hero__artist-caption {
   position: absolute;
-  right: 2%;
+  inset-inline-end: 2%;
   bottom: 1%;
   display: grid;
   max-width: 14rem;
   border: 1px solid color-mix(in srgb, var(--fg) 12%, transparent);
   border-radius: 1rem;
   padding: 0.7rem 0.9rem;
-  text-align: right;
+  text-align: end;
   background: color-mix(in srgb, var(--bg) 74%, transparent);
   backdrop-filter: blur(18px);
 }
@@ -486,6 +524,7 @@
   font-size: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__artist-caption small {
@@ -497,14 +536,15 @@
 .nova-hero__track-note {
   position: absolute;
   bottom: 6%;
-  left: 0;
+  inset-inline-start: 0;
   display: flex;
   align-items: center;
   gap: 0.65rem;
   max-width: 14rem;
   border: 1px solid color-mix(in srgb, var(--hero-pink) 22%, transparent);
   border-radius: 0.95rem;
-  padding: 0.42rem 0.65rem 0.42rem 0.42rem;
+  padding-block: 0.42rem;
+  padding-inline: 0.42rem 0.65rem;
   background: color-mix(in srgb, var(--bg) 76%, transparent);
   backdrop-filter: blur(18px);
 }
@@ -521,6 +561,7 @@
   font-size: 0.76rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__scroll-note {
@@ -655,6 +696,7 @@
   color: var(--type-ink-muted);
   font-size: 0.92rem;
   line-height: 1.72;
+  unicode-bidi: plaintext;
 }
 
 .nova-hero__panel-action {
@@ -717,7 +759,7 @@
 
 .nova-hero__source-legend small {
   min-width: 3.2rem;
-  text-align: right;
+  text-align: end;
 }
 
 .nova-hero__telemetry-totals {
@@ -789,6 +831,7 @@
   font-size: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+  unicode-bidi: isolate;
 }
 
 .nova-hero__archive-card > p {
@@ -796,6 +839,7 @@
   color: var(--type-ink-muted);
   font-size: 0.68rem;
   line-height: 1.42;
+  unicode-bidi: plaintext;
 }
 
 .nova-hero__metric-grid {
@@ -992,7 +1036,7 @@
 
   .nova-hero__eyebrow,
   .nova-hero__actions,
-  .nova-hero__assistant-link {
+  .nova-hero__utility-links {
     justify-content: center;
   }
 
@@ -1078,7 +1122,7 @@
   }
 
   .nova-hero__artist-caption {
-    right: 0;
+    inset-inline-end: 0;
     bottom: -1%;
     max-width: 12rem;
   }
@@ -1158,7 +1202,7 @@
     padding-block: 0.65rem;
   }
 
-  .nova-hero__assistant-link {
+  .nova-hero__utility-links {
     margin-top: 0.55rem;
   }
 

@@ -10,7 +10,8 @@ import {
 } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
-import { normalizeGenre } from '../utils/analytics';
+import { localeFor } from '../utils/i18n';
+import { buildGenreDistribution, getDatasetCoverage } from '../utils/chartIntegrity';
 import {
   albumReleaseLabel,
   getAlbumEnrichment,
@@ -28,8 +29,9 @@ import CoverArt from './CoverArt';
 import GenreArt from './GenreArt';
 import FlagArt from './FlagArt';
 import MediaEmbedHub from './MediaEmbedHub';
-import { CHART_ANIMATION, SWAP_POSES, SWAP_TRANSITION } from './chartKit';
+import { axisProps, ChartCanvas, ChartFrame, gridStroke, SWAP_POSES, SWAP_TRANSITION, useChartAnimation } from './chartKit';
 import { localizeEraLabel } from '../utils/localeText';
+import { localizeGenreName } from '../utils/localizedDatasetText';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
 import ArtistPhotoCarousel from './ArtistPhotoCarousel';
@@ -48,8 +50,9 @@ import {
   type EmotionalMoodKey,
 } from '../engines/emotionalEngine';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
+import MobileDetailDrawer from './MobileDetailDrawer';
 
-function getLinkLabel(url: string): string {
+function getLinkLabel(url: string, officialWebsiteLabel: string): string {
   const lowercase = url.toLowerCase();
   if (lowercase.includes('wikipedia.org')) return 'Wikipedia';
   if (lowercase.includes('wikidata.org')) return 'Wikidata';
@@ -58,7 +61,7 @@ function getLinkLabel(url: string): string {
   if (lowercase.includes('youtube.com') || lowercase.includes('youtu.be')) return 'YouTube';
   if (lowercase.includes('discogs.com')) return 'Discogs';
   if (lowercase.includes('musicbrainz.org')) return 'MusicBrainz';
-  return 'Official Website';
+  return officialWebsiteLabel;
 }
 
 function getLinkColor(url: string, defaultColor: string): { color: string; borderColor: string; backgroundColor: string } {
@@ -101,6 +104,7 @@ interface TopHistoricoProps {
 }
 
 type TopTab = 'canciones' | 'artistas' | 'albums' | 'generos' | 'anos';
+type MobileDossierKind = 'artist' | 'track' | 'album';
 
 // Sub-tab swaps ride the app-wide shared chart/panel transition (chartKit).
 const tabTransition = SWAP_TRANSITION;
@@ -128,6 +132,7 @@ type RowMoodProfile = {
 const ARTIST_ATLAS_COPY = {
   es: {
     dossier: 'Dossier de artista',
+    backToRanking: 'Volver al ranking',
     curatedBadge: 'Ficha curada',
     sourceBadge: 'Enciclopedia local',
     origin: 'Origen',
@@ -230,6 +235,7 @@ const ARTIST_ATLAS_COPY = {
     albumMoodBody: 'Esta capa traduce la lectura del álbum en identidad visual: color, atmósfera y una función clara dentro del museo.',
     trackMoodBody: 'Esta capa convierte la repetición de la canción en una señal visual inmediata: qué estado activa y cómo usarla mejor.',
     moodFilter: 'Filtro emocional',
+    moodFilterCompactHint: 'Toca para refinar el archivo',
     moodFilterHint: 'Filtra artistas, canciones y álbumes por estado emocional dominante. El ranking se mantiene como una lectura del archivo, pero la lista se vuelve navegable por mood.',
     allMoods: 'Todos',
     catalogRange: 'Rango curado',
@@ -262,9 +268,24 @@ const ARTIST_ATLAS_COPY = {
     lineupSince: (year: string) => `desde ${year}`,
     lineupSpan: (from: string, to: string) => `${from}–${to}`,
     lineupMore: (count: number) => `+${count} integrantes más en la historia de la banda`,
+    officialWebsite: 'Sitio oficial',
+    curatedKnowledgeSummary: (source: string, origin: string, description: string, background: string) =>
+      `Perfil local verificado desde ${source}: ${origin}. ${description} ${background}`,
+    wikidataKnowledgeSummary: (id: string, description: string) => `Ficha pública ${id}: ${description}.`,
+    ageLabel: (age: number) => `Edad: ${age} años`,
+    rolesLabel: 'Roles',
+    statusLabel: 'Estado',
+    clearSearch: 'Limpiar búsqueda',
+    wholeArchive: 'Archivo completo',
+    countedListensOther: 'escuchas contadas · categoría Otros explícita',
+    yearlySubtitle: (maxDate?: string | null) => `Una métrica por vez, con su propia escala${maxDate ? ` · observado hasta ${maxDate}` : ''}.`,
+    yearlySummary: (label: string) => `${label} se muestra por separado para que el volumen de escuchas no aplaste el conteo de artistas.`,
+    yearLabel: 'Año',
+    yearlyMetricAria: 'Métrica del gráfico anual',
   },
   en: {
     dossier: 'Artist Dossier',
+    backToRanking: 'Back to ranking',
     curatedBadge: 'Curated profile',
     sourceBadge: 'Local encyclopedia',
     origin: 'Origin',
@@ -367,6 +388,7 @@ const ARTIST_ATLAS_COPY = {
     albumMoodBody: 'This layer translates the album reading into visual identity: color, atmosphere and a clear function inside the museum.',
     trackMoodBody: 'This layer turns track repetition into an immediate visual signal: which state it activates and how to use it better.',
     moodFilter: 'Emotional filter',
+    moodFilterCompactHint: 'Tap to refine the archive',
     moodFilterHint: 'Filter artists, tracks and albums by dominant emotional state. The ranking stays as an archive reading, but the list becomes navigable by mood.',
     allMoods: 'All',
     catalogRange: 'Curated range',
@@ -399,11 +421,179 @@ const ARTIST_ATLAS_COPY = {
     lineupSince: (year: string) => `since ${year}`,
     lineupSpan: (from: string, to: string) => `${from}–${to}`,
     lineupMore: (count: number) => `+${count} more members across the band's history`,
+    officialWebsite: 'Official website',
+    curatedKnowledgeSummary: (source: string, origin: string, description: string, background: string) =>
+      `Verified local profile from ${source}: ${origin}. ${description} ${background}`,
+    wikidataKnowledgeSummary: (id: string, description: string) => `Public profile ${id}: ${description}.`,
+    ageLabel: (age: number) => `Age: ${age}`,
+    rolesLabel: 'Roles',
+    statusLabel: 'Status',
+    clearSearch: 'Clear search',
+    wholeArchive: 'Whole archive',
+    countedListensOther: 'counted listens · explicit Other category',
+    yearlySubtitle: (maxDate?: string | null) => `One metric at a time, with its own scale${maxDate ? ` · observed through ${maxDate}` : ''}.`,
+    yearlySummary: (label: string) => `${label} is shown independently so listen volume never flattens the artist count.`,
+    yearLabel: 'Year',
+    yearlyMetricAria: 'Year chart metric',
+  },
+  he: {
+    dossier: 'תיק האמן',
+    backToRanking: 'חזרה לדירוג',
+    curatedBadge: 'פרופיל בעריכה מקומית',
+    sourceBadge: 'אנציקלופדיה מקומית',
+    origin: 'מוצא',
+    start: 'תחילת פעילות',
+    archiveEvidence: 'עדויות מהארכיון שלך',
+    archiveRole: 'תפקיד בארכיון',
+    soundEvolution: 'התפתחות מוזיקלית',
+    whyMatters: 'למה זה משמעותי כאן',
+    verifiedBackground: '🧬 רקע מאומת',
+    verifiedBackgroundHint: 'עובדות תמציתיות ממאגר הידע הלא־מקוון: MusicBrainz,‏ Wikidata ומקורות בעריכה מקומית במקרים שבהם ההתאמה האוטומטית אינה ודאית.',
+    publicProfile: 'פרופיל ציבורי',
+    membersAndRoles: 'חברי ההרכב ותפקידים',
+    sourceLinks: 'מקורות וקישורים',
+    noMemberData: 'לא נמצאו חברי הרכב מתועדים בפרופיל המובנה.',
+    openSource: 'פתיחת המקור',
+    listeningPath: 'מסלול להאזנה מעמיקה',
+    listeningPathHint: 'קריאה מודרכת בשלושה שלבים: קודם מה שהארכיון שלך כבר מחזיר שוב ושוב, אחר כך נקודת המפנה בקריירה, ולבסוף הפרק העדכני ביותר.',
+    archiveAnchor: 'עוגן הארכיון',
+    evolutionPivot: 'נקודת מפנה',
+    currentChapter: 'הפרק הנוכחי',
+    archiveAnchorBody: 'כדאי להתחיל בפריט שמופיע בתדירות הגבוהה ביותר בהיסטוריית ההאזנה שלך; הוא משמש שער רגשי לפני הכניסה לקטלוג המלא.',
+    evolutionPivotBody: 'הפרק הזה מאפשר לשמוע כיצד השפה של האמן השתנתה — בהפקה, בעוצמה, במלודיה או בשאיפה הרעיונית.',
+    currentChapterBody: 'לסיום, הנקודה העדכנית ביותר בפרופיל מראה לאן הזהות של הפרויקט מכוונת כיום.',
+    trackLabel: 'שיר',
+    trackDossier: 'תיק השיר',
+    trackAtlas: 'פרופיל השיר',
+    selectedTrackHint: 'בחירה בשיר תפתח את הפרופיל שלו, את הקריאה הרגשית ואת תחנת ההאזנה.',
+    trackContext: 'קריאת השיר',
+    trackContextBody: 'שיר מוביל הוא יחידת הזיכרון הקטנה ביותר: הוא אינו מבטא רק טעם, אלא חושף איזו שורה, אנרגיה או מרקם חזרו מספיק פעמים כדי להישאר.',
+    replayRole: 'תפקיד החזרה',
+    emotionalFunction: 'תפקיד רגשי',
+    artistConnection: 'הקשר לאמן',
+    trackRank: 'מיקום בדירוג',
+    trackPlaysMetric: 'השמעות לשיר',
+    trackGenreMetric: 'ז׳אנר',
+    artistAlbumGravity: 'אלבומי האמן בארכיון שלך',
+    artistTrackNeighbors: 'שירים נוספים מאת האמן',
+    trackAlbumHint: 'האלבומים האלה הם סימנים ברמת האמן. מערך הנתונים אינו כולל שיוך מדויק בין כל שיר לאלבום, ולכן מוצג משקל האלבומים של האמן בתוך הארכיון שלך.',
+    trackNeighborsHint: 'שירים סמוכים של אותו אמן בתוך הדירוג ההיסטורי.',
+    openAlbumDossier: 'פתיחת תיק האלבום',
+    openTrackDossier: 'פתיחת תיק השיר',
+    noTrackSelected: 'יש לבחור שיר מהדירוג כדי לפתוח את התיק שלו.',
+    trackReplayCore: 'ליבת החזרה',
+    trackReplayCoreBody: 'השיר נמצא בצמרת הארכיון: כנראה המנון מרכזי, קיצור דרך למצב רגשי או יצירה שמגדירה תקופה.',
+    trackReplayHigh: 'שיר שחוזרים אליו',
+    trackReplayHighBody: 'מספר החזרות מצביע על שיר מוכר ובטוח שחוזרים אליו כשצריך מרקם יציב או מזוהה מיד.',
+    trackReplayMid: 'אות מתמשך',
+    trackReplayMidBody: 'הנוכחות שלו אינה מקרית: הוא מחזיק קו אסתטי בתוך הארכיון, גם אם אינו במרכז המוחלט של הדירוג.',
+    trackReplayDeep: 'חותם קטלוגי',
+    trackReplayDeepBody: 'זהו חותם משני — פחות דומיננטי מההמנונים המרכזיים, אך חשוב להבנת מפת הטעם המלאה.',
+    trackEmotionHeavy: 'הקריאה הרגשית מצביעה על מתח, קתרזיס, דחף גופני והניגוד שבין כובד למלודיה.',
+    trackEmotionSynth: 'הקריאה הרגשית מצביעה על נוסטלגיה זוהרת, תנועה לילית, מהירות מחשבתית ואווירה קולנועית.',
+    trackEmotionEmo: 'הקריאה הרגשית מצביעה על פגיעוּת ישירה, זיכרון רגשי, וידוי וצורך בקרבה.',
+    trackEmotionPop: 'הקריאה הרגשית מצביעה על בהירות מלודית, משיכה מיידית לחזרה ואנרגיה חברתית או מרחיבה.',
+    trackEmotionDefault: 'הקריאה הרגשית נוצרת מהשילוב בין ז׳אנר, חזרתיות וזהות האמן — אות אישי יותר מתווית קבועה.',
+    albumLabel: 'אלבום',
+    curatedAlbumLabel: 'אלבום עם הקשר ערוך',
+    albumDossier: 'תיק האלבום',
+    albumAtlas: 'פרופיל האלבום',
+    selectedAlbumHint: 'בחירה באלבום תפתח את הפרופיל, ההקשר ותחנת ההאזנה שלו.',
+    albumContext: 'הקשר האלבום',
+    albumArchiveRole: 'תפקיד האלבום בארכיון שלך',
+    artistBridge: 'החיבור לאמן',
+    catalogRole: 'תפקיד ברצף הקטלוגי',
+    releaseYear: 'שנת יציאה',
+    playsRank: 'מיקום בדירוג',
+    artistInArchive: 'השמעות של האמן',
+    catalogChapter: 'פרק בקטלוג',
+    relatedArtistTracks: 'שירי האמן בארכיון שלך',
+    artistAlbumsNearby: 'אלבומים סמוכים של האמן',
+    albumTracksHint: 'השירים האלה אינם בהכרח חלק מהאלבום; הם מראים כיצד אותו אמן מופיע בדירוג השירים שלך.',
+    openArtistDossier: 'פתיחת תיק האמן',
+    noAlbumContext: 'עדיין אין לאלבום הזה הקשר מדויק בעריכה מקומית. האפליקציה מציגה את משקלו בארכיון ומקשרת אותו לפרופיל האמן, כאשר הוא קיים.',
+    albumArchiveRoleBody: 'משקלו נובע מהאזנה עקבית ברמת האלבום — אות איטי ומכוון יותר משיר יחיד שחוזר בלופ.',
+    earlyCatalogRole: 'זהו שלב מוקדם ברצף הקטלוגי הערוך, ולכן הוא עוזר לשמוע את השפה של האמן בנקודת ההתחלה.',
+    middleCatalogRole: 'זהו פרק של שינוי, שמאפשר להבין את המעבר בהפקה, ברגש או בשאיפה האמנותית.',
+    lateCatalogRole: 'זהו פרק מאוחר או עדכני, שמראה לאן הזהות של האמן התקדמה.',
+    unknownCatalogRole: 'האלבום עדיין אינו משויך לרצף הקטלוגי הערוך, אך מיקומו בדירוג מעיד על משקל אמיתי בארכיון.',
+    keyAlbums: 'אלבומי מפתח',
+    archiveAlbums: 'אלבומים בארכיון שלך',
+    topTracks: 'שירים בולטים בארכיון שלך',
+    eraSignals: 'שנות דומיננטיות',
+    relatedArtists: 'אמנים קשורים בארכיון שלך',
+    relatedHint: 'הקשרים מחושבים לפי ז׳אנרים משותפים, ארץ מוצא ומשקל בדירוג ההיסטורי שלך.',
+    catalogFootprint: 'טביעת רגל קטלוגית',
+    emotionalEngine: 'המנוע הרגשי',
+    artistLongBio: 'ביוגרפיה רגשית מורחבת',
+    albumLongRead: 'קריאה מורחבת של האלבום',
+    trackLongRead: 'קריאה מורחבת של השיר',
+    primaryEmotion: 'רגש מרכזי',
+    secondaryEmotion: 'רובד משני',
+    emotionalIntensity: 'עוצמה רגשית',
+    emotionalAxis: 'צירים רגשיים',
+    emotionalEvidence: 'עדויות מהמנוע',
+    recommendedUse: 'שימוש מומלץ',
+    emotionalEngineNote: 'החישוב מבוסס על ז׳אנר, דירוג, השמעות, אלבומים, שירים סמוכים, שנים דומיננטיות והפרופיל המקומי, כאשר הוא קיים.',
+    moodLens: 'עדשת מצב הרוח',
+    moodConfidence: 'רמת הביטחון בזיהוי',
+    moodRitual: 'טקס מוצע',
+    albumMoodBody: 'הרובד הזה מתרגם את קריאת האלבום לזהות חזותית: צבע, אווירה ותפקיד ברור בתוך המוזיאון.',
+    trackMoodBody: 'הרובד הזה הופך את החזרתיות של השיר לאות חזותי מיידי: איזה מצב הוא מפעיל וכיצד להשתמש בו בצורה מיטבית.',
+    moodFilter: 'סינון לפי מצב רוח',
+    moodFilterCompactHint: 'אפשר לצמצם את הארכיון',
+    moodFilterHint: 'הסינון מציג אמנים, שירים ואלבומים לפי מצב הרוח הדומיננטי. הדירוג נשמר, אך אפשר לנווט בארכיון דרך מצבים רגשיים.',
+    allMoods: 'הכול',
+    catalogRange: 'טווח הקטלוג הערוך',
+    archiveCovers: 'עטיפות מהארכיון',
+    visualSignal: 'אות חזותי',
+    knownAlbums: 'אלבומים עם הקשר',
+    yearsShort: 'שנים',
+    sameCountry: 'אותה ארץ מוצא',
+    sharedStyle: 'סגנון משותף',
+    hasProfile: 'פרופיל זמין',
+    topChart: 'השוואת 20 המובילים',
+    archivePlays: 'השמעות בארכיון שלך',
+    noProfileTitle: 'הביוגרפיה עדיין בהכנה',
+    noProfileBody: 'עדיין אין לאמן הזה פרופיל בעריכה מקומית. האפליקציה מציגה את העדויות שכבר קיימות בארכיון, והפרופיל מוכן להשלמה בהמשך.',
+    noAlbums: 'לא נמצאו אלבומים של האמן בדירוג האלבומים.',
+    noTracks: 'לא נמצאו שירים של האמן בדירוג השירים.',
+    noEras: 'האמן עדיין אינו מוביל שנה מלאה בארכיון.',
+    selectedHint: 'בחירה באמן תפתח את הפרופיל שלו.',
+    released: 'שנת יציאה',
+    albumCount: 'אלבומים שזוהו',
+    trackCount: 'שירים שזוהו',
+    eraCount: 'שנים דומיננטיות',
+    albumPlays: 'השמעות אלבומים',
+    trackPlays: 'השמעות שירים',
+    curatedNote: 'הפרופיל הוא שכבת עריכה מקומית שמשלבת עובדות ציבוריות על הקריירה עם עדויות מהיסטוריית ההאזנה שלך. בהמשך אפשר לחבר אותו ל-Spotify,‏ MusicBrainz או לאמנות שנוצרה באמצעות Claude.',
+    lineupTitle: 'הרכב',
+    lineupHint: 'חברי הרכב המתועדים ב-MusicBrainz, כולל כלי נגינה ושנות פעילות. נקודות מוארות מסמנות חברים נוכחיים.',
+    lineupCurrent: 'נוכחי',
+    lineupPast: 'לשעבר',
+    lineupSince: (year: string) => `מאז ${year}`,
+    lineupSpan: (from: string, to: string) => `${from}–${to}`,
+    lineupMore: (count: number) => `עוד ${count} חברי הרכב לאורך ההיסטוריה של הלהקה`,
+    officialWebsite: 'האתר הרשמי',
+    curatedKnowledgeSummary: (source: string, origin: string, description: string, background: string) =>
+      `פרופיל מקומי מאומת ממקור ${source}: ${origin}. ${description} ${background}`,
+    wikidataKnowledgeSummary: (id: string, description: string) => `פרופיל ציבורי ${id}: ${description}.`,
+    ageLabel: (age: number) => `גיל: ${age}`,
+    rolesLabel: 'תפקידים',
+    statusLabel: 'סטטוס',
+    clearSearch: 'ניקוי החיפוש',
+    wholeArchive: 'כל הארכיון',
+    countedListensOther: 'השמעות שנספרו · כולל קטגוריית ״אחר״ מפורשת',
+    yearlySubtitle: (maxDate?: string | null) => `מדד אחד בכל פעם, בסולם עצמאי${maxDate ? ` · הנתונים נצפו עד ${maxDate}` : ''}.`,
+    yearlySummary: (label: string) => `${label} מוצג בנפרד, כדי שנפח ההאזנה לא ישטח את מספר האמנים.`,
+    yearLabel: 'שנה',
+    yearlyMetricAria: 'המדד בתרשים השנתי',
   },
 } as const;
 
 export default function TopHistorico({ data }: TopHistoricoProps) {
   const { tc, t, lang } = useApp();
+  const chartAnimation = useChartAnimation();
   const {
     selectedArtistName: globalArtist, setSelectedArtistName,
     selectedAlbumKey: globalAlbum, setSelectedAlbumKey,
@@ -412,21 +602,62 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   } = useApp();
 
   const [tab, setTabState] = useState<TopTab>('artistas');
+  const [yearMetric, setYearMetric] = useState<'plays' | 'artistas'>('plays');
   const [search, setSearch] = useState('');
   const [selectedMood, setSelectedMood] = useState<EmotionalMoodKey | 'all'>('all');
+  const [moodFilterExpanded, setMoodFilterExpanded] = useState(() =>
+    typeof window === 'undefined' || !window.matchMedia
+      ? true
+      : window.matchMedia('(min-width: 768px)').matches);
+  const [mobileDossier, setMobileDossier] = useState<MobileDossierKind | null>(null);
+  const mobileDossierTriggerRef = useRef<HTMLElement | null>(null);
+  const tabListRef = useRef<HTMLDivElement>(null);
+
+  const closeMobileDossier = useCallback(() => setMobileDossier(null), []);
+  const openMobileDossier = useCallback((kind: MobileDossierKind, trigger?: HTMLElement) => {
+    if (typeof window !== 'undefined' && window.matchMedia?.('(max-width: 1279px)').matches) {
+      if (trigger) {
+        mobileDossierTriggerRef.current = trigger;
+      } else if (mobileDossier === null) {
+        mobileDossierTriggerRef.current = document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      }
+      setMobileDossier(kind);
+    }
+  }, [mobileDossier]);
 
   // Sync local tab state from global topSubTab
   useEffect(() => {
     if (topSubTab === 'artists') setTabState('artistas');
     else if (topSubTab === 'albums') setTabState('albums');
     else if (topSubTab === 'tracks') setTabState('canciones');
+    else if (topSubTab === 'genres') setTabState('generos');
+    else if (topSubTab === 'years') setTabState('anos');
   }, [topSubTab]);
 
+  useEffect(() => {
+    const activeButton = tabListRef.current?.querySelector<HTMLElement>(`[data-top-tab="${tab}"]`);
+    activeButton?.scrollIntoView?.({ block: 'nearest', inline: 'center', behavior: 'auto' });
+  }, [tab]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const media = window.matchMedia('(min-width: 768px)');
+    const syncLayout = () => setMoodFilterExpanded(media.matches);
+    syncLayout();
+    media.addEventListener('change', syncLayout);
+    return () => media.removeEventListener('change', syncLayout);
+  }, []);
+
   const setTab = (t: TopTab) => {
+    setMobileDossier(null);
     setTabState(t);
     if (t === 'artistas') setTopSubTab('artists');
     else if (t === 'albums') setTopSubTab('albums');
     else if (t === 'canciones') setTopSubTab('tracks');
+    else if (t === 'generos') setTopSubTab('genres');
+    else if (t === 'anos') setTopSubTab('years');
   };
 
   // Initialize global defaults if empty
@@ -453,6 +684,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const COLORS = [tc.c1, tc.c2, tc.c3, tc.c4, '#fb923c', '#a78bfa', '#34d399', '#f59e0b', '#ec4899', '#6ee7b7'];
   const artistCopy = ARTIST_ATLAS_COPY[lang];
   const moodEntries = Object.values(EMOTIONAL_MOOD_TAXONOMY);
+  const locale = localeFor(lang);
 
   const tabs = [
     { id: 'artistas',  label: t.topHistorico.tabArtists,  icon: MicVocal },
@@ -462,7 +694,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     { id: 'anos',      label: t.topHistorico.tabYears,    icon: Trophy },
   ] as const;
 
-  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
   const fmtList = useCallback((items: string[], max = 4) => items.slice(0, max).join(', '), []);
   // Diacritic-insensitive search: "sigur ros" must find "Sigur Rós", and an
   // NFD-encoded uploaded name must match its NFC twin.
@@ -499,8 +731,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       artist?.genre,
       profile?.signature_moods.en.join(' '),
       profile?.signature_moods.es.join(' '),
+      profile?.signature_moods.he.join(' '),
       albumMeta?.description.en,
       albumMeta?.description.es,
+      albumMeta?.description.he,
       album.artist,
       album.title,
     ].filter(Boolean).join(' '), album.plays, {
@@ -531,6 +765,32 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     return map;
   }, [data.top_artists]);
 
+  const artistRanks = useMemo(() =>
+    new Map(data.top_artists.map((artist, index) => [artist.name, index + 1])),
+    [data.top_artists]);
+
+  const trackRowMoods = useMemo(() =>
+    new Map(data.top_tracks.map((track, index) => [trackKey(track.artist, track.title), buildTrackRowMood(track, index)])),
+    [buildTrackRowMood, data.top_tracks]);
+
+  const trackRanks = useMemo(() =>
+    new Map(data.top_tracks.map((track, index) => [trackKey(track.artist, track.title), index + 1])),
+    [data.top_tracks]);
+
+  const albumRowMoods = useMemo(() =>
+    new Map(data.top_albums.map((album, index) => {
+      const profile = getArtistEnrichment(album.artist);
+      return [
+        albumKey(album.artist, album.title),
+        buildAlbumRowMood(album, index, profile, getAlbumEnrichment(profile, album.title)),
+      ];
+    })),
+    [buildAlbumRowMood, data.top_albums]);
+
+  const albumRanks = useMemo(() =>
+    new Map(data.top_albums.map((album, index) => [albumKey(album.artist, album.title), index + 1])),
+    [data.top_albums]);
+
   /* ── Filtered lists ── */
   const filteredArtists = useMemo(() =>
     data.top_artists.filter(a => {
@@ -541,26 +801,25 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     [artistMoodProfiles, data.top_artists, q, selectedMood]);
 
   const filteredTracks = useMemo(() =>
-    data.top_tracks.filter((track, index) => {
+    data.top_tracks.filter(track => {
       const matchesSearch = !q || searchable(track.title).includes(q) || searchable(track.artist).includes(q);
-      const matchesMood = selectedMood === 'all' || buildTrackRowMood(track, index).moodKey === selectedMood;
+      const matchesMood = selectedMood === 'all' || trackRowMoods.get(trackKey(track.artist, track.title))?.moodKey === selectedMood;
       return matchesSearch && matchesMood;
     }),
-    [buildTrackRowMood, data.top_tracks, q, selectedMood]);
+    [data.top_tracks, q, selectedMood, trackRowMoods]);
 
   const filteredAlbums = useMemo(() =>
-    data.top_albums.filter((album, index) => {
+    data.top_albums.filter(album => {
       const matchesSearch = !q || searchable(album.title).includes(q) || searchable(album.artist).includes(q);
-      const albumProfile = getArtistEnrichment(album.artist);
       const matchesMood = selectedMood === 'all'
-        || buildAlbumRowMood(album, index, albumProfile, getAlbumEnrichment(albumProfile, album.title)).moodKey === selectedMood;
+        || albumRowMoods.get(albumKey(album.artist, album.title))?.moodKey === selectedMood;
       return matchesSearch && matchesMood;
     }),
-    [buildAlbumRowMood, data.top_albums, q, selectedMood]);
+    [albumRowMoods, data.top_albums, q, selectedMood]);
 
   const selectedTrack = useMemo(() =>
-    data.top_tracks.find(track => trackKey(track.artist, track.title) === selectedTrackKey) ?? data.top_tracks[0],
-    [data.top_tracks, selectedTrackKey]);
+    filteredTracks.find(track => trackKey(track.artist, track.title) === selectedTrackKey) ?? filteredTracks[0],
+    [filteredTracks, selectedTrackKey]);
 
   const selectedTrackRank = useMemo(() =>
     selectedTrack
@@ -658,8 +917,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     : tc.c2;
 
   const selectedAlbum = useMemo(() =>
-    data.top_albums.find(album => albumKey(album.artist, album.title) === selectedAlbumKey) ?? data.top_albums[0],
-    [data.top_albums, selectedAlbumKey]);
+    filteredAlbums.find(album => albumKey(album.artist, album.title) === selectedAlbumKey) ?? filteredAlbums[0],
+    [filteredAlbums, selectedAlbumKey]);
 
   const selectedAlbumProfile = useMemo(() =>
     selectedAlbum ? getArtistEnrichment(selectedAlbum.artist) : undefined,
@@ -732,8 +991,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     : tc.c3;
 
   const selectedArtist = useMemo(() =>
-    data.top_artists.find(a => a.name === selectedArtistName) ?? data.top_artists[0],
-    [data.top_artists, selectedArtistName]);
+    filteredArtists.find(a => a.name === selectedArtistName) ?? filteredArtists[0],
+    [filteredArtists, selectedArtistName]);
 
   const selectedProfile = useMemo(() =>
     selectedArtist ? getArtistEnrichment(selectedArtist.name) : undefined,
@@ -801,13 +1060,14 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     const curated = selectedKnowledge.curated;
     const mb = selectedKnowledge.musicbrainz;
     const description = curated
-      ? (lang === 'es'
-        ? `Perfil local verificado desde ${curated.sourceName}: ${curated.origin}. ${curated.background}`
-        : `${curated.description} ${curated.background}`)
+      ? artistCopy.curatedKnowledgeSummary(
+        curated.sourceName,
+        curated.origin,
+        curated.description,
+        curated.background,
+      )
       : wd?.description
-        ? (lang === 'es'
-          ? `Ficha pública ${wd.id}: ${wd.description}.`
-          : `${wd.description}.`)
+        ? artistCopy.wikidataKnowledgeSummary(wd.id, wd.description)
         : mb?.disambiguation
           ? `${mb.disambiguation}.`
           : artistCopy.noProfileBody;
@@ -844,7 +1104,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     });
 
     return { description, facts, members, links };
-  }, [artistCopy.knownAlbums, artistCopy.noProfileBody, fmtList, lang, selectedKnowledge]);
+  }, [artistCopy, fmtList, selectedKnowledge]);
 
   const selectedListeningPath = (() => {
     if (!selectedArtist) return [];
@@ -909,20 +1169,45 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   /* ── Charts data ── */
   // Memoized: local search state re-renders this component on every keystroke,
   // and none of these depend on the search box.
+  const yearCoverage = useMemo(
+    () => getDatasetCoverage({ daily_plays: data.daily_plays }),
+    [data.daily_plays],
+  );
   const yearlyData = useMemo(() =>
-    data.yearly_eras.map(e => ({ year: String(e.year), plays: e.plays, artistas: e.unique_artists })),
-    [data.yearly_eras]);
+    data.yearly_eras.map(e => ({
+      year: yearCoverage.isPartialYear && e.year === yearCoverage.maxYear ? `${e.year} YTD` : String(e.year),
+      plays: e.plays,
+      artistas: e.unique_artists,
+    })),
+    [data.yearly_eras, yearCoverage.isPartialYear, yearCoverage.maxYear]);
+  const selectedYearMetric = yearMetric === 'plays'
+    ? { label: t.topHistorico.playsLegend, color: tc.c1 }
+    : { label: t.topHistorico.uniqueArtistsLegend, color: tc.c3 };
 
-  const genreData = useMemo(() => {
-    const genreMap: Record<string, number> = {};
-    data.top_artists.forEach(a => { const g = normalizeGenre(a.genre); genreMap[g] = (genreMap[g] || 0) + a.plays; });
-    return Object.entries(genreMap).sort((a, b) => b[1] - a[1]).slice(0, 15).map(([name, plays]) => ({ name, plays }));
-  }, [data.top_artists]);
+  const genreDistribution = useMemo(
+    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 15),
+    [data.core_metrics.total_plays, data.top_genres],
+  );
+  const genreData = useMemo(
+    () => genreDistribution.rows.map(row => ({
+      ...row,
+      genre: row.name,
+      name: localizeGenreName(row.name, lang),
+    })),
+    [genreDistribution.rows, lang],
+  );
 
   /* ── Treemap ── */
-  const treemapChildren = useMemo(() =>
-    genreData.slice(0, 10).map(g => ({ name: g.name, size: g.plays, plays: g.plays })),
-    [genreData]);
+  const treemapChildren = useMemo(
+    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 10).rows
+      .map(row => ({
+        ...row,
+        genre: row.name,
+        name: localizeGenreName(row.name, lang),
+        size: row.plays,
+      })),
+    [data.core_metrics.total_plays, data.top_genres, lang],
+  );
   const TREEMAP_COLORS = COLORS;
 
   const CustomTreemapContent = ({ x, y, width, height, index, name, plays }: any) => {
@@ -938,7 +1223,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         )}
         {width > 55 && height > 38 && (
           <text x={x + 8} y={y + 32} fontSize={9} fontFamily="monospace"
-            fill="#9ca3af">{plays.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</text>
+            fill="#9ca3af">{plays.toLocaleString(locale)}</text>
         )}
       </g>
     );
@@ -947,12 +1232,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
     return (
-      <div className="rounded-xl px-4 py-3 text-xs font-mono shadow-lg"
-        style={{ backgroundColor: '#070e1c', border: `1px solid ${tc.c1}40` }}>
-        <p className="text-white font-bold mb-1">{label}</p>
+      <div className="nova-chart-tooltip rounded-xl px-4 py-3 text-xs font-mono shadow-lg"
+        style={{ border: `1px solid ${tc.c1}40` }}>
+        <p className="font-bold mb-1">{label}</p>
         {payload.map((p: any, i: number) => (
           <p key={i} style={{ color: p.color ?? tc.c1 }}>
-            {p.name}: <span className="text-white">{Number(p.value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES')}</span>
+            {p.name}: <span className="nova-chart-tooltip__value">{Number(p.value).toLocaleString(locale)}</span>
           </p>
         ))}
       </div>
@@ -969,7 +1254,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     color: string;
     avatarName?: string;
     flagCountry?: string;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
     active?: boolean;
     /** When set (with coverKind), show album/track artwork instead of the artist photo. */
     coverTitle?: string;
@@ -983,7 +1268,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   }) => {
     const rowBody = (
       <>
-        <div className="flex items-center space-x-3 truncate min-w-0">
+        <div className="flex items-center gap-3 truncate min-w-0">
           <span className="type-metric w-7 h-7 shrink-0 flex items-center justify-center rounded-lg text-xs font-black"
             style={{ color, backgroundColor: `${color}18`, border: `1px solid ${color}40` }}>
             {rank}
@@ -991,8 +1276,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {coverTitle && coverKind && avatarName
             ? <CoverArt artist={avatarName} title={coverTitle} kind={coverKind} size={36} />
             : avatarName && <ArtistAvatar name={avatarName} size={32} tooltip={false} />}
-          <div className="truncate">
-            <p className="type-meta font-bold text-white truncate flex items-center gap-1.5">
+          <div className="truncate" dir="auto">
+            <p className="type-meta font-bold text-white truncate flex items-center gap-1.5" dir="auto">
               {moodColor && (
                 <span className="w-2 h-2 rounded-full shrink-0"
                   style={{ backgroundColor: moodColor, boxShadow: `0 0 6px ${moodColor}` }} />
@@ -1005,25 +1290,25 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 {moodKey && (
                   <MoodBadge moodKey={moodKey} confidence={moodConfidence} size="sm" className="shrink-0" />
                 )}
-                <span className="truncate">{sub}</span>
+                <span className="truncate" dir="auto">{sub}</span>
               </p>
             )}
           </div>
         </div>
-        <div className="flex items-center gap-2 shrink-0 ml-3">
+        <div className="flex items-center gap-2 shrink-0 ms-3">
           <span className="type-metric text-xs font-bold px-3 py-1 rounded-full"
             style={{ color, backgroundColor: `${color}15`, border: `1px solid ${color}30` }}>
             {fmtNum(plays)}
           </span>
           {onClick && (
-            <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
+            <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors rtl:rotate-180" />
           )}
         </div>
       </>
     );
 
     const rowClassName = [
-      'flex w-full items-center justify-between p-3 rounded-2xl transition-all group text-left',
+      'flex w-full items-center justify-between p-3 rounded-2xl transition-all group text-start',
       onClick ? 'nova-surface--interactive hover:bg-white/5 cursor-pointer' : 'hover:bg-white/3',
       active ? 'bg-white/7 shadow-lg' : '',
     ].join(' ');
@@ -1052,61 +1337,97 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     );
   };
 
-  const MoodFilterBar = () => (
-    <div className="nova-surface nova-surface--utility relative overflow-hidden rounded-2xl p-3">
-      <div className="absolute inset-0 pointer-events-none opacity-70"
-        style={{
-          background: `radial-gradient(circle at 8% 10%, ${tc.c1}18, transparent 28%), radial-gradient(circle at 90% 10%, ${tc.c3}14, transparent 26%)`,
-        }} />
-      <div className="relative z-10 flex flex-col gap-3">
-        <div className="flex items-start gap-3 max-w-3xl">
-          <div className="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0"
-            style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="type-kicker" style={{ color: tc.c1 }}>
-              {artistCopy.moodFilter}
-            </h3>
-            <p className="type-meta text-gray-500 mt-1 max-w-4xl">
-              {artistCopy.moodFilterHint}
-            </p>
-          </div>
-        </div>
+  const selectedMoodLabel = selectedMood === 'all'
+    ? artistCopy.allMoods
+    : EMOTIONAL_MOOD_TAXONOMY[selectedMood].shortLabel[lang];
 
-        <div className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+  const MoodButtons = () => (
+    <div
+      className="flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible"
+      role="group"
+      aria-label={artistCopy.moodFilter}
+    >
+      <button
+        type="button"
+        onClick={() => setSelectedMood('all')}
+        aria-pressed={selectedMood === 'all'}
+        className="type-kicker nova-surface--interactive inline-flex min-h-11 shrink-0 items-center gap-2 rounded-2xl border px-3 py-2 transition-all"
+        style={selectedMood === 'all'
+          ? { color: '#020617', backgroundColor: tc.c1, borderColor: tc.c1, boxShadow: `0 0 18px ${tc.c1}28` }
+          : { color: tc.c1, backgroundColor: `${tc.c1}10`, borderColor: `${tc.c1}30` }}>
+        <Sparkles className="h-3.5 w-3.5" />
+        {artistCopy.allMoods}
+      </button>
+      {moodEntries.map(mood => {
+        const Icon = MOOD_ICONS[mood.icon] ?? Sparkles;
+        const active = selectedMood === mood.key;
+        return (
           <button
+            key={mood.key}
             type="button"
-            onClick={() => setSelectedMood('all')}
-            className="type-kicker nova-surface--interactive inline-flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 transition-all shrink-0"
-            style={selectedMood === 'all'
-              ? { color: '#020617', backgroundColor: tc.c1, borderColor: tc.c1, boxShadow: `0 0 18px ${tc.c1}28` }
-              : { color: tc.c1, backgroundColor: `${tc.c1}10`, borderColor: `${tc.c1}30` }}>
-            <Sparkles className="w-3.5 h-3.5" />
-            {artistCopy.allMoods}
+            onClick={() => setSelectedMood(active ? 'all' : mood.key)}
+            aria-pressed={active}
+            className="type-kicker nova-surface--interactive inline-flex min-h-11 shrink-0 items-center gap-2 rounded-2xl border px-3 py-2 transition-all"
+            style={active
+              ? { color: '#020617', backgroundColor: mood.color, borderColor: mood.color, boxShadow: `0 0 18px ${mood.color}32` }
+              : { color: mood.color, backgroundColor: `${mood.color}10`, borderColor: `${mood.color}32` }}
+            title={mood.description[lang]}
+          >
+            <Icon className="h-3.5 w-3.5" />
+            {mood.shortLabel[lang]}
           </button>
-          {moodEntries.map(mood => {
-            const Icon = MOOD_ICONS[mood.icon] ?? Sparkles;
-            const active = selectedMood === mood.key;
-            return (
-              <button
-                key={mood.key}
-                type="button"
-                onClick={() => setSelectedMood(active ? 'all' : mood.key)}
-                className="type-kicker nova-surface--interactive inline-flex min-h-11 items-center gap-2 rounded-2xl border px-3 py-2 transition-all shrink-0"
-                style={active
-                  ? { color: '#020617', backgroundColor: mood.color, borderColor: mood.color, boxShadow: `0 0 18px ${mood.color}32` }
-                  : { color: mood.color, backgroundColor: `${mood.color}10`, borderColor: `${mood.color}32` }}
-                title={mood.description[lang]}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                {mood.shortLabel[lang]}
-              </button>
-            );
-          })}
+        );
+      })}
+    </div>
+  );
+
+  const MoodFilterBar = () => (
+    <details
+      open={moodFilterExpanded}
+      onToggle={event => {
+        if (typeof window === 'undefined' || !window.matchMedia?.('(min-width: 768px)').matches) {
+          setMoodFilterExpanded(event.currentTarget.open);
+        }
+      }}
+      className="nova-surface nova-surface--utility group relative overflow-hidden rounded-2xl"
+    >
+      <summary
+        aria-label={`${artistCopy.moodFilter}: ${selectedMoodLabel}`}
+        className="nova-surface--interactive flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 md:hidden [&::-webkit-details-marker]:hidden"
+      >
+        <span className="flex min-w-0 items-center gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl"
+            style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
+            <Sparkles className="h-4 w-4" />
+          </span>
+          <span className="min-w-0">
+            <span className="type-kicker block" style={{ color: tc.c1 }}>{selectedMoodLabel}</span>
+            <span className="type-meta block truncate text-gray-500">{artistCopy.moodFilterCompactHint}</span>
+          </span>
+        </span>
+        <ChevronRight className="h-4 w-4 shrink-0 text-gray-500 transition-transform group-open:rotate-90" />
+      </summary>
+      <div className="relative border-t border-white/5 px-3 pb-3 pt-3 md:block md:border-0 md:p-3">
+        <div className="pointer-events-none absolute inset-0 opacity-70"
+          style={{
+            background: `radial-gradient(circle at 8% 10%, ${tc.c1}18, transparent 28%), radial-gradient(circle at 90% 10%, ${tc.c3}14, transparent 26%)`,
+          }} />
+        <div className="relative z-10 flex flex-col gap-3">
+          <div className="hidden max-w-3xl items-start gap-3 md:flex">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl"
+              style={{ color: tc.c1, backgroundColor: `${tc.c1}16`, border: `1px solid ${tc.c1}35` }}>
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <div>
+              <h3 className="type-kicker" style={{ color: tc.c1 }}>{artistCopy.moodFilter}</h3>
+              <p className="type-meta mt-1 max-w-4xl text-gray-500">{artistCopy.moodFilterHint}</p>
+            </div>
+          </div>
+          <p className="type-meta text-gray-500 md:hidden">{artistCopy.moodFilterHint}</p>
+          <MoodButtons />
         </div>
       </div>
-    </div>
+    </details>
   );
 
   const InfoBlock = ({ title, body, icon: Icon, color }: { title: string; body: string; icon: React.ElementType; color: string }) => (
@@ -1333,6 +1654,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             onClick={() => {
               setSelectedAlbumKey(albumKey(archivedAlbum.artist, archivedAlbum.title));
               setTab('albums');
+              openMobileDossier('album');
             }}
             className="w-full rounded-2xl border border-white/8 bg-white/[0.035] p-3 text-left transition-all hover:bg-white/[0.06]"
             style={{ boxShadow: `inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px ${color}12` }}
@@ -1398,12 +1720,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <MoodBadge moodKey={selectedTrackReading.moodKey} confidence={selectedTrackReading.moodConfidence} />
                 )}
               </div>
-              <h3 className="type-title text-white">
+              <h3 className="type-title text-white" dir="auto">
                 {selectedTrack.title}
               </h3>
               <p className="text-sm text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
                 {trackFlagCountry && <FlagArt country={trackFlagCountry} size={17} />}
-                <span>{trackArtistName}</span>
+                <bdi>{trackArtistName}</bdi>
                 {trackDisplayCountry && (
                   <>
                     <span className="text-gray-600">/</span>
@@ -1483,6 +1805,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               onClick={() => {
                 setSelectedArtistName(selectedTrackArtist?.name ?? selectedTrack.artist);
                 setTab('artistas');
+                openMobileDossier('artist');
               }}
               className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all hover:bg-white/10"
               style={{ color: tc.c4, borderColor: `${tc.c4}45`, backgroundColor: `${tc.c4}12` }}
@@ -1554,6 +1877,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     onClick={() => {
                       setSelectedAlbumKey(albumKey(album.artist, album.title));
                       setTab('albums');
+                      openMobileDossier('album');
                     }}
                     className="w-full flex items-center justify-between gap-3 text-xs text-left rounded-xl px-2 py-2 hover:bg-white/[0.05] transition-all"
                   >
@@ -1651,7 +1975,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <MoodBadge moodKey={selectedArtistMood.moodKey} confidence={selectedArtistMood.confidence} />
                     )}
                   </div>
-                  <h3 className="type-title text-white text-neon-glow">
+                  <h3 className="type-title text-white text-neon-glow" dir="auto">
                     {selectedProfile?.name ?? selectedArtist.name}
                   </h3>
                   <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
@@ -1701,6 +2025,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         onClick={() => {
                           setSelectedAlbumKey(albumKey(album.artist, album.title));
                           setTab('albums');
+                          openMobileDossier('album');
                         }}
                         key={`${album.artist}-${album.title}`}
                         className="relative aspect-square overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-transform hover:scale-[1.03]"
@@ -1739,15 +2064,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <div key={member.name} className="group relative flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-2 transition-all hover:bg-white/[0.07] hover:border-white/15 cursor-help">
                         <ArtistAvatar name={member.name} size={28} tooltip={false} />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-xs font-bold text-white">{member.name}</p>
+                          <p className="truncate text-xs font-bold text-white" dir="auto">{member.name}</p>
                           <p className="truncate text-[10px] font-mono text-gray-500 flex items-center gap-1">
                             <span className="shrink-0">{getRoleIcon(member.roles)}</span>
                             <span className="truncate">{member.roles.slice(0, 2).join(' · ') || (member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast)}</span>
                           </p>
                         </div>
-                        <div className="shrink-0 text-right">
+                        <div className="shrink-0 text-end">
                           <span
-                            className="ml-auto block h-1.5 w-1.5 rounded-full"
+                            className="ms-auto block h-1.5 w-1.5 rounded-full"
                             title={member.current ? artistCopy.lineupCurrent : artistCopy.lineupPast}
                             style={{
                               backgroundColor: member.current ? '#22c55e' : '#6b7280',
@@ -1765,14 +2090,14 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
                         {/* Cyberpunk Glassmorphic Hover Tooltip */}
                         <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2.5 w-56 -translate-x-1/2 scale-95 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:scale-100 group-hover:opacity-100">
-                          <div className="rounded-xl border border-white/15 bg-black/95 p-3 shadow-2xl backdrop-blur-md text-left">
+                          <div className="rounded-xl border border-white/15 bg-black/95 p-3 shadow-2xl backdrop-blur-md text-start">
                             <div className="flex items-center gap-2 mb-2">
                               <ArtistAvatar name={member.name} size={36} tooltip={false} />
                               <div className="min-w-0 flex-1">
-                                <p className="text-xs font-black text-white truncate">{member.name}</p>
+                                <p className="text-xs font-black text-white truncate" dir="auto">{member.name}</p>
                                 {enrichment?.age && (
                                   <p className="text-[10px] font-mono text-cyan-400">
-                                    {lang === 'es' ? `Edad: ${enrichment.age} años` : `Age: ${enrichment.age}`}
+                                    {artistCopy.ageLabel(enrichment.age)}
                                   </p>
                                 )}
                                 {enrichment?.birthDate && !enrichment?.age && (
@@ -1785,7 +2110,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                             
                             <div className="border-t border-white/10 pt-2 mb-2">
                               <p className="text-[9px] font-mono text-gray-400 uppercase tracking-wider mb-1">
-                                {lang === 'es' ? 'Roles' : 'Roles'}
+                                {artistCopy.rolesLabel}
                               </p>
                               <div className="flex flex-wrap gap-1">
                                 {member.roles.slice(0, 5).map(r => (
@@ -1854,7 +2179,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             <div className="rounded-2xl bg-white/[0.035] border border-white/8 p-3">
               <div className="flex items-center gap-2 mb-1">
                 <Sparkles className="w-4 h-4" style={{ color: tc.c4 }} />
-                <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500">Status</p>
+                <p className="text-[10px] font-mono uppercase tracking-widest text-gray-500">{artistCopy.statusLabel}</p>
               </div>
               <p className="text-xs text-gray-300 leading-relaxed">{selectedProfile?.status[lang] ?? artistCopy.noProfileTitle}</p>
             </div>
@@ -1929,7 +2254,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       <div className="flex flex-wrap gap-2">
                         {selectedKnowledgeSummary.links.slice(0, 8).map((url) => {
                           const linkStyle = getLinkColor(url, tc.c4);
-                          const platformName = getLinkLabel(url);
+                          const platformName = getLinkLabel(url, artistCopy.officialWebsite);
                           return (
                             <a key={url} href={url} target="_blank" rel="noreferrer"
                               className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[10px] font-mono font-bold transition-all hover:scale-[1.04] active:scale-95 shadow-sm hover:shadow-md"
@@ -2083,6 +2408,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                       onClick={() => {
                         setSelectedAlbumKey(albumKey(album.artist, album.title));
                         setTab('albums');
+                        openMobileDossier('album');
                       }}
                       className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-1.5 text-left text-xs transition-colors hover:bg-white/[0.06]"
                     >
@@ -2114,6 +2440,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     onClick={() => {
                       setSelectedTrackKey(trackKey(track.artist, track.title));
                       setTab('canciones');
+                      openMobileDossier('track');
                     }}
                     className="flex w-full items-center justify-between gap-3 rounded-xl px-2 py-1.5 text-left text-xs transition-colors hover:bg-white/[0.06]"
                   >
@@ -2280,12 +2607,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     <MoodBadge moodKey={selectedAlbumReading.moodKey} confidence={selectedAlbumReading.moodConfidence} />
                   )}
                 </div>
-                <h3 className="type-title text-white">
+                <h3 className="type-title text-white" dir="auto">
                   {selectedAlbum.title}
                 </h3>
                 <p className="text-sm text-gray-400 mt-2 flex items-center gap-2 flex-wrap">
                   {albumFlagCountry && <FlagArt country={albumFlagCountry} size={17} />}
-                  <span>{albumArtistName}</span>
+                  <bdi>{albumArtistName}</bdi>
                   {albumDisplayCountry && (
                     <>
                       <span className="text-gray-600">/</span>
@@ -2384,6 +2711,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               onClick={() => {
                 setSelectedArtistName(selectedAlbumArtist?.name ?? selectedAlbum.artist);
                 setTab('artistas');
+                openMobileDossier('artist');
               }}
               className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-mono font-black uppercase tracking-widest border transition-all hover:bg-white/10"
               style={{ color: tc.c4, borderColor: `${tc.c4}45`, backgroundColor: `${tc.c4}12` }}
@@ -2466,13 +2794,13 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       {/* The museum chapter header owns the page title and narrative. This compact
           control deck lets the ranking itself enter the viewport sooner. */}
       <div className="nova-surface nova-surface--utility flex flex-col gap-2 rounded-2xl p-2 lg:flex-row lg:items-center">
-        <div className="flex min-w-0 flex-1 overflow-x-auto gap-1.5 pb-1 lg:pb-0" role="group"
+        <div ref={tabListRef} className="flex min-w-0 flex-1 overflow-x-auto gap-1.5 pb-1 lg:pb-0" role="group"
           aria-label={t.topHistorico.title}>
           {tabs.map(tabItem => {
             const Icon = tabItem.icon;
             const active = tab === tabItem.id;
             return (
-              <button key={tabItem.id} type="button" onClick={() => setTab(tabItem.id as TopTab)}
+              <button key={tabItem.id} type="button" data-top-tab={tabItem.id} onClick={() => setTab(tabItem.id as TopTab)}
                 aria-pressed={active}
                 className="type-kicker nova-surface--interactive flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-4 py-2 transition-all"
                 style={active ? {
@@ -2488,25 +2816,27 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
         </div>
 
         <div className="relative shrink-0">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <Search className="w-4 h-4 absolute start-3 top-1/2 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder={t.topHistorico.searchPlaceholder}
             aria-label={t.topHistorico.searchPlaceholder}
-            className="type-meta min-h-11 w-full rounded-xl border bg-white/5 py-2 pl-9 pr-11 text-white placeholder-gray-500 transition-all lg:w-56"
+            className="type-meta min-h-11 w-full rounded-xl border bg-white/5 py-2 ps-9 pe-11 text-white placeholder-gray-500 transition-all lg:w-56"
             style={{ borderColor: search ? tc.c1 : 'rgba(255,255,255,0.1)' }}
           />
           {search && (
             <button type="button" onClick={() => setSearch('')}
-              aria-label={lang === 'en' ? 'Clear search' : 'Limpiar búsqueda'}
-              className="nova-surface--interactive absolute right-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl">
+              aria-label={artistCopy.clearSearch}
+              className="nova-surface--interactive absolute end-0 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-xl">
               <X className="w-3.5 h-3.5 text-gray-400 hover:text-white transition-colors" />
             </button>
           )}
         </div>
       </div>
+
+      <h2 className="sr-only">{tabs.find(item => item.id === tab)?.label}</h2>
 
       {(tab === 'artistas' || tab === 'canciones' || tab === 'albums') && (
         <MoodFilterBar />
@@ -2532,23 +2862,30 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <BookOpen className="w-5 h-5 shrink-0" style={{ color: tc.c1 }} />
                 </div>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
-                  className="space-y-2 max-h-[620px] overflow-y-auto pr-1">
+                  className="max-h-[58dvh] space-y-2 overflow-y-auto pr-1 xl:max-h-[620px]">
+                  {filteredArtists.length === 0 && (
+                    <p className="type-body type-muted py-6 text-center">{t.topHistorico.resultsCount(0)}</p>
+                  )}
                   {filteredArtists.slice(0, 50).map((a, idx) => {
                     const mood = artistMoodProfiles.get(a.name);
+                    const originalRank = artistRanks.get(a.name) ?? idx + 1;
                     return (
-                      <ListRow key={a.name} rank={idx + 1} main={a.name}
+                      <ListRow key={a.name} rank={originalRank} main={a.name}
                         sub={`${a.country} · ${a.genre}`} plays={a.plays}
-                        color={COLORS[idx % COLORS.length]} avatarName={a.name} flagCountry={a.country}
+                        color={COLORS[(originalRank - 1) % COLORS.length]} avatarName={a.name} flagCountry={a.country}
                         moodColor={mood?.color}
-                        ariaLabel={`${idx + 1}. ${a.name} - ${a.country} - ${a.genre} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
-                        onClick={() => setSelectedArtistName(a.name)}
+                        ariaLabel={`${originalRank}. ${a.name} - ${a.country} - ${a.genre} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
+                        onClick={(event) => {
+                          setSelectedArtistName(a.name);
+                          openMobileDossier('artist', event.currentTarget);
+                        }}
                         active={selectedArtist?.name === a.name} />
                     );
                   })}
                 </motion.div>
               </div>
 
-              <div className="space-y-6">
+              <div className="hidden space-y-6 xl:block">
                 <ArtistDossier />
 
                 <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
@@ -2559,23 +2896,26 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     </span>
                     <ChevronRight className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-90" />
                   </summary>
-                  <div className="h-[440px] border-t border-white/5 px-4 pb-5 pt-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data.top_artists.slice(0, 20)} layout="vertical"
+                  <ChartCanvas
+                    label={artistCopy.topChart}
+                    className="min-h-[520px] border-t border-white/5 px-4 pb-5 pt-4"
+                    style={{ height: Math.max(520, data.top_artists.slice(0, 20).length * 32 + 48) }}
+                  >
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                      <BarChart accessibilityLayer data={data.top_artists.slice(0, 20)} layout="vertical"
                         margin={{ left: 0, right: 32, top: 4, bottom: 4 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" horizontal={false} />
-                        <XAxis type="number" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                        <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11}
-                          width={145} tick={{ fill: '#d1d5db' }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1, tc.mode)} horizontal={false} />
+                        <XAxis type="number" {...axisProps(tc.mode)} />
+                        <YAxis type="category" dataKey="name" width={168} interval={0} {...axisProps(tc.mode)} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
+                        <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...chartAnimation}>
                           {data.top_artists.slice(0, 20).map((artist, i) => (
                             <Cell key={artist.name} fill={selectedArtist?.name === artist.name ? tc.c1 : (i < 3 ? tc.c2 : tc.c3)} fillOpacity={selectedArtist?.name === artist.name || i < 3 ? 1 : 0.65} />
                           ))}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
-                  </div>
+                  </ChartCanvas>
                 </details>
               </div>
             </div>
@@ -2596,24 +2936,32 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <ListMusic className="w-5 h-5 shrink-0" style={{ color: tc.c2 }} />
                 </div>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
-                  className="space-y-2 max-h-[720px] overflow-y-auto pr-1">
+                  className="max-h-[58dvh] space-y-2 overflow-y-auto pr-1 xl:max-h-[720px]">
+                  {filteredTracks.length === 0 && (
+                    <p className="type-body type-muted py-6 text-center">{t.topHistorico.resultsCount(0)}</p>
+                  )}
                   {filteredTracks.slice(0, 50).map((track, idx) => {
-                    const mood = buildTrackRowMood(track, idx);
+                    const key = trackKey(track.artist, track.title);
+                    const mood = trackRowMoods.get(key);
+                    const originalRank = trackRanks.get(key) ?? idx + 1;
                     return (
-                      <ListRow key={`${track.artist}-${track.title}`} rank={idx + 1} main={track.title}
+                      <ListRow key={`${track.artist}-${track.title}`} rank={originalRank} main={track.title}
                         sub={`${track.artist} · ${track.genre}`} plays={track.plays}
-                        color={COLORS[idx % COLORS.length]} avatarName={track.artist}
+                        color={COLORS[(originalRank - 1) % COLORS.length]} avatarName={track.artist}
                         coverTitle={track.title} coverKind="track"
                         moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
-                        ariaLabel={`${idx + 1}. ${track.title} - ${track.artist} - ${track.genre} - ${fmtNum(track.plays)} ${t.topHistorico.playsLegend}`}
-                        onClick={() => setSelectedTrackKey(trackKey(track.artist, track.title))}
+                        ariaLabel={`${originalRank}. ${track.title} - ${track.artist} - ${track.genre} - ${fmtNum(track.plays)} ${t.topHistorico.playsLegend}`}
+                        onClick={(event) => {
+                          setSelectedTrackKey(trackKey(track.artist, track.title));
+                          openMobileDossier('track', event.currentTarget);
+                        }}
                         active={selectedTrack ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title) : false} />
                     );
                   })}
                 </motion.div>
               </div>
 
-              <div className="space-y-6">
+              <div className="hidden space-y-6 xl:block">
                 <TrackDossier />
 
                 <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
@@ -2624,16 +2972,19 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     </span>
                     <ChevronRight className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-90" />
                   </summary>
-                  <div className="h-[440px] border-t border-white/5 px-4 pb-5 pt-4">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={data.top_tracks.slice(0, 20).map(track => ({ ...track, name: track.title }))}
+                  <ChartCanvas
+                    label={t.topHistorico.top20Chart}
+                    className="min-h-[520px] border-t border-white/5 px-4 pb-5 pt-4"
+                    style={{ height: Math.max(520, data.top_tracks.slice(0, 20).length * 32 + 48) }}
+                  >
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                      <BarChart accessibilityLayer data={data.top_tracks.slice(0, 20).map(track => ({ ...track, name: track.title }))}
                         layout="vertical" margin={{ left: 0, right: 32, top: 4, bottom: 4 }}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" horizontal={false} />
-                        <XAxis type="number" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                        <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={11}
-                          width={145} tick={{ fill: '#d1d5db' }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c2, tc.mode)} horizontal={false} />
+                        <XAxis type="number" {...axisProps(tc.mode)} />
+                        <YAxis type="category" dataKey="name" width={168} interval={0} {...axisProps(tc.mode)} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Bar dataKey="plays" radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
+                        <Bar dataKey="plays" radius={[0, 6, 6, 0]} {...chartAnimation}>
                           {data.top_tracks.slice(0, 20).map((track, i) => {
                             const isActive = selectedTrack
                               ? trackKey(track.artist, track.title) === trackKey(selectedTrack.artist, selectedTrack.title)
@@ -2647,7 +2998,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
-                  </div>
+                  </ChartCanvas>
                 </details>
               </div>
             </div>
@@ -2668,26 +3019,36 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   <Disc3 className="w-5 h-5 shrink-0" style={{ color: tc.c3 }} />
                 </div>
                 <motion.div variants={listVariants} initial="initial" animate="animate"
-                  className="space-y-2 max-h-[720px] overflow-y-auto pr-1">
+                  className="max-h-[58dvh] space-y-2 overflow-y-auto pr-1 xl:max-h-[720px]">
+                  {filteredAlbums.length === 0 && (
+                    <p className="type-body type-muted py-6 text-center">{t.topHistorico.resultsCount(0)}</p>
+                  )}
                   {filteredAlbums.slice(0, 50).map((a, idx) => {
                     const albumProfile = getArtistEnrichment(a.artist);
                     const releaseYear = albumReleaseLabel(a, albumProfile);
-                    const mood = buildAlbumRowMood(a, idx, albumProfile, getAlbumEnrichment(albumProfile, a.title));
+                    const key = albumKey(a.artist, a.title);
+                    const mood = albumRowMoods.get(key);
+                    const originalRank = albumRanks.get(key) ?? idx + 1;
                     return (
-                      <ListRow key={`${a.artist}-${a.title}`} rank={idx + 1} main={a.title}
+                      <ListRow key={`${a.artist}-${a.title}`} rank={originalRank} main={a.title}
                         sub={releaseYear ? `${a.artist} · ${artistCopy.released} ${releaseYear}` : a.artist}
-                        plays={a.plays} color={COLORS[idx % COLORS.length]} avatarName={a.artist}
+                        plays={a.plays} color={COLORS[(originalRank - 1) % COLORS.length]} avatarName={a.artist}
                         coverTitle={a.title} coverKind="album"
                         moodColor={mood?.color} moodKey={mood?.moodKey} moodConfidence={mood?.confidence}
-                        ariaLabel={`${idx + 1}. ${a.title} - ${a.artist}${releaseYear ? ` - ${artistCopy.released} ${releaseYear}` : ''} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
-                        onClick={() => setSelectedAlbumKey(albumKey(a.artist, a.title))}
+                        ariaLabel={`${originalRank}. ${a.title} - ${a.artist}${releaseYear ? ` - ${artistCopy.released} ${releaseYear}` : ''} - ${fmtNum(a.plays)} ${t.topHistorico.playsLegend}`}
+                        onClick={(event) => {
+                          setSelectedAlbumKey(albumKey(a.artist, a.title));
+                          openMobileDossier('album', event.currentTarget);
+                        }}
                         active={selectedAlbum ? albumKey(a.artist, a.title) === albumKey(selectedAlbum.artist, selectedAlbum.title) : false} />
                     );
                   })}
                 </motion.div>
               </div>
 
-              <AlbumDossier />
+              <div className="hidden xl:block">
+                <AlbumDossier />
+              </div>
             </div>
           )}
 
@@ -2698,9 +3059,12 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 <h3 className="type-kicker mb-5" style={{ color: tc.c2 }}>
                   {t.topHistorico.tabGenres}
                 </h3>
+                <p className="type-caption type-muted -mt-3 mb-5">
+                  🧭 {artistCopy.wholeArchive} · {genreDistribution.totalPlays.toLocaleString(locale)} {artistCopy.countedListensOther}
+                </p>
                 <div className="flex flex-wrap gap-5">
                   {genreData.slice(0, 10).map(g => (
-                    <GenreArt key={g.name} genre={g.name} size={68} showLabel />
+                    <GenreArt key={g.genre} genre={g.genre} label={g.name} size={68} showLabel />
                   ))}
                 </div>
               </div>
@@ -2709,35 +3073,38 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 <h3 className="type-kicker mb-5" style={{ color: tc.c1 }}>
                   {t.topHistorico.genreTreemap}
                 </h3>
-                <div className="h-72">
-                  <ResponsiveContainer width="100%" height="100%">
+                <ChartCanvas label={t.topHistorico.genreTreemap} className="h-72">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                     <Treemap data={treemapChildren} dataKey="size"
-                      content={<CustomTreemapContent />} isAnimationActive />
+                      content={<CustomTreemapContent />} {...chartAnimation} />
                   </ResponsiveContainer>
-                </div>
+                </ChartCanvas>
               </div>
 
               <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
                 <h3 className="type-kicker mb-5" style={{ color: tc.c4 }}>
                   {t.topHistorico.genreBreakdown}
                 </h3>
-                <div className="h-[420px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={genreData} layout="vertical"
+                <ChartCanvas
+                  label={t.topHistorico.genreBreakdown}
+                  className="min-h-[420px] min-w-0"
+                  style={{ height: Math.max(420, genreData.length * 32 + 48) }}
+                >
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                      <BarChart accessibilityLayer data={genreData} layout="vertical"
                       margin={{ left: 0, right: 24, top: 4, bottom: 4 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" horizontal={false} />
-                      <XAxis type="number" stroke="#374151" fontSize={10} tick={{ fill: '#9ca3af' }} />
-                      <YAxis type="category" dataKey="name" stroke="#9ca3af" fontSize={10}
-                        width={160} tick={{ fill: '#9ca3af' }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c2, tc.mode)} horizontal={false} />
+                      <XAxis type="number" {...axisProps(tc.mode)} />
+                      <YAxis type="category" dataKey="name" width={176} interval={0} {...axisProps(tc.mode)} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...CHART_ANIMATION}>
+                      <Bar dataKey="plays" name={t.topHistorico.playsLegend} radius={[0, 6, 6, 0]} {...chartAnimation}>
                         {genreData.map((_, i) => (
                           <Cell key={i} fill={COLORS[i % COLORS.length]} />
                         ))}
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
-                </div>
+                </ChartCanvas>
               </div>
             </div>
           )}
@@ -2746,35 +3113,62 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
           {tab === 'anos' && (
             <div className="space-y-6">
               <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">
-                <h3 className="type-kicker mb-6" style={{ color: tc.c1 }}>
-                  {t.topHistorico.playsByYear}
-                </h3>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={yearlyData} margin={{ left: 0, right: 24, top: 8, bottom: 0 }}>
+                <ChartFrame
+                  title={t.topHistorico.playsByYear}
+                  subtitle={artistCopy.yearlySubtitle(yearCoverage.maxDate)}
+                  summary={artistCopy.yearlySummary(selectedYearMetric.label)}
+                  status={yearCoverage.isPartialYear ? ['exact', 'ytd'] : 'exact'}
+                  tableRows={yearlyData}
+                  tableColumns={[
+                    { key: 'year', label: artistCopy.yearLabel },
+                    { key: 'plays', label: t.topHistorico.playsLegend },
+                    { key: 'artistas', label: t.topHistorico.uniqueArtistsLegend },
+                  ]}
+                  fileName="nova-top-years.csv"
+                >
+                  <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label={artistCopy.yearlyMetricAria}>
+                    {(['plays', 'artistas'] as const).map(metric => {
+                      const active = yearMetric === metric;
+                      const label = metric === 'plays' ? t.topHistorico.playsLegend : t.topHistorico.uniqueArtistsLegend;
+                      const color = metric === 'plays' ? tc.c1 : tc.c3;
+                      return (
+                        <button
+                          key={metric}
+                          type="button"
+                          aria-pressed={active}
+                          onClick={() => setYearMetric(metric)}
+                          className="min-h-11 rounded-full border px-4 py-2 text-[10px] font-mono font-black uppercase tracking-wider transition-colors"
+                          style={{
+                            borderColor: `${color}${active ? '70' : '28'}`,
+                            backgroundColor: active ? `${color}18` : 'transparent',
+                            color: active ? color : 'var(--type-ink-muted)',
+                          }}
+                        >
+                          {label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                <ChartCanvas className="h-80">
+                  <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                    <AreaChart accessibilityLayer data={yearlyData} margin={{ left: 0, right: 24, top: 8, bottom: 0 }}>
                       <defs>
                         <linearGradient id="topGradYear" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={tc.c1} stopOpacity={0.4} />
-                          <stop offset="95%" stopColor={tc.c1} stopOpacity={0.02} />
-                        </linearGradient>
-                        <linearGradient id="topGradArt" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor={tc.c3} stopOpacity={0.4} />
-                          <stop offset="95%" stopColor={tc.c3} stopOpacity={0.02} />
+                          <stop offset="5%" stopColor={selectedYearMetric.color} stopOpacity={0.4} />
+                          <stop offset="95%" stopColor={selectedYearMetric.color} stopOpacity={0.02} />
                         </linearGradient>
                       </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#0d1f38" />
-                      <XAxis dataKey="year" stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
-                      <YAxis stroke="#4b5563" fontSize={11} tick={{ fill: '#9ca3af' }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={gridStroke(tc.c1, tc.mode)} />
+                      <XAxis dataKey="year" {...axisProps(tc.mode)} />
+                      <YAxis allowDecimals={false} {...axisProps(tc.mode)} />
                       <Tooltip content={<CustomTooltip />} />
-                      <Area {...CHART_ANIMATION} type="monotone" dataKey="plays" name={t.topHistorico.playsLegend}
-                        stroke={tc.c1} strokeWidth={2.5} fill="url(#topGradYear)"
-                        dot={{ fill: tc.c1, r: 4 }} activeDot={{ r: 7 }} />
-                      <Area {...CHART_ANIMATION} type="monotone" dataKey="artistas" name={t.topHistorico.uniqueArtistsLegend}
-                        stroke={tc.c3} strokeWidth={2} fill="url(#topGradArt)"
-                        dot={{ fill: tc.c3, r: 3 }} activeDot={{ r: 6 }} />
+                      <Area {...chartAnimation} type="monotone" dataKey={yearMetric} name={selectedYearMetric.label}
+                        stroke={selectedYearMetric.color} strokeWidth={2.5} fill="url(#topGradYear)"
+                        dot={{ fill: selectedYearMetric.color, r: 4 }} activeDot={{ r: 7 }} />
                     </AreaChart>
                   </ResponsiveContainer>
-                </div>
+                </ChartCanvas>
+                </ChartFrame>
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -2802,6 +3196,22 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
         </motion.div>
       </AnimatePresence>
+
+      <MobileDetailDrawer
+        open={mobileDossier !== null}
+        title={mobileDossier === 'track'
+          ? `${artistCopy.trackDossier}${selectedTrack ? ` · ${selectedTrack.title}` : ''}`
+          : mobileDossier === 'album'
+            ? `${artistCopy.albumDossier}${selectedAlbum ? ` · ${selectedAlbum.title}` : ''}`
+            : `${artistCopy.dossier}${selectedArtist ? ` · ${selectedArtist.name}` : ''}`}
+        closeLabel={artistCopy.backToRanking}
+        onClose={closeMobileDossier}
+        returnFocusTarget={mobileDossierTriggerRef.current}
+      >
+        {mobileDossier === 'track' && <TrackDossier />}
+        {mobileDossier === 'album' && <AlbumDossier />}
+        {mobileDossier === 'artist' && <ArtistDossier />}
+      </MobileDetailDrawer>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
+import { localeFor } from '../utils/i18n';
 
 interface CountUpProps {
   target: number;
@@ -56,7 +57,7 @@ export default function CountUp({
     };
   }, [target, duration, delay]);
 
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const formatted = val.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
   return (

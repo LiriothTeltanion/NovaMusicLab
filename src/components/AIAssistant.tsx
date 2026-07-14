@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Send, Sparkles, Key, Lock, Eye, EyeOff, Trash2, ArrowRight, Loader2 } from 'lucide-react';
+import { Send, Sparkles, Key, Lock, Eye, EyeOff, Trash2, ArrowRight, Loader2 } from 'lucide-react';
 import { MusicDnaData } from '../types';
-import { useApp } from '../context/AppContext';
+import { useApp, type Lang } from '../context/AppContext';
+import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
+import { localizeGenreName } from '../utils/localizedDatasetText';
 
 interface AIAssistantProps {
   data: MusicDnaData;
@@ -16,18 +18,348 @@ interface Message {
 }
 
 const STORAGE_KEY = 'nml_gemini_api_key';
+const GENERIC_GENRE_BUCKETS = new Set(['alternative', 'unclassified']);
+
+function isGenericGenreBucket(name: string) {
+  const normalized = name.trim().toLowerCase();
+  return GENERIC_GENRE_BUCKETS.has(normalized)
+    || normalized.includes('unclassified')
+    || normalized.includes('miscellaneous');
+}
+
+function genreShare(plays: number, totalPlays: number) {
+  return ((plays / Math.max(totalPlays, 1)) * 100).toFixed(1);
+}
+
+interface PromptChip {
+  label: string;
+  text: string;
+}
+
+interface AssistantCopy {
+  playsUnit: string;
+  notEnoughClassified: string;
+  none: string;
+  genreResponse: (
+    bucketList: string,
+    primaryLine: string,
+    secondaryLine: string,
+    genericShare: string,
+    genericNames: string,
+  ) => string;
+  welcome: (project: string) => string;
+  conversationCleared: string;
+  promptChips: PromptChip[];
+  artistLine: (name: string, plays: string) => string;
+  trackLine: (title: string, artist: string, plays: string) => string;
+  playlistResponse: string;
+  obsessionResponse: (topTracks: string) => string;
+  daypartResponse: (daypart: string) => string;
+  morningFallback: string;
+  defaultResponse: (query: string, totalPlays: string, uniqueArtists: string, topArtists: string) => string;
+  apiRequestFailed: string;
+  emptyResponse: string;
+  connectionFailed: string;
+  errorResponse: (message: string) => string;
+  clearChat: string;
+  conversationAria: string;
+  userMessage: string;
+  thinkingAria: string;
+  thinking: string;
+  quickTemplates: string;
+  askPlaceholder: string;
+  askAria: string;
+  sendMessage: string;
+  apiSettings: string;
+  apiDescription: string;
+  apiPlaceholder: string;
+  apiKeyAria: string;
+  hideApiKey: string;
+  showApiKey: string;
+  keySaved: string;
+  sandboxActive: string;
+  freeGeminiKey: string;
+  opensNewTab: string;
+  contextualDna: string;
+  scrobbles: string;
+  uniqueArtists: string;
+  livePromptInstruction: string;
+}
+
+const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
+  es: {
+    playsUnit: 'escuchas',
+    notEnoughClassified: 'todavía no hay suficientes metadatos clasificados',
+    none: 'ninguno',
+    genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
+      `### 📊 Lectura de géneros basada en evidencia\n\nTu archivo activo muestra:\n- Principales categorías del archivo: ${bucketList}\n- Señal específica más fuerte: ${primaryLine} del total de escuchas contadas.\n- Segunda señal específica: ${secondaryLine} del total de escuchas contadas.\n- Contexto de datos: **${genericShare}%** permanece en categorías amplias (${genericNames}). Lo trato como incertidumbre de clasificación, no como un rasgo de tu personalidad musical.\n\nLos géneros nombrados son la evidencia más sólida para interpretar; las categorías amplias deben orientar la limpieza futura de metadatos, no definir tu identidad.`,
+    welcome: project => `¡Hola! Soy **Nova**, tu asistente musical de IA. 🌌\n\nPuedo analizar tu historial compilado (*${project}*) y darte análisis profundos. Pregúntame lo que quieras o configura abajo tu clave personal de API de Gemini para activar razonamiento avanzado.`,
+    conversationCleared: 'Conversación reiniciada. ¡Todo listo para tu siguiente pregunta!',
+    promptChips: [
+      { label: '🎵 Sugiere una playlist matutina', text: 'Sugiere una lista de reproducción de 5 canciones para la mañana basada en mis datos. Dale un nombre creativo y explica por qué las elegiste.' },
+      { label: '📊 Describe mis géneros principales', text: 'Analiza mis géneros principales en detalle. ¿Qué dicen sobre mi identidad musical?' },
+      { label: '🔥 Analiza mis obsesiones', text: 'Revisa mis canciones principales y obsesiones de escucha. ¿Qué patrones encuentras?' },
+      { label: '⚡ Perfil de franja horaria dominante', text: 'Explica qué significa mi franja horaria dominante en relación con mi estilo de vida y mi descubrimiento musical.' },
+    ],
+    artistLine: (name, plays) => `**${name}** (${plays} escuchas)`,
+    trackLine: (title, artist, plays) => `*"${title}"* de **${artist}** (${plays} escuchas)`,
+    playlistResponse: `### 🎵 Playlist simulada personalizada: *Catarsis de Neón*\n\nAquí tienes una selección de 5 canciones creada a partir de tu ADN musical:\n\n1. **In Blur** — Deafheaven (tu himno absoluto, ideal para ganar claridad emocional por la mañana)\n2. **Shadow** — Bring Me the Horizon (un impulso de energía para concentrarte al mediodía)\n3. **Looping** — Bilmuri (groove post-hardcore para mantenerte en movimiento)\n4. **Vampires** — The Midnight (atmósfera synthwave retro para la transición de la tarde)\n5. **Aperol Spritz** — The Kid LAROI (pop moderno de alta energía para cerrar el día)\n\n*Nota: para consultar a Gemini en vivo y crear listas contextuales ilimitadas, introduce tu clave de API en los ajustes de abajo.*`,
+    obsessionResponse: topTracks => `### 🔥 Resumen de obsesiones de escucha\n\nSegún tus registros:\n- Canciones principales:\n- ${topTracks}\n\nSe observa una fuerte tendencia a repetir *In Blur* de Deafheaven. Tus registros incluyen sesiones con reproducciones consecutivas de esta canción durante la mañana, por lo que funciona como un refugio emocional destacado.`,
+    daypartResponse: daypart => `### ⚡ Análisis de la franja horaria dominante\n\nTus registros indican que tu franja horaria dominante es **${daypart}**.\n\nEste patrón sugiere que utilizas la música como catalizador de productividad —por ejemplo, metal progresivo o pop punk al programar o trabajar— o como apoyo emocional matutino, con blackgaze durante los trayectos o al despertar.`,
+    morningFallback: 'Mañana',
+    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Modo Sandbox de Nova\n\nHe procesado tu consulta: *"${query}"*\n\nEstas son algunas métricas clave:\n- **Reproducciones totales**: ${totalPlays} escuchas\n- **Artistas únicos**: ${uniqueArtists}\n- **Artistas principales**: ${topArtists}\n\n*🔧 **¿Cómo activar el razonamiento de IA en vivo?***\n1. Consigue una clave de API gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** de abajo.\n3. Pega tu clave.\n4. Pregúntame lo que quieras; analizaré tus datos en tiempo real con **Gemini 2.5 Flash**.`,
+    apiRequestFailed: 'La solicitud a la API falló. Verifica tu clave.',
+    emptyResponse: 'Se recibió una respuesta vacía.',
+    connectionFailed: 'No fue posible conectar. Verifica tu red y tu clave de API.',
+    errorResponse: message => `❌ **Error**: ${message}`,
+    clearChat: 'Limpiar chat',
+    conversationAria: 'Conversación con Nova',
+    userMessage: 'Tu mensaje',
+    thinkingAria: 'Nova está analizando',
+    thinking: 'Nova está analizando…',
+    quickTemplates: 'Análisis sugeridos:',
+    askPlaceholder: 'Pregúntale a Nova por tu historial musical…',
+    askAria: 'Pregunta a Nova sobre tu historial musical',
+    sendMessage: 'Enviar mensaje',
+    apiSettings: 'Configurar clave de API',
+    apiDescription: 'Tu clave se guarda en el almacenamiento local del navegador. Cuando envías un mensaje, Gemini recibe tu pregunta y un resumen compacto de escucha —totales, artistas, canciones, géneros, países y eras—, nunca los archivos de exportación en bruto.',
+    apiPlaceholder: 'Clave de API de Gemini…',
+    apiKeyAria: 'Clave de API de Gemini',
+    hideApiKey: 'Ocultar clave de API',
+    showApiKey: 'Mostrar clave de API',
+    keySaved: 'Clave guardada en el almacenamiento local del navegador.',
+    sandboxActive: 'Modo Sandbox simulado activo.',
+    freeGeminiKey: 'Obtener una clave de Gemini gratis',
+    opensNewTab: 'se abre en una pestaña nueva',
+    contextualDna: 'ADN musical contextual',
+    scrobbles: 'Reproducciones',
+    uniqueArtists: 'Artistas únicos',
+    livePromptInstruction: 'The active interface language is Spanish. Answer in Spanish unless the user clearly asks in another language.',
+  },
+  en: {
+    playsUnit: 'plays',
+    notEnoughClassified: 'not enough classified metadata yet',
+    none: 'none',
+    genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
+      `### 📊 Nova's Evidence-Based Genre Reading\n\nYour active archive shows:\n- Top archive categories: ${bucketList}\n- Strongest specific signal: ${primaryLine} of all counted plays.\n- Secondary specific signal: ${secondaryLine} of all counted plays.\n- Data context: **${genericShare}%** currently sits in broad metadata categories (${genericNames}). I treat that as classification uncertainty, not as a musical personality trait.\n\nThe named genres are the stronger evidence for interpretation; broad categories should guide future metadata cleanup, not define your identity.`,
+    welcome: project => `Hello! I am **Nova**, your AI Music Assistant. 🌌\n\nI can analyze your compiled history (*${project}*) and provide deep musical insights. Ask me anything, or configure your personal Gemini API key below to unlock advanced reasoning.`,
+    conversationCleared: 'Conversation cleared. Ready for your next question!',
+    promptChips: [
+      { label: '🎵 Suggest a morning playlist', text: 'Suggest a 5-track morning playlist based on my listening data. Give it a creative name and explain why you chose these tracks.' },
+      { label: '📊 Describe my top genres', text: 'Analyze my top genres in detail. What do they say about my musical identity?' },
+      { label: '🔥 Analyze my obsessions', text: 'Review my top tracks and listening obsessions. What patterns do you see?' },
+      { label: '⚡ Dominant daypart profile', text: 'Explain what my dominant daypart means for my lifestyle and music discovery.' },
+    ],
+    artistLine: (name, plays) => `**${name}** (${plays} plays)`,
+    trackLine: (title, artist, plays) => `*"${title}"* by **${artist}** (${plays} plays)`,
+    playlistResponse: `### 🎵 Simulated Custom Playlist: *Neon Catharsis*\n\nHere is a curated 5-track selection compiled from your music DNA:\n\n1. **In Blur** — Deafheaven (your absolute anthem, perfect for emotional clarity in the morning)\n2. **Shadow** — Bring Me the Horizon (an energy boost for midday focus)\n3. **Looping** — Bilmuri (post-hardcore groove to keep you moving)\n4. **Vampires** — The Midnight (retro synthwave atmosphere for the afternoon transition)\n5. **Aperol Spritz** — The Kid LAROI (modern high-energy pop to close the day)\n\n*Note: to query Gemini live and build unlimited contextual lists, enter your API key in the settings below.*`,
+    obsessionResponse: topTracks => `### 🔥 Listening Obsessions Summary\n\nAccording to your records:\n- Top tracks:\n- ${topTracks}\n\nYou show a strong tendency to replay *In Blur* by Deafheaven. Your records include sessions with consecutive morning replays, making it a prominent emotional refuge.`,
+    daypartResponse: daypart => `### ⚡ Dominant Daypart Analysis\n\nYour records indicate that your dominant daypart is **${daypart}**.\n\nThis pattern suggests that you use music as a productivity catalyst —for example, progressive metal or pop punk while coding or working— or as morning emotional support, with blackgaze during a commute or while waking up.`,
+    morningFallback: 'Morning',
+    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Nova Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some key metrics:\n- **Total plays**: ${totalPlays}\n- **Unique artists**: ${uniqueArtists}\n- **Top artists**: ${topArtists}\n\n*🔧 **How do I enable live AI reasoning?***\n1. Get a free API key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key.\n4. Ask me anything; I will analyze your data in real time with **Gemini 2.5 Flash**.`,
+    apiRequestFailed: 'The API request failed. Verify your key.',
+    emptyResponse: 'An empty response was received.',
+    connectionFailed: 'Could not connect. Check your network and API key.',
+    errorResponse: message => `❌ **Error**: ${message}`,
+    clearChat: 'Clear chat',
+    conversationAria: 'Conversation with Nova',
+    userMessage: 'Your message',
+    thinkingAria: 'Nova is analyzing',
+    thinking: 'Nova is analyzing…',
+    quickTemplates: 'Quick analysis templates:',
+    askPlaceholder: 'Ask Nova about your music history…',
+    askAria: 'Ask Nova about your music history',
+    sendMessage: 'Send message',
+    apiSettings: 'API key settings',
+    apiDescription: 'Your key stays in browser local storage. When you send a message, Gemini receives your question plus a compact listening summary —totals, top artists, tracks, genres, countries and eras—, never the raw export files.',
+    apiPlaceholder: 'Gemini API key…',
+    apiKeyAria: 'Gemini API key',
+    hideApiKey: 'Hide API key',
+    showApiKey: 'Show API key',
+    keySaved: 'Key saved in browser local storage.',
+    sandboxActive: 'Simulated Sandbox Mode is active.',
+    freeGeminiKey: 'Get a free Gemini key',
+    opensNewTab: 'opens in a new tab',
+    contextualDna: 'Contextual music DNA',
+    scrobbles: 'Scrobbles',
+    uniqueArtists: 'Unique artists',
+    livePromptInstruction: 'The active interface language is English. Answer in English unless the user clearly asks in another language.',
+  },
+  he: {
+    playsUnit: 'השמעות',
+    notEnoughClassified: 'עדיין אין מספיק מטא־נתונים מסווגים',
+    none: 'אין',
+    genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
+      `### 📊 קריאת ז׳אנרים מבוססת נתונים\n\nבארכיון הפעיל שלך נמצאו:\n- הקטגוריות המובילות בארכיון: ${bucketList}\n- האות הסגנוני הספציפי החזק ביותר: ${primaryLine} מכלל ההשמעות שנספרו.\n- האות הסגנוני הספציפי השני בעוצמתו: ${secondaryLine} מכלל ההשמעות שנספרו.\n- הקשר הנתונים: **${genericShare}%** נמצאים כרגע בקטגוריות מטא־נתונים רחבות (${genericNames}). זהו חוסר ודאות בסיווג, ולא מאפיין של האישיות המוזיקלית שלך.\n\nהז׳אנרים המפורשים הם הבסיס החזק יותר לפרשנות; הקטגוריות הרחבות אמורות לכוון את שיפור המטא־נתונים בעתיד, ולא להגדיר את הזהות שלך.`,
+    welcome: project => `שלום! אני **Nova**, עוזרת ה-AI המוזיקלית שלך. 🌌\n\nאני יכולה לנתח את היסטוריית ההאזנה שנאספה (*${project}*) ולהפיק ממנה תובנות מוזיקליות עמוקות. אפשר לשאול אותי כל דבר, או להגדיר למטה מפתח API אישי של Gemini כדי להפעיל ניתוח מתקדם.`,
+    conversationCleared: 'השיחה נוקתה. אפשר להמשיך לשאלה הבאה!',
+    promptChips: [
+      { label: '🎵 בניית פלייליסט לבוקר', text: 'נא ליצור פלייליסט של 5 שירים לבוקר על סמך נתוני ההאזנה שלי, לתת לו שם יצירתי ולהסביר למה כל שיר נבחר.' },
+      { label: '📊 ניתוח הז׳אנרים המובילים', text: 'נא לנתח לעומק את הז׳אנרים המובילים שלי ולהסביר מה הם מלמדים על הזהות המוזיקלית שלי.' },
+      { label: '🔥 זיהוי דפוסי האזנה חוזרת', text: 'נא לבדוק את השירים המובילים ואת דפוסי ההאזנה החוזרת שלי. אילו דפוסים בולטים בנתונים?' },
+      { label: '⚡ פרופיל שעות ההאזנה', text: 'נא להסביר מה חלון ההאזנה הדומיננטי שלי מלמד על אורח החיים ועל הדרך שבה אני מגלה מוזיקה.' },
+    ],
+    artistLine: (name, plays) => `**${name}** (${plays} השמעות)`,
+    trackLine: (title, artist, plays) => `*"${title}"* מאת **${artist}** (${plays} השמעות)`,
+    playlistResponse: `### 🎵 פלייליסט מותאם אישית במצב הדמיה: *קתרזיס ניאון*\n\nהנה בחירה של 5 שירים שנבנתה מתוך ה-DNA המוזיקלי שלך:\n\n1. **In Blur** — Deafheaven (ההמנון המובהק שלך, לבהירות רגשית בשעות הבוקר)\n2. **Shadow** — Bring Me the Horizon (זריקת אנרגיה לריכוז באמצע היום)\n3. **Looping** — Bilmuri (גרוב פוסט-הארדקור שמחזיק את התנועה)\n4. **Vampires** — The Midnight (אווירת synthwave רטרו למעבר אל שעות הערב)\n5. **Aperol Spritz** — The Kid LAROI (פופ מודרני עתיר אנרגיה לסיום היום)\n\n*הערה: כדי לפנות אל Gemini בזמן אמת ולבנות פלייליסטים הקשריים ללא הגבלה, יש להזין את מפתח ה-API בהגדרות שלמטה.*`,
+    obsessionResponse: topTracks => `### 🔥 סיכום דפוסי ההאזנה החוזרת\n\nלפי הרשומות שלך:\n- השירים המובילים:\n- ${topTracks}\n\nניכרת נטייה חזקה לחזור אל *In Blur* של Deafheaven. ברשומות מופיעים רצפים של השמעות חוזרות בשעות הבוקר, ולכן השיר מתפקד כעוגן רגשי בולט.`,
+    daypartResponse: daypart => `### ⚡ ניתוח חלון ההאזנה הדומיננטי\n\nלפי הרשומות, חלון ההאזנה הדומיננטי שלך הוא **${daypart}**.\n\nהדפוס הזה מצביע על שימוש במוזיקה כזרז לפרודוקטיביות —למשל metal מתקדם או pop punk בזמן תכנות ועבודה— או כתמיכה רגשית בבוקר, עם blackgaze בדרך או בזמן ההתעוררות.`,
+    morningFallback: 'בוקר',
+    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 מצב ה-Sandbox של Nova\n\nעיבדתי את הבקשה: *"${query}"*\n\nהנה כמה מדדים מרכזיים:\n- **סך כל ההשמעות**: ${totalPlays}\n- **אמנים ייחודיים**: ${uniqueArtists}\n- **האמנים המובילים**: ${topArtists}\n\n*🔧 **איך מפעילים ניתוח AI בזמן אמת?***\n1. לקבל מפתח API בחינם דרך [Google AI Studio](https://aistudio.google.com/).\n2. לפתוח את חלונית **הגדרות ה-API** שלמטה.\n3. להדביק את המפתח.\n4. לשאול אותי כל דבר; אנתח את הנתונים בזמן אמת באמצעות **Gemini 2.5 Flash**.`,
+    apiRequestFailed: 'הבקשה ל-API נכשלה. כדאי לבדוק את המפתח.',
+    emptyResponse: 'התקבלה תשובה ריקה.',
+    connectionFailed: 'לא ניתן להתחבר. כדאי לבדוק את החיבור לרשת ואת מפתח ה-API.',
+    errorResponse: message => `❌ **שגיאה**: ${message}`,
+    clearChat: 'ניקוי השיחה',
+    conversationAria: 'שיחה עם Nova',
+    userMessage: 'ההודעה שלך',
+    thinkingAria: 'Nova מנתחת את הנתונים',
+    thinking: 'Nova מנתחת את הנתונים…',
+    quickTemplates: 'תבניות לניתוח מהיר:',
+    askPlaceholder: 'אפשר לשאול את Nova על היסטוריית ההאזנה שלך…',
+    askAria: 'שליחת שאלה ל-Nova על היסטוריית ההאזנה שלך',
+    sendMessage: 'שליחת הודעה',
+    apiSettings: 'הגדרות מפתח API',
+    apiDescription: 'המפתח נשמר באחסון המקומי של הדפדפן. בעת שליחת הודעה, Gemini מקבלת את השאלה יחד עם סיכום האזנה מצומצם —סכומים, אמנים, שירים, ז׳אנרים, מדינות ותקופות— ולעולם לא את קובצי הייצוא הגולמיים.',
+    apiPlaceholder: 'מפתח API של Gemini…',
+    apiKeyAria: 'מפתח API של Gemini',
+    hideApiKey: 'הסתרת מפתח ה-API',
+    showApiKey: 'הצגת מפתח ה-API',
+    keySaved: 'המפתח נשמר באחסון המקומי של הדפדפן.',
+    sandboxActive: 'מצב Sandbox מדומה פעיל.',
+    freeGeminiKey: 'קבלת מפתח Gemini בחינם',
+    opensNewTab: 'נפתח בכרטיסייה חדשה',
+    contextualDna: 'DNA מוזיקלי לפי הקשר',
+    scrobbles: 'השמעות מתועדות',
+    uniqueArtists: 'אמנים ייחודיים',
+    livePromptInstruction: 'The active interface language is Hebrew. Answer in fluent Modern Hebrew unless the user clearly asks in another language. Preserve artist, track, genre and product names in their original form.',
+  },
+};
+
+const SANDBOX_QUERY_TERMS = {
+  playlist: ['playlist', 'reproducción', 'sugiere', 'suggest', 'פלייליסט', 'רשימת השמעה'],
+  genre: ['genre', 'género', 'style', 'estilo', 'ז׳אנר', "ז'אנר", 'סגנון'],
+  obsession: ['obsession', 'obsesión', 'track', 'canción', 'אובססיה', 'האזנה חוזרת', 'האזנה החוזרת', 'השמעות חוזרות', 'שיר'],
+  daypart: ['daypart', 'horaria', 'mañana', 'morning', 'שעות ההאזנה', 'חלון ההאזנה', 'בוקר'],
+} as const;
+
+const DAYPART_LABELS: Record<Lang, Record<string, string>> = {
+  es: {
+    'Madrugada 00-05': 'Madrugada 00–05',
+    'Mañana 06-11': 'Mañana 06–11',
+    'Tarde 12-17': 'Tarde 12–17',
+    'Noche 18-23': 'Noche 18–23',
+  },
+  en: {
+    'Madrugada 00-05': 'Late night 00–05',
+    'Mañana 06-11': 'Morning 06–11',
+    'Tarde 12-17': 'Afternoon 12–17',
+    'Noche 18-23': 'Evening 18–23',
+  },
+  he: {
+    'Madrugada 00-05': 'לילה מאוחר 00–05',
+    'Mañana 06-11': 'בוקר 06–11',
+    'Tarde 12-17': 'אחר הצהריים 12–17',
+    'Noche 18-23': 'ערב 18–23',
+  },
+};
+
+function includesAny(value: string, terms: readonly string[]) {
+  return terms.some(term => value.includes(term));
+}
+
+/**
+ * Build an evidence-backed local genre reading. Broad metadata buckets remain
+ * visible for honesty, but are never presented as personality traits and no
+ * percentage is asserted without being calculated from the active archive.
+ */
+export function buildSandboxGenreResponse(data: MusicDnaData, lang: Lang): string {
+  const copy = pickLanguage(lang, ASSISTANT_COPY);
+  const number = new Intl.NumberFormat(localeFor(lang));
+  const topBuckets = data.top_genres.slice(0, 5);
+  const specificGenres = data.top_genres.filter(
+    genre => !isGenericGenreBucket(genre.name),
+  );
+  const genericGenres = data.top_genres.filter(
+    genre => isGenericGenreBucket(genre.name),
+  );
+  const [primary, secondary] = specificGenres;
+  const totalPlays = data.core_metrics.total_plays;
+  const genericPlays = genericGenres.reduce((sum, genre) => sum + genre.plays, 0);
+  const bucketList = topBuckets
+    .map(genre => `**${localizeGenreName(genre.name, lang)}** (${number.format(genre.plays)} ${copy.playsUnit})`)
+    .join(', ');
+
+  const primaryLine = primary
+    ? `**${primary.name}** — ${number.format(primary.plays)} ${copy.playsUnit} (**${genreShare(primary.plays, totalPlays)}%**)`
+    : copy.notEnoughClassified;
+  const secondaryLine = secondary
+    ? `**${secondary.name}** — ${number.format(secondary.plays)} ${copy.playsUnit} (**${genreShare(secondary.plays, totalPlays)}%**)`
+    : copy.notEnoughClassified;
+  const genericNames = genericGenres.map(genre => localizeGenreName(genre.name, lang)).join(' + ');
+
+  return copy.genreResponse(
+    bucketList,
+    primaryLine,
+    secondaryLine,
+    genreShare(genericPlays, totalPlays),
+    genericNames || copy.none,
+  );
+}
+
+export function buildSandboxResponse(data: MusicDnaData, lang: Lang, query: string): string {
+  const copy = pickLanguage(lang, ASSISTANT_COPY);
+  const locale = localeFor(lang);
+  const number = new Intl.NumberFormat(locale);
+  const normalizedQuery = query.toLowerCase();
+  const topArtists = data.top_artists
+    .slice(0, 5)
+    .map(artist => copy.artistLine(artist.name, number.format(artist.plays)))
+    .join(', ');
+  const topTracks = data.top_tracks
+    .slice(0, 5)
+    .map(track => copy.trackLine(track.title, track.artist, number.format(track.plays)))
+    .join('\n- ');
+
+  if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.playlist)) {
+    return copy.playlistResponse;
+  }
+
+  if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.genre)) {
+    return buildSandboxGenreResponse(data, lang);
+  }
+
+  if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.obsession)) {
+    return copy.obsessionResponse(topTracks);
+  }
+
+  if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.daypart)) {
+    const sourceDaypart = data.yearly_eras[0]?.dominant_daypart;
+    const localizedDaypart = sourceDaypart
+      ? DAYPART_LABELS[lang][sourceDaypart] ?? sourceDaypart
+      : copy.morningFallback;
+    return copy.daypartResponse(localizedDaypart);
+  }
+
+  return copy.defaultResponse(
+    query,
+    number.format(data.core_metrics.total_plays),
+    number.format(data.core_metrics.unique_artists),
+    topArtists,
+  );
+}
 
 export default function AIAssistant({ data }: AIAssistantProps) {
   const { lang } = useApp();
-  const L = lang === 'en';
+  const copy = pickLanguage(lang, ASSISTANT_COPY);
+  const locale = localeFor(lang);
+  const isRtl = directionFor(lang) === 'rtl';
 
   const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: 'welcome',
       sender: 'assistant',
-      text: L
-        ? `Hello! I am **Nova**, your AI Music Assistant. 🌌\n\nI can analyze your compiled history (*${data.project}*) and provide deep musical insights. Ask me anything, or configure your personal Gemini API Key below to unlock advanced reasoning!`
-        : `¡Hola! Soy **Nova**, tu asistente musical de IA. 🌌\n\nPuedo analizar tu historial compilado (*${data.project}*) y darte análisis profundos. ¡Pregúntame lo que quieras, o configura tu API Key personal de Gemini abajo para desbloquear razonamiento avanzado!`,
+      text: copy.welcome(data.project),
       timestamp: new Date(),
     },
   ]);
@@ -43,11 +375,26 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   const [showKey, setShowKey] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatLogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const chatLog = chatLogRef.current;
+    if (chatLog) chatLog.scrollTop = chatLog.scrollHeight;
   }, [messages, loading]);
+
+  useEffect(() => {
+    setMessages(previous => {
+      if (previous.length !== 1 || !['welcome', 'welcome-reset'].includes(previous[0].id)) {
+        return previous;
+      }
+
+      const isResetMessage = previous[0].id === 'welcome-reset';
+      return [{
+        ...previous[0],
+        text: isResetMessage ? copy.conversationCleared : copy.welcome(data.project),
+      }];
+    });
+  }, [copy, data.project]);
 
   const saveKey = (key: string) => {
     const cleanKey = key.trim();
@@ -68,68 +415,13 @@ export default function AIAssistant({ data }: AIAssistantProps) {
       {
         id: 'welcome-reset',
         sender: 'assistant',
-        text: L
-          ? "Conversation cleared. Ready for your next query!"
-          : "Conversación reiniciada. ¡Listo para tu siguiente pregunta!",
+        text: copy.conversationCleared,
         timestamp: new Date(),
       },
     ]);
   };
 
-  // Quick Prompt Chips
-  const promptChips = L
-    ? [
-        { label: "🎵 Suggest a morning playlist", text: "Suggest a 5-track morning playlist based on my listening data. Give it a creative name and explain why you chose these tracks." },
-        { label: "📊 Describe my top genres", text: "Analyze my top genres in detail. What do they tell about my musical identity?" },
-        { label: "🔥 Analyze my obsessions", text: "Review my top tracks and obsessions. What patterns do you see?" },
-        { label: "⚡ Dominant daypart profile", text: "Explain what my dominant daypart means in terms of my lifestyle and music discovery." }
-      ]
-    : [
-        { label: "🎵 Sugiere una playlist matutina", text: "Sugiere una lista de reproducción de 5 canciones para la mañana basada en mis datos. Dale un nombre creativo y explica por qué las elegiste." },
-        { label: "📊 Describe mis géneros principales", text: "Analiza mis géneros principales en detalle. ¿Qué dicen sobre mi identidad musical?" },
-        { label: "🔥 Analiza mis obsesiones", text: "Revisa mis canciones principales y obsesiones de escucha. ¿Qué patrones encuentras?" },
-        { label: "⚡ Perfil de franja horaria dominante", text: "Explica qué significa mi franja horaria dominante en relación a mi estilo de vida." }
-      ];
-
-  // Local Sandbox response engine (Fallback if no Gemini API Key is entered)
-  const getSandboxResponse = (query: string): string => {
-    const q = query.toLowerCase();
-    const isEn = lang === 'en';
-
-    const topArtsStr = data.top_artists.slice(0, 5).map(a => `**${a.name}** (${a.plays} plays)`).join(', ');
-    const topTracksStr = data.top_tracks.slice(0, 5).map(t => `*"${t.title}"* by **${t.artist}** (${t.plays} plays)`).join('\n- ');
-    const topGenresStr = data.top_genres.slice(0, 5).map(g => `**${g.name}** (${g.plays} plays)`).join(', ');
-
-    if (q.includes('playlist') || q.includes('reproducción') || q.includes('sugiere') || q.includes('suggest')) {
-      return isEn
-        ? `### 🎵 Simulated Custom Playlist: *Neon Catharsis*\n\nHere is a curated 5-track selection compiled from your music DNA:\n\n1. **In Blur** — Deafheaven (Your absolute anthem! perfect for emotional morning clarity)\n2. **Shadow** — Bring Me the Horizon (Energy booster for midday focus)\n3. **Looping** — Bilmuri (Post-hardcore groove to keep you moving)\n4. **Vampires** — The Midnight (Synthwave retro atmosphere for late afternoon transition)\n5. **Aperol Spritz** — The Kid LAROI (Modern high-energy pop to close the day)\n\n*Note: To query Gemini live and build endless contextual lists, enter your API Key in the settings below!*`
-        : `### 🎵 Playlist Simulada: *Catarsis de Neón*\n\nAquí tienes una selección de 5 temas recopilados a partir de tu ADN musical:\n\n1. **In Blur** — Deafheaven (¡Tu himno! Perfecto para una mañana de claridad emocional)\n2. **Shadow** — Bring Me the Horizon (Inyección de energía para el enfoque del mediodía)\n3. **Looping** — Bilmuri (Groove post-hardcore para mantenerte en movimiento)\n4. **Vampires** — The Midnight (Atmósfera retro de synthwave para la transición de la tarde)\n5. **Aperol Spritz** — The Kid LAROI (Pop moderno de alta energía para cerrar el día)\n\n*Nota: ¡Para consultar a Gemini en vivo y construir listas contextuales ilimitadas, ingresa tu API Key en la configuración de abajo!*`;
-    }
-
-    if (q.includes('genre') || q.includes('género') || q.includes('style') || q.includes('estilo')) {
-      return isEn
-        ? `### 📊 Nova's Genre Breakdown\n\nYour primary musical universe is shaped by:\n- Top Genres: ${topGenresStr}\n- Dominant Focus: **Metalcore & Post-Hardcore** accounts for over 45% of your listening. This shows a high affinity for energetic guitar riffs, contrasting clean/screaming vocals, and emotional melodies.\n- Secondary Sphere: **Synthwave / Darksynth**, suggesting a deep connection to visual cyberpunk themes and nocturnal retro-escapism.`
-        : `### 📊 Desglose de Géneros de Nova\n\nTu universo musical principal está moldeado por:\n- Géneros principales: ${topGenresStr}\n- Enfoque dominante: **Metalcore y Post-Hardcore** representan más del 45% de tus escuchas. Esto muestra una gran afinidad por riffs de guitarra enérgicos, contraste de voces limpias/guturales y melodías emotivas.\n- Esfera secundaria: **Synthwave / Darksynth**, sugiriendo una conexión profunda con estéticas visuales cyberpunk y escapismo retro nocturno.`;
-    }
-
-    if (q.includes('obsession') || q.includes('obsesión') || q.includes('track') || q.includes('canción')) {
-      return isEn
-        ? `### 🔥 Listening Obsessions Summary\n\nAccording to your records:\n- Top Tracks:\n- ${topTracksStr}\n\nYou show a high repeat listener index on track *In Blur* by Deafheaven. Your records show sessions containing consecutive replays of this song in the morning hours, representing a peak emotional refuge.`
-        : `### 🔥 Resumen de Obsesiones de Escucha\n\nDe acuerdo a tus registros:\n- Canciones principales:\n- ${topTracksStr}\n\nMuestras un índice extremadamente alto de reproducción repetida en *In Blur* de Deafheaven. Tus registros indican sesiones con bucles continuos de este tema durante las mañanas, representando tu refugio emocional principal.`;
-    }
-
-    if (q.includes('daypart') || q.includes('horaria') || q.includes('mañana') || q.includes('morning')) {
-      const era = data.yearly_eras[0];
-      return isEn
-        ? `### ⚡ Dominant Daypart Analysis\n\nYour records indicate that your dominant daypart is **${era?.dominant_daypart || 'Morning'}**.\n\nThis listening pattern is highly indicative of utilizing music as a productivity catalyst (listening to progressive metal or pop punk during coding/work hours) or morning therapy (listening to blackgaze while commuting/waking up).`
-        : `### ⚡ Análisis de Franja Horaria Dominante\n\nTus registros indican que tu franja horaria dominante es **${era?.dominant_daypart || 'Mañana'}**.\n\nEste patrón indica el uso de música como catalizador de productividad (escuchar metal progresivo o pop punk en horas de trabajo/programación) o como terapia matutina (escuchar blackgaze al despertar).`;
-    }
-
-    // Default Sandbox Response
-    return isEn
-      ? `### 🌌 Nova Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some of your metrics:\n- **Total scrobbles**: ${data.core_metrics.total_plays.toLocaleString()} plays\n- **Unique artists**: ${data.core_metrics.unique_artists.toLocaleString()} unique creators\n- **Top Artists**: ${topArtsStr}\n\n*🔧 **How to enable Live AI Reasoning?***\n1. Get a free API Key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key and click **Save**.\n4. Ask me anything! I will analyze your data in real-time using **Gemini 2.5 Flash**.`
-      : `### 🌌 Modo Sandbox de Nova\n\nProcesé tu consulta: *"${query}"*\n\nAquí tienes algunas de tus métricas clave:\n- **Total de reproducciones**: ${data.core_metrics.total_plays.toLocaleString()} escuchas\n- **Artistas únicos**: ${data.core_metrics.unique_artists.toLocaleString()} creadores\n- **Artistas principales**: ${topArtsStr}\n\n*🔧 **¿Cómo activar el razonamiento en vivo con IA?***\n1. Consigue una API Key gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** abajo.\n3. Pega tu clave y dale a **Guardar**.\n4. ¡Pregúntame lo que quieras! Analizaré tus datos en tiempo real usando **Gemini 2.5 Flash**.`;
-  };
+  const promptChips = copy.promptChips;
 
   // Chat Submission handler
   const handleSend = async (textToSend: string) => {
@@ -152,7 +444,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
       if (!apiKey) {
         // Run in local sandbox mode
         await new Promise(resolve => setTimeout(resolve, 800)); // simulate network delay
-        const reply = getSandboxResponse(prompt);
+        const reply = buildSandboxResponse(data, lang, prompt);
         setMessages(prev => [...prev, {
           id: Math.random().toString(36).substring(7),
           sender: 'assistant',
@@ -175,11 +467,13 @@ Here is a summary of this listener's music listening history:
 - Top Artists: ${data.top_artists.slice(0, 10).map(a => `${a.name} (${a.plays} plays, ${a.genre})`).join(', ')}
 - Top Tracks: ${data.top_tracks.slice(0, 10).map(t => `${t.artist} - ${t.title} (${t.plays} plays)`).join(', ')}
 - Top Genres: ${data.top_genres.slice(0, 8).map(g => `${g.name} (${g.plays} plays)`).join(', ')}
+- Genre metadata rule: "Unclassified" and broad "Alternative" buckets represent classification uncertainty, not identity traits. Never invent a percentage; calculate every share from the play counts and total plays above.
 - Listening Countries: ${data.countries.slice(0, 5).map(c => `${c.country} (${c.plays} plays)`).join(', ')}
 - Top Eras: ${data.yearly_eras.map(e => `Year ${e.year}: Top Artist ${e.top_artist}, Top Track ${e.top_track}, Label: ${e.era_label}`).join('\n')}
 
 Preferred visual style for responses: Cyberpunk, neon accents, dark theme, futuristic, glassmorphism, sci-fi.
 Keep your responses structured, beautiful, detailed, using markdown, emojis, bullet points, code blocks, and high information density. Maintain a friendly, supportive, and encouraging tone. Answer in the same language as the user's query.
+${copy.livePromptInstruction}
 
 The user asks: "${prompt}"
 `;
@@ -211,14 +505,14 @@ The user asks: "${prompt}"
         );
 
         if (!response.ok) {
-          throw new Error(L ? 'API request failed. Verify your key.' : 'Error en la solicitud. Verifica tu API Key.');
+          throw new Error(copy.apiRequestFailed);
         }
 
         const resData = await response.json();
         const text = resData?.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (!text) {
-          throw new Error(L ? 'Empty response received.' : 'Respuesta vacía recibida.');
+          throw new Error(copy.emptyResponse);
         }
 
         setMessages(prev => [...prev, {
@@ -228,14 +522,16 @@ The user asks: "${prompt}"
           timestamp: new Date(),
         }]);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
+      const knownMessage = err instanceof Error
+        && [copy.apiRequestFailed, copy.emptyResponse].includes(err.message)
+        ? err.message
+        : copy.connectionFailed;
       setMessages(prev => [...prev, {
         id: Math.random().toString(36).substring(7),
         sender: 'assistant',
-        text: L
-          ? `❌ **Error**: ${err.message || 'Failed to connect. Please check your network and API Key.'}`
-          : `❌ **Error**: ${err.message || 'Fallo de conexión. Por favor verifica tu red y tu API Key.'}`,
+        text: copy.errorResponse(knownMessage),
         timestamp: new Date(),
       }]);
     } finally {
@@ -245,31 +541,33 @@ The user asks: "${prompt}"
 
   return (
     <div className="space-y-6 animate-fade-in flex flex-col min-h-[calc(100vh-140px)]">
-      {/* Title */}
-      <div className="flex items-center justify-between shrink-0">
-        <div className="flex items-center space-x-3">
-          <Bot className="w-6 h-6 text-purple-400" />
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {L ? 'Nova AI Lab' : 'Laboratorio IA Nova'}
-          </h2>
-        </div>
+      <div className="flex shrink-0 justify-end">
         <button
+          type="button"
           onClick={clearChat}
-          className="text-xs font-mono text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10"
+          className="flex min-h-11 items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-mono text-gray-500 transition-colors hover:border-white/10 hover:bg-white/5 hover:text-red-400"
         >
           <Trash2 className="w-3.5 h-3.5" />
-          <span>{L ? 'Clear Chat' : 'Limpiar Chat'}</span>
+          <span>{copy.clearChat}</span>
         </button>
       </div>
 
       {/* Main chat layout */}
       <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_340px] gap-6 items-stretch flex-1 font-sans">
         {/* Chat area */}
-        <div className="glass-panel rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col min-h-[460px] max-h-[620px] relative overflow-hidden">
+        <div className="nova-surface nova-surface--featured rounded-3xl border border-white/10 p-4 md:p-6 flex flex-col min-h-[460px] max-h-[620px] relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 to-transparent pointer-events-none" />
           
           {/* Scrollable logs */}
-          <div className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-white/10">
+          <div
+            ref={chatLogRef}
+            className="flex-1 overflow-y-auto space-y-4 pr-2 scrollbar-thin scrollbar-thumb-white/10"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions text"
+            aria-busy={loading}
+            aria-label={copy.conversationAria}
+          >
             <AnimatePresence initial={false}>
               {messages.map(msg => (
                 <motion.div
@@ -277,9 +575,11 @@ The user asks: "${prompt}"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  aria-label={`${msg.sender === 'user' ? copy.userMessage : 'Nova'}: ${msg.text}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed border relative ${
+                    dir="auto"
+                    className={`nova-on-dark max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed border relative ${
                       msg.sender === 'user'
                         ? 'bg-purple-600/10 border-purple-500/30 text-white'
                         : 'bg-white/5 border-white/10 text-gray-200'
@@ -313,7 +613,7 @@ The user asks: "${prompt}"
                         }
                         if (paragraph.startsWith('- ')) {
                           return (
-                            <ul key={pi} className="list-disc pl-4 space-y-1 my-1">
+                            <ul key={pi} className="my-1 list-disc space-y-1 ps-4">
                               {paragraph.split('\n').map((li, lii) => (
                                 <li key={lii} className="text-xs text-gray-300">{formatText(li.replace('- ', ''))}</li>
                               ))}
@@ -323,8 +623,8 @@ The user asks: "${prompt}"
                         return <p key={pi} className="text-xs text-gray-300 my-1 whitespace-pre-wrap">{formatText(paragraph)}</p>;
                       })}
                     </div>
-                    <span className="block text-[9px] font-mono text-gray-500 text-right mt-1">
-                      {msg.timestamp.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                    <span className="mt-1 block text-end font-mono text-[9px] text-gray-500">
+                      {msg.timestamp.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </motion.div>
@@ -332,33 +632,33 @@ The user asks: "${prompt}"
             </AnimatePresence>
 
             {loading && (
-              <div className="flex justify-start">
-                <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex items-center space-x-2">
+              <div className="flex justify-start" aria-label={copy.thinkingAria}>
+                <div className="nova-on-dark bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex items-center space-x-2">
                   <Loader2 className="w-4 h-4 text-purple-400 animate-spin" />
                   <span className="text-xs text-gray-400 font-mono">
-                    {L ? 'Nova is thinking...' : 'Nova está analizando...'}
+                    {copy.thinking}
                   </span>
                 </div>
               </div>
             )}
-            <div ref={chatEndRef} />
           </div>
 
           {/* Prompt chips */}
           {messages.length === 1 && !loading && (
             <div className="mt-4 pt-3 border-t border-white/5 shrink-0">
               <p className="text-[10px] font-mono text-gray-400 uppercase tracking-widest mb-2">
-                {L ? 'Quick analysis templates:' : 'Análisis sugeridos:'}
+                {copy.quickTemplates}
               </p>
               <div className="flex flex-wrap gap-2">
                 {promptChips.map(chip => (
                   <button
                     key={chip.label}
+                    type="button"
                     onClick={() => handleSend(chip.text)}
-                    className="text-xs bg-white/5 hover:bg-purple-950/20 border border-white/10 hover:border-purple-500/40 text-gray-300 px-3 py-1.5 rounded-full transition-all text-left flex items-center gap-1 hover:scale-[1.01]"
+                    className="flex min-h-11 items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-start text-xs text-gray-300 transition-all hover:scale-[1.01] hover:border-purple-500/40 hover:bg-purple-950/20"
                   >
                     <span>{chip.label}</span>
-                    <ArrowRight className="w-3 h-3 text-purple-400 opacity-55" />
+                    <ArrowRight className={`h-3 w-3 text-purple-400 opacity-55 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 ))}
               </div>
@@ -372,14 +672,17 @@ The user asks: "${prompt}"
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSend(input)}
-              placeholder={L ? "Ask about your music history..." : "Pregúntale a tu historial musical..."}
-              className="flex-1 bg-black/40 border border-white/10 focus:border-purple-500/50 rounded-2xl px-4 py-3 text-xs text-white placeholder-gray-500 transition-colors"
+              placeholder={copy.askPlaceholder}
+              aria-label={copy.askAria}
+              dir="auto"
+              className="nova-on-dark flex-1 bg-black/40 border border-white/10 focus:border-purple-500/50 rounded-2xl px-4 py-3 text-xs text-white placeholder-gray-500 transition-colors"
             />
             <button
+              type="button"
               onClick={() => handleSend(input)}
               disabled={!input.trim() || loading}
-              aria-label={L ? 'Send message' : 'Enviar mensaje'}
-              className="h-10 w-10 rounded-2xl bg-purple-600 hover:bg-purple-500 disabled:bg-white/5 disabled:text-gray-600 text-white flex items-center justify-center transition-all shadow-lg hover:shadow-purple-500/20"
+              aria-label={copy.sendMessage}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-purple-600 text-white shadow-lg transition-all hover:bg-purple-500 hover:shadow-purple-500/20 disabled:bg-white/5 disabled:text-gray-600"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -389,52 +692,53 @@ The user asks: "${prompt}"
         {/* Side Panel: Settings & Summary */}
         <div className="flex flex-col space-y-4">
           {/* Key configuration panel */}
-          <div className="glass-panel p-5 rounded-3xl border border-white/10 space-y-4 relative overflow-hidden flex-1">
+          <div className="nova-surface nova-surface--analysis p-5 rounded-3xl border border-white/10 space-y-4 relative overflow-hidden flex-1">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 blur-[50px] rounded-full pointer-events-none" />
             
             <div className="flex items-center space-x-2.5">
               <Key className="w-5 h-5 text-purple-400" />
               <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
-                {L ? 'API Key Settings' : 'Configurar API Key'}
+                {copy.apiSettings}
               </h3>
             </div>
             
-            <p className="text-xs text-gray-400 leading-relaxed">
-              {L
-                ? "Your key stays in browser local storage. When you send a message, Gemini receives your question plus a compact listening summary (totals, top artists, tracks, genres, countries, and eras), never the raw export files."
-                : "Tu clave se guarda localmente en el navegador. Al enviar un mensaje, Gemini recibe tu pregunta y un resumen de escucha (totales, artistas, canciones, géneros, países y eras), nunca los archivos de exportación en bruto."}
+            <p id="nova-api-key-description" className="text-xs text-gray-400 leading-relaxed">
+              {copy.apiDescription}
             </p>
 
             <div className="space-y-3 pt-2">
-              <div className="relative">
+              <div className="nova-on-dark relative">
                 <input
                   type={showKey ? 'text' : 'password'}
                   value={apiKey}
                   onChange={e => saveKey(e.target.value)}
-                  placeholder="Gemini API Key..."
-                  className="w-full bg-black/50 border border-white/10 focus:border-purple-500/50 rounded-xl pl-3 pr-10 py-2.5 text-xs text-white placeholder-gray-500 transition-colors font-mono"
+                  placeholder={copy.apiPlaceholder}
+                  aria-label={copy.apiKeyAria}
+                  aria-describedby="nova-api-key-description"
+                  dir={apiKey ? 'ltr' : directionFor(lang)}
+                  className={`w-full rounded-xl border border-white/10 bg-black/50 py-2.5 text-xs text-white placeholder-gray-500 transition-colors focus:border-purple-500/50 font-mono ${isRtl ? 'pl-10 pr-3' : 'pl-3 pr-10'}`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowKey(!showKey)}
-                  aria-label={showKey ? (L ? 'Hide API key' : 'Ocultar API key') : (L ? 'Show API key' : 'Mostrar API key')}
-                  className="absolute right-2.5 top-2.5 text-gray-500 hover:text-white transition-colors"
+                  aria-label={showKey ? copy.hideApiKey : copy.showApiKey}
+                  className={`absolute inset-y-0 flex min-w-11 items-center justify-center text-gray-500 transition-colors hover:text-white ${isRtl ? 'left-0' : 'right-0'}`}
                 >
                   {showKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
 
               {apiKey ? (
-                <div className="flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
+                <div className="nova-on-dark flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  {/* Honest copy in BOTH languages: plain localStorage is local,
+                  {/* Honest copy in every language: plain localStorage is local,
                       not "secure" - never overclaim how a billable key is kept. */}
-                  <span>{L ? 'Key saved in browser local storage.' : 'Clave guardada localmente en tu navegador.'}</span>
+                  <span>{copy.keySaved}</span>
                 </div>
               ) : (
-                <div className="flex items-center space-x-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">
+                <div className="nova-on-dark flex items-center space-x-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span>{L ? 'Using Simulated Sandbox Mode.' : 'Usando Sandbox Simulado.'}</span>
+                  <span>{copy.sandboxActive}</span>
                 </div>
               )}
             </div>
@@ -445,32 +749,33 @@ The user asks: "${prompt}"
                 href="https://aistudio.google.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono text-purple-400 hover:text-purple-300 transition-colors flex items-center justify-between"
+                aria-label={`${copy.freeGeminiKey} (${copy.opensNewTab})`}
+                className="flex min-h-11 items-center justify-between text-[10px] font-mono text-purple-400 transition-colors hover:text-purple-300"
               >
-                <span>{L ? 'Get Free Gemini Key' : 'Obtener Key de Gemini Gratis'}</span>
-                <ArrowRight className="w-3 h-3" />
+                <span>{copy.freeGeminiKey}</span>
+                <ArrowRight className={`h-3 w-3 ${isRtl ? 'rotate-180' : ''}`} />
               </a>
             </div>
           </div>
 
           {/* Quick Stats Summary Card */}
-          <div className="glass-panel p-5 rounded-3xl border border-white/10 shrink-0 space-y-3 relative overflow-hidden">
+          <div className="nova-surface nova-surface--utility p-5 rounded-3xl border border-white/10 shrink-0 space-y-3 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 blur-[40px] rounded-full pointer-events-none" />
             <div className="flex items-center space-x-2">
               <Sparkles className="w-4 h-4 text-purple-400" />
               <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-gray-300">
-                {L ? 'Contextual music DNA' : 'ADN de contexto'}
+                {copy.contextualDna}
               </span>
             </div>
             
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
               <div className="bg-white/3 border border-white/5 rounded-xl p-2">
-                <span className="text-[10px] text-gray-500">{L ? 'Scrobbles' : 'Reproducciones'}</span>
-                <p className="font-extrabold text-white mt-0.5">{data.core_metrics.total_plays.toLocaleString()}</p>
+                <span className="text-[10px] text-gray-500">{copy.scrobbles}</span>
+                <p className="font-extrabold text-white mt-0.5">{data.core_metrics.total_plays.toLocaleString(locale)}</p>
               </div>
               <div className="bg-white/3 border border-white/5 rounded-xl p-2">
-                <span className="text-[10px] text-gray-500">{L ? 'Unique Bands' : 'Bandas únicas'}</span>
-                <p className="font-extrabold text-white mt-0.5">{data.core_metrics.unique_artists.toLocaleString()}</p>
+                <span className="text-[10px] text-gray-500">{copy.uniqueArtists}</span>
+                <p className="font-extrabold text-white mt-0.5">{data.core_metrics.unique_artists.toLocaleString(locale)}</p>
               </div>
             </div>
           </div>

@@ -48,6 +48,7 @@
   --bg: #050b14;
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
+  --nova-app-header-height: 69px;
 
   /* Three deliberate voices: editorial display, highly legible reading text,
      and a real technical monospace. The remote font request stays unchanged;
@@ -57,6 +58,7 @@
     'Helvetica Neue', Arial, sans-serif;
   --font-body: 'Inter', 'Segoe UI Variable Text', 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
+  --font-hebrew: 'Noto Sans Hebrew', 'Segoe UI', Arial, sans-serif;
   --font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Menlo, Monaco,
     Consolas, 'Liberation Mono', monospace;
   --type-leading-body: 1.62;
@@ -75,6 +77,146 @@
               --bg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               --fg 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               --glass-bg 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Responsive application shell ───────────────────────────────────────────
+ * The room column owns only the space left by the sidebar. Keeping both flex
+ * children shrinkable prevents a 100%-wide main from being added to the rail,
+ * while container sizing lets rooms respond to their real canvas rather than
+ * to the browser viewport. Decorative layers clip themselves independently;
+ * the application root deliberately does not hide functional overflow. */
+.nova-app-root,
+.nova-app-shell,
+.nova-room-main {
+  min-inline-size: 0;
+}
+
+.nova-app-shell {
+  inline-size: 100%;
+}
+
+.nova-room-main {
+  container: nova-room / inline-size;
+  flex: 1 1 0%;
+  inline-size: 100%;
+  max-inline-size: var(--nova-room-max-width, 90rem);
+}
+
+.nova-room-main[data-room-width='reading'] {
+  --nova-room-max-width: 70rem;
+}
+
+.nova-room-main[data-room-width='analytics'] {
+  --nova-room-max-width: 90rem;
+}
+
+.nova-room-main[data-room-width='explorer'] {
+  --nova-room-max-width: 100rem;
+}
+
+.nova-header-primary-action,
+.nova-header-wide-action {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nova-room-main {
+    inline-size: auto;
+  }
+
+  .nova-app-header {
+    min-block-size: var(--nova-app-header-height);
+  }
+
+  .nova-app-sidebar {
+    inset-block-start: var(--nova-app-header-height);
+    flex: 0 0 5rem;
+    inline-size: 5rem;
+    max-block-size: calc(100dvh - var(--nova-app-header-height));
+    padding: 0.5rem;
+    border-inline-end-style: solid;
+    border-inline-end-width: 1px;
+  }
+
+  .nova-sidebar__item,
+  .nova-sidebar__group-trigger {
+    min-block-size: 2.75rem;
+    justify-content: center;
+  }
+
+  .nova-sidebar__item {
+    gap: 0;
+    padding-inline: 0.5rem;
+  }
+
+  .nova-sidebar__label,
+  .nova-sidebar__active-dot,
+  .nova-sidebar__group-label,
+  .nova-sidebar__brand {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .nova-header-primary-action {
+    display: flex;
+  }
+}
+
+@media (min-width: 1440px) {
+  .nova-app-sidebar {
+    flex-basis: 15rem;
+    inline-size: 15rem;
+    padding: 1rem;
+  }
+
+  .nova-sidebar__item {
+    justify-content: flex-start;
+    gap: 0.625rem;
+    padding-inline: 0.625rem;
+  }
+
+  .nova-sidebar__group-trigger {
+    justify-content: space-between;
+  }
+
+  .nova-sidebar__label,
+  .nova-sidebar__group-label {
+    display: block;
+  }
+
+  .nova-sidebar__label {
+    min-inline-size: 0;
+    flex: 1 1 0%;
+    text-align: start;
+  }
+
+  .nova-sidebar__active-dot {
+    display: block;
+  }
+
+  .nova-sidebar__brand {
+    display: flex;
+  }
+}
+
+@media (min-width: 1536px) {
+  .nova-header-wide-action {
+    display: flex;
+  }
+}
+
+/* Hebrew has its own typographic rhythm. Noto Sans Hebrew keeps display and
+   reading text coherent across platforms instead of relying on an arbitrary
+   OS fallback, while the zero tracking protects connected letter shapes. */
+:root[lang='he'] {
+  --font-display: var(--font-hebrew);
+  --font-body: var(--font-hebrew);
+  --type-leading-body: 1.7;
+  --type-leading-title: 1.12;
+  --type-tracking-body: 0;
+  --type-tracking-title: 0;
+  --type-tracking-display: 0;
 }
 
 [data-mode="light"] {
@@ -144,6 +286,32 @@ p, span, button, a, svg {
 [data-mode="light"] .bg-white\/2  { background-color: rgba(30, 41, 59, 0.02); }
 [data-mode="light"] .bg-white\/3  { background-color: rgba(30, 41, 59, 0.03); }
 [data-mode="light"] .bg-white\/5  { background-color: rgba(30, 41, 59, 0.05); }
+
+/*
+ * Explicit dark islands (exportable posters, editorial covers and media
+ * players) keep their own ink contract even when the surrounding museum uses
+ * a light theme. Without this boundary the global remap above turns white ink
+ * dark while the island itself intentionally remains near-black.
+ */
+.nova-on-dark {
+  color: #f8fafc;
+  color-scheme: dark;
+}
+
+[data-mode="light"] .nova-on-dark.text-white,
+[data-mode="light"] .nova-on-dark .text-white { color: #f8fafc; }
+[data-mode="light"] .nova-on-dark.text-gray-100,
+[data-mode="light"] .nova-on-dark .text-gray-100 { color: #f1f5f9; }
+[data-mode="light"] .nova-on-dark.text-gray-200,
+[data-mode="light"] .nova-on-dark .text-gray-200 { color: #e2e8f0; }
+[data-mode="light"] .nova-on-dark.text-gray-300,
+[data-mode="light"] .nova-on-dark .text-gray-300 { color: #cbd5e1; }
+[data-mode="light"] .nova-on-dark.text-gray-400,
+[data-mode="light"] .nova-on-dark .text-gray-400 { color: #94a3b8; }
+[data-mode="light"] .nova-on-dark.text-gray-500,
+[data-mode="light"] .nova-on-dark .text-gray-500 { color: #94a3b8; }
+[data-mode="light"] .nova-on-dark .border-white\/5 { border-color: rgba(255, 255, 255, 0.08); }
+[data-mode="light"] .nova-on-dark .border-white\/10 { border-color: rgba(255, 255, 255, 0.12); }
 /* Brand badge colors (Last.fm red, Spotify green) are too light-value to pass
    AA contrast on white; darken them slightly in light mode while keeping the
    same hue so they're still instantly recognizable as each platform's brand. */
@@ -342,6 +510,166 @@ p, span, button, a, svg {
   }
 }
 
+/* ── Hebrew + bidirectional layout foundation ───────────────────────────────
+ * `dir` controls application chrome. Data visualizations opt back into LTR
+ * geometry with `.nova-data-ltr`, so timelines and axes never reverse merely
+ * because their surrounding prose is Hebrew. */
+:root[lang='he'] :where(h1, h2, h3, h4, h5, h6, p, li, blockquote, figcaption, dt, dd, th, td, label, button, a, summary) {
+  letter-spacing: normal;
+}
+
+:root[lang='he'] :where(.uppercase, .type-kicker, .type-label, [class*='tracking-']) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* These labels get their tracking from component CSS rather than Tailwind.
+   Their content is localized, so preserve normal Hebrew word shapes here. */
+:root[lang='he'] :where(
+  .nova-hero__artist-caption span,
+  .nova-hero__track-note small,
+  .museum-chapter__eyebrow,
+  .museum-room-progress__group,
+  .museum-room-progress__label,
+  .museum-mobile-map__groups h2
+) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+:root[lang='he'] :where(.font-mono):not(.type-metric, .nova-force-mono) {
+  font-family: var(--font-body);
+  letter-spacing: normal;
+}
+
+:root[lang='he'] :where(.type-display, .type-title, .type-section) {
+  letter-spacing: normal;
+  line-height: var(--type-leading-title);
+}
+
+:root[lang='he'] .nova-hero__title {
+  letter-spacing: normal;
+  line-height: 0.96;
+}
+
+:root[lang='he'] .museum-chapter h1 {
+  letter-spacing: normal;
+  line-height: 1.06;
+}
+
+:root[dir='rtl'] body {
+  text-align: start;
+}
+
+/* Existing physical alignment utilities now follow the reading direction.
+   New component work should prefer Tailwind's text-start/text-end utilities. */
+:root[dir='rtl'] :where(.text-left) {
+  text-align: start;
+}
+
+:root[dir='rtl'] :where(.text-right) {
+  text-align: end;
+}
+
+/* Tailwind 3's physical space/divide utilities expose reversal variables. */
+:root[dir='rtl'] [class*='space-x-'] > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+:root[dir='rtl'] [class*='divide-x-'] > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-x-reverse: 1;
+}
+
+/* Technical fields retain familiar left-to-right entry semantics inside RTL
+   forms. Search and free-text inputs intentionally inherit Hebrew direction. */
+:root[dir='rtl'] :where(
+  input[type='email'],
+  input[type='url'],
+  input[type='tel'],
+  input[type='number'],
+  input[type='date'],
+  input[type='time'],
+  code,
+  pre,
+  kbd,
+  samp
+) {
+  direction: ltr;
+  text-align: start;
+  unicode-bidi: isolate;
+}
+
+/* Mixed artist names, tracks and Latin brands can opt into a stable bidi
+   boundary without forcing the direction of the surrounding sentence. */
+.nova-bidi-isolate,
+bdi {
+  unicode-bidi: isolate;
+}
+
+.nova-bidi-auto {
+  unicode-bidi: plaintext;
+}
+
+.nova-bidi-ltr,
+.nova-number-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.nova-bidi-rtl {
+  direction: rtl;
+  unicode-bidi: isolate;
+}
+
+.nova-number-ltr {
+  display: inline-block;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Opt-in boundary for Recharts, heatmaps, chronological rails and canvases.
+   Localized captions stay outside this element and continue to follow RTL. */
+.nova-data-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.nova-data-ltr :where(.text-left) {
+  text-align: left;
+}
+
+.nova-data-ltr :where(.text-right) {
+  text-align: right;
+}
+
+/* Uses the independent scale property so directional icons can still animate
+   their transform (rotation/translation) without either effect being lost. */
+.nova-mirror-rtl {
+  transform-origin: center;
+}
+
+:root[dir='rtl'] .nova-mirror-rtl {
+  scale: -1 1;
+}
+
+/* Logical anchors for menus and badges whose trigger moves with the header. */
+.nova-anchor-start {
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+}
+
+.nova-anchor-end {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+.nova-text-start {
+  text-align: start;
+}
+
+.nova-text-end {
+  text-align: end;
+}
+
 @media (max-width: 640px) {
   .type-display {
     line-height: 0.92;
@@ -416,6 +744,19 @@ p, span, button, a, svg {
   border-color: color-mix(in srgb, var(--c1) 42%, transparent);
 }
 
+.nova-chart-tooltip {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--bg) 94%, #020617 6%);
+  box-shadow: 0 16px 38px color-mix(in srgb, #020617 38%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.nova-chart-tooltip__value {
+  color: var(--fg);
+  font-weight: 700;
+}
+
 [data-mode='light'] .nova-surface {
   border-color: color-mix(in srgb, #334155 14%, transparent);
   background-color: rgba(255, 255, 255, 0.7);
@@ -434,6 +775,11 @@ p, span, button, a, svg {
 [data-mode='light'] .nova-surface--utility {
   background-color: rgba(255, 255, 255, 0.46);
   box-shadow: none;
+}
+
+[data-mode='light'] .nova-chart-tooltip {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -519,6 +865,7 @@ p, span, button, a, svg {
 
 button:focus-visible,
 input:focus-visible,
+a:focus-visible,
 [role="button"]:focus-visible {
   outline: 2px solid var(--c1);
   outline-offset: 3px;

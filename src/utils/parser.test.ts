@@ -75,7 +75,7 @@ describe('music data parser', () => {
 
     expect(data.source_summary?.source_type).toBe('youtube');
     expect(data.source_summary?.youtube_plays).toBe(2);
-    expect(data.top_artists[0].name).toBe('Bring Me The Horizon');
+    expect(data.top_artists[0].name).toBe('Bring Me the Horizon');
     expect(data.top_tracks.map(track => track.title)).toContain('MANTRA');
     expect(data.top_tracks.map(track => track.title)).toContain('In Blur');
   });
@@ -160,7 +160,7 @@ describe('music data parser', () => {
       matched_plays: 2,
     });
     expect(data.knowledge_summary?.top_matches[0]).toMatchObject({
-      name: 'Bring Me The Horizon',
+      name: 'Bring Me the Horizon',
       matchedName: 'Bring Me the Horizon',
     });
     expect(data.knowledge_summary?.top_missing[0].name).toBe('Unknown Future Band');
@@ -502,7 +502,7 @@ describe('music data parser', () => {
 
     expect(data.source_summary?.source_type).toBe('apple_music');
     expect(data.source_summary?.apple_music_plays).toBe(1);
-    expect(data.top_artists[0].name).toBe('Bring Me The Horizon');
+    expect(data.top_artists[0].name).toBe('Bring Me the Horizon');
   });
 
   it('parses a ListenBrainz listens export (plain array)', () => {
@@ -529,7 +529,7 @@ describe('music data parser', () => {
 
     expect(data.source_summary?.source_type).toBe('listenbrainz');
     expect(data.source_summary?.listenbrainz_plays).toBe(2);
-    expect(data.top_artists.map(a => a.name)).toEqual(expect.arrayContaining(['Deafheaven', 'Bring Me The Horizon']));
+    expect(data.top_artists.map(a => a.name)).toEqual(expect.arrayContaining(['Deafheaven', 'Bring Me the Horizon']));
     expect(data.top_tracks.find(t => t.title === 'In Blur')).toMatchObject({ artist: 'Deafheaven' });
   });
 
@@ -580,5 +580,124 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_plays).toBe(1);
     expect(data.source_summary?.listenbrainz_plays).toBe(1);
     expect(data.core_metrics.total_plays).toBe(4);
+  });
+
+  it('merges only the five evidence-backed artist alias groups across every derived view', () => {
+    const identities = [
+      ['Bring Me the Horizon', 'Bring Me The Horizon'],
+      ['Hayehudim', 'היהודים'],
+      ['Slaves', 'SLAVES'],
+      ['mgk', 'Machine Gun Kelly'],
+      ['nothing,nowhere.', 'nothingnowhere.'],
+    ] as const;
+    const csv = identities.flatMap(([canonical, alias], index) => [
+      `"${canonical}",Shared Album ${index},Shared Track ${index},01 Jan 2026 10:${String(index * 2).padStart(2, '0')}`,
+      `"${alias}",Shared Album ${index},Shared Track ${index},01 Jan 2026 10:${String(index * 2 + 1).padStart(2, '0')}`,
+    ]).join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+    const canonicalNames = identities.map(([canonical]) => canonical);
+    const aliases = identities.map(([, alias]) => alias);
+
+    expect(data.core_metrics).toMatchObject({
+      total_plays: 10,
+      unique_artists: 5,
+      unique_tracks: 5,
+      unique_albums: 5,
+    });
+    expect(data.top_artists).toHaveLength(5);
+    expect(data.top_artists.map(artist => artist.name)).toEqual(canonicalNames);
+    expect(data.top_artists.every(artist => artist.plays === 2)).toBe(true);
+    expect(data.top_tracks.map(track => track.artist)).toEqual(canonicalNames);
+    expect(data.top_tracks.every(track => track.plays === 2)).toBe(true);
+    expect(data.top_albums.map(album => album.artist)).toEqual(canonicalNames);
+    expect(data.top_albums.every(album => album.plays === 2)).toBe(true);
+    expect(data.yearly_eras[0]).toMatchObject({
+      unique_artists: 5,
+      unique_tracks: 5,
+      top_artist: 'Bring Me the Horizon',
+    });
+    expect(data.sessions[0].unique_artists).toBe(5);
+    expect(data.top_artists.some(artist => aliases.includes(artist.name as typeof aliases[number]))).toBe(false);
+  });
+
+  it('canonicalizes registered aliases before cross-source deduplication', () => {
+    const lastfm = 'Bring Me The Horizon,Sempiternal,Shadow Moses,01 Jan 2026 10:00';
+    const spotify = JSON.stringify([{
+      ts: '2026-01-01T10:01:00Z',
+      ms_played: 180000,
+      master_metadata_track_name: 'Shadow Moses',
+      master_metadata_album_artist_name: 'Bring Me the Horizon',
+      master_metadata_album_album_name: 'Sempiternal',
+    }]);
+
+    const data = parseMusicSources({ csvTexts: [lastfm], spotifyJsonTexts: [spotify] });
+
+    expect(data.core_metrics.total_plays).toBe(1);
+    expect(data.source_summary?.cross_source_duplicates).toBe(1);
+    expect(data.top_artists[0]).toMatchObject({ name: 'Bring Me the Horizon', plays: 1 });
+  });
+
+  it('does not infer artist identities outside the exact registry', () => {
+    const csv = [
+      'Machine Gun Kelly,Album,Track A,01 Jan 2026 10:00',
+      'MachineGun Kelly,Album,Track B,01 Jan 2026 10:01',
+      'MGK,Album,Track C,01 Jan 2026 10:02',
+    ].join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+
+    expect(data.top_artists.map(artist => artist.name)).toEqual(['mgk', 'MachineGun Kelly', 'MGK']);
+    expect(data.core_metrics.unique_artists).toBe(3);
+  });
+
+  it('emits automatic genre provenance for catalogued and unclassified artists', () => {
+    const csv = [
+      'Metallica,Master of Puppets,Battery,01 Jan 2026 10:00',
+      'Metallica,Master of Puppets,Damage Inc.,01 Jan 2026 10:01',
+      'Unknown Future Band,Demo,Signal,01 Jan 2026 10:02',
+    ].join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+    const metallica = data.artist_genre_catalog?.find(artist => artist.name === 'Metallica');
+    const unknown = data.artist_genre_catalog?.find(artist => artist.name === 'Unknown Future Band');
+
+    expect(metallica).toEqual({
+      artistKey: 'Metallica',
+      name: 'Metallica',
+      plays: 2,
+      automaticGenre: 'Thrash Metal / Heavy Metal',
+      automaticFamily: 'Power / Speed Metal',
+      country: 'United States',
+      source: 'catalog',
+    });
+    expect(unknown).toEqual({
+      artistKey: 'Unknown Future Band',
+      name: 'Unknown Future Band',
+      plays: 1,
+      automaticGenre: 'Unclassified',
+      automaticFamily: 'Unclassified',
+      country: 'Unknown',
+      source: 'unclassified',
+    });
+  });
+
+  it('keeps every long-tail artist in the genre catalog beyond the top-100 cap', () => {
+    const csv = Array.from({ length: 105 }, (_, index) => {
+      const artist = `Long Tail Artist ${String(index + 1).padStart(3, '0')}`;
+      const day = String((index % 28) + 1).padStart(2, '0');
+      const hour = String(index % 24).padStart(2, '0');
+      const minute = String(index % 60).padStart(2, '0');
+      return `${artist},Archive,Track ${index + 1},${day} Jan 2026 ${hour}:${minute}`;
+    }).join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+    const catalog = data.artist_genre_catalog ?? [];
+
+    expect(data.top_artists).toHaveLength(100);
+    expect(catalog).toHaveLength(105);
+    expect(new Set(catalog.map(artist => artist.artistKey)).size).toBe(105);
+    expect(catalog.reduce((sum, artist) => sum + artist.plays, 0)).toBe(data.core_metrics.total_plays);
+    expect(catalog.every(artist => artist.source === 'unclassified')).toBe(true);
   });
 });

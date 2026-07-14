@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Radio, Crown, Sparkles, Repeat, History, Zap, Music } from 'lucide-react';
+import { Crown, Sparkles, Repeat, History, Zap, Music } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import MethodologyPanel from './MethodologyPanel';
 import SectionNarrative from './SectionNarrative';
 import pulseData from '../data/recent_pulse.json';
+import { localeFor } from '../utils/i18n';
 
 interface RecentPulseProps {
   data: MusicDnaData;
@@ -101,13 +102,13 @@ function AlbumArt({ title, image, size, rounded = 'rounded-xl' }: { title: strin
 
 export default function RecentPulse({ data }: RecentPulseProps) {
   const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
-  const fmtNum = (n: number) => Math.round(n).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const fmtNum = (n: number) => Math.round(n).toLocaleString(localeFor(lang));
 
   const formatDate = (dateStr: string) => {
     try {
       const d = new Date(`${dateStr}T00:00:00`);
       if (isNaN(d.getTime())) return dateStr;
-      return d.toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+      return d.toLocaleDateString(localeFor(lang), { day: 'numeric', month: 'short', year: 'numeric' });
     } catch {
       return dateStr;
     }
@@ -134,20 +135,7 @@ export default function RecentPulse({ data }: RecentPulseProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      {/* ── Header ── */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            <Radio className="w-6 h-6" style={{ color: tc.c1 }} />
-            <span
-              className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full animate-ping"
-              style={{ backgroundColor: tc.c2 }}
-            />
-          </div>
-          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-            {t.pulse.title}
-          </h2>
-        </div>
+      <div className="flex justify-end">
         <span
           className="px-3 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider border"
           style={{ color: tc.c1, borderColor: `${tc.c1}40`, backgroundColor: `${tc.c1}10` }}
@@ -155,7 +143,7 @@ export default function RecentPulse({ data }: RecentPulseProps) {
           {t.pulse.syncedAt(formatDate(pulse.synced_at))}
         </span>
       </div>
-      <p className="text-sm text-gray-400 leading-relaxed font-sans -mt-6 max-w-2xl">
+      <p className="text-sm text-gray-400 leading-relaxed font-sans max-w-2xl">
         {t.pulse.subtitle}
       </p>
 

@@ -1,11 +1,12 @@
 import React from 'react';
-import { AlertCircle, HelpCircle, HeartHandshake, ShieldAlert } from 'lucide-react';
+import { HelpCircle, HeartHandshake, ShieldAlert } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getRecords } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
 import SectionNarrative from './SectionNarrative';
 import { localizeSourceNote } from '../utils/localizedDatasetText';
+import { localeFor } from '../utils/i18n';
 
 interface HiddenInsightsProps {
   data: MusicDnaData;
@@ -19,8 +20,8 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
   const source = deriveSourceSummary(data);
   const records = getRecords(data);
   const nightRatio = getNightRatio(data);
-  const { tc, t, lang } = useApp();
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const { t, lang } = useApp();
+  const locale = localeFor(lang);
   const sourceNote = localizeSourceNote(source, lang);
 
   const secondArtistName = supportArtists[0]?.name ?? t.hiddenInsights.secondArtistFallback;
@@ -29,13 +30,6 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3 mb-6">
-        <AlertCircle className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.hiddenInsights.title}
-        </h2>
-      </div>
-
       <SectionNarrative content={t.deepNarratives.insights} accent="c1" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

@@ -9,9 +9,15 @@ import {
   Info,
   Layers3,
   ListChecks,
-  ShieldCheck,
 } from 'lucide-react';
-import type { ArtistEnrichmentGap, ArtistEnrichmentPriority, MusicDnaData, PlaySource } from '../types';
+import type {
+  ArtistEnrichmentGap,
+  ArtistEnrichmentPriority,
+  ArtistGenreCatalogEntry,
+  GenreAssignment,
+  MusicDnaData,
+  PlaySource,
+} from '../types';
 import {
   buildMonthlyActivity,
   deriveSourceSummary,
@@ -24,11 +30,20 @@ import SectionNarrative from './SectionNarrative';
 import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
 import MediaCoverageAudit from './MediaCoverageAudit';
 import { buildOfflineArtistKnowledgeSummary } from '../utils/offlineArtistKnowledge';
+import { deriveDatasetTemporalTrust } from '../utils/dataTrust';
+import { localeFor, pickLanguage } from '../utils/i18n';
+import GenreTaggingStudio from './GenreTaggingStudio';
 
 type ConfidenceKind = 'exact' | 'mixed' | 'estimated' | 'inferred' | 'curated' | 'unavailable';
 
 interface DataQualityCenterProps {
   data: MusicDnaData;
+  genreAssignments?: GenreAssignment[];
+  useBundledGenreCatalog?: boolean;
+  onGenreAssignmentsChange?: (
+    assignments: GenreAssignment[],
+    catalog: ArtistGenreCatalogEntry[],
+  ) => void;
 }
 
 function confidenceColor(kind: ConfidenceKind, tc: ReturnType<typeof useApp>['tc']) {
@@ -92,12 +107,21 @@ function priorityColor(priority: ArtistEnrichmentPriority, tc: ReturnType<typeof
   return colors[priority];
 }
 
-export default function DataQualityCenter({ data }: DataQualityCenterProps) {
+export default function DataQualityCenter({
+  data,
+  genreAssignments = [],
+  useBundledGenreCatalog = false,
+  onGenreAssignmentsChange,
+}: DataQualityCenterProps) {
   const { t, tc, lang } = useApp();
   const source = deriveSourceSummary(data);
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
   const sourceNote = localizeSourceNote(source, lang);
-  const knowledgeSummary = data.knowledge_summary ?? buildOfflineArtistKnowledgeSummary(data.top_artists);
+  // The bundled dataset can outlive an offline-knowledge refresh. Always build
+  // this view from the live offline archive instead of displaying its embedded
+  // (and potentially stale) import-time snapshot.
+  const knowledgeSummary = buildOfflineArtistKnowledgeSummary(data.top_artists);
+  const temporalTrust = deriveDatasetTemporalTrust(data);
   const peakYear = getPeakYear(data);
   const night = getNightRatio(data);
   const confidence = overallConfidence(data);
@@ -111,6 +135,18 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
   const generatedAt = data.generated_at
     ? new Date(data.generated_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
     : 'N/A';
+  const formatDataDate = (dateKey: string) => new Date(`${dateKey}T12:00:00Z`)
+    .toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+  const periodStatus = temporalTrust.latestPeriodStatus === 'ytd'
+    ? pickLanguage(lang, { en: '⏳ YTD', es: '⏳ Año en curso', he: '⏳ מתחילת השנה' })
+    : temporalTrust.latestPeriodStatus === 'complete'
+      ? pickLanguage(lang, { en: '✅ Complete year', es: '✅ Año completo', he: '✅ שנה מלאה' })
+      : temporalTrust.latestPeriodStatus === 'partial'
+        ? pickLanguage(lang, { en: '⚠ Partial period', es: '⚠ Periodo parcial', he: '⚠ תקופה חלקית' })
+        : pickLanguage(lang, { en: 'Date range unavailable', es: 'Rango no disponible', he: 'טווח התאריכים אינו זמין' });
+  const observedPeriod = temporalTrust.dataMinDate && temporalTrust.dataMaxDate
+    ? `${formatDataDate(temporalTrust.dataMinDate)} → ${formatDataDate(temporalTrust.dataMaxDate)} · ${periodStatus} · ${temporalTrust.analysisTimeZone}`
+    : t.dataQuality.activeDatasetLabel;
   const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
   const gapLabel = (gap: ArtistEnrichmentGap) => t.dataQuality.knowledge.gaps[gap] ?? gap;
 
@@ -140,9 +176,11 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       icon: Activity,
       label: t.dataQuality.eventCountLabel,
       value: formatNumber(source.merged_plays || data.core_metrics.total_plays, locale),
-      sub: lang === 'en'
-        ? `${formatNumber(data.core_metrics.unique_artists, locale)} artists · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`
-        : `${formatNumber(data.core_metrics.unique_artists, locale)} artistas · ${formatNumber(data.core_metrics.unique_tracks, locale)} canciones`,
+      sub: pickLanguage(lang, {
+        en: `${formatNumber(data.core_metrics.unique_artists, locale)} artists · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`,
+        es: `${formatNumber(data.core_metrics.unique_artists, locale)} artistas · ${formatNumber(data.core_metrics.unique_tracks, locale)} canciones`,
+        he: `${formatNumber(data.core_metrics.unique_artists, locale)} אמנים · ${formatNumber(data.core_metrics.unique_tracks, locale)} שירים`,
+      }),
       color: tc.c2,
     },
     {
@@ -156,7 +194,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
       icon: FileJson,
       label: t.dataQuality.generatedAtLabel,
       value: generatedAt,
-      sub: t.dataQuality.activeDatasetLabel,
+      sub: observedPeriod,
       color: tc.c4,
     },
   ];
@@ -239,14 +277,16 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
 
   return (
     <div className="space-y-10 animate-fade-in">
-      <div className="flex items-center space-x-3">
-        <ShieldCheck className="w-6 h-6" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.dataQuality.title}
-        </h2>
-      </div>
-
       <SectionNarrative content={t.deepNarratives.dataQuality} accent="c1" />
+
+      {onGenreAssignmentsChange && (
+        <GenreTaggingStudio
+          data={data}
+          assignments={genreAssignments}
+          useBundledCatalog={useBundledGenreCatalog}
+          onAssignmentsChange={onGenreAssignmentsChange}
+        />
+      )}
 
       <section className="space-y-4">
         <div className="flex items-center gap-2">
@@ -258,7 +298,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {profileCards.map(({ icon: Icon, label, value, sub, color }) => (
-            <div key={label} className="glass-panel p-5 rounded-2xl border-l-4" style={{ borderLeftColor: color }}>
+            <div key={label} className="nova-surface nova-surface--utility rounded-2xl border-l-4 p-5" style={{ borderLeftColor: color }}>
               <Icon className="w-5 h-5 mb-3" style={{ color }} />
               <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-400">{label}</p>
               <p className="text-lg font-black text-white mt-1 leading-tight">{value}</p>
@@ -267,7 +307,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
           ))}
         </div>
 
-        <div className="glass-panel p-5 rounded-2xl">
+        <div className="nova-surface nova-surface--analysis rounded-2xl p-5">
           <p className="text-xs text-gray-300 leading-relaxed">{sourceNote}</p>
           <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 mt-5">
             {sourceCards.map(card => {
@@ -296,7 +336,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
           </h3>
         </div>
 
-        <div className="glass-panel rounded-3xl border border-white/10 p-5">
+        <div className="nova-surface nova-surface--analysis rounded-3xl p-5">
           <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
             <div>
               <p className="text-xs leading-relaxed text-gray-300">
@@ -420,7 +460,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
               const kind = metricConfidence(metric.id, source.source_type, hasMonthlyActivity);
               const color = confidenceColor(kind, tc);
               return (
-                <div key={metric.id} className="glass-panel p-4 rounded-2xl border" style={{ borderColor: `${color}28` }}>
+                <div key={metric.id} className="nova-surface nova-surface--analysis rounded-2xl p-4" style={{ borderColor: `${color}28` }}>
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-white">{metric.label}</p>
@@ -447,7 +487,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
               {t.dataQuality.dynamicReadingTitle}
             </h3>
           </div>
-          <div className="glass-panel p-5 rounded-2xl space-y-3">
+          <div className="nova-surface nova-surface--analysis space-y-3 rounded-2xl p-5">
             {dynamicLines.map((line, index) => (
               <div key={line} className="flex gap-3">
                 <span
@@ -474,7 +514,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
           {t.dataQuality.methodology.map((method, index) => {
             const color = [tc.c1, tc.c2, tc.c3, tc.c4][index % 4];
             return (
-              <div key={method.title} className="glass-panel p-5 rounded-2xl border-t-4" style={{ borderTopColor: color }}>
+              <div key={method.title} className="nova-surface nova-surface--analysis rounded-2xl border-t-4 p-5" style={{ borderTopColor: color }}>
                 <p className="text-[10px] font-mono font-black uppercase tracking-widest mb-2" style={{ color }}>
                   {method.tag}
                 </p>
@@ -500,7 +540,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
           {t.dataQuality.glossary.map((group, groupIndex) => {
             const color = [tc.c1, tc.c2, tc.c3, tc.c4][groupIndex % 4];
             return (
-              <div key={group.group} className="glass-panel p-5 rounded-2xl border" style={{ borderColor: `${color}25` }}>
+              <div key={group.group} className="nova-surface nova-surface--analysis rounded-2xl p-5" style={{ borderColor: `${color}25` }}>
                 <h4 className="text-xs font-mono font-black uppercase tracking-widest mb-4" style={{ color }}>
                   {group.group}
                 </h4>
@@ -518,7 +558,7 @@ export default function DataQualityCenter({ data }: DataQualityCenterProps) {
         </div>
       </section>
 
-      <section className="glass-panel p-6 rounded-3xl">
+      <section className="nova-surface nova-surface--utility rounded-3xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 className="w-5 h-5 text-green-400" />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">

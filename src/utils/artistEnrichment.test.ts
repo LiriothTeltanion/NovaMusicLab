@@ -3,6 +3,8 @@ import {
   getAlbumEnrichment,
   getArtistEnrichment,
   getRelatedArchiveArtists,
+  isHebrewArtistEnrichmentLoaded,
+  loadHebrewArtistEnrichment,
   normalizeCatalogName,
   type ArtistEnrichment,
 } from './artistEnrichment';
@@ -31,18 +33,18 @@ describe('normalizeCatalogName', () => {
 const fakeProfile: ArtistEnrichment = {
   name: 'Test Band',
   aliases: [],
-  origin: { es: '', en: '' },
-  country: { es: '', en: '' },
+  origin: { es: '', en: '', he: '' },
+  country: { es: '', en: '', he: '' },
   start_year: 2010,
-  status: { es: '', en: '' },
-  bio: { es: '', en: '' },
-  archive_role: { es: '', en: '' },
-  sound_evolution: { es: '', en: '' },
-  why_it_matters: { es: '', en: '' },
-  signature_moods: { es: [], en: [] },
+  status: { es: '', en: '', he: '' },
+  bio: { es: '', en: '', he: '' },
+  archive_role: { es: '', en: '', he: '' },
+  sound_evolution: { es: '', en: '', he: '' },
+  why_it_matters: { es: '', en: '', he: '' },
+  signature_moods: { es: [], en: [], he: [] },
   key_albums: [
-    { title: 'Sempiternal', year: 2013, description: { es: '', en: '' } },
-    { title: 'Live at the Union Chapel', year: 2015, description: { es: '', en: '' } },
+    { title: 'Sempiternal', year: 2013, description: { es: '', en: '', he: '' } },
+    { title: 'Live at the Union Chapel', year: 2015, description: { es: '', en: '', he: '' } },
   ],
 };
 
@@ -72,6 +74,27 @@ describe('getArtistEnrichment (real bundled data)', () => {
 
   it('returns undefined for unknown artists instead of guessing', () => {
     expect(getArtistEnrichment('Totally Nonexistent Band XYZ')).toBeUndefined();
+  });
+
+  it('keeps the synchronous API safe before the optional Hebrew chunk loads', () => {
+    expect(isHebrewArtistEnrichmentLoaded()).toBe(false);
+    const profile = getArtistEnrichment('Bring Me the Horizon');
+    expect(profile?.bio.he).toBe(profile?.bio.en);
+  });
+
+  it('installs the Hebrew overlay idempotently without changing catalog identity', async () => {
+    const firstLoad = loadHebrewArtistEnrichment();
+    const secondLoad = loadHebrewArtistEnrichment();
+    expect(secondLoad).toBe(firstLoad);
+    await firstLoad;
+
+    const profile = getArtistEnrichment('Bring Me the Horizon');
+    expect(isHebrewArtistEnrichmentLoaded()).toBe(true);
+    expect(profile?.bio.he).toMatch(/[\u0590-\u05FF]/);
+    expect(profile?.bio.he).not.toBe(profile?.bio.en);
+    expect(profile?.key_albums[0].title).toBe('Sempiternal');
+    expect(profile?.key_albums[0].description.he).toMatch(/[\u0590-\u05FF]/);
+    await expect(loadHebrewArtistEnrichment()).resolves.toBeUndefined();
   });
 });
 

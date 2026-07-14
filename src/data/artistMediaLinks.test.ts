@@ -79,4 +79,31 @@ describe('artist_media_links.json stability', () => {
     expect(count('youtubeChannelUrl')).toBeGreaterThanOrEqual(65);
     expect(entries.filter(e => e.wikipediaEnUrl || e.wikipediaEsUrl).length).toBeGreaterThanOrEqual(65);
   });
+
+  it('pins newly canonicalized artists to evidence-backed provider identifiers', () => {
+    const expected = {
+      'Amr Diab': {
+        spotifyArtistUrl: 'https://open.spotify.com/artist/5abSRg0xN1NV3gLbuvX24M',
+        youtubeChannelUrl: 'https://www.youtube.com/channel/UCpui0-2JqcAcII4ybpB1q3w',
+      },
+      'Sigur Rós': {
+        spotifyArtistUrl: 'https://open.spotify.com/artist/6UUrUCIZtQeOf8tC0WuzRy',
+        youtubeChannelUrl: 'https://www.youtube.com/channel/UCAmt29QykFXnuIqQoEEnEFg',
+      },
+      'Aviv Geffen': {
+        spotifyArtistUrl: 'https://open.spotify.com/artist/73ieysHN7XpJYEnEAYsO3K',
+        youtubeChannelUrl: 'https://www.youtube.com/channel/UCem7pt_OUc85xKNQz1jH8JQ',
+      },
+    };
+
+    for (const [artist, providers] of Object.entries(expected)) {
+      const entry = entries.find(candidate => candidate.artist === artist);
+      expect(entry, artist).toBeDefined();
+      expect(entry, artist).toMatchObject({
+        mediaConfidence: 'verified',
+        ...providers,
+      });
+      expect(entry?.youtubeVideoUrl, `${artist} embeddable media`).toMatch(/^https:\/\/www\.youtube\.com\/watch\?v=/);
+    }
+  });
 });

@@ -1,72 +1,285 @@
+/* eslint-disable no-console -- This CLI's public interface is its CI diagnostic output. */
 /**
- * Post-build bundle budget guard. Fails the build when a known regression
- * class reappears:
- *  1. The app entry chunk (index-*.js) exceeding its budget - this caught
- *     nobody twice already (InteractiveBackdrop eager import: 398->968KB;
- *     museum wave: 457->627KB) because nothing failed loudly.
- *  2. The offline knowledge base or the bundled dataset leaking INTO the
- *     entry chunk instead of staying in their own lazy chunks.
- *  3. Vendor chunks disappearing (someone dropping the codeSplitting config).
+ * Post-build bundle guard. It protects both the entry file and the actual
+ * landing closure: entry + HeroSection + InteractiveBackdrop and every static
+ * JavaScript dependency those roots pull over the network.
  *
  * Run: npm run build && node scripts/check_bundle_budget.mjs
- * CI runs this via `npm run build:check`.
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ASSETS = path.join(ROOT, 'dist', 'assets');
 
-// Margin over the current ~210KB entry so routine app growth doesn't cry
-// wolf, but any data-file or heavy-library leak (the dataset chunk alone is
-// ~100KB) fails loudly.
 const ENTRY_BUDGET_KB = 300;
+// Current landing JS closure is ~245KB gzip after moodCore stopped the 600KB
+// offline knowledge file from being fetched on first paint. The margin allows
+// normal UI growth while any knowledge-base regression still fails loudly.
+const SHELL_LANDING_GZIP_BUDGET_KB = 285;
+const DEMO_LANDING_GZIP_BUDGET_KB = 315;
+const SHELL_LANDING_ROOT_PREFIXES = ['index-', 'HeroSection-', 'InteractiveBackdrop-'];
+const DEMO_DATASET_ROOT_PREFIX = 'music_dna_compiled-';
+// Hebrew is a complete third-language experience, but ES/EN visitors must not
+// pay its transfer cost. These dedicated chunks are loaded only after the user
+// chooses עברית; their own budgets keep translation growth visible.
+const HEBREW_LAZY_CHUNKS = [
+  { name: 'Hebrew UI catalog', prefix: 'heStrings-', gzipBudgetKb: 35 },
+  { name: 'Hebrew artist overlay', prefix: 'artist_enrichment_he-', gzipBudgetKb: 55 },
+  { name: 'Hebrew artist loader', prefix: 'artistEnrichmentHebrew-', gzipBudgetKb: 2 },
+];
+// Incremental cost after the landing closure is already cached. Baselines from
+// the 2026-07-13 production build were 304 / 305 / 337 / 321 / 176KB gzip.
+// The 6-8% headroom catches a heavy shared import or data leak without making
+// small copy and interaction changes fail CI.
+const ROOM_GZIP_BUDGETS = [
+  { name: 'Dashboard', rootPrefix: 'Dashboard-', budgetKb: 325 },
+  { name: 'StatsDeepDive', rootPrefix: 'StatsDeepDive-', budgetKb: 325 },
+  { name: 'TopHistorico', rootPrefix: 'TopHistorico-', budgetKb: 360 },
+  { name: 'EmotionalMap', rootPrefix: 'EmotionalMap-', budgetKb: 345 },
+  { name: 'DataUploader', rootPrefix: 'DataUploader-', budgetKb: 190 },
+];
 
 if (!fs.existsSync(ASSETS)) {
   console.error('[bundle-budget] dist/assets not found - run `npm run build` first.');
   process.exit(1);
 }
 
-const files = fs.readdirSync(ASSETS).filter(f => f.endsWith('.js'));
-const entry = files.find(f => /^index-[\w-]+\.js$/.test(f));
+const files = fs.readdirSync(ASSETS).filter(file => file.endsWith('.js'));
+const fileSet = new Set(files);
 const failures = [];
 
-if (!entry) {
-  failures.push('No index-*.js entry chunk found in dist/assets.');
-} else {
+function findChunk(prefix) {
+  const matches = files.filter(file => file.startsWith(prefix));
+  if (matches.length !== 1) {
+    failures.push(`Expected exactly one ${prefix}*.js chunk; found ${matches.length}.`);
+    return null;
+  }
+  return matches[0];
+}
+
+/** Dynamic import(...) calls are deliberately excluded from this graph. */
+function staticImports(source) {
+  const imports = [];
+  const pattern = /(?:^|[;\n])\s*(?:import(?!\s*\()|export)\s*(?:[^"'`;]*?from\s*)?["']\.\/([^"']+\.js)["']/g;
+  for (const match of source.matchAll(pattern)) imports.push(match[1]);
+  return imports;
+}
+
+function buildStaticClosure(roots) {
+  const closure = new Set();
+  const queue = roots.filter(Boolean);
+  while (queue.length) {
+    const file = queue.pop();
+    if (closure.has(file)) continue;
+    if (!fileSet.has(file)) {
+      failures.push(`Static dependency ${file} referenced by a guarded closure was not emitted.`);
+      continue;
+    }
+    closure.add(file);
+    const source = fs.readFileSync(path.join(ASSETS, file), 'utf8');
+    for (const dependency of staticImports(source)) {
+      if (!closure.has(dependency)) queue.push(dependency);
+    }
+  }
+  return closure;
+}
+
+function measureFiles(filesToMeasure) {
+  let rawBytes = 0;
+  let gzipBytes = 0;
+  const details = [];
+
+  for (const file of filesToMeasure) {
+    const bytes = fs.readFileSync(path.join(ASSETS, file));
+    const fileGzipBytes = gzipSync(bytes, { level: 9 }).length;
+    rawBytes += bytes.length;
+    gzipBytes += fileGzipBytes;
+    details.push({ file, gzipBytes: fileGzipBytes });
+  }
+
+  return { rawBytes, gzipBytes, details };
+}
+
+function formatLargestContributors(details, limit = 6) {
+  return details
+    .toSorted((a, b) => b.gzipBytes - a.gzipBytes)
+    .slice(0, limit)
+    .map(item => `${item.file} ${(item.gzipBytes / 1024).toFixed(0)}KB`)
+    .join(', ');
+}
+
+function hasOfflineKnowledgePayload(source) {
+  return source.includes('emotionalSeeds')
+    && source.includes('releaseGroups')
+    && source.includes('musicbrainz');
+}
+
+function hasArtistEnrichmentPayload(source) {
+  return source.includes('archive_role')
+    && source.includes('sound_evolution')
+    && source.includes('signature_moods');
+}
+
+const entry = findChunk('index-');
+if (entry) {
   const entryPath = path.join(ASSETS, entry);
   const sizeKb = fs.statSync(entryPath).size / 1024;
-  console.log(`[bundle-budget] entry ${entry}: ${sizeKb.toFixed(0)} KB (budget ${ENTRY_BUDGET_KB} KB)`);
+  console.log(`[bundle-budget] entry ${entry}: ${sizeKb.toFixed(0)} KB raw (budget ${ENTRY_BUDGET_KB} KB)`);
   if (sizeKb > ENTRY_BUDGET_KB) {
-    failures.push(`Entry chunk ${entry} is ${sizeKb.toFixed(0)} KB (budget: ${ENTRY_BUDGET_KB} KB). ` +
-      'Check for a new eager import of a data-backed module (emotionalEngine/offlineArtistKnowledge/music_dna_compiled).');
+    failures.push(`Entry chunk ${entry} is ${sizeKb.toFixed(0)} KB (budget: ${ENTRY_BUDGET_KB} KB).`);
   }
 
   const source = fs.readFileSync(entryPath, 'utf8');
-  // Fingerprints of the two heavy data modules that must stay lazily chunked.
-  // These strings exist in the JSON payloads, not in ordinary app code.
-  if (source.includes('"emotionalSeeds"')) {
-    failures.push('offline_artist_knowledge.json content found INSIDE the entry chunk - it must stay a lazy chunk.');
+  if (hasOfflineKnowledgePayload(source)) {
+    failures.push('offline_artist_knowledge.json content found INSIDE the entry chunk.');
   }
-  if (source.includes('"cross_source_duplicates"') && source.includes('"artist_origin_countries"')) {
-    failures.push('music_dna_compiled.json content found INSIDE the entry chunk - the default dataset must load via loadDefaultDataset().');
+  if (source.includes('cross_source_duplicates') && source.includes('artist_origin_countries')) {
+    failures.push('music_dna_compiled.json content found INSIDE the entry chunk.');
   }
 }
 
 for (const vendor of ['vendor-react', 'vendor-charts', 'vendor-motion']) {
-  if (!files.some(f => f.startsWith(vendor + '-'))) {
-    failures.push(`Expected vendor chunk "${vendor}-*.js" is missing - was the codeSplitting config removed from vite.config.ts?`);
+  if (!files.some(file => file.startsWith(`${vendor}-`))) {
+    failures.push(`Expected vendor chunk "${vendor}-*.js" is missing.`);
   }
 }
 
-if (!files.some(f => f.startsWith('offlineArtistKnowledge-'))) {
-  failures.push('offlineArtistKnowledge-*.js lazy chunk is missing - the knowledge base may have been absorbed into another chunk.');
+const offlineKnowledgeChunk = findChunk('offlineArtistKnowledge-');
+if (offlineKnowledgeChunk) {
+  const source = fs.readFileSync(path.join(ASSETS, offlineKnowledgeChunk), 'utf8');
+  if (hasArtistEnrichmentPayload(source)) {
+    failures.push('Artist enrichment content leaked into the offline-knowledge chunk.');
+  }
+}
+
+const hebrewLazyChunks = HEBREW_LAZY_CHUNKS.map(config => ({
+  ...config,
+  file: findChunk(config.prefix),
+}));
+
+for (const chunk of hebrewLazyChunks) {
+  if (!chunk.file) continue;
+  const measurement = measureFiles([chunk.file]);
+  const gzipKb = measurement.gzipBytes / 1024;
+  console.log(
+    `[bundle-budget] ${chunk.name}: ${gzipKb.toFixed(1)} KB gzip `
+    + `(lazy budget ${chunk.gzipBudgetKb} KB)`,
+  );
+  if (gzipKb > chunk.gzipBudgetKb) {
+    failures.push(
+      `${chunk.name} is ${gzipKb.toFixed(1)} KB gzip `
+      + `(budget: ${chunk.gzipBudgetKb} KB). Review or split the Hebrew catalog.`,
+    );
+  }
+}
+
+const shellLandingRoots = SHELL_LANDING_ROOT_PREFIXES.map(findChunk);
+const shellLandingClosure = buildStaticClosure(shellLandingRoots);
+const shellLandingMeasurement = measureFiles(shellLandingClosure);
+const demoDatasetRoot = findChunk(DEMO_DATASET_ROOT_PREFIX);
+const demoLandingClosure = buildStaticClosure([...shellLandingRoots, demoDatasetRoot]);
+const demoLandingMeasurement = measureFiles(demoLandingClosure);
+
+for (const chunk of hebrewLazyChunks) {
+  if (!chunk.file) continue;
+  if (shellLandingClosure.has(chunk.file) || demoLandingClosure.has(chunk.file)) {
+    failures.push(`${chunk.name} leaked into the ES/EN landing closure through ${chunk.file}.`);
+  }
+}
+
+for (const file of demoLandingClosure) {
+  const bytes = fs.readFileSync(path.join(ASSETS, file));
+  const source = bytes.toString('utf8');
+  if (file.startsWith('offlineArtistKnowledge-') || hasOfflineKnowledgePayload(source)) {
+    failures.push(`Offline artist knowledge leaked into the landing closure through ${file}.`);
+  }
+}
+
+const shellLandingRawKb = shellLandingMeasurement.rawBytes / 1024;
+const shellLandingGzipKb = shellLandingMeasurement.gzipBytes / 1024;
+console.log(
+  `[bundle-budget] landing shell closure: ${shellLandingClosure.size} chunks, `
+  + `${shellLandingRawKb.toFixed(0)} KB raw / ${shellLandingGzipKb.toFixed(0)} KB gzip `
+  + `(budget ${SHELL_LANDING_GZIP_BUDGET_KB} KB gzip)`,
+);
+console.log(
+  '[bundle-budget] landing shell roots: '
+  + formatLargestContributors(shellLandingMeasurement.details),
+);
+
+if (shellLandingGzipKb > SHELL_LANDING_GZIP_BUDGET_KB) {
+  failures.push(
+    `Landing shell closure is ${shellLandingGzipKb.toFixed(0)} KB gzip `
+    + `(budget: ${SHELL_LANDING_GZIP_BUDGET_KB} KB). Check HeroSection and InteractiveBackdrop static imports.`,
+  );
+}
+
+const demoLandingRawKb = demoLandingMeasurement.rawBytes / 1024;
+const demoLandingGzipKb = demoLandingMeasurement.gzipBytes / 1024;
+console.log(
+  `[bundle-budget] first demo visit closure: ${demoLandingClosure.size} chunks, `
+  + `${demoLandingRawKb.toFixed(0)} KB raw / ${demoLandingGzipKb.toFixed(0)} KB gzip `
+  + `(budget ${DEMO_LANDING_GZIP_BUDGET_KB} KB gzip; includes bundled dataset)`,
+);
+console.log(
+  '[bundle-budget] first demo visit largest: '
+  + formatLargestContributors(demoLandingMeasurement.details),
+);
+
+if (demoLandingGzipKb > DEMO_LANDING_GZIP_BUDGET_KB) {
+  failures.push(
+    `First demo visit is ${demoLandingGzipKb.toFixed(0)} KB gzip including the bundled dataset `
+    + `(budget: ${DEMO_LANDING_GZIP_BUDGET_KB} KB). Inspect ${DEMO_DATASET_ROOT_PREFIX} and landing imports.`,
+  );
+}
+
+for (const room of ROOM_GZIP_BUDGETS) {
+  const root = findChunk(room.rootPrefix);
+  if (!root) continue;
+
+  const roomClosure = buildStaticClosure([root]);
+  const incrementalClosure = new Set(
+    [...roomClosure].filter(file => !shellLandingClosure.has(file)),
+  );
+  const measurement = measureFiles(incrementalClosure);
+  const rawKb = measurement.rawBytes / 1024;
+  const gzipKb = measurement.gzipBytes / 1024;
+  const headroomKb = room.budgetKb - gzipKb;
+
+  console.log(
+    `[bundle-budget] room ${room.name}: ${incrementalClosure.size} incremental chunks, `
+    + `${rawKb.toFixed(0)} KB raw / ${gzipKb.toFixed(0)} KB gzip after landing `
+    + `(budget ${room.budgetKb} KB, headroom ${headroomKb.toFixed(0)} KB)`,
+  );
+
+  if (room.name !== 'TopHistorico') {
+    for (const file of incrementalClosure) {
+      const source = fs.readFileSync(path.join(ASSETS, file), 'utf8');
+      if (hasArtistEnrichmentPayload(source)) {
+        failures.push(`Artist enrichment leaked into ${room.name} through ${file}.`);
+      }
+    }
+  }
+  console.log(
+    `[bundle-budget] room ${room.name} largest incremental: `
+    + formatLargestContributors(measurement.details),
+  );
+
+  if (gzipKb > room.budgetKb) {
+    failures.push(
+      `${room.name} adds ${gzipKb.toFixed(0)} KB gzip after the landing closure `
+      + `(budget: ${room.budgetKb} KB). Inspect ${room.rootPrefix} static imports and the contributors above.`,
+    );
+  }
 }
 
 if (failures.length) {
   console.error('\n[bundle-budget] FAILED:');
-  for (const f of failures) console.error(' - ' + f);
+  for (const failure of failures) console.error(` - ${failure}`);
   process.exit(1);
 }
-console.log('[bundle-budget] OK - entry within budget, data chunks properly split, vendor chunks present.');
+
+console.log('[bundle-budget] OK - entry, shell/demo landings, guarded rooms, Hebrew/data lazy chunks and vendor boundaries are healthy.');

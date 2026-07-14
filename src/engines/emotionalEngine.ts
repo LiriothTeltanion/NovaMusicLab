@@ -1,8 +1,9 @@
 import type { TopAlbum, TopArtist, TopTrack, YearlyEra } from '../types';
-import type { ArtistAlbumEnrichment, ArtistEnrichment, LocalizedText } from '../utils/artistEnrichment';
+import type { ArtistAlbumEnrichment, ArtistEnrichment, LocalizedList, LocalizedText } from '../utils/artistEnrichment';
 import { getOfflineArtistKnowledge, getOfflineArtistSourceText } from '../utils/offlineArtistKnowledge';
+import { localeFor, type Lang } from '../utils/i18n';
 
-export type EmotionalEngineLang = 'es' | 'en';
+export type EmotionalEngineLang = Lang;
 
 export interface EmotionalAxis {
   energy: number;
@@ -21,10 +22,7 @@ export interface EmotionalEngineReading {
   intensityLabel: LocalizedText;
   longNarrative: LocalizedText;
   listeningUse: LocalizedText;
-  evidence: {
-    es: string[];
-    en: string[];
-  };
+  evidence: LocalizedList;
   axis: EmotionalAxis;
 }
 
@@ -106,120 +104,136 @@ export const EMOTIONAL_MOOD_TAXONOMY: Record<EmotionalMoodKey, EmotionalMoodTaxo
     key: 'melancolia',
     color: '#00f2fe',
     icon: 'moon',
-    title: { es: 'Melancolía / Introspección', en: 'Melancholy / Introspection' },
-    shortLabel: { es: 'Melancolía', en: 'Melancholy' },
+    title: { es: 'Melancolía / Introspección', en: 'Melancholy / Introspection', he: 'מלנכוליה / התבוננות פנימית' },
+    shortLabel: { es: 'Melancolía', en: 'Melancholy', he: 'מלנכוליה' },
     description: {
       es: 'Música para procesar, recordar, caminar de noche y convertir tristeza en paisaje estético.',
       en: 'Music for processing, remembering, night walking and turning sadness into an aesthetic landscape.',
+      he: 'מוזיקה שעוזרת לעבד רגשות, להיזכר, ללכת בלילה ולהפוך עצב לנוף אסתטי.',
     },
     ritual: {
       es: 'Cierra con una canción luminosa o una acción concreta para que el peso no se quede abierto.',
       en: 'Close with one luminous track or a concrete action so the weight does not stay open.',
+      he: 'סיים בשיר מואר או בפעולה מוחשית, כדי לא להשאיר את הכובד פתוח.',
     },
   },
   energia: {
     key: 'energia',
     color: '#f72585',
     icon: 'flame',
-    title: { es: 'Fuerza / Catarsis', en: 'Force / Catharsis' },
-    shortLabel: { es: 'Catarsis', en: 'Catharsis' },
+    title: { es: 'Fuerza / Catarsis', en: 'Force / Catharsis', he: 'עוצמה / קתרזיס' },
+    shortLabel: { es: 'Catarsis', en: 'Catharsis', he: 'קתרזיס' },
     description: {
       es: 'Música de presión, cuerpo, defensa y descarga emocional con dirección.',
       en: 'Music of pressure, body, defense and emotional release with direction.',
+      he: 'מוזיקה של לחץ, גוף, הגנה ופריקה רגשית ממוקדת.',
     },
     ritual: {
       es: 'Úsala para moverte: entrenar, limpiar, caminar rápido o romper bloqueo mental.',
       en: 'Use it with movement: training, cleaning, fast walking or breaking a mental block.',
+      he: 'השתמש בה תוך כדי תנועה: אימון, ניקיון, הליכה מהירה או שבירת מחסום מנטלי.',
     },
   },
   dopamina: {
     key: 'dopamina',
     color: '#ffb703',
     icon: 'sun',
-    title: { es: 'Dopamina / Reinicio', en: 'Dopamine / Reset' },
-    shortLabel: { es: 'Dopamina', en: 'Dopamine' },
+    title: { es: 'Dopamina / Reinicio', en: 'Dopamine / Reset', he: 'דופמין / איפוס' },
+    shortLabel: { es: 'Dopamina', en: 'Dopamine', he: 'דופמין' },
     description: {
       es: 'Música para levantar energía, jugar, recuperar humor y empezar tareas con menos fricción.',
       en: 'Music for raising energy, playing, recovering humor and starting tasks with less friction.',
+      he: 'מוזיקה שמרימה את האנרגיה, מחזירה את מצב הרוח ועוזרת להתחיל משימות בפחות חיכוך.',
     },
     ritual: {
       es: 'Haz bloques cortos de 15-20 minutos para iniciar sin caer en estímulo infinito.',
       en: 'Use short 15-20 minute blocks to start without falling into endless stimulation.',
+      he: 'עבוד במקטעים קצרים של 15–20 דקות, כדי להתחיל בלי להישאב לגירוי אינסופי.',
     },
   },
   calma: {
     key: 'calma',
     color: '#10b981',
     icon: 'activity',
-    title: { es: 'Calma / Foco técnico', en: 'Calm / Technical Focus' },
-    shortLabel: { es: 'Foco', en: 'Focus' },
+    title: { es: 'Calma / Foco técnico', en: 'Calm / Technical Focus', he: 'רוגע / מיקוד טכני' },
+    shortLabel: { es: 'Foco', en: 'Focus', he: 'מיקוד' },
     description: {
       es: 'Música para ordenar atención, sostener trabajo creativo y respirar sin apagar la imaginación.',
       en: 'Music for organizing attention, sustaining creative work and breathing without shutting imagination down.',
+      he: 'מוזיקה שמסדרת את הקשב, תומכת בעבודה יצירתית ומאפשרת לנשום בלי לכבות את הדמיון.',
     },
     ritual: {
       es: 'Define una tarea antes de darle play y cierra el bloque con una canción cálida.',
       en: 'Define one task before pressing play and close the block with a warmer track.',
+      he: 'הגדר משימה אחת לפני שאתה לוחץ על Play, וסיים את המקטע בשיר חם יותר.',
     },
   },
   nostalgia: {
     key: 'nostalgia',
     color: '#a78bfa',
     icon: 'heart',
-    title: { es: 'Nostalgia / Memoria', en: 'Nostalgia / Memory' },
-    shortLabel: { es: 'Memoria', en: 'Memory' },
+    title: { es: 'Nostalgia / Memoria', en: 'Nostalgia / Memory', he: 'נוסטלגיה / זיכרון' },
+    shortLabel: { es: 'Memoria', en: 'Memory', he: 'זיכרון' },
     description: {
       es: 'Música que convierte pasado, carreteras, ciudades y versiones antiguas de ti en estética útil.',
       en: 'Music that turns the past, highways, cities and older versions of you into useful aesthetics.',
+      he: 'מוזיקה שהופכת את העבר, הכבישים, הערים והגרסאות הקודמות שלך לאסתטיקה שימושית.',
     },
     ritual: {
       es: 'Crea una playlist por era y termina con algo nuevo para traer la memoria al presente.',
       en: 'Make an era playlist and end with something new to bring memory into the present.',
+      he: 'צור פלייליסט לכל תקופה וסיים במשהו חדש, כדי להביא את הזיכרון אל ההווה.',
     },
   },
   rebeldia: {
     key: 'rebeldia',
     color: '#ef4444',
     icon: 'shield',
-    title: { es: 'Rebeldía / Supervivencia', en: 'Rebellion / Survival' },
-    shortLabel: { es: 'Rebeldía', en: 'Rebellion' },
+    title: { es: 'Rebeldía / Supervivencia', en: 'Rebellion / Survival', he: 'מרדנות / הישרדות' },
+    shortLabel: { es: 'Rebeldía', en: 'Rebellion', he: 'מרדנות' },
     description: {
       es: 'Música para marcar límites, cortar ruido externo y convertir cansancio en decisión.',
       en: 'Music for setting boundaries, cutting external noise and turning exhaustion into decision.',
+      he: 'מוזיקה שעוזרת להציב גבולות, לחסום רעש חיצוני ולהפוך עייפות להחלטה.',
     },
     ritual: {
       es: 'Evita escucharla sentado en bucle: dale salida corporal o úsala como transición.',
       en: 'Avoid looping it while sitting still: give it a physical outlet or use it as transition.',
+      he: 'אל תשמע אותה שוב ושוב בישיבה: תן לה מוצא גופני או השתמש בה כמעבר.',
     },
   },
   futurismo: {
     key: 'futurismo',
     color: '#7209b7',
     icon: 'orbit',
-    title: { es: 'Futurismo / Night Drive', en: 'Futurism / Night Drive' },
-    shortLabel: { es: 'Futuro', en: 'Future' },
+    title: { es: 'Futurismo / Night Drive', en: 'Futurism / Night Drive', he: 'עתידנות / נסיעת לילה' },
+    shortLabel: { es: 'Futuro', en: 'Future', he: 'עתיד' },
     description: {
       es: 'Música de pantalla, velocidad, cyberpunk, diseño y construcción de mundos posibles.',
       en: 'Music of screens, speed, cyberpunk, design and possible-world building.',
+      he: 'מוזיקה של מסכים, מהירות, סייברפאנק, עיצוב ובניית עולמות אפשריים.',
     },
     ritual: {
       es: 'Úsala para diseñar o programar, luego sal a caminar sin música para volver al cuerpo.',
       en: 'Use it to design or code, then walk without music to return to the body.',
+      he: 'השתמש בה לעיצוב או לתכנות, ואז צא להליכה בלי מוזיקה כדי לחזור אל הגוף.',
     },
   },
   romanticismo: {
     key: 'romanticismo',
     color: '#ec4899',
     icon: 'sparkles',
-    title: { es: 'Romanticismo oscuro', en: 'Dark Romanticism' },
-    shortLabel: { es: 'Romance', en: 'Romance' },
+    title: { es: 'Romanticismo oscuro', en: 'Dark Romanticism', he: 'רומנטיקה אפלה' },
+    shortLabel: { es: 'Romance', en: 'Romance', he: 'רומנטיקה' },
     description: {
       es: 'Música donde vulnerabilidad, belleza dramática y memoria afectiva se vuelven escena.',
       en: 'Music where vulnerability, dramatic beauty and affective memory become a scene.',
+      he: 'מוזיקה שבה פגיעות, יופי דרמטי וזיכרון רגשי הופכים לסצנה.',
     },
     ritual: {
       es: 'Úsala para escribir, diseñar personajes o cerrar el día con suavidad.',
       en: 'Use it for writing, character design or closing the day softly.',
+      he: 'השתמש בה לכתיבה, לעיצוב דמויות או לסיום רך של היום.',
     },
   },
 };
@@ -228,34 +242,42 @@ const EMOTION_LEXICON = {
   catharsis: {
     es: 'catarsis',
     en: 'catharsis',
+    he: "קתרזיס",
   },
   tension: {
     es: 'tensión',
     en: 'tension',
+    he: "מתח",
   },
   nostalgia: {
     es: 'nostalgia luminosa',
     en: 'luminous nostalgia',
+    he: "נוסטלגיה זוהרת",
   },
   melancholy: {
     es: 'melancolía',
     en: 'melancholy',
+    he: 'מלנכוליה',
   },
   focus: {
     es: 'foco',
     en: 'focus',
+    he: 'מיקוד',
   },
   euphoria: {
     es: 'dopamina',
     en: 'dopamine',
+    he: "דופמין",
   },
   intimacy: {
     es: 'intimidad',
     en: 'intimacy',
+    he: "אינטימיות",
   },
   movement: {
     es: 'movimiento',
     en: 'movement',
+    he: "תנועה",
   },
 } as const;
 
@@ -263,22 +285,27 @@ const INTENSITY_LABELS = {
   veryHigh: {
     es: 'alta intensidad emocional',
     en: 'high emotional intensity',
+    he: "עוצמה רגשית גבוהה",
   },
   high: {
     es: 'intensidad sostenida',
     en: 'sustained intensity',
+    he: "עוצמה מתמשכת",
   },
   medium: {
     es: 'presencia emocional estable',
     en: 'stable emotional presence',
+    he: "נוכחות רגשית יציבה",
   },
   low: {
     es: 'señal emocional secundaria',
     en: 'secondary emotional signal',
+    he: "אות רגשי משני",
   },
 } as const;
 
 const clampScore = (value: number) => Math.max(0, Math.min(100, Math.round(value)));
+const bidiIsolate = (value: string | number) => `\u2068${value}\u2069`;
 
 function normalizeText(value: string) {
   return value.toLowerCase();
@@ -384,13 +411,13 @@ function intensityLabel(axis: EmotionalAxis, plays = 0, rank = 0): LocalizedText
 }
 
 function formatCount(value: number, lang: EmotionalEngineLang) {
-  return Math.round(value).toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  return Math.round(value).toLocaleString(localeFor(lang));
 }
 
 function formatShortList(items: string[], lang: EmotionalEngineLang) {
   const cleanItems = items.filter(Boolean);
   if (cleanItems.length <= 1) return cleanItems[0] ?? '';
-  const formatter = new Intl.ListFormat(lang === 'en' ? 'en-US' : 'es-ES', {
+  const formatter = new Intl.ListFormat(localeFor(lang), {
     style: 'long',
     type: 'conjunction',
   });
@@ -418,6 +445,9 @@ function offlineArtistFactLine(artistName: string): LocalizedText | undefined {
   const alias = mb && mb.name !== knowledge.name ? mb.name : undefined;
   const sourceEs = mb ? `MusicBrainz lo identifica${alias ? ` también como ${alias}` : ''}` : `ficha curada desde ${curated?.sourceName}`;
   const sourceEn = mb ? `MusicBrainz identifies it${alias ? ` also as ${alias}` : ''}` : `curated profile from ${curated?.sourceName}`;
+  const sourceHe = mb
+    ? `MusicBrainz מזהה אותו${alias ? ` גם בשם ${bidiIsolate(alias)}` : ''}`
+    : `פרופיל שנאצר מתוך ${bidiIsolate(curated?.sourceName ?? '')}`;
 
   return {
     es: [
@@ -443,21 +473,33 @@ function offlineArtistFactLine(artistName: string): LocalizedText | undefined {
       wd?.officialWebsites?.length ? 'verified official site' : '',
       releases.length ? `and an album line starting with ${formatShortList(releases, 'en')}` : '',
     ].filter(Boolean).join(', ') + '.',
+    he: [
+      `בסיס נתונים מקומי: ${sourceHe}`,
+      wd?.id ? `Wikidata מוסיף את הרשומה ${bidiIsolate(wd.id)}` : '',
+      curated?.description ? 'הפרופיל המקומי עבר אימות ידני' : '',
+      place ? `עם זיקה ל-${bidiIsolate(place)}` : '',
+      activeYears ? `פעילות מתועדת משנת ${bidiIsolate(activeYears)}` : '',
+      tags.length ? `מאפיינים בולטים: ${formatShortList(tags.map(bidiIsolate), 'he')}` : '',
+      members.length ? `חברים מתועדים: ${formatShortList(members.map(bidiIsolate), 'he')}` : '',
+      occupations.length ? `תפקידים מתועדים: ${formatShortList(occupations.map(bidiIsolate), 'he')}` : '',
+      wd?.officialWebsites?.length ? 'אתר רשמי מאומת' : '',
+      releases.length ? `ורצף אלבומים שמתחיל ב-${formatShortList(releases.map(bidiIsolate), 'he')}` : '',
+    ].filter(Boolean).join(', ') + '.',
   };
 }
 
-function evidencePair(es: string, en: string) {
-  return { es, en };
+function evidencePair(es: string, en: string, he: string): LocalizedText {
+  return { es, en, he };
 }
 
 function strongestAxisLabel(axis: EmotionalAxis): LocalizedText {
   const entries: Array<[keyof EmotionalAxis, number, LocalizedText]> = [
-    ['energy', axis.energy, { es: 'energía', en: 'energy' }],
-    ['valence', axis.valence, { es: 'luminosidad', en: 'brightness' }],
-    ['nostalgia', axis.nostalgia, { es: 'nostalgia', en: 'nostalgia' }],
-    ['catharsis', axis.catharsis, { es: 'catarsis', en: 'catharsis' }],
-    ['focus', axis.focus, { es: 'foco', en: 'focus' }],
-    ['darkness', axis.darkness, { es: 'oscuridad estética', en: 'aesthetic darkness' }],
+    ['energy', axis.energy, { es: 'energía', en: 'energy', he: 'אנרגיה' }],
+    ['valence', axis.valence, { es: 'luminosidad', en: 'brightness', he: 'בהירות' }],
+    ['nostalgia', axis.nostalgia, { es: 'nostalgia', en: 'nostalgia', he: 'נוסטלגיה' }],
+    ['catharsis', axis.catharsis, { es: 'catarsis', en: 'catharsis', he: 'קתרזיס' }],
+    ['focus', axis.focus, { es: 'foco', en: 'focus', he: 'מיקוד' }],
+    ['darkness', axis.darkness, { es: 'oscuridad estética', en: 'aesthetic darkness', he: 'אפלוליות אסתטית' }],
   ];
   return entries.sort((a, b) => b[1] - a[1])[0][2];
 }
@@ -603,6 +645,7 @@ export function buildArtistEmotionalReading({
     artist.genre,
     profile?.signature_moods.en.join(' '),
     profile?.signature_moods.es.join(' '),
+    profile?.signature_moods.he.join(' '),
     getOfflineArtistSourceText(artist.name),
   ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
@@ -639,14 +682,27 @@ export function buildArtistEmotionalReading({
         eras.length ? `Dominates ${eras.length} yearly era(s).` : 'Does not dominate a full year, but may work as a side influence.',
         ...(offlineFacts ? [offlineFacts.en] : []),
       ],
+      he: [
+        `${bidiIsolate(formatCount(artist.plays, 'he'))} השמעות של האמן בארכיון.`,
+        topTrack ? `שיר עוגן: ${bidiIsolate(topTrack.title)}.` : 'עדיין אין שיר עוגן ישיר בדירוג.',
+        topAlbum ? `האלבום בעל המשקל הרב ביותר: ${bidiIsolate(topAlbum.title)}.` : 'אין אלבום דומיננטי בדירוג האלבומים.',
+        eras.length === 1
+          ? 'מוביל תקופה שנתית אחת.'
+          : eras.length > 1
+            ? `מוביל ${bidiIsolate(eras.length)} תקופות שנתיות.`
+            : 'אינו מוביל שנה שלמה, אך עשוי לשמש השפעה משנית.',
+        ...(offlineFacts ? [offlineFacts.he] : []),
+      ],
     },
     longNarrative: {
       es: `En el motor emocional, ${artist.name} aparece principalmente como ${primary.es}: una presencia marcada por ${strongest.es}, ${formatCount(artist.plays, 'es')} plays y una relación con tu ranking que no se reduce a popularidad. ${topTrack ? `"${topTrack.title}" actúa como puerta de entrada a esa energía; ` : ''}${topAlbum ? `${topAlbum.title} añade una capa de escucha más lenta y de catálogo. ` : ''}La lectura más útil es verlo como un nodo de estado de ánimo: cuando este artista aparece, el museo activa una combinación de memoria, cuerpo, tensión y forma visual.`,
       en: `In the emotional engine, ${artist.name} reads mainly as ${primary.en}: a presence shaped by ${strongest.en}, ${formatCount(artist.plays, 'en')} plays and a relationship with your ranking that is bigger than popularity. ${topTrack ? `"${topTrack.title}" works as the doorway into that energy; ` : ''}${topAlbum ? `${topAlbum.title} adds a slower catalog-level layer. ` : ''}The most useful reading is to treat this artist as a mood node: when they appear, the museum activates a blend of memory, body, tension and visual identity.`,
+      he: `במנוע הרגשי, ${bidiIsolate(artist.name)} מופיע בעיקר כ${primary.he}: נוכחות שמאופיינת ב${strongest.he}, ב-${bidiIsolate(formatCount(artist.plays, 'he'))} השמעות ובקשר לדירוג שלך שחורג מפופולריות בלבד. ${topTrack ? `השיר „${bidiIsolate(topTrack.title)}” משמש שער לאנרגיה הזאת; ` : ''}${topAlbum ? `האלבום ${bidiIsolate(topAlbum.title)} מוסיף שכבת האזנה איטית ועמוקה יותר. ` : ''}הקריאה המועילה ביותר היא לראות באמן הזה צומת רגשי: כשהוא מופיע, המוזיאון מפעיל שילוב של זיכרון, גוף, מתח וזהות חזותית.`,
     },
     listeningUse: {
       es: `Úsalo cuando necesites entrar en ${primary.es} sin perder dirección: primero una canción ancla, luego un álbum fuerte y después una era donde el artista domine o dialogue con tu identidad musical.`,
       en: `Use this when you need to enter ${primary.en} without losing direction: start with an anchor track, then a strong album, then an era where the artist dominates or speaks to your musical identity.`,
+      he: `השתמש בקריאה הזאת כשאתה רוצה להיכנס למצב של ${primary.he} בלי לאבד כיוון: התחל בשיר עוגן, המשך לאלבום חזק וסיים בתקופה שבה האמן מוביל או משוחח עם הזהות המוזיקלית שלך.`,
     },
   };
 }
@@ -664,8 +720,10 @@ export function buildAlbumEmotionalReading({
     artist?.genre,
     profile?.signature_moods.en.join(' '),
     profile?.signature_moods.es.join(' '),
+    profile?.signature_moods.he.join(' '),
     albumMeta?.description.en,
     albumMeta?.description.es,
+    albumMeta?.description.he,
     getOfflineArtistSourceText(album.artist),
   ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
@@ -702,14 +760,23 @@ export function buildAlbumEmotionalReading({
         anchorTrack ? `Connects with artist tracks such as ${anchorTrack.title}.` : 'No nearby artist tracks in the top yet.',
         ...(offlineFacts ? [offlineFacts.en] : []),
       ],
+      he: [
+        `${bidiIsolate(formatCount(album.plays, 'he'))} השמעות של האלבום בארכיון.`,
+        rank ? `מקום ${bidiIsolate(rank)} בדירוג האלבומים.` : 'לא חושב מיקום לאלבום.',
+        releaseInfo ? `שנת יציאה מזוהה: ${bidiIsolate(releaseInfo)}.` : 'שנת היציאה עדיין חסרה בפרופיל המקומי.',
+        anchorTrack ? `מתחבר לשירים של האמן, למשל ${bidiIsolate(anchorTrack.title)}.` : 'עדיין אין שירים קרובים של האמן בדירוג.',
+        ...(offlineFacts ? [offlineFacts.he] : []),
+      ],
     },
     longNarrative: {
       es: `${album.title} funciona como una lectura de álbum, no solo como una suma de canciones. ${albumMeta?.description.es ?? 'Todavía no tiene contexto editorial exacto, así que el motor lo interpreta por peso de archivo, artista y género.'} En la matriz emocional aparece como ${primary.es}, con ${strongest.es} como eje dominante. ${catalogIndex >= 0 ? `Dentro de la línea curada ocupa el capítulo ${catalogIndex + 1}, así que puede leerse como una estación concreta de evolución. ` : ''}Su valor para el museo está en dar continuidad: una canción puede ser impulso inmediato, pero un álbum suele revelar permanencia, atmósfera y una forma más larga de habitar al artista.`,
       en: `${album.title} works as an album reading, not only as a sum of songs. ${albumMeta?.description.en ?? 'It does not have exact editorial context yet, so the engine interprets it through archive weight, artist and genre.'} In the emotional matrix it appears as ${primary.en}, with ${strongest.en} as the dominant axis. ${catalogIndex >= 0 ? `Inside the curated line it sits as chapter ${catalogIndex + 1}, so it can be read as a specific station of evolution. ` : ''}Its value for the museum is continuity: a track can be immediate impulse, but an album usually reveals permanence, atmosphere and a longer way of inhabiting the artist.`,
+      he: `האלבום ${bidiIsolate(album.title)} נקרא כיצירה שלמה, לא רק כסכום של שירים. ${albumMeta?.description.he ?? 'עדיין אין לו הקשר עריכתי מדויק, ולכן המנוע מפרש אותו לפי משקלו בארכיון, האמן והז׳אנר.'} במטריצה הרגשית הוא מופיע כ${primary.he}, כאשר ${strongest.he} הוא הציר הדומיננטי. ${catalogIndex >= 0 ? `ברצף האצור הוא נמצא בפרק ${bidiIsolate(catalogIndex + 1)}, ולכן אפשר לקרוא אותו כתחנה מוגדרת בהתפתחות המוזיקלית. ` : ''}הערך שלו במוזיאון הוא המשכיות: שיר יכול להיות דחף מיידי, אבל אלבום חושף לרוב קביעות, אווירה ודרך ממושכת יותר לחוות את האמן.`,
     },
     listeningUse: {
       es: `Escúchalo cuando quieras sostener ${primary.es} durante más tiempo: sirve para pasar de una emoción puntual a un clima completo.`,
       en: `Play it when you want to hold ${primary.en} for longer: it helps turn one emotional spark into a full atmosphere.`,
+      he: `האזן לו כשאתה רוצה לשהות זמן רב יותר ב${primary.he}: הוא עוזר להפוך ניצוץ רגשי יחיד לאווירה שלמה.`,
     },
   };
 }
@@ -728,6 +795,7 @@ export function buildTrackEmotionalReading({
     artist?.genre,
     profile?.signature_moods.en.join(' '),
     profile?.signature_moods.es.join(' '),
+    profile?.signature_moods.he.join(' '),
     getOfflineArtistSourceText(track.artist),
   ]);
   const axis = blendAxis(scoreAxisFromGenre(genre), {
@@ -764,23 +832,34 @@ export function buildTrackEmotionalReading({
         relatedAlbum ? `Nearby album gravity: ${relatedAlbum.title}.` : 'No nearby album detected in the top.',
         ...(offlineFacts ? [offlineFacts.en] : []),
       ],
+      he: [
+        `${bidiIsolate(formatCount(track.plays, 'he'))} השמעות של השיר.`,
+        rank ? `מקום ${bidiIsolate(rank)} בדירוג השירים ההיסטורי.` : 'לא חושב מיקום לשיר.',
+        artistTracks.length === 1
+          ? 'שיר אחד נוסף של האמן מופיע בקרבת מקום בארכיון שלך.'
+          : `${bidiIsolate(artistTracks.length)} שירים של האמן מופיעים בקרבת מקום בארכיון שלך.`,
+        relatedAlbum ? `אלבום קרוב בעל משקל: ${bidiIsolate(relatedAlbum.title)}.` : 'לא זוהה אלבום קרוב בדירוג.',
+        ...(offlineFacts ? [offlineFacts.he] : []),
+      ],
     },
     longNarrative: {
       es: `${track.title} se comporta como una unidad emocional de alta precisión. Por género, repetición y posición en el ranking, el motor la clasifica como ${primary.es}, con ${secondary.es} como segunda capa. Su eje más fuerte es ${strongest.es}, lo que sugiere que no vuelve solo por gusto sino por función: abrir una emoción, acelerar el cuerpo, ordenar una noche, acompañar foco o tocar una memoria específica. ${rank <= 10 ? 'Al estar tan arriba, funciona casi como botón directo del archivo: una entrada rápida a un estado interno reconocible.' : 'Aunque no sea el himno absoluto, su persistencia la convierte en una señal importante dentro del mapa.'}`,
       en: `${track.title} behaves like a high-precision emotional unit. Through genre, repetition and ranking position, the engine classifies it as ${primary.en}, with ${secondary.en} as a second layer. Its strongest axis is ${strongest.en}, which suggests it returns not only because of taste but because of function: opening an emotion, accelerating the body, organizing a night, supporting focus or touching a specific memory. ${rank <= 10 ? 'Because it sits so high, it works almost like a direct button in the archive: a quick entrance into a recognizable inner state.' : 'Even if it is not the absolute anthem, its persistence makes it an important signal inside the map.'}`,
+      he: `השיר ${bidiIsolate(track.title)} מתפקד כיחידה רגשית מדויקת. לפי הז׳אנר, החזרתיות והמיקום בדירוג, המנוע מסווג אותו כ${primary.he}, עם ${secondary.he} כשכבה נוספת. הציר החזק ביותר שלו הוא ${strongest.he}; כלומר, הוא חוזר לא רק בגלל טעם אלא גם בגלל תפקיד: לפתוח רגש, להניע את הגוף, לארגן את הלילה, לתמוך במיקוד או לגעת בזיכרון מסוים. ${rank <= 10 ? 'המיקום הגבוה שלו הופך אותו כמעט לכפתור ישיר בארכיון: כניסה מהירה למצב פנימי מוכר.' : 'גם אם הוא אינו ההמנון המרכזי, ההתמדה שלו הופכת אותו לאות חשוב במפה.'}`,
     },
     listeningUse: {
       es: `Úsala como herramienta de ${primary.es}: al inicio de una sesión para activar el estado, o al final para cerrar una emoción que necesita forma.`,
       en: `Use it as a ${primary.en} tool: at the beginning of a session to activate the state, or at the end to close an emotion that needs shape.`,
+      he: `השתמש בו ככלי ל${primary.he}: בתחילת מקטע האזנה כדי להפעיל את המצב, או בסופו כדי לתת צורה לרגש שעדיין פתוח.`,
     },
   };
 }
 
 export const emotionalAxisLabels: Record<keyof EmotionalAxis, LocalizedText> = {
-  energy: evidencePair('energía', 'energy'),
-  valence: evidencePair('luminosidad', 'brightness'),
-  nostalgia: evidencePair('nostalgia', 'nostalgia'),
-  catharsis: evidencePair('catarsis', 'catharsis'),
-  focus: evidencePair('foco', 'focus'),
-  darkness: evidencePair('oscuridad', 'darkness'),
+  energy: evidencePair('energía', 'energy', 'אנרגיה'),
+  valence: evidencePair('luminosidad', 'brightness', 'בהירות'),
+  nostalgia: evidencePair('nostalgia', 'nostalgia', 'נוסטלגיה'),
+  catharsis: evidencePair('catarsis', 'catharsis', 'קתרזיס'),
+  focus: evidencePair('foco', 'focus', 'מיקוד'),
+  darkness: evidencePair('oscuridad', 'darkness', 'אפלוליות'),
 };

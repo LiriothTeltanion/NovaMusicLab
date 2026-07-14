@@ -43,6 +43,15 @@ const FLAGS: Record<string, React.ReactNode> = {
       <path d="M15 13.8 L11.7 8 H18.3 Z" fill="none" stroke="#0038B8" strokeWidth="1" />
     </>
   ),
+  'India': (
+    <>
+      <rect width="30" height="6.67" fill="#FF9933" />
+      <rect y="6.67" width="30" height="6.67" fill="#fff" />
+      <rect y="13.33" width="30" height="6.67" fill="#138808" />
+      <circle cx="15" cy="10" r="2.2" fill="none" stroke="#000080" strokeWidth="0.8" />
+      <circle cx="15" cy="10" r="0.55" fill="#000080" />
+    </>
+  ),
   'Sweden': (
     <>
       <rect width="30" height="20" fill="#006AA7" />
@@ -145,6 +154,15 @@ const FLAGS: Record<string, React.ReactNode> = {
       <rect y="13.33" width="30" height="6.67" fill="#000" />
       {/* Simplified golden Eagle of Saladin mark */}
       <circle cx="15" cy="10" r="1.8" fill="#C09300" />
+    </>
+  ),
+  'Tunisia': (
+    <>
+      <rect width="30" height="20" fill="#E70013" />
+      <circle cx="15" cy="10" r="5.2" fill="#fff" />
+      <circle cx="15.8" cy="10" r="3.3" fill="#E70013" />
+      <circle cx="16.8" cy="10" r="2.6" fill="#fff" />
+      <path d="M17.2 7.7 l0.6 1.5 1.6 0.1 -1.2 1 0.4 1.6 -1.4 -0.9 -1.4 0.9 0.4 -1.6 -1.2 -1 1.6 -0.1 Z" fill="#E70013" />
     </>
   ),
   'Netherlands': (
@@ -284,6 +302,16 @@ const FLAGS: Record<string, React.ReactNode> = {
       <path d="M0 4 L10 10 L0 16" fill="#000" />
       <path d="M13.5 8 L30 8 M13.5 12 L30 12" stroke="#fff" strokeWidth="1.6" />
       <path d="M0 -0.8 L14.2 9 M0 20.8 L14.2 11" stroke="#fff" strokeWidth="1.6" />
+    </>
+  ),
+  'Wales': (
+    <>
+      <rect width="30" height="10" fill="#fff" />
+      <rect y="10" width="30" height="10" fill="#00AB39" />
+      <path
+        d="M5 12.7 c2.4 -3.8 5.2 -5.1 8.2 -3.4 l2.2 -2.2 0.8 2.5 3.8 -1.6 -1 2.8 4 1.1 -3.6 1.2 1.2 3.2 -3.7 -1.9 -2.8 3.2 -1.1 -3.5 -4 2.2 1.5 -3.5 Z"
+        fill="#D30731"
+      />
     </>
   ),
   'Barbados_alt': null,

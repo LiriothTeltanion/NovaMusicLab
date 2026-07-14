@@ -7,7 +7,6 @@ import {
   Mic2,
   Music,
   Rocket,
-  Sparkles,
   Users,
 } from 'lucide-react';
 import { MusicDnaData } from '../types';
@@ -19,6 +18,7 @@ import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
 import { buildArtistProfile, buildDossierLineValues, buildSonicGenes, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
+import { localeFor, pickLanguage } from '../utils/i18n';
 
 interface ArtistIdentityProps {
   data: MusicDnaData;
@@ -229,6 +229,107 @@ const ARTIST_DOSSIER_COPY = {
       'Synthetic closer: the alias stops being fantasy and appears as a new artistic identity.',
     ],
   },
+  he: {
+    quick: {
+      thesisLabel: 'תזה צלילית',
+      thesisTitle: 'Blackgaze מואר + Synthwave בסגנון Cyberpunk + Post-Hardcore מלודי',
+      thesisBody: 'הזהות לא מעתיקה את האמנים האהובים עליך: היא משלבת את התפקידים הרגשיים שלהם כדי לדמיין פרויקט אישי, עוצמתי וחזותי.',
+      personaLabel: 'דמות',
+      personaTitle: 'האלטר־אגו שלך כאדריכל רגשי דיגיטלי',
+      personaBody: 'הכינוי פועל כדמות שנעה בין גלות, בנייה מחדש ובריאת עולמות: חשופה, עתידנית ודרמטית בלי לאבד את הגרוב.',
+      stageLabel: 'במה',
+      stageTitle: 'מופע של אור, תופים חיים וויז׳ואלים תגובתיים',
+      stageBody: 'הקונספט החי צריך להרגיש בו־זמנית כמו הופעה, מיצב אור־קולי וטקס קתרזיס.',
+    },
+    evidenceTitle: 'הראיות ל־DNA האמנותי',
+    evidenceIntro: 'השמות האלה תומכים בזהות המדומיינת: לא כהעתקים, אלא כמרכיבים של אנרגיה, מרקם ונרטיב.',
+    influenceLabel: 'השפעה',
+    playsLabel: 'השמעות בארכיון',
+    sonicGenesTitle: 'מטריצת הגנים הצליליים',
+    sonicGenes: [
+      { label: 'Blackgaze', value: '92%', body: 'גיטרות עצומות, מלנכוליה מוארת ותחושה של התעלות רגשית.' },
+      { label: 'Synthwave', value: '88%', body: 'ניאון, תנועה לילית, פאדים של רטרו ומרקם קולנועי.' },
+      { label: 'Post-Hardcore', value: '84%', body: 'שירה ישירה, קתרזיס, מתח מלודי ואנרגיה של בנייה מחדש.' },
+      { label: 'Groove Pop/R&B', value: '71%', body: 'קצב גופני, הוקים נקיים יותר ומרחב שנותן לחלקים הכבדים לנשום.' },
+    ],
+    dossierTitle: 'תיק האמן המורחב',
+    dossierIntro: 'כל כרטיס פותח שכבה אחרת: סאונד, דימוי, סיפור, במה, שיתופי פעולה והצעדים הבאים.',
+    cards: [
+      {
+        eyebrow: 'שכבה 01',
+        title: 'ארכיטקטורת הסאונד',
+        summary: 'המוזיקה צריכה לחיות על ניגוד: יופי של shoegaze מלמעלה, כלי הקשה כבדים מלמטה וסינתיסייזרים כארכיטקטורת ניאון.',
+        lines: [
+          { label: 'גיטרות', value: 'קירות shoegaze מוארים, אקורדים פתוחים ודיסטורשן שנשמע שמימי יותר מתוקפני.' },
+          { label: 'תופים', value: 'דופק מהיר של metalcore/blackgaze עם fills אנרגטיים, במיקס צלול ומודרני.' },
+          { label: 'סינתיסייזרים', value: 'פאדים אפלים, ארפג׳ים של Cyberpunk ובסים ליליים שמתחברים ל־The Midnight ול־Carpenter Brut.' },
+          { label: 'שירה', value: 'שירת post-hardcore נקייה עם רגעי R&B אינטימיים, כדי לתת לרגש פנים אנושיות.' },
+        ],
+      },
+      {
+        eyebrow: 'שכבה 02',
+        title: 'זהות חזותית',
+        summary: 'האסתטיקה צריכה להרגיש כמו ממשק רגשי: זכוכית, ניאון, רונות טכנולוגיות וערים פנימיות.',
+        lines: [
+          { label: 'פלטה', value: 'ציאן, ורוד ניאון, שחור עמוק ולבן קר שיוצרים ניגוד בין רוך לסכנה.' },
+          { label: 'לבוש', value: 'ביגוד טכני שחור, פרטים מחזירי אור, אביזרי כרום וסמלים שנראים כמו שפת מערכת.' },
+          { label: 'עולם', value: 'כבישים ליליים, חורבות דיגיטליות, הרי זכוכית ומסכים הולוגרפיים תחת גשם של נתונים.' },
+          { label: 'עטיפות', value: 'הכינוי כצללית או כאווטאר בחזית, מוקף ב־UI שבור, אורות וארכיטקטורה רגשית.' },
+        ],
+      },
+      {
+        eyebrow: 'שכבה 03',
+        title: 'נרטיב ה־EP',
+        summary: 'אפשר לקרוא את ה־EP כמעבר: בידוד, התנגשות, זיכרון, לופ ולידה מחדש.',
+        lines: [
+          { label: 'מערכה I', value: 'כניסה סינתטית: הכביש והשכחה פותחים מסע החוצה ממקום קודם.' },
+          { label: 'מערכה II', value: 'התנגשות בין להקות: blackgaze, metalcore ו־synthwave נאבקים עד שהם הופכים לשפה אישית.' },
+          { label: 'מערכה III', value: 'בנייה מחדש: הכינוי מפסיק להיות מסכה והופך לפרויקט, לטקס ולעתיד.' },
+          { label: 'רעיון מרכזי', value: 'זה לא רק עצב; זו הפיכת העוצמה לזהות יצירתית.' },
+        ],
+      },
+      {
+        eyebrow: 'שכבה 04',
+        title: 'מופע חי',
+        summary: 'עיצוב הבמה צריך להסביר את הפרויקט עוד לפני שהשיר הראשון מתחיל.',
+        lines: [
+          { label: 'מסך', value: 'ויז׳ואלים תלת־ממדיים תגובתיים עם הרים גאומטריים, גשם דיגיטלי, כבישים וסמלי הכינוי.' },
+          { label: 'תאורה', value: 'גרדיאנטים של ציאן וורוד שמסתנכרנים עם מכות התופים, ופיצוצים לבנים ברגעי השיא.' },
+          { label: 'להקה', value: 'תופים חיים בחזית, גיטרות רחבות בצדדים וסינתיסייזרים במרכז האטמוספרי.' },
+          { label: 'קהל', value: 'רגעים של צעקה ותנועה, לצד קטעים מהורהרים שמאפשרים לנשום בתוך העולם.' },
+        ],
+      },
+      {
+        eyebrow: 'שכבה 05',
+        title: 'DNA של שיתופי פעולה',
+        summary: 'שיתופי הפעולה צריכים להוסיף תפקידים, לא רק שמות: אור, גרוב, מתח ופזמון.',
+        lines: [
+          { label: 'Deafheaven', value: 'מוסיפים קנה מידה רגשי, גיטרות אינסופיות ותחושה של יופי פצוע.' },
+          { label: 'Bilmuri', value: 'מוסיפים גרוב, הומור צלילי, הוקים מוזרים ודרך אנושית יותר להיבנות מחדש.' },
+          { label: 'The Midnight', value: 'מוסיפים לילה, כביש, נוסטלגיה וסינתיסייזרים שהופכים זיכרון לקולנוע.' },
+          { label: 'BMTH', value: 'מוסיפים אימפקט מודרני, הפקה גדולה וגשר בין metal, pop וקתרזיס דיגיטלי.' },
+        ],
+      },
+      {
+        eyebrow: 'שכבה 06',
+        title: 'הצעדים האמנותיים הבאים',
+        summary: 'לזהות כבר יש בסיס; עכשיו צריך להפוך אותה לחומר שאפשר לפרסם ושנראה עקבי.',
+        lines: [
+          { label: 'סינגל 1', value: 'בחר שיר עוגן: הישיר ביותר, עם הוק חזק ו־visualizer של כביש לילי.' },
+          { label: 'סינגל 2', value: 'הוצא קטע אטמוספרי יותר כדי להראות עומק ולא רק אנרגיה.' },
+          { label: 'אמנות', value: 'הגדר עטיפה, תמונות, אווטאר ו־visualizers בתוך תנ״ך חזותי אחד, כדי שהכול ירגיש מאותו יקום.' },
+          { label: 'הופעה', value: 'עצב סט קצר של 18–22 דקות שיוכל לעבוד כדמו חי של הקונספט המלא.' },
+        ],
+      },
+    ],
+    trackLoreTitle: 'קריאה שיר אחר שיר',
+    trackNotes: [
+      'שער הכניסה: סינתיסייזרים, כביש והתחושה שאתה משאיר מאחור גרסה קודמת של עצמך.',
+      'ההתנגשות המרכזית: זה השיר האמיתי המושמע ביותר בארכיון, וכאן הוא מדומיין מחדש עם הד.',
+      'השיר הכבד של ה־EP: עיר, הגירה רגשית וגיטרות כארכיטקטורה חרבה.',
+      'סיום סינתטי: הכינוי מפסיק להיות פנטזיה ומופיע כזהות אמנותית חדשה.',
+    ],
+  },
 };
 
 export default function ArtistIdentity({ data, isPersonalArchive = false }: ArtistIdentityProps) {
@@ -247,13 +348,13 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
   // album cover reflects the archive's actual dominant mood, not a stock icon.
   const dominantMood = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24).dominantMood, [data.top_artists]);
   const ep = profile.ep_concept;
-  const copy = ARTIST_DOSSIER_COPY[lang];
+  const copy = pickLanguage(lang, ARTIST_DOSSIER_COPY);
   const colors = [tc.c1, tc.c2, tc.c3, tc.c4, '#10b981', '#fb923c'];
   const topInfluences = profile.influences.map(name => ({
     name,
     plays: data.top_artists.find(artist => artist.name === name)?.plays,
   }));
-  const formatNum = (value: number) => value.toLocaleString(lang === 'en' ? 'en-US' : 'es-ES');
+  const formatNum = (value: number) => value.toLocaleString(localeFor(lang));
 
   // Every dossier layer's line VALUES are swapped for real-data-driven text
   // (genre/trait/aesthetic-derived, real influences, real top track); the
@@ -336,12 +437,6 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="flex items-center space-x-3 mb-6">
-        <Sparkles className="w-6 h-6 animate-pulse" style={{ color: tc.c1 }} />
-        <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">
-          {t.artistIdentity.title}</h2>
-      </div>
-
       <SectionNarrative content={t.deepNarratives.artist} accent="c1" />
 
       <SectionQuickRead items={quickReadItems} />
@@ -352,30 +447,34 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
           <div className="space-y-1">
             <span className="text-xs font-mono font-bold text-cyberCyan uppercase tracking-widest block">
               {t.artistIdentity.suggestedAlias}</span>
-            <h3 className="text-3xl font-black text-white text-neon-glow">{profile.alias}</h3>
+            <h3 className="text-3xl font-black text-white text-neon-glow">
+              <bdi dir="auto">{profile.alias}</bdi>
+            </h3>
           </div>
 
           <div className="space-y-4">
             <div className="space-y-1">
               <span className="text-xs font-mono font-bold text-cyberPink uppercase tracking-wider block">
                 {t.artistIdentity.possibleSound}</span>
-              <p className="text-sm text-gray-300 font-sans leading-relaxed">{profile.sound}</p>
+              <p className="text-sm text-gray-300 font-sans leading-relaxed" dir="auto">{profile.sound}</p>
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-2">
               <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl">
                 <span className="text-[10px] font-mono text-gray-400 uppercase">{t.artistIdentity.idealTempo}</span>
-                <p className="text-sm font-bold text-white mt-1">{profile.tempo}</p>
+                <p className="text-sm font-bold text-white mt-1 nova-number-ltr" dir="ltr">{profile.tempo}</p>
               </div>
               <div className="p-3 bg-[#0a0f1d] border border-cyan-500/10 rounded-xl">
                 <span className="text-[10px] font-mono text-gray-400 uppercase">{t.artistIdentity.keyInfluences}</span>
                 <div className="flex items-center gap-2 mt-1.5">
-                  <div className="flex items-center -space-x-1.5 shrink-0">
+                  <div className="flex items-center -space-x-1.5 rtl:space-x-reverse shrink-0">
                     {profile.influences.slice(0, 3).map(name => (
                       <ArtistAvatar key={name} name={name} size={22} className="ring-1 ring-black" />
                     ))}
                   </div>
-                  <p className="text-xs font-bold text-cyberCyan truncate">{profile.influences.slice(0, 3).join(', ')}</p>
+                  <p className="text-xs font-bold text-cyberCyan truncate">
+                    <bdi dir="auto">{profile.influences.slice(0, 3).join(', ')}</bdi>
+                  </p>
                 </div>
               </div>
             </div>
@@ -407,10 +506,10 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
                   <div key={name} className="rounded-2xl border border-white/5 bg-white/3 p-3 flex items-center gap-3 hover:bg-white/5 transition-colors">
                     <ArtistAvatar name={name} size={34} />
                     <div className="min-w-0">
-                      <p className="text-sm font-bold text-white truncate">{name}</p>
+                      <p className="text-sm font-bold text-white truncate"><bdi dir="auto">{name}</bdi></p>
                       <p className="text-[10px] text-gray-500 font-mono">
                         {copy.influenceLabel}
-                        {plays ? ` · ${formatNum(plays)} ${copy.playsLabel}` : ''}
+                        {plays ? <span> · <bdi dir="ltr" className="nova-number-ltr">{formatNum(plays)}</bdi> {copy.playsLabel}</span> : ''}
                       </p>
                     </div>
                   </div>
@@ -423,13 +522,15 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
         {/* Right Side: First EP Concept & Album Art Mockup */}
         <div className="glass-panel p-6 rounded-3xl lg:col-span-5 flex flex-col justify-between h-full">
           <div>
-            <div className="flex items-center space-x-2 mb-4" style={{ color: tc.c2 }}>
+            <div className="flex items-center gap-2 mb-4" style={{ color: tc.c2 }}>
               <Disc className="w-5 h-5" />
               <h4 className="font-mono text-sm font-bold uppercase tracking-wider">
                 {t.artistIdentity.firstEpConcept}
               </h4>
             </div>
-            <h4 className="text-xl font-bold text-white font-mono tracking-wide mb-1">"{ep.title}"</h4>
+            <h4 className="text-xl font-bold text-white font-mono tracking-wide mb-1">
+              <bdi dir="auto">“{ep.title}”</bdi>
+            </h4>
             <p className="text-xs text-gray-400 mb-4">{ep.description}</p>
             <div className="space-y-2">
               <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block">
@@ -438,12 +539,12 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
               <div className="space-y-1.5">
                 {ep.tracklist.map((track, i) => (
                   <div key={track} className="p-3 rounded-xl text-xs font-mono border border-white/5 bg-white/3 hover:bg-white/5 transition-all group">
-                    <div className="flex items-center space-x-2 min-w-0">
-                      <span className="text-[10px] font-mono font-bold shrink-0" style={{ color: tc.c1 }}>{String(i + 1).padStart(2, '0')}</span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-[10px] font-mono font-bold shrink-0 nova-number-ltr" dir="ltr" style={{ color: tc.c1 }}>{String(i + 1).padStart(2, '0')}</span>
                       <Music className="w-3 h-3 shrink-0" style={{ color: tc.c2 }} />
-                      <span className="truncate text-gray-300 group-hover:text-white transition-colors">{track}</span>
+                      <span className="truncate text-gray-300 group-hover:text-white transition-colors"><bdi dir="auto">{track}</bdi></span>
                     </div>
-                    <p className="text-[10px] text-gray-500 leading-relaxed mt-1.5 pl-8 font-sans">
+                    <p className="text-[10px] text-gray-500 leading-relaxed mt-1.5 ps-8 font-sans">
                       {copy.trackNotes[i]}
                     </p>
                   </div>
@@ -466,8 +567,8 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `${tc.c1}10` }} />
             <div className="absolute inset-x-0 bottom-0 p-5 pt-14"
               style={{ background: 'linear-gradient(to top, rgba(3,7,18,0.94) 0%, rgba(3,7,18,0.68) 45%, transparent 100%)' }}>
-              <p className="text-xs font-mono font-bold text-white tracking-widest uppercase truncate">{ep.title}</p>
-              <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}>{profile.alias.toUpperCase()}</p>
+              <p className="text-xs font-mono font-bold text-white tracking-widest uppercase truncate"><bdi dir="auto">{ep.title}</bdi></p>
+              <p className="text-[9px] font-mono font-semibold mt-1" style={{ color: tc.c2 }}><bdi dir="auto">{profile.alias.toUpperCase()}</bdi></p>
               <p className="text-[9px] text-gray-400 font-mono mt-0.5">{t.artistIdentity.albumArtConcept}</p>
             </div>
           </div>
@@ -491,8 +592,8 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
                   style={{ background: `radial-gradient(circle at top right, ${color}12, transparent 68%)` }} />
                 <div className="relative z-10 space-y-3">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-sm font-black text-white">{gene.label}</p>
-                    <p className="text-lg font-black font-mono" style={{ color }}>{gene.value}</p>
+                    <p className="text-sm font-black text-white"><bdi dir="auto">{gene.label}</bdi></p>
+                    <p className="text-lg font-black font-mono nova-number-ltr" dir="ltr" style={{ color }}>{gene.value}</p>
                   </div>
                   <div className="h-2 rounded-full bg-white/5 overflow-hidden">
                     <div className="h-full rounded-full" style={{ width: gene.value, backgroundColor: color }} />

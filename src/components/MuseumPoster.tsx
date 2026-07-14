@@ -7,6 +7,8 @@ import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
 import { buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MoodArtCanvas from './MoodArtCanvas';
 import { MOOD_ICONS } from './MoodBadge';
+import { directionFor, localeFor } from '../utils/i18n';
+import { localizeGenreName } from '../utils/localizedDatasetText';
 
 interface MuseumPosterProps {
   data: MusicDnaData;
@@ -26,7 +28,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);
   const [variation, setVariation] = useState(0);
-  const locale = lang === 'en' ? 'en-US' : 'es-ES';
+  const locale = localeFor(lang);
 
   const engine = useMemo(() => buildEmotionalMapEngineProfile(data.top_artists, 24), [data.top_artists]);
   const dominant = engine.dominantMood;
@@ -73,7 +75,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
   };
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-4" dir={directionFor(lang)}>
       <div>
         <p className="text-[10px] font-mono font-black uppercase tracking-[0.22em]" style={{ color: tc.c3 }}>
           {copy.eyebrow}
@@ -89,7 +91,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
       <div className="mx-auto w-full max-w-[440px]">
         <div
           ref={posterRef}
-          className="relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/15"
+          className="nova-on-dark relative aspect-[3/4] overflow-hidden rounded-3xl border border-white/15"
           style={{ backgroundColor: '#04070e' }}
         >
           <div className="absolute inset-0">
@@ -100,13 +102,13 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
           <div className="relative z-10 flex h-full flex-col justify-between p-6">
             <div>
               <p className="text-[9px] font-mono font-black uppercase tracking-[0.3em]" style={{ color: dominant.color }}>
-                NOVA MUSIC LAB
+                <bdi dir="ltr">NOVA MUSIC LAB</bdi>
               </p>
               <h4 className="mt-1 text-3xl font-black leading-none tracking-tight text-white" style={{ textShadow: `0 0 24px ${dominant.color}66` }}>
                 {copy.posterHeading}
               </h4>
               <p className="mt-1.5 text-[10px] font-mono uppercase tracking-widest text-gray-300">
-                {copy.curatedBy(alias)}
+                {copy.curatedBy(`\u2068${alias}\u2069`)}
               </p>
             </div>
 
@@ -114,7 +116,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
               <div className="grid grid-cols-4 gap-2">
                 {stats.map(stat => (
                   <div key={stat.label} className="rounded-xl border border-white/15 bg-black/35 px-2 py-2 text-center backdrop-blur-[2px]">
-                    <p className="text-sm font-black font-mono leading-tight text-white">{stat.value}</p>
+                    <p className="text-sm font-black font-mono leading-tight text-white" dir="ltr">{stat.value}</p>
                     <p className="mt-0.5 text-[8px] font-mono uppercase tracking-widest text-gray-400">{stat.label}</p>
                   </div>
                 ))}
@@ -130,7 +132,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
                       <span className="w-4 text-[10px] font-mono font-black" style={{ color: dominant.color }}>
                         {idx + 1}
                       </span>
-                      <span className="min-w-0 flex-1 truncate text-xs font-bold text-white">{artist.name}</span>
+                      <bdi dir="auto" className="min-w-0 flex-1 truncate text-xs font-bold text-white">{artist.name}</bdi>
                       <span className="text-[9px] font-mono text-gray-400">{fmt(artist.plays)}</span>
                     </li>
                   ))}
@@ -167,7 +169,7 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
               <div className="flex flex-wrap gap-1.5">
                 {data.top_genres.slice(0, 3).map(genre => (
                   <span key={genre.name} className="rounded-full border border-white/20 bg-black/35 px-2 py-0.5 text-[8px] font-mono font-bold uppercase tracking-wider text-gray-200">
-                    {genre.name}
+                    <bdi dir="auto">{localizeGenreName(genre.name, lang)}</bdi>
                   </span>
                 ))}
               </div>

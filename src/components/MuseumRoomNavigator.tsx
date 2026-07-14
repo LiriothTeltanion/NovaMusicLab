@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ElementType } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Map as MapIcon, X } from 'lucide-react';
+import { directionFor, type Lang } from '../utils/i18n';
 
 import './MuseumRoomNavigator.css';
 
@@ -25,11 +26,20 @@ export interface MuseumRoomProgress {
 interface RoomNavigatorProps {
   items: MuseumRoomItem[];
   activeId: string;
-  lang: 'es' | 'en';
+  lang: Lang;
   onNavigate: (id: string) => void;
 }
 
-const copy = {
+const copy: Record<Lang, {
+  chapter: string;
+  utility: string;
+  previous: string;
+  next: string;
+  openMap: string;
+  closeMap: string;
+  roomMap: string;
+  active: string;
+}> = {
   es: {
     chapter: 'Capítulo',
     utility: 'Acceso',
@@ -50,7 +60,17 @@ const copy = {
     roomMap: 'Room map',
     active: 'Active room',
   },
-} as const;
+  he: {
+    chapter: 'פרק',
+    utility: 'גישה',
+    previous: 'החדר הקודם',
+    next: 'החדר הבא',
+    openMap: 'פתיחת מפת החדרים',
+    closeMap: 'סגירת מפת החדרים',
+    roomMap: 'מפת החדרים',
+    active: 'החדר הפעיל',
+  },
+};
 
 export function getMuseumRoomProgress(items: MuseumRoomItem[], activeId: string): MuseumRoomProgress {
   const chapters = items.filter(item => item.isChapter);
@@ -73,16 +93,15 @@ export function getMuseumRoomProgress(items: MuseumRoomItem[], activeId: string)
   };
 }
 
-function RoomProgressText({ progress, lang }: { progress: MuseumRoomProgress; lang: 'es' | 'en' }) {
+function RoomProgressText({ progress, lang }: { progress: MuseumRoomProgress; lang: Lang }) {
   if (progress.chapterIndex < 0) {
     return <>{copy[lang].utility}</>;
   }
 
   return (
     <>
-      {copy[lang].chapter} {progress.chapterIndex + 1}
-      <span aria-hidden="true"> / </span>
-      {progress.chapterTotal}
+      {copy[lang].chapter}{' '}
+      <bdi dir="ltr">{progress.chapterIndex + 1} / {progress.chapterTotal}</bdi>
     </>
   );
 }
@@ -123,7 +142,7 @@ export function MuseumRoomTransition({ items, activeId }: Pick<RoomNavigatorProp
           style={{ color: activeItem.color, borderColor: `${activeItem.color}55` }}
         >
           <Icon className="h-3.5 w-3.5" />
-          <span>{progress.code}</span>
+          <span dir="ltr">{progress.code}</span>
         </motion.div>
       </AnimatePresence>
     </div>
@@ -165,7 +184,7 @@ function RoomMapGrid({
                     <ItemIcon className="h-3.5 w-3.5" />
                   </span>
                   <span className="min-w-0">
-                    <span className="museum-mobile-map__code">{itemProgress.code}</span>
+                    <span className="museum-mobile-map__code" dir="ltr">{itemProgress.code}</span>
                     <strong>{item.label}</strong>
                   </span>
                 </button>
@@ -190,6 +209,35 @@ function useGroupedRoomItems(items: MuseumRoomItem[]) {
   }, [items]);
 }
 
+function useRoomMapFocus(
+  open: boolean,
+  close: () => void,
+  triggerRef: React.RefObject<HTMLButtonElement | null>,
+  mapRef: React.RefObject<HTMLElement | null>,
+) {
+  useEffect(() => {
+    if (!open) return;
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      const initialTarget = mapRef.current?.querySelector<HTMLElement>('[aria-current="page"]')
+        ?? mapRef.current?.querySelector<HTMLElement>('button');
+      initialTarget?.focus({ preventScroll: true });
+    });
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      close();
+      window.requestAnimationFrame(() => triggerRef.current?.focus({ preventScroll: true }));
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [close, mapRef, open, triggerRef]);
+}
+
 /**
  * Desktop orientation rail: chapter code, current room and whole-museum
  * progress - same navigation the mobile dock offers (step to the previous/
@@ -203,16 +251,36 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
   const activeItem = items[activeIndex];
   const progress = getMuseumRoomProgress(items, activeId);
   const groupedItems = useGroupedRoomItems(items);
+  const mapTriggerRef = useRef<HTMLButtonElement>(null);
+  const mapRef = useRef<HTMLElement>(null);
+  const previousActiveIdRef = useRef(activeId);
+
+  const closeMap = useCallback(() => setMapOpen(false), []);
+  const closeMapAndRestoreFocus = useCallback(() => {
+    setMapOpen(false);
+    window.requestAnimationFrame(() => mapTriggerRef.current?.focus({ preventScroll: true }));
+  }, []);
+  const navigateFromMap = useCallback((id: string) => {
+    setMapOpen(false);
+    onNavigate(id);
+    window.requestAnimationFrame(() => mapTriggerRef.current?.focus({ preventScroll: true }));
+  }, [onNavigate]);
+
+  useRoomMapFocus(mapOpen, closeMap, mapTriggerRef, mapRef);
 
   useEffect(() => {
-    setMapOpen(false);
-  }, [activeId]);
+    const changed = previousActiveIdRef.current !== activeId;
+    previousActiveIdRef.current = activeId;
+    if (changed && mapOpen) closeMapAndRestoreFocus();
+  }, [activeId, closeMapAndRestoreFocus, mapOpen]);
 
   if (!activeItem) return null;
 
   const Icon = activeItem.icon;
   const previousItem = activeIndex > 0 ? items[activeIndex - 1] : null;
   const nextItem = activeIndex < items.length - 1 ? items[activeIndex + 1] : null;
+  const PreviousIcon = lang === 'he' ? ChevronRight : ChevronLeft;
+  const NextIcon = lang === 'he' ? ChevronLeft : ChevronRight;
 
   return (
     <section
@@ -224,6 +292,7 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
       } as React.CSSProperties}
       aria-label={`${copy[lang].active}: ${activeItem.label}`}
       data-testid="room-progress"
+      dir={directionFor(lang)}
     >
       <div className="museum-room-progress__row">
         <button
@@ -233,21 +302,23 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
           disabled={!previousItem}
           aria-label={previousItem ? `${copy[lang].previous}: ${previousItem.label}` : copy[lang].previous}
         >
-          <ChevronLeft className="h-3.5 w-3.5" />
+          <PreviousIcon className="h-3.5 w-3.5" />
         </button>
 
         <button
+          ref={mapTriggerRef}
           type="button"
           className="museum-room-progress__active"
-          onClick={() => setMapOpen(open => !open)}
+          onClick={() => mapOpen ? closeMapAndRestoreFocus() : setMapOpen(true)}
           aria-expanded={mapOpen}
           aria-controls="desktop-room-map"
-          aria-label={`${copy[lang].openMap}: ${activeItem.label}`}
+          aria-haspopup="dialog"
+          aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
         >
           <span className="museum-room-progress__icon" aria-hidden="true">
             <Icon className="h-3.5 w-3.5" />
           </span>
-          <span className="museum-room-progress__code">{progress.code}</span>
+          <span className="museum-room-progress__code" dir="ltr">{progress.code}</span>
           <span className="museum-room-progress__divider" aria-hidden="true" />
           <span className="min-w-0">
             <span className="museum-room-progress__group">{activeItem.groupLabel}</span>
@@ -269,13 +340,14 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
           disabled={!nextItem}
           aria-label={nextItem ? `${copy[lang].next}: ${nextItem.label}` : copy[lang].next}
         >
-          <ChevronRight className="h-3.5 w-3.5" />
+          <NextIcon className="h-3.5 w-3.5" />
         </button>
       </div>
 
       <AnimatePresence>
         {mapOpen && (
           <motion.section
+            ref={mapRef}
             id="desktop-room-map"
             className="museum-room-map-desktop"
             initial={reduceMotion ? false : { opacity: 0, y: -8, scale: 0.99 }}
@@ -283,8 +355,9 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -6, scale: 0.995 }}
             transition={{ duration: reduceMotion ? 0 : 0.16, ease: 'easeOut' }}
             aria-label={copy[lang].roomMap}
+            role="dialog"
           >
-            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={onNavigate} />
+            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={navigateFromMap} />
           </motion.section>
         )}
       </AnimatePresence>
@@ -299,18 +372,37 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
   const activeIndex = items.findIndex(item => item.id === activeId);
   const activeItem = items[activeIndex];
   const progress = getMuseumRoomProgress(items, activeId);
-
   const groupedItems = useGroupedRoomItems(items);
+  const mapTriggerRef = useRef<HTMLButtonElement>(null);
+  const mapRef = useRef<HTMLElement>(null);
+  const previousActiveIdRef = useRef(activeId);
+
+  const closeMap = useCallback(() => setMapOpen(false), []);
+  const closeMapAndRestoreFocus = useCallback(() => {
+    setMapOpen(false);
+    window.requestAnimationFrame(() => mapTriggerRef.current?.focus({ preventScroll: true }));
+  }, []);
+  const navigateFromMap = useCallback((id: string) => {
+    setMapOpen(false);
+    onNavigate(id);
+    window.requestAnimationFrame(() => mapTriggerRef.current?.focus({ preventScroll: true }));
+  }, [onNavigate]);
+
+  useRoomMapFocus(mapOpen, closeMap, mapTriggerRef, mapRef);
 
   useEffect(() => {
-    setMapOpen(false);
-  }, [activeId]);
+    const changed = previousActiveIdRef.current !== activeId;
+    previousActiveIdRef.current = activeId;
+    if (changed && mapOpen) closeMapAndRestoreFocus();
+  }, [activeId, closeMapAndRestoreFocus, mapOpen]);
 
   if (!activeItem) return null;
 
   const ActiveIcon = activeItem.icon;
   const previousItem = activeIndex > 0 ? items[activeIndex - 1] : null;
   const nextItem = activeIndex < items.length - 1 ? items[activeIndex + 1] : null;
+  const PreviousIcon = lang === 'he' ? ChevronRight : ChevronLeft;
+  const NextIcon = lang === 'he' ? ChevronLeft : ChevronRight;
 
   return (
     <div
@@ -320,10 +412,12 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
         '--room-secondary': activeItem.secondary,
         '--room-progress': `${progress.ratio * 100}%`,
       } as React.CSSProperties}
+      dir={directionFor(lang)}
     >
       <AnimatePresence>
         {mapOpen && (
           <motion.section
+            ref={mapRef}
             id="mobile-room-map"
             className="museum-mobile-map"
             initial={reduceMotion ? false : { opacity: 0, y: 14, scale: 0.985 }}
@@ -331,18 +425,19 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.99 }}
             transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }}
             aria-label={copy[lang].roomMap}
+            role="dialog"
           >
             <header className="museum-mobile-map__header">
               <span>
-                <span className="museum-mobile-map__eyebrow">NOVA · {progress.code}</span>
+                <span className="museum-mobile-map__eyebrow" dir="ltr">NOVA · {progress.code}</span>
                 <strong>{copy[lang].roomMap}</strong>
               </span>
-              <button type="button" onClick={() => setMapOpen(false)} aria-label={copy[lang].closeMap}>
+              <button type="button" onClick={closeMapAndRestoreFocus} aria-label={copy[lang].closeMap}>
                 <X className="h-4 w-4" />
               </button>
             </header>
 
-            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={onNavigate} />
+            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={navigateFromMap} />
           </motion.section>
         )}
       </AnimatePresence>
@@ -355,22 +450,24 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
           disabled={!previousItem}
           aria-label={previousItem ? `${copy[lang].previous}: ${previousItem.label}` : copy[lang].previous}
         >
-          <ChevronLeft className="h-5 w-5" />
+          <PreviousIcon className="h-5 w-5" />
         </button>
 
         <button
+          ref={mapTriggerRef}
           type="button"
           className="museum-mobile-dock__active"
-          onClick={() => setMapOpen(open => !open)}
+          onClick={() => mapOpen ? closeMapAndRestoreFocus() : setMapOpen(true)}
           aria-expanded={mapOpen}
           aria-controls="mobile-room-map"
-          aria-label={`${copy[lang].openMap}: ${activeItem.label}`}
+          aria-haspopup="dialog"
+          aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
         >
           <span className="museum-mobile-dock__active-icon" aria-hidden="true">
             <ActiveIcon className="h-4 w-4" />
           </span>
           <span className="museum-mobile-dock__meta">
-            <span>{progress.code} · {activeItem.groupLabel}</span>
+            <span><bdi dir="ltr">{progress.code}</bdi> · {activeItem.groupLabel}</span>
             <strong>{activeItem.label}</strong>
           </span>
           <MapIcon className="museum-mobile-dock__map-icon" aria-hidden="true" />
@@ -384,7 +481,7 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
           disabled={!nextItem}
           aria-label={nextItem ? `${copy[lang].next}: ${nextItem.label}` : copy[lang].next}
         >
-          <ChevronRight className="h-5 w-5" />
+          <NextIcon className="h-5 w-5" />
         </button>
       </nav>
     </div>

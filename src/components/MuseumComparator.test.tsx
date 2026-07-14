@@ -76,4 +76,18 @@ describe('MuseumComparator', () => {
     expect(screen.getByText('Sube un segundo museo')).toBeInTheDocument();
     expect(screen.queryByText('Overlap de Artistas')).toBeNull();
   });
+
+  it('uses RTL composition without altering archive names in Hebrew', async () => {
+    window.localStorage.setItem('nml_lang', 'he');
+    const { container } = render(
+      <AppProvider>
+        <MuseumComparator data={primary} primaryLabel="Kevin Music Museum" />
+      </AppProvider>
+    );
+
+    expect(await screen.findByText('העלה מוזיאון שני')).toBeInTheDocument();
+    expect(container.firstElementChild).toHaveAttribute('dir', 'rtl');
+    expect(screen.getByText('Kevin Music Museum')).toBeInTheDocument();
+    expect(screen.getByText(primary.top_artists[0].name)).toBeInTheDocument();
+  });
 });

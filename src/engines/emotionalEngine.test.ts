@@ -29,7 +29,7 @@ const album: TopAlbum = {
 };
 
 describe('emotional engine', () => {
-  it('creates bilingual artist readings from archive evidence', () => {
+  it('creates trilingual artist readings from archive evidence', () => {
     const reading = buildArtistEmotionalReading({
       artist,
       albums: [album],
@@ -39,11 +39,15 @@ describe('emotional engine', () => {
 
     expect(reading.longNarrative.es).toContain('Test Horizon');
     expect(reading.longNarrative.en).toContain('Test Horizon');
+    expect(reading.longNarrative.he).toContain('Test Horizon');
+    expect(reading.longNarrative.he).toContain(reading.primaryEmotion.he);
+    expect(reading.longNarrative.he).not.toContain(reading.primaryEmotion.en);
     expect(reading.evidence.es).toHaveLength(4);
+    expect(reading.evidence.he).toHaveLength(4);
     expect(reading.axis.catharsis).toBeGreaterThan(50);
   });
 
-  it('creates album and track readings with recommended use in both languages', () => {
+  it('creates album and track readings with recommended use in all three languages', () => {
     const albumReading = buildAlbumEmotionalReading({
       album,
       artist,
@@ -62,10 +66,14 @@ describe('emotional engine', () => {
 
     expect(albumReading.listeningUse.es).toMatch(/Escúchalo/);
     expect(albumReading.listeningUse.en).toMatch(/Play it/);
+    expect(albumReading.listeningUse.he).toContain(albumReading.primaryEmotion.he);
+    expect(albumReading.listeningUse.he).not.toContain(albumReading.primaryEmotion.en);
     expect(albumReading.moodKey).toBeTruthy();
     expect(albumReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.longNarrative.es).toContain('Neon Collapse');
     expect(trackReading.longNarrative.en).toContain('Neon Collapse');
+    expect(trackReading.longNarrative.he).toContain('Neon Collapse');
+    expect(trackReading.longNarrative.he).toContain(trackReading.primaryEmotion.he);
     expect(trackReading.moodKey).toBeTruthy();
     expect(trackReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.evidence.en.join(' ')).toContain('Rank #3');
@@ -81,6 +89,7 @@ describe('emotional engine', () => {
     expect(profile.artists).toHaveLength(3);
     expect(profile.distribution.length).toBeGreaterThan(0);
     expect(profile.dominantMood.title.en).toBeTruthy();
+    expect(profile.dominantMood.title.he).toBeTruthy();
     expect(profile.averageAxis.energy).toBeGreaterThan(0);
   });
 
@@ -109,5 +118,8 @@ describe('emotional engine', () => {
     expect(reading.longNarrative.es).toContain('En el motor emocional');
     expect(reading.evidence.en.some(item => item.includes('MusicBrainz'))).toBe(true);
     expect(reading.evidence.en.some(item => item.includes('Wikidata'))).toBe(true);
+    expect(reading.evidence.he.some(item => item.includes('MusicBrainz'))).toBe(true);
+    expect(reading.evidence.he.some(item => item.includes('Wikidata'))).toBe(true);
+    expect(reading.evidence.he.join(' ')).toContain('בסיס נתונים מקומי');
   });
 });

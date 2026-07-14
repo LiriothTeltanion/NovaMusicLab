@@ -22,6 +22,8 @@ const ARTIST_QUERY_ALIASES = new Map([
   ['mgk', ['machine gun kelly']],
   // Spotify transliterates Hebrew band names; MusicBrainz indexes the originals.
   ['hayehudim', ['היהודים']],
+  ['amr diab', ['عمرو دياب']],
+  ['aviv geffen', ['אביב גפן']],
   ['girafot', ['גירפות', "ג'ירפות"]],
   ['rami kleinstein', ['רמי קלינשטיין', 'רמי קליינשטיין']],
 ]);
@@ -98,6 +100,7 @@ const args = new Map(
 
 const limitArg = args.get('limit');
 const onlyArtist = args.get('artist');
+const mergeIntoExisting = args.has('merge');
 const limit = limitArg && limitArg !== 'true' ? Number(limitArg) : undefined;
 
 function normalizeCatalogName(value) {
@@ -529,6 +532,10 @@ async function buildArtistKnowledge(artist, rank, data, wikidataMap) {
 }
 
 async function main() {
+  if (mergeIntoExisting && !onlyArtist) {
+    throw new Error('--merge requires --artist=<exact archive name> to prevent an accidental full-database rewrite.');
+  }
+
   const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
   const selectedArtists = data.top_artists
     .filter(artist => !onlyArtist || normalizeCatalogName(artist.name) === normalizeCatalogName(onlyArtist))
@@ -539,7 +546,8 @@ async function main() {
 
   for (const [index, artist] of selectedArtists.entries()) {
     log(`[${index + 1}/${selectedArtists.length}] ${artist.name}`);
-    partialArtists.push(await buildArtistKnowledge(artist, index + 1, data, new Map()));
+    const archiveRank = data.top_artists.indexOf(artist) + 1;
+    partialArtists.push(await buildArtistKnowledge(artist, archiveRank, data, new Map()));
   }
 
   const mbids = partialArtists.map(artist => artist.musicbrainz?.id).filter(Boolean);
@@ -565,7 +573,7 @@ async function main() {
     };
   });
 
-  const database = {
+  let database = {
     meta: {
       schemaVersion: 1,
       generatedAt: new Date().toISOString(),
@@ -596,8 +604,31 @@ async function main() {
     artists,
   };
 
+  if (mergeIntoExisting && fs.existsSync(outputPath)) {
+    const existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+    const exactName = value => String(value ?? '').normalize('NFC').trim();
+    const topArtistKeys = new Set(data.top_artists.map(artist => exactName(artist.name)));
+    const replacementKeys = new Set(artists.map(artist => exactName(artist.name)));
+    const mergedArtists = [
+      ...(existing.artists ?? []).filter(artist => {
+        const key = exactName(artist.name);
+        return topArtistKeys.has(key) && !replacementKeys.has(key);
+      }),
+      ...artists,
+    ];
+    database = {
+      ...existing,
+      meta: {
+        ...existing.meta,
+        generatedAt: new Date().toISOString(),
+        artistCount: mergedArtists.length,
+      },
+      artists: mergedArtists,
+    };
+  }
+
   fs.writeFileSync(outputPath, `${JSON.stringify(database, null, 2)}\n`);
-  log(`Wrote ${path.relative(root, outputPath)} with ${artists.length} artist(s).`);
+  log(`Wrote ${path.relative(root, outputPath)} with ${database.artists.length} artist(s).`);
 }
 
 main().catch(error => {

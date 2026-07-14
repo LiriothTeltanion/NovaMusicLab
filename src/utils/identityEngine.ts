@@ -1,6 +1,9 @@
 import type { Archetype, ArtistProfile, PersonalityMatrix, TopArtist, TopTrack } from '../types';
 import { normalizeGenre } from './analytics';
+import { localeFor, pickLanguage, type Lang } from './i18n';
 import { hashSeed } from './seededRandom';
+
+type Localized<T> = Record<Lang, T>;
 
 /**
  * Generates the "Personality Matrix", "Archetypes" and "Artist Identity"
@@ -50,45 +53,52 @@ const GENRE_WEIGHTS: Record<string, Partial<Record<keyof PersonalityMatrix, numb
   'Israeli Rock': { nostalgia: 0.2 },
 };
 
-const TRAIT_TEXT: Record<keyof PersonalityMatrix, { es: { positive: string; shadow: string; tip: string }; en: { positive: string; shadow: string; tip: string } }> = {
+const TRAIT_TEXT: Record<keyof PersonalityMatrix, Localized<{ positive: string; shadow: string; tip: string }>> = {
   sensibilidad_emocional: {
     es: { positive: 'Empatía y lectura emocional profunda.', shadow: 'Tendencia a quedarse demasiado tiempo en estados intensos.', tip: 'Alterna canciones catárticas con cierres luminosos.' },
     en: { positive: 'Empathy and deep emotional reading.', shadow: 'A tendency to linger too long in intense states.', tip: 'Alternate cathartic songs with brighter closers.' },
+    he: { positive: 'אמפתיה וקריאה רגשית עמוקה.', shadow: 'נטייה להישאר זמן רב מדי במצבים עוצמתיים.', tip: 'שלב בין שירים קתרזיים לסיומות מוארות יותר.' },
   },
   nostalgia: {
     es: { positive: 'Memoria afectiva poderosa.', shadow: 'Idealizar etapas pasadas.', tip: 'Crea playlists por era y cierra cada una con una canción nueva.' },
     en: { positive: 'Powerful emotional memory.', shadow: 'Idealizing past eras.', tip: 'Build playlists per era and close each with a brand-new song.' },
+    he: { positive: 'זיכרון רגשי עוצמתי.', shadow: 'נטייה לייפות תקופות מן העבר.', tip: 'צור פלייליסט לכל תקופה וסיים כל אחד בשיר חדש לגמרי.' },
   },
   energia: {
     es: { positive: 'Impulso y resiliencia.', shadow: 'Sobreestimulación si todo el día se vuelve intensidad.', tip: 'Usa la energía alta como ritual de acción.' },
     en: { positive: 'Drive and resilience.', shadow: 'Overstimulation if every hour stays high-intensity.', tip: 'Use high-energy tracks as an action ritual.' },
+    he: { positive: 'דרייב וחוסן.', shadow: 'עומס יתר כשהיום כולו נשאר בעוצמה גבוהה.', tip: 'הפוך מוזיקה עתירת אנרגיה לטקס שמניע לפעולה.' },
   },
   oscuridad_estetica: {
     es: { positive: 'Imaginación visual fuerte.', shadow: 'Aislamiento estetizado.', tip: 'Convierte esa oscuridad en diseño, escritura o sonido.' },
     en: { positive: 'Strong visual imagination.', shadow: 'Aestheticized isolation.', tip: 'Turn that darkness into design, writing or sound.' },
+    he: { positive: 'דמיון חזותי מפותח.', shadow: 'בידוד שהופך לאסתטיקה.', tip: 'הפוך את החושך הזה לעיצוב, כתיבה או סאונד.' },
   },
   creatividad: {
     es: { positive: 'Exploración y apertura.', shadow: 'Saltar demasiado rápido entre ideas.', tip: 'Elige una micro-era creativa por semana.' },
     en: { positive: 'Exploration and openness.', shadow: 'Jumping too fast between ideas.', tip: 'Pick one creative micro-era per week.' },
+    he: { positive: 'סקרנות ופתיחות לחקירה.', shadow: 'נטייה לדלג מהר מדי בין רעיונות.', tip: 'בחר מיקרו־תקופה יצירתית אחת בכל שבוע.' },
   },
   rebeldia: {
     es: { positive: 'Autodefensa emocional.', shadow: 'Tensión acumulada.', tip: 'Cierra los loops intensos con movimiento físico.' },
     en: { positive: 'Emotional self-defense.', shadow: 'Accumulated tension.', tip: 'Close intense loops with physical movement.' },
+    he: { positive: 'הגנה עצמית רגשית.', shadow: 'מתח שממשיך להצטבר.', tip: 'סגור מעגלים אינטנסיביים בעזרת תנועה גופנית.' },
   },
   futurismo: {
     es: { positive: 'Visión de futuro.', shadow: 'Desconexión del presente.', tip: 'Usa la música futurista para programar, diseñar o planear.' },
     en: { positive: 'Vision of the future.', shadow: 'Disconnection from the present.', tip: 'Use futuristic music to code, design or plan.' },
+    he: { positive: 'ראייה עתידית.', shadow: 'ניתוק מן ההווה.', tip: 'השתמש במוזיקה עתידנית כדי לתכנת, לעצב או לתכנן.' },
   },
 };
 
-const TRAIT_EVIDENCE_LABEL: Record<keyof PersonalityMatrix, { es: string; en: string }> = {
-  sensibilidad_emocional: { es: 'texturas emocionales densas', en: 'dense emotional textures' },
-  nostalgia: { es: 'sonidos retro y recurrencias de época', en: 'retro sounds and era-recurring artists' },
-  energia: { es: 'bloques de alto pulso', en: 'high-pulse blocks' },
-  oscuridad_estetica: { es: 'texturas oscuras y atmosféricas', en: 'dark, atmospheric textures' },
-  creatividad: { es: 'variedad amplia de artistas', en: 'a wide variety of artists' },
-  rebeldia: { es: 'catarsis, ruptura y reconstrucción', en: 'catharsis, rupture and reconstruction' },
-  futurismo: { es: 'producción sintética y estética digital', en: 'synthetic production and digital aesthetics' },
+const TRAIT_EVIDENCE_LABEL: Record<keyof PersonalityMatrix, Localized<string>> = {
+  sensibilidad_emocional: { es: 'texturas emocionales densas', en: 'dense emotional textures', he: 'מרקמים רגשיים צפופים' },
+  nostalgia: { es: 'sonidos retro y recurrencias de época', en: 'retro sounds and era-recurring artists', he: 'צלילי רטרו ואמנים שחוזרים לאורך תקופות' },
+  energia: { es: 'bloques de alto pulso', en: 'high-pulse blocks', he: 'מקטעים עם דופק גבוה' },
+  oscuridad_estetica: { es: 'texturas oscuras y atmosféricas', en: 'dark, atmospheric textures', he: 'מרקמים אפלים ואטמוספריים' },
+  creatividad: { es: 'variedad amplia de artistas', en: 'a wide variety of artists', he: 'מגוון רחב של אמנים' },
+  rebeldia: { es: 'catarsis, ruptura y reconstrucción', en: 'catharsis, rupture and reconstruction', he: 'קתרזיס, שבר ובנייה מחדש' },
+  futurismo: { es: 'producción sintética y estética digital', en: 'synthetic production and digital aesthetics', he: 'הפקה סינתטית ואסתטיקה דיגיטלית' },
 };
 
 /** Weighted play-share per trait, from the real top-100 genres - not a fixed score for anyone. */
@@ -129,7 +139,7 @@ function scoreTraits(topArtists: TopArtist[]): Record<keyof PersonalityMatrix, {
   return result;
 }
 
-export function buildPersonalityMatrix(topArtists: TopArtist[], lang: 'es' | 'en' = 'es'): PersonalityMatrix {
+export function buildPersonalityMatrix(topArtists: TopArtist[], lang: Lang = 'es'): PersonalityMatrix {
   const scores = scoreTraits(topArtists);
   const traits = Object.keys(TRAIT_TEXT) as (keyof PersonalityMatrix)[];
   const matrix = {} as PersonalityMatrix;
@@ -142,12 +152,16 @@ export function buildPersonalityMatrix(topArtists: TopArtist[], lang: 'es' | 'en
     const score = Math.round(30 + pct * 68);
     const label = TRAIT_EVIDENCE_LABEL[trait][lang];
     const evidence = topArtist
-      ? (lang === 'en'
-        ? `Recurring listening of ${label}, led by ${topArtist.name} (${topArtist.plays.toLocaleString('en-US')} plays).`
-        : `Escucha recurrente de ${label}, liderada por ${topArtist.name} (${topArtist.plays.toLocaleString('es-ES')} plays).`)
-      : (lang === 'en'
-        ? `A modest but present thread of ${label} across the archive.`
-        : `Un hilo modesto pero presente de ${label} en el archivo.`);
+      ? pickLanguage(lang, {
+        es: `Escucha recurrente de ${label}, liderada por ${topArtist.name} (${topArtist.plays.toLocaleString(localeFor(lang))} plays).`,
+        en: `Recurring listening of ${label}, led by ${topArtist.name} (${topArtist.plays.toLocaleString(localeFor(lang))} plays).`,
+        he: `האזנה חוזרת ל${label}, בהובלת ${topArtist.name} (${topArtist.plays.toLocaleString(localeFor(lang))} השמעות).`,
+      })
+      : pickLanguage(lang, {
+        es: `Un hilo modesto pero presente de ${label} en el archivo.`,
+        en: `A modest but present thread of ${label} across the archive.`,
+        he: `נוכחות צנועה אך ברורה של ${label} ברחבי הארכיון.`,
+      });
     const text = TRAIT_TEXT[trait][lang];
     matrix[trait] = {
       score,
@@ -167,6 +181,7 @@ interface ArchetypeTemplate {
   genres: string[];
   es: Omit<Archetype, 'artists' | 'tracks'>;
   en: Omit<Archetype, 'artists' | 'tracks'>;
+  he: Omit<Archetype, 'artists' | 'tracks'>;
 }
 
 const ARCHETYPE_BANK: ArchetypeTemplate[] = [
@@ -175,40 +190,46 @@ const ARCHETYPE_BANK: ArchetypeTemplate[] = [
     genres: ['Post-Metal / Blackgaze', 'Ambient / Lo-Fi'],
     es: { name: 'El Explorador Melancólico', desc: 'Buscador de belleza en la tristeza', color: 'cyan', aesthetic: 'Luna de neón', strength: 'Introspección', wound: 'Soledad', advice: 'Transforma la melancolía en obra.' },
     en: { name: 'The Melancholic Explorer', desc: 'A seeker of beauty inside sadness', color: 'cyan', aesthetic: 'Neon moon', strength: 'Introspection', wound: 'Loneliness', advice: 'Turn melancholy into a body of work.' },
+    he: { name: 'החוקר המלנכולי', desc: 'מחפש יופי בתוך העצב', color: 'cyan', aesthetic: 'ירח ניאון', strength: 'התבוננות פנימית', wound: 'בדידות', advice: 'הפוך את המלנכוליה ליצירה.' },
   },
   {
     id: 'guerrero',
     genres: ['Metalcore', 'Post-Hardcore'],
     es: { name: 'El Guerrero Emocional', desc: 'Usa la intensidad como escudo creativo', color: 'pink', aesthetic: 'Lluvia rosa', strength: 'Resiliencia', wound: 'Ansiedad', advice: 'Convierte la fuerza en acción concreta.' },
     en: { name: 'The Emotional Warrior', desc: 'Uses intensity as a creative shield', color: 'pink', aesthetic: 'Pink rain', strength: 'Resilience', wound: 'Anxiety', advice: 'Turn strength into concrete action.' },
+    he: { name: 'הלוחם הרגשי', desc: 'משתמש בעוצמה כמגן יצירתי', color: 'pink', aesthetic: 'גשם ורוד', strength: 'חוסן', wound: 'חרדה', advice: 'תרגם את הכוח לפעולה ממשית.' },
   },
   {
     id: 'arquitecto',
     genres: ['Synthwave / Darksynth', 'Progressive Metal'],
     es: { name: 'El Arquitecto Nocturno', desc: 'Construye mundos digitales desde la nostalgia', color: 'purple', aesthetic: 'Rejilla cian sobre asfalto mojado', strength: 'Visión', wound: 'Desconexión del presente', advice: 'Aterriza un plano futurista en un paso de hoy.' },
     en: { name: 'The Night Architect', desc: 'Builds digital worlds out of nostalgia', color: 'purple', aesthetic: 'Cyan grid over wet asphalt', strength: 'Vision', wound: 'Disconnection from the present', advice: 'Ground one futuristic blueprint in a step you take today.' },
+    he: { name: 'אדריכל הלילה', desc: 'בונה עולמות דיגיטליים מתוך נוסטלגיה', color: 'purple', aesthetic: 'רשת ציאן מעל אספלט רטוב', strength: 'חזון', wound: 'ניתוק מן ההווה', advice: 'עגן תוכנית עתידנית אחת בצעד שאתה עושה היום.' },
   },
   {
     id: 'nomada',
     genres: [],
     es: { name: 'El Nómada Sonoro', desc: 'Nunca se queda demasiado tiempo en un solo género', color: 'green', aesthetic: 'Mapa desplegado', strength: 'Curiosidad', wound: 'Dispersión', advice: 'Elige un territorio y quédate una temporada más.' },
     en: { name: 'The Sonic Nomad', desc: 'Never stays in one genre for too long', color: 'green', aesthetic: 'An unfolded map', strength: 'Curiosity', wound: 'Scattered focus', advice: 'Pick one territory and stay a season longer.' },
+    he: { name: 'הנווד הצלילי', desc: 'לעולם אינו נשאר זמן רב מדי בז׳אנר אחד', color: 'green', aesthetic: 'מפה פרושה', strength: 'סקרנות', wound: 'פיזור', advice: 'בחר טריטוריה אחת והישאר בה עוד עונה.' },
   },
   {
     id: 'ritual',
     genres: ['Death Metal', 'Heavy Metal', 'Power / Speed Metal', 'Folk Metal'],
     es: { name: 'El Guardián del Ritual', desc: 'Encuentra orden y pertenencia en lo pesado', color: 'red', aesthetic: 'Vitral roto y forja', strength: 'Disciplina', wound: 'Rigidez', advice: 'Deja que un sonido ligero entre sin traicionar el ritual.' },
     en: { name: 'The Ritual Keeper', desc: 'Finds order and belonging in heaviness', color: 'red', aesthetic: 'Shattered stained glass and forge-light', strength: 'Discipline', wound: 'Rigidity', advice: 'Let one lighter sound in without betraying the ritual.' },
+    he: { name: 'שומר הטקס', desc: 'מוצא סדר ושייכות בתוך הכובד', color: 'red', aesthetic: 'ויטראז׳ מנופץ ואור כבשן', strength: 'משמעת', wound: 'נוקשות', advice: 'אפשר לצליל קליל אחד להיכנס בלי לבגוד בטקס.' },
   },
   {
     id: 'romantico',
     genres: ['Pop Punk / Emo', 'Emo Rap / Trap'],
     es: { name: 'El Romántico Digital', desc: 'Convierte cada obsesión en una carta de amor', color: 'orange', aesthetic: 'Polaroid con glitch', strength: 'Ternura', wound: 'Apego', advice: 'Escribe el final antes de vivir el loop otra vez.' },
     en: { name: 'The Digital Romantic', desc: 'Turns every fixation into a love letter', color: 'orange', aesthetic: 'A glitched-out polaroid', strength: 'Tenderness', wound: 'Attachment', advice: 'Write the ending before living the loop again.' },
+    he: { name: 'הרומנטיקן הדיגיטלי', desc: 'הופך כל אובססיה למכתב אהבה', color: 'orange', aesthetic: 'Polaroid עם גליץ׳', strength: 'רוך', wound: 'היקשרות', advice: 'כתוב את הסוף לפני שאתה נכנס שוב ללופ.' },
   },
 ];
 
-export function buildArchetypes(topArtists: TopArtist[], lang: 'es' | 'en' = 'es'): Archetype[] {
+export function buildArchetypes(topArtists: TopArtist[], lang: Lang = 'es'): Archetype[] {
   const genrePlays: Record<string, number> = {};
   const genreTopPick: Record<string, { name: string; plays: number }> = {};
   const genreSecondPick: Record<string, { name: string; plays: number }> = {};
@@ -270,28 +291,28 @@ function pickAlias(seed: number, dominantTrait: keyof PersonalityMatrix): string
   return `${first} ${last}`;
 }
 
-const SOUND_TEMPLATES: Record<string, { es: string; en: string }> = {
-  'Post-Metal / Blackgaze': { es: 'Blackgaze', en: 'Blackgaze' },
-  'Synthwave / Darksynth': { es: 'Synthwave Cyberpunk', en: 'Cyberpunk Synthwave' },
-  'Metalcore': { es: 'Metalcore melódico', en: 'Melodic Metalcore' },
-  'Post-Hardcore': { es: 'Post-Hardcore', en: 'Post-Hardcore' },
-  'Death Metal': { es: 'Death Metal melódico', en: 'Melodic Death Metal' },
-  'Heavy Metal': { es: 'Heavy Metal clásico', en: 'Classic Heavy Metal' },
-  'Power / Speed Metal': { es: 'Power/Speed Metal', en: 'Power/Speed Metal' },
-  'Folk Metal': { es: 'Folk Metal', en: 'Folk Metal' },
-  'Hard Rock': { es: 'Hard Rock', en: 'Hard Rock' },
-  'Pop Punk / Emo': { es: 'Pop Punk emocional', en: 'Emotional Pop Punk' },
-  'Emo Rap / Trap': { es: 'Emo Rap', en: 'Emo Rap' },
-  'Hip-Hop / Rap': { es: 'Hip-Hop introspectivo', en: 'Introspective Hip-Hop' },
-  'Pop / Indie': { es: 'Pop/Indie luminoso', en: 'Luminous Pop/Indie' },
-  'Progressive Metal': { es: 'Metal Progresivo', en: 'Progressive Metal' },
-  'Alt-Metal': { es: 'Alt-Metal', en: 'Alt-Metal' },
-  'Alternative Rock': { es: 'Rock Alternativo', en: 'Alternative Rock' },
-  'Israeli Rock': { es: 'Rock Israelí', en: 'Israeli Rock' },
+const SOUND_TEMPLATES: Record<string, Localized<string>> = {
+  'Post-Metal / Blackgaze': { es: 'Blackgaze', en: 'Blackgaze', he: 'Blackgaze' },
+  'Synthwave / Darksynth': { es: 'Synthwave Cyberpunk', en: 'Cyberpunk Synthwave', he: 'Synthwave בסגנון Cyberpunk' },
+  'Metalcore': { es: 'Metalcore melódico', en: 'Melodic Metalcore', he: 'Metalcore מלודי' },
+  'Post-Hardcore': { es: 'Post-Hardcore', en: 'Post-Hardcore', he: 'Post-Hardcore' },
+  'Death Metal': { es: 'Death Metal melódico', en: 'Melodic Death Metal', he: 'Death Metal מלודי' },
+  'Heavy Metal': { es: 'Heavy Metal clásico', en: 'Classic Heavy Metal', he: 'Heavy Metal קלאסי' },
+  'Power / Speed Metal': { es: 'Power/Speed Metal', en: 'Power/Speed Metal', he: 'Power/Speed Metal' },
+  'Folk Metal': { es: 'Folk Metal', en: 'Folk Metal', he: 'Folk Metal' },
+  'Hard Rock': { es: 'Hard Rock', en: 'Hard Rock', he: 'Hard Rock' },
+  'Pop Punk / Emo': { es: 'Pop Punk emocional', en: 'Emotional Pop Punk', he: 'Pop Punk רגשי' },
+  'Emo Rap / Trap': { es: 'Emo Rap', en: 'Emo Rap', he: 'Emo Rap' },
+  'Hip-Hop / Rap': { es: 'Hip-Hop introspectivo', en: 'Introspective Hip-Hop', he: 'Hip-Hop אינטרוספקטיבי' },
+  'Pop / Indie': { es: 'Pop/Indie luminoso', en: 'Luminous Pop/Indie', he: 'Pop/Indie מואר' },
+  'Progressive Metal': { es: 'Metal Progresivo', en: 'Progressive Metal', he: 'Progressive Metal' },
+  'Alt-Metal': { es: 'Alt-Metal', en: 'Alt-Metal', he: 'Alt-Metal' },
+  'Alternative Rock': { es: 'Rock Alternativo', en: 'Alternative Rock', he: 'רוק אלטרנטיבי' },
+  'Israeli Rock': { es: 'Rock Israelí', en: 'Israeli Rock', he: 'רוק ישראלי' },
 };
 
 const EP_TITLES = ['Neon Catarsis', 'Ruido Interior', 'Segunda Piel', 'Circuito Cerrado', 'Voltaje Emocional', 'Ciudad de Vidrio'];
-const EP_DESC: Record<'es' | 'en', string[]> = {
+const EP_DESC: Localized<string[]> = {
   es: [
     'Un EP conceptual sobre memoria, reconstrucción y luces nocturnas.',
     'Un EP corto que cruza catarsis, ciudad interior y sonido de escape.',
@@ -302,31 +323,36 @@ const EP_DESC: Record<'es' | 'en', string[]> = {
     'A short EP crossing catharsis, an inner city and the sound of escape.',
     'Five tracks about leaving an earlier self behind without erasing it.',
   ],
+  he: [
+    'EP קונספטואלי על זיכרון, בנייה מחדש ואורות ליליים.',
+    'EP קצר שמחבר בין קתרזיס, עיר פנימית והצליל של הבריחה.',
+    'חמישה שירים על השארת גרסה קודמת של עצמך מאחור, בלי למחוק אותה לגמרי.',
+  ],
 };
 
-const GENRE_BLURB: Record<string, { es: string; en: string }> = {
-  'Post-Metal / Blackgaze': { es: 'Guitarras enormes, melancolía luminosa y sensación de ascenso emocional.', en: 'Huge guitars, luminous melancholy and the feeling of emotional ascent.' },
-  'Synthwave / Darksynth': { es: 'Neón, movimiento nocturno, pads retro y textura cinematográfica.', en: 'Neon, nocturnal motion, retro pads and cinematic texture.' },
-  'Post-Hardcore': { es: 'Voz frontal, catarsis, tensión melódica y energía de reconstrucción.', en: 'Forward vocals, catharsis, melodic tension and reconstruction energy.' },
-  Metalcore: { es: 'Pulso pesado, breakdowns y catarsis con estructura moderna.', en: 'Heavy pulse, breakdowns and catharsis with a modern structure.' },
-  'Pop Punk / Emo': { es: 'Hooks directos, letras vulnerables y energía de garage adolescente.', en: 'Direct hooks, vulnerable lyrics and teenage-garage energy.' },
-  'Emo Rap / Trap': { es: 'Producción íntima, voz quebrada y beats lentos y confesionales.', en: 'Intimate production, cracked vocals and slow, confessional beats.' },
-  'Hip-Hop / Rap': { es: 'Ritmo, flow y narrativa directa sobre una base solida.', en: 'Rhythm, flow and direct storytelling over a solid beat.' },
-  'Death Metal': { es: 'Densidad, técnica y oscuridad sin filtro.', en: 'Density, technicality and unfiltered darkness.' },
-  'Heavy Metal': { es: 'Riffs clásicos, poder y tradición metalera.', en: 'Classic riffs, power and metal tradition.' },
-  'Folk Metal': { es: 'Raíz acústica y melodía folclórica combinadas con fuerza metalera.', en: 'Acoustic roots and folk melody combined with metal force.' },
-  'Power / Speed Metal': { es: 'Velocidad, coros épicos y virtuosismo instrumental.', en: 'Speed, epic choruses and instrumental virtuosity.' },
-  'Progressive Metal': { es: 'Estructuras complejas, cambios de compás y ambición compositiva.', en: 'Complex structures, shifting time signatures and compositional ambition.' },
-  'Alt-Metal': { es: 'Groove pesado con hooks accesibles y actitud alternativa.', en: 'Heavy groove with accessible hooks and alternative attitude.' },
-  'Hard Rock': { es: 'Riffs directos, actitud y energía de estadio.', en: 'Direct riffs, attitude and stadium-sized energy.' },
-  'Ambient / Lo-Fi': { es: 'Texturas suaves, espacio y calma introspectiva.', en: 'Soft textures, space and introspective calm.' },
-  'Pop / Indie': { es: 'Melodías luminosas y producción cuidada, más ligera que pesada.', en: 'Bright melodies and polished production, lighter than heavy.' },
-  'Alternative Rock': { es: 'Guitarras crudas y actitud alternativa clásica.', en: 'Raw guitars and classic alt-rock attitude.' },
-  'Israeli Rock': { es: 'Una identidad de escena local dentro del archivo.', en: 'A local scene identity thread inside the archive.' },
+const GENRE_BLURB: Record<string, Localized<string>> = {
+  'Post-Metal / Blackgaze': { es: 'Guitarras enormes, melancolía luminosa y sensación de ascenso emocional.', en: 'Huge guitars, luminous melancholy and the feeling of emotional ascent.', he: 'גיטרות עצומות, מלנכוליה מוארת ותחושה של התעלות רגשית.' },
+  'Synthwave / Darksynth': { es: 'Neón, movimiento nocturno, pads retro y textura cinematográfica.', en: 'Neon, nocturnal motion, retro pads and cinematic texture.', he: 'ניאון, תנועה לילית, פאדים של רטרו ומרקם קולנועי.' },
+  'Post-Hardcore': { es: 'Voz frontal, catarsis, tensión melódica y energía de reconstrucción.', en: 'Forward vocals, catharsis, melodic tension and reconstruction energy.', he: 'שירה ישירה, קתרזיס, מתח מלודי ואנרגיה של בנייה מחדש.' },
+  Metalcore: { es: 'Pulso pesado, breakdowns y catarsis con estructura moderna.', en: 'Heavy pulse, breakdowns and catharsis with a modern structure.', he: 'דופק כבד, breakdowns וקתרזיס בתוך מבנה מודרני.' },
+  'Pop Punk / Emo': { es: 'Hooks directos, letras vulnerables y energía de garage adolescente.', en: 'Direct hooks, vulnerable lyrics and teenage-garage energy.', he: 'הוקים ישירים, מילים חשופות ואנרגיה של גראז׳ נעורים.' },
+  'Emo Rap / Trap': { es: 'Producción íntima, voz quebrada y beats lentos y confesionales.', en: 'Intimate production, cracked vocals and slow, confessional beats.', he: 'הפקה אינטימית, קול שבור וביטים איטיים וחשופים.' },
+  'Hip-Hop / Rap': { es: 'Ritmo, flow y narrativa directa sobre una base solida.', en: 'Rhythm, flow and direct storytelling over a solid beat.', he: 'קצב, flow וסיפור ישיר מעל ביט יציב.' },
+  'Death Metal': { es: 'Densidad, técnica y oscuridad sin filtro.', en: 'Density, technicality and unfiltered darkness.', he: 'צפיפות, טכניקה ואפלה ללא פילטר.' },
+  'Heavy Metal': { es: 'Riffs clásicos, poder y tradición metalera.', en: 'Classic riffs, power and metal tradition.', he: 'ריפים קלאסיים, עוצמה ומסורת של Metal.' },
+  'Folk Metal': { es: 'Raíz acústica y melodía folclórica combinadas con fuerza metalera.', en: 'Acoustic roots and folk melody combined with metal force.', he: 'שורשים אקוסטיים ומלודיה עממית שמתחברים לעוצמה של Metal.' },
+  'Power / Speed Metal': { es: 'Velocidad, coros épicos y virtuosismo instrumental.', en: 'Speed, epic choruses and instrumental virtuosity.', he: 'מהירות, פזמונים אפיים ווירטואוזיות אינסטרומנטלית.' },
+  'Progressive Metal': { es: 'Estructuras complejas, cambios de compás y ambición compositiva.', en: 'Complex structures, shifting time signatures and compositional ambition.', he: 'מבנים מורכבים, משקלים מתחלפים ושאפתנות הלחנתית.' },
+  'Alt-Metal': { es: 'Groove pesado con hooks accesibles y actitud alternativa.', en: 'Heavy groove with accessible hooks and alternative attitude.', he: 'גרוב כבד עם הוקים נגישים וגישה אלטרנטיבית.' },
+  'Hard Rock': { es: 'Riffs directos, actitud y energía de estadio.', en: 'Direct riffs, attitude and stadium-sized energy.', he: 'ריפים ישירים, אטיטיוד ואנרגיה בגודל אצטדיון.' },
+  'Ambient / Lo-Fi': { es: 'Texturas suaves, espacio y calma introspectiva.', en: 'Soft textures, space and introspective calm.', he: 'מרקמים רכים, מרחב ושקט אינטרוספקטיבי.' },
+  'Pop / Indie': { es: 'Melodías luminosas y producción cuidada, más ligera que pesada.', en: 'Bright melodies and polished production, lighter than heavy.', he: 'מלודיות מוארות והפקה מלוטשת, קלילה יותר מכבדה.' },
+  'Alternative Rock': { es: 'Guitarras crudas y actitud alternativa clásica.', en: 'Raw guitars and classic alt-rock attitude.', he: 'גיטרות מחוספסות וגישה אלטרנטיבית קלאסית.' },
+  'Israeli Rock': { es: 'Una identidad de escena local dentro del archivo.', en: 'A local scene identity thread inside the archive.', he: 'חוט של זהות מקומית שעובר בתוך הארכיון.' },
 };
 
 /** Real top-4 genres by weighted play-share, with an honest computed percentage - not a fixed "92%" for everyone. */
-export function buildSonicGenes(topArtists: TopArtist[], lang: 'es' | 'en' = 'es'): Array<{ label: string; value: string; body: string }> {
+export function buildSonicGenes(topArtists: TopArtist[], lang: Lang = 'es'): Array<{ label: string; value: string; body: string }> {
   const genrePlays: Record<string, number> = {};
   let totalPlays = 0;
   topArtists.forEach(a => {
@@ -343,7 +369,11 @@ export function buildSonicGenes(topArtists: TopArtist[], lang: 'es' | 'en' = 'es
       label: genre,
       value: `${Math.round((plays / Math.max(1, totalPlays)) * 100)}%`,
       body: GENRE_BLURB[genre]?.[lang]
-        ?? (lang === 'en' ? 'A defining thread across the archive.' : 'Un hilo definitorio en el archivo.'),
+        ?? pickLanguage(lang, {
+          es: 'Un hilo definitorio en el archivo.',
+          en: 'A defining thread across the archive.',
+          he: 'חוט מרכזי שמגדיר את הארכיון.',
+        }),
     }));
 }
 
@@ -386,7 +416,7 @@ interface IdentitySignals {
 }
 
 /** Shared by buildArtistProfile and buildDossierLineValues so genre-ranking and trait-scoring logic never drifts between the two. */
-function computeIdentitySignals(topArtists: TopArtist[], lang: 'es' | 'en'): IdentitySignals {
+function computeIdentitySignals(topArtists: TopArtist[], lang: Lang): IdentitySignals {
   const genrePlays: Record<string, number> = {};
   topArtists.forEach(a => {
     const g = normalizeGenre(a.genre);
@@ -420,20 +450,20 @@ function computeIdentitySignals(topArtists: TopArtist[], lang: 'es' | 'en'): Ide
 
 const TEMPO_BPM: Record<TempoKey, string> = { fast: '140-160 BPM', mid: '110-130 BPM', slow: '80-100 BPM' };
 
-const AESTHETIC_LABEL: Record<AestheticKey, { es: string; en: string }> = {
-  cyberpunk: { es: 'Cyberpunk / Glassmorphic', en: 'Cyberpunk / Glassmorphic' },
-  gothic: { es: 'Gótico Atmosférico', en: 'Atmospheric Gothic' },
-  warm: { es: 'Cálido Analógico', en: 'Warm Analog' },
+const AESTHETIC_LABEL: Record<AestheticKey, Localized<string>> = {
+  cyberpunk: { es: 'Cyberpunk / Glassmorphic', en: 'Cyberpunk / Glassmorphic', he: 'Cyberpunk / Glassmorphic' },
+  gothic: { es: 'Gótico Atmosférico', en: 'Atmospheric Gothic', he: 'גותי אטמוספרי' },
+  warm: { es: 'Cálido Analógico', en: 'Warm Analog', he: 'אנלוגי חם' },
 };
 
-const AESTHETIC_LIVE_SHOW: Record<AestheticKey, { es: string; en: string }> = {
-  cyberpunk: { es: 'Hologramas reactivos', en: 'Reactive holograms' },
-  gothic: { es: 'Niebla y luz estroboscópica', en: 'Fog and strobing light' },
-  warm: { es: 'Luces cálidas y cuerdas en vivo', en: 'Warm stage lighting and live strings' },
+const AESTHETIC_LIVE_SHOW: Record<AestheticKey, Localized<string>> = {
+  cyberpunk: { es: 'Hologramas reactivos', en: 'Reactive holograms', he: 'הולוגרמות תגובתיות' },
+  gothic: { es: 'Niebla y luz estroboscópica', en: 'Fog and strobing light', he: 'ערפל ותאורת סטרוב' },
+  warm: { es: 'Luces cálidas y cuerdas en vivo', en: 'Warm stage lighting and live strings', he: 'תאורת במה חמה וכלי קשת חיים' },
 };
 
 /** Per-aesthetic-bucket facets reused across the Sound Architecture, Visual Identity and Live Show dossier layers. */
-const AESTHETIC_STYLE: Record<AestheticKey, { es: DossierAestheticFacets; en: DossierAestheticFacets }> = {
+const AESTHETIC_STYLE: Record<AestheticKey, Localized<DossierAestheticFacets>> = {
   cyberpunk: {
     es: {
       synths: 'Pads oscuros, arpegios cyberpunk y bajos nocturnos',
@@ -454,6 +484,16 @@ const AESTHETIC_STYLE: Record<AestheticKey, { es: DossierAestheticFacets; en: Do
       lights: 'Cyan/pink gradients synchronized to the drum hits',
       band: 'Synthesizers as the atmospheric center alongside live drums',
       audience: 'Collective movement under neon light',
+    },
+    he: {
+      synths: 'פאדים אפלים, ארפג׳ים של Cyberpunk ובסים ליליים',
+      palette: 'ציאן, ורוד ניאון, שחור עמוק ולבן קר',
+      wardrobe: 'ביגוד טכני שחור, פרטים מחזירי אור ואביזרי כרום',
+      world: 'כבישים ליליים, חורבות דיגיטליות ומסכים הולוגרפיים תחת גשם של נתונים',
+      screen: 'ויז׳ואלים תלת־ממדיים תגובתיים עם הרים גאומטריים וגשם דיגיטלי',
+      lights: 'גרדיאנטים של ציאן וורוד שמסתנכרנים עם מכות התופים',
+      band: 'סינתיסייזרים במרכז האטמוספרי לצד תופים חיים',
+      audience: 'תנועה קולקטיבית תחת אור ניאון',
     },
   },
   gothic: {
@@ -477,6 +517,16 @@ const AESTHETIC_STYLE: Record<AestheticKey, { es: DossierAestheticFacets; en: Do
       band: 'Ritual percussion upfront with guitars as a background choir',
       audience: 'Tense silence that breaks in sharp bursts',
     },
+    he: {
+      synths: 'מרקמים אטמוספריים אפלים ודרונים ברקע',
+      palette: 'שחור עמוק, אדום חלודה וגוני אפור של אבן',
+      wardrobe: 'שכבות ארוכות, מרקמים שחוקים וצלליות טקסיות',
+      world: 'קתדרלות חרבות, ערפל נמוך וויטראז׳ים מנופצים',
+      screen: 'הקרנות עשן, ויטראז׳ים שבורים ותאורה אחורית',
+      lights: 'ערפל סמיך והבזקי סטרוב ממוקדים',
+      band: 'כלי הקשה טקסיים בחזית וגיטרות כמקהלה ברקע',
+      audience: 'שקט מתוח שמתפרץ ברגעים חדים',
+    },
   },
   warm: {
     es: {
@@ -499,38 +549,62 @@ const AESTHETIC_STYLE: Record<AestheticKey, { es: DossierAestheticFacets; en: Do
       band: 'Live strings and unprocessed acoustic drums',
       audience: 'Physical closeness, shared singalongs and calm',
     },
+    he: {
+      synths: 'שכבות חמות וכמעט בלתי מורגשות, שמשאירות מקום ללהקה',
+      palette: 'אוכרה, חום חם ולבן עצם',
+      wardrobe: 'בדים טבעיים, שכבות פשוטות ואביזרים בעבודת יד',
+      world: 'חדרים מוארים במנורות, עץ ואור אחר הצהריים',
+      screen: 'הקרנות מינימליות וכמעט תיעודיות, בלי עודף דיגיטלי',
+      lights: 'תאורת במה חמה ונרות אמיתיים',
+      band: 'כלי קשת חיים ותופים אקוסטיים ללא עיבוד',
+      audience: 'קרבה פיזית, שירה משותפת ורוגע',
+    },
   },
 };
 
-const VOICE_STYLE: Record<keyof PersonalityMatrix, { es: string; en: string }> = {
-  sensibilidad_emocional: { es: 'Voz limpia y frontal, cerca del micrófono para que la emoción tenga rostro humano.', en: 'Clean, forward vocals close to the mic so the emotion has a human face.' },
-  nostalgia: { es: 'Voz cálida con eco suave, como si llegara desde otra década.', en: 'Warm vocals with a soft echo, as if arriving from another decade.' },
-  energia: { es: 'Voz proyectada con fuerza, casi gritada en los estribillos.', en: 'Vocals pushed hard, almost shouted through the choruses.' },
-  oscuridad_estetica: { es: 'Voz grave y contenida, con susurros que se rompen en momentos puntuales.', en: 'Low, restrained vocals that break into whispers at key moments.' },
-  creatividad: { es: 'Voz cambiante, que salta de registro limpio a experimental sin aviso.', en: 'A shifting voice that jumps from a clean register to experimental without warning.' },
-  rebeldia: { es: 'Voz que alterna entre limpia y gritada, catártica en los puentes.', en: 'Vocals that shift between clean and screamed, cathartic through the bridges.' },
-  futurismo: { es: 'Voz procesada con capas digitales, casi vocoder en los coros.', en: 'Vocals processed with digital layers, almost vocoder-like in the choruses.' },
+const VOICE_STYLE: Record<keyof PersonalityMatrix, Localized<string>> = {
+  sensibilidad_emocional: { es: 'Voz limpia y frontal, cerca del micrófono para que la emoción tenga rostro humano.', en: 'Clean, forward vocals close to the mic so the emotion has a human face.', he: 'שירה נקייה וישירה, קרובה למיקרופון, כדי לתת לרגש פנים אנושיות.' },
+  nostalgia: { es: 'Voz cálida con eco suave, como si llegara desde otra década.', en: 'Warm vocals with a soft echo, as if arriving from another decade.', he: 'שירה חמה עם הד עדין, כאילו הגיעה מעשור אחר.' },
+  energia: { es: 'Voz proyectada con fuerza, casi gritada en los estribillos.', en: 'Vocals pushed hard, almost shouted through the choruses.', he: 'שירה עוצמתית, כמעט צעקה לאורך הפזמונים.' },
+  oscuridad_estetica: { es: 'Voz grave y contenida, con susurros que se rompen en momentos puntuales.', en: 'Low, restrained vocals that break into whispers at key moments.', he: 'שירה נמוכה ומאופקת, שנשברת ללחישות ברגעים הנכונים.' },
+  creatividad: { es: 'Voz cambiante, que salta de registro limpio a experimental sin aviso.', en: 'A shifting voice that jumps from a clean register to experimental without warning.', he: 'שירה משתנה שקופצת מרגיסטר נקי לניסיוני בלי התראה.' },
+  rebeldia: { es: 'Voz que alterna entre limpia y gritada, catártica en los puentes.', en: 'Vocals that shift between clean and screamed, cathartic through the bridges.', he: 'שירה שנעה בין נקי לצרחות, וקתרזיס שמתפרץ בגשרים.' },
+  futurismo: { es: 'Voz procesada con capas digitales, casi vocoder en los coros.', en: 'Vocals processed with digital layers, almost vocoder-like in the choruses.', he: 'שירה מעובדת בשכבות דיגיטליות, כמעט כמו vocoder בפזמונים.' },
 };
 
-const TEMPO_STYLE: Record<TempoKey, { es: string; en: string }> = {
-  fast: { es: 'Pulso rápido y directo, con fills que empujan cada estribillo hacia adelante.', en: 'A fast, direct pulse, with fills that push every chorus forward.' },
-  mid: { es: 'Pulso medio con groove marcado, ni frenético ni relajado.', en: 'A mid-tempo groove, neither frantic nor relaxed.' },
-  slow: { es: 'Pulso relajado y espacioso, dejando que cada golpe respire.', en: 'A relaxed, spacious pulse that lets every hit breathe.' },
+const TEMPO_STYLE: Record<TempoKey, Localized<string>> = {
+  fast: { es: 'Pulso rápido y directo, con fills que empujan cada estribillo hacia adelante.', en: 'A fast, direct pulse, with fills that push every chorus forward.', he: 'דופק מהיר וישיר, עם fills שדוחפים כל פזמון קדימה.' },
+  mid: { es: 'Pulso medio con groove marcado, ni frenético ni relajado.', en: 'A mid-tempo groove, neither frantic nor relaxed.', he: 'קצב בינוני עם גרוב מודגש, לא תזזיתי ולא רגוע.' },
+  slow: { es: 'Pulso relajado y espacioso, dejando que cada golpe respire.', en: 'A relaxed, spacious pulse that lets every hit breathe.', he: 'דופק רגוע ומרווח שנותן לכל מכה לנשום.' },
 };
 
-function joinTwo(a: string | undefined, b: string | undefined, lang: 'es' | 'en'): string {
-  if (a && b) return lang === 'en' ? `${a} and ${b}` : `${a} y ${b}`;
+function joinTwo(a: string | undefined, b: string | undefined, lang: Lang): string {
+  if (a && b) {
+    return pickLanguage(lang, {
+      es: `${a} y ${b}`,
+      en: `${a} and ${b}`,
+      he: `${a} ו־${b}`,
+    });
+  }
   return a ?? b ?? '';
 }
 
-export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[], lang: 'es' | 'en' = 'es', options?: ArtistProfileOptions): ArtistProfile {
+export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[], lang: Lang = 'es', options?: ArtistProfileOptions): ArtistProfile {
   const { sound1, sound2, dominantTrait, aestheticKey, tempoKey, influences, seed } = computeIdentitySignals(topArtists, lang);
 
   const sound = sound1 && sound2
-    ? (lang === 'en' ? `A fusion of ${sound1} and ${sound2}` : `Fusión de ${sound1} y ${sound2}`)
+    ? pickLanguage(lang, {
+      es: `Fusión de ${sound1} y ${sound2}`,
+      en: `A fusion of ${sound1} and ${sound2}`,
+      he: `היתוך של ${sound1} ו־${sound2}`,
+    })
     : sound1
       ? sound1
-      : (lang === 'en' ? 'An eclectic personal blend' : 'Una mezcla personal ecléctica');
+      : pickLanguage(lang, {
+        es: 'Una mezcla personal ecléctica',
+        en: 'An eclectic personal blend',
+        he: 'תערובת אישית אקלקטית',
+      });
 
   const tempo = TEMPO_BPM[tempoKey];
   const aesthetic = AESTHETIC_LABEL[aestheticKey][lang];
@@ -541,19 +615,26 @@ export function buildArtistProfile(topArtists: TopArtist[], topTracks: TopTrack[
   const description = EP_DESC[lang][idx % EP_DESC[lang].length];
   const topTrackTitle = topTracks[0]?.title;
 
-  const tracklist = lang === 'en'
-    ? [
-      '1. Noise Portal',
-      topTrackTitle ? `2. ${topTrackTitle} (Echo)` : '2. Echo Chamber',
-      '3. Inner City',
-      '4. Synthetic Sunrise',
-    ]
-    : [
+  const tracklist = pickLanguage(lang, {
+    es: [
       '1. Portal de Ruido',
       topTrackTitle ? `2. ${topTrackTitle} (Echo)` : '2. Cámara de Eco',
       '3. Ciudad Interior',
       '4. Amanecer Sintético',
-    ];
+    ],
+    en: [
+      '1. Noise Portal',
+      topTrackTitle ? `2. ${topTrackTitle} (Echo)` : '2. Echo Chamber',
+      '3. Inner City',
+      '4. Synthetic Sunrise',
+    ],
+    he: [
+      '1. שער הרעש',
+      topTrackTitle ? `2. ${topTrackTitle} (Echo)` : '2. תא ההד',
+      '3. העיר הפנימית',
+      '4. זריחה סינתטית',
+    ],
+  });
 
   return {
     alias: options?.fixedAlias ?? pickAlias(seed, dominantTrait),
@@ -584,47 +665,74 @@ export interface DossierLineValues {
  * in ArtistIdentity.tsx - they're structural section labels, not claims
  * about the archive.
  */
-export function buildDossierLineValues(topArtists: TopArtist[], topTracks: TopTrack[], lang: 'es' | 'en' = 'es'): DossierLineValues {
+export function buildDossierLineValues(topArtists: TopArtist[], topTracks: TopTrack[], lang: Lang = 'es'): DossierLineValues {
   const { sound1, sound2, dominantTrait, aestheticKey, tempoKey, influences } = computeIdentitySignals(topArtists, lang);
   const style = AESTHETIC_STYLE[aestheticKey][lang];
   const topTrackTitle = topTracks[0]?.title;
   const influencePair = joinTwo(influences[0], influences[1], lang);
 
-  const guitars = lang === 'en'
-    ? `Guitar textures shaped by ${sound1 ?? 'your dominant sound'}${influencePair ? `, colored by what ${influencePair} bring to your rotation` : ''}.`
-    : `Texturas de guitarra marcadas por ${sound1 ?? 'tu sonido dominante'}${influencePair ? `, coloreadas por lo que ${influencePair} traen a tu rotación` : ''}.`;
+  const guitars = pickLanguage(lang, {
+    es: `Texturas de guitarra marcadas por ${sound1 ?? 'tu sonido dominante'}${influencePair ? `, coloreadas por lo que ${influencePair} traen a tu rotación` : ''}.`,
+    en: `Guitar textures shaped by ${sound1 ?? 'your dominant sound'}${influencePair ? `, colored by what ${influencePair} bring to your rotation` : ''}.`,
+    he: `מרקמי גיטרה שעוצבו בידי ${sound1 ?? 'הסאונד הדומיננטי שלך'}${influencePair ? `, ונצבעו במה ש־${influencePair} מביאים לרוטציה שלך` : ''}.`,
+  });
 
   const synths = influences[0]
-    ? (lang === 'en' ? `${style.synths}, in the spirit of ${influences[0]}.` : `${style.synths}, en la línea de ${influences[0]}.`)
+    ? pickLanguage(lang, {
+      es: `${style.synths}, en la línea de ${influences[0]}.`,
+      en: `${style.synths}, in the spirit of ${influences[0]}.`,
+      he: `${style.synths}, ברוח ${influences[0]}.`,
+    })
     : `${style.synths}.`;
 
-  const covers = lang === 'en'
-    ? `The alias as silhouette or avatar, set against ${style.world}.`
-    : `El alias en primer plano como silueta o avatar, sobre ${style.world}.`;
+  const covers = pickLanguage(lang, {
+    es: `El alias en primer plano como silueta o avatar, sobre ${style.world}.`,
+    en: `The alias as silhouette or avatar, set against ${style.world}.`,
+    he: `הכינוי כצללית או כאווטאר בחזית, על רקע ${style.world}.`,
+  });
 
-  const world = lang === 'en'
-    ? `The imagined setting: ${style.world}.`
-    : `El escenario imaginado: ${style.world}.`;
+  const world = pickLanguage(lang, {
+    es: `El escenario imaginado: ${style.world}.`,
+    en: `The imagined setting: ${style.world}.`,
+    he: `העולם המדומיין: ${style.world}.`,
+  });
 
-  const act2 = lang === 'en'
-    ? `Sound collision: ${sound1 ?? 'your lead genre'}${sound2 ? ` and ${sound2}` : ''} fight until they become a personal language.`
-    : `Choque de sonidos: ${sound1 ?? 'tu género principal'}${sound2 ? ` y ${sound2}` : ''} pelean hasta convertirse en idioma propio.`;
+  const act2 = pickLanguage(lang, {
+    es: `Choque de sonidos: ${sound1 ?? 'tu género principal'}${sound2 ? ` y ${sound2}` : ''} pelean hasta convertirse en idioma propio.`,
+    en: `Sound collision: ${sound1 ?? 'your lead genre'}${sound2 ? ` and ${sound2}` : ''} fight until they become a personal language.`,
+    he: `התנגשות צלילים: ${sound1 ?? 'הז׳אנר המוביל שלך'}${sound2 ? ` ו־${sound2}` : ''} נאבקים עד שהם הופכים לשפה אישית.`,
+  });
 
   const single1 = topTrackTitle
-    ? (lang === 'en'
-      ? `Choose "${topTrackTitle}" as the anchor single: the hook is already there, it just needs a visualizer that matches it.`
-      : `Elegir "${topTrackTitle}" como sencillo ancla: el gancho ya existe, solo falta un visualizer a su altura.`)
-    : (lang === 'en'
-      ? 'Choose an anchor song: the most direct one, with a strong hook and a visualizer that matches it.'
-      : 'Elegir una canción ancla: la más directa, con un gancho fuerte y un visualizer a su altura.');
+    ? pickLanguage(lang, {
+      es: `Elegir "${topTrackTitle}" como sencillo ancla: el gancho ya existe, solo falta un visualizer a su altura.`,
+      en: `Choose "${topTrackTitle}" as the anchor single: the hook is already there, it just needs a visualizer that matches it.`,
+      he: `בחר ב־"${topTrackTitle}" כסינגל העוגן: ההוק כבר שם; חסר רק visualizer שמתאים לו.`,
+    })
+    : pickLanguage(lang, {
+      es: 'Elegir una canción ancla: la más directa, con un gancho fuerte y un visualizer a su altura.',
+      en: 'Choose an anchor song: the most direct one, with a strong hook and a visualizer that matches it.',
+      he: 'בחר שיר עוגן: הישיר ביותר, עם הוק חזק ו־visualizer שמתאים לו.',
+    });
 
   const single2 = sound2
-    ? (lang === 'en' ? `Release a more atmospheric piece leaning into ${sound2}, to show depth and not only energy.` : `Publicar una pieza más atmosférica cerca de ${sound2}, para mostrar profundidad y no solo energía.`)
-    : (lang === 'en' ? 'Release a more atmospheric piece to show depth, not only energy.' : 'Publicar una pieza más atmosférica para mostrar profundidad, no solo energía.');
+    ? pickLanguage(lang, {
+      es: `Publicar una pieza más atmosférica cerca de ${sound2}, para mostrar profundidad y no solo energía.`,
+      en: `Release a more atmospheric piece leaning into ${sound2}, to show depth and not only energy.`,
+      he: `הוצא קטע אטמוספרי יותר שנוטה לכיוון ${sound2}, כדי להראות עומק ולא רק אנרגיה.`,
+    })
+    : pickLanguage(lang, {
+      es: 'Publicar una pieza más atmosférica para mostrar profundidad, no solo energía.',
+      en: 'Release a more atmospheric piece to show depth, not only energy.',
+      he: 'הוצא קטע אטמוספרי יותר כדי להראות עומק ולא רק אנרגיה.',
+    });
 
-  const art = lang === 'en'
-    ? `Define cover, photos and visualizers around the ${style.palette.toLowerCase()} palette so everything belongs to the same universe.`
-    : `Definir portada, fotos y visualizers alrededor de la paleta ${style.palette.toLowerCase()} para que todo pertenezca al mismo universo.`;
+  const normalizedPalette = style.palette.toLocaleLowerCase(localeFor(lang));
+  const art = pickLanguage(lang, {
+    es: `Definir portada, fotos y visualizers alrededor de la paleta ${normalizedPalette} para que todo pertenezca al mismo universo.`,
+    en: `Define cover, photos and visualizers around the ${normalizedPalette} palette so everything belongs to the same universe.`,
+    he: `בנה את העטיפה, התמונות וה־visualizers סביב פלטת ${normalizedPalette}, כדי שהכול ישתייך לאותו יקום.`,
+  });
 
   return {
     layer1: { guitars, drums: TEMPO_STYLE[tempoKey][lang], synths, voice: VOICE_STYLE[dominantTrait][lang] },
@@ -634,4 +742,3 @@ export function buildDossierLineValues(topArtists: TopArtist[], topTracks: TopTr
     layer6: { single1, single2, art },
   };
 }
-

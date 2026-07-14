@@ -1,11 +1,20 @@
 /**
- * AppContext: Language (ES/EN) + Theme (4 themes) unified context.
+ * AppContext: Language (ES/EN/HE) + theme + navigation unified context.
  * Usage: const { lang, t, theme, setTheme, themeColors } = useAppContext();
  */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { loadHebrewExperience } from '../i18n/loadHebrewExperience';
+import {
+  DEFAULT_DEEP_LINK_STATE,
+  parseDeepLink,
+  type AppTab,
+  type TopSubTab,
+} from '../utils/deepLinks';
+import { DOCUMENT_METADATA, directionFor, isLang, type Lang } from '../utils/i18n';
+
+export type { Lang } from '../utils/i18n';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
-export type Lang  = 'es' | 'en';
 export type Theme =
   | 'cyber' | 'aurora' | 'crimson' | 'nebula' | 'ocean' | 'gold' | 'midnight'
   | 'daylight' | 'linen' | 'mintfresh' | 'blossom' | 'sky' | 'sand' | 'lavender';
@@ -16,7 +25,7 @@ export interface ThemeColors {
 }
 
 // ─── Translations ─────────────────────────────────────────────────────────────
-const STRINGS = {
+export const STRINGS = {
   es: {
     appTitle: 'NOVA MUSIC LAB',
     appSubtitle: 'Tu Universo Musical',
@@ -372,7 +381,7 @@ const STRINGS = {
       hours:     'Horas',
       artists:   'Artistas',
       tracks:    'Canciones',
-      days:      'Días Escuchados',
+      days:      'Días de Música (24 h)',
     },
     tabs: {
       artists:  'Artistas',
@@ -989,8 +998,8 @@ const STRINGS = {
         topTrackDetail: (artist: string) => `por ${artist}`,
         peakEra: 'Era pico',
         peakEraDetail: (plays: string) => `${plays} plays concentrados`,
-        dataTrust: 'Confianza de datos',
-        dataTrustDetail: (source: string) => `${source} analizado localmente`,
+        dataTrust: 'Fuente del archivo',
+        dataTrustDetail: (source: string) => `${source} · procesado localmente`,
         unknown: 'Por calcular',
         pending: 'Esperando datos activos',
       },
@@ -1751,7 +1760,7 @@ const STRINGS = {
       hours:     'Hours',
       artists:   'Artists',
       tracks:    'Tracks',
-      days:      'Listening Days',
+      days:      '24h Music Days',
     },
     tabs: {
       artists:  'Artists',
@@ -2368,8 +2377,8 @@ const STRINGS = {
         topTrackDetail: (artist: string) => `by ${artist}`,
         peakEra: 'Peak era',
         peakEraDetail: (plays: string) => `${plays} concentrated plays`,
-        dataTrust: 'Data trust',
-        dataTrustDetail: (source: string) => `${source} analyzed locally`,
+        dataTrust: 'Archive source',
+        dataTrustDetail: (source: string) => `${source} · processed locally`,
         unknown: 'To calculate',
         pending: 'Waiting for active data',
       },
@@ -2842,10 +2851,6 @@ export const THEMES: Record<Theme, ThemeColors> = {
   },
 };
 
-function isLang(value: string | null): value is Lang {
-  return value === 'es' || value === 'en';
-}
-
 function isTheme(value: string | null): value is Theme {
   return Boolean(value && value in THEMES);
 }
@@ -2855,25 +2860,27 @@ interface AppContextValue {
   lang: Lang;
   setLang: (l: Lang) => void;
   t: TranslationKeys;
+  isLanguageReady: boolean;
   theme: Theme;
   setTheme: (th: Theme) => void;
   tc: ThemeColors;
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: AppTab;
+  setActiveTab: (tab: AppTab) => void;
   selectedArtistName: string;
   setSelectedArtistName: (name: string) => void;
   selectedAlbumKey: string;
   setSelectedAlbumKey: (key: string) => void;
   selectedTrackKey: string;
   setSelectedTrackKey: (key: string) => void;
-  topSubTab: 'artists' | 'albums' | 'tracks';
-  setTopSubTab: (sub: 'artists' | 'albums' | 'tracks') => void;
+  topSubTab: TopSubTab;
+  setTopSubTab: (sub: TopSubTab) => void;
 }
 
 const AppContext = createContext<AppContextValue>({
   lang: 'es',
   setLang: () => {},
   t: STRINGS.es,
+  isLanguageReady: true,
   theme: 'cyber',
   setTheme: () => {},
   tc: THEMES.cyber,
@@ -2889,7 +2896,47 @@ const AppContext = createContext<AppContextValue>({
   setTopSubTab: () => {},
 });
 
+function HebrewLanguageGate({ failed, onRetry }: { failed: boolean; onRetry: () => void }) {
+  return (
+    <main
+      dir="rtl"
+      role={failed ? 'alert' : 'status'}
+      aria-live="polite"
+      aria-label={failed ? 'שגיאה בטעינת הממשק בעברית' : 'טעינת הממשק בעברית'}
+      className="flex min-h-screen items-center justify-center bg-[var(--bg,#050b14)] px-6 text-center text-white"
+    >
+      <div className="nova-surface nova-surface--featured w-full max-w-md rounded-3xl border border-white/10 p-8 shadow-2xl">
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-cyan-300/25 bg-cyan-300/10 text-2xl" aria-hidden="true">
+          {failed ? '🔁' : '🌙'}
+        </span>
+        <h1 className="mt-5 text-xl font-black">
+          {failed ? 'טעינת הממשק בעברית נכשלה' : 'טוענים את הממשק המלא בעברית…'}
+        </h1>
+        <p className="mt-2 text-sm leading-relaxed text-gray-400">
+          {failed
+            ? 'החיבור לקטלוג השפה לא הושלם. אפשר לנסות שוב.'
+            : 'מכינים את התרגומים ואת קטלוג האמנים.'}
+        </p>
+        {failed && (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="mt-5 min-h-11 rounded-2xl border border-cyan-300/30 bg-cyan-300/10 px-5 text-sm font-black text-cyan-100 transition-colors hover:bg-cyan-300/20"
+          >
+            נסה שוב
+          </button>
+        )}
+      </div>
+    </main>
+  );
+}
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  const [initialDeepLink] = useState(() => (
+    typeof window === 'undefined'
+      ? { ...DEFAULT_DEEP_LINK_STATE, valid: true }
+      : parseDeepLink(window.location.hash)
+  ));
   const [lang, setLangState] = useState<Lang>(() => {
     const stored = localStorage.getItem('nml_lang');
     return isLang(stored) ? stored : 'en';
@@ -2900,11 +2947,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   });
 
   // Global navigation & dossiers selection state
-  const [activeTab, setActiveTab] = useState<string>('hero');
-  const [selectedArtistName, setSelectedArtistName] = useState<string>('');
-  const [selectedAlbumKey, setSelectedAlbumKey] = useState<string>('');
-  const [selectedTrackKey, setSelectedTrackKey] = useState<string>('');
-  const [topSubTab, setTopSubTab] = useState<'artists' | 'albums' | 'tracks'>('artists');
+  const [activeTab, setActiveTab] = useState<AppTab>(initialDeepLink.tab);
+  const [selectedArtistName, setSelectedArtistName] = useState(initialDeepLink.selectedArtistName);
+  const [selectedAlbumKey, setSelectedAlbumKey] = useState(initialDeepLink.selectedAlbumKey);
+  const [selectedTrackKey, setSelectedTrackKey] = useState(initialDeepLink.selectedTrackKey);
+  const [topSubTab, setTopSubTab] = useState<TopSubTab>(initialDeepLink.topSubTab);
+  const [hebrewStrings, setHebrewStrings] = useState<TranslationKeys | null>(null);
+  const [hebrewLoadFailed, setHebrewLoadFailed] = useState(false);
+  const [hebrewLoadAttempt, setHebrewLoadAttempt] = useState(0);
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
@@ -2915,6 +2965,40 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setThemeState(th);
     localStorage.setItem('nml_theme', th);
   }, []);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.lang = lang;
+    root.dir = directionFor(lang);
+    root.dataset.language = lang;
+    document.title = DOCUMENT_METADATA[lang].title;
+    let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (!description) {
+      description = document.createElement('meta');
+      description.name = 'description';
+      document.head.append(description);
+    }
+    description.content = DOCUMENT_METADATA[lang].description;
+  }, [lang]);
+
+  useEffect(() => {
+    if (lang !== 'he' || hebrewStrings) return undefined;
+
+    let active = true;
+    setHebrewLoadFailed(false);
+    void loadHebrewExperience()
+      .then(strings => {
+        if (!active) return;
+        setHebrewStrings(strings as unknown as TranslationKeys);
+      })
+      .catch(() => {
+        if (active) setHebrewLoadFailed(true);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [hebrewLoadAttempt, hebrewStrings, lang]);
 
   // Apply CSS variables to :root whenever theme changes
   useEffect(() => {
@@ -2931,10 +3015,16 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--glass-bg', tc.mode === 'light' ? 'rgba(255, 255, 255, 0.55)' : 'rgba(10, 25, 47, 0.45)');
   }, [theme]);
 
+  const isLanguageReady = lang !== 'he' || hebrewStrings !== null;
+  const translations = lang === 'he'
+    ? (hebrewStrings ?? STRINGS.en)
+    : lang === 'es' ? STRINGS.es : STRINGS.en;
+
   return (
     <AppContext.Provider value={{
       lang, setLang,
-      t: STRINGS[lang] as TranslationKeys,
+      t: translations as TranslationKeys,
+      isLanguageReady,
       theme, setTheme,
       tc: THEMES[theme],
       activeTab, setActiveTab,
@@ -2943,7 +3033,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       selectedTrackKey, setSelectedTrackKey,
       topSubTab, setTopSubTab,
     }}>
-      {children}
+      {isLanguageReady
+        ? children
+        : <HebrewLanguageGate failed={hebrewLoadFailed} onRetry={() => setHebrewLoadAttempt(attempt => attempt + 1)} />}
     </AppContext.Provider>
   );
 }

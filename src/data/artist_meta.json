@@ -96,16 +96,16 @@
     "country": "Netherlands"
   },
   "anathema": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Progressive Rock / Death-Doom Metal",
+    "country": "United Kingdom"
   },
   "animals as leaders": {
     "genre": "Progressive Metal / Instrumental",
     "country": "United States"
   },
   "annihilator": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Thrash Metal / Heavy Metal",
+    "country": "Canada"
   },
   "anuel aa": {
     "genre": "Latin Trap / Reggaeton",
@@ -156,8 +156,8 @@
     "country": "Israel"
   },
   "asking alexandria": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Metalcore / Post-Hardcore",
+    "country": "United Kingdom"
   },
   "at the gates": {
     "genre": "Melodic Death Metal",
@@ -212,7 +212,7 @@
     "country": "Poland"
   },
   "being as an ocean": {
-    "genre": "Alternative",
+    "genre": "Post-Hardcore / Melodic Hardcore",
     "country": "United States"
   },
   "berry sakharof": {
@@ -240,15 +240,15 @@
     "country": "United Kingdom"
   },
   "blackfield": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Progressive Rock / Art Rock",
+    "country": "United Kingdom"
   },
   "blackpink": {
     "genre": "K-Pop / Dance Pop",
     "country": "South Korea"
   },
   "blessthefall": {
-    "genre": "Alternative",
+    "genre": "Metalcore / Post-Hardcore",
     "country": "United States"
   },
   "blink-182": {
@@ -284,7 +284,7 @@
     "country": "United Kingdom"
   },
   "boy pablo": {
-    "genre": "Alternative",
+    "genre": "Indie Pop / Indie Rock",
     "country": "United States"
   },
   "brand new": {
@@ -384,15 +384,15 @@
     "country": "United States"
   },
   "crazy lixx": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Glam Metal / Hard Rock",
+    "country": "Sweden"
   },
   "crossfaith": {
     "genre": "Electronicore / Metalcore",
     "country": "Japan"
   },
   "crown the empire": {
-    "genre": "Alternative",
+    "genre": "Post-Hardcore / Metalcore",
     "country": "United States"
   },
   "crystal lake": {
@@ -464,8 +464,8 @@
     "country": "United Kingdom"
   },
   "def leppard": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Hard Rock / Glam Metal",
+    "country": "United Kingdom"
   },
   "deftones": {
     "genre": "Alternative Metal / Shoegaze",
@@ -516,7 +516,7 @@
     "country": "United States"
   },
   "drake": {
-    "genre": "Alternative",
+    "genre": "Hip-Hop / Contemporary R&B",
     "country": "United States"
   },
   "dream theater": {
@@ -552,8 +552,8 @@
     "country": "Sweden"
   },
   "entwine": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Gothic Metal",
+    "country": "Finland"
   },
   "epica": {
     "genre": "Symphonic Metal / Death Metal",
@@ -564,7 +564,7 @@
     "country": "Germany"
   },
   "erra": {
-    "genre": "Alternative",
+    "genre": "Progressive Metalcore / Djent",
     "country": "United States"
   },
   "europe": {
@@ -596,7 +596,7 @@
     "country": "Colombia"
   },
   "firehouse": {
-    "genre": "Alternative",
+    "genre": "Glam Metal / Hard Rock",
     "country": "United States"
   },
   "flume": {
@@ -604,7 +604,7 @@
     "country": "Australia"
   },
   "fm-84": {
-    "genre": "Alternative",
+    "genre": "Synthwave / Synth-Pop",
     "country": "United States"
   },
   "foo fighters": {
@@ -804,7 +804,7 @@
     "country": "United Kingdom"
   },
   "issues": {
-    "genre": "Alternative",
+    "genre": "Metalcore / Electronicore",
     "country": "United States"
   },
   "j balvin": {
@@ -825,7 +825,7 @@
   },
   "jonny craig": {
     "genre": "Post-Hardcore / Soul",
-    "country": "United States"
+    "country": "Canada"
   },
   "jordyne": {
     "genre": "Alternative",
@@ -860,8 +860,8 @@
     "country": "Colombia"
   },
   "katatonia": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Doom Metal / Gothic Metal",
+    "country": "Sweden"
   },
   "katy perry": {
     "genre": "Pop / Dance Pop",
@@ -928,7 +928,7 @@
     "country": "United States"
   },
   "landon tewers": {
-    "genre": "Alternative",
+    "genre": "Post-Hardcore / Alternative Rock",
     "country": "United States"
   },
   "lantlôs": {
@@ -988,8 +988,8 @@
     "country": "Argentina"
   },
   "lost society": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Thrash Metal",
+    "country": "Finland"
   },
   "louta": {
     "genre": "Alternative",
@@ -1148,8 +1148,8 @@
     "country": "United Kingdom"
   },
   "myrath": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Progressive Metal / Oriental Metal",
+    "country": "Tunisia"
   },
   "mötley crüe": {
     "genre": "Glam Metal / Hard Rock",
@@ -1164,8 +1164,8 @@
     "country": "United States"
   },
   "neck deep": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Pop Punk / Punk Rock",
+    "country": "Wales"
   },
   "nestor": {
     "genre": "AOR / Melodic Rock",
@@ -1212,7 +1212,7 @@
     "country": "Finland"
   },
   "nine inch nails": {
-    "genre": "Alternative",
+    "genre": "Industrial Rock / Industrial Metal",
     "country": "United States"
   },
   "nirvana": {
@@ -1332,8 +1332,8 @@
     "country": "United States"
   },
   "perturbator": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Synthwave / Darksynth",
+    "country": "France"
   },
   "peso pluma": {
     "genre": "Corridos Tumbados / Regional Mexican",
@@ -1364,7 +1364,7 @@
     "country": "United States"
   },
   "polyphia": {
-    "genre": "Alternative",
+    "genre": "Math Rock / Progressive Metal",
     "country": "United States"
   },
   "poorstacy": {
@@ -1396,8 +1396,8 @@
     "country": "Canada"
   },
   "primal fear": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Power Metal / Heavy Metal",
+    "country": "Germany"
   },
   "queen": {
     "genre": "Rock / Glam Rock",
@@ -1412,8 +1412,8 @@
     "country": "United States"
   },
   "rami kleinstein": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Israeli Rock",
+    "country": "Israel"
   },
   "rammstein": {
     "genre": "Industrial Metal / Neue Deutsche Härte",
@@ -1453,7 +1453,7 @@
   },
   "roosevelt": {
     "genre": "Alternative",
-    "country": "United States"
+    "country": "Germany"
   },
   "rosalía": {
     "genre": "Flamenco Pop / Experimental Pop",
@@ -1488,8 +1488,8 @@
     "country": "Spain"
   },
   "scar symmetry": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Melodic Death Metal / Groove Metal",
+    "country": "Sweden"
   },
   "scarlxrd": {
     "genre": "Trap Metal / Rage Rap",
@@ -1500,7 +1500,7 @@
     "country": "Germany"
   },
   "sebastian gampl": {
-    "genre": "Alternative",
+    "genre": "Synthwave",
     "country": "United States"
   },
   "seether": {
@@ -1540,15 +1540,15 @@
     "country": "Iceland"
   },
   "silverstein": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Post-Hardcore / Emo",
+    "country": "Canada"
   },
   "simple plan": {
     "genre": "Pop Punk / Pop Rock",
     "country": "Canada"
   },
   "skid row": {
-    "genre": "Alternative",
+    "genre": "Glam Metal / Heavy Metal",
     "country": "United States"
   },
   "skrillex": {
@@ -1556,8 +1556,8 @@
     "country": "United States"
   },
   "skyharbor": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Progressive Metal / Djent",
+    "country": "India"
   },
   "slaves": {
     "genre": "Post-Hardcore / R&B",
@@ -1596,7 +1596,7 @@
     "country": "Argentina"
   },
   "som": {
-    "genre": "Alternative",
+    "genre": "Post-Metal / Shoegaze",
     "country": "United States"
   },
   "sonata arctica": {
@@ -1692,7 +1692,7 @@
     "country": "United States"
   },
   "teenage wrist": {
-    "genre": "Alternative",
+    "genre": "Indie Rock / Alternative Rock",
     "country": "United States"
   },
   "tesseract": {
@@ -1700,8 +1700,8 @@
     "country": "United Kingdom"
   },
   "the 1975": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Indie Pop / Indie Rock",
+    "country": "United Kingdom"
   },
   "the amity affliction": {
     "genre": "Metalcore / Post-Hardcore",
@@ -1744,11 +1744,11 @@
     "country": "United States"
   },
   "the kid laroi": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Emo Rap / Pop Rap",
+    "country": "Australia"
   },
   "the killers": {
-    "genre": "Alternative",
+    "genre": "Alternative Rock / Indie Rock",
     "country": "United States"
   },
   "the maine": {
@@ -1800,7 +1800,7 @@
     "country": "United States"
   },
   "thirty seconds to mars": {
-    "genre": "Alternative",
+    "genre": "Alternative Rock / Progressive Rock",
     "country": "United States"
   },
   "thornhill": {
@@ -1832,11 +1832,11 @@
     "country": "United States"
   },
   "treat": {
-    "genre": "Alternative",
-    "country": "United States"
+    "genre": "Hard Rock",
+    "country": "Sweden"
   },
   "trevor something": {
-    "genre": "Alternative",
+    "genre": "Synthwave / Synth-Pop",
     "country": "United States"
   },
   "trippie redd": {
@@ -1880,7 +1880,7 @@
     "country": "United States"
   },
   "type o negative": {
-    "genre": "Alternative",
+    "genre": "Gothic Metal / Doom Metal",
     "country": "United States"
   },
   "u2": {

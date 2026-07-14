@@ -1,7 +1,7 @@
 {
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-07-11T12:22:44.636Z",
+    "generatedAt": "2026-07-13T18:37:51.880Z",
     "artistCount": 100,
     "sources": [
       {
@@ -27,337 +27,6 @@
     ]
   },
   "artists": [
-    {
-      "name": "Bring Me The Horizon",
-      "normalizedName": "bring me the horizon",
-      "archive": {
-        "rank": 1,
-        "plays": 2053,
-        "genre": "Metalcore / Alternative",
-        "country": "United Kingdom",
-        "topTracks": [
-          "MANTRA",
-          "Follow You",
-          "medicine",
-          "Can You Feel My Heart",
-          "in the dark"
-        ],
-        "topAlbums": [
-          "amo",
-          "That's The Spirit",
-          "Sempiternal",
-          "amo"
-        ]
-      },
-      "musicbrainz": {
-        "id": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
-        "score": 100,
-        "name": "Bring Me the Horizon",
-        "sortName": "Bring Me the Horizon",
-        "type": "Group",
-        "country": "GB",
-        "area": "United Kingdom",
-        "beginArea": "Sheffield",
-        "lifeSpanBegin": "2004-03",
-        "ended": false,
-        "aliases": [
-          "BMTHchannel",
-          "BMTHOfficialVEVO",
-          "BMTH"
-        ],
-        "tags": [
-          "metalcore",
-          "alternative rock",
-          "alternative metal",
-          "deathcore",
-          "pop rock",
-          "post-hardcore",
-          "melodic metalcore",
-          "emo",
-          "electronic",
-          "nu metal",
-          "psychedelic rock",
-          "rock",
-          "pop",
-          "drum and bass",
-          "heavy metal",
-          "house",
-          "hard rock",
-          "screamo"
-        ],
-        "isnis": [
-          "0000000122868773"
-        ]
-      },
-      "wikidata": {
-        "id": "Q494784",
-        "url": "https://www.wikidata.org/entity/Q494784",
-        "label": "Bring Me the Horizon",
-        "description": "British rock band",
-        "genres": [
-          "pop rock",
-          "deathcore",
-          "post-hardcore",
-          "metalcore",
-          "techno",
-          "alternative metal"
-        ],
-        "countries": [
-          "United Kingdom"
-        ],
-        "formationPlaces": [
-          "Sheffield"
-        ],
-        "recordLabels": [
-          "Columbia Records",
-          "RCA Records",
-          "Epitaph Records",
-          "BMG Rights Management",
-          "Earache Records",
-          "Visible Noise",
-          "Sony Music"
-        ],
-        "members": [
-          "Matt Kean",
-          "Matt Nicholls"
-        ],
-        "occupations": [],
-        "instruments": [],
-        "instanceOf": [
-          "musical group"
-        ],
-        "officialWebsites": [
-          "https://www.bmthofficial.com/"
-        ],
-        "images": [
-          "http://commons.wikimedia.org/wiki/Special:FilePath/Bring%20Me%20The%20Horizon%20Tons%20of%20Rock%202026%2002.jpg"
-        ],
-        "inception": "2004-01-01"
-      },
-      "releaseGroups": [
-        {
-          "id": "ea8e2fec-ed89-3918-a9e4-bf4e8e5f7e28",
-          "title": "Count Your Blessings",
-          "primaryType": "Album",
-          "firstReleaseDate": "2006-10-30"
-        },
-        {
-          "id": "bd29e155-81aa-3600-8de3-a9dea76da4c9",
-          "title": "Suicide Season",
-          "primaryType": "Album",
-          "firstReleaseDate": "2008-09-29"
-        },
-        {
-          "id": "b2947bde-f35a-4e83-b70a-985460388027",
-          "title": "Live at Wacken Open Air",
-          "primaryType": "Album",
-          "firstReleaseDate": "2009"
-        },
-        {
-          "id": "4dcf93d7-2372-44e4-816c-4ef225b448c8",
-          "title": "There Is a Hell Believe Me I’ve Seen It. There Is a Heaven Let’s Keep It a Secret",
-          "primaryType": "Album",
-          "firstReleaseDate": "2010-10-04"
-        },
-        {
-          "id": "f0c8edf8-26a7-4425-9ce9-82b00e90669a",
-          "title": "Sempiternal",
-          "primaryType": "Album",
-          "firstReleaseDate": "2013-03-29"
-        },
-        {
-          "id": "a5377a12-7614-4e2d-94a1-324dbc37480b",
-          "title": "Limited Box Set",
-          "primaryType": "Album",
-          "firstReleaseDate": "2014-11-24"
-        },
-        {
-          "id": "00584f3e-580e-487b-867c-b623ec50f300",
-          "title": "Live at Wembley",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-06-22"
-        },
-        {
-          "id": "78113c03-d7dc-4200-91f0-5b20088e403d",
-          "title": "That’s the Spirit",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-09-04"
-        },
-        {
-          "id": "e1b2407b-03fd-41f1-b920-472d57607654",
-          "title": "Live at the Royal Albert Hall",
-          "primaryType": "Album",
-          "firstReleaseDate": "2016-12-02"
-        },
-        {
-          "id": "9cb90886-99ff-4da9-9aa1-901e7f1eb13f",
-          "title": "2004 - 2013",
-          "primaryType": "Album",
-          "firstReleaseDate": "2017-11-24"
-        },
-        {
-          "id": "3351433a-72a3-4c58-9fc5-9c628a35742e",
-          "title": "amo",
-          "primaryType": "Album",
-          "firstReleaseDate": "2019-01-25"
-        },
-        {
-          "id": "2d1d9561-4c16-41d4-8234-dfe30c6334eb",
-          "title": "POST HUMAN: SURVIVAL HORROR",
-          "primaryType": "Album",
-          "firstReleaseDate": "2020-10-29"
-        },
-        {
-          "id": "96a7fe39-114f-4102-aba8-6387748553ce",
-          "title": "POST HUMAN: NeX GEn",
-          "primaryType": "Album",
-          "firstReleaseDate": "2024-05-24"
-        },
-        {
-          "id": "cf967c9e-133a-49ed-a9e5-8d6a7f4c2760",
-          "title": "Wish I Could Forget (The Remixes)",
-          "primaryType": "Album",
-          "firstReleaseDate": "2025-01-31"
-        },
-        {
-          "id": "2e83a13d-d9c5-4ce1-b7cb-15c073873c57",
-          "title": "Lo-files",
-          "primaryType": "Album",
-          "firstReleaseDate": "2025-07-11"
-        },
-        {
-          "id": "4c519efc-f513-4a62-ae3d-01087b5a0bba",
-          "title": "L.I.V.E. in São Paulo (Live Immersive Virtual Experiment)",
-          "primaryType": "Album",
-          "firstReleaseDate": "2026-04-10"
-        },
-        {
-          "id": "497feea7-e7b6-4380-b999-0d253f75adc4",
-          "title": "Count Your Blessings | Repented",
-          "primaryType": "Album",
-          "firstReleaseDate": "2026-07-10"
-        }
-      ],
-      "emotionalSeeds": {
-        "sourceText": "Bring Me The Horizon Metalcore / Alternative United Kingdom Group United Kingdom Sheffield Bring Me the Horizon British rock band United Kingdom Sheffield Columbia Records RCA Records Epitaph Records BMG Rights Management Earache Records Visible Noise Sony Music Matt Kean Matt Nicholls musical group Metalcore / Alternative metalcore alternative rock alternative metal deathcore pop rock post-hardcore melodic metalcore emo electronic nu metal psychedelic rock rock pop drum and bass heavy metal house hard rock screamo techno Count Your Blessings Suicide Season Live at Wacken Open Air There Is a Hell Believe Me I’ve Seen It. There Is a Heaven Let’s Keep It a Secret Sempiternal Limited Box Set Live at Wembley That’s the Spirit Live at the Royal Albert Hall 2004 - 2013 amo POST HUMAN: SURVIVAL HORROR",
-        "tags": [
-          "Metalcore / Alternative",
-          "metalcore",
-          "alternative rock",
-          "alternative metal",
-          "deathcore",
-          "pop rock",
-          "post-hardcore",
-          "melodic metalcore",
-          "emo",
-          "electronic",
-          "nu metal",
-          "psychedelic rock",
-          "rock",
-          "pop",
-          "drum and bass",
-          "heavy metal",
-          "house",
-          "hard rock",
-          "screamo",
-          "techno"
-        ],
-        "activeYears": [
-          "2004",
-          "2004"
-        ],
-        "releaseYears": [
-          2006,
-          2008,
-          2009,
-          2010,
-          2013,
-          2014,
-          2015,
-          2016,
-          2017,
-          2019,
-          2020,
-          2024,
-          2025,
-          2026
-        ]
-      },
-      "fetchStatus": "matched",
-      "bandMembers": [
-        {
-          "name": "Matt Kean",
-          "roles": [
-            "bass guitar"
-          ],
-          "begin": "2004",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Lee Malia",
-          "roles": [
-            "background vocals",
-            "guitar"
-          ],
-          "begin": "2004",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Matt Nicholls",
-          "roles": [
-            "drums (drum set)"
-          ],
-          "begin": "2004",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Oliver Sykes",
-          "roles": [
-            "keyboard",
-            "lead vocals",
-            "guitar"
-          ],
-          "begin": "2004",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Curtis Ward",
-          "roles": [
-            "guitar",
-            "background vocals"
-          ],
-          "begin": "2004",
-          "end": "2014",
-          "current": false
-        },
-        {
-          "name": "Jona Weinhofen",
-          "roles": [
-            "background vocals",
-            "guitar",
-            "keyboard"
-          ],
-          "begin": "2009",
-          "end": "2013",
-          "current": false
-        },
-        {
-          "name": "Jordan Fish",
-          "roles": [
-            "background vocals",
-            "keyboard",
-            "percussion"
-          ],
-          "begin": "2012",
-          "end": "2023-12-22",
-          "current": false
-        }
-      ]
-    },
     {
       "name": "Deafheaven",
       "normalizedName": "deafheaven",
@@ -1433,7 +1102,7 @@
         "rank": 6,
         "plays": 1030,
         "genre": "Post-Hardcore / Soul",
-        "country": "United States",
+        "country": "Canada",
         "topTracks": [
           "GOOSEBUMPS",
           "Going Under",
@@ -1541,7 +1210,7 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Jonny Craig Post-Hardcore / Soul United States Person United States Minot former vocalist of Dance Gavin Dance & Emarosa Jonny Craig Canadian musician Canada Rise Records singer-songwriter human Post-Hardcore / Soul soul rock experimental rock pop-punk post-hardcore alternative rock emo A Dream Is a Question You Don’t Know How to Answer Live at Bamboozle 2010 (Live Nation Studios) The Blueprint for Going in Circles The Le Cube Sessions Find Your Home The Places We’ll Never Be",
+        "sourceText": "Jonny Craig Post-Hardcore / Soul Canada Person United States Minot former vocalist of Dance Gavin Dance & Emarosa Jonny Craig Canadian musician Canada Rise Records singer-songwriter human Post-Hardcore / Soul soul rock experimental rock pop-punk post-hardcore alternative rock emo A Dream Is a Question You Don’t Know How to Answer Live at Bamboozle 2010 (Live Nation Studios) The Blueprint for Going in Circles The Le Cube Sessions Find Your Home The Places We’ll Never Be",
         "tags": [
           "Post-Hardcore / Soul",
           "soul",
@@ -1942,7 +1611,7 @@
       "normalizedName": "hayehudim",
       "archive": {
         "rank": 9,
-        "plays": 863,
+        "plays": 926,
         "genre": "Israeli Rock / Metal",
         "country": "Israel",
         "topTracks": [],
@@ -2160,7 +1829,7 @@
       "name": "Normandie",
       "normalizedName": "normandie",
       "archive": {
-        "rank": 10,
+        "rank": 11,
         "plays": 849,
         "genre": "Alternative Rock / Post-Hardcore",
         "country": "Sweden",
@@ -2266,7 +1935,7 @@
       "name": "Dance With the Dead",
       "normalizedName": "dance with the dead",
       "archive": {
-        "rank": 11,
+        "rank": 12,
         "plays": 832,
         "genre": "Darksynth / Cyberpunk",
         "country": "United States",
@@ -2422,7 +2091,7 @@
       "name": "Odeon",
       "normalizedName": "odeon",
       "archive": {
-        "rank": 12,
+        "rank": 13,
         "plays": 827,
         "genre": "Post-Hardcore / Electronic",
         "country": "Brazil",
@@ -2489,7 +2158,7 @@
       "name": "Emarosa",
       "normalizedName": "emarosa",
       "archive": {
-        "rank": 13,
+        "rank": 14,
         "plays": 824,
         "genre": "Pop Rock / Post-Hardcore",
         "country": "United States",
@@ -2657,7 +2326,7 @@
       "name": "The Midnight",
       "normalizedName": "the midnight",
       "archive": {
-        "rank": 14,
+        "rank": 15,
         "plays": 803,
         "genre": "Synthwave / Dreampop",
         "country": "United States",
@@ -2822,7 +2491,7 @@
       "name": "Hammock",
       "normalizedName": "hammock",
       "archive": {
-        "rank": 15,
+        "rank": 16,
         "plays": 793,
         "genre": "Ambient / Contemplative",
         "country": "United States",
@@ -3092,7 +2761,7 @@
       "name": "Holding Absence",
       "normalizedName": "holding absence",
       "archive": {
-        "rank": 16,
+        "rank": 17,
         "plays": 792,
         "genre": "Post-Hardcore / Emo",
         "country": "United Kingdom",
@@ -3230,7 +2899,7 @@
       "name": "The Word Alive",
       "normalizedName": "the word alive",
       "archive": {
-        "rank": 17,
+        "rank": 18,
         "plays": 723,
         "genre": "Metalcore / Alternative",
         "country": "United States",
@@ -3461,7 +3130,7 @@
       "name": "Tokio Hotel",
       "normalizedName": "tokio hotel",
       "archive": {
-        "rank": 18,
+        "rank": 19,
         "plays": 719,
         "genre": "Pop Rock / Nostalgia",
         "country": "Germany",
@@ -3718,7 +3387,7 @@
       "name": "Don Vedda",
       "normalizedName": "don vedda",
       "archive": {
-        "rank": 19,
+        "rank": 20,
         "plays": 714,
         "genre": "Alternative Rock / Indie",
         "country": "United States",
@@ -3777,8 +3446,8 @@
       "name": "Slaves",
       "normalizedName": "slaves",
       "archive": {
-        "rank": 20,
-        "plays": 662,
+        "rank": 10,
+        "plays": 853,
         "genre": "Post-Hardcore / R&B",
         "country": "United States",
         "topTracks": [
@@ -4080,7 +3749,7 @@
       "name": "Alcest",
       "normalizedName": "alcest",
       "archive": {
-        "rank": 21,
+        "rank": 22,
         "plays": 616,
         "genre": "Post-Metal / Shoegaze",
         "country": "France",
@@ -4274,7 +3943,7 @@
       "name": "Omnium Gatherum",
       "normalizedName": "omnium gatherum",
       "archive": {
-        "rank": 22,
+        "rank": 23,
         "plays": 609,
         "genre": "Melodic Death Metal",
         "country": "Finland",
@@ -4475,7 +4144,7 @@
       "name": "Magnolia Park",
       "normalizedName": "magnolia park",
       "archive": {
-        "rank": 23,
+        "rank": 24,
         "plays": 581,
         "genre": "Pop Punk / Emo Pop",
         "country": "United States",
@@ -4579,7 +4248,7 @@
       "name": "H.E.A.T",
       "normalizedName": "h e a t",
       "archive": {
-        "rank": 24,
+        "rank": 25,
         "plays": 580,
         "genre": "Hard Rock / AOR",
         "country": "Sweden",
@@ -4820,14 +4489,15 @@
       "name": "mgk",
       "normalizedName": "mgk",
       "archive": {
-        "rank": 25,
-        "plays": 579,
+        "rank": 21,
+        "plays": 678,
         "genre": "Pop Punk / Emo Rap",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
           "Hotel Diablo",
-          "Tickets To My Downfall"
+          "Tickets To My Downfall",
+          "mainstream sellout"
         ]
       },
       "musicbrainz": {
@@ -5044,9 +4714,7 @@
         "plays": 549,
         "genre": "Darksynth / Cyberpunk",
         "country": "France",
-        "topTracks": [
-          "Le Perv"
-        ],
+        "topTracks": [],
         "topAlbums": [
           "Trilogy"
         ]
@@ -5204,8 +4872,8 @@
       "name": "Bring Me the Horizon",
       "normalizedName": "bring me the horizon",
       "archive": {
-        "rank": 27,
-        "plays": 540,
+        "rank": 1,
+        "plays": 2593,
         "genre": "Metalcore / Alternative",
         "country": "United Kingdom",
         "topTracks": [
@@ -5218,8 +4886,7 @@
         "topAlbums": [
           "amo",
           "That's The Spirit",
-          "Sempiternal",
-          "amo"
+          "Sempiternal"
         ]
       },
       "musicbrainz": {
@@ -5532,232 +5199,13 @@
       ]
     },
     {
-      "name": "Machine Gun Kelly",
-      "normalizedName": "machine gun kelly",
-      "archive": {
-        "rank": 28,
-        "plays": 493,
-        "genre": "Pop Punk / Emo Rap",
-        "country": "United States",
-        "topTracks": [],
-        "topAlbums": [
-          "Hotel Diablo"
-        ]
-      },
-      "musicbrainz": {
-        "id": "f6af669a-56ea-448a-a044-de76181ada33",
-        "score": 100,
-        "name": "mgk",
-        "sortName": "mgk",
-        "type": "Person",
-        "country": "US",
-        "area": "United States",
-        "beginArea": "Houston",
-        "lifeSpanBegin": "1990-04-22",
-        "ended": false,
-        "disambiguation": "rapper Colson Baker, fka Machine Gun Kelly",
-        "aliases": [
-          "mgk",
-          "MGK",
-          "Colson Baker",
-          "Machine Gun Kelly",
-          "Richard Colson Baker"
-        ],
-        "tags": [
-          "hip hop",
-          "english",
-          "pop punk",
-          "pop rap",
-          "rap rock",
-          "4d49e67b-1746-48ac-9eac-9ebabc595486"
-        ],
-        "isnis": [
-          "0000000384011948"
-        ]
-      },
-      "wikidata": {
-        "id": "Q1354843",
-        "url": "https://www.wikidata.org/entity/Q1354843",
-        "label": "Machine Gun Kelly",
-        "description": "American musician (born 1990)",
-        "genres": [
-          "alternative rock",
-          "hip-hop",
-          "pop rap",
-          "rap rock",
-          "pop-punk",
-          "alternative hip-hop"
-        ],
-        "countries": [
-          "United States"
-        ],
-        "formationPlaces": [],
-        "recordLabels": [
-          "Interscope Records",
-          "Bad Boy Records"
-        ],
-        "members": [],
-        "occupations": [
-          "actor",
-          "singer",
-          "record producer",
-          "musician",
-          "songwriter",
-          "guitarist",
-          "rapper",
-          "television actor"
-        ],
-        "instruments": [
-          "guitar",
-          "voice"
-        ],
-        "instanceOf": [
-          "human"
-        ],
-        "officialWebsites": [
-          "http://www.machinegunkelly.com/"
-        ],
-        "images": [
-          "http://commons.wikimedia.org/wiki/Special:FilePath/Machine%20Gun%20Kelly%20%28rapper%29%2003.jpg"
-        ],
-        "birthDate": "1990-04-22"
-      },
-      "releaseGroups": [
-        {
-          "id": "e52eea9e-e8cf-4fa7-9caa-95a9e031fe9f",
-          "title": "100 Words and Running",
-          "primaryType": "Album",
-          "firstReleaseDate": "2010-02-11"
-        },
-        {
-          "id": "3e3649f1-9fb3-4911-b532-4f878002f76a",
-          "title": "Lace Up",
-          "primaryType": "Album",
-          "firstReleaseDate": "2010-11-18"
-        },
-        {
-          "id": "9d593c9d-fe09-4659-b273-7d009ee4fc26",
-          "title": "Rage Pack",
-          "primaryType": "Album",
-          "firstReleaseDate": "2011-10-14"
-        },
-        {
-          "id": "17e24fd1-3826-4e57-a67c-d8393a1f3d06",
-          "title": "Lace Up",
-          "primaryType": "Album",
-          "firstReleaseDate": "2012-01-01"
-        },
-        {
-          "id": "1e469c9f-f0d5-4f3c-8b80-c33218a2b904",
-          "title": "EST 4 Life",
-          "primaryType": "Album",
-          "firstReleaseDate": "2012-08-12"
-        },
-        {
-          "id": "b8c20c54-ea44-4276-b6d4-342f351a8c40",
-          "title": "Black Flag",
-          "primaryType": "Album",
-          "firstReleaseDate": "2013-06-26"
-        },
-        {
-          "id": "88ec657f-8790-40e9-aa7a-5ec6ecd1ce5d",
-          "title": "Fuck It",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-07-23"
-        },
-        {
-          "id": "8e077807-07c5-4279-93ab-fd37770b5e94",
-          "title": "General Admission",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-10-16"
-        },
-        {
-          "id": "90df11a9-0a27-47cf-b3cf-1fe55c189cff",
-          "title": "bloom",
-          "primaryType": "Album",
-          "firstReleaseDate": "2017-05-12"
-        },
-        {
-          "id": "96de0816-729a-4e0d-a0a3-24c18397d02b",
-          "title": "Hotel Diablo",
-          "primaryType": "Album",
-          "firstReleaseDate": "2019-07-05"
-        },
-        {
-          "id": "74075a86-d650-4273-9876-4890eeffeb09",
-          "title": "Tickets to My Downfall",
-          "primaryType": "Album",
-          "firstReleaseDate": "2020-09-25"
-        },
-        {
-          "id": "4d5f0303-9153-4875-af3c-4f9d97ae89d3",
-          "title": "mainstream sellout",
-          "primaryType": "Album",
-          "firstReleaseDate": "2022-03-25"
-        },
-        {
-          "id": "ecf94f53-6e2d-424e-973f-946ea5b788be",
-          "title": "lofi chill vibes with machine gun kelly",
-          "primaryType": "Album",
-          "firstReleaseDate": "2023-11-17"
-        },
-        {
-          "id": "364a7345-dc8f-4109-b1d8-fc630ecde469",
-          "title": "lost americana",
-          "primaryType": "Album",
-          "firstReleaseDate": "2025-08-08"
-        },
-        {
-          "id": "07d40d42-7f60-4728-93c4-bf63a9b2b47f",
-          "title": "blog era boyz",
-          "primaryType": "Album",
-          "firstReleaseDate": "2026-05-22"
-        }
-      ],
-      "emotionalSeeds": {
-        "sourceText": "Machine Gun Kelly Pop Punk / Emo Rap United States Person United States Houston rapper Colson Baker, fka Machine Gun Kelly Machine Gun Kelly American musician (born 1990) United States Interscope Records Bad Boy Records actor singer record producer musician songwriter guitarist rapper television actor guitar voice human Pop Punk / Emo Rap hip hop english pop punk pop rap rap rock 4d49e67b-1746-48ac-9eac-9ebabc595486 alternative rock hip-hop pop-punk alternative hip-hop 100 Words and Running Lace Up Rage Pack Lace Up EST 4 Life Black Flag Fuck It General Admission bloom Hotel Diablo Tickets to My Downfall mainstream sellout",
-        "tags": [
-          "Pop Punk / Emo Rap",
-          "hip hop",
-          "english",
-          "pop punk",
-          "pop rap",
-          "rap rock",
-          "4d49e67b-1746-48ac-9eac-9ebabc595486",
-          "alternative rock",
-          "hip-hop",
-          "pop-punk",
-          "alternative hip-hop"
-        ],
-        "activeYears": [
-          "1990",
-          "1990"
-        ],
-        "releaseYears": [
-          2010,
-          2011,
-          2012,
-          2013,
-          2015,
-          2017,
-          2019,
-          2020,
-          2022,
-          2023,
-          2025,
-          2026
-        ]
-      },
-      "fetchStatus": "matched"
-    },
-    {
       "name": "Myrath",
       "normalizedName": "myrath",
       "archive": {
-        "rank": 29,
+        "rank": 28,
         "plays": 475,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Progressive Metal / Oriental Metal",
+        "country": "Tunisia",
         "topTracks": [
           "Believer"
         ],
@@ -5882,9 +5330,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Myrath Alternative United States Group Tunisia Ben Arous Myrath Tunisian progressive metal band Tunisia Edel Records Malek Ben Arbia Zaher Zorgati Anis Jouini Morgan Berthet Kevin Codfert musical group Alternative progressive metal oriental metal power metal folk metal metal ميراث Hope Desert Call Tales of the Sands Legacy Shehili Live in Carthage Karma Reflections Wilderness of Mirrors",
+        "sourceText": "Myrath Progressive Metal / Oriental Metal Tunisia Group Tunisia Ben Arous Myrath Tunisian progressive metal band Tunisia Edel Records Malek Ben Arbia Zaher Zorgati Anis Jouini Morgan Berthet Kevin Codfert musical group Progressive Metal / Oriental Metal progressive metal oriental metal power metal folk metal metal ميراث Hope Desert Call Tales of the Sands Legacy Shehili Live in Carthage Karma Reflections Wilderness of Mirrors",
         "tags": [
-          "Alternative",
+          "Progressive Metal / Oriental Metal",
           "progressive metal",
           "oriental metal",
           "power metal",
@@ -5931,10 +5379,10 @@
       "name": "Primal Fear",
       "normalizedName": "primal fear",
       "archive": {
-        "rank": 30,
+        "rank": 29,
         "plays": 469,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Power Metal / Heavy Metal",
+        "country": "Germany",
         "topTracks": [],
         "topAlbums": [
           "Nuclear Fire"
@@ -6134,9 +5582,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Primal Fear Alternative United States Group Germany Esslingen am Neckar Primal Fear German power metal band Germany Germany Nuclear Blast Frontiers Records Thalìa Bellazecca Randy Black Mat Sinner Magnus Karlsson Andre Hilgers Ralf Scheepers musical group Alternative heavy metal power metal speed metal speed/power-metal alemanha heavy metal music Primal Fear Jaws of Death Nuclear Fire Black Sun The History of Fear Devil's Ground Seven Seals Metal Is Forever: The Very Best of Primal Fear New Religion 16.6 (Before the Devil Knows You're Dead) Live in the USA Unbreakable",
+        "sourceText": "Primal Fear Power Metal / Heavy Metal Germany Group Germany Esslingen am Neckar Primal Fear German power metal band Germany Germany Nuclear Blast Frontiers Records Thalìa Bellazecca Randy Black Mat Sinner Magnus Karlsson Andre Hilgers Ralf Scheepers musical group Power Metal / Heavy Metal heavy metal power metal speed metal speed/power-metal alemanha heavy metal music Primal Fear Jaws of Death Nuclear Fire Black Sun The History of Fear Devil's Ground Seven Seals Metal Is Forever: The Very Best of Primal Fear New Religion 16.6 (Before the Devil Knows You're Dead) Live in the USA Unbreakable",
         "tags": [
-          "Alternative",
+          "Power Metal / Heavy Metal",
           "heavy metal",
           "power metal",
           "speed metal",
@@ -6277,9 +5725,9 @@
       "name": "Type O Negative",
       "normalizedName": "type o negative",
       "archive": {
-        "rank": 31,
+        "rank": 30,
         "plays": 450,
-        "genre": "Alternative",
+        "genre": "Gothic Metal / Doom Metal",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -6509,9 +5957,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Type O Negative Alternative United States Group United States Brooklyn Type O Negative American gothic/doom metal band United States Brooklyn Roadrunner Records Josh Silver Kenny Hickey Sal Abruscato Johnny Kelly Peter Steele musical group Alternative gothic metal doom metal heavy metal metal american estados unidos Slow, Deep and Hard The Origin of the Feces Bloody Kisses Live, Rare and Hard Suicide Is Self Expression – Express Yourself We Suck… Slower, Deeper, and Harder Love to Me Is So Unreal… Happiness I Cannot Feel Even Snow Dies Steel O Dick October Rust Live Cries, B‐Sides, Sui Sides",
+        "sourceText": "Type O Negative Gothic Metal / Doom Metal United States Group United States Brooklyn Type O Negative American gothic/doom metal band United States Brooklyn Roadrunner Records Josh Silver Kenny Hickey Sal Abruscato Johnny Kelly Peter Steele musical group Gothic Metal / Doom Metal gothic metal doom metal heavy metal metal american estados unidos Slow, Deep and Hard The Origin of the Feces Bloody Kisses Live, Rare and Hard Suicide Is Self Expression – Express Yourself We Suck… Slower, Deeper, and Harder Love to Me Is So Unreal… Happiness I Cannot Feel Even Snow Dies Steel O Dick October Rust Live Cries, B‐Sides, Sui Sides",
         "tags": [
-          "Alternative",
+          "Gothic Metal / Doom Metal",
           "gothic metal",
           "doom metal",
           "heavy metal",
@@ -6596,202 +6044,13 @@
       ]
     },
     {
-      "name": "nothingnowhere.",
-      "normalizedName": "nothingnowhere",
-      "archive": {
-        "rank": 32,
-        "plays": 445,
-        "genre": "Emo Rap / Alternative Pop",
-        "country": "United States",
-        "topTracks": [],
-        "topAlbums": [
-          "Trauma Factory"
-        ]
-      },
-      "musicbrainz": {
-        "id": "90e8bc57-78b0-4992-8784-898d5122d3b3",
-        "score": 100,
-        "name": "nothing,nowhere.",
-        "sortName": "nothing,nowhere.",
-        "type": "Person",
-        "country": "US",
-        "area": "United States",
-        "beginArea": "Foxborough",
-        "lifeSpanBegin": "1992-06-04",
-        "ended": false,
-        "disambiguation": "US emo rap/post-hardcore musician",
-        "aliases": [
-          "n,n."
-        ],
-        "tags": [
-          "emo",
-          "alternative rock",
-          "hip hop",
-          "experimental"
-        ],
-        "isnis": []
-      },
-      "wikidata": {
-        "id": "Q42336667",
-        "url": "https://www.wikidata.org/entity/Q42336667",
-        "label": "Nothing,Nowhere",
-        "description": "American rapper and singer",
-        "genres": [
-          "screamo",
-          "trap music",
-          "post-hardcore",
-          "alternative rock",
-          "trap metal",
-          "emo rap"
-        ],
-        "countries": [
-          "United States"
-        ],
-        "formationPlaces": [],
-        "recordLabels": [
-          "Fueled by Ramen",
-          "DCD2 Records"
-        ],
-        "members": [],
-        "occupations": [
-          "musician",
-          "songwriter",
-          "rapper",
-          "multi-instrumentalist",
-          "manufacturer",
-          "singer",
-          "record producer"
-        ],
-        "instruments": [
-          "guitar",
-          "drum kit",
-          "voice",
-          "piano"
-        ],
-        "instanceOf": [
-          "human"
-        ],
-        "officialWebsites": [
-          "http://nothingnowhere.net"
-        ],
-        "images": [
-          "http://commons.wikimedia.org/wiki/Special:FilePath/Nothing%2CNowhere%20-%20Rock%20am%20Ring%202019-2460.jpg"
-        ],
-        "birthDate": "1992-06-04"
-      },
-      "releaseGroups": [
-        {
-          "id": "8b7f3cb4-f81d-444f-9d47-1aff905c4736",
-          "title": "the nothing,nowhere. lp",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-06-30"
-        },
-        {
-          "id": "e8424f99-875e-4505-a429-bed0d113e117",
-          "title": "Reaper",
-          "primaryType": "Album",
-          "firstReleaseDate": "2017-10-20"
-        },
-        {
-          "id": "e48302cb-570d-4c49-bf67-844b32c0020b",
-          "title": "ruiner",
-          "primaryType": "Album",
-          "firstReleaseDate": "2018-04-13"
-        },
-        {
-          "id": "4802becd-b0a7-4115-b29c-06d02fa6958d",
-          "title": "one takes vol. 1",
-          "primaryType": "Album",
-          "firstReleaseDate": "2020-07-10"
-        },
-        {
-          "id": "1ba618d2-1728-42b6-8e9a-559b7698e58a",
-          "title": "The Singles LP",
-          "primaryType": "Album",
-          "firstReleaseDate": "2020-11-27"
-        },
-        {
-          "id": "795117ad-2e8f-49a8-84aa-97ff2b703cb2",
-          "title": "Trauma Factory",
-          "primaryType": "Album",
-          "firstReleaseDate": "2021-02-19"
-        },
-        {
-          "id": "dc270a51-5a7d-4189-ab05-59368983b41a",
-          "title": "Trauma Factory Live",
-          "primaryType": "Album",
-          "firstReleaseDate": "2021-09-03"
-        },
-        {
-          "id": "40c404c2-f3f9-4252-8d25-d42242ed6f4c",
-          "title": "VOID ETERNAL",
-          "primaryType": "Album",
-          "firstReleaseDate": "2023-03-31"
-        },
-        {
-          "id": "02d3eca1-2464-4d8b-be80-47429609ccdb",
-          "title": "Dark Magic",
-          "primaryType": "Album",
-          "firstReleaseDate": "2024-02-09"
-        },
-        {
-          "id": "ce592dbe-ad17-43fa-bc04-89489e37374e",
-          "title": "Hell or Highwater",
-          "primaryType": "Album",
-          "firstReleaseDate": "2024-06-28"
-        },
-        {
-          "id": "bec73720-608c-4335-985b-c72cba13d845",
-          "title": "Cult Classic",
-          "primaryType": "Album",
-          "firstReleaseDate": "2024-12-20"
-        },
-        {
-          "id": "bf83154c-4382-4310-a15c-a3ee6c46b05c",
-          "title": "will it emo, vol.1",
-          "primaryType": "Album",
-          "firstReleaseDate": "2025-09-19"
-        }
-      ],
-      "emotionalSeeds": {
-        "sourceText": "nothingnowhere. Emo Rap / Alternative Pop United States Person United States Foxborough US emo rap/post-hardcore musician Nothing,Nowhere American rapper and singer United States Fueled by Ramen DCD2 Records musician songwriter rapper multi-instrumentalist manufacturer singer record producer guitar drum kit voice piano human Emo Rap / Alternative Pop emo alternative rock hip hop experimental screamo trap music post-hardcore trap metal emo rap the nothing,nowhere. lp Reaper ruiner one takes vol. 1 The Singles LP Trauma Factory Trauma Factory Live VOID ETERNAL Dark Magic Hell or Highwater Cult Classic will it emo, vol.1",
-        "tags": [
-          "Emo Rap / Alternative Pop",
-          "emo",
-          "alternative rock",
-          "hip hop",
-          "experimental",
-          "screamo",
-          "trap music",
-          "post-hardcore",
-          "trap metal",
-          "emo rap"
-        ],
-        "activeYears": [
-          "1992",
-          "1992"
-        ],
-        "releaseYears": [
-          2015,
-          2017,
-          2018,
-          2020,
-          2021,
-          2023,
-          2024,
-          2025
-        ]
-      },
-      "fetchStatus": "matched"
-    },
-    {
       "name": "Perturbator",
       "normalizedName": "perturbator",
       "archive": {
-        "rank": 33,
+        "rank": 31,
         "plays": 443,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Synthwave / Darksynth",
+        "country": "France",
         "topTracks": [
           "Venger (feat. Greta Link)"
         ],
@@ -6926,9 +6185,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Perturbator Alternative United States Person France Paris Perturbator French electronic musician (born 1993) France Blood Music composer musician guitar human Alternative synthwave electronic darksynth darkwave new retro wave electronic music industrial syntwave ebm phychodelic soundtrack post-punk synth goth dark atmospheric coldwave hotline miami TERROR 404 I Am the Night L.A. Cop Duo / Selections Dangerous Days The Uncanny Valley B-Sides and Remixes, Vol. I B‐Sides and Remixes, Vol. II Lustful Sacraments Age of Aquarius",
+        "sourceText": "Perturbator Synthwave / Darksynth France Person France Paris Perturbator French electronic musician (born 1993) France Blood Music composer musician guitar human Synthwave / Darksynth synthwave electronic darksynth darkwave new retro wave electronic music industrial syntwave ebm phychodelic soundtrack post-punk synth goth dark atmospheric coldwave hotline miami TERROR 404 I Am the Night L.A. Cop Duo / Selections Dangerous Days The Uncanny Valley B-Sides and Remixes, Vol. I B‐Sides and Remixes, Vol. II Lustful Sacraments Age of Aquarius",
         "tags": [
-          "Alternative",
+          "Synthwave / Darksynth",
           "synthwave",
           "electronic",
           "darksynth",
@@ -6968,12 +6227,16 @@
       "name": "nothing,nowhere.",
       "normalizedName": "nothing nowhere",
       "archive": {
-        "rank": 34,
-        "plays": 436,
+        "rank": 27,
+        "plays": 497,
         "genre": "Emo Rap / Alternative",
         "country": "United States",
-        "topTracks": [],
-        "topAlbums": []
+        "topTracks": [
+          "lights (4444)"
+        ],
+        "topAlbums": [
+          "Trauma Factory"
+        ]
       },
       "musicbrainz": {
         "id": "90e8bc57-78b0-4992-8784-898d5122d3b3",
@@ -7155,10 +6418,10 @@
       "name": "Crazy Lixx",
       "normalizedName": "crazy lixx",
       "archive": {
-        "rank": 35,
+        "rank": 32,
         "plays": 394,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Glam Metal / Hard Rock",
+        "country": "Sweden",
         "topTracks": [],
         "topAlbums": [
           "New Religion"
@@ -7282,9 +6545,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Crazy Lixx Alternative United States Group Sweden Malmö glam rock band from Malmö, Sweden Crazy Lixx Swedish sleaze rock band Sweden Malmö Frontiers Records musical group Alternative glam rock aor glam metal heavy metal hard rock sleaze rock Loud Minority New Religion Riot Avenue Crazy Lixx Sound of the LIVE Minority Ruff Justice Forever Wild Street Lethal Two Shots At Glory Thrill of the Bite",
+        "sourceText": "Crazy Lixx Glam Metal / Hard Rock Sweden Group Sweden Malmö glam rock band from Malmö, Sweden Crazy Lixx Swedish sleaze rock band Sweden Malmö Frontiers Records musical group Glam Metal / Hard Rock glam rock aor glam metal heavy metal hard rock sleaze rock Loud Minority New Religion Riot Avenue Crazy Lixx Sound of the LIVE Minority Ruff Justice Forever Wild Street Lethal Two Shots At Glory Thrill of the Bite",
         "tags": [
-          "Alternative",
+          "Glam Metal / Hard Rock",
           "glam rock",
           "aor",
           "glam metal",
@@ -7315,7 +6578,7 @@
       "name": "Dayseeker",
       "normalizedName": "dayseeker",
       "archive": {
-        "rank": 36,
+        "rank": 33,
         "plays": 389,
         "genre": "Post-Hardcore / Synth-Metal",
         "country": "United States",
@@ -7555,9 +6818,9 @@
       "name": "blessthefall",
       "normalizedName": "blessthefall",
       "archive": {
-        "rank": 37,
+        "rank": 34,
         "plays": 381,
-        "genre": "Alternative",
+        "genre": "Metalcore / Post-Hardcore",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -7669,9 +6932,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "blessthefall Alternative United States Group United States Blessthefall American metalcore band United States Scottsdale Phoenix Ferret Music Rise Records Beau Bokan rock band Alternative metalcore emocore post-hardcore screamo alternative hardcore christian hardcore His Last Walk Witness Awakening Hollow Bodies To Those Left Behind Hard Feelings GALLOWS",
+        "sourceText": "blessthefall Metalcore / Post-Hardcore United States Group United States Blessthefall American metalcore band United States Scottsdale Phoenix Ferret Music Rise Records Beau Bokan rock band Metalcore / Post-Hardcore metalcore emocore post-hardcore screamo alternative hardcore christian hardcore His Last Walk Witness Awakening Hollow Bodies To Those Left Behind Hard Feelings GALLOWS",
         "tags": [
-          "Alternative",
+          "Metalcore / Post-Hardcore",
           "metalcore",
           "emocore",
           "post-hardcore",
@@ -7760,10 +7023,10 @@
       "name": "Annihilator",
       "normalizedName": "annihilator",
       "archive": {
-        "rank": 38,
+        "rank": 35,
         "plays": 377,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Thrash Metal / Heavy Metal",
+        "country": "Canada",
         "topTracks": [],
         "topAlbums": [
           "Feast"
@@ -7986,9 +7249,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Annihilator Alternative United States Group Canada Ottawa Canadian thrash metal band Annihilator Canadian thrash metal band Canada Ottawa Roadrunner Records Jeff Waters rock band Alternative thrash metal heavy metal speed metal metal technical thrash metal canada thrash heavy metal music Alice in Hell Never, Neverland Set the World on Fire Bag of Tricks King of the Kill Refresh the Demon Remains Criteria for a Black Widow Carnival Diablos Waking the Fury Two From the Vault: Alice in Hell / Never, Neverland All for You",
+        "sourceText": "Annihilator Thrash Metal / Heavy Metal Canada Group Canada Ottawa Canadian thrash metal band Annihilator Canadian thrash metal band Canada Ottawa Roadrunner Records Jeff Waters rock band Thrash Metal / Heavy Metal thrash metal heavy metal speed metal metal technical thrash metal canada thrash heavy metal music Alice in Hell Never, Neverland Set the World on Fire Bag of Tricks King of the Kill Refresh the Demon Remains Criteria for a Black Widow Carnival Diablos Waking the Fury Two From the Vault: Alice in Hell / Never, Neverland All for You",
         "tags": [
-          "Alternative",
+          "Thrash Metal / Heavy Metal",
           "thrash metal",
           "heavy metal",
           "speed metal",
@@ -8279,10 +7542,10 @@
       "name": "Def Leppard",
       "normalizedName": "def leppard",
       "archive": {
-        "rank": 39,
+        "rank": 36,
         "plays": 374,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Hard Rock / Glam Metal",
+        "country": "United Kingdom",
         "topTracks": [],
         "topAlbums": [
           "Def Leppard"
@@ -8523,9 +7786,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Def Leppard Alternative United States Group United Kingdom Sheffield Def Leppard British musical group; rock band United Kingdom Sheffield Mercury Records Island Records earMUSIC Tony Kenning Pete Willis Rick Savage Joe Elliott Phil Collen Rick Allen Steve Clark Vivian Campbell musical group Alternative hard rock glam metal heavy metal rock nwobhm pop rock british aor alternative rock uk classic rock glam rock glam classic pop and rock new wave of british heavy metal 80s post-grunge english On Through the Night High ’n’ Dry Pyromania Hysteria Def Leppard 4 Adrenalize Retro Active Vault: Def Leppard Greatest Hits 1980–1995 Slang Euphoria X Best Of",
+        "sourceText": "Def Leppard Hard Rock / Glam Metal United Kingdom Group United Kingdom Sheffield Def Leppard British musical group; rock band United Kingdom Sheffield Mercury Records Island Records earMUSIC Tony Kenning Pete Willis Rick Savage Joe Elliott Phil Collen Rick Allen Steve Clark Vivian Campbell musical group Hard Rock / Glam Metal hard rock glam metal heavy metal rock nwobhm pop rock british aor alternative rock uk classic rock glam rock glam classic pop and rock new wave of british heavy metal 80s post-grunge english On Through the Night High ’n’ Dry Pyromania Hysteria Def Leppard 4 Adrenalize Retro Active Vault: Def Leppard Greatest Hits 1980–1995 Slang Euphoria X Best Of",
         "tags": [
-          "Alternative",
+          "Hard Rock / Glam Metal",
           "hard rock",
           "glam metal",
           "heavy metal",
@@ -8644,7 +7907,7 @@
       "name": "The Story So Far",
       "normalizedName": "the story so far",
       "archive": {
-        "rank": 40,
+        "rank": 37,
         "plays": 374,
         "genre": "Pop Punk / Emo",
         "country": "United States",
@@ -8838,10 +8101,10 @@
       "name": "Roosevelt",
       "normalizedName": "roosevelt",
       "archive": {
-        "rank": 41,
+        "rank": 38,
         "plays": 362,
         "genre": "Alternative",
-        "country": "United States",
+        "country": "Germany",
         "topTracks": [],
         "topAlbums": [
           "Young Romance"
@@ -8932,7 +8195,7 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Roosevelt Alternative United States Person Germany Viersen German producer & DJ from Cologne Roosevelt German musician Germany singer songwriter synthesizer voice guitar human Alternative Roosevelt Young Romance Polydans Polydans Remixes Embrace",
+        "sourceText": "Roosevelt Alternative Germany Person Germany Viersen German producer & DJ from Cologne Roosevelt German musician Germany singer songwriter synthesizer voice guitar human Alternative Roosevelt Young Romance Polydans Polydans Remixes Embrace",
         "tags": [
           "Alternative"
         ],
@@ -8959,228 +8222,10 @@
       ]
     },
     {
-      "name": "היהודים",
-      "normalizedName": "היהודים",
-      "archive": {
-        "rank": 42,
-        "plays": 350,
-        "genre": "Israeli Rock / Metal",
-        "country": "Israel",
-        "topTracks": [],
-        "topAlbums": [
-          "Unplugged (Live)"
-        ]
-      },
-      "musicbrainz": {
-        "id": "bc45bdfb-bd29-4213-aa92-be527cdcf424",
-        "score": 100,
-        "name": "היהודים",
-        "sortName": "Jews, The",
-        "type": "Group",
-        "country": "IL",
-        "area": "Israel",
-        "lifeSpanBegin": "1992",
-        "ended": false,
-        "aliases": [
-          "HaYehudim"
-        ],
-        "tags": [
-          "hard rock"
-        ],
-        "isnis": [
-          "0000000470467255"
-        ]
-      },
-      "wikidata": {
-        "id": "Q5636415",
-        "url": "https://www.wikidata.org/entity/Q5636415",
-        "label": "HaYehudim",
-        "description": "music group from Israel",
-        "genres": [
-          "hard rock"
-        ],
-        "countries": [],
-        "formationPlaces": [],
-        "recordLabels": [
-          "Hed Arzi Music"
-        ],
-        "members": [],
-        "occupations": [],
-        "instruments": [],
-        "instanceOf": [
-          "rock band"
-        ],
-        "officialWebsites": [],
-        "images": [
-          "http://commons.wikimedia.org/wiki/Special:FilePath/Hayehudim%20in%20Caesarea%202010%203.jpg"
-        ],
-        "inception": "1992-01-01"
-      },
-      "releaseGroups": [
-        {
-          "id": "2220b4b2-997c-395a-b88a-e9eb8294ee97",
-          "title": "מציאות נפרדת",
-          "primaryType": "Album",
-          "firstReleaseDate": "1995"
-        },
-        {
-          "id": "ced264fb-7592-3acc-94b0-68912e6cb90a",
-          "title": "היהודים",
-          "primaryType": "Album",
-          "firstReleaseDate": "1998"
-        },
-        {
-          "id": "f726cb9e-2c1c-3b5d-b536-7a702d49af58",
-          "title": "פחד מוות",
-          "primaryType": "Album",
-          "firstReleaseDate": "2002-07-09"
-        },
-        {
-          "id": "2c1b0910-1a68-45f2-8d98-44b78103929b",
-          "title": "Live",
-          "primaryType": "Album",
-          "firstReleaseDate": "2003"
-        },
-        {
-          "id": "8f81224f-ba91-3ba5-8823-32719bc4c495",
-          "title": "Unplugged",
-          "primaryType": "Album",
-          "firstReleaseDate": "2004"
-        },
-        {
-          "id": "61de1092-1e98-32ad-a4ce-3df937eaeb94",
-          "title": "פורטה",
-          "primaryType": "Album",
-          "firstReleaseDate": "2007"
-        },
-        {
-          "id": "aab0dfa0-db20-44b3-9b1d-b77c41d7f9ef",
-          "title": "יותר לא",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-07-30"
-        }
-      ],
-      "emotionalSeeds": {
-        "sourceText": "היהודים Israeli Rock / Metal Israel Group Israel HaYehudim music group from Israel Hed Arzi Music rock band Israeli Rock / Metal hard rock מציאות נפרדת היהודים פחד מוות Live Unplugged פורטה יותר לא",
-        "tags": [
-          "Israeli Rock / Metal",
-          "hard rock"
-        ],
-        "activeYears": [
-          "1992",
-          "1992"
-        ],
-        "releaseYears": [
-          1995,
-          1998,
-          2002,
-          2003,
-          2004,
-          2007,
-          2015
-        ]
-      },
-      "fetchStatus": "matched",
-      "bandMembers": [
-        {
-          "name": "תום פטרובר",
-          "roles": [
-            "guitar",
-            "lead vocals"
-          ],
-          "begin": "1992",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "אורית שחף",
-          "roles": [
-            "guitar",
-            "lead vocals"
-          ],
-          "begin": "1992",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "עמרי אגמון",
-          "roles": [
-            "guitar"
-          ],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Yahav Lipinski",
-          "roles": [
-            "membranophone"
-          ],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "רועי זוארץ",
-          "roles": [
-            "keyboard"
-          ],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "ערן מיטלמן",
-          "roles": [
-            "keyboard"
-          ],
-          "begin": "1993",
-          "end": "2006",
-          "current": false
-        },
-        {
-          "name": "יפתח שחף",
-          "roles": [
-            "electric guitar"
-          ],
-          "begin": "1998",
-          "end": "2003",
-          "current": false
-        },
-        {
-          "name": "גיא באר",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "2003",
-          "end": "2014",
-          "current": false
-        },
-        {
-          "name": "ניר מימון",
-          "roles": [
-            "electric bass guitar"
-          ],
-          "begin": "2009",
-          "end": "2016",
-          "current": false
-        },
-        {
-          "name": "גיא אילוז",
-          "roles": [
-            "task"
-          ],
-          "begin": null,
-          "end": null,
-          "current": false
-        }
-      ]
-    },
-    {
       "name": "Jordyne",
       "normalizedName": "jordyne",
       "archive": {
-        "rank": 43,
+        "rank": 39,
         "plays": 350,
         "genre": "Alternative",
         "country": "United States",
@@ -9219,9 +8264,9 @@
       "name": "Thirty Seconds To Mars",
       "normalizedName": "thirty seconds to mars",
       "archive": {
-        "rank": 44,
+        "rank": 40,
         "plays": 342,
-        "genre": "Alternative",
+        "genre": "Alternative Rock / Progressive Rock",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -9394,9 +8439,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Thirty Seconds To Mars Alternative United States Group United States Los Angeles 30 Seconds to Mars American rock band from California United States Los Angeles Universal Music Group Jared Leto Shannon Leto musical group Alternative alternative rock rock electronic 311 emo electropop pop rock alternative pop pop and chart big music progressive rock american experimental progressive alternative acoustic rock arena rock art-rock 30 Seconds to Mars A Beautiful Lie Rarities Essentials This Is War Into the Wild Greatest Hits 2010-06-24: 1LIVE 2010: Acoustic Set: 1LIVE, Cologne, Germany Love Lust Faith + Dreams Live at the Roundhouse At Rock am Ring 2013 AMERICA",
+        "sourceText": "Thirty Seconds To Mars Alternative Rock / Progressive Rock United States Group United States Los Angeles 30 Seconds to Mars American rock band from California United States Los Angeles Universal Music Group Jared Leto Shannon Leto musical group Alternative Rock / Progressive Rock alternative rock rock electronic 311 emo electropop pop rock alternative pop pop and chart big music progressive rock american experimental progressive alternative acoustic rock arena rock art-rock 30 Seconds to Mars A Beautiful Lie Rarities Essentials This Is War Into the Wild Greatest Hits 2010-06-24: 1LIVE 2010: Acoustic Set: 1LIVE, Cologne, Germany Love Lust Faith + Dreams Live at the Roundhouse At Rock am Ring 2013 AMERICA",
         "tags": [
-          "Alternative",
+          "Alternative Rock / Progressive Rock",
           "alternative rock",
           "rock",
           "electronic",
@@ -9498,7 +8543,7 @@
       "name": "Mooki",
       "normalizedName": "mooki",
       "archive": {
-        "rank": 45,
+        "rank": 41,
         "plays": 341,
         "genre": "Israeli Pop",
         "country": "Israel",
@@ -9535,10 +8580,10 @@
       "name": "Anathema",
       "normalizedName": "anathema",
       "archive": {
-        "rank": 46,
+        "rank": 42,
         "plays": 325,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Progressive Rock / Death-Doom Metal",
+        "country": "United Kingdom",
         "topTracks": [],
         "topAlbums": [
           "Universal"
@@ -9780,9 +8825,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Anathema Alternative United States Group United Kingdom Liverpool British alternative / progressive rock band Anathema British rock band United Kingdom Liverpool Peaceville Records Les Smith Darren \"Daz\" White Lee Douglas James Cavanagh John Douglas Daniel Cardoso Duncan Patterson Vincent Cavanagh Daniel Cavanagh Dave Pybus Shaun Steels musical group Alternative progressive rock death doom metal alternative rock doom metal british metal gothic rock reino unido 1990s 2000s death-doom metal 2010s atmospheric rock post-metal depressive death-doom gothic metal Serenades The Silent Enigma Serenades / The Crestfallen EP Eternity The Crestfallen EP / Pentecost III A Vision of a Dying Embrace Alternative 4 Judgement Resonance A Fine Day to Exit Resonance 2 A Natural Disaster",
+        "sourceText": "Anathema Progressive Rock / Death-Doom Metal United Kingdom Group United Kingdom Liverpool British alternative / progressive rock band Anathema British rock band United Kingdom Liverpool Peaceville Records Les Smith Darren \"Daz\" White Lee Douglas James Cavanagh John Douglas Daniel Cardoso Duncan Patterson Vincent Cavanagh Daniel Cavanagh Dave Pybus Shaun Steels musical group Progressive Rock / Death-Doom Metal progressive rock death doom metal alternative rock doom metal british metal gothic rock reino unido 1990s 2000s death-doom metal 2010s atmospheric rock post-metal depressive death-doom gothic metal Serenades The Silent Enigma Serenades / The Crestfallen EP Eternity The Crestfallen EP / Pentecost III A Vision of a Dying Embrace Alternative 4 Judgement Resonance A Fine Day to Exit Resonance 2 A Natural Disaster",
         "tags": [
-          "Alternative",
+          "Progressive Rock / Death-Doom Metal",
           "progressive rock",
           "death doom metal",
           "alternative rock",
@@ -9948,7 +8993,7 @@
       "name": "Ghost",
       "normalizedName": "ghost",
       "archive": {
-        "rank": 47,
+        "rank": 43,
         "plays": 315,
         "genre": "Occult Rock / Heavy Metal",
         "country": "Sweden",
@@ -10180,9 +9225,9 @@
       "name": "Skid Row",
       "normalizedName": "skid row",
       "archive": {
-        "rank": 48,
+        "rank": 44,
         "plays": 306,
-        "genre": "Alternative",
+        "genre": "Glam Metal / Heavy Metal",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -10412,9 +9457,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Skid Row Alternative United States Group United States Toms River US hard rock / heavy metal band Skid Row American rock band United States Toms River Atlantic Records SPV GmbH Erik Grönwall Rob Affuso Matt Fallon Dave Gara Rachel Bolan Tony Harnell Scotti Hill Johnny Solinger Dave Sabo Sebastian Bach ZP Theart musical group Alternative glam metal heavy metal hard rock metal glam estados unidos rock and indie heavy metal music Skid Row Youth Gone Wild Slave to the Grind Doin' the Business Live in Brasil: Rio de Janeiro 22/01/92 Banzai 2 Hollywood Rocks 1992 Welcome to the Subhuman Race Track 1995-03-26: This Is the Subhuman Gig!!: Noorderligt, Tilburg, Holland Subhuman Race Subhuman Beings on Tour!! Live & Demos",
+        "sourceText": "Skid Row Glam Metal / Heavy Metal United States Group United States Toms River US hard rock / heavy metal band Skid Row American rock band United States Toms River Atlantic Records SPV GmbH Erik Grönwall Rob Affuso Matt Fallon Dave Gara Rachel Bolan Tony Harnell Scotti Hill Johnny Solinger Dave Sabo Sebastian Bach ZP Theart musical group Glam Metal / Heavy Metal glam metal heavy metal hard rock metal glam estados unidos rock and indie heavy metal music Skid Row Youth Gone Wild Slave to the Grind Doin' the Business Live in Brasil: Rio de Janeiro 22/01/92 Banzai 2 Hollywood Rocks 1992 Welcome to the Subhuman Race Track 1995-03-26: This Is the Subhuman Gig!!: Noorderligt, Tilburg, Holland Subhuman Race Subhuman Beings on Tour!! Live & Demos",
         "tags": [
-          "Alternative",
+          "Glam Metal / Heavy Metal",
           "glam metal",
           "heavy metal",
           "hard rock",
@@ -10693,10 +9738,10 @@
       "name": "Katatonia",
       "normalizedName": "katatonia",
       "archive": {
-        "rank": 49,
+        "rank": 45,
         "plays": 286,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Doom Metal / Gothic Metal",
+        "country": "Sweden",
         "topTracks": [],
         "topAlbums": []
       },
@@ -10932,9 +9977,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Katatonia Alternative United States Group Sweden Stockholm Swedish metal band Katatonia Swedish metal band Sweden Stockholm Peaceville Records Per Eriksson Daniel Moilanen Anders Nyström Mattias Norrman Daniel Liljekvist Jonas Renkse Fredrik Norrman Mikael Åkerfeldt musical group Alternative doom metal progressive metal gothic metal alternative metal death-doom metal metal death doom metal alternative rock progressive rock hard rock gothic rock avant-garde depressive rock swedish death metal death doom hårdrock suécia Dance of December Souls Jhva Elohim Meth / Alone Walkyng Brave Murder Day Discouraged Ones Tonight’s Decision Last Fair Deal Gone Down Viva Emptiness Brave Yester Days The Black Sessions The Great Cold Distance Live Consternation Night Is the New Day",
+        "sourceText": "Katatonia Doom Metal / Gothic Metal Sweden Group Sweden Stockholm Swedish metal band Katatonia Swedish metal band Sweden Stockholm Peaceville Records Per Eriksson Daniel Moilanen Anders Nyström Mattias Norrman Daniel Liljekvist Jonas Renkse Fredrik Norrman Mikael Åkerfeldt musical group Doom Metal / Gothic Metal doom metal progressive metal gothic metal alternative metal death-doom metal metal death doom metal alternative rock progressive rock hard rock gothic rock avant-garde depressive rock swedish death metal death doom hårdrock suécia Dance of December Souls Jhva Elohim Meth / Alone Walkyng Brave Murder Day Discouraged Ones Tonight’s Decision Last Fair Deal Gone Down Viva Emptiness Brave Yester Days The Black Sessions The Great Cold Distance Live Consternation Night Is the New Day",
         "tags": [
-          "Alternative",
+          "Doom Metal / Gothic Metal",
           "doom metal",
           "progressive metal",
           "gothic metal",
@@ -11126,9 +10171,9 @@
       "name": "Drake",
       "normalizedName": "drake",
       "archive": {
-        "rank": 50,
+        "rank": 46,
         "plays": 280,
-        "genre": "Alternative",
+        "genre": "Hip-Hop / Contemporary R&B",
         "country": "United States",
         "topTracks": [
           "First Person Shooter (feat. J. Cole)",
@@ -11380,9 +10425,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Drake Alternative United States Person Canada Toronto Canadian rapper Drake Canadian-American rapper and singer Canada United States Cash Money Records Young Money Entertainment Republic Records OVO Sound actor singer entrepreneur record producer musician songwriter rapper film actor voice human Alternative hip hop r&b pop rap contemporary r&b alternative r&b trap pop hip-hop trap rap rap southern hip hop lesbian sxsw top 100 hardcore hip hop rap us top 10 hardcore hip trap music contemporary R&B pop music Room for Improvement Comeback Season Heartbreak Drake So Far Gone No More Thank Yous Young & Successful Thank Me Later Thank Us Later: The Remix Album Take Care Nothing Was the Same 6 God If You’re Reading This It’s Too Late",
+        "sourceText": "Drake Hip-Hop / Contemporary R&B United States Person Canada Toronto Canadian rapper Drake Canadian-American rapper and singer Canada United States Cash Money Records Young Money Entertainment Republic Records OVO Sound actor singer entrepreneur record producer musician songwriter rapper film actor voice human Hip-Hop / Contemporary R&B hip hop r&b pop rap contemporary r&b alternative r&b trap pop hip-hop trap rap rap southern hip hop lesbian sxsw top 100 hardcore hip hop rap us top 10 hardcore hip trap music contemporary R&B pop music Room for Improvement Comeback Season Heartbreak Drake So Far Gone No More Thank Yous Young & Successful Thank Me Later Thank Us Later: The Remix Album Take Care Nothing Was the Same 6 God If You’re Reading This It’s Too Late",
         "tags": [
-          "Alternative",
+          "Hip-Hop / Contemporary R&B",
           "hip hop",
           "r&b",
           "pop rap",
@@ -11444,13 +10489,12 @@
       "name": "Kiremi",
       "normalizedName": "kiremi",
       "archive": {
-        "rank": 51,
+        "rank": 47,
         "plays": 280,
         "genre": "Lo-Fi / Dream Pop",
         "country": "United States",
         "topTracks": [
-          "I NEVER COULD",
-          "OBLIVION"
+          "I NEVER COULD"
         ],
         "topAlbums": []
       },
@@ -11488,7 +10532,7 @@
       "name": "Enforcer",
       "normalizedName": "enforcer",
       "archive": {
-        "rank": 52,
+        "rank": 48,
         "plays": 278,
         "genre": "Speed Metal / Heavy Metal",
         "country": "Sweden",
@@ -11630,9 +10674,9 @@
       "name": "Teenage Wrist",
       "normalizedName": "teenage wrist",
       "archive": {
-        "rank": 53,
+        "rank": 49,
         "plays": 276,
-        "genre": "Alternative",
+        "genre": "Indie Rock / Alternative Rock",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -11706,9 +10750,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Teenage Wrist Alternative United States Group Los Angeles LA band Teenage Wrist American rock band United States Epitaph Records musical group Alternative rock indie rock alternative rock Chrome Neon Jesus Earth Is A Black Hole Earth Is A Black Hole (Live At Kingsize) Still Love",
+        "sourceText": "Teenage Wrist Indie Rock / Alternative Rock United States Group Los Angeles LA band Teenage Wrist American rock band United States Epitaph Records musical group Indie Rock / Alternative Rock rock indie rock alternative rock Chrome Neon Jesus Earth Is A Black Hole Earth Is A Black Hole (Live At Kingsize) Still Love",
         "tags": [
-          "Alternative",
+          "Indie Rock / Alternative Rock",
           "rock",
           "indie rock",
           "alternative rock"
@@ -11740,10 +10784,10 @@
       "name": "Silverstein",
       "normalizedName": "silverstein",
       "archive": {
-        "rank": 54,
+        "rank": 50,
         "plays": 271,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Post-Hardcore / Emo",
+        "country": "Canada",
         "topTracks": [],
         "topAlbums": []
       },
@@ -11949,9 +10993,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Silverstein Alternative United States Group Canada Burlington Silverstein Canadian emo/post-hardcore band Canada Burlington Victory Records Shane Told rock band Alternative emo post-hardcore pop punk emocore melodic hardcore alternative hardcore rock hardcore punk metalcore hard rock burlington emo metal screamo hardcore punk When Broken Is Easily Fixed Discovering the Waterfront 18 Candles: The Early Years Arrivals & Departures A Shipwreck in the Sand Decade (live at the El Mocambo) Rescue Short Songs This Is How the Wind Shifts I Am Alive in Everything I Touch Dead Reflection Redux: The First 10 Years",
+        "sourceText": "Silverstein Post-Hardcore / Emo Canada Group Canada Burlington Silverstein Canadian emo/post-hardcore band Canada Burlington Victory Records Shane Told rock band Post-Hardcore / Emo emo post-hardcore pop punk emocore melodic hardcore alternative hardcore rock hardcore punk metalcore hard rock burlington emo metal screamo hardcore punk When Broken Is Easily Fixed Discovering the Waterfront 18 Candles: The Early Years Arrivals & Departures A Shipwreck in the Sand Decade (live at the El Mocambo) Rescue Short Songs This Is How the Wind Shifts I Am Alive in Everything I Touch Dead Reflection Redux: The First 10 Years",
         "tags": [
-          "Alternative",
+          "Post-Hardcore / Emo",
           "emo",
           "post-hardcore",
           "pop punk",
@@ -12066,7 +11110,7 @@
       "name": "Diversify",
       "normalizedName": "diversify",
       "archive": {
-        "rank": 55,
+        "rank": 51,
         "plays": 267,
         "genre": "Alternative",
         "country": "United States",
@@ -12134,9 +11178,9 @@
       "name": "The Killers",
       "normalizedName": "the killers",
       "archive": {
-        "rank": 56,
+        "rank": 52,
         "plays": 266,
-        "genre": "Alternative",
+        "genre": "Alternative Rock / Indie Rock",
         "country": "United States",
         "topTracks": [],
         "topAlbums": []
@@ -12370,9 +11414,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "The Killers Alternative United States Group United States Las Vegas American rock band The Killers American musical group; rock band United States Las Vegas Island Records Vertigo Records Lizard King Records Dave Keuning Brandon Flowers Ronnie Vannucci musical group Alternative alternative rock indie rock pop rock new wave post-punk revival heartland rock big music rock alternative christmas music synthpop pop american usa indie américain rock and indie united states 2004-11-12: Manchester Club Academy, Manchester, England Hot Fuss 2004-12-18: Live at Enmore Theatre, Sydney, Australia Sam’s Town Greatest Hits Live, B-Sides & Demos Sawdust Previous Age 2008-11-11: Live at Kesselhaus, Berlin, Germany Day & Age Hot Fuss / Sam’s Town / Sawdust Stereo of Lies",
+        "sourceText": "The Killers Alternative Rock / Indie Rock United States Group United States Las Vegas American rock band The Killers American musical group; rock band United States Las Vegas Island Records Vertigo Records Lizard King Records Dave Keuning Brandon Flowers Ronnie Vannucci musical group Alternative Rock / Indie Rock alternative rock indie rock pop rock new wave post-punk revival heartland rock big music rock alternative christmas music synthpop pop american usa indie américain rock and indie united states 2004-11-12: Manchester Club Academy, Manchester, England Hot Fuss 2004-12-18: Live at Enmore Theatre, Sydney, Australia Sam’s Town Greatest Hits Live, B-Sides & Demos Sawdust Previous Age 2008-11-11: Live at Kesselhaus, Berlin, Germany Day & Age Hot Fuss / Sam’s Town / Sawdust Stereo of Lies",
         "tags": [
-          "Alternative",
+          "Alternative Rock / Indie Rock",
           "alternative rock",
           "indie rock",
           "pop rock",
@@ -12489,9 +11533,9 @@
       "name": "Crown The Empire",
       "normalizedName": "crown the empire",
       "archive": {
-        "rank": 57,
+        "rank": 53,
         "plays": 266,
-        "genre": "Alternative",
+        "genre": "Post-Hardcore / Metalcore",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -12593,9 +11637,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Crown The Empire Alternative United States Group United States Dallas Crown the Empire American metalcore band United States Dallas Rise Records musical group Alternative post-hardcore metalcore trancecore electronic alternative hardcore post-screamo heavy metal music alternative metal The Fallout The Resistance: Rise of the Runaways Retrograde Sudden Sky 07102010 DOGMA",
+        "sourceText": "Crown The Empire Post-Hardcore / Metalcore United States Group United States Dallas Crown the Empire American metalcore band United States Dallas Rise Records musical group Post-Hardcore / Metalcore post-hardcore metalcore trancecore electronic alternative hardcore post-screamo heavy metal music alternative metal The Fallout The Resistance: Rise of the Runaways Retrograde Sudden Sky 07102010 DOGMA",
         "tags": [
-          "Alternative",
+          "Post-Hardcore / Metalcore",
           "post-hardcore",
           "metalcore",
           "trancecore",
@@ -12657,9 +11701,9 @@
       "name": "Landon Tewers",
       "normalizedName": "landon tewers",
       "archive": {
-        "rank": 58,
+        "rank": 54,
         "plays": 266,
-        "genre": "Alternative",
+        "genre": "Post-Hardcore / Alternative Rock",
         "country": "United States",
         "topTracks": [
           "Sink With Me"
@@ -12730,9 +11774,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Landon Tewers Alternative United States Person Detroit Landon Tewers American musician United States singer record producer musician ghostwriter songwriter rhythm guitarist music executive human Alternative alternative rock post-hardcore pop soul Dynamite Withdrawals",
+        "sourceText": "Landon Tewers Post-Hardcore / Alternative Rock United States Person Detroit Landon Tewers American musician United States singer record producer musician ghostwriter songwriter rhythm guitarist music executive human Post-Hardcore / Alternative Rock alternative rock post-hardcore pop soul Dynamite Withdrawals",
         "tags": [
-          "Alternative",
+          "Post-Hardcore / Alternative Rock",
           "alternative rock",
           "post-hardcore",
           "pop",
@@ -12769,9 +11813,9 @@
       "name": "Firehouse",
       "normalizedName": "firehouse",
       "archive": {
-        "rank": 59,
+        "rank": 55,
         "plays": 253,
-        "genre": "Alternative",
+        "genre": "Glam Metal / Hard Rock",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -12928,9 +11972,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Firehouse Alternative United States Group United States Richmond US hard rock band FireHouse American rock band United States Charlotte Epic Records Perry Richardson musical group Alternative glam metal hard rock heavy metal acoustic rock aor FireHouse Hold Your Fire FireHouse 3 Good Acoustics The Best of Firehouse Category 5 Bring 'em Out 'Live' Super Hits O2 Prime Time The Very Best Playlist: The Very Best of Firehouse",
+        "sourceText": "Firehouse Glam Metal / Hard Rock United States Group United States Richmond US hard rock band FireHouse American rock band United States Charlotte Epic Records Perry Richardson musical group Glam Metal / Hard Rock glam metal hard rock heavy metal acoustic rock aor FireHouse Hold Your Fire FireHouse 3 Good Acoustics The Best of Firehouse Category 5 Bring 'em Out 'Live' Super Hits O2 Prime Time The Very Best Playlist: The Very Best of Firehouse",
         "tags": [
-          "Alternative",
+          "Glam Metal / Hard Rock",
           "glam metal",
           "hard rock",
           "heavy metal",
@@ -12999,7 +12043,7 @@
       "name": "Sweezy",
       "normalizedName": "sweezy",
       "archive": {
-        "rank": 60,
+        "rank": 56,
         "plays": 253,
         "genre": "Alternative",
         "country": "United States",
@@ -13035,9 +12079,9 @@
       "name": "Trevor Something",
       "normalizedName": "trevor something",
       "archive": {
-        "rank": 61,
+        "rank": 57,
         "plays": 242,
-        "genre": "Alternative",
+        "genre": "Synthwave / Synth-Pop",
         "country": "United States",
         "topTracks": [
           "Summer Love"
@@ -13176,9 +12220,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Trevor Something Alternative United States Person Miami US | electronic Trevor Something American synthwave musician United States musician human Alternative synthwave electronic synth-pop electropop Synthetic Love LP Trevor Something Does Not Exist Death Dream Soulless Computer Boy and The Eternal Render Die With You Ultraparanoia Bots Don't Cry Microwaves Deep Wave Data Dark Web Daemons Love Me and Leave Me The Death Of Archetypes",
+        "sourceText": "Trevor Something Synthwave / Synth-Pop United States Person Miami US | electronic Trevor Something American synthwave musician United States musician human Synthwave / Synth-Pop synthwave electronic synth-pop electropop Synthetic Love LP Trevor Something Does Not Exist Death Dream Soulless Computer Boy and The Eternal Render Die With You Ultraparanoia Bots Don't Cry Microwaves Deep Wave Data Dark Web Daemons Love Me and Leave Me The Death Of Archetypes",
         "tags": [
-          "Alternative",
+          "Synthwave / Synth-Pop",
           "synthwave",
           "electronic",
           "synth-pop",
@@ -13207,7 +12251,7 @@
       "name": "Girafot",
       "normalizedName": "girafot",
       "archive": {
-        "rank": 62,
+        "rank": 58,
         "plays": 237,
         "genre": "Israeli Indie Rock",
         "country": "Israel",
@@ -13365,10 +12409,10 @@
       "name": "The Kid LAROI",
       "normalizedName": "the kid laroi",
       "archive": {
-        "rank": 63,
+        "rank": 59,
         "plays": 236,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Emo Rap / Pop Rap",
+        "country": "Australia",
         "topTracks": [],
         "topAlbums": []
       },
@@ -13460,9 +12504,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "The Kid LAROI Alternative United States Person Australia Waterloo rapper/singer The Kid Laroi Australian rapper and singer (born 2003) Australia Columbia Records Grade A Productions singer songwriter rapper human Alternative hip hop emo rap rap pop rap english 2020s gen z contemporary R&B pop music hip-hop FUCK LOVE THE FIRST TIME BEFORE I FORGET",
+        "sourceText": "The Kid LAROI Emo Rap / Pop Rap Australia Person Australia Waterloo rapper/singer The Kid Laroi Australian rapper and singer (born 2003) Australia Columbia Records Grade A Productions singer songwriter rapper human Emo Rap / Pop Rap hip hop emo rap rap pop rap english 2020s gen z contemporary R&B pop music hip-hop FUCK LOVE THE FIRST TIME BEFORE I FORGET",
         "tags": [
-          "Alternative",
+          "Emo Rap / Pop Rap",
           "hip hop",
           "emo rap",
           "rap",
@@ -13490,9 +12534,9 @@
       "name": "ERRA",
       "normalizedName": "erra",
       "archive": {
-        "rank": 64,
+        "rank": 60,
         "plays": 232,
-        "genre": "Alternative",
+        "genre": "Progressive Metalcore / Djent",
         "country": "United States",
         "topTracks": [
           "Alpha Seed"
@@ -13599,9 +12643,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "ERRA Alternative United States Group United States Birmingham progressive metalcore band from Alabama Erra American progressive metalcore band United States Birmingham Sumerian Records musical group Alternative metalcore progressive metal progressive metalcore djent post-hardcore melodic metalcore technical metalcore Impulse Augment Drift Neon ERRA CURE silence outlives the earth",
+        "sourceText": "ERRA Progressive Metalcore / Djent United States Group United States Birmingham progressive metalcore band from Alabama Erra American progressive metalcore band United States Birmingham Sumerian Records musical group Progressive Metalcore / Djent metalcore progressive metal progressive metalcore djent post-hardcore melodic metalcore technical metalcore Impulse Augment Drift Neon ERRA CURE silence outlives the earth",
         "tags": [
-          "Alternative",
+          "Progressive Metalcore / Djent",
           "metalcore",
           "progressive metal",
           "progressive metalcore",
@@ -13716,10 +12760,10 @@
       "name": "Entwine",
       "normalizedName": "entwine",
       "archive": {
-        "rank": 65,
+        "rank": 61,
         "plays": 228,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Gothic Metal",
+        "country": "Finland",
         "topTracks": [],
         "topAlbums": [
           "Chaotic Nation"
@@ -13839,9 +12883,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Entwine Alternative United States Group Finland Lahti Entwine Finnish gothic metal band Finland Lahti Century Media Records Spinefarm Records Spikefarm Records Panu Willman Tom Mikkola Aksu Hanttu Mika Tauriainen musical group Alternative gothic metal The Treasures Within Hearts Gone Time of Despair diEversity Sliver + Time of Despair Fatal Design Painstained Rough n’ Stripped Chaotic Nation",
+        "sourceText": "Entwine Gothic Metal Finland Group Finland Lahti Entwine Finnish gothic metal band Finland Lahti Century Media Records Spinefarm Records Spikefarm Records Panu Willman Tom Mikkola Aksu Hanttu Mika Tauriainen musical group Gothic Metal gothic metal The Treasures Within Hearts Gone Time of Despair diEversity Sliver + Time of Despair Fatal Design Painstained Rough n’ Stripped Chaotic Nation",
         "tags": [
-          "Alternative",
+          "Gothic Metal",
           "gothic metal"
         ],
         "activeYears": [
@@ -13926,10 +12970,10 @@
       "name": "Blackfield",
       "normalizedName": "blackfield",
       "archive": {
-        "rank": 66,
+        "rank": 62,
         "plays": 216,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Progressive Rock / Art Rock",
+        "country": "United Kingdom",
         "topTracks": [],
         "topAlbums": [
           "Blackfield"
@@ -14063,9 +13107,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Blackfield Alternative United States Group United Kingdom Blackfield British-Israeli music project United Kingdom England Atlantic Records Aviv Geffen Steven Wilson musical group Alternative progressive rock rock art rock english prog related alternative rock Blackfield Blackfield II NYC: Blackfield Live in New York City Welcome to My DNA 2011-04-28: Trix Zaal, Antwerpen, Belgium Blackfield IV Welcome to My DNA / IV Blackfield V Open Mind: The Best of Blackfield For the Music An Accident Of Stars : 2004 - 2017",
+        "sourceText": "Blackfield Progressive Rock / Art Rock United Kingdom Group United Kingdom Blackfield British-Israeli music project United Kingdom England Atlantic Records Aviv Geffen Steven Wilson musical group Progressive Rock / Art Rock progressive rock rock art rock english prog related alternative rock Blackfield Blackfield II NYC: Blackfield Live in New York City Welcome to My DNA 2011-04-28: Trix Zaal, Antwerpen, Belgium Blackfield IV Welcome to My DNA / IV Blackfield V Open Mind: The Best of Blackfield For the Music An Accident Of Stars : 2004 - 2017",
         "tags": [
-          "Alternative",
+          "Progressive Rock / Art Rock",
           "progressive rock",
           "rock",
           "art rock",
@@ -14118,9 +13162,9 @@
       "name": "FM-84",
       "normalizedName": "fm 84",
       "archive": {
-        "rank": 67,
+        "rank": 63,
         "plays": 212,
-        "genre": "Alternative",
+        "genre": "Synthwave / Synth-Pop",
         "country": "United States",
         "topTracks": [
           "Running in the Night"
@@ -14160,9 +13204,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "FM-84 Alternative United States Person California Scotland Alternative synthwave electronic synth-pop Atlas",
+        "sourceText": "FM-84 Synthwave / Synth-Pop United States Person California Scotland Synthwave / Synth-Pop synthwave electronic synth-pop Atlas",
         "tags": [
-          "Alternative",
+          "Synthwave / Synth-Pop",
           "synthwave",
           "electronic",
           "synth-pop"
@@ -14180,10 +13224,10 @@
       "name": "Neck Deep",
       "normalizedName": "neck deep",
       "archive": {
-        "rank": 68,
+        "rank": 64,
         "plays": 212,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Pop Punk / Punk Rock",
+        "country": "Wales",
         "topTracks": [
           "In Bloom"
         ],
@@ -14294,9 +13338,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Neck Deep Alternative United States Group Wrexham Wrexham UK pop punk band Neck Deep Welsh pop punk band from the city of Wrexham in north-east Wales Wales Wrexham Hopeless Records Pinky Swear Records We Are Triumphant musical group Alternative pop punk punk rock alternative rock punk rock easycore pop-punk Wishful Thinking Rain in July / A History of Bad Decisions Life’s Not Out to Get You The Peace and the Panic All Distortions Are Intentional SlipNeck Halloween 2020 Neck Deep",
+        "sourceText": "Neck Deep Pop Punk / Punk Rock Wales Group Wrexham Wrexham UK pop punk band Neck Deep Welsh pop punk band from the city of Wrexham in north-east Wales Wales Wrexham Hopeless Records Pinky Swear Records We Are Triumphant musical group Pop Punk / Punk Rock pop punk punk rock alternative rock punk rock easycore pop-punk Wishful Thinking Rain in July / A History of Bad Decisions Life’s Not Out to Get You The Peace and the Panic All Distortions Are Intentional SlipNeck Halloween 2020 Neck Deep",
         "tags": [
-          "Alternative",
+          "Pop Punk / Punk Rock",
           "pop punk",
           "punk",
           "rock",
@@ -14334,10 +13378,10 @@
       "name": "Lost Society",
       "normalizedName": "lost society",
       "archive": {
-        "rank": 69,
+        "rank": 65,
         "plays": 211,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Thrash Metal",
+        "country": "Finland",
         "topTracks": [],
         "topAlbums": [
           "Fast Loud Death"
@@ -14447,9 +13491,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Lost Society Alternative United States Group Finland Jyväskylä Finnish thrash metal band; 2010– Lost Society Finnish thrash metal band Finland Jyväskylä Nuclear Blast Mirko Lehtinen Ossi Paananen Arttu Lesonen Samy Elbanna Tapani Fagerström musical group Alternative thrash metal metal metalcore Fast Loud Death Terror Hungry Braindead Loud∞Out Fest 2016 No Absolution If the Sky Came Down Hell Is a State of Mind",
+        "sourceText": "Lost Society Thrash Metal Finland Group Finland Jyväskylä Finnish thrash metal band; 2010– Lost Society Finnish thrash metal band Finland Jyväskylä Nuclear Blast Mirko Lehtinen Ossi Paananen Arttu Lesonen Samy Elbanna Tapani Fagerström musical group Thrash Metal thrash metal metal metalcore Fast Loud Death Terror Hungry Braindead Loud∞Out Fest 2016 No Absolution If the Sky Came Down Hell Is a State of Mind",
         "tags": [
-          "Alternative",
+          "Thrash Metal",
           "thrash metal",
           "metal",
           "metalcore"
@@ -14485,7 +13529,7 @@
       "name": "Thekidszn",
       "normalizedName": "thekidszn",
       "archive": {
-        "rank": 70,
+        "rank": 66,
         "plays": 210,
         "genre": "Melodic Trap / Emo Rap",
         "country": "United States",
@@ -14519,7 +13563,7 @@
       "name": "Paloma",
       "normalizedName": "paloma",
       "archive": {
-        "rank": 71,
+        "rank": 67,
         "plays": 209,
         "genre": "Alternative",
         "country": "United States",
@@ -14569,9 +13613,9 @@
       "name": "Polyphia",
       "normalizedName": "polyphia",
       "archive": {
-        "rank": 72,
+        "rank": 68,
         "plays": 204,
-        "genre": "Alternative",
+        "genre": "Math Rock / Progressive Metal",
         "country": "United States",
         "topTracks": [],
         "topAlbums": []
@@ -14670,9 +13714,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Polyphia Alternative United States Group United States Plano Polyphia American progressive rock band United States Dallas Tim Henson rock band Alternative progressive metal math rock progressive rock instrumental djent math metal hard rock trap edm instrumental rock art rock Muse Renaissance New Levels New Devils Remember That You Will Die Live at The Factory in Deep Ellum",
+        "sourceText": "Polyphia Math Rock / Progressive Metal United States Group United States Plano Polyphia American progressive rock band United States Dallas Tim Henson rock band Math Rock / Progressive Metal progressive metal math rock progressive rock instrumental djent math metal hard rock trap edm instrumental rock art rock Muse Renaissance New Levels New Devils Remember That You Will Die Live at The Factory in Deep Ellum",
         "tags": [
-          "Alternative",
+          "Math Rock / Progressive Metal",
           "progressive metal",
           "math rock",
           "progressive rock",
@@ -14750,7 +13794,7 @@
       "name": "Saurom",
       "normalizedName": "saurom",
       "archive": {
-        "rank": 73,
+        "rank": 69,
         "plays": 204,
         "genre": "Folk Metal / Power Metal",
         "country": "Spain",
@@ -15028,9 +14072,9 @@
       "name": "Sebastian Gampl",
       "normalizedName": "sebastian gampl",
       "archive": {
-        "rank": 74,
+        "rank": 70,
         "plays": 202,
-        "genre": "Alternative",
+        "genre": "Synthwave",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -15080,9 +14124,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Sebastian Gampl Alternative United States Person München Alternative rock synthwave 80's rock City Hunter Master Switch GAMPL Works",
+        "sourceText": "Sebastian Gampl Synthwave United States Person München Synthwave rock synthwave 80's rock City Hunter Master Switch GAMPL Works",
         "tags": [
-          "Alternative",
+          "Synthwave",
           "rock",
           "synthwave",
           "80's rock"
@@ -15101,10 +14145,10 @@
       "name": "Scar Symmetry",
       "normalizedName": "scar symmetry",
       "archive": {
-        "rank": 75,
+        "rank": 71,
         "plays": 201,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Melodic Death Metal / Groove Metal",
+        "country": "Sweden",
         "topTracks": [],
         "topAlbums": [
           "The Singularity (Phase I - Neohumanity)"
@@ -15222,9 +14266,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Scar Symmetry Alternative United States Group Sweden Avesta Scar Symmetry Swedish melodic death metal band Sweden Avesta Nuclear Blast Jonas Kjellgren musical group Alternative melodic death metal metal groove metal swedish alliteration Symmetric in Design Pitch Black Progress Holographic Universe Dark Matter Dimensions The Unseen Empire Best Of The Singularity (Phase I – Neohumanity) The Singularity (Phase II – Xenotaph) Two Originals",
+        "sourceText": "Scar Symmetry Melodic Death Metal / Groove Metal Sweden Group Sweden Avesta Scar Symmetry Swedish melodic death metal band Sweden Avesta Nuclear Blast Jonas Kjellgren musical group Melodic Death Metal / Groove Metal melodic death metal metal groove metal swedish alliteration Symmetric in Design Pitch Black Progress Holographic Universe Dark Matter Dimensions The Unseen Empire Best Of The Singularity (Phase I – Neohumanity) The Singularity (Phase II – Xenotaph) Two Originals",
         "tags": [
-          "Alternative",
+          "Melodic Death Metal / Groove Metal",
           "melodic death metal",
           "metal",
           "groove metal",
@@ -15341,7 +14385,7 @@
       "name": "Helloween",
       "normalizedName": "helloween",
       "archive": {
-        "rank": 76,
+        "rank": 72,
         "plays": 199,
         "genre": "Power Metal / Speed Metal",
         "country": "Germany",
@@ -15741,9 +14785,9 @@
       "name": "Nine Inch Nails",
       "normalizedName": "nine inch nails",
       "archive": {
-        "rank": 77,
+        "rank": 73,
         "plays": 194,
-        "genre": "Alternative",
+        "genre": "Industrial Rock / Industrial Metal",
         "country": "United States",
         "topTracks": [],
         "topAlbums": []
@@ -15993,9 +15037,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Nine Inch Nails Alternative United States Group United States Cleveland Nine Inch Nails American industrial rock band United States Cleveland Columbia Records Island Records Atlantic Records Interscope Records Rykodisc Nothing Records TVT Records The Null Corporation Universal Music Group Atticus Ross musical group Alternative industrial rock industrial alternative rock electronic industrial metal electro-industrial rock post-industrial bootleg synthpop creative commons usa alternative américain experimental rock alternative metal rock and indie n3 dark ambient industrial music electronic rock ambient music Pretty Hate Machine The Downward Spiral Further Down the Spiral Quake Closure The Fragile Things Falling Apart And All That Could Have Been With Teeth The Definitive Nine Inch Nails: Quiet Live: Beside You in Time Year Zero",
+        "sourceText": "Nine Inch Nails Industrial Rock / Industrial Metal United States Group United States Cleveland Nine Inch Nails American industrial rock band United States Cleveland Columbia Records Island Records Atlantic Records Interscope Records Rykodisc Nothing Records TVT Records The Null Corporation Universal Music Group Atticus Ross musical group Industrial Rock / Industrial Metal industrial rock industrial alternative rock electronic industrial metal electro-industrial rock post-industrial bootleg synthpop creative commons usa alternative américain experimental rock alternative metal rock and indie n3 dark ambient industrial music electronic rock ambient music Pretty Hate Machine The Downward Spiral Further Down the Spiral Quake Closure The Fragile Things Falling Apart And All That Could Have Been With Teeth The Definitive Nine Inch Nails: Quiet Live: Beside You in Time Year Zero",
         "tags": [
-          "Alternative",
+          "Industrial Rock / Industrial Metal",
           "industrial rock",
           "industrial",
           "alternative rock",
@@ -16436,7 +15480,7 @@
       "name": "Insomnium",
       "normalizedName": "insomnium",
       "archive": {
-        "rank": 78,
+        "rank": 74,
         "plays": 193,
         "genre": "Melodic Death Metal / Doom Metal",
         "country": "Finland",
@@ -16667,7 +15711,7 @@
       "name": "nightlife",
       "normalizedName": "nightlife",
       "archive": {
-        "rank": 79,
+        "rank": 75,
         "plays": 193,
         "genre": "Alternative",
         "country": "United States",
@@ -16739,316 +15783,13 @@
       ]
     },
     {
-      "name": "SLAVES",
-      "normalizedName": "slaves",
-      "archive": {
-        "rank": 80,
-        "plays": 191,
-        "genre": "Post-Hardcore / R&B",
-        "country": "United States",
-        "topTracks": [
-          "Prayers",
-          "To Better Days"
-        ],
-        "topAlbums": [
-          "To Better Days",
-          "Revision"
-        ]
-      },
-      "musicbrainz": {
-        "id": "bd0f203c-6d4b-4c44-89d1-63be9c60acc3",
-        "score": 100,
-        "name": "Rain City Drive",
-        "sortName": "Rain City Drive",
-        "type": "Group",
-        "country": "US",
-        "area": "United States",
-        "beginArea": "Sacramento",
-        "lifeSpanBegin": "2014",
-        "ended": false,
-        "disambiguation": "US post‐hardcore band, formerly known as Slaves",
-        "aliases": [
-          "Slaves",
-          "Rain City"
-        ],
-        "tags": [
-          "post-hardcore",
-          "experimental rock"
-        ],
-        "isnis": []
-      },
-      "wikidata": {
-        "id": "Q17088326",
-        "url": "https://www.wikidata.org/entity/Q17088326",
-        "label": "Slaves",
-        "description": "American rock band from Sacramento, California",
-        "genres": [
-          "post-hardcore",
-          "alternative rock",
-          "emo"
-        ],
-        "countries": [
-          "United States"
-        ],
-        "formationPlaces": [
-          "Sacramento"
-        ],
-        "recordLabels": [],
-        "members": [],
-        "occupations": [],
-        "instruments": [],
-        "instanceOf": [
-          "musical group"
-        ],
-        "officialWebsites": [
-          "https://www.youareallslaves.com"
-        ],
-        "images": [
-          "http://commons.wikimedia.org/wiki/Special:FilePath/Slaves%20American%20band.jpg"
-        ]
-      },
-      "releaseGroups": [
-        {
-          "id": "66d84a6a-6c63-4563-b72b-2e2b43564866",
-          "title": "Through Art We Are All Equals",
-          "primaryType": "Album",
-          "firstReleaseDate": "2014-06-24"
-        },
-        {
-          "id": "31206ffe-40f7-42da-b6ea-72d696e627f5",
-          "title": "Routine Breathing",
-          "primaryType": "Album",
-          "firstReleaseDate": "2015-08-21"
-        },
-        {
-          "id": "79672d64-1cb5-41a5-a5c5-9852b4c01756",
-          "title": "Beautiful Death",
-          "primaryType": "Album",
-          "firstReleaseDate": "2018-02-16"
-        },
-        {
-          "id": "6a3a44e5-1d3e-46c2-b63e-31c873a54dec",
-          "title": "To Better Days",
-          "primaryType": "Album",
-          "firstReleaseDate": "2020-08-07"
-        },
-        {
-          "id": "392f1772-6e3c-4782-b024-834cf5554549",
-          "title": "Rain City Drive",
-          "primaryType": "Album",
-          "firstReleaseDate": "2022-07-15"
-        },
-        {
-          "id": "5eefddcd-8ef0-4e46-a346-a74ca232a775",
-          "title": "Things Are Different Now",
-          "primaryType": "Album",
-          "firstReleaseDate": "2024-09-27"
-        }
-      ],
-      "emotionalSeeds": {
-        "sourceText": "SLAVES Post-Hardcore / R&B United States Group United States Sacramento US post‐hardcore band, formerly known as Slaves Slaves American rock band from Sacramento, California United States Sacramento musical group Post-Hardcore / R&B post-hardcore experimental rock alternative rock emo Through Art We Are All Equals Routine Breathing Beautiful Death To Better Days Rain City Drive Things Are Different Now",
-        "tags": [
-          "Post-Hardcore / R&B",
-          "post-hardcore",
-          "experimental rock",
-          "alternative rock",
-          "emo"
-        ],
-        "activeYears": [
-          "2014"
-        ],
-        "releaseYears": [
-          2014,
-          2015,
-          2018,
-          2020,
-          2022,
-          2024
-        ]
-      },
-      "fetchStatus": "matched",
-      "bandMembers": [
-        {
-          "name": "Colin Vieira",
-          "roles": [
-            "bass guitar"
-          ],
-          "begin": "2014",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Weston Richmond",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "2015",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Felipe Sanchez",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "2017",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Zack Baker",
-          "roles": [
-            "drums (drum set)"
-          ],
-          "begin": "2018",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Matt McAndrew",
-          "roles": [
-            "lead vocals"
-          ],
-          "begin": "2019-07-26",
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Jason Mays",
-          "roles": [
-            "bass guitar"
-          ],
-          "begin": "2014",
-          "end": "2014-05-30",
-          "current": false
-        },
-        {
-          "name": "Andrew Mena",
-          "roles": [
-            "additional",
-            "bass guitar"
-          ],
-          "begin": "2014",
-          "end": "2014",
-          "current": false
-        },
-        {
-          "name": "Michael Nordeen",
-          "roles": [
-            "additional",
-            "bass guitar"
-          ],
-          "begin": "2014",
-          "end": "2014",
-          "current": false
-        },
-        {
-          "name": "Christopher Kim",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "2014",
-          "end": "2015-02-09",
-          "current": false
-        },
-        {
-          "name": "Tai Wright",
-          "roles": [
-            "drums (drum set)",
-            "percussion"
-          ],
-          "begin": "2014",
-          "end": "2016-04-09",
-          "current": false
-        },
-        {
-          "name": "Alex Lyman",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "2014",
-          "end": "2016-04-10",
-          "current": false
-        },
-        {
-          "name": "Jonny Craig",
-          "roles": [
-            "lead vocals"
-          ],
-          "begin": "2014",
-          "end": "2019-01-24",
-          "current": false
-        },
-        {
-          "name": "Jonathan Wolfe",
-          "roles": [
-            "additional",
-            "guitar"
-          ],
-          "begin": "2015",
-          "end": "2015",
-          "current": false
-        },
-        {
-          "name": "Paul Gaul",
-          "roles": [
-            "additional",
-            "guitar"
-          ],
-          "begin": "2016",
-          "end": "2016",
-          "current": false
-        },
-        {
-          "name": "Thomas Michael Joy",
-          "roles": [
-            "additional",
-            "guitar"
-          ],
-          "begin": "2016",
-          "end": "2016",
-          "current": false
-        },
-        {
-          "name": "Christian Kett",
-          "roles": [
-            "additional",
-            "drums (drum set)"
-          ],
-          "begin": "2016",
-          "end": "2016",
-          "current": false
-        },
-        {
-          "name": "Blake Howard",
-          "roles": [
-            "additional",
-            "guitar"
-          ],
-          "begin": "2016",
-          "end": null,
-          "current": false
-        },
-        {
-          "name": "Matthew Marquez",
-          "roles": [
-            "additional",
-            "drums (drum set)"
-          ],
-          "begin": "2017",
-          "end": "2018",
-          "current": false
-        }
-      ]
-    },
-    {
       "name": "Treat",
       "normalizedName": "treat",
       "archive": {
-        "rank": 81,
+        "rank": 76,
         "plays": 188,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Hard Rock",
+        "country": "Sweden",
         "topTracks": [],
         "topAlbums": [
           "Ghost of Graceland"
@@ -17180,9 +15921,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Treat Alternative United States Group Sweden Swedish hard rock band Treat Swedish musical group; rock band Sweden Kitee Universal Music Group musical group Alternative hard-rock hard rock Scratch and Bite The Pleasure Principle Dreamhunter Organized Crime Treat Muscle in Motion Weapons of Choice Coup de Grace Ghost of Graceland The Road More or Less Traveled Tunguska The Endgame",
+        "sourceText": "Treat Hard Rock Sweden Group Sweden Swedish hard rock band Treat Swedish musical group; rock band Sweden Kitee Universal Music Group musical group Hard Rock hard-rock hard rock Scratch and Bite The Pleasure Principle Dreamhunter Organized Crime Treat Muscle in Motion Weapons of Choice Coup de Grace Ghost of Graceland The Road More or Less Traveled Tunguska The Endgame",
         "tags": [
-          "Alternative",
+          "Hard Rock",
           "hard-rock",
           "hard rock"
         ],
@@ -17310,9 +16051,9 @@
       "name": "Issues",
       "normalizedName": "issues",
       "archive": {
-        "rank": 82,
+        "rank": 77,
         "plays": 187,
-        "genre": "Alternative",
+        "genre": "Metalcore / Electronicore",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -17395,9 +16136,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Issues Alternative United States Group United States Atlanta Atlanta, GA metalcore 2012-24 Issues American rock band United States Atlanta Rise Records musical group Alternative metalcore electronic experimental nu metal post-hardcore electronicore punk rock Issues Headspace Beautiful Oblivion",
+        "sourceText": "Issues Metalcore / Electronicore United States Group United States Atlanta Atlanta, GA metalcore 2012-24 Issues American rock band United States Atlanta Rise Records musical group Metalcore / Electronicore metalcore electronic experimental nu metal post-hardcore electronicore punk rock Issues Headspace Beautiful Oblivion",
         "tags": [
-          "Alternative",
+          "Metalcore / Electronicore",
           "metalcore",
           "electronic",
           "experimental",
@@ -17520,7 +16261,7 @@
       "name": "Blut Aus Nord",
       "normalizedName": "blut aus nord",
       "archive": {
-        "rank": 83,
+        "rank": 78,
         "plays": 186,
         "genre": "Atmospheric Black Metal",
         "country": "France",
@@ -17811,10 +16552,10 @@
       "name": "Asking Alexandria",
       "normalizedName": "asking alexandria",
       "archive": {
-        "rank": 84,
+        "rank": 79,
         "plays": 183,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Metalcore / Post-Hardcore",
+        "country": "United Kingdom",
         "topTracks": [
           "Alone In A Room"
         ],
@@ -17960,9 +16701,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Asking Alexandria Alternative United States Group United Kingdom Dubai English metalcore band Asking Alexandria British musical group; rock band United Kingdom York Sumerian Records musical group Alternative metalcore electronicore rock alternative rock post-hardcore hard rock alternative metal electronic rock electronic metal emo emocore melodic metalcore heavy metal pop rock pop metal electronic metal electronic metalcore The Irony of Your Perfection Stand Up and Scream Reckless & Relentless Stepped Up and Scratched From Death to Destiny Live From Brixton & Beyond The Black Asking Alexandria Like a House on Fire See What’s on the Inside Where Do We Go From Here?",
+        "sourceText": "Asking Alexandria Metalcore / Post-Hardcore United Kingdom Group United Kingdom Dubai English metalcore band Asking Alexandria British musical group; rock band United Kingdom York Sumerian Records musical group Metalcore / Post-Hardcore metalcore electronicore rock alternative rock post-hardcore hard rock alternative metal electronic rock electronic metal emo emocore melodic metalcore heavy metal pop rock pop metal electronic metal electronic metalcore The Irony of Your Perfection Stand Up and Scream Reckless & Relentless Stepped Up and Scratched From Death to Destiny Live From Brixton & Beyond The Black Asking Alexandria Like a House on Fire See What’s on the Inside Where Do We Go From Here?",
         "tags": [
-          "Alternative",
+          "Metalcore / Post-Hardcore",
           "metalcore",
           "electronicore",
           "rock",
@@ -18081,7 +16822,7 @@
       "name": "Arrows in Action",
       "normalizedName": "arrows in action",
       "archive": {
-        "rank": 85,
+        "rank": 80,
         "plays": 176,
         "genre": "Alternative",
         "country": "United States",
@@ -18150,9 +16891,9 @@
       "name": "boy pablo",
       "normalizedName": "boy pablo",
       "archive": {
-        "rank": 86,
+        "rank": 81,
         "plays": 173,
-        "genre": "Alternative",
+        "genre": "Indie Pop / Indie Rock",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -18233,9 +16974,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "boy pablo Alternative United States Group Norway Bergen Boy Pablo Norwegian band Bergen Nicolás Pablo Rivera Muñoz musical group Alternative indie pop indie rock jangle pop dream pop Soy Pablo Soy Pablo / Roy Pablo Wachito Rico",
+        "sourceText": "boy pablo Indie Pop / Indie Rock United States Group Norway Bergen Boy Pablo Norwegian band Bergen Nicolás Pablo Rivera Muñoz musical group Indie Pop / Indie Rock indie pop indie rock jangle pop dream pop Soy Pablo Soy Pablo / Roy Pablo Wachito Rico",
         "tags": [
-          "Alternative",
+          "Indie Pop / Indie Rock",
           "indie pop",
           "indie rock",
           "jangle pop",
@@ -18306,7 +17047,7 @@
       "name": "Marty Friedman",
       "normalizedName": "marty friedman",
       "archive": {
-        "rank": 87,
+        "rank": 82,
         "plays": 168,
         "genre": "Instrumental Rock / Heavy Metal",
         "country": "United States",
@@ -18644,7 +17385,7 @@
       "name": "ג'ירפות",
       "normalizedName": "גירפות",
       "archive": {
-        "rank": 88,
+        "rank": 83,
         "plays": 167,
         "genre": "Alternative",
         "country": "United States",
@@ -18802,9 +17543,9 @@
       "name": "Being As An Ocean",
       "normalizedName": "being as an ocean",
       "archive": {
-        "rank": 89,
+        "rank": 84,
         "plays": 166,
-        "genre": "Alternative",
+        "genre": "Post-Hardcore / Melodic Hardcore",
         "country": "United States",
         "topTracks": [],
         "topAlbums": []
@@ -18897,9 +17638,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Being As An Ocean Alternative United States Group United States Being as an Ocean American post-hardcore band United States Alpine Equal Vision Records Tyler Ross musical group Alternative post-hardcore melodic hardcore punk rock Dear G‐d… How We Both Wondrously Perish Being as an Ocean Waiting for Morning to Come PROXY: An A.N.I.M.O. Story Death Can Wait",
+        "sourceText": "Being As An Ocean Post-Hardcore / Melodic Hardcore United States Group United States Being as an Ocean American post-hardcore band United States Alpine Equal Vision Records Tyler Ross musical group Post-Hardcore / Melodic Hardcore post-hardcore melodic hardcore punk rock Dear G‐d… How We Both Wondrously Perish Being as an Ocean Waiting for Morning to Come PROXY: An A.N.I.M.O. Story Death Can Wait",
         "tags": [
-          "Alternative",
+          "Post-Hardcore / Melodic Hardcore",
           "post-hardcore",
           "melodic hardcore",
           "punk rock"
@@ -18938,7 +17679,7 @@
       "name": "Naits",
       "normalizedName": "naits",
       "archive": {
-        "rank": 90,
+        "rank": 85,
         "plays": 166,
         "genre": "Alternative",
         "country": "United States",
@@ -18982,10 +17723,10 @@
       "name": "The 1975",
       "normalizedName": "the 1975",
       "archive": {
-        "rank": 91,
+        "rank": 86,
         "plays": 165,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Indie Pop / Indie Rock",
+        "country": "United Kingdom",
         "topTracks": [],
         "topAlbums": []
       },
@@ -19131,9 +17872,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "The 1975 Alternative United States Group United Kingdom Wilmslow The 1975 English pop rock band United Kingdom Wilmslow Polydor Interscope Records Vagrant Records Dirty Hit Adam Hann George Daniel Matty Healy Polly Money Ross MacDonald musical group Alternative indie rock pop rock art pop new wave synthpop ambient pop alternative rock synth-pop indie pop leftfield post-punk revival alternative pop indietronica tumblr rock power pop The 1975 I like it when you sleep, for you are so beautiful yet so unaware of it DH00278 A Brief Inquiry Into Online Relationships Notes on a Conditional Form Live with the BBC Philharmonic Orchestra Being Funny in a Foreign Language At Their Very Best: Madison Square Garden Live From Gorilla Still… At Their Very Best (Live From The AO Arena, Manchester, 17.02.24)",
+        "sourceText": "The 1975 Indie Pop / Indie Rock United Kingdom Group United Kingdom Wilmslow The 1975 English pop rock band United Kingdom Wilmslow Polydor Interscope Records Vagrant Records Dirty Hit Adam Hann George Daniel Matty Healy Polly Money Ross MacDonald musical group Indie Pop / Indie Rock indie rock pop rock art pop new wave synthpop ambient pop alternative rock synth-pop indie pop leftfield post-punk revival alternative pop indietronica tumblr rock power pop The 1975 I like it when you sleep, for you are so beautiful yet so unaware of it DH00278 A Brief Inquiry Into Online Relationships Notes on a Conditional Form Live with the BBC Philharmonic Orchestra Being Funny in a Foreign Language At Their Very Best: Madison Square Garden Live From Gorilla Still… At Their Very Best (Live From The AO Arena, Manchester, 17.02.24)",
         "tags": [
-          "Alternative",
+          "Indie Pop / Indie Rock",
           "indie rock",
           "pop rock",
           "art pop",
@@ -19217,10 +17958,10 @@
       "name": "Rami Kleinstein",
       "normalizedName": "rami kleinstein",
       "archive": {
-        "rank": 92,
+        "rank": 87,
         "plays": 162,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Israeli Rock",
+        "country": "Israel",
         "topTracks": [],
         "topAlbums": [
           "אהביני"
@@ -19391,9 +18132,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Rami Kleinstein Alternative United States Person Israel New York Rami Kleinstein Israeli singer/composer Israel Hed Arzi Music composer singer pianist musician songwriter voice human Alternative hebrew rock rock music ביום של הפצצה על הגשר הישן אהביני במסיבה אצל גידו תפוחים ותמרים האוסף כל מה שתרצי תגיד את זה המופע המשותף (Live) הרבה פנים שיר חשוף סיטואציה מורכבת",
+        "sourceText": "Rami Kleinstein Israeli Rock Israel Person Israel New York Rami Kleinstein Israeli singer/composer Israel Hed Arzi Music composer singer pianist musician songwriter voice human Israeli Rock hebrew rock rock music ביום של הפצצה על הגשר הישן אהביני במסיבה אצל גידו תפוחים ותמרים האוסף כל מה שתרצי תגיד את זה המופע המשותף (Live) הרבה פנים שיר חשוף סיטואציה מורכבת",
         "tags": [
-          "Alternative",
+          "Israeli Rock",
           "hebrew",
           "rock",
           "rock music"
@@ -19427,12 +18168,14 @@
       "name": "Skyharbor",
       "normalizedName": "skyharbor",
       "archive": {
-        "rank": 93,
+        "rank": 88,
         "plays": 161,
-        "genre": "Alternative",
-        "country": "United States",
+        "genre": "Progressive Metal / Djent",
+        "country": "India",
         "topTracks": [],
-        "topAlbums": []
+        "topAlbums": [
+          "Guiding Lights"
+        ]
       },
       "musicbrainz": {
         "id": "5ec19553-a0f1-462e-bc38-984b63f8c36d",
@@ -19507,9 +18250,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "Skyharbor Alternative United States Group United States New Delhi Progressive rock/metal band Skyharbor Indian/American progressive metal band India New Delhi Basick Records musical group Alternative progressive metal math metal experimental djent Blinding White Noise: Illusion & Chaos Guiding Lights Sunshine Dust",
+        "sourceText": "Skyharbor Progressive Metal / Djent India Group United States New Delhi Progressive rock/metal band Skyharbor Indian/American progressive metal band India New Delhi Basick Records musical group Progressive Metal / Djent progressive metal math metal experimental djent Blinding White Noise: Illusion & Chaos Guiding Lights Sunshine Dust",
         "tags": [
-          "Alternative",
+          "Progressive Metal / Djent",
           "progressive metal",
           "math metal",
           "experimental",
@@ -19558,7 +18301,7 @@
       "name": "Ryan Caraveo",
       "normalizedName": "ryan caraveo",
       "archive": {
-        "rank": 94,
+        "rank": 89,
         "plays": 160,
         "genre": "Alternative",
         "country": "United States",
@@ -19650,9 +18393,9 @@
       "name": "SOM",
       "normalizedName": "som",
       "archive": {
-        "rank": 95,
+        "rank": 90,
         "plays": 158,
-        "genre": "Alternative",
+        "genre": "Post-Metal / Shoegaze",
         "country": "United States",
         "topTracks": [],
         "topAlbums": [
@@ -19711,9 +18454,9 @@
         }
       ],
       "emotionalSeeds": {
-        "sourceText": "SOM Alternative United States Group United States United States American post-metal band Alternative post-metal shoegaze post-rock hard rock rock alternative metal alternative rock The Fall The Fall Redux The Shape of Everything Let the Light In",
+        "sourceText": "SOM Post-Metal / Shoegaze United States Group United States United States American post-metal band Post-Metal / Shoegaze post-metal shoegaze post-rock hard rock rock alternative metal alternative rock The Fall The Fall Redux The Shape of Everything Let the Light In",
         "tags": [
-          "Alternative",
+          "Post-Metal / Shoegaze",
           "post-metal",
           "shoegaze",
           "post-rock",
@@ -19767,7 +18510,7 @@
       "name": "NIGHTBREAKERS",
       "normalizedName": "nightbreakers",
       "archive": {
-        "rank": 96,
+        "rank": 91,
         "plays": 156,
         "genre": "Alternative",
         "country": "United States",
@@ -19803,7 +18546,7 @@
       "name": "My Vitriol",
       "normalizedName": "my vitriol",
       "archive": {
-        "rank": 97,
+        "rank": 92,
         "plays": 153,
         "genre": "Alternative Rock / Shoegaze",
         "country": "United Kingdom",
@@ -19972,7 +18715,7 @@
       "name": "44phantom",
       "normalizedName": "44phantom",
       "archive": {
-        "rank": 98,
+        "rank": 93,
         "plays": 153,
         "genre": "Alternative",
         "country": "United States",
@@ -20026,7 +18769,7 @@
       "name": "Twin Shadow",
       "normalizedName": "twin shadow",
       "archive": {
-        "rank": 99,
+        "rank": 94,
         "plays": 152,
         "genre": "Indie Pop / Synth-Pop",
         "country": "United States",
@@ -20173,12 +18916,14 @@
       "name": "Unprocessed",
       "normalizedName": "unprocessed",
       "archive": {
-        "rank": 100,
+        "rank": 95,
         "plays": 151,
         "genre": "Progressive Metal / Math Rock",
         "country": "Germany",
         "topTracks": [],
-        "topAlbums": []
+        "topAlbums": [
+          "Gold"
+        ]
       },
       "musicbrainz": {
         "id": "ef3eb759-49b3-4f20-ac12-a92b87a3cb4c",
@@ -20361,6 +19106,918 @@
           "current": false
         }
       ]
+    },
+    {
+      "name": "Hurtwave",
+      "normalizedName": "hurtwave",
+      "archive": {
+        "rank": 97,
+        "plays": 147,
+        "genre": "Alternative",
+        "country": "United States",
+        "topTracks": [],
+        "topAlbums": []
+      },
+      "musicbrainz": {
+        "id": "99b0adf3-31f5-4626-9230-1960e1adca99",
+        "score": 100,
+        "name": "Hurtwave",
+        "sortName": "Hurtwave",
+        "type": "Group",
+        "country": "US",
+        "area": "United States",
+        "lifeSpanBegin": "2020",
+        "ended": false,
+        "aliases": [],
+        "tags": [],
+        "isnis": []
+      },
+      "releaseGroups": [
+        {
+          "id": "2862be82-8f7b-48dc-ba8e-4cda692be90b",
+          "title": "Night Therapy I",
+          "primaryType": "Album",
+          "firstReleaseDate": "2021-04-30"
+        }
+      ],
+      "emotionalSeeds": {
+        "sourceText": "Hurtwave Alternative United States Group United States Alternative Night Therapy I",
+        "tags": [
+          "Alternative"
+        ],
+        "activeYears": [
+          "2020"
+        ],
+        "releaseYears": [
+          2021
+        ]
+      },
+      "fetchStatus": "matched"
+    },
+    {
+      "name": "Sigur Rós",
+      "normalizedName": "sigur ros",
+      "archive": {
+        "rank": 98,
+        "plays": 146,
+        "genre": "Post-Rock / Ambient",
+        "country": "Iceland",
+        "topTracks": [],
+        "topAlbums": []
+      },
+      "musicbrainz": {
+        "id": "f6f2326f-6b25-4170-b89d-e235b25508e8",
+        "score": 100,
+        "name": "Sigur Rós",
+        "sortName": "Sigur Rós",
+        "type": "Group",
+        "country": "IS",
+        "area": "Iceland",
+        "beginArea": "Reykjavík",
+        "lifeSpanBegin": "1994-01-04",
+        "ended": false,
+        "disambiguation": "Icelandic post‐rock band",
+        "aliases": [
+          "Sigur Ros",
+          "シガー・ロス",
+          "Sìgur Ros",
+          "Sìgur Rós"
+        ],
+        "tags": [
+          "post-rock",
+          "ambient",
+          "icelandic",
+          "dream pop",
+          "art pop",
+          "ambient pop",
+          "experimental",
+          "islande",
+          "islandais",
+          "experimental rock",
+          "rock and indie",
+          "island",
+          "electronic",
+          "instrumental",
+          "shoegazing",
+          "iceland",
+          "art rock",
+          "electonic"
+        ],
+        "isnis": [
+          "000000011516599X"
+        ]
+      },
+      "wikidata": {
+        "id": "Q483828",
+        "url": "https://www.wikidata.org/entity/Q483828",
+        "label": "Sigur Rós",
+        "description": "Icelandic band",
+        "genres": [
+          "post-rock",
+          "post-metal"
+        ],
+        "countries": [
+          "Iceland"
+        ],
+        "formationPlaces": [
+          "Reykjavík"
+        ],
+        "recordLabels": [
+          "Geffen Records",
+          "FatCat Records"
+        ],
+        "members": [
+          "Georg Hólm",
+          "Ágúst Ævar Gunnarsson",
+          "Jónsi",
+          "Kjartan Sveinsson",
+          "Orri Páll Dýrason"
+        ],
+        "occupations": [],
+        "instruments": [],
+        "instanceOf": [
+          "musical group"
+        ],
+        "officialWebsites": [
+          "https://sigurros.com"
+        ],
+        "images": [
+          "http://commons.wikimedia.org/wiki/Special:FilePath/Sigur%20R%C3%B3s%20at%20the%20Orpheum%20Theatre%2C%20San%20Francisco.jpg"
+        ],
+        "inception": "1994-01-01"
+      },
+      "releaseGroups": [
+        {
+          "id": "7b3844d1-5125-3158-8aed-90e0b6f61def",
+          "title": "Von",
+          "primaryType": "Album",
+          "firstReleaseDate": "1997"
+        },
+        {
+          "id": "474910da-e0e1-3413-a663-c333dd431007",
+          "title": "Von brigði",
+          "primaryType": "Album",
+          "firstReleaseDate": "1998"
+        },
+        {
+          "id": "62b427b8-1c52-34e7-b250-da2aa3e44860",
+          "title": "Ágætis byrjun",
+          "primaryType": "Album",
+          "firstReleaseDate": "1999-06"
+        },
+        {
+          "id": "e3b988ae-4b40-3127-87d8-062c46400bf5",
+          "title": "Englar alheimsins",
+          "primaryType": "Album",
+          "firstReleaseDate": "2001-09-10"
+        },
+        {
+          "id": "950a650b-1e8d-3097-92af-9f7686bba4f1",
+          "title": "( )",
+          "primaryType": "Album",
+          "firstReleaseDate": "2002-10-23"
+        },
+        {
+          "id": "22e72e76-3a9c-38d3-b00a-bb8d96856d47",
+          "title": "Hlemmur",
+          "primaryType": "Album",
+          "firstReleaseDate": "2003-08-20"
+        },
+        {
+          "id": "47d8e9e2-dc13-3d94-afee-1f8c38cec091",
+          "title": "Takk…",
+          "primaryType": "Album",
+          "firstReleaseDate": "2005-09-07"
+        },
+        {
+          "id": "e75a31dc-eb66-4a0a-b911-874baac40b3d",
+          "title": "In a Frozen Sea: A Year With Sigur Rós",
+          "primaryType": "Album",
+          "firstReleaseDate": "2007-05"
+        },
+        {
+          "id": "19171580-5910-3f03-a035-b2a0d4db042a",
+          "title": "Hvarf‐Heim",
+          "primaryType": "Album",
+          "firstReleaseDate": "2007-11-05"
+        },
+        {
+          "id": "15143341-de7d-3c64-90a1-2fffe2c4b5a9",
+          "title": "Með suð í eyrum við spilum endalaust",
+          "primaryType": "Album",
+          "firstReleaseDate": "2008-06-23"
+        },
+        {
+          "id": "783d62b2-b4e5-300d-a4b1-dd4dcafd6ef6",
+          "title": "We Play Endlessly",
+          "primaryType": "Album",
+          "firstReleaseDate": "2009-01-31"
+        },
+        {
+          "id": "6fb7d786-ff58-4db0-b5c9-8c94aba72129",
+          "title": "Tíu Lifandi",
+          "primaryType": "Album",
+          "firstReleaseDate": "2010-01-05"
+        },
+        {
+          "id": "25f92646-cded-42a2-a2d6-65c82f49a5ec",
+          "title": "Inni",
+          "primaryType": "Album",
+          "firstReleaseDate": "2011-11-03"
+        },
+        {
+          "id": "7c78acfc-3253-42b9-abdf-06085e99d71b",
+          "title": "Valtari",
+          "primaryType": "Album",
+          "firstReleaseDate": "2012-05-23"
+        },
+        {
+          "id": "9fa7397e-7212-425f-8158-87c3bfb79602",
+          "title": "Kveikur",
+          "primaryType": "Album",
+          "firstReleaseDate": "2013-06-12"
+        },
+        {
+          "id": "83d8835f-2cbc-4c3e-8e44-7e94d8499d53",
+          "title": "Liminal Remixes",
+          "primaryType": "Album",
+          "firstReleaseDate": "2017-12-27"
+        },
+        {
+          "id": "b67d5f9d-831e-4d88-984f-d0f7587f4157",
+          "title": "Route One",
+          "primaryType": "Album",
+          "firstReleaseDate": "2017-12-27"
+        },
+        {
+          "id": "632e5836-267a-4e43-91a2-32d98f54e837",
+          "title": "Black Mirror: Hang the DJ",
+          "primaryType": "Album",
+          "firstReleaseDate": "2017-12-30"
+        },
+        {
+          "id": "2efd9b69-a05d-4c6b-9ca2-c1d3369b867d",
+          "title": "Rare, Unreleased & Different Versions",
+          "primaryType": "Album",
+          "firstReleaseDate": "2018"
+        },
+        {
+          "id": "0e38be18-6c2e-4c44-af56-0744ba488570",
+          "title": "22° Lunar Halo",
+          "primaryType": "Album",
+          "firstReleaseDate": "2019-04-13"
+        },
+        {
+          "id": "321ee51f-ef6c-404d-8a69-25d0f23090b8",
+          "title": "Variations on Darkness",
+          "primaryType": "Album",
+          "firstReleaseDate": "2019-04-13"
+        },
+        {
+          "id": "68b3e4db-e0ce-42ed-83ac-0e9b4db6e5bd",
+          "title": "Sigur Rós Presents Liminal Sleep",
+          "primaryType": "Album",
+          "firstReleaseDate": "2019-08-09"
+        },
+        {
+          "id": "fa4ac994-e631-425b-8d9c-0253fa1f3573",
+          "title": "Odin’s Raven Magic",
+          "primaryType": "Album",
+          "firstReleaseDate": "2020-12-04"
+        },
+        {
+          "id": "7a6e4394-1bbe-434c-a8e0-679d5d58e649",
+          "title": "ÁTTA",
+          "primaryType": "Album",
+          "firstReleaseDate": "2023-06-16"
+        },
+        {
+          "id": "c5bcfc81-799e-409c-a637-3bbe626bcba2",
+          "title": "Takk… (The Tape Variations)",
+          "primaryType": "Album",
+          "firstReleaseDate": "2025-12-05"
+        }
+      ],
+      "emotionalSeeds": {
+        "sourceText": "Sigur Rós Post-Rock / Ambient Iceland Group Iceland Reykjavík Icelandic post‐rock band Sigur Rós Icelandic band Iceland Reykjavík Geffen Records FatCat Records Georg Hólm Ágúst Ævar Gunnarsson Jónsi Kjartan Sveinsson Orri Páll Dýrason musical group Post-Rock / Ambient post-rock ambient icelandic dream pop art pop ambient pop experimental islande islandais experimental rock rock and indie island electronic instrumental shoegazing iceland art rock electonic post-metal Von Von brigði Ágætis byrjun Englar alheimsins ( ) Hlemmur Takk… In a Frozen Sea: A Year With Sigur Rós Hvarf‐Heim Með suð í eyrum við spilum endalaust We Play Endlessly Tíu Lifandi",
+        "tags": [
+          "Post-Rock / Ambient",
+          "post-rock",
+          "ambient",
+          "icelandic",
+          "dream pop",
+          "art pop",
+          "ambient pop",
+          "experimental",
+          "islande",
+          "islandais",
+          "experimental rock",
+          "rock and indie",
+          "island",
+          "electronic",
+          "instrumental",
+          "shoegazing",
+          "iceland",
+          "art rock",
+          "electonic",
+          "post-metal"
+        ],
+        "activeYears": [
+          "1994",
+          "1994"
+        ],
+        "releaseYears": [
+          1997,
+          1998,
+          1999,
+          2001,
+          2002,
+          2003,
+          2005,
+          2007,
+          2008,
+          2009,
+          2010,
+          2011,
+          2012,
+          2013,
+          2017,
+          2018,
+          2019,
+          2020,
+          2023,
+          2025
+        ]
+      },
+      "fetchStatus": "matched"
+    },
+    {
+      "name": "Indighxst",
+      "normalizedName": "indighxst",
+      "archive": {
+        "rank": 99,
+        "plays": 142,
+        "genre": "Alternative",
+        "country": "United States",
+        "topTracks": [
+          "Lace"
+        ],
+        "topAlbums": []
+      },
+      "musicbrainz": {
+        "id": "a65a4af8-7fd8-424c-80a6-a830b927c184",
+        "score": 100,
+        "name": "INDIGHXST",
+        "sortName": "INDIGHXST",
+        "type": "Group",
+        "area": "New Jersey",
+        "beginArea": "New Jersey",
+        "ended": false,
+        "disambiguation": "post-hardcore",
+        "aliases": [
+          "Indighxst",
+          "INDIGHOST"
+        ],
+        "tags": [
+          "post-hardcore"
+        ],
+        "isnis": []
+      },
+      "releaseGroups": [],
+      "emotionalSeeds": {
+        "sourceText": "Indighxst Alternative United States Group New Jersey New Jersey post-hardcore Alternative post-hardcore",
+        "tags": [
+          "Alternative",
+          "post-hardcore"
+        ],
+        "activeYears": [],
+        "releaseYears": []
+      },
+      "fetchStatus": "matched"
+    },
+    {
+      "name": "Amr Diab",
+      "normalizedName": "amr diab",
+      "archive": {
+        "rank": 96,
+        "plays": 147,
+        "genre": "Egyptian Pop / Mediterranean",
+        "country": "Egypt",
+        "topTracks": [],
+        "topAlbums": []
+      },
+      "musicbrainz": {
+        "id": "ba26c1ff-e5e2-42c2-b1d7-b6f82ebc37ac",
+        "score": 100,
+        "name": "عمرو دياب",
+        "sortName": "Diab, Amr",
+        "type": "Person",
+        "country": "EG",
+        "area": "Egypt",
+        "beginArea": "Port Said",
+        "lifeSpanBegin": "1961-10-11",
+        "ended": false,
+        "aliases": [
+          "Amr Diab",
+          "Amro Diab",
+          "Diab, Amr",
+          "Amr Diyab",
+          "Amr Abd El-Basset Abd El-Azeez Diab",
+          "عمرو عبدالباسط عبد العزيز دياب",
+          "عمر دياب",
+          "Ami Diab",
+          "Amr Diad",
+          "عمرو دياب",
+          "Amer Diab"
+        ],
+        "tags": [
+          "pop",
+          "arabic",
+          "script-arab"
+        ],
+        "isnis": [
+          "0000000078397483"
+        ]
+      },
+      "wikidata": {
+        "id": "Q477461",
+        "url": "https://www.wikidata.org/entity/Q477461",
+        "label": "Amr Diab",
+        "description": "Egyptian singer, composer and actor",
+        "genres": [
+          "music of Egypt",
+          "Arabic pop",
+          "Arabic music",
+          "Khaliji",
+          "Latin pop",
+          "rhythm and blues"
+        ],
+        "countries": [
+          "Egypt"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [
+          "Sony Music",
+          "Rotana Music Group",
+          "Nay for Media",
+          "Delta Sound",
+          "EMI",
+          "Alam El Phan"
+        ],
+        "members": [],
+        "occupations": [
+          "musician",
+          "performing artist",
+          "film actor",
+          "recording artist",
+          "pop musician",
+          "actor",
+          "composer",
+          "businessperson",
+          "entrepreneur",
+          "singer"
+        ],
+        "instruments": [
+          "voice",
+          "oud",
+          "piano"
+        ],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [
+          "https://amrdiab.net/"
+        ],
+        "images": [
+          "http://commons.wikimedia.org/wiki/Special:FilePath/Amr%20Diab%20With%20World%20Music%20Awards.jpg"
+        ],
+        "birthDate": "1961-10-11"
+      },
+      "releaseGroups": [
+        {
+          "id": "a40da59f-a329-4e50-ad03-1e2223d1af19",
+          "title": "Ya Tareeq يا طريق",
+          "primaryType": "Album",
+          "firstReleaseDate": "1983"
+        },
+        {
+          "id": "7a16c147-d4d3-40fc-9581-e3af3df8dc33",
+          "title": "Ghani Men Albak غني من قلبك",
+          "primaryType": "Album",
+          "firstReleaseDate": "1985"
+        },
+        {
+          "id": "29c9056a-42ca-378d-8d35-ab2e569938df",
+          "title": "Hala Hala هلا..هلا",
+          "primaryType": "Album",
+          "firstReleaseDate": "1986"
+        },
+        {
+          "id": "26a46f0f-9f29-403e-b746-e2621e55ecfc",
+          "title": "Khalseen خالصين",
+          "primaryType": "Album",
+          "firstReleaseDate": "1987"
+        },
+        {
+          "id": "914b5fe9-68ec-42a1-aca0-a3aef545ef17",
+          "title": "Mayaal ميال",
+          "primaryType": "Album",
+          "firstReleaseDate": "1988"
+        },
+        {
+          "id": "158683ca-c4b6-4507-8a80-a67ce278a5a7",
+          "title": "Mayal",
+          "primaryType": "Album",
+          "firstReleaseDate": "1988-12-31"
+        },
+        {
+          "id": "c23fee66-9578-4297-a694-fe3e41818625",
+          "title": "Shawakna شوقنا",
+          "primaryType": "Album",
+          "firstReleaseDate": "1989"
+        },
+        {
+          "id": "130253b8-0939-4cb8-8e6a-94ed79e4e2e2",
+          "title": "Matkhafesh متخافيش",
+          "primaryType": "Album",
+          "firstReleaseDate": "1990"
+        },
+        {
+          "id": "eb2291c8-db5e-445b-a9f6-cd5b629a0087",
+          "title": "Habibi حبيبي",
+          "primaryType": "Album",
+          "firstReleaseDate": "1991-03-01"
+        },
+        {
+          "id": "b351c373-4422-3cc1-8a7a-d1da785eeb41",
+          "title": "Ayamna أيامنا",
+          "primaryType": "Album",
+          "firstReleaseDate": "1992"
+        },
+        {
+          "id": "93f69e63-7c1a-425f-8bd6-4c1b57384c25",
+          "title": "Ya Omrena يا عمرنا",
+          "primaryType": "Album",
+          "firstReleaseDate": "1993"
+        },
+        {
+          "id": "3639be20-5e03-3f39-835b-0848b3370572",
+          "title": "Zekrayat زكريات",
+          "primaryType": "Album",
+          "firstReleaseDate": "1994"
+        },
+        {
+          "id": "394bd01d-2119-49f3-bc4a-7168047777ed",
+          "title": "We Yloumouni ويلوموني",
+          "primaryType": "Album",
+          "firstReleaseDate": "1994"
+        },
+        {
+          "id": "901aa0dd-23c8-4094-9121-7b5d8797801b",
+          "title": "Ragein راجعين",
+          "primaryType": "Album",
+          "firstReleaseDate": "1995"
+        },
+        {
+          "id": "fb283298-f1ac-3d43-81af-e61032e2e486",
+          "title": "Nour el Ain نور العين",
+          "primaryType": "Album",
+          "firstReleaseDate": "1996"
+        },
+        {
+          "id": "8d50205b-a666-3694-9b09-80ba3a901e26",
+          "title": "Amarain قمرين",
+          "primaryType": "Album",
+          "firstReleaseDate": "1997"
+        },
+        {
+          "id": "24d67c89-ff20-36bb-a60c-1aca38120655",
+          "title": "Awedony عودوني",
+          "primaryType": "Album",
+          "firstReleaseDate": "1998-08-20"
+        },
+        {
+          "id": "2e30903a-3cf6-3e85-9074-89d70e1a843c",
+          "title": "Tamally Maak تملي معاك",
+          "primaryType": "Album",
+          "firstReleaseDate": "2000"
+        },
+        {
+          "id": "1ca41d8a-93c3-466b-aefc-955919287167",
+          "title": "Aktar Wahed أكثر واحد",
+          "primaryType": "Album",
+          "firstReleaseDate": "2001-07-25"
+        },
+        {
+          "id": "4ccb9330-d8ae-3b91-822a-769e39e36279",
+          "title": "Allem Alby علم قلبي",
+          "primaryType": "Album",
+          "firstReleaseDate": "2003-05"
+        },
+        {
+          "id": "5fdd993e-cc2c-3011-8681-fd23289d96cd",
+          "title": "Lealy Nahary ليلي نهاري",
+          "primaryType": "Album",
+          "firstReleaseDate": "2004-06-26"
+        },
+        {
+          "id": "576d31be-0663-3501-bc18-fddda6f6da4c",
+          "title": "Kammel Kalamak كمل كلامك",
+          "primaryType": "Album",
+          "firstReleaseDate": "2005-11-21"
+        },
+        {
+          "id": "3dda18a6-787a-306a-97fb-90ffb37ad739",
+          "title": "El Lilady الليلادي",
+          "primaryType": "Album",
+          "firstReleaseDate": "2007-04-01"
+        },
+        {
+          "id": "45d1f4fb-f2b0-4d75-8739-678ed9cd4768",
+          "title": "Wayah وياه",
+          "primaryType": "Album",
+          "firstReleaseDate": "2009-01-23"
+        },
+        {
+          "id": "5de2707d-c665-49dd-bb22-267da8982544",
+          "title": "Banadeek Ta'ala بناديك تعالى",
+          "primaryType": "Album",
+          "firstReleaseDate": "2011-09-02"
+        }
+      ],
+      "emotionalSeeds": {
+        "sourceText": "Amr Diab Egyptian Pop / Mediterranean Egypt Person Egypt Port Said Amr Diab Egyptian singer, composer and actor Egypt Sony Music Rotana Music Group Nay for Media Delta Sound EMI Alam El Phan musician performing artist film actor recording artist pop musician actor composer businessperson entrepreneur singer voice oud piano human Egyptian Pop / Mediterranean pop arabic script-arab music of Egypt Arabic pop Arabic music Khaliji Latin pop rhythm and blues Ya Tareeq يا طريق Ghani Men Albak غني من قلبك Hala Hala هلا..هلا Khalseen خالصين Mayaal ميال Mayal Shawakna شوقنا Matkhafesh متخافيش Habibi حبيبي Ayamna أيامنا Ya Omrena يا عمرنا Zekrayat زكريات",
+        "tags": [
+          "Egyptian Pop / Mediterranean",
+          "pop",
+          "arabic",
+          "script-arab",
+          "music of Egypt",
+          "Arabic pop",
+          "Arabic music",
+          "Khaliji",
+          "Latin pop",
+          "rhythm and blues"
+        ],
+        "activeYears": [
+          "1961",
+          "1961"
+        ],
+        "releaseYears": [
+          1983,
+          1985,
+          1986,
+          1987,
+          1988,
+          1989,
+          1990,
+          1991,
+          1992,
+          1993,
+          1994,
+          1995,
+          1996,
+          1997,
+          1998,
+          2000,
+          2001,
+          2003,
+          2004,
+          2005,
+          2007,
+          2009,
+          2011
+        ]
+      },
+      "fetchStatus": "matched"
+    },
+    {
+      "name": "Aviv Geffen",
+      "normalizedName": "aviv geffen",
+      "archive": {
+        "rank": 100,
+        "plays": 138,
+        "genre": "Israeli Rock / Alternative",
+        "country": "Israel",
+        "topTracks": [],
+        "topAlbums": []
+      },
+      "musicbrainz": {
+        "id": "3f1f9c33-b86e-44e1-a332-b215456d279c",
+        "score": 100,
+        "name": "אביב גפן",
+        "sortName": "Geffen, Aviv",
+        "type": "Person",
+        "country": "IL",
+        "area": "Israel",
+        "beginArea": "Ramat Gan",
+        "lifeSpanBegin": "1973-05-10",
+        "ended": false,
+        "aliases": [
+          "Aviv Geffen"
+        ],
+        "tags": [
+          "singer-songwriter",
+          "rock"
+        ],
+        "isnis": [
+          "0000000079095516"
+        ]
+      },
+      "wikidata": {
+        "id": "Q733103",
+        "url": "https://www.wikidata.org/entity/Q733103",
+        "label": "Aviv Geffen",
+        "description": "Israeli musician",
+        "genres": [
+          "alternative rock"
+        ],
+        "countries": [
+          "Israel"
+        ],
+        "formationPlaces": [],
+        "recordLabels": [
+          "Hed Arzi Music"
+        ],
+        "members": [],
+        "occupations": [
+          "composer",
+          "actor",
+          "singer",
+          "record producer",
+          "poet",
+          "singer-songwriter",
+          "songwriter"
+        ],
+        "instruments": [
+          "piano",
+          "voice",
+          "guitar"
+        ],
+        "instanceOf": [
+          "human"
+        ],
+        "officialWebsites": [
+          "http://www.avivarchive.co.il"
+        ],
+        "images": [
+          "http://commons.wikimedia.org/wiki/Special:FilePath/Aviv%20Geffen%201.jpg"
+        ],
+        "birthDate": "1973-05-10"
+      },
+      "releaseGroups": [
+        {
+          "id": "4eb67554-8739-35d8-9d16-0add3338034f",
+          "title": "זה רק אור הירח",
+          "primaryType": "Album",
+          "firstReleaseDate": "1992"
+        },
+        {
+          "id": "b822791d-78ee-4e05-a14c-c97cc15327bc",
+          "title": "עכשיו מעונן",
+          "primaryType": "Album",
+          "firstReleaseDate": "1993-06"
+        },
+        {
+          "id": "952636f6-4128-4249-a48d-1e3e80931a69",
+          "title": "III אביב גפן",
+          "primaryType": "Album",
+          "firstReleaseDate": "1994"
+        },
+        {
+          "id": "8a9a83c2-ae90-4556-8113-b5f9fa734bbd",
+          "title": "השלישי",
+          "primaryType": "Album",
+          "firstReleaseDate": "1994-01-04"
+        },
+        {
+          "id": "d469da01-37c4-4465-b202-e92f38317a1d",
+          "title": "שומקום",
+          "primaryType": "Album",
+          "firstReleaseDate": "1995-04-26"
+        },
+        {
+          "id": "3baa7876-2df8-4e98-aa9e-4b7baa40aef9",
+          "title": "המכתב",
+          "primaryType": "Album",
+          "firstReleaseDate": "1996-05"
+        },
+        {
+          "id": "ab3d9d79-26b1-39d4-9d3d-20296aa3637e",
+          "title": "ירח מלא - האוסף",
+          "primaryType": "Album",
+          "firstReleaseDate": "1997"
+        },
+        {
+          "id": "637897ba-8eda-486c-b165-751aa5b321f5",
+          "title": "חלולים",
+          "primaryType": "Album",
+          "firstReleaseDate": "1998-03"
+        },
+        {
+          "id": "916eb2ed-7daf-3344-8d93-bf72a8f480f1",
+          "title": "לילות לבנים",
+          "primaryType": "Album",
+          "firstReleaseDate": "1999"
+        },
+        {
+          "id": "578ea70b-a55f-32d4-9260-f93a63af1e85",
+          "title": "יומן מסע",
+          "primaryType": "Album",
+          "firstReleaseDate": "2000"
+        },
+        {
+          "id": "94aaa068-ba48-36d9-87fb-12c2b150fd00",
+          "title": "ממנטו מורי",
+          "primaryType": "Album",
+          "firstReleaseDate": "2002"
+        },
+        {
+          "id": "08f803cb-a073-485a-8ae7-aeea137fea34",
+          "title": "מחוץ לתחרות",
+          "primaryType": "Album",
+          "firstReleaseDate": "2006"
+        },
+        {
+          "id": "bc1feed5-2c7c-4fa1-b803-066df25ba1b4",
+          "title": "עם הזמן",
+          "primaryType": "Album",
+          "firstReleaseDate": "2006-03-06"
+        },
+        {
+          "id": "c40131a1-f70a-4edf-8497-ea099d15c935",
+          "title": "Live",
+          "primaryType": "Album",
+          "firstReleaseDate": "2008"
+        },
+        {
+          "id": "e16b3498-bf12-456b-b563-d79c7d8e4b79",
+          "title": "2009‐01‐21: Melkweg, Amsterdam, Netherlands",
+          "primaryType": "Album",
+          "firstReleaseDate": "2009"
+        },
+        {
+          "id": "74d1e857-a4ca-4e43-8203-0e0664624350",
+          "title": "Aviv Geffen",
+          "primaryType": "Album",
+          "firstReleaseDate": "2009-08-28"
+        },
+        {
+          "id": "1d4bab54-af5d-41e0-a528-9c5454929b25",
+          "title": "פסיפס",
+          "primaryType": "Album",
+          "firstReleaseDate": "2012-05-27"
+        },
+        {
+          "id": "31db8072-d643-4f98-8349-f6687e1da9ea",
+          "title": "סדקים",
+          "primaryType": "Album",
+          "firstReleaseDate": "2014"
+        },
+        {
+          "id": "6244d22e-4478-4acb-8075-9b50ef3b069b",
+          "title": "היסטוריה של תאונות",
+          "primaryType": "Album",
+          "firstReleaseDate": "2025-02-12"
+        },
+        {
+          "id": "9461aff6-bd8a-41de-a75d-83aad8c7b922",
+          "title": "בהופעה אקוסטית",
+          "primaryType": "Album"
+        }
+      ],
+      "emotionalSeeds": {
+        "sourceText": "Aviv Geffen Israeli Rock / Alternative Israel Person Israel Ramat Gan Aviv Geffen Israeli musician Israel Hed Arzi Music composer actor singer record producer poet singer-songwriter songwriter piano voice guitar human Israeli Rock / Alternative singer-songwriter rock alternative rock זה רק אור הירח עכשיו מעונן III אביב גפן השלישי שומקום המכתב ירח מלא - האוסף חלולים לילות לבנים יומן מסע ממנטו מורי מחוץ לתחרות",
+        "tags": [
+          "Israeli Rock / Alternative",
+          "singer-songwriter",
+          "rock",
+          "alternative rock"
+        ],
+        "activeYears": [
+          "1973",
+          "1973"
+        ],
+        "releaseYears": [
+          1992,
+          1993,
+          1994,
+          1995,
+          1996,
+          1997,
+          1998,
+          1999,
+          2000,
+          2002,
+          2006,
+          2008,
+          2009,
+          2012,
+          2014,
+          2025
+        ]
+      },
+      "fetchStatus": "matched"
     }
   ]
 }

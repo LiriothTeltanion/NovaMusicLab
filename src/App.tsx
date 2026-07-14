@@ -1,19 +1,37 @@
-import React, { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
   Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users,
-  ChevronDown, Bot, SlidersHorizontal
+  ChevronDown, Bot, SlidersHorizontal, Link2, Check
 } from 'lucide-react';
 
 import { loadDefaultDataset } from './data/defaultDataset';
-import { MusicDnaData } from './types';
+import type { ArtistGenreCatalogEntry, GenreAssignment, MusicDnaData } from './types';
 import { clearDataset, loadDataset, saveDataset } from './utils/datasetStorage';
+import { applyGenreAssignments } from './utils/genreAssignments';
+import {
+  buildDeepLink,
+  buildShareUrl,
+  parseDeepLink,
+  syncDeepLinkHistory,
+  type AppTab,
+  type DeepLinkState,
+} from './utils/deepLinks';
+import {
+  LANGUAGE_OPTIONS,
+  directionFor,
+  languageUiFor,
+  localeFor,
+  pickLanguage,
+  type Lang,
+} from './utils/i18n';
 import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
+import CreatorCvLink from './components/CreatorCvLink';
 import NovaMark from './components/NovaMark';
 import SectionNarrative from './components/SectionNarrative';
 import {
@@ -62,11 +80,21 @@ const RecentPulse = lazy(() => import('./components/RecentPulse'));
 const MuseumComparator = lazy(() => import('./components/MuseumComparator'));
 const AIAssistant = lazy(() => import('./components/AIAssistant'));
 
-type Tab =
-  | 'hero' | 'dashboard' | 'eras' | 'top' | 'personality' | 'emotions'
-  | 'obsessions' | 'cultural' | 'inner' | 'artist' | 'insights'
-  | 'compare' | 'museums' | 'platforms' | 'quality' | 'statsdeep' | 'achievements'
-  | 'timecapsule' | 'wrapped' | 'pulse' | 'report' | 'upload' | 'aiassistant';
+type Tab = AppTab;
+
+type RoomWidth = 'reading' | 'analytics' | 'explorer';
+
+const EXPLORER_ROOMS = new Set<Tab>(['top', 'cultural', 'artist', 'compare', 'museums']);
+const ANALYTICS_ROOMS = new Set<Tab>([
+  'dashboard', 'eras', 'statsdeep', 'achievements', 'emotions',
+  'obsessions', 'inner', 'platforms', 'quality', 'pulse',
+]);
+
+function roomWidthFor(tab: Tab): RoomWidth {
+  if (EXPLORER_ROOMS.has(tab)) return 'explorer';
+  if (ANALYTICS_ROOMS.has(tab)) return 'analytics';
+  return 'reading';
+}
 
 const pageTransition = { duration: 0.35, ease: 'easeInOut' as const };
 const TOUR_STORAGE_KEY = 'nml_tour_seen';
@@ -308,12 +336,117 @@ function LoadingPanel() {
   );
 }
 
+type CopyLinkStatus = 'idle' | 'copied' | 'error';
+
+interface CopyLinkLabels {
+  copy: string;
+  copyAria: string;
+  copied: string;
+  copiedAria: string;
+  error: string;
+  errorAria: string;
+}
+
+export async function writeClipboardText(value: string) {
+  if (navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Permissions and embedded browsers can reject the modern API even when
+      // it exists. Continue through the local, synchronous fallback below.
+    }
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = value;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.append(textarea);
+  textarea.select();
+
+  try {
+    if (!document.execCommand?.('copy')) throw new Error('Clipboard copy was rejected');
+  } finally {
+    textarea.remove();
+  }
+}
+
+function CopyDeepLinkButton({
+  status,
+  labels,
+  accent,
+  variant,
+  onCopy,
+}: {
+  status: CopyLinkStatus;
+  labels: CopyLinkLabels;
+  accent: string;
+  variant: 'header' | 'menu';
+  onCopy: () => void;
+}) {
+  const copied = status === 'copied';
+  const visualLabel = copied ? labels.copied : status === 'error' ? labels.error : labels.copy;
+  const ariaLabel = copied ? labels.copiedAria : status === 'error' ? labels.errorAria : labels.copyAria;
+
+  return (
+    <button
+      type="button"
+      onClick={onCopy}
+      aria-label={ariaLabel}
+      data-testid={`copy-deep-link-${variant}`}
+      className={variant === 'header'
+        ? 'nova-header-wide-action hidden min-h-11 min-w-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all'
+        : 'flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left font-mono text-xs font-bold transition-colors hover:bg-white/5'}
+      style={variant === 'header'
+        ? { borderColor: `${accent}40`, color: accent, backgroundColor: copied ? `${accent}18` : `${accent}08` }
+        : { color: accent }}
+    >
+      {copied
+        ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" />
+        : <Link2 className="h-4 w-4 shrink-0" aria-hidden="true" />}
+      <span>{visualLabel}</span>
+    </button>
+  );
+}
+
+export function resetRoomViewport(container: HTMLElement | null) {
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  if (!container) return;
+
+  const heading = container.querySelector<HTMLElement>('h1')
+    ?? container.querySelector<HTMLElement>('h2');
+  const focusTarget = heading ?? container;
+  if (!focusTarget.hasAttribute('tabindex')) focusTarget.setAttribute('tabindex', '-1');
+  focusTarget.focus({ preventScroll: true });
+}
+
+function RoomReadyFocus({ activeTab, containerRef }: {
+  activeTab: Tab;
+  containerRef: React.RefObject<HTMLElement | null>;
+}) {
+  useEffect(() => {
+    let settleFrame = 0;
+    const layoutFrame = window.requestAnimationFrame(() => {
+      settleFrame = window.requestAnimationFrame(() => resetRoomViewport(containerRef.current));
+    });
+    return () => {
+      window.cancelAnimationFrame(layoutFrame);
+      window.cancelAnimationFrame(settleFrame);
+    };
+  }, [activeTab, containerRef]);
+
+  return null;
+}
+
 // ─── Boot gate: resolve the initial dataset before mounting the app ───────────
 // The bundled archive is a dynamic import (its own chunk), and a returning
 // visitor's own IndexedDB dataset takes priority - so the app shell paints
 // immediately and the ~150KB default dataset is only fetched when needed.
 interface AppBoot {
   data: MusicDnaData;
+  genreAssignments: GenreAssignment[];
   storedMeta: { savedAt: string; sourceLabel: string } | null;
   restoredAt: string | null;
 }
@@ -326,11 +459,16 @@ function AppDataGate() {
     loadDataset()
       .then((rec): Promise<AppBoot> | AppBoot => {
         if (rec) {
-          return { data: rec.data, storedMeta: { savedAt: rec.savedAt, sourceLabel: rec.sourceLabel }, restoredAt: rec.savedAt };
+          return {
+            data: rec.data,
+            genreAssignments: rec.genreAssignments ?? [],
+            storedMeta: { savedAt: rec.savedAt, sourceLabel: rec.sourceLabel },
+            restoredAt: rec.savedAt,
+          };
         }
-        return loadDefaultDataset().then((data): AppBoot => ({ data, storedMeta: null, restoredAt: null }));
+        return loadDefaultDataset().then((data): AppBoot => ({ data, genreAssignments: [], storedMeta: null, restoredAt: null }));
       })
-      .catch((): Promise<AppBoot> => loadDefaultDataset().then(data => ({ data, storedMeta: null, restoredAt: null })))
+      .catch((): Promise<AppBoot> => loadDefaultDataset().then(data => ({ data, genreAssignments: [], storedMeta: null, restoredAt: null })))
       .then(resolved => { if (!cancelled && resolved) setBoot(resolved); });
     return () => { cancelled = true; };
   }, []);
@@ -341,13 +479,34 @@ function AppDataGate() {
 
 // ─── Inner app uses context ────────────────────────────────────────────────────
 function AppInner({ boot }: { boot: AppBoot }) {
-  const { t, theme, setTheme, tc, lang, setLang } = useApp();
+  const {
+    t,
+    theme,
+    setTheme,
+    tc,
+    lang,
+    setLang,
+    activeTab,
+    setActiveTab,
+    topSubTab,
+    setTopSubTab,
+    selectedArtistName,
+    setSelectedArtistName,
+    selectedAlbumKey,
+    setSelectedAlbumKey,
+    selectedTrackKey,
+    setSelectedTrackKey,
+  } = useApp();
   const reduceMotion = Boolean(useReducedMotion());
-  const activeTab = useApp().activeTab as Tab;
-  const setActiveTab = useApp().setActiveTab as (t: Tab) => void;
-  const [musicData, setMusicData]   = useState<MusicDnaData>(() => boot.data);
+  const [baseMusicData, setBaseMusicData] = useState<MusicDnaData>(() => boot.data);
+  const [genreAssignments, setGenreAssignments] = useState<GenreAssignment[]>(() => boot.genreAssignments);
+  const musicData = useMemo(
+    () => applyGenreAssignments(baseMusicData, genreAssignments),
+    [baseMusicData, genreAssignments],
+  );
   const [showThemes, setShowThemes] = useState(false);
   const [showMobileUtilities, setShowMobileUtilities] = useState(false);
+  const [copyLinkStatus, setCopyLinkStatus] = useState<CopyLinkStatus>('idle');
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
   const [isPersonalArchive, setIsPersonalArchive] = useState(Boolean(boot.storedMeta));
   const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
@@ -357,6 +516,43 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const mainContentRef = useRef<HTMLElement>(null);
   const mobileUtilitiesButtonRef = useRef<HTMLButtonElement>(null);
   const mobileUtilitiesPanelRef = useRef<HTMLDivElement>(null);
+  const previousTabRef = useRef<Tab>(activeTab);
+  const copyResetTimerRef = useRef<number | null>(null);
+
+  const deepLinkState = React.useMemo<DeepLinkState>(() => ({
+    tab: activeTab,
+    topSubTab,
+    selectedArtistName,
+    selectedAlbumKey,
+    selectedTrackKey,
+  }), [activeTab, topSubTab, selectedArtistName, selectedAlbumKey, selectedTrackKey]);
+  const currentDeepLink = React.useMemo(() => buildDeepLink(deepLinkState), [deepLinkState]);
+  const copyLinkLabels: CopyLinkLabels = pickLanguage(lang, {
+    en: {
+        copy: 'Copy link',
+        copyAria: 'Copy a link to this view',
+        copied: 'Link copied',
+        copiedAria: 'Link copied to the clipboard',
+        error: 'Try again',
+        errorAria: 'The link could not be copied. Try again',
+      },
+    es: {
+        copy: 'Copiar enlace',
+        copyAria: 'Copiar un enlace a esta vista',
+        copied: 'Enlace copiado',
+        copiedAria: 'Enlace copiado al portapapeles',
+        error: 'Reintentar',
+        errorAria: 'No se pudo copiar el enlace. Inténtalo de nuevo',
+      },
+    he: {
+        copy: 'העתקת קישור',
+        copyAria: 'העתקת קישור לתצוגה הזאת',
+        copied: 'הקישור הועתק',
+        copiedAria: 'הקישור הועתק ללוח',
+        error: 'ניסיון נוסף',
+        errorAria: 'לא הצלחנו להעתיק את הקישור. אפשר לנסות שוב',
+      },
+  });
 
   // Collapsible nav group state
   const [expandedGroups, setExpandedGroups] = useState<Record<NavGroupId, boolean>>({
@@ -406,6 +602,37 @@ function AppInner({ boot }: { boot: AppBoot }) {
     };
   }, [showMobileUtilities]);
 
+  useEffect(() => () => {
+    if (copyResetTimerRef.current !== null) {
+      window.clearTimeout(copyResetTimerRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (copyResetTimerRef.current !== null) {
+      window.clearTimeout(copyResetTimerRef.current);
+      copyResetTimerRef.current = null;
+    }
+    setCopyLinkStatus('idle');
+  }, [currentDeepLink]);
+
+  const handleCopyDeepLink = useCallback(async () => {
+    try {
+      await writeClipboardText(buildShareUrl(window.location, deepLinkState));
+      setCopyLinkStatus('copied');
+    } catch {
+      setCopyLinkStatus('error');
+    }
+
+    if (copyResetTimerRef.current !== null) {
+      window.clearTimeout(copyResetTimerRef.current);
+    }
+    copyResetTimerRef.current = window.setTimeout(() => {
+      setCopyLinkStatus('idle');
+      copyResetTimerRef.current = null;
+    }, 2_400);
+  }, [deepLinkState]);
+
   const menuItems: MenuItem[] = React.useMemo(() => [
     { id: 'dashboard',   group: 'overview',  label: t.nav.dashboard,   icon: LayoutDashboard, color: tc.c1, secondary: tc.c3, motif: 'grid' },
     { id: 'aiassistant', group: 'overview',  label: t.nav.aiAssistant,  icon: Bot,             color: '#a78bfa', secondary: '#f72585', motif: 'orbit' },
@@ -450,6 +677,54 @@ function AppInner({ boot }: { boot: AppBoot }) {
     isChapter: item.id !== 'upload',
   })), [menuItems, navGroups]);
 
+  useEffect(() => {
+    syncDeepLinkHistory(
+      window.history,
+      window.location.hash,
+      previousTabRef.current,
+      deepLinkState,
+    );
+    previousTabRef.current = activeTab;
+  }, [activeTab, deepLinkState]);
+
+  useEffect(() => {
+    const applyHash = () => {
+      const next = parseDeepLink(window.location.hash);
+      const canonicalHash = buildDeepLink(next);
+
+      if (window.location.hash !== canonicalHash) {
+        window.history.replaceState(null, '', canonicalHash);
+      }
+
+      setShowThemes(false);
+      setShowMobileUtilities(false);
+      setActiveTab(next.tab);
+      setTopSubTab(next.topSubTab);
+      setSelectedArtistName(next.selectedArtistName);
+      setSelectedAlbumKey(next.selectedAlbumKey);
+      setSelectedTrackKey(next.selectedTrackKey);
+    };
+
+    window.addEventListener('hashchange', applyHash);
+    return () => window.removeEventListener('hashchange', applyHash);
+  }, [
+    setActiveTab,
+    setSelectedAlbumKey,
+    setSelectedArtistName,
+    setSelectedTrackKey,
+    setTopSubTab,
+  ]);
+
+  useEffect(() => {
+    const activeItem = menuItems.find(item => item.id === activeTab);
+    if (!activeItem) return;
+    setExpandedGroups(previous => (
+      previous[activeItem.group]
+        ? previous
+        : { ...previous, [activeItem.group]: true }
+    ));
+  }, [activeTab, menuItems]);
+
   const toggleGroup = useCallback((groupId: NavGroupId) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   }, []);
@@ -464,8 +739,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
     }
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-      mainContentRef.current?.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-      mainContentRef.current?.focus({ preventScroll: true });
     });
   }, [menuItems, setActiveTab]);
 
@@ -487,22 +760,49 @@ function AppInner({ boot }: { boot: AppBoot }) {
     return () => window.clearTimeout(id);
   }, [restoredAt]);
 
-  const handleDataLoaded = (newData: MusicDnaData, sourceLabel?: string) => {
-    setMusicData(newData);
+  const handleDataLoaded = (
+    newData: MusicDnaData,
+    sourceLabel?: string,
+    restoredGenreAssignments: GenreAssignment[] = [],
+  ) => {
+    setBaseMusicData(newData);
+    setGenreAssignments(restoredGenreAssignments);
     setIsPersonalArchive(true);
     goToTab('dashboard');
     const label = sourceLabel ?? 'Upload';
-    void saveDataset(newData, label).then(ok => {
+    void saveDataset(newData, label, restoredGenreAssignments).then(ok => {
       if (ok) setStoredMeta({ savedAt: new Date().toISOString(), sourceLabel: label });
     });
   };
+
+  const handleGenreAssignmentsChange = useCallback((
+    nextAssignments: GenreAssignment[],
+    catalog: ArtistGenreCatalogEntry[],
+  ) => {
+    const nextBaseData = baseMusicData.artist_genre_catalog?.length
+      ? baseMusicData
+      : { ...baseMusicData, artist_genre_catalog: catalog };
+    const label = storedMeta?.sourceLabel ?? pickLanguage(lang, {
+      en: 'Nova Music Lab · local genre curation',
+      es: 'Nova Music Lab · curaduría local de géneros',
+      he: 'Nova Music Lab · אוצרות ז׳אנרים מקומית',
+    });
+
+    setBaseMusicData(nextBaseData);
+    setGenreAssignments(nextAssignments);
+    setIsPersonalArchive(true);
+    void saveDataset(nextBaseData, label, nextAssignments).then(ok => {
+      if (ok) setStoredMeta({ savedAt: new Date().toISOString(), sourceLabel: label });
+    });
+  }, [baseMusicData, lang, storedMeta?.sourceLabel]);
 
   const handleClearStored = useCallback(() => {
     void clearDataset();
     setStoredMeta(null);
     setIsPersonalArchive(false);
     setRestoredAt(null);
-    void loadDefaultDataset().then(setMusicData);
+    setGenreAssignments([]);
+    void loadDefaultDataset().then(setBaseMusicData);
   }, []);
 
   const renderNavItem = (item: typeof menuItems[number], group: typeof navGroups[number]) => {
@@ -512,7 +812,8 @@ function AppInner({ boot }: { boot: AppBoot }) {
       <button key={item.id} onClick={() => goToTab(item.id as Tab)}
         aria-current={active ? 'page' : undefined}
         aria-label={`${item.label} - ${group.label}`}
-        className="group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap shrink-0 md:w-full border relative overflow-hidden text-left"
+        title={`${item.label} · ${group.label}`}
+        className="nova-sidebar__item group flex items-center gap-2.5 px-2.5 py-2 rounded-2xl font-mono text-[11px] font-bold uppercase tracking-wider transition-all whitespace-nowrap shrink-0 md:w-full border relative overflow-hidden text-left"
         style={active ? {
           borderColor: `${item.color}60`,
           color: item.color,
@@ -529,9 +830,9 @@ function AppInner({ boot }: { boot: AppBoot }) {
           active={active}
           index={idx}
         />
-        <span className="flex-1 text-left leading-tight">{item.label}</span>
+        <span className="nova-sidebar__label flex-1 text-left leading-tight">{item.label}</span>
         {active && (
-          <span className="hidden md:block h-2 w-2 rounded-full animate-pulse shrink-0"
+          <span className="nova-sidebar__active-dot hidden md:block h-2 w-2 rounded-full animate-pulse shrink-0"
             style={{ backgroundColor: item.secondary, boxShadow: `0 0 10px ${item.secondary}` }} />
         )}
       </button>
@@ -539,16 +840,17 @@ function AppInner({ boot }: { boot: AppBoot }) {
   };
 
   const filteredData = musicData;
+  const languageUi = languageUiFor(lang);
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}>
+    <div className="nova-app-root relative flex min-h-screen min-w-0 flex-col" style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}>
       <Suspense fallback={null}>
         <InteractiveBackdrop data={musicData} />
       </Suspense>
       <DynamicMuseumBackground activeTab={activeTab} data={musicData} />
 
       {/* ── Navbar ── */}
-      <header className="sticky top-0 z-40 flex w-full items-center justify-between gap-2 border-b px-3 py-2 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-3"
+      <header data-testid="museum-app-header" className="nova-app-header sticky top-0 z-40 flex w-full flex-nowrap items-center justify-between gap-2 border-b px-3 py-2 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-3"
         style={{ backgroundColor: `${tc.bg}99`, borderBottomColor: `${tc.c1}18` }}>
         
         {/* Logo */}
@@ -567,37 +869,57 @@ function AppInner({ boot }: { boot: AppBoot }) {
         </button>
 
         {/* Right controls */}
-        <div className="flex items-center justify-end gap-1 md:flex-wrap md:gap-2">
-          {/* Demo-archive signature - only for the bundled Kevin/Lirioth
-              archive; never shown once a visitor loads their own data. */}
-          {!isPersonalArchive && (
-            <div className="hidden lg:flex items-center gap-1.5 rounded-full border px-3 py-1 font-mono text-xs text-gray-400"
-              style={{ borderColor: `${tc.c1}25` }}>
-              <span style={{ color: tc.c1 }} className="font-bold">Kevin Cusnir (Lirioth)</span>
-            </div>
-          )}
+        <div className="flex min-w-0 flex-nowrap items-center justify-end gap-1 md:gap-2">
+          {/* Creator profile remains available throughout the museum, without
+              implying that an uploaded archive belongs to Kevin. */}
+          <CreatorCvLink lang={lang} variant="header" accent={tc.c1} className="nova-header-primary-action" />
+          <CopyDeepLinkButton
+            status={copyLinkStatus}
+            labels={copyLinkLabels}
+            accent={tc.c1}
+            variant="header"
+            onCopy={handleCopyDeepLink}
+          />
           {/* Language toggle */}
           <div
-            className="flex items-center overflow-hidden rounded-full border"
+            className="hidden items-center overflow-hidden rounded-full border xl:flex"
             style={{ borderColor: `${tc.c1}30` }}
             role="group"
-            aria-label={lang === 'en' ? 'Interface language' : 'Idioma de la interfaz'}
+            aria-label={languageUi.groupLabel}
           >
-            {(['es','en'] as const).map(l => (
-              <button key={l} onClick={() => setLang(l)}
-                aria-label={l === 'en' ? 'Switch language to English' : 'Cambiar idioma a español'}
-                aria-pressed={lang === l}
+            {LANGUAGE_OPTIONS.map(option => (
+              <button key={option.code} onClick={() => setLang(option.code)}
+                aria-label={languageUi.switchTo[option.code]}
+                aria-pressed={lang === option.code}
                 className="min-h-11 min-w-11 px-2 font-mono text-xs font-bold uppercase transition-all sm:px-3"
-                style={lang === l
+                style={lang === option.code
                   ? { backgroundColor: tc.c1, color: '#000' }
                   : { color: '#6b7280' }}>
-                {l}
+                {option.shortLabel}
               </button>
             ))}
           </div>
+          <label className="relative grid min-h-11 min-w-14 place-items-center rounded-full border xl:hidden"
+            style={{ borderColor: `${tc.c1}30`, color: tc.c1, backgroundColor: `${tc.c1}08` }}>
+            <span className="sr-only">{languageUi.selectLabel}</span>
+            <select
+              value={lang}
+              onChange={event => setLang(event.target.value as Lang)}
+              aria-label={languageUi.selectLabel}
+              dir={directionFor(lang)}
+              className="min-h-11 w-16 cursor-pointer appearance-none bg-transparent px-2 text-center font-mono text-xs font-bold uppercase outline-none"
+              style={{ color: tc.c1 }}
+            >
+              {LANGUAGE_OPTIONS.map(option => (
+                <option key={option.code} value={option.code}>
+                  {option.emoji} {option.shortLabel}
+                </option>
+              ))}
+            </select>
+          </label>
 
           {/* Theme selector */}
-          <div className="relative hidden md:block">
+          <div className="nova-header-wide-action relative hidden">
             <button onClick={() => { setShowMobileUtilities(false); setShowThemes(v => !v); }}
               aria-haspopup="menu"
               aria-expanded={showThemes}
@@ -631,7 +953,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           {/* Reopen welcome tour */}
           <button onClick={() => setShowTour(true)}
             aria-label={t.onboarding.reopenAria}
-            className="hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all md:flex"
+            className="nova-header-wide-action hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all"
             style={{ borderColor: `${tc.c3}35`, color: tc.c3 }}>
             <Compass className="w-3.5 h-3.5" />
             <span className="hidden sm:block">{t.onboarding.reopenLabel}</span>
@@ -640,14 +962,14 @@ function AppInner({ boot }: { boot: AppBoot }) {
           {/* Load data button */}
           <button onClick={() => goToTab('upload')}
             aria-label={t.loadDataAria}
-            className="hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all md:flex"
+            className="nova-header-wide-action hidden min-h-11 items-center gap-1.5 rounded-full border px-3 font-mono text-xs font-bold transition-all"
             style={{ borderColor: `${tc.c1}40`, color: tc.c1 }}>
             <Upload className="w-3 h-3" />
             <span className="hidden sm:block">{t.loadData}</span>
           </button>
 
           {/* Mobile: theme, tour and data live in one calm utility surface. */}
-          <div className="relative md:hidden">
+          <div className="relative 2xl:hidden">
             <button
               ref={mobileUtilitiesButtonRef}
               type="button"
@@ -655,7 +977,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
               aria-haspopup="dialog"
               aria-expanded={showMobileUtilities}
               aria-controls="mobile-utilities"
-              aria-label={lang === 'en' ? 'Open quick controls' : 'Abrir controles rápidos'}
+              aria-label={pickLanguage(lang, {
+                es: 'Abrir controles rápidos',
+                en: 'Open quick controls',
+                he: 'פתיחת פקדים מהירים',
+              })}
               className="grid min-h-11 min-w-11 place-items-center rounded-full border transition-all"
               style={{ borderColor: `${tc.c1}40`, color: tc.c1, backgroundColor: `${tc.c1}10` }}
             >
@@ -672,7 +998,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
                   exit={{ opacity: 0, y: 8, scale: 0.98 }}
                   transition={{ duration: reduceMotion ? 0 : 0.15 }}
                   role="dialog"
-                  aria-label={lang === 'en' ? 'Quick controls' : 'Controles rápidos'}
+                  aria-label={pickLanguage(lang, {
+                    es: 'Controles rápidos',
+                    en: 'Quick controls',
+                    he: 'פקדים מהירים',
+                  })}
                   className="absolute right-0 top-full z-50 mt-2 w-[min(18rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border p-2 shadow-cyber"
                   style={{ backgroundColor: `${tc.bg}f5`, borderColor: `${tc.c1}30`, backdropFilter: 'blur(18px)' }}
                 >
@@ -714,10 +1044,27 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     <Upload className="h-4 w-4 shrink-0" />
                     <span>{t.loadData}</span>
                   </button>
+
+                  <CopyDeepLinkButton
+                    status={copyLinkStatus}
+                    labels={copyLinkLabels}
+                    accent={tc.c1}
+                    variant="menu"
+                    onCopy={handleCopyDeepLink}
+                  />
+
+                  <CreatorCvLink lang={lang} variant="menu" accent={tc.c1} />
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+          <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {copyLinkStatus === 'copied'
+              ? copyLinkLabels.copiedAria
+              : copyLinkStatus === 'error'
+                ? copyLinkLabels.errorAria
+                : ''}
+          </span>
         </div>
       </header>
 
@@ -733,10 +1080,10 @@ function AppInner({ boot }: { boot: AppBoot }) {
           />
         </Suspense>
       ) : (
-        <div className="flex-1 flex flex-col md:flex-row z-10">
+        <div data-testid="museum-app-shell" className="nova-app-shell z-10 flex w-full min-w-0 flex-1 flex-col md:flex-row">
           {/* Sidebar */}
-          <aside className="hidden md:block md:w-60 shrink-0 border-r md:p-4 md:sticky md:top-[68px] md:self-start md:max-h-[calc(100vh-68px)] md:overflow-y-auto"
-            style={{ backgroundColor: `${tc.bg}60`, borderRightColor: `${tc.c1}10` }}>
+          <aside data-testid="museum-sidebar" className="nova-app-sidebar hidden shrink-0 md:sticky md:block md:self-start md:overflow-y-auto"
+            style={{ backgroundColor: `${tc.bg}60`, borderInlineEndColor: `${tc.c1}10` }}>
             <nav className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-3 pb-2 md:pb-0">
               {navGroups.map(group => {
                 const groupItems = menuItems.filter(item => item.group === group.id);
@@ -746,11 +1093,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
                 return (
                   <section key={group.id} className="flex shrink-0 flex-row gap-1 md:flex-col md:gap-1.5">
                     <button
+                      id={`sidebar-group-trigger-${group.id}`}
                       onClick={() => toggleGroup(group.id)}
-                      className="hidden md:flex w-full items-center justify-between gap-2 px-2.5 pt-1.5 pb-1 cursor-pointer hover:bg-white/5 rounded-lg transition-colors text-left font-mono"
+                      aria-label={group.label}
+                      aria-expanded={isExpanded}
+                      aria-controls={`sidebar-group-${group.id}`}
+                      className="nova-sidebar__group-trigger hidden w-full cursor-pointer items-center justify-between gap-2 rounded-lg px-2.5 pb-1 pt-1.5 text-left font-mono transition-colors hover:bg-white/5 md:flex"
                     >
                       <span
-                        className="text-[9px] font-black uppercase tracking-[0.22em] transition-colors"
+                        className="nova-sidebar__group-label text-[9px] font-black uppercase tracking-[0.22em] transition-colors"
                         style={{ color: groupActive ? group.color : '#64748b' }}
                       >
                         {group.label}
@@ -780,6 +1131,10 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
                     {/* Desktop items container (collapsible) */}
                     <motion.div
+                      id={`sidebar-group-${group.id}`}
+                      aria-labelledby={`sidebar-group-trigger-${group.id}`}
+                      aria-hidden={!isExpanded}
+                      inert={!isExpanded}
                       initial={false}
                       animate={{
                         height: isExpanded ? 'auto' : 0,
@@ -794,7 +1149,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                 );
               })}
             </nav>
-            <div className="hidden md:flex flex-col items-center pt-4 mt-2 border-t gap-1"
+            <div className="nova-sidebar__brand hidden flex-col items-center gap-1 border-t pt-4 mt-2 md:flex"
               style={{ borderTopColor: `${tc.c1}12` }}>
               <span className="font-mono text-[9px] text-gray-600">Nova Music Lab</span>
               {!isPersonalArchive && (
@@ -804,7 +1159,13 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </aside>
 
           {/* Content */}
-          <main ref={mainContentRef} tabIndex={-1} className="relative flex-1 p-4 pb-28 md:p-8 max-w-7xl mx-auto w-full overflow-y-auto focus:outline-none">
+          <main
+            ref={mainContentRef}
+            tabIndex={-1}
+            data-testid="museum-room-main"
+            data-room-width={roomWidthFor(activeTab)}
+            className="nova-room-main relative mx-auto min-w-0 flex-1 p-4 pb-28 focus:outline-none md:p-8"
+          >
             <MuseumRoomTransition items={roomNavigationItems} activeId={activeTab} />
             <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} onNavigate={navigateRoom} />
             <AnimatePresence mode="wait">
@@ -813,11 +1174,9 @@ function AppInner({ boot }: { boot: AppBoot }) {
                 exit={reduceMotion ? { opacity: 1 } : { opacity: 0, y: -10 }}
                 transition={reduceMotion ? { duration: 0 } : pageTransition}
                 className="min-h-full">
-                <Suspense fallback={null}>
+                <Suspense fallback={<LoadingPanel />}>
                   <MuseumChapterHeader activeTab={activeTab} data={filteredData} lang={lang} />
-                </Suspense>
-                <ErrorBoundary key={activeTab}>
-                  <Suspense fallback={<LoadingPanel />}>
+                  <ErrorBoundary key={activeTab}>
                     {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
                     {activeTab === 'aiassistant' && <AIAssistant data={filteredData} />}
                     {activeTab === 'eras'        && <EraExplorer data={filteredData} />}
@@ -825,7 +1184,14 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
                     {activeTab === 'museums'     && <MuseumComparator data={filteredData} primaryLabel={storedMeta?.sourceLabel ?? filteredData.project} />}
                     {activeTab === 'platforms'   && <PlatformsDevices data={filteredData} />}
-                    {activeTab === 'quality'     && <DataQualityCenter data={filteredData} />}
+                    {activeTab === 'quality'     && (
+                      <DataQualityCenter
+                        data={filteredData}
+                        genreAssignments={genreAssignments}
+                        useBundledGenreCatalog={!isPersonalArchive && !baseMusicData.artist_genre_catalog?.length}
+                        onGenreAssignmentsChange={handleGenreAssignmentsChange}
+                      />
+                    )}
                     {activeTab === 'statsdeep'   && <StatsDeepDive data={filteredData} />}
                     {activeTab === 'achievements' && <Achievements data={filteredData} />}
                     {activeTab === 'personality' && <PersonalityRadar data={filteredData} />}
@@ -848,14 +1214,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
                         <SectionNarrative content={t.deepNarratives.upload} accent="c2" />
                         <DataUploader
                           onDataLoaded={handleDataLoaded}
-                          currentData={musicData}
+                          currentData={baseMusicData}
+                          genreAssignments={genreAssignments}
                           storedMeta={storedMeta}
                           onClearStored={handleClearStored}
                         />
                       </div>
                     )}
-                  </Suspense>
-                </ErrorBoundary>
+                  </ErrorBoundary>
+                  <RoomReadyFocus activeTab={activeTab} containerRef={mainContentRef} />
+                </Suspense>
               </motion.div>
             </AnimatePresence>
           </main>
@@ -885,7 +1253,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             <ShieldCheck className="h-5 w-5 shrink-0" style={{ color: tc.c1 }} />
             <span className="max-w-xs text-xs leading-relaxed" style={{ color: 'var(--fg)' }}>
               {t.uploader.restoredNotice(
-                new Date(restoredAt).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-ES', {
+                new Date(restoredAt).toLocaleDateString(localeFor(lang), {
                   day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit',
                 })
               )}

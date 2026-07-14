@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DataUploader from './DataUploader';
 import { AppProvider } from '../context/AppContext';
@@ -23,6 +23,7 @@ const STRINGS = {
       noFilesError:
         'Por favor, sube un CSV de Last.fm/Apple Music, JSON de Spotify/ListenBrainz o JSON/HTML de YouTube Takeout.',
       wizardTitle: 'Elige tu fuente, descarga tu historial y súbelo aquí',
+      formatsLabel: 'Formatos admitidos',
     },
   },
   en: {
@@ -33,6 +34,16 @@ const STRINGS = {
       noFilesError:
         'Please upload Last.fm/Apple Music CSV, Spotify/ListenBrainz JSON or YouTube Takeout JSON/HTML files.',
       wizardTitle: 'Choose your source, download your history and upload it here',
+      formatsLabel: 'Accepted formats',
+    },
+  },
+  he: {
+    uploader: {
+      title: 'העלה את נתוני המוזיקה האמיתיים שלך',
+      browseButton: 'עיין בקבצים מקומיים',
+      wizardTitle: 'בחר את המקור שלך, הורד את ההיסטוריה שלך והעלה אותה לכאן',
+      formatsLabel: 'פורמטים נתמכים',
+      localEyebrow: 'ייבוא פרטי ומקומי',
     },
   },
 };
@@ -44,6 +55,7 @@ describe('DataUploader', () => {
 
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     window.localStorage.clear();
   });
 
@@ -57,13 +69,39 @@ describe('DataUploader', () => {
 
     expect(screen.getByText(STRINGS.es.uploader.title)).toBeInTheDocument();
     expect(screen.getByText(STRINGS.es.uploader.wizardTitle)).toBeInTheDocument();
-    expect(screen.getByText('▶️ YouTube / YouTube Music')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: STRINGS.es.uploader.browseButton })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: STRINGS.es.uploader.dropZoneAriaLabel })
+      screen.getByRole('region', { name: STRINGS.es.uploader.dropZoneAriaLabel })
     ).toBeInTheDocument();
+    expect(within(screen.getByTestId('upload-primary-action')).getByText(STRINGS.es.uploader.formatsLabel)).toBeInTheDocument();
+  });
+
+  it('puts the upload action before a collapsed, accessible source guide', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
+      </AppProvider>
+    );
+
+    const primaryAction = screen.getByTestId('upload-primary-action');
+    const feedback = screen.getByTestId('upload-feedback');
+    const sourceGuide = screen.getByTestId('upload-source-guide') as HTMLDetailsElement;
+    const summary = screen.getByText(STRINGS.en.uploader.wizardTitle).closest('summary');
+
+    expect(primaryAction.compareDocumentPosition(feedback) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(feedback.compareDocumentPosition(sourceGuide) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(sourceGuide.open).toBe(false);
+    expect(summary).toBeInTheDocument();
+    expect(screen.getByText('▶️ YouTube / YouTube Music')).not.toBeVisible();
+
+    await user.click(summary!);
+
+    expect(sourceGuide.open).toBe(true);
+    expect(screen.getByText('▶️ YouTube / YouTube Music')).toBeVisible();
   });
 
   it('shows the "no files" error when an unsupported file extension is selected', async () => {
@@ -88,6 +126,53 @@ describe('DataUploader', () => {
     await user.upload(input, badFile);
 
     expect(await screen.findByText(STRINGS.es.uploader.noFilesError)).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent(STRINGS.es.uploader.noFilesError);
+  });
+
+  it('announces import progress and completion with accessible live regions', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    let releaseRead: (() => void) | undefined;
+
+    class ControlledFileReader {
+      result: string | ArrayBuffer | null = null;
+      onload: ((event: { target: ControlledFileReader }) => void) | null = null;
+
+      readAsText() {
+        releaseRead = () => {
+          this.result = [
+            'Apple Id Number,Event Start Timestamp,Track Description,Artist Name,Container Description,Media Duration In Milliseconds',
+            '123,2026-03-01T10:00:00Z,In Blur,Deafheaven,Infinite Granite,200000',
+          ].join('\n');
+          this.onload?.({ target: this });
+        };
+      }
+    }
+
+    vi.stubGlobal('FileReader', ControlledFileReader);
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, new File(['pending'], 'history.csv', { type: 'text/csv' }));
+
+    const progressbar = await screen.findByRole('progressbar', { name: 'File import progress' });
+    expect(progressbar).toHaveAttribute('aria-valuemin', '0');
+    expect(progressbar).toHaveAttribute('aria-valuemax', '100');
+    expect(progressbar).toHaveAttribute('aria-valuenow');
+    expect(screen.getByRole('status')).toHaveTextContent(/Processing and analyzing your history/i);
+
+    await act(async () => {
+      releaseRead?.();
+    });
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(screen.queryByRole('progressbar')).not.toBeInTheDocument());
+    expect(screen.getByRole('status')).toHaveTextContent(/Loaded 1 file/i);
   });
 
   it('does not call onDataLoaded when an unsupported file extension is selected', async () => {
@@ -164,7 +249,7 @@ describe('DataUploader', () => {
     const parsed = onDataLoaded.mock.calls[0][0];
     expect(parsed.source_summary?.source_type).toBe('apple_music');
     expect(parsed.source_summary?.apple_music_plays).toBe(1);
-    expect(parsed.top_artists[0].name).toBe('Bring Me The Horizon');
+    expect(parsed.top_artists[0].name).toBe('Bring Me the Horizon');
     expect(await screen.findByText('Cobertura del catálogo local de artistas')).toBeInTheDocument();
   });
 
@@ -222,5 +307,22 @@ describe('DataUploader', () => {
     expect(
       screen.getByRole('button', { name: STRINGS.en.uploader.browseButton })
     ).toBeInTheDocument();
+  });
+
+  it('localizes the new primary action and source disclosure in Hebrew', async () => {
+    window.localStorage.setItem('nml_lang', 'he');
+
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={vi.fn()} {...baseProps} />
+      </AppProvider>
+    );
+
+    const primaryAction = within(await screen.findByTestId('upload-primary-action'));
+    expect(primaryAction.getByText(STRINGS.he.uploader.title)).toBeInTheDocument();
+    expect(primaryAction.getByText(STRINGS.he.uploader.localEyebrow)).toBeInTheDocument();
+    expect(primaryAction.getByText(STRINGS.he.uploader.formatsLabel)).toBeInTheDocument();
+    expect(screen.getByText(STRINGS.he.uploader.wizardTitle)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: STRINGS.he.uploader.browseButton })).toBeInTheDocument();
   });
 });

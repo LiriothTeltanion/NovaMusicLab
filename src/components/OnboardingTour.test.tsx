@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import OnboardingTour from './OnboardingTour';
 import { AppProvider } from '../context/AppContext';
@@ -98,6 +98,48 @@ describe('OnboardingTour', () => {
     );
 
     await user.keyboard('{Escape}');
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('moves focus into the modal, traps Tab and restores the opener focus', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const tree = (open: boolean) => (
+      <>
+        <button type="button">Abrir recorrido</button>
+        <AppProvider>
+          <OnboardingTour open={open} onClose={onClose} />
+        </AppProvider>
+      </>
+    );
+    const { rerender } = render(tree(false));
+    const opener = screen.getByRole('button', { name: 'Abrir recorrido' });
+    opener.focus();
+
+    rerender(tree(true));
+    const next = screen.getByRole('button', { name: 'Siguiente' });
+    await waitFor(() => expect(next).toHaveFocus());
+
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Cerrar' })).toHaveFocus();
+    await user.tab({ shift: true });
+    expect(next).toHaveFocus();
+
+    rerender(tree(false));
+    await waitFor(() => expect(opener).toHaveFocus());
+  });
+
+  it('closes when the modal backdrop is pressed', () => {
+    const onClose = vi.fn();
+    render(
+      <AppProvider>
+        <OnboardingTour open onClose={onClose} />
+      </AppProvider>
+    );
+
+    const backdrop = screen.getByRole('dialog').parentElement;
+    expect(backdrop).not.toBeNull();
+    fireEvent.mouseDown(backdrop!);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
