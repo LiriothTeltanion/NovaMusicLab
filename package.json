@@ -31,11 +31,11 @@
   "dependencies": {
     "canvas-confetti": "^1.9.4",
     "dexie": "^4.4.4",
-    "framer-motion": "^12.42.1",
-    "lucide-react": "^1.22.0",
+    "framer-motion": "^12.42.2",
+    "lucide-react": "^1.24.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "recharts": "^3.9.1"
+    "recharts": "^3.9.2"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
