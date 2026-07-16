@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-13T18:37:51.880Z",
+  "sourceFingerprint": "c78943c9290bf5c35655b5c2d4faf1460d63d4ee1e03930570daf97f8bd8752e",
+  "sourceFiles": [
+    "src/data/offline_artist_knowledge.json",
+    "src/data/artist_images.json",
+    "src/data/artist_gallery.json"
+  ],
+  "artistCount": 100,
+  "visualAssetCount": 295,
+  "assetsAwaitingLicenseReview": 171
+}

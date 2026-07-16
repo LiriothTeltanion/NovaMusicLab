@@ -18,6 +18,9 @@ const data = {
   top_albums: [],
 } as unknown as MusicDnaData;
 
+const originalInnerWidth = window.innerWidth;
+const originalInnerHeight = window.innerHeight;
+
 function mockCanvas() {
   const gradient = { addColorStop: vi.fn() };
   const context = {
@@ -58,6 +61,8 @@ afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
   Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: originalInnerWidth });
+  Object.defineProperty(window, 'innerHeight', { configurable: true, value: originalInnerHeight });
 });
 
 describe('InteractiveBackdrop scheduling', () => {
@@ -83,7 +88,7 @@ describe('InteractiveBackdrop scheduling', () => {
     vi.stubGlobal('requestAnimationFrame', raf);
     vi.stubGlobal('cancelAnimationFrame', vi.fn());
 
-    render(<InteractiveBackdrop data={data} />);
+    render(<InteractiveBackdrop data={data} motionMode="expressive" />);
 
     expect(context.fillRect).toHaveBeenCalledTimes(1);
     expect(raf).not.toHaveBeenCalled();
@@ -97,7 +102,7 @@ describe('InteractiveBackdrop scheduling', () => {
     vi.stubGlobal('requestAnimationFrame', raf);
     vi.stubGlobal('cancelAnimationFrame', cancel);
 
-    render(<InteractiveBackdrop data={data} />);
+    render(<InteractiveBackdrop data={data} motionMode="expressive" />);
     expect(raf).toHaveBeenCalledTimes(1);
 
     Object.defineProperty(document, 'hidden', { configurable: true, value: true });
@@ -107,5 +112,31 @@ describe('InteractiveBackdrop scheduling', () => {
     Object.defineProperty(document, 'hidden', { configurable: true, value: false });
     fireEvent(document, new Event('visibilitychange'));
     expect(raf).toHaveBeenCalledTimes(2);
+  });
+
+  it('preserves blob geometry when the canvas follows a viewport resize', () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1_000 });
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 800 });
+    const context = mockCanvas();
+    mockMotionPreference(false);
+    vi.stubGlobal('requestAnimationFrame', vi.fn(() => 1));
+    vi.stubGlobal('cancelAnimationFrame', vi.fn());
+
+    const { container } = render(<InteractiveBackdrop data={data} motionMode="calm" />);
+    const canvas = container.querySelector('canvas');
+    expect(canvas).not.toBeNull();
+    expect(canvas).toHaveAttribute('width', '340');
+    expect(canvas).toHaveAttribute('height', '272');
+
+    context.arc.mockClear();
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1_500 });
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 1_200 });
+    fireEvent(window, new Event('resize'));
+
+    expect(canvas).toHaveAttribute('width', '510');
+    expect(canvas).toHaveAttribute('height', '408');
+    const [firstX, firstY] = context.arc.mock.calls[0];
+    expect(firstX).toBeCloseTo(510 * 0.22);
+    expect(firstY).toBeCloseTo(408 * 0.28);
   });
 });

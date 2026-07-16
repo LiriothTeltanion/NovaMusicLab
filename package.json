@@ -1,22 +1,26 @@
 {
-  "name": "nova-music-dashboard",
+  "name": "nova-music-lab",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0-rc.1",
   "type": "module",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:check": "npm run build && node scripts/check_bundle_budget.mjs",
-    "verify": "npm run lint && npm run audit:data:strict && npm run audit:links && npm run test && npm run build:check",
+    "verify": "npm run lint && npm run audit:data:strict && npm run audit:links && npm run audit:knowledge && npm run audit:privacy && npm run audit:pwa && npm run test && npm run build:check",
     "lint": "oxlint",
     "compile:data": "node scripts/compile_kevin_music_dna.mjs",
     "audit:data": "node scripts/audit_data_quality.mjs",
     "audit:data:strict": "node scripts/audit_data_quality.mjs --strict",
     "audit:links": "node scripts/audit_media_links.mjs --strict",
+    "audit:privacy": "node scripts/audit_public_bundle_privacy.mjs",
+    "audit:pwa": "node scripts/audit_pwa_contract.mjs",
     "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",
+    "knowledge:manifest": "node scripts/build_artist_knowledge_manifest.mjs",
+    "audit:knowledge": "node scripts/audit_artist_knowledge_manifest.mjs",
     "i18n:hebrew": "node scripts/generate_hebrew_ui.mjs",
     "i18n:hebrew:central": "node scripts/generate_hebrew_ui.mjs --central-only",
     "i18n:hebrew:data": "node scripts/generate_hebrew_ui.mjs --json-only",
@@ -26,6 +30,7 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
+    "dexie": "^4.4.4",
     "framer-motion": "^12.42.1",
     "lucide-react": "^1.22.0",
     "react": "^19.2.7",
@@ -42,6 +47,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
     "autoprefixer": "^10.5.2",
+    "fake-indexeddb": "^6.2.5",
     "html-to-image": "^1.11.13",
     "jsdom": "^29.1.1",
     "oxlint": "^1.71.0",

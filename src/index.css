@@ -68,6 +68,11 @@
   --type-tracking-display: -0.06em;
   --type-ink-strong: color-mix(in srgb, var(--fg) 96%, transparent);
   --type-ink-muted: color-mix(in srgb, var(--fg) 67%, transparent);
+  --motion-feedback: 140ms;
+  --motion-navigation: 280ms;
+  --motion-narrative: 560ms;
+  --motion-ambient: 36s;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   
   /* Smoothly transition theme variables */
   transition: --c1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
@@ -163,10 +168,10 @@
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1360px) {
   .nova-app-sidebar {
-    flex-basis: 15rem;
-    inline-size: 15rem;
+    flex-basis: 14rem;
+    inline-size: 14rem;
     padding: 1rem;
   }
 
@@ -200,6 +205,84 @@
   }
 }
 
+.nova-sidebar__tooltip {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-content: center;
+  border: 1px solid color-mix(in srgb, var(--c1) 24%, transparent);
+  border-radius: inherit;
+  padding: 0.35rem;
+  color: var(--fg);
+  text-align: center;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.28);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity var(--motion-feedback) ease, transform var(--motion-feedback) ease;
+  pointer-events: none;
+}
+
+.nova-sidebar__tooltip strong,
+.nova-sidebar__tooltip small {
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+}
+
+.nova-sidebar__tooltip small {
+  margin-top: 0.16rem;
+  color: var(--type-ink-muted);
+}
+
+@media (min-width: 768px) and (max-width: 1359px) {
+  /* The rail must normally remain vertically scrollable on short screens.
+     Temporarily release its clipping only for the item whose flyout is open,
+     allowing the label to sit outside the compact rail without sacrificing
+     access to lower navigation groups. */
+  .nova-app-sidebar:has(.nova-sidebar__item:hover, .nova-sidebar__item:focus-visible, .nova-sidebar__group-trigger:hover, .nova-sidebar__group-trigger:focus-visible) {
+    overflow: visible !important;
+  }
+
+  .nova-sidebar__tooltip {
+    inset-block-start: 50%;
+    inset-block-end: auto;
+    inset-inline-start: calc(100% + 0.65rem);
+    inset-inline-end: auto;
+    min-inline-size: 10rem;
+    max-inline-size: min(18rem, calc(100vw - 7rem));
+    inline-size: max-content;
+    place-content: center start;
+    padding: 0.55rem 0.75rem;
+    text-align: start;
+    transform: translateY(-50%) scale(0.96);
+    transform-origin: center;
+  }
+
+  .nova-sidebar__tooltip strong,
+  .nova-sidebar__tooltip small {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .nova-sidebar__item:hover .nova-sidebar__tooltip,
+  .nova-sidebar__item:focus-visible .nova-sidebar__tooltip,
+  .nova-sidebar__group-trigger:hover .nova-sidebar__tooltip,
+  .nova-sidebar__group-trigger:focus-visible .nova-sidebar__tooltip {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@media (min-width: 1360px) {
+  .nova-sidebar__tooltip {
+    display: none;
+  }
+}
+
 @media (min-width: 1536px) {
   .nova-header-wide-action {
     display: flex;
@@ -225,6 +308,25 @@
   --type-ink-muted: #526177;
 }
 
+[data-motion='expressive'] {
+  --motion-navigation: 320ms;
+  --motion-narrative: 680ms;
+  --motion-ambient: 30s;
+}
+
+[data-motion='calm'] {
+  --motion-navigation: 240ms;
+  --motion-narrative: 460ms;
+  --motion-ambient: 52s;
+}
+
+[data-motion='static'] {
+  --motion-feedback: 1ms;
+  --motion-navigation: 1ms;
+  --motion-narrative: 1ms;
+  --motion-ambient: 1ms;
+}
+
 /* Smoothly transition background colors, text colors, and borders when the theme changes */
 body,
 .glass-panel,
@@ -232,8 +334,8 @@ body,
 h1, h2, h3, h4, h5, h6,
 p, span, button, a, svg {
   transition-property: color, background-color, border-color, box-shadow;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 450ms;
+  transition-timing-function: var(--motion-ease);
+  transition-duration: var(--motion-navigation);
 }
 
 /* ── Tactile press feedback ─────────────────────────────────────────────────
@@ -865,6 +967,8 @@ bdi {
 
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible {
   outline: 2px solid var(--c1);
@@ -1045,7 +1149,6 @@ a:focus-visible,
 
 .dynamic-museum-wave {
   fill: none;
-  stroke: url(#museumWaveGradient);
   stroke-width: 1.35;
   stroke-linecap: round;
   stroke-dasharray: 8 18 32 26;
@@ -1053,7 +1156,6 @@ a:focus-visible,
 }
 
 .dynamic-museum-timebeam {
-  stroke: url(#museumTimelineGradient);
   stroke-width: 1;
   stroke-dasharray: 12 28;
   animation: museum-timebeam 12s linear infinite;
@@ -1097,6 +1199,47 @@ a:focus-visible,
 
 [data-mode="light"] .dynamic-museum-link {
   stroke: color-mix(in srgb, var(--museum-c3) 58%, var(--museum-c1));
+}
+
+/* Room headings receive programmatic focus after navigation so screen-reader
+   users hear the new room. They are not interactive controls and should not
+   retain a screenshot-like browser outline. */
+.nova-room-main :is(h1, h2)[tabindex='-1']:focus {
+  outline: none;
+}
+
+[data-mode='light'] .dynamic-museum-background {
+  filter: saturate(0.78) contrast(0.94);
+}
+
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-field,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-stage,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-beam,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-scanlines,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-timebeam,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-node,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-bar,
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-ring {
+  animation: none;
+}
+
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-grid {
+  animation-duration: calc(var(--museum-tempo) * 2.2);
+}
+
+.dynamic-museum-background[data-motion='calm'] .dynamic-museum-wave {
+  animation-duration: calc(var(--museum-tempo) * 1.45) !important;
+}
+
+.dynamic-museum-background[data-motion='static'] *,
+.dynamic-museum-background[data-motion='static'] *::before,
+.dynamic-museum-background[data-motion='static'] *::after {
+  animation: none !important;
+}
+
+.dynamic-museum-background[data-motion='static'] .dynamic-museum-scanlines,
+.dynamic-museum-background[data-motion='static'] .dynamic-museum-beam {
+  display: none;
 }
 
 @keyframes museum-grid-drift {
@@ -1373,4 +1516,18 @@ a:focus-visible,
   .glass-panel:hover {
     transform: none;
   }
+}
+
+[data-motion='static'] *,
+[data-motion='static'] *::before,
+[data-motion='static'] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+[data-motion='static'] .glass-panel:hover,
+[data-motion='static'] .card-lift:hover {
+  transform: none;
 }

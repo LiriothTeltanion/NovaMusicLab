@@ -1,20 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useId, useMemo } from 'react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import AnimatedParticles from './AnimatedParticles';
+import { museumVisualFor, type MotionMode } from './museumVisualIdentity';
 
 interface DynamicMuseumBackgroundProps {
   activeTab: string;
   data: MusicDnaData;
-}
-
-interface SectionVisual {
-  density: number;
-  amplitude: number;
-  tempo: number;
-  angle: number;
-  particleCount: number;
-  particleIntensity: 'subtle' | 'medium';
+  motionMode?: MotionMode;
 }
 
 interface NodePoint {
@@ -42,30 +35,6 @@ interface HaloRing {
   delay: number;
   colorSlot: number;
 }
-
-const SECTION_VISUALS: Record<string, SectionVisual> = {
-  hero: { density: 0.44, amplitude: 28, tempo: 34, angle: 18, particleCount: 62, particleIntensity: 'medium' },
-  dashboard: { density: 0.52, amplitude: 24, tempo: 30, angle: -8, particleCount: 54, particleIntensity: 'subtle' },
-  eras: { density: 0.48, amplitude: 18, tempo: 38, angle: 0, particleCount: 46, particleIntensity: 'subtle' },
-  top: { density: 0.58, amplitude: 30, tempo: 28, angle: 12, particleCount: 58, particleIntensity: 'medium' },
-  personality: { density: 0.42, amplitude: 34, tempo: 42, angle: -18, particleCount: 50, particleIntensity: 'subtle' },
-  emotions: { density: 0.64, amplitude: 38, tempo: 32, angle: 24, particleCount: 64, particleIntensity: 'medium' },
-  obsessions: { density: 0.72, amplitude: 46, tempo: 22, angle: -24, particleCount: 68, particleIntensity: 'medium' },
-  cultural: { density: 0.45, amplitude: 22, tempo: 40, angle: 10, particleCount: 50, particleIntensity: 'subtle' },
-  inner: { density: 0.62, amplitude: 42, tempo: 46, angle: -14, particleCount: 60, particleIntensity: 'medium' },
-  artist: { density: 0.55, amplitude: 36, tempo: 35, angle: 16, particleCount: 58, particleIntensity: 'medium' },
-  insights: { density: 0.66, amplitude: 32, tempo: 26, angle: -10, particleCount: 56, particleIntensity: 'medium' },
-  compare: { density: 0.5, amplitude: 26, tempo: 34, angle: 4, particleCount: 52, particleIntensity: 'subtle' },
-  platforms: { density: 0.46, amplitude: 24, tempo: 36, angle: -2, particleCount: 50, particleIntensity: 'subtle' },
-  quality: { density: 0.38, amplitude: 16, tempo: 44, angle: 0, particleCount: 42, particleIntensity: 'subtle' },
-  statsdeep: { density: 0.58, amplitude: 28, tempo: 30, angle: 8, particleCount: 56, particleIntensity: 'medium' },
-  achievements: { density: 0.6, amplitude: 34, tempo: 31, angle: 18, particleCount: 58, particleIntensity: 'medium' },
-  timecapsule: { density: 0.46, amplitude: 20, tempo: 42, angle: -6, particleCount: 48, particleIntensity: 'subtle' },
-  wrapped: { density: 0.7, amplitude: 44, tempo: 27, angle: 22, particleCount: 70, particleIntensity: 'medium' },
-  pulse: { density: 0.76, amplitude: 48, tempo: 20, angle: -12, particleCount: 72, particleIntensity: 'medium' },
-  report: { density: 0.4, amplitude: 22, tempo: 48, angle: 6, particleCount: 44, particleIntensity: 'subtle' },
-  upload: { density: 0.34, amplitude: 18, tempo: 44, angle: -4, particleCount: 40, particleIntensity: 'subtle' },
-};
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
@@ -158,10 +127,16 @@ function buildHaloRings(density: number, amplitude: number) {
   });
 }
 
-export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuseumBackgroundProps) {
+export default function DynamicMuseumBackground({
+  activeTab,
+  data,
+  motionMode = 'calm',
+}: DynamicMuseumBackgroundProps) {
   const { tc } = useApp();
-  const section = SECTION_VISUALS[activeTab] ?? SECTION_VISUALS.dashboard;
-  const palette = [tc.c1, tc.c2, tc.c3, tc.c4];
+  const reactId = useId().replaceAll(':', '');
+  const identity = museumVisualFor(activeTab);
+  const section = identity.background;
+  const palette = [identity.palette[0], identity.palette[1], identity.palette[2], tc.c4];
 
   const topGenre = data.top_genres?.[0];
   const topArtistTotal = data.top_artists?.slice(0, 10).reduce((sum, artist) => sum + artist.plays, 0) || 1;
@@ -183,6 +158,13 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
   const nodes = useMemo(() => buildNodes(section.density), [section.density]);
   const spectrumBars = useMemo(() => buildSpectrumBars(section.density, section.amplitude), [section.density, section.amplitude]);
   const haloRings = useMemo(() => buildHaloRings(section.density, section.amplitude), [section.amplitude, section.density]);
+  const visibleWaves = wavePaths.slice(0, motionMode === 'expressive' ? 6 : motionMode === 'calm' ? 4 : 3);
+  const visibleNodes = nodes.slice(0, motionMode === 'expressive' ? nodes.length : motionMode === 'calm' ? 12 : 7);
+  const visibleBars = spectrumBars.slice(0, motionMode === 'expressive' ? 28 : motionMode === 'calm' ? 18 : 12);
+  const visibleRings = haloRings.slice(0, motionMode === 'expressive' ? 5 : motionMode === 'calm' ? 3 : 2);
+  const waveGradientId = `museum-wave-${reactId}`;
+  const timelineGradientId = `museum-timeline-${reactId}`;
+  const glowId = `museum-glow-${reactId}`;
 
   const style = {
     '--museum-c1': palette[0],
@@ -201,7 +183,13 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
   } as React.CSSProperties & Record<`--${string}`, string | number>;
 
   return (
-    <div className="dynamic-museum-background absolute inset-0 pointer-events-none z-0 overflow-hidden" style={style} aria-hidden="true">
+    <div
+      className="dynamic-museum-background absolute inset-0 pointer-events-none z-0 overflow-hidden"
+      style={style}
+      data-family={identity.family}
+      data-motion={motionMode}
+      aria-hidden="true"
+    >
       <div className="dynamic-museum-grid" />
       <div className="dynamic-museum-field dynamic-museum-field-a" />
       <div className="dynamic-museum-field dynamic-museum-field-b" />
@@ -209,28 +197,30 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
       <div className="dynamic-museum-beam dynamic-museum-beam-a" />
       <div className="dynamic-museum-beam dynamic-museum-beam-b" />
       <div className="dynamic-museum-scanlines" />
-      <AnimatedParticles
-        count={section.particleCount}
-        intensity={section.particleIntensity}
-        className="dynamic-museum-particles"
-      />
+      {motionMode === 'expressive' && activeTab !== 'hero' ? (
+        <AnimatedParticles
+          count={section.particleCount}
+          intensity={section.particleIntensity}
+          className="dynamic-museum-particles"
+        />
+      ) : null}
 
       <svg className="dynamic-museum-svg" viewBox="0 0 1200 800" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="museumWaveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id={waveGradientId} x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="var(--museum-c1)" stopOpacity="0" />
             <stop offset="22%" stopColor="var(--museum-c1)" stopOpacity="0.72" />
             <stop offset="52%" stopColor="var(--museum-genre)" stopOpacity="0.92" />
             <stop offset="82%" stopColor="var(--museum-c3)" stopOpacity="0.7" />
             <stop offset="100%" stopColor="var(--museum-c4)" stopOpacity="0" />
           </linearGradient>
-          <linearGradient id="museumTimelineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id={timelineGradientId} x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="var(--museum-c2)" stopOpacity="0" />
             <stop offset="35%" stopColor="var(--museum-c2)" stopOpacity="0.5" />
             <stop offset="68%" stopColor="var(--museum-c4)" stopOpacity="0.46" />
             <stop offset="100%" stopColor="var(--museum-c1)" stopOpacity="0" />
           </linearGradient>
-          <filter id="museumSoftGlow">
+          <filter id={glowId}>
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -239,12 +229,13 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
           </filter>
         </defs>
 
-        <g className="dynamic-museum-waves" filter="url(#museumSoftGlow)">
-          {wavePaths.map((path, index) => (
+        <g className="dynamic-museum-waves" filter={`url(#${glowId})`}>
+          {visibleWaves.map((path, index) => (
             <path
               key={path}
               d={path}
               className="dynamic-museum-wave"
+              stroke={`url(#${waveGradientId})`}
               style={{
                 animationDuration: `${section.tempo + index * 2}s`,
                 animationDelay: `${index * -1.2}s`,
@@ -263,13 +254,14 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
               y1="20"
               y2="780"
               className="dynamic-museum-timebeam"
+              stroke={`url(#${timelineGradientId})`}
               style={{ animationDelay: `${index * -1.7}s`, opacity: (0.1 + section.density * 0.18) * modeOpacity }}
             />
           ))}
         </g>
 
-        <g className="dynamic-museum-rings" filter="url(#museumSoftGlow)">
-          {haloRings.map(ring => (
+        <g className="dynamic-museum-rings" filter={`url(#${glowId})`}>
+          {visibleRings.map(ring => (
             <circle
               key={ring.id}
               cx={ring.cx}
@@ -286,8 +278,8 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
         </g>
 
         <g className="dynamic-museum-constellation">
-          {nodes.slice(1).map((node, index) => {
-            const previous = nodes[index];
+          {visibleNodes.slice(1).map((node, index) => {
+            const previous = visibleNodes[index];
             const distance = Math.hypot(node.x - previous.x, node.y - previous.y);
             if (distance > 340) return null;
 
@@ -303,7 +295,7 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
               />
             );
           })}
-          {nodes.map(node => (
+          {visibleNodes.map(node => (
             <circle
               key={node.id}
               cx={node.x}
@@ -320,7 +312,7 @@ export default function DynamicMuseumBackground({ activeTab, data }: DynamicMuse
         </g>
 
         <g className="dynamic-museum-spectrum">
-          {spectrumBars.map(bar => (
+          {visibleBars.map(bar => (
             <rect
               key={bar.id}
               x={bar.x}

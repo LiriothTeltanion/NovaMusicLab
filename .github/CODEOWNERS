@@ -1,0 +1,9 @@
+# The flagship dataset, privacy contract and release pipeline always receive an
+# explicit owner review before they are merged or deployed.
+* @LiriothTeltanion
+
+/src/data/ @LiriothTeltanion
+/scripts/audit_public_bundle_privacy.mjs @LiriothTeltanion
+/.github/workflows/ @LiriothTeltanion
+/docs/architecture/PRIVACY_THREAT_MODEL.md @LiriothTeltanion
+/docs/data/PUBLIC_DATA_POLICY.md @LiriothTeltanion

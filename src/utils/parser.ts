@@ -15,6 +15,7 @@ import { countryCodeToName, normalizeGenre } from './analytics';
 import artistMetaJson from '../data/artist_meta.json';
 import { buildOfflineArtistKnowledgeSummary } from './offlineArtistKnowledge';
 import { canonicalArtistName } from './artistIdentity';
+import { platformFamily } from './chartIntegrity';
 
 type RawSource = Exclude<PlaySource, 'merged' | 'unknown'>;
 
@@ -731,7 +732,10 @@ export function aggregateData(
     heatmap[hour][weekday]++;
 
     if (item.conn_country) countryCounts[item.conn_country] = (countryCounts[item.conn_country] || 0) + 1;
-    if (item.platform) platformCounts[item.platform] = (platformCounts[item.platform] || 0) + 1;
+    if (item.platform) {
+      const safePlatform = platformFamily(item.platform);
+      platformCounts[safePlatform] = (platformCounts[safePlatform] || 0) + 1;
+    }
   });
 
   const totalPlays = sortedItems.length;

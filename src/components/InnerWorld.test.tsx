@@ -47,4 +47,19 @@ describe('InnerWorld Hebrew and RTL surfaces', () => {
     expect(stars[0]).toHaveAttribute('tabindex', '0');
     expect(stars[0]).toHaveAccessibleName(/השמעות/);
   });
+
+  it('hides the authored flagship identity for a visitor archive', () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    render(
+      <AppProvider>
+        <InnerWorld data={data} isPersonalArchive />
+      </AppProvider>,
+    );
+
+    expect(screen.getByTestId('visitor-inner-world')).toHaveTextContent('Archive-derived constellation');
+    expect(screen.getByRole('heading', { level: 3, name: 'The Genre Constellation' })).toBeInTheDocument();
+    expect(screen.queryByText('Love Who Loves You Back')).not.toBeInTheDocument();
+    expect(screen.queryByText('Tokio Hotel', { exact: false })).not.toBeInTheDocument();
+    expect(screen.queryByText('Own music production with metalcore and synthwave roots')).not.toBeInTheDocument();
+  });
 });

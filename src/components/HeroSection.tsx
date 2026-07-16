@@ -26,6 +26,7 @@ import { buildCoreEmotionalMapProfile } from '../engines/moodCore';
 import { buildArchetypes } from '../utils/identityEngine';
 import { deriveSourceSummary, getSourceTelemetry, type SourceTelemetryId } from '../utils/analytics';
 import { localeFor, pickLanguage, type Lang } from '../utils/i18n';
+import type { MotionMode } from './museumVisualIdentity';
 import './HeroSection.css';
 
 interface HeroSectionProps {
@@ -34,8 +35,12 @@ interface HeroSectionProps {
   onUpload: () => void;
   /** Distinguishes an uploaded/restored archive from the bundled demo museum. */
   isPersonalArchive?: boolean;
+  /** True only after IndexedDB confirms that this exact active archive was saved. */
+  isArchivePersisted?: boolean;
   /** Opens the AI Assistant tab; the welcome card's "Launch Chat Console" CTA needs it. */
   onOpenAssistant?: () => void;
+  /** User-selected ambient quality. System reduced-motion still wins. */
+  motionMode?: MotionMode;
 }
 
 // Stable fallback: an inline object literal here would be a fresh reference on
@@ -65,13 +70,14 @@ interface HeroProfileReportInput {
   moodPercentage: number;
   topArtist: string;
   topArtistPlays: string;
-  peakYear: number;
+  peakSentence: string;
   sourceSentence: string;
 }
 
 interface HeroLocalCopy {
   sourceOverlap: string;
   personalBadge: (years: number) => string;
+  personalTimelineUnavailable: string;
   personalSubtitle: string;
   personalSupport: string;
   personalOwner: string;
@@ -80,6 +86,9 @@ interface HeroLocalCopy {
   singleSource: (source: string) => string;
   profileTitle: (owner: string, genre: string) => string;
   profileReport: (input: HeroProfileReportInput) => string;
+  genreUnavailable: string;
+  peakYearSentence: (year: number) => string;
+  peakYearUnavailableSentence: string;
   archiveHighlights: string;
   assistantLink: string;
   playSignature: (artist: string) => string;
@@ -88,7 +97,12 @@ interface HeroLocalCopy {
   offlineReading: string;
   launchConsole: string;
   initializing: string;
-  decryptingAtlas: (years: number) => string;
+  decryptingAtlas: (years: number | null) => string;
+  personalArchiveState: string;
+  personalArchiveDetail: string;
+  personalArchiveTabOnlyDetail: string;
+  flagshipArchiveState: string;
+  flagshipArchiveDetail: string;
 }
 
 const bidiIsolate = (value: string | number) => `\u2068${value}\u2069`;
@@ -97,6 +111,7 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
   es: {
     sourceOverlap: 'solapamiento de canciones entre fuentes',
     personalBadge: years => `✨ ${years} ${years === 1 ? 'Año' : 'Años'} en Tu Archivo`,
+    personalTimelineUnavailable: '✨ Cronología del archivo no disponible',
     personalSubtitle: '✧ Tu Universo Musical ✧',
     personalSupport: 'Tu archivo está listo para explorar. Añade más datos cuando quieras; todo permanece privado y local en este navegador.',
     personalOwner: 'TU ARCHIVO',
@@ -104,7 +119,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     mergedSource: matchRate => `Fuente del archivo: exportaciones combinadas. El ${matchRate}% de las canciones normalizadas aparece en más de una fuente.`,
     singleSource: source => `Fuente del archivo: ${source}; este archivo no afirma un solapamiento entre fuentes.`,
     profileTitle: (owner, genre) => `EXPEDIENTE DE MÚSICA IA: ${owner} [CLASE ${genre.toUpperCase()}]`,
-    profileReport: input => `La auditoría neural de tu biblioteca revela una firma sonora altamente estructurada. A lo largo de ${input.scrobbles} reproducciones y ${input.hours} horas, tu perfil resuena bajo el arquetipo "${input.archetype}". Tu espectro emocional está dominado por la resonancia "${input.mood}" (intensidad ${input.moodPercentage}%). En el núcleo de tu biblioteca destaca ${input.topArtist}, representando tu obsesión principal con ${input.topArtistPlays} scrobbles. La era pico se centra en ${input.peakYear}. ${input.sourceSentence}`,
+    profileReport: input => `La auditoría neural de tu biblioteca revela una firma sonora altamente estructurada. A lo largo de ${input.scrobbles} reproducciones y ${input.hours} horas, tu perfil resuena bajo el arquetipo "${input.archetype}". Tu espectro emocional está dominado por la resonancia "${input.mood}" (intensidad ${input.moodPercentage}%). En el núcleo de tu biblioteca destaca ${input.topArtist}, representando tu obsesión principal con ${input.topArtistPlays} scrobbles. ${input.peakSentence} ${input.sourceSentence}`,
+    genreUnavailable: 'Género no disponible',
+    peakYearSentence: year => `La era pico se centra en ${year}.`,
+    peakYearUnavailableSentence: 'No hay datos anuales suficientes para identificar una era pico.',
     archiveHighlights: 'Destacados del archivo',
     assistantLink: 'Abrir tu expediente musical IA',
     playSignature: artist => `Reproducir la firma sonora de ${artist}`,
@@ -113,11 +131,19 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     offlineReading: 'Lectura IA offline',
     launchConsole: 'Iniciar Consola de Chat',
     initializing: 'INICIALIZANDO INTERFAZ NEURAL',
-    decryptingAtlas: years => `DESCIFRANDO ATLAS DE ${years} ${years === 1 ? 'AÑO' : 'AÑOS'}…`,
+    decryptingAtlas: years => years === null
+      ? 'CRONOLOGÍA NO DISPONIBLE · ABRIENDO SEÑALES VERIFICADAS…'
+      : `DESCIFRANDO ATLAS DE ${years} ${years === 1 ? 'AÑO' : 'AÑOS'}…`,
+    personalArchiveState: 'Archivo personal',
+    personalArchiveDetail: 'Privado · guardado localmente',
+    personalArchiveTabOnlyDetail: 'Privado · activo solo en esta pestaña',
+    flagshipArchiveState: 'Exposición insignia',
+    flagshipArchiveDetail: 'Archivo curado de demostración',
   },
   en: {
     sourceOverlap: 'cross-source track overlap',
     personalBadge: years => `✨ ${years} ${years === 1 ? 'Year' : 'Years'} in Your Archive`,
+    personalTimelineUnavailable: '✨ Archive timeline unavailable',
     personalSubtitle: '✧ Your Musical Universe ✧',
     personalSupport: 'Your archive is ready to explore. Add more files whenever you want; everything stays private and local in this browser.',
     personalOwner: 'YOUR ARCHIVE',
@@ -125,7 +151,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     mergedSource: matchRate => `Archive source: merged exports. ${matchRate}% of normalized tracks overlap across those sources.`,
     singleSource: source => `Archive source: ${source}; no cross-source overlap is claimed for this archive.`,
     profileTitle: (owner, genre) => `AI MUSIC PROFILE: ${owner} [${genre.toUpperCase()} CLASS]`,
-    profileReport: input => `Neural audit of your library reveals a highly structured sonic signature. Across ${input.scrobbles} plays and ${input.hours} hours, your profile resonates with the "${input.archetype}" archetype. Your emotional spectrum is dominated by "${input.mood}" resonance (intensity ${input.moodPercentage}%). At the core of your listening stands ${input.topArtist}, representing your primary obsession with ${input.topArtistPlays} scrobbles. The peak era centers on ${input.peakYear}. ${input.sourceSentence}`,
+    profileReport: input => `Neural audit of your library reveals a highly structured sonic signature. Across ${input.scrobbles} plays and ${input.hours} hours, your profile resonates with the "${input.archetype}" archetype. Your emotional spectrum is dominated by "${input.mood}" resonance (intensity ${input.moodPercentage}%). At the core of your listening stands ${input.topArtist}, representing your primary obsession with ${input.topArtistPlays} scrobbles. ${input.peakSentence} ${input.sourceSentence}`,
+    genreUnavailable: 'Genre unavailable',
+    peakYearSentence: year => `The peak era centers on ${year}.`,
+    peakYearUnavailableSentence: 'Annual evidence is unavailable, so no peak era is claimed.',
     archiveHighlights: 'Archive highlights',
     assistantLink: 'Open your AI music dossier',
     playSignature: artist => `Play the sonic signature of ${artist}`,
@@ -134,11 +163,19 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     offlineReading: 'Offline AI reading',
     launchConsole: 'Launch Chat Console',
     initializing: 'INITIALIZING NEURAL INTERFACE',
-    decryptingAtlas: years => `DECRYPTING ${years}-YEAR ATLAS…`,
+    decryptingAtlas: years => years === null
+      ? 'TIMELINE UNAVAILABLE · OPENING VERIFIED SIGNALS…'
+      : `DECRYPTING ${years}-YEAR ATLAS…`,
+    personalArchiveState: 'Personal archive',
+    personalArchiveDetail: 'Private · saved locally',
+    personalArchiveTabOnlyDetail: 'Private · active in this tab only',
+    flagshipArchiveState: 'Flagship exhibition',
+    flagshipArchiveDetail: 'Curated demonstration archive',
   },
   he: {
     sourceOverlap: 'חפיפה בין שירים ממקורות שונים',
     personalBadge: years => years === 1 ? '✨ שנה אחת בארכיון שלך' : `✨ ${years} שנים בארכיון שלך`,
+    personalTimelineUnavailable: '✨ ציר הזמן של הארכיון אינו זמין',
     personalSubtitle: '✧ היקום המוזיקלי שלך ✧',
     personalSupport: 'הארכיון שלך מוכן לחקירה. תוכל להוסיף קבצים נוספים מתי שתרצה; הכול נשאר פרטי ומקומי בדפדפן הזה.',
     personalOwner: 'הארכיון שלך',
@@ -146,7 +183,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     mergedSource: matchRate => `מקור הארכיון: ייצואים משולבים. ${bidiIsolate(`${matchRate}%`)} מהשירים המנורמלים חופפים בין המקורות האלה.`,
     singleSource: source => `מקור הארכיון: ${bidiIsolate(source)}; הארכיון הזה אינו טוען לחפיפה בין מקורות.`,
     profileTitle: (owner, genre) => `פרופיל מוזיקלי מבוסס בינה מלאכותית: ${bidiIsolate(owner)} [סיווג ${bidiIsolate(genre)}]`,
-    profileReport: input => `הניתוח העצבי של הספרייה שלך חושף חתימה צלילית מובנית ומובהקת. לאורך ${bidiIsolate(input.scrobbles)} השמעות ו־${bidiIsolate(input.hours)} שעות, הפרופיל שלך מהדהד עם הארכיטיפ „${bidiIsolate(input.archetype)}”. בספקטרום הרגשי שלך שולטת התהודה „${bidiIsolate(input.mood)}” בעוצמה של ${bidiIsolate(`${input.moodPercentage}%`)}. בלב ההאזנה שלך ניצב ${bidiIsolate(input.topArtist)}, האובססיה המרכזית שלך עם ${bidiIsolate(input.topArtistPlays)} השמעות. תקופת השיא מתמקדת בשנת ${bidiIsolate(input.peakYear)}. ${input.sourceSentence}`,
+    profileReport: input => `הניתוח העצבי של הספרייה שלך חושף חתימה צלילית מובנית ומובהקת. לאורך ${bidiIsolate(input.scrobbles)} השמעות ו־${bidiIsolate(input.hours)} שעות, הפרופיל שלך מהדהד עם הארכיטיפ „${bidiIsolate(input.archetype)}”. בספקטרום הרגשי שלך שולטת התהודה „${bidiIsolate(input.mood)}” בעוצמה של ${bidiIsolate(`${input.moodPercentage}%`)}. בלב ההאזנה שלך ניצב ${bidiIsolate(input.topArtist)}, האובססיה המרכזית שלך עם ${bidiIsolate(input.topArtistPlays)} השמעות. ${input.peakSentence} ${input.sourceSentence}`,
+    genreUnavailable: 'הז׳אנר אינו זמין',
+    peakYearSentence: year => `תקופת השיא מתמקדת בשנת ${bidiIsolate(year)}.`,
+    peakYearUnavailableSentence: 'אין נתונים שנתיים מספיקים, ולכן לא נטענת תקופת שיא.',
     archiveHighlights: 'נקודות השיא של הארכיון',
     assistantLink: 'פתח את תיק המוזיקה שלך מבוסס הבינה המלאכותית',
     playSignature: artist => `נגן את החתימה הצלילית של ${bidiIsolate(artist)}`,
@@ -155,7 +195,14 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     offlineReading: 'ניתוח בינה מלאכותית מקומי',
     launchConsole: 'פתח את מסוף הצ׳אט',
     initializing: 'אתחול הממשק העצבי',
-    decryptingAtlas: years => years === 1 ? 'מפענח אטלס של שנה אחת…' : `מפענח אטלס של ${years} שנים…`,
+    decryptingAtlas: years => years === null
+      ? 'ציר הזמן אינו זמין · פותח אותות מאומתים…'
+      : years === 1 ? 'מפענח אטלס של שנה אחת…' : `מפענח אטלס של ${years} שנים…`,
+    personalArchiveState: 'ארכיון אישי',
+    personalArchiveDetail: 'פרטי · שמור מקומית',
+    personalArchiveTabOnlyDetail: 'פרטי · פעיל רק בכרטיסייה הזאת',
+    flagshipArchiveState: 'תערוכת הדגל',
+    flagshipArchiveDetail: 'ארכיון הדגמה באוצרות מלאה',
   },
 };
 
@@ -169,13 +216,15 @@ export default function HeroSection({
   onEnter,
   onUpload,
   isPersonalArchive = false,
+  isArchivePersisted = false,
   onOpenAssistant,
+  motionMode = 'calm',
 }: HeroSectionProps) {
   const metrics = data?.core_metrics || EMPTY_METRICS;
   const topArtist = data?.top_artists?.[0];
   const topTrack = data?.top_tracks?.[0];
   const { t, lang } = useApp();
-  const shouldReduceMotion = Boolean(useReducedMotion());
+  const shouldReduceMotion = Boolean(useReducedMotion()) || motionMode === 'static';
   const locale = localeFor(lang);
   const copy = pickLanguage(lang, HERO_LOCAL_COPY);
   const fmtNum = useCallback((num: number) => num.toLocaleString(locale), [locale]);
@@ -184,14 +233,17 @@ export default function HeroSection({
   // Peak year calculation helper
   const peakYear = useMemo(() => {
     if (!data?.yearly_eras || data.yearly_eras.length === 0) return null;
-    return [...data.yearly_eras].sort((a, b) => b.plays - a.plays)[0];
+    return data.yearly_eras
+      .filter(era => era.plays > 0 && Number.isFinite(era.year))
+      .sort((a, b) => b.plays - a.plays)[0] ?? null;
   }, [data?.yearly_eras]);
 
   const archiveYearSpan = useMemo(() => {
     const years = (data?.yearly_eras ?? [])
       .filter((era) => era.plays > 0)
       .map((era) => era.year);
-    if (years.length < 2) return 1;
+    if (years.length === 0) return null;
+    if (years.length === 1) return 1;
     return Math.max(1, Math.max(...years) - Math.min(...years));
   }, [data?.yearly_eras]);
 
@@ -203,7 +255,9 @@ export default function HeroSection({
 
   const introCopy = isPersonalArchive
     ? {
-        badge: copy.personalBadge(archiveYearSpan),
+        badge: archiveYearSpan === null
+          ? copy.personalTimelineUnavailable
+          : copy.personalBadge(archiveYearSpan),
         subtitle: copy.personalSubtitle,
         support: copy.personalSupport,
       }
@@ -216,6 +270,12 @@ export default function HeroSection({
   const dossierOwner = isPersonalArchive
     ? copy.personalOwner
     : 'KEVIN CUSNIR';
+  const archiveState = isPersonalArchive
+    ? {
+        label: copy.personalArchiveState,
+        detail: isArchivePersisted ? copy.personalArchiveDetail : copy.personalArchiveTabOnlyDetail,
+      }
+    : { label: copy.flagshipArchiveState, detail: copy.flagshipArchiveDetail };
 
   const dominantMood = useMemo(() => {
     const list = data?.top_artists || [];
@@ -231,32 +291,73 @@ export default function HeroSection({
   }, [data?.top_artists, lang]);
 
   // The mood texture is decorative, so it must not compete with the title or
-  // anchor portrait on the critical render path. Paint a smaller static image
-  // after the first frame instead of synchronously encoding a 1440x900 canvas
-  // during React render.
+  // anchor portrait on the critical render path. Its CSS texture is the stable
+  // fallback; richer bitmap art is generated only while the browser is idle.
   const [heroArtUrl, setHeroArtUrl] = useState<string | null>(null);
   useEffect(() => {
     let cancelled = false;
+    let idleTask: number | null = null;
+    let delayedTask: number | null = null;
+    let objectUrl: string | null = null;
     setHeroArtUrl(null);
 
-    const frame = window.requestAnimationFrame(() => {
+    // Static mode and OS reduced-motion both keep the lightweight visual
+    // fallback and skip all decorative canvas/encoding work.
+    if (shouldReduceMotion) return undefined;
+
+    // DOM typings model idle callbacks as universally available, while some
+    // supported browsers still omit them at runtime. Reflective lookup keeps
+    // the fallback reachable without narrowing `window` to `never`.
+    const requestIdle = Reflect.get(window, 'requestIdleCallback') as Window['requestIdleCallback'] | undefined;
+    const cancelIdle = Reflect.get(window, 'cancelIdleCallback') as Window['cancelIdleCallback'] | undefined;
+
+    const generateArtwork = () => {
+      idleTask = null;
+      delayedTask = null;
       const width = 960;
       const height = 600;
       const canvas = document.createElement('canvas');
+      if (
+        typeof canvas.toBlob !== 'function'
+        || typeof URL.createObjectURL !== 'function'
+      ) return;
+
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       paintMoodArt(ctx, width, height, dominantMood.key, `hero::${topArtist?.name ?? 'nova'}`);
-      const artUrl = canvas.toDataURL('image/png');
-      if (!cancelled) setHeroArtUrl(artUrl);
-    });
+
+      // Blob encoding is asynchronous, unlike toDataURL's main-thread PNG
+      // serialization. The object URL is owned by this effect and revoked on
+      // every dependency change or unmount.
+      canvas.toBlob((blob) => {
+        if (cancelled || !blob) return;
+        const artUrl = URL.createObjectURL(blob);
+        if (cancelled) {
+          URL.revokeObjectURL(artUrl);
+          return;
+        }
+        objectUrl = artUrl;
+        setHeroArtUrl(artUrl);
+      }, 'image/png');
+    };
+
+    if (typeof requestIdle === 'function') {
+      idleTask = requestIdle.call(window, generateArtwork, { timeout: 1_400 });
+    } else {
+      delayedTask = window.setTimeout(generateArtwork, 120);
+    }
 
     return () => {
       cancelled = true;
-      window.cancelAnimationFrame(frame);
+      if (idleTask !== null && typeof cancelIdle === 'function') {
+        cancelIdle.call(window, idleTask);
+      }
+      if (delayedTask !== null) window.clearTimeout(delayedTask);
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
-  }, [dominantMood.key, topArtist?.name]);
+  }, [dominantMood.key, shouldReduceMotion, topArtist?.name]);
 
   // Derived live from the real top_artists, per current language - matches
   // whichever archive (bundled demo or a visitor's own upload) is on screen.
@@ -270,13 +371,17 @@ export default function HeroSection({
     if (!topArtist) return null;
     const scrobbles = metrics.total_plays;
     const hours = metrics.listening_hours;
-    const topGenre = topArtist.genre || data?.top_genres?.[0]?.name || 'Alternative';
+    const artistGenre = topArtist.genre?.trim();
+    const rankedGenre = data?.top_genres
+      ?.find(entry => entry.plays > 0 && entry.name.trim().length > 0)
+      ?.name.trim();
+    const topGenre = artistGenre || rankedGenre;
     const moodLabel = dominantMood.name;
     const archetype = heroArchetype;
     const sourceProvenanceSentence = sourceSummary.source_type === 'merged'
       ? copy.mergedSource(metrics.match_rate_pct)
       : copy.singleSource(sourceLabel);
-    const genreClass = topGenre.split(' / ')[0];
+    const genreClass = topGenre?.split(' / ')[0] ?? copy.genreUnavailable;
     const reportInput: HeroProfileReportInput = {
       scrobbles: fmtNum(scrobbles),
       hours: fmtNum(hours),
@@ -285,7 +390,9 @@ export default function HeroSection({
       moodPercentage: Math.round(dominantMood.percentage),
       topArtist: topArtist.name,
       topArtistPlays: fmtNum(topArtist.plays),
-      peakYear: peakYear?.year || 2026,
+      peakSentence: peakYear
+        ? copy.peakYearSentence(peakYear.year)
+        : copy.peakYearUnavailableSentence,
       sourceSentence: sourceProvenanceSentence,
     };
 
@@ -415,18 +522,23 @@ export default function HeroSection({
   };
 
   return (
-    <section className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]" aria-labelledby="nova-hero-title">
-      {heroArtUrl && (
-        <div
-          className="nova-hero__mood-art absolute inset-0 pointer-events-none"
-          aria-hidden="true"
-          style={{ backgroundImage: 'url(' + heroArtUrl + ')' }}
-        />
-      )}
+    <section
+      className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]"
+      data-motion={motionMode}
+      aria-labelledby="nova-hero-title"
+    >
+      <div
+        className="nova-hero__mood-art absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        data-art-source={heroArtUrl ? 'generated' : 'fallback'}
+        style={heroArtUrl ? { backgroundImage: `url(${heroArtUrl})` } : undefined}
+      />
       <div className="nova-hero__aurora nova-hero__aurora--cyan" aria-hidden="true" />
       <div className="nova-hero__aurora nova-hero__aurora--pink" aria-hidden="true" />
       <div className="nova-hero__grid absolute inset-0 pointer-events-none" aria-hidden="true" />
-      {!shouldReduceMotion && <AnimatedParticles count={24} intensity="subtle" />}
+      {!shouldReduceMotion ? (
+        <AnimatedParticles count={motionMode === 'expressive' ? 20 : 8} intensity="subtle" />
+      ) : null}
 
       <div className="nova-hero__viewport relative z-10" data-testid="hero-first-viewport">
         <motion.header
@@ -445,15 +557,27 @@ export default function HeroSection({
             </span>
           </div>
 
-          <div className="nova-hero__source">
-            <span className="nova-hero__live-dot" aria-hidden="true" />
-            <span>{sourceLabel}</span>
-            {sourceSummary.source_type === 'merged' && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span><bdi dir="ltr" className="nova-number-ltr">{metrics.match_rate_pct}%</bdi> {copy.sourceOverlap}</span>
-              </>
-            )}
+          <div className="nova-hero__masthead-meta">
+            <div
+              className="nova-hero__archive-state"
+              aria-label={`${archiveState.label}: ${archiveState.detail}`}
+            >
+              <ShieldCheck className="h-4 w-4" aria-hidden="true" />
+              <span>
+                <strong>{archiveState.label}</strong>
+                <small>{archiveState.detail}</small>
+              </span>
+            </div>
+            <div className="nova-hero__source">
+              <span className="nova-hero__live-dot" aria-hidden="true" />
+              <span>{sourceLabel}</span>
+              {sourceSummary.source_type === 'merged' && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span><bdi dir="ltr" className="nova-number-ltr">{metrics.match_rate_pct}%</bdi> {copy.sourceOverlap}</span>
+                </>
+              )}
+            </div>
           </div>
         </motion.header>
 

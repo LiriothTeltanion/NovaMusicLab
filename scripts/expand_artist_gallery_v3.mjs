@@ -22,7 +22,7 @@ const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'deezer_artist_picture');
 mkdirSync(CACHE_DIR, { recursive: true });
 
 const TARGET_PHOTOS = 4;
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // A pure ASCII-strip key collapses any non-Latin-script name (Hebrew, etc.)

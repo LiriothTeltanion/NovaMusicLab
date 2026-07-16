@@ -148,6 +148,24 @@ function wikimediaFileKey(url) {
   return url;
 }
 
+function gallerySubject(url) {
+  try {
+    return normalize(decodeURIComponent(new URL(url).pathname));
+  } catch {
+    return normalize(url);
+  }
+}
+
+function isOpenMediaPhoto(photo) {
+  if (photo.source === 'wikipedia' || photo.source === 'wikimedia') return true;
+  try {
+    const host = new URL(photo.url).hostname.toLowerCase();
+    return host === 'upload.wikimedia.org' || host === 'commons.wikimedia.org';
+  } catch {
+    return false;
+  }
+}
+
 function buildFlagSet(flagSource) {
   return new Set(
     [...flagSource.matchAll(/^\s{2}'([^']+)':\s\(/gm)]
@@ -169,6 +187,7 @@ const [
   artistGenreCatalog,
   artistImages,
   artistGallery,
+  artistGalleryIdentityPolicy,
   artistMeta,
   artistEnrichment,
   artistMediaLinks,
@@ -183,6 +202,7 @@ const [
   readJson('src/data/music_dna_genre_catalog.json'),
   readJson('src/data/artist_images.json'),
   readJson('src/data/artist_gallery.json'),
+  readJson('src/data/artist_gallery_identity_policy.json'),
   readJson('src/data/artist_meta.json'),
   readJson('src/data/artist_enrichment.json'),
   readJson('src/data/artist_media_links.json'),
@@ -702,9 +722,12 @@ if (odeonMeta?.country !== 'Brazil' || odeonTop?.country !== 'Brazil') {
 }
 
 const suspiciousGalleryPattern = /fileicon|newly_released_slaves|cargo_of_newly_released_slaves|slavery/i;
+const galleryArtifactPattern = /file-type-icons|fileicon|\.pdf(?:\/|\.|$)|\.stl(?:\/|\.|$)/i;
 const invalidGalleryRows = [];
 const duplicateGalleryRows = [];
 const suspiciousGalleryRows = [];
+const galleryArtifactRows = [];
+const galleryIdentityViolations = [];
 for (const [artist, photos] of Object.entries(artistGallery)) {
   const seen = new Set();
   for (const photo of photos) {
@@ -720,6 +743,96 @@ for (const [artist, photos] of Object.entries(artistGallery)) {
     if (artist === 'slaves' && suspiciousGalleryPattern.test(photo.url)) {
       suspiciousGalleryRows.push({ artist, url: photo.url });
     }
+    if (galleryArtifactPattern.test(photo.url)) {
+      galleryArtifactRows.push({ artist, url: photo.url });
+    }
+  }
+}
+
+if (artistGalleryIdentityPolicy.schemaVersion !== 1
+  || !Array.isArray(artistGalleryIdentityPolicy.rules)) {
+  errors.push('Artist gallery identity policy is missing or unsupported.');
+} else {
+  for (const rule of artistGalleryIdentityPolicy.rules) {
+    const allowedSubjects = (rule.allowedOpenMediaSubjects ?? []).map(normalize);
+    const requiredSubjects = (rule.requiredOpenMediaSubjects ?? []).map(normalize);
+    const approvedDirectAssets = rule.approvedDirectAssets ?? [];
+
+    for (const forbiddenKey of rule.forbiddenGalleryKeys ?? []) {
+      if (Object.hasOwn(artistGallery, forbiddenKey)) {
+        galleryIdentityViolations.push({
+          identity: rule.identity,
+          galleryKey: forbiddenKey,
+          reason: 'forbidden alias gallery key',
+          url: null,
+        });
+      }
+    }
+
+    for (const galleryKey of rule.galleryKeys ?? []) {
+      const photos = artistGallery[galleryKey];
+      if (!Array.isArray(photos) || photos.length === 0) {
+        galleryIdentityViolations.push({
+          identity: rule.identity,
+          galleryKey,
+          reason: 'missing trusted gallery/fallback',
+          url: null,
+        });
+        continue;
+      }
+
+      for (const photo of photos.filter(isOpenMediaPhoto)) {
+        const subject = gallerySubject(photo.url);
+        if (!allowedSubjects.some(allowed => subject.includes(allowed))) {
+          galleryIdentityViolations.push({
+            identity: rule.identity,
+            galleryKey,
+            reason: 'open-media subject is not identity-approved',
+            url: photo.url,
+          });
+        }
+      }
+
+      for (const photo of photos.filter(candidate => !isOpenMediaPhoto(candidate))) {
+        if (!approvedDirectAssets.some(asset => (
+          asset.source === photo.source && photo.url.includes(asset.urlToken)
+        ))) {
+          galleryIdentityViolations.push({
+            identity: rule.identity,
+            galleryKey,
+            reason: 'direct-provider asset is not identity-approved',
+            url: photo.url,
+          });
+        }
+      }
+
+      for (const required of requiredSubjects) {
+        if (!photos.some(photo => isOpenMediaPhoto(photo) && gallerySubject(photo.url).includes(required))) {
+          galleryIdentityViolations.push({
+            identity: rule.identity,
+            galleryKey,
+            reason: `missing required open-media subject: ${required}`,
+            url: null,
+          });
+        }
+      }
+
+      for (const requiredSource of rule.requiredDirectSources ?? []) {
+        if (!photos.some(photo => (
+          photo.source === requiredSource
+          && approvedDirectAssets.some(asset => (
+            asset.source === photo.source && photo.url.includes(asset.urlToken)
+          ))
+        ))) {
+          galleryIdentityViolations.push({
+            identity: rule.identity,
+            galleryKey,
+            reason: `missing trusted ${requiredSource} fallback`,
+            url: null,
+          });
+        }
+      }
+    }
   }
 }
 if (invalidGalleryRows.length) {
@@ -730,6 +843,14 @@ if (duplicateGalleryRows.length) {
 }
 if (suspiciousGalleryRows.length) {
   errors.push(`Suspicious Slaves gallery URLs: ${suspiciousGalleryRows.map(row => row.url).join(', ')}`);
+}
+if (galleryArtifactRows.length) {
+  errors.push(`Non-photographic gallery artifacts: ${galleryArtifactRows.map(row => row.url).join(', ')}`);
+}
+if (galleryIdentityViolations.length) {
+  errors.push(`Ambiguous artist gallery identity violations: ${galleryIdentityViolations.map(row => (
+    `${row.galleryKey} (${row.reason}${row.url ? `: ${row.url}` : ''})`
+  )).join('; ')}`);
 }
 const slavesGallery = artistGallery.slaves ?? [];
 if (!slavesGallery.some(photo => photo.url.includes('Slaves_American_band.jpg'))) {
@@ -907,6 +1028,8 @@ const report = {
     invalidGalleryRows,
     duplicateGalleryRows,
     suspiciousGalleryRows,
+    galleryArtifactRows,
+    galleryIdentityViolations,
     slavesGallery,
     singlePhotoArtists: topList(singlePhotoArtists, row => row.artist.name, 20),
     searchOnlyMedia: topList(searchOnlyMedia, row => row.artist.name, 20),
@@ -965,6 +1088,8 @@ if (jsonOutput) {
   write(`- Generic genre budget: ${genericGenreRows.length}/${normalizedTopArtists.length} artists (${genericArtistPercent}% / ${GENERIC_ARTIST_PERCENT_BUDGET}% max), ${genericGenrePlays}/${topArtistPlays} plays (${genericPlayPercent}% / ${GENERIC_PLAY_PERCENT_BUDGET}% max)`);
   write(`- Canonical artist identities: ${report.quality.artistIdentity.verified}/${report.quality.artistIdentity.identities.length} verified`);
   write(`- Suspicious Slaves gallery rows: ${suspiciousGalleryRows.length ? suspiciousGalleryRows.length : 'none'}`);
+  write(`- Non-photographic gallery artifacts: ${galleryArtifactRows.length ? galleryArtifactRows.length : 'none'}`);
+  write(`- Ambiguous-name gallery identity violations: ${galleryIdentityViolations.length ? galleryIdentityViolations.length : 'none'}`);
   write(`- Duplicate gallery photos: ${duplicateGalleryRows.length ? duplicateGalleryRows.length : 'none'}`);
   write(`- Invalid gallery rows: ${invalidGalleryRows.length ? invalidGalleryRows.length : 'none'}`);
   write('');

@@ -1,0 +1,57 @@
+name: Data quality report
+description: Report a wrong attribution, image, genre, link or analytical reconciliation issue.
+title: "data: "
+labels: [area-data, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not upload a real listening archive. Report the smallest affected artist/track/album identity and public evidence required to verify the correction.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Data category
+      options:
+        - Artist identity or alias
+        - Track or album attribution
+        - Genre classification
+        - Artwork or gallery
+        - Country or cultural origin
+        - Spotify, YouTube or official link
+        - Play-count reconciliation
+        - Source capability or confidence
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected
+    attributes:
+      label: Affected public record
+      description: Provide the artist, track, album, room and visible value.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Verification evidence
+      description: Link to authoritative public sources and explain the mismatch. Avoid copied biographies or long quotations.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected correction
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: This report contains no raw listening rows, account identifiers or API credentials.
+          required: true

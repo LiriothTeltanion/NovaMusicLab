@@ -1,11 +1,14 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
 import HeroSection from './HeroSection';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
+const paintMoodArtMock = vi.hoisted(() => vi.fn());
+vi.mock('./MoodArtCanvas', () => ({ paintMoodArt: paintMoodArtMock }));
 
 const data = musicData as unknown as MusicDnaData;
 const singleSourcePlays = data.source_summary?.lastfm_plays ?? data.core_metrics.total_plays;
@@ -41,6 +44,7 @@ describe('HeroSection intro rebalance', () => {
   afterEach(() => {
     cleanup();
     localStorage.clear();
+    vi.restoreAllMocks();
   });
 
   afterAll(() => {
@@ -60,10 +64,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
     expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /open kevin cusnir's cv/i })).toHaveAttribute(
-      'href',
-      '/cv/kevin-cusnir-cv-en.pdf',
-    );
+    expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
     expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Archive Snapshot')).toBeInTheDocument();
     expect(screen.getAllByText('Anchor artist').length).toBeGreaterThan(1);
@@ -95,10 +96,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
     expect(screen.getByRole('button', { name: /entrar al museo sonoro/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /subir mis datos/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /abrir el cv de kevin cusnir/i })).toHaveAttribute(
-      'href',
-      '/cv/kevin-cusnir-cv-es.pdf',
-    );
+    expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
     expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Instantánea del Archivo')).toBeInTheDocument();
     expect(screen.getAllByText('Artista ancla').length).toBeGreaterThan(1);
@@ -157,7 +155,133 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('✨ 1 Year in Your Archive')).toBeInTheDocument();
     expect(screen.getByText('✧ Your Musical Universe ✧')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: /YOUR ARCHIVE/i })).toBeInTheDocument();
+    expect(screen.getByText('Private · active in this tab only')).toBeInTheDocument();
+    expect(screen.getByLabelText('Personal archive: Private · active in this tab only')).toBeInTheDocument();
+    expect(screen.queryByText('Private · saved locally')).not.toBeInTheDocument();
     expect(screen.queryByText(/KEVIN CUSNIR/i)).not.toBeInTheDocument();
+  });
+
+  it('shows saved-local status only when persistence has been confirmed', () => {
+    localStorage.setItem('nml_lang', 'en');
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={data}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          isPersonalArchive
+          isArchivePersisted
+        />
+      </AppProvider>
+    );
+
+    expect(screen.getByText('Private · saved locally')).toBeInTheDocument();
+    expect(screen.getByLabelText('Personal archive: Private · saved locally')).toBeInTheDocument();
+    expect(screen.queryByText('Private · active in this tab only')).not.toBeInTheDocument();
+  });
+
+  it('keeps the persistence truth visibly rendered at the narrow mobile breakpoint', () => {
+    const css = readFileSync('src/components/HeroSection.css', 'utf8');
+    const mobileStart = css.indexOf('@media (max-width: 520px)');
+    const mobileEnd = css.indexOf('@media (min-width: 761px)', mobileStart);
+    const mobileRules = css.slice(mobileStart, mobileEnd);
+
+    expect(mobileStart).toBeGreaterThanOrEqual(0);
+    expect(mobileRules).toMatch(/\.nova-hero__archive-state small\s*\{[^}]*display:\s*block/s);
+    expect(mobileRules).not.toMatch(/\.nova-hero__archive-state small\s*\{[^}]*display:\s*none/s);
+  });
+
+  it.each([
+    ['en', '✨ Archive timeline unavailable'],
+    ['es', '✨ Cronología del archivo no disponible'],
+    ['he', '✨ ציר הזמן של הארכיון אינו זמין'],
+  ] as const)('does not invent a one-year timeline for an empty %s archive', async (lang, unavailableCopy) => {
+    localStorage.setItem('nml_lang', lang);
+    const emptyArchive = {
+      ...singleSourceData,
+      core_metrics: {
+        ...singleSourceData.core_metrics,
+        total_plays: 0,
+        listening_hours: 0,
+        unique_artists: 0,
+        unique_tracks: 0,
+        max_year: 2026,
+      },
+      top_artists: [],
+      top_tracks: [],
+      top_genres: [],
+      yearly_eras: [],
+    } as MusicDnaData;
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={emptyArchive}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          isPersonalArchive
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    expect(await screen.findByText(unavailableCopy)).toBeInTheDocument();
+    expect(document.body).not.toHaveTextContent(/1 year|1 año|שנה אחת/i);
+    expect(document.body).not.toHaveTextContent(/alternative/i);
+    expect(document.body).not.toHaveTextContent('2026');
+  });
+
+  it('keeps a partial artist dossier honest when genre and annual evidence are absent', () => {
+    localStorage.setItem('nml_lang', 'en');
+    const evidenceLimitedArchive = {
+      ...singleSourceData,
+      core_metrics: { ...singleSourceData.core_metrics, max_year: 2026 },
+      top_artists: [{
+        ...singleSourceData.top_artists[0],
+        name: 'Evidence Limited Artist',
+        genre: '',
+      }],
+      top_genres: [],
+      yearly_eras: [],
+    } as MusicDnaData;
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={evidenceLimitedArchive}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          isPersonalArchive
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(/genre unavailable/i);
+    expect(document.body).toHaveTextContent(/annual evidence is unavailable, so no peak era is claimed/i);
+    expect(document.body).not.toHaveTextContent(/alternative/i);
+    expect(document.body).not.toHaveTextContent('2026');
+  });
+
+  it('keeps the visual fallback and skips decorative canvas work in Static mode', () => {
+    localStorage.setItem('nml_lang', 'en');
+    const createElement = vi.spyOn(document, 'createElement');
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={singleSourceData}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    expect(document.querySelector('.nova-hero__mood-art'))
+      .toHaveAttribute('data-art-source', 'fallback');
+    expect(createElement).not.toHaveBeenCalledWith('canvas');
   });
 
   it('names the real archive owner for the bundled demo archive only', () => {
@@ -234,5 +358,75 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('אתחול הממשק העצבי')).toBeInTheDocument();
     expect(screen.getByText('מפענח אטלס של שנה אחת…')).toBeInTheDocument();
     expect(screen.queryByText('Offline AI reading')).not.toBeInTheDocument();
+  });
+
+  it('generates mood art during idle time with async blob URLs and revokes them', () => {
+    localStorage.setItem('nml_lang', 'en');
+    paintMoodArtMock.mockClear();
+    let idleCallback: IdleRequestCallback | null = null;
+    const requestIdleCallback = vi.fn((callback: IdleRequestCallback) => {
+      idleCallback = callback;
+      return 37;
+    });
+    const cancelIdleCallback = vi.fn();
+    vi.stubGlobal('requestIdleCallback', requestIdleCallback);
+    vi.stubGlobal('cancelIdleCallback', cancelIdleCallback);
+
+    const getContext = vi.spyOn(HTMLCanvasElement.prototype, 'getContext')
+      .mockReturnValue({} as CanvasRenderingContext2D);
+    const toBlob = vi.spyOn(HTMLCanvasElement.prototype, 'toBlob')
+      .mockImplementation(callback => callback(new Blob(['nova'], { type: 'image/png' })));
+    const toDataURL = vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL');
+    const createObjectURL = vi.fn(() => 'blob:nova-hero-art');
+    const revokeObjectURL = vi.fn();
+    const createDescriptor = Object.getOwnPropertyDescriptor(URL, 'createObjectURL');
+    const revokeDescriptor = Object.getOwnPropertyDescriptor(URL, 'revokeObjectURL');
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: createObjectURL,
+    });
+    Object.defineProperty(URL, 'revokeObjectURL', {
+      configurable: true,
+      value: revokeObjectURL,
+    });
+
+    try {
+      const { unmount } = render(
+        <AppProvider>
+          <HeroSection data={singleSourceData} onEnter={vi.fn()} onUpload={vi.fn()} />
+        </AppProvider>,
+      );
+
+      expect(requestIdleCallback).toHaveBeenCalledOnce();
+      expect(document.querySelector('.nova-hero__mood-art'))
+        .toHaveAttribute('data-art-source', 'fallback');
+
+      act(() => {
+        idleCallback?.({ didTimeout: false, timeRemaining: () => 20 });
+      });
+
+      expect(getContext).toHaveBeenCalledWith('2d');
+      expect(paintMoodArtMock).toHaveBeenCalledOnce();
+      expect(toBlob).toHaveBeenCalledWith(expect.any(Function), 'image/png');
+      expect(toDataURL).not.toHaveBeenCalled();
+      expect(createObjectURL).toHaveBeenCalledOnce();
+      expect(document.querySelector('.nova-hero__mood-art'))
+        .toHaveAttribute('data-art-source', 'generated');
+
+      unmount();
+      expect(revokeObjectURL).toHaveBeenCalledWith('blob:nova-hero-art');
+      expect(cancelIdleCallback).not.toHaveBeenCalled();
+    } finally {
+      if (createDescriptor) {
+        Object.defineProperty(URL, 'createObjectURL', createDescriptor);
+      } else {
+        Reflect.deleteProperty(URL, 'createObjectURL');
+      }
+      if (revokeDescriptor) {
+        Object.defineProperty(URL, 'revokeObjectURL', revokeDescriptor);
+      } else {
+        Reflect.deleteProperty(URL, 'revokeObjectURL');
+      }
+    }
   });
 });

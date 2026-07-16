@@ -8314,5 +8314,248 @@
         }
       }
     ]
+  },
+  {
+    "name": "Amr Diab",
+    "aliases": [
+      "عمرو دياب",
+      "Amro Diab",
+      "Amr Diyab"
+    ],
+    "origin": {
+      "es": "Puerto Saíd, Egipto",
+      "en": "Port Said, Egypt"
+    },
+    "country": {
+      "es": "Egipto",
+      "en": "Egypt"
+    },
+    "start_year": 1983,
+    "status": {
+      "es": "Cantante, compositor y productor egipcio activo; figura central del pop árabe moderno.",
+      "en": "Active Egyptian singer, composer and producer; a central figure in modern Arabic pop."
+    },
+    "bio": {
+      "es": "Amr Diab convirtió el pop egipcio en una música de alcance panárabe y global. Su voz melódica, las percusiones árabes y una producción abierta al pop mediterráneo, latino y R&B forman un lenguaje inmediatamente reconocible sin perder su centro egipcio.",
+      "en": "Amr Diab turned Egyptian pop into music with pan-Arab and global reach. His melodic voice, Arabic percussion and production open to Mediterranean pop, Latin pop and R&B form an immediately recognizable language without losing its Egyptian center."
+    },
+    "archive_role": {
+      "es": "Abre una ruta mediterránea dentro del museo y evita que la historia del pop quede limitada a un eje anglófono.",
+      "en": "He opens a Mediterranean route through the museum and keeps its pop history from being limited to an Anglophone axis."
+    },
+    "sound_evolution": {
+      "es": "Desde sus primeros discos de los años ochenta hasta la expansión internacional de Nour el Ain y Tamally Maak, su catálogo integra nuevas tecnologías y ritmos globales alrededor de una identidad árabe estable.",
+      "en": "From his early-1980s records through the international reach of Nour el Ain and Tamally Maak, his catalog integrates new technology and global rhythms around a stable Arabic identity."
+    },
+    "why_it_matters": {
+      "es": "Su presencia amplía la cartografía cultural del archivo: demuestra que modernidad, tradición y éxito masivo pueden convivir en la misma señal.",
+      "en": "His presence expands the archive's cultural cartography: modernity, tradition and mass appeal can coexist in the same signal."
+    },
+    "signature_moods": {
+      "es": [
+        "pop mediterráneo",
+        "romance nocturno",
+        "pulso árabe",
+        "calidez global"
+      ],
+      "en": [
+        "Mediterranean pop",
+        "night romance",
+        "Arabic pulse",
+        "global warmth"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Nour el Ain",
+        "year": 1996,
+        "description": {
+          "es": "El gran punto de expansión internacional, con una melodía mediterránea que cruzó idiomas y mercados.",
+          "en": "The major international breakthrough, driven by a Mediterranean melody that crossed languages and markets."
+        }
+      },
+      {
+        "title": "Tamally Maak",
+        "year": 2000,
+        "description": {
+          "es": "Una síntesis elegante de balada árabe, pop moderno y romanticismo de alcance global.",
+          "en": "An elegant synthesis of Arabic balladry, modern pop and globally resonant romance."
+        }
+      },
+      {
+        "title": "Lealy Nahary",
+        "year": 2004,
+        "description": {
+          "es": "Producción pulida y rítmica que consolida su lenguaje de pop árabe contemporáneo.",
+          "en": "Polished, rhythmic production that consolidates his contemporary Arabic-pop language."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Sigur Rós",
+    "aliases": [
+      "Sigur Ros"
+    ],
+    "origin": {
+      "es": "Reikiavik, Islandia",
+      "en": "Reykjavík, Iceland"
+    },
+    "country": {
+      "es": "Islandia",
+      "en": "Iceland"
+    },
+    "start_year": 1994,
+    "status": {
+      "es": "Banda islandesa activa de post-rock, ambient y experimentación orquestal.",
+      "en": "Active Icelandic band spanning post-rock, ambient music and orchestral experimentation."
+    },
+    "bio": {
+      "es": "Sigur Rós construye paisajes donde la voz, las guitarras arqueadas, el silencio y la escala orquestal convierten una canción en espacio. Su música puede sentirse íntima y monumental al mismo tiempo, como clima emocional más que como una estructura de rock convencional.",
+      "en": "Sigur Rós builds landscapes where voice, bowed guitar, silence and orchestral scale turn a song into a place. Their music can feel intimate and monumental at once, working like emotional weather rather than conventional rock structure."
+    },
+    "archive_role": {
+      "es": "Es la sala panorámica del museo: una referencia para ambient, post-rock y escucha contemplativa de largo recorrido.",
+      "en": "They are the museum's panoramic room: a reference point for ambient, post-rock and long-form contemplative listening."
+    },
+    "sound_evolution": {
+      "es": "Desde el post-rock expansivo de Ágætis byrjun y ( ) hasta la luminosidad de Takk…, la tensión de Kveikur y la quietud madura de ÁTTA, la banda cambia de densidad sin perder su firma atmosférica.",
+      "en": "From the expansive post-rock of Ágætis byrjun and ( ) through the light of Takk…, the tension of Kveikur and the mature stillness of ÁTTA, the band changes density without losing its atmospheric signature."
+    },
+    "why_it_matters": {
+      "es": "Demuestra que la intensidad no necesita velocidad: puede nacer de la paciencia, el espacio y una acumulación casi cinematográfica.",
+      "en": "They show that intensity does not require speed; it can emerge from patience, space and almost cinematic accumulation."
+    },
+    "signature_moods": {
+      "es": [
+        "asombro",
+        "paisaje glaciar",
+        "quietud monumental",
+        "catarsis lenta"
+      ],
+      "en": [
+        "awe",
+        "glacial landscape",
+        "monumental stillness",
+        "slow catharsis"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "Ágætis byrjun",
+        "year": 1999,
+        "description": {
+          "es": "El álbum que definió su escala internacional: post-rock amplio, frágil y profundamente islandés.",
+          "en": "The album that defined their international scale: expansive, fragile and distinctly Icelandic post-rock."
+        }
+      },
+      {
+        "title": "( )",
+        "year": 2002,
+        "description": {
+          "es": "Una obra sin títulos convencionales que lleva la voz y la textura hacia un espacio todavía más abstracto.",
+          "en": "A work without conventional titles that pushes voice and texture into an even more abstract space."
+        }
+      },
+      {
+        "title": "Takk…",
+        "year": 2005,
+        "description": {
+          "es": "Su etapa más luminosa y accesible, sin abandonar la paciencia ni la escala orquestal.",
+          "en": "Their most luminous and accessible phase, without abandoning patience or orchestral scale."
+        }
+      },
+      {
+        "title": "ÁTTA",
+        "year": 2023,
+        "description": {
+          "es": "Un regreso sereno y oscuro donde las cuerdas y el espacio pesan tanto como la banda.",
+          "en": "A serene, shadowed return where strings and space carry as much weight as the band."
+        }
+      }
+    ]
+  },
+  {
+    "name": "Aviv Geffen",
+    "aliases": [
+      "אביב גפן"
+    ],
+    "origin": {
+      "es": "Ramat Gan, Israel",
+      "en": "Ramat Gan, Israel"
+    },
+    "country": {
+      "es": "Israel",
+      "en": "Israel"
+    },
+    "start_year": 1992,
+    "status": {
+      "es": "Cantautor, compositor y productor israelí activo; figura central del rock alternativo hebreo.",
+      "en": "Active Israeli singer-songwriter, composer and producer; a central figure in Hebrew alternative rock."
+    },
+    "bio": {
+      "es": "Aviv Geffen convirtió vulnerabilidad, inconformismo y escritura confesional en una voz generacional del rock israelí. Piano, guitarra y producción dramática sostienen canciones que se mueven entre intimidad, protesta y gran escenario.",
+      "en": "Aviv Geffen turned vulnerability, nonconformity and confessional writing into a generational voice in Israeli rock. Piano, guitar and dramatic production support songs that move between intimacy, protest and the large stage."
+    },
+    "archive_role": {
+      "es": "Conecta el museo con su entorno hebreo e israelí y añade una genealogía local de rock alternativo, autor y memoria cultural.",
+      "en": "He connects the museum to its Hebrew and Israeli context, adding a local genealogy of alternative rock, songwriting and cultural memory."
+    },
+    "sound_evolution": {
+      "es": "Desde el impulso juvenil de sus discos de los noventa hasta producciones más amplias y colaborativas, mantiene una voz de autor directa mientras cambia el tamaño del arreglo.",
+      "en": "From the youthful urgency of his 1990s records to broader and more collaborative productions, he keeps a direct authorial voice while changing the scale of the arrangement."
+    },
+    "why_it_matters": {
+      "es": "Aporta contexto regional real: la identidad musical del archivo no solo mira hacia escenas internacionales, también conserva lengua, lugar y memoria cercana.",
+      "en": "He adds real regional context: the archive's musical identity does not look only toward international scenes; it also preserves language, place and nearby memory."
+    },
+    "signature_moods": {
+      "es": [
+        "confesión",
+        "rebeldía",
+        "melancolía hebrea",
+        "memoria generacional"
+      ],
+      "en": [
+        "confession",
+        "rebellion",
+        "Hebrew melancholy",
+        "generational memory"
+      ]
+    },
+    "key_albums": [
+      {
+        "title": "זה רק אור הירח",
+        "year": 1992,
+        "description": {
+          "es": "El debut que presentó su escritura vulnerable y su identidad de outsider dentro del rock israelí.",
+          "en": "The debut that introduced his vulnerable writing and outsider identity within Israeli rock."
+        }
+      },
+      {
+        "title": "עכשיו מעונן",
+        "year": 1993,
+        "description": {
+          "es": "El punto de consolidación generacional: rock alternativo, tensión social y confesión personal.",
+          "en": "The generational consolidation point: alternative rock, social tension and personal confession."
+        }
+      },
+      {
+        "title": "המכתב",
+        "year": 1996,
+        "description": {
+          "es": "Una etapa de escritura más amplia y dramática, sostenida por melodía y producción de gran formato.",
+          "en": "A broader, more dramatic writing phase supported by melody and large-scale production."
+        }
+      },
+      {
+        "title": "יומן מסע",
+        "year": 2000,
+        "description": {
+          "es": "Un diario de cambio de milenio que equilibra intimidad, memoria y ambición pop-rock.",
+          "en": "A turn-of-the-millennium travel diary balancing intimacy, memory and pop-rock ambition."
+        }
+      }
+    ]
   }
 ]

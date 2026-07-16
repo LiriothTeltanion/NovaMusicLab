@@ -2,11 +2,19 @@
 // iTunes Search API (no auth, no key). Results are baked into static JSON;
 // the app itself never calls this at runtime.
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const targets = JSON.parse(fs.readFileSync(
-  'C:/Users/kevin/AppData/Local/Temp/claude/C--Users-kevin-OneDrive-Escritorio-NovaMusicScan/fdc294b3-fb92-48a7-ad44-84b11918ce7f/scratchpad/media_targets.json',
-  'utf8'
-));
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const targetArg = process.argv[2];
+if (!targetArg) {
+  throw new Error('Usage: node scripts/fetch_itunes_art.mjs <media_targets.json>');
+}
+const targetPath = path.resolve(process.cwd(), targetArg);
+const targets = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+if (!Array.isArray(targets.albums) || !Array.isArray(targets.tracks)) {
+  throw new TypeError('media_targets.json must contain albums[] and tracks[].');
+}
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -85,7 +93,7 @@ for (const [i, t] of targets.tracks.entries()) {
   await sleep(350);
 }
 
-const outDir = 'C:/Users/kevin/OneDrive/Escritorio/NovaMusicScan/Sources/nova-music-dashboard/src/data';
-fs.writeFileSync(outDir + '/album_images.json', JSON.stringify(albums, null, 2) + '\n');
-fs.writeFileSync(outDir + '/track_images.json', JSON.stringify(tracks, null, 2) + '\n');
+const outDir = path.join(ROOT, 'src', 'data');
+fs.writeFileSync(path.join(outDir, 'album_images.json'), JSON.stringify(albums, null, 2) + '\n');
+fs.writeFileSync(path.join(outDir, 'track_images.json'), JSON.stringify(tracks, null, 2) + '\n');
 console.log(`\nDONE. Albums: ${albumHits}/${targets.albums.length} | Tracks: ${trackHits}/${targets.tracks.length}`);

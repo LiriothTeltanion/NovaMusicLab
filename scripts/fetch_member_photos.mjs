@@ -17,7 +17,7 @@ const OUTPUT_PATH = join(ROOT, 'src', 'data', 'member_images.json');
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'member_images');
 mkdirSync(CACHE_DIR, { recursive: true });
 
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // A pure ASCII-strip cache key collapses any name written in a non-Latin

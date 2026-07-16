@@ -15,10 +15,10 @@ function writeLine(message = '') {
 function printUsage() {
   writeLine(`
 Usage:
-  npm run compile:data -- --source-dir <export-directory> [--output <dataset-path>] [--catalog-output <catalog-path>]
+  npm run compile:data -- --source-dir <export-directory> [--lastfm-file <csv-path>] [--output <dataset-path>] [--catalog-output <catalog-path>]
 
 The export directory can contain any combination of:
-  kevincusnir.csv
+  one Last.fm CSV at the export root (or an explicit --lastfm-file)
   my_spotify_data/Spotify Extended Streaming History/Streaming_History_Audio_*.json
   historial de videos/historial de reproducciones.html
 `);
@@ -38,6 +38,7 @@ function parseArguments(args) {
   }
 
   let sourceDir = '';
+  let lastfmFilePath = null;
   let outputPath = defaultOutputPath;
   let genreCatalogOutputPath = defaultGenreCatalogOutputPath;
   let outputWasCustomized = false;
@@ -48,6 +49,9 @@ function parseArguments(args) {
 
     if (argument === '--source-dir') {
       sourceDir = path.resolve(process.cwd(), optionValue(args, index, argument));
+      index += 1;
+    } else if (argument === '--lastfm-file') {
+      lastfmFilePath = path.resolve(process.cwd(), optionValue(args, index, argument));
       index += 1;
     } else if (argument === '--output') {
       outputPath = path.resolve(process.cwd(), optionValue(args, index, argument));
@@ -69,6 +73,9 @@ function parseArguments(args) {
   if (!fs.existsSync(sourceDir) || !fs.statSync(sourceDir).isDirectory()) {
     throw new Error(`Source directory does not exist or is not a directory: ${sourceDir}`);
   }
+  if (lastfmFilePath && (!fs.existsSync(lastfmFilePath) || !fs.statSync(lastfmFilePath).isFile())) {
+    throw new Error(`Last.fm CSV does not exist or is not a file: ${lastfmFilePath}`);
+  }
 
   if (outputWasCustomized && !catalogOutputWasCustomized) {
     const extension = path.extname(outputPath);
@@ -76,7 +83,7 @@ function parseArguments(args) {
     genreCatalogOutputPath = path.join(path.dirname(outputPath), `${basename}_genre_catalog${extension || '.json'}`);
   }
 
-  return { help: false, sourceDir, outputPath, genreCatalogOutputPath };
+  return { help: false, sourceDir, lastfmFilePath, outputPath, genreCatalogOutputPath };
 }
 
 function readOptionalFile(filePath, label) {
@@ -105,6 +112,23 @@ function readSpotifyExports(sourceDir) {
   return filenames.map((filename) => readOptionalFile(path.join(spotifyDir, filename), 'SPOTIFY')).filter(Boolean);
 }
 
+function findLastfmFile(sourceDir, explicitPath) {
+  if (explicitPath) return explicitPath;
+
+  const candidates = fs.readdirSync(sourceDir, { withFileTypes: true })
+    .filter(entry => entry.isFile() && path.extname(entry.name).toLowerCase() === '.csv')
+    .map(entry => path.join(sourceDir, entry.name))
+    .sort((left, right) => left.localeCompare(right));
+
+  if (candidates.length > 1) {
+    throw new Error(
+      `Multiple root-level CSV files were found. Select the Last.fm export explicitly with --lastfm-file: ${candidates.map(candidate => path.basename(candidate)).join(', ')}`,
+    );
+  }
+
+  return candidates[0] ?? null;
+}
+
 async function loadParser() {
   const vite = await createServer({
     root: repoRoot,
@@ -122,7 +146,11 @@ async function loadParser() {
 }
 
 async function compileData(options) {
-  const lastfmText = readOptionalFile(path.join(options.sourceDir, 'kevincusnir.csv'), 'LAST.FM');
+  const lastfmFilePath = findLastfmFile(options.sourceDir, options.lastfmFilePath);
+  const lastfmText = lastfmFilePath
+    ? readOptionalFile(lastfmFilePath, 'LAST.FM')
+    : null;
+  if (!lastfmFilePath) console.warn('[LAST.FM] No root-level CSV was found; continuing with other sources.');
   const spotifyJsonTexts = readSpotifyExports(options.sourceDir);
   const youtubeText = readOptionalFile(
     path.join(options.sourceDir, 'historial de videos', 'historial de reproducciones.html'),

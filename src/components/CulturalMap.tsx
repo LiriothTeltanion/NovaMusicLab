@@ -12,6 +12,7 @@ import { directionFor, localeFor, pickLanguage, type Lang } from '../utils/i18n'
 
 interface CulturalMapProps {
   data: MusicDnaData;
+  isPersonalArchive?: boolean;
 }
 
 interface CountryMetaLocale {
@@ -114,7 +115,7 @@ const COUNTRY_META: Record<string, CountryMeta> = {
   },
 };
 
-export default function CulturalMap({ data }: CulturalMapProps) {
+export default function CulturalMap({ data, isPersonalArchive = false }: CulturalMapProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const { lang, t } = useApp();
   // Artist-origin geography is compiled from every counted play with a
@@ -127,8 +128,76 @@ export default function CulturalMap({ data }: CulturalMapProps) {
   // was connected from, not where the music came from.
   const listeningCountries = data.countries.filter(c => c.country && c.country !== 'Unknown' && c.plays > 0);
   const maxPlays = Math.max(...countries.map(c => c.plays), 1);
-  const sceneTags = getCulturalSceneTags(lang);
   const locale = localeFor(lang);
+  const originNames = countries.slice(0, 3).map(country => localizeCountryName(country.country, lang));
+  const originList = new Intl.ListFormat(locale, { style: 'long', type: 'conjunction' }).format(originNames);
+  const visitorNarrative = React.useMemo(() => ({
+    eyebrow: pickLanguage(lang, {
+      es: 'Geografía del archivo',
+      en: 'Archive geography',
+      he: 'גאוגרפיית הארכיון',
+    }),
+    title: pickLanguage(lang, {
+      es: 'Mapea la música sin inventar la identidad del oyente.',
+      en: 'Map the music without inventing the listener.',
+      he: 'מיפוי המוזיקה בלי להמציא את זהות המאזין.',
+    }),
+    body: pickLanguage(lang, {
+      es: 'Esta vista usa únicamente países de origen de artistas resueltos en el archivo activo. Describe la música representada, no la nacionalidad, las raíces ni la biografía de quien escucha.',
+      en: 'This view uses only resolved artist-origin countries from the active archive. It describes the represented music, not the listener’s nationality, roots or biography.',
+      he: 'התצוגה משתמשת רק במדינות המוצא של אמנים שזוהו בארכיון הפעיל. היא מתארת את המוזיקה המיוצגת, לא את הלאום, השורשים או הביוגרפיה של המאזין.',
+    }),
+    insights: [
+      {
+        title: pickLanguage(lang, { es: 'Origen', en: 'Origin', he: 'מוצא' }),
+        body: pickLanguage(lang, {
+          es: 'Cada país se pondera por reproducciones con metadatos de origen disponibles.',
+          en: 'Each country is weighted by plays with available artist-origin metadata.',
+          he: 'כל מדינה משוקללת לפי השמעות שעבורן זמינים נתוני מוצא של האמן.',
+        }),
+      },
+      {
+        title: pickLanguage(lang, { es: 'Cobertura', en: 'Coverage', he: 'כיסוי' }),
+        body: originGeography.isCompleteHistory
+          ? pickLanguage(lang, {
+              es: `${Math.round(originGeography.coveragePct)}% de las reproducciones tiene un origen de artista resuelto.`,
+              en: `${Math.round(originGeography.coveragePct)}% of plays have a resolved artist origin.`,
+              he: `ל־${Math.round(originGeography.coveragePct)}% מההשמעות יש מוצא אמן מזוהה.`,
+            })
+          : pickLanguage(lang, {
+              es: 'Este archivo heredado solo permite mapear los artistas principales disponibles.',
+              en: 'This legacy archive can only map its available top artists.',
+              he: 'בארכיון הישן הזה אפשר למפות רק את האמנים המובילים הזמינים.',
+            }),
+      },
+      {
+        title: pickLanguage(lang, { es: 'Límite', en: 'Boundary', he: 'גבול' }),
+        body: pickLanguage(lang, {
+          es: 'El país del artista y el país desde donde se escuchó son señales diferentes y se muestran por separado.',
+          en: 'Artist origin and the country where listening happened are different signals and remain separate.',
+          he: 'מוצא האמן והמדינה שבה התבצעה ההאזנה הם אותות שונים ומוצגים בנפרד.',
+        }),
+      },
+    ],
+    dataNote: pickLanguage(lang, {
+      es: 'La ausencia de metadatos permanece sin resolver; nunca se convierte en una identidad probable.',
+      en: 'Missing metadata remains unresolved; it is never converted into a plausible identity.',
+      he: 'מטא־דאטה חסר נשאר בלתי מזוהה; הוא לעולם לא הופך לזהות משוערת.',
+    }),
+  }), [lang, originGeography.coveragePct, originGeography.isCompleteHistory]);
+  const sceneTags = isPersonalArchive
+    ? countries.slice(0, 8).map(country => {
+        const meta = COUNTRY_META[country.country];
+        const share = originGeography.knownOriginPlays
+          ? (country.plays / originGeography.knownOriginPlays) * 100
+          : 0;
+        const shareLabel = share >= 0.5 ? `${Math.round(share)}%` : '<1%';
+        return {
+          tag: `${meta?.flag ?? '🌐'} ${localizeCountryName(country.country, lang)} · ${shareLabel}`,
+          color: meta?.color ?? '#94a3b8',
+        };
+      })
+    : getCulturalSceneTags(lang);
   const originScopeNote = originGeography.isCompleteHistory
     ? t.cultural.originScopeFull(
         originGeography.knownOriginPlays.toLocaleString(locale),
@@ -136,9 +205,58 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         Math.round(originGeography.coveragePct),
       )
     : t.cultural.originScopeLegacy;
-  const heroDescription = originGeography.isCompleteHistory
-    ? t.cultural.heroDesc(countries.length)
-    : t.cultural.heroDescLegacy;
+  const heroTitle = isPersonalArchive
+    ? pickLanguage(lang, {
+        es: 'Huella de origen de los artistas',
+        en: 'Artist-origin footprint',
+        he: 'מפת מוצא האמנים',
+      })
+    : t.cultural.heroTitle;
+  const heroDescription = isPersonalArchive
+    ? countries.length > 0
+      ? pickLanguage(lang, {
+          es: `Este archivo contiene evidencia de origen para artistas de ${countries.length} países${originList ? `, con mayor peso en ${originList}` : ''}. Estos datos describen el catálogo, no las raíces de quien escucha.`,
+          en: `This archive contains origin evidence for artists from ${countries.length} countries${originList ? `, led by ${originList}` : ''}. These signals describe the catalog, not the listener’s roots.`,
+          he: `בארכיון יש עדויות מוצא לאמנים מ־${countries.length} מדינות${originList ? `, בעיקר ${originList}` : ''}. האותות מתארים את הקטלוג, לא את שורשי המאזין.`,
+        })
+      : pickLanguage(lang, {
+          es: 'Este archivo todavía no contiene metadatos de origen de artistas suficientes para construir el mapa.',
+          en: 'This archive does not yet contain enough artist-origin metadata to build the map.',
+          he: 'בארכיון עדיין אין מספיק נתוני מוצא של אמנים כדי לבנות את המפה.',
+        })
+    : originGeography.isCompleteHistory
+      ? t.cultural.heroDesc(countries.length)
+      : t.cultural.heroDescLegacy;
+  const conclusionDescription = isPersonalArchive
+    ? countries.length > 0
+      ? pickLanguage(lang, {
+          es: `Los orígenes de artistas resueltos abarcan ${countries.length} países${originList ? `; las señales principales son ${originList}` : ''}. Es una lectura del archivo musical, no una afirmación sobre la nacionalidad o identidad personal del oyente.`,
+          en: `Resolved artist origins span ${countries.length} countries${originList ? `; the strongest signals are ${originList}` : ''}. This is a reading of the music archive, not a claim about the listener’s nationality or personal identity.`,
+          he: `מוצאי האמנים שזוהו משתרעים על ${countries.length} מדינות${originList ? `; האותות הבולטים הם ${originList}` : ''}. זו קריאה של ארכיון המוזיקה, לא טענה על הלאום או הזהות האישית של המאזין.`,
+        })
+      : pickLanguage(lang, {
+          es: 'Conclusión no disponible: faltan orígenes de artistas resueltos en este archivo.',
+          en: 'Conclusion unavailable: this archive has no resolved artist origins yet.',
+          he: 'המסקנה אינה זמינה: עדיין אין בארכיון מוצאי אמנים מזוהים.',
+        })
+    : t.cultural.conclusionDesc;
+  const visitorOriginLabel = pickLanguage(lang, {
+    es: 'Origen de artista resuelto',
+    en: 'Resolved artist origin',
+    he: 'מוצא אמן מזוהה',
+  });
+  const languageDistributionTitle = isPersonalArchive
+    ? pickLanguage(lang, {
+        es: 'Idioma de las canciones',
+        en: 'Song language',
+        he: 'שפת השירים',
+      })
+    : t.cultural.languageDistribution;
+  const visitorLanguageUnavailable = pickLanguage(lang, {
+    es: 'No disponible con evidencia suficiente. El país de origen de un artista no demuestra el idioma de una canción, por lo que Nova no fabrica esta distribución.',
+    en: 'Unavailable with sufficient evidence. An artist’s origin country does not prove a song’s language, so Nova does not fabricate this distribution.',
+    he: 'לא זמין ברמת ודאות מספקת. מדינת המוצא של אמן אינה מוכיחה את שפת השיר, ולכן Nova אינה ממציאה את ההתפלגות הזו.',
+  });
 
   // Language distribution follows the music's origin countries
   const languageData = React.useMemo(() => {
@@ -179,14 +297,14 @@ export default function CulturalMap({ data }: CulturalMapProps) {
 
   return (
     <div data-testid="cultural-map" className="min-w-0 space-y-10 animate-fade-in" dir={directionFor(lang)}>
-      <SectionNarrative content={t.deepNarratives.cultural} accent="c4" />
+      <SectionNarrative content={isPersonalArchive ? visitorNarrative : t.deepNarratives.cultural} accent="c4" />
 
       {/* Hero narrative */}
       <div className="glass-panel p-7 rounded-3xl border-l-4 border-l-cyberCyan relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-cyberCyan/5 blur-[60px] rounded-full pointer-events-none" />
         <div className="relative z-10 space-y-3">
           <h3 className="text-xl font-bold text-white">
-            {t.cultural.heroTitle}
+            {heroTitle}
           </h3>
           <p className="text-sm text-gray-300 leading-relaxed">
             {heroDescription}
@@ -240,7 +358,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                   animate="animate"
                   onClick={() => setSelected(isSelected ? null : c.country)}
                   aria-pressed={isSelected}
-                  aria-label={`${localizeCountryName(c.country, lang)} · ${c.plays.toLocaleString(locale)} · ${localeMeta.lang} · ${localeMeta.scene}`}
+                  aria-label={isPersonalArchive
+                    ? `${localizeCountryName(c.country, lang)} · ${c.plays.toLocaleString(locale)} · ${visitorOriginLabel}`
+                    : `${localizeCountryName(c.country, lang)} · ${c.plays.toLocaleString(locale)} · ${localeMeta.lang} · ${localeMeta.scene}`}
                   className={`glass-panel min-h-32 min-w-0 w-full rounded-2xl border-2 p-4 text-start transition-all ${isSelected ? 'scale-[1.015]' : ''}`}
                   style={{ borderColor: isSelected ? meta.color : 'transparent' }}
                 >
@@ -255,7 +375,9 @@ export default function CulturalMap({ data }: CulturalMapProps) {
                     </span>
                   </div>
                   <p className="break-words text-sm font-bold leading-tight text-white [overflow-wrap:anywhere]">{localizeCountryName(c.country, lang)}</p>
-                  <p className="mt-0.5 break-words text-xs font-mono text-gray-500 [overflow-wrap:anywhere]">{localeMeta.lang}</p>
+                  <p className="mt-0.5 break-words text-xs font-mono text-gray-500 [overflow-wrap:anywhere]">
+                    {isPersonalArchive ? visitorOriginLabel : localeMeta.lang}
+                  </p>
                   <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
                     <motion.div className="h-full rounded-full"
                       style={{ backgroundColor: meta.color }}
@@ -300,23 +422,29 @@ export default function CulturalMap({ data }: CulturalMapProps) {
           <div>
             <div className="flex items-center gap-2 mb-5">
               <Languages className="w-5 h-5 text-cyberPink" />
-              <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{t.cultural.languageDistribution}</h3>
+              <h3 className="text-sm font-mono font-bold text-white uppercase tracking-widest">{languageDistributionTitle}</h3>
             </div>
-            <div className="space-y-4">
-              {languageData.map(({ label, pct, pctLabel, color }, i) => (
-                <div key={label} className="space-y-1.5">
-                  <div className="flex min-w-0 justify-between gap-3 text-xs font-mono">
-                    <span className="min-w-0 break-words font-bold text-gray-300 [overflow-wrap:anywhere]">{label}</span>
-                    <span style={{ color }} className="font-bold">{pctLabel}</span>
+            {isPersonalArchive ? (
+              <p className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-sm leading-relaxed text-gray-400">
+                {visitorLanguageUnavailable}
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {languageData.map(({ label, pct, pctLabel, color }, i) => (
+                  <div key={label} className="space-y-1.5">
+                    <div className="flex min-w-0 justify-between gap-3 text-xs font-mono">
+                      <span className="min-w-0 break-words font-bold text-gray-300 [overflow-wrap:anywhere]">{label}</span>
+                      <span style={{ color }} className="font-bold">{pctLabel}</span>
+                    </div>
+                    <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
+                      <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
+                        initial={{ width: 0 }} animate={{ width: `${Math.max(pct, 0.75)}%` }}
+                        transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: 'easeOut' }} />
+                    </div>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
-                    <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
-                      initial={{ width: 0 }} animate={{ width: `${Math.max(pct, 0.75)}%` }}
-                      transition={{ duration: 0.9, delay: 0.3 + i * 0.1, ease: 'easeOut' }} />
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -355,7 +483,7 @@ export default function CulturalMap({ data }: CulturalMapProps) {
         <div className="space-y-1.5">
           <p className="text-xs font-mono font-bold text-cyberCyan uppercase tracking-wider">{t.cultural.conclusionTitle}</p>
           <p className="text-sm text-gray-300 leading-relaxed">
-            {t.cultural.conclusionDesc}
+            {conclusionDescription}
           </p>
         </div>
       </div>

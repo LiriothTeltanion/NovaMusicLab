@@ -1,0 +1,65 @@
+name: Feature proposal
+description: Propose a focused museum, analytics, import or platform improvement.
+title: "feat: "
+labels: [enhancement, needs-triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Strong proposals explain the visitor problem, the evidence needed, the privacy boundary and how the feature fits the Quick Tour, Full Museum or Lab Tools journey.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What should become easier, clearer or more trustworthy?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: journey
+    attributes:
+      label: Product area
+      options:
+        - Quick Tour
+        - Full Museum
+        - Lab Tools
+        - Import and storage
+        - Data quality and provenance
+        - Design system and accessibility
+        - Release and portfolio presentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experience
+      description: Describe the interaction, visual behavior and expected outcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Data and provenance requirements
+      description: Which supported sources provide the necessary evidence? What should happen when evidence is unavailable?
+    validations:
+      required: true
+
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Privacy and network impact
+      description: State whether this adds storage, external requests, exports or new public data.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: completion
+    attributes:
+      label: Definition of done
+      options:
+        - label: Works in English, Spanish and Hebrew/RTL where user-facing copy changes.
+        - label: Includes keyboard, reduced-motion and responsive behavior.
+        - label: Does not fabricate unavailable data.

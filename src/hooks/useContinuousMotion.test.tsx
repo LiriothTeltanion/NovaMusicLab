@@ -1,4 +1,4 @@
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useRef } from 'react';
 import { useContinuousMotion } from './useContinuousMotion';
@@ -12,7 +12,7 @@ function ViewportProbe() {
   const targetRef = useRef<HTMLDivElement>(null);
   const allowed = useContinuousMotion(targetRef);
   return (
-    <div ref={targetRef} data-testid="motion-target">
+    <div ref={targetRef} data-testid="motion-target" data-motion="running">
       <output data-testid="motion-state">{allowed ? 'running' : 'paused'}</output>
     </div>
   );
@@ -47,6 +47,39 @@ afterEach(() => {
 });
 
 describe('useContinuousMotion', () => {
+  it('treats the app root Static mode as authoritative and follows mode changes', async () => {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    installMotionQuery(false);
+    const { rerender } = render(
+      <div className="nova-app-root" data-motion="static">
+        <Probe />
+      </div>,
+    );
+
+    expect(screen.getByTestId('motion-state')).toHaveTextContent('paused');
+
+    rerender(
+      <div className="nova-app-root" data-motion="calm">
+        <Probe />
+      </div>,
+    );
+    await waitFor(() => {
+      expect(screen.getByTestId('motion-state')).toHaveTextContent('running');
+    });
+  });
+
+  it('finds Static above a targeted consumer with an unrelated motion marker', () => {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: false });
+    installMotionQuery(false);
+    render(
+      <div className="nova-app-root" data-motion="static">
+        <ViewportProbe />
+      </div>,
+    );
+
+    expect(screen.getByTestId('motion-state')).toHaveTextContent('paused');
+  });
+
   it('tracks reduced-motion changes without remounting', () => {
     Object.defineProperty(document, 'hidden', { configurable: true, value: false });
     const media = installMotionQuery(false);

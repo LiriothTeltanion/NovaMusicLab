@@ -62,8 +62,9 @@ describe('chart integrity helpers', () => {
 
   it('recognizes privacy-safe platform families', () => {
     expect(platformFamily('Android-tablet OS 8.1.0 API 27')).toBe('Android tablet');
-    expect(platformFamily('Partner SCEI sony_tv;ps4;hash;;tpapi')).toBe('Smart TV');
+    expect(platformFamily('Partner SCEI sony_tv;ps4;hash;;tpapi')).toBe('PlayStation');
     expect(platformFamily('YouTube Takeout HTML')).toBe('YouTube import');
+    expect(platformFamily('YouTube import')).toBe('YouTube import');
   });
 
   it('derives YTD from the last observed local date', () => {

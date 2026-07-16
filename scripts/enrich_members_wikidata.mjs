@@ -17,7 +17,7 @@ const OUTPUT_PATH = join(ROOT, 'src', 'data', 'member_enrichment.json');
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'wikidata_members');
 mkdirSync(CACHE_DIR, { recursive: true });
 
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const MUSICIAN_OCCUPATIONS = new Set([

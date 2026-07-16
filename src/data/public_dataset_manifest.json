@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "datasetKind": "flagship",
+  "privacyTier": "curated-public",
+  "analysisTimezone": "Asia/Jerusalem",
+  "allowedSections": [
+    "project",
+    "generated_at",
+    "core_metrics",
+    "top_artists",
+    "top_tracks",
+    "top_albums",
+    "top_genres",
+    "yearly_eras",
+    "sessions",
+    "obsessions",
+    "artist_origin_countries",
+    "countries",
+    "heatmap",
+    "daily_plays",
+    "monthly_activity",
+    "platform_breakdown",
+    "source_summary",
+    "knowledge_summary",
+    "records"
+  ],
+  "prohibitedExactSections": [
+    "raw_events",
+    "raw_exports",
+    "connection_history",
+    "account_profile",
+    "ip_history",
+    "device_identifiers",
+    "precise_locations"
+  ],
+  "reviewedExactSections": {
+    "sessions": "published-curated",
+    "obsessions": "published-curated",
+    "daily_plays": "published-curated",
+    "platform_breakdown": "redacted",
+    "recent_pulse": "published-curated"
+  },
+  "notes": [
+    "The flagship dataset intentionally publishes reviewed listening aggregates; it does not contain raw export rows.",
+    "Platform telemetry is reduced to broad device families; raw models, versions, user-agent strings and device identifiers are omitted.",
+    "Every exact-granularity section must be reviewed again before a refreshed public dataset is committed.",
+    "Visitor imports remain browser-local and are not covered by this public-bundle manifest."
+  ]
+}

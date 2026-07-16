@@ -20,15 +20,15 @@ export const LANGUAGE_OPTIONS: readonly LanguageOption[] = [
 export const DOCUMENT_METADATA: Record<Lang, { title: string; description: string }> = {
   es: {
     title: 'Nova Music Lab ✧ Tu ADN musical',
-    description: 'Un museo visual, estadístico y emocional que explora tu historial de escucha de Spotify y Last.fm.',
+    description: 'Un museo musical trilingüe y local que convierte exportaciones de Spotify, Last.fm, Apple Music, ListenBrainz y YouTube en análisis, historias y arte generativo con evidencia.',
   },
   en: {
     title: 'Nova Music Lab ✧ Your Musical DNA',
-    description: 'A visual, statistical and emotional museum that explores your Spotify and Last.fm listening history.',
+    description: 'A trilingual, local-first music museum that turns Spotify, Last.fm, Apple Music, ListenBrainz and YouTube exports into evidence-linked analytics, stories and generative art.',
   },
   he: {
     title: 'Nova Music Lab ✧ הדנ״א המוזיקלי שלך',
-    description: 'מוזיאון חזותי, סטטיסטי ורגשי שחוקר את היסטוריית ההאזנה שלך ב-Spotify וב-Last.fm.',
+    description: 'מוזיאון מוזיקלי תלת־לשוני ומקומי שהופך את היסטוריית ההאזנה שלך מייצואי Spotify, Last.fm, Apple Music, ListenBrainz ו-YouTube לניתוחים, סיפורים ואמנות גנרטיבית מבוססי ראיות.',
   },
 };
 

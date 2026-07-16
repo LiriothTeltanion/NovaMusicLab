@@ -21,18 +21,55 @@ import {
 import { parseMusicSources, ParseError } from '../utils/parser';
 import type { GenreAssignment, MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
-import { downloadExport, parseExport } from '../utils/datasetStorage';
+import {
+  downloadExport,
+  parseExport,
+  type DatasetClearResult,
+  type DatasetSaveResult,
+} from '../utils/datasetStorage';
 import { localeFor, pickLanguage } from '../utils/i18n';
 import { motion } from 'framer-motion';
 
 const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
+const NOVA_BACKUP_SNIFF_LENGTH = 300;
+
+function hasNovaBackupMarker(text: string): boolean {
+  return text.slice(0, NOVA_BACKUP_SNIFF_LENGTH).includes('"nova_music_export"');
+}
+
+function isNovaBackupEnvelope(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object'
+    && value !== null
+    && !Array.isArray(value)
+    && Object.prototype.hasOwnProperty.call(value, 'nova_music_export');
+}
+
+export type DatasetOperationKind = 'import' | 'clear';
+
+export interface DatasetOperationToken {
+  id: number;
+  kind: DatasetOperationKind;
+}
+
+export interface DatasetOperationCoordinator {
+  active: DatasetOperationToken | null;
+  acquire: (kind: DatasetOperationKind) => DatasetOperationToken | null;
+  isCurrent: (operation: DatasetOperationToken) => boolean;
+  release: (operation: DatasetOperationToken) => void;
+}
 
 interface DataUploaderProps {
-  onDataLoaded: (data: MusicDnaData, sourceLabel?: string, genreAssignments?: GenreAssignment[]) => void;
+  onDataLoaded: (
+    data: MusicDnaData,
+    sourceLabel?: string,
+    genreAssignments?: GenreAssignment[],
+    operation?: DatasetOperationToken,
+  ) => void | DatasetSaveResult | Promise<void | DatasetSaveResult>;
   currentData: MusicDnaData;
   genreAssignments?: GenreAssignment[];
   storedMeta: { savedAt: string; sourceLabel: string } | null;
-  onClearStored: () => void;
+  onClearStored: (operation?: DatasetOperationToken) => Promise<DatasetClearResult | void>;
+  operationCoordinator: DatasetOperationCoordinator;
 }
 
 export default function DataUploader({
@@ -41,6 +78,7 @@ export default function DataUploader({
   genreAssignments = [],
   storedMeta,
   onClearStored,
+  operationCoordinator,
 }: DataUploaderProps) {
   const { tc, t, lang } = useApp();
   const locale = localeFor(lang);
@@ -87,8 +125,11 @@ export default function DataUploader({
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [clearingStored, setClearingStored] = useState(false);
+  const [showClearConfirmation, setShowClearConfirmation] = useState(false);
   const [knowledgeSummary, setKnowledgeSummary] = useState<MusicDnaData['knowledge_summary'] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cancelClearRef = useRef<HTMLButtonElement>(null);
   const [parsingLogs, setParsingLogs] = useState<string[]>([]);
   const [progressPercent, setProgressPercent] = useState(0);
   const consoleRef = useRef<HTMLDivElement>(null);
@@ -106,10 +147,103 @@ export default function DataUploader({
     icon: providerIcons[index] ?? Files,
     color: [tc.c1, '#1DB954', '#ff0033', tc.c3, tc.c2, tc.c4][index] ?? tc.c1,
   }));
+  const clearCopy = pickLanguage(lang, {
+    en: {
+      busy: 'Clearing…',
+      failed: 'The local archive could not be cleared. It remains active and no data was changed.',
+      stale: 'A newer archive action in another Nova tab took priority. This older Clear request changed nothing.',
+      idleLock: 'Import and Clear run as one local operation at a time.',
+      importLock: 'Import and local save are still running. Clear unlocks when they finish.',
+      clearLock: 'The saved archive is being cleared. New imports unlock when it finishes.',
+      confirmTitle: 'Confirm local archive removal',
+      confirmBody: 'Only the saved browser copy below will be removed. Export a backup first if you may need it again.',
+      source: 'Exact saved source',
+      saved: 'Saved time',
+      confirm: 'Yes, clear this archive',
+      cancel: 'Cancel',
+    },
+    es: {
+      busy: 'Borrando…',
+      failed: 'No se pudo borrar el archivo local. Sigue activo y no se modificó ningún dato.',
+      stale: 'Una acción de archivo más reciente en otra pestaña de Nova tuvo prioridad. Esta solicitud de borrado antigua no cambió nada.',
+      idleLock: 'Importar y Borrar se ejecutan como una sola operación local a la vez.',
+      importLock: 'La importación y el guardado local siguen en curso. Borrar se habilitará al terminar.',
+      clearLock: 'Se está borrando el archivo guardado. Las importaciones se habilitarán al terminar.',
+      confirmTitle: 'Confirma el borrado del archivo local',
+      confirmBody: 'Solo se eliminará la copia guardada en este navegador. Exporta una copia antes si podrías necesitarla de nuevo.',
+      source: 'Fuente guardada exacta',
+      saved: 'Hora de guardado',
+      confirm: 'Sí, borrar este archivo',
+      cancel: 'Cancelar',
+    },
+    he: {
+      busy: 'מנקים…',
+      failed: 'לא הצלחנו לנקות את הארכיון המקומי. הוא נשאר פעיל ולא בוצע שינוי בנתונים.',
+      stale: 'פעולת ארכיון חדשה יותר בכרטיסיית Nova אחרת קיבלה קדימות. בקשת הניקוי הישנה לא שינתה דבר.',
+      idleLock: 'ייבוא וניקוי רצים כפעולה מקומית אחת בכל פעם.',
+      importLock: 'הייבוא והשמירה המקומית עדיין פעילים. הניקוי ייפתח בסיום.',
+      clearLock: 'הארכיון השמור נמחק. ייבוא חדש ייפתח בסיום.',
+      confirmTitle: 'אישור מחיקת הארכיון המקומי',
+      confirmBody: 'רק העותק השמור בדפדפן הזה יימחק. אם ייתכן שיהיה בו צורך שוב, כדאי לייצא גיבוי קודם.',
+      source: 'המקור השמור המדויק',
+      saved: 'מועד השמירה',
+      confirm: 'כן, למחוק את הארכיון',
+      cancel: 'ביטול',
+    },
+  });
+  const backupCopy = pickLanguage(lang, {
+    en: {
+      invalid: 'This file looks like a Nova backup, but its contents are invalid or damaged. Export a fresh backup and try again.',
+      ignored: (count: number) => `${count} invalid Nova backup file(s) were ignored. The remaining valid files were imported safely.`,
+    },
+    es: {
+      invalid: 'Este archivo parece una copia de seguridad de Nova, pero su contenido no es válido o está dañado. Exporta una copia nueva e inténtalo otra vez.',
+      ignored: (count: number) => `Se ignoraron ${count} copia(s) de seguridad de Nova no válidas. Los demás archivos válidos se importaron de forma segura.`,
+    },
+    he: {
+      invalid: 'הקובץ נראה כמו גיבוי של Nova, אבל התוכן שלו פגום או לא תקין. יש לייצא גיבוי חדש ולנסות שוב.',
+      ignored: (count: number) => `התעלמנו מ-${count} קובצי גיבוי לא תקינים של Nova. שאר הקבצים התקינים יובאו בבטחה.`,
+    },
+  });
+  const activeOperationKind = operationCoordinator.active?.kind;
+  const activeImport = loading || activeOperationKind === 'import';
+  const activeClear = clearingStored || activeOperationKind === 'clear';
+  const operationBusy = activeImport || activeClear;
+
+  useEffect(() => {
+    if (showClearConfirmation) cancelClearRef.current?.focus();
+  }, [showClearConfirmation]);
+
+  useEffect(() => {
+    if (!storedMeta) setShowClearConfirmation(false);
+  }, [storedMeta]);
+
+  const handleClearStored = async () => {
+    const operation = operationCoordinator.acquire('clear');
+    if (!operation) return;
+    setClearingStored(true);
+    setSuccessMsg(null);
+    setWarning(null);
+    try {
+      const result = await onClearStored(operation);
+      if (!operationCoordinator.isCurrent(operation) || !result) return;
+      setWarning(result.ok
+        ? t.uploader.clearedMessage
+        : result.reason === 'stale-intent' ? clearCopy.stale : clearCopy.failed);
+    } finally {
+      operationCoordinator.release(operation);
+      setClearingStored(false);
+      setShowClearConfirmation(false);
+    }
+  };
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (operationCoordinator.active) {
+      setDragActive(false);
+      return;
+    }
     if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
     } else if (e.type === "dragleave") {
@@ -121,7 +255,8 @@ export default function DataUploader({
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
+    if (operationCoordinator.active) return;
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       await processFiles(Array.from(e.dataTransfer.files));
     }
@@ -129,6 +264,7 @@ export default function DataUploader({
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    if (operationCoordinator.active) return;
     if (e.target.files && e.target.files[0]) {
       await processFiles(Array.from(e.target.files));
     }
@@ -145,6 +281,11 @@ export default function DataUploader({
   };
 
   const processFiles = async (files: File[]) => {
+    // The coordinator acquires synchronously in App, above this lazy route. Its
+    // token therefore survives uploader unmount/remount and remains held through
+    // parsing plus the caller's complete local-save promise.
+    const operation = operationCoordinator.acquire('import');
+    if (!operation) return;
     setLoading(true);
     setError(null);
     setWarning(null);
@@ -187,71 +328,114 @@ export default function DataUploader({
       setProgressPercent(45);
       await paint();
 
-      // Nova portable backups short-circuit parsing
-      let isBackup = false;
+      // A textual marker is only a cheap candidate signal. Backup mode starts
+      // after the complete envelope passes parseExport's trust-boundary guard.
+      const sourceJsonTexts: string[] = [];
+      let invalidBackupCount = 0;
       for (const text of spotifyJsonTexts) {
-        if (!text.slice(0, 300).includes('"nova_music_export"')) continue;
-        isBackup = true;
+        if (!hasNovaBackupMarker(text)) {
+          sourceJsonTexts.push(text);
+          continue;
+        }
+
+        let candidate: unknown;
+        try {
+          candidate = JSON.parse(text);
+        } catch {
+          invalidBackupCount += 1;
+          continue;
+        }
+
+        // A source export can contain the marker as ordinary nested text. It
+        // remains eligible for the normal parser unless the root is a Nova
+        // envelope, preventing an accidental false-positive short circuit.
+        if (!isNovaBackupEnvelope(candidate)) {
+          sourceJsonTexts.push(text);
+          continue;
+        }
+
+        const exported = parseExport(candidate);
+        if (!exported) {
+          invalidBackupCount += 1;
+          continue;
+        }
+
         addLog(logCopy.backup);
         setProgressPercent(70);
         await paint();
 
-        const exported = parseExport(JSON.parse(text));
-        if (exported) {
-          onDataLoaded(exported.data, exported.source_label || pickLanguage(lang, {
-            en: 'Nova backup',
-            es: 'Copia de seguridad Nova',
-            he: 'גיבוי Nova',
-          }), exported.genre_assignments);
-          setProgressPercent(100);
-          addLog(logCopy.restored);
-          setSuccessMsg(t.uploader.importedMessage(
-            exported.data.core_metrics.total_plays.toLocaleString(locale),
-            exported.data.core_metrics.unique_artists.toLocaleString(locale),
-          ));
-          return;
-        }
-      }
-
-      if (!isBackup) {
-        addLog(logCopy.processing);
-        const parsed = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
-        setProgressPercent(75);
-        await paint();
-
-        addLog(logCopy.parsed(
-          parsed.core_metrics.total_plays.toLocaleString(locale),
-          parsed.core_metrics.unique_artists.toLocaleString(locale),
-        ));
-        await paint();
-
-        addLog(logCopy.metadata);
-        setProgressPercent(90);
-        await paint();
-
-        const source = parsed.source_summary;
-        const sourceLabel = [
-          source?.lastfm_plays ? `${source.lastfm_plays}× Last.fm` : null,
-          source?.apple_music_plays ? `${source.apple_music_plays}× Apple Music` : null,
-          source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
-          source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
-          source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
-        ].filter(Boolean).join(' + ') || logCopy.importedFiles;
-
-        onDataLoaded(parsed, sourceLabel);
-        setKnowledgeSummary(parsed.knowledge_summary ?? null);
-
+        if (!operationCoordinator.isCurrent(operation)) return;
+        await onDataLoaded(exported.data, exported.source_label || pickLanguage(lang, {
+          en: 'Nova backup',
+          es: 'Copia de seguridad Nova',
+          he: 'גיבוי Nova',
+        }), exported.genre_assignments, operation);
+        if (!operationCoordinator.isCurrent(operation)) return;
         setProgressPercent(100);
-        addLog(logCopy.success);
-
-        setSuccessMsg(t.uploader.successMessage(
-          files.length,
-          parsed.core_metrics.total_plays.toLocaleString(locale),
-          parsed.core_metrics.unique_artists.toLocaleString(locale),
-          source?.spotify_skip_rate_pct ?? 0
+        addLog(logCopy.restored);
+        setSuccessMsg(t.uploader.importedMessage(
+          exported.data.core_metrics.total_plays.toLocaleString(locale),
+          exported.data.core_metrics.unique_artists.toLocaleString(locale),
         ));
+        return;
       }
+
+      if (invalidBackupCount > 0
+        && csvTexts.length === 0
+        && sourceJsonTexts.length === 0
+        && youtubeHtmlTexts.length === 0) {
+        throw new Error(backupCopy.invalid);
+      }
+      if (invalidBackupCount > 0) setWarning(backupCopy.ignored(invalidBackupCount));
+
+      addLog(logCopy.processing);
+      let parsed: MusicDnaData;
+      try {
+        parsed = parseMusicSources({ csvTexts, spotifyJsonTexts: sourceJsonTexts, youtubeHtmlTexts });
+      } catch (err) {
+        if (invalidBackupCount > 0 && err instanceof ParseError && err.code === 'NO_VALID_ROWS') {
+          throw new Error(backupCopy.invalid);
+        }
+        throw err;
+      }
+      setProgressPercent(75);
+      await paint();
+
+      addLog(logCopy.parsed(
+        parsed.core_metrics.total_plays.toLocaleString(locale),
+        parsed.core_metrics.unique_artists.toLocaleString(locale),
+      ));
+      await paint();
+
+      addLog(logCopy.metadata);
+      setProgressPercent(90);
+      await paint();
+
+      const source = parsed.source_summary;
+      const sourceLabel = [
+        source?.lastfm_plays ? `${source.lastfm_plays}× Last.fm` : null,
+        source?.apple_music_plays ? `${source.apple_music_plays}× Apple Music` : null,
+        source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
+        source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
+        source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
+      ].filter(Boolean).join(' + ') || logCopy.importedFiles;
+
+      if (!operationCoordinator.isCurrent(operation)) return;
+      await onDataLoaded(parsed, sourceLabel, undefined, operation);
+      if (!operationCoordinator.isCurrent(operation)) return;
+      setKnowledgeSummary(parsed.knowledge_summary ?? null);
+
+      setProgressPercent(100);
+      addLog(logCopy.success);
+
+      setSuccessMsg(t.uploader.successMessage(
+        Math.max(1, files.length - invalidBackupCount),
+        parsed.core_metrics.total_plays.toLocaleString(locale),
+        parsed.core_metrics.unique_artists.toLocaleString(locale),
+        source?.spotify_skip_rate_pct ?? 0
+      ));
     } catch (err: any) {
+      if (!operationCoordinator.isCurrent(operation)) return;
       console.error(err);
       if (err instanceof ParseError) {
         setError(err.code === 'INVALID_JSON' ? t.uploader.invalidJsonError : t.uploader.noValidRowsError);
@@ -259,7 +443,9 @@ export default function DataUploader({
         setError(err.message || t.uploader.processingError);
       }
     } finally {
+      operationCoordinator.release(operation);
       setLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -324,6 +510,7 @@ export default function DataUploader({
           onDragLeave={handleDrag}
           onDrop={handleDrop}
           role="region"
+          aria-busy={operationBusy}
           aria-label={t.uploader.dropZoneAriaLabel}
           aria-describedby="upload-drop-hint upload-privacy-note upload-format-note"
           className={`glass-panel relative isolate overflow-hidden border-2 border-dashed p-6 sm:p-10 rounded-3xl text-center transition-all duration-300 ${
@@ -343,6 +530,7 @@ export default function DataUploader({
             multiple
             accept=".csv,.json,.html,.htm"
             onChange={handleChange}
+            disabled={operationBusy}
             aria-label={t.uploader.dropZoneAriaLabel}
             className="hidden"
           />
@@ -367,7 +555,9 @@ export default function DataUploader({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="min-h-11 px-6 py-2 bg-gradient-to-r from-cyberCyan/20 to-cyberPurple/20 border border-cyberCyan/40 hover:border-cyberCyan hover:shadow-cyber text-cyberCyan font-semibold rounded-full text-sm font-mono transition-all"
+              disabled={operationBusy}
+              aria-describedby={operationBusy ? 'archive-operation-note' : undefined}
+              className="min-h-11 px-6 py-2 bg-gradient-to-r from-cyberCyan/20 to-cyberPurple/20 border border-cyberCyan/40 hover:border-cyberCyan hover:shadow-cyber text-cyberCyan font-semibold rounded-full text-sm font-mono transition-all disabled:cursor-wait disabled:opacity-50"
             >
               {t.uploader.browseButton}
             </button>
@@ -407,14 +597,23 @@ export default function DataUploader({
 
       <section
         data-testid="upload-feedback"
-        data-state={loading ? 'loading' : error ? 'error' : successMsg ? 'success' : warning ? 'warning' : 'idle'}
+        data-state={operationBusy ? 'loading' : error ? 'error' : successMsg ? 'success' : warning ? 'warning' : 'idle'}
         aria-label={uploadUxCopy.feedbackLabel}
         className="min-h-[4.75rem] space-y-3"
       >
-        {!loading && !warning && !error && !successMsg && (
+        {!operationBusy && !warning && !error && !successMsg && (
           <div className="flex min-h-[4.75rem] items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3 text-gray-400">
             <CheckCircle2 aria-hidden="true" className="h-5 w-5 shrink-0" style={{ color: tc.c1 }} />
             <span className="text-xs font-mono font-bold">{uploadUxCopy.readyStatus}</span>
+          </div>
+        )}
+
+        {operationBusy && !loading && (
+          <div role="status" className="flex min-h-[4.75rem] items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] px-4 py-3 text-gray-300">
+            <Database aria-hidden="true" className="h-5 w-5 shrink-0 animate-pulse" style={{ color: tc.c2 }} />
+            <span className="text-xs font-mono font-bold">
+              {activeImport ? clearCopy.importLock : clearCopy.clearLock}
+            </span>
           </div>
         )}
 
@@ -594,6 +793,9 @@ export default function DataUploader({
                     )
                   : t.uploader.noStoredData}
               </p>
+              <p id="archive-operation-note" aria-live="polite" className="mt-2 text-[10px] font-mono text-gray-500">
+                {activeImport ? clearCopy.importLock : activeClear ? clearCopy.clearLock : clearCopy.idleLock}
+              </p>
             </div>
           </div>
 
@@ -604,7 +806,7 @@ export default function DataUploader({
                 storedMeta?.sourceLabel ?? 'Nova Music Lab',
                 genreAssignments,
               )}
-              className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider transition-all hover:scale-[1.03]"
               style={{ color: tc.c1, borderColor: `${tc.c1}45`, backgroundColor: `${tc.c1}12` }}
             >
               <Download className="h-4 w-4" />
@@ -612,15 +814,87 @@ export default function DataUploader({
             </button>
             {storedMeta && (
               <button
-                onClick={() => { onClearStored(); setSuccessMsg(null); setWarning(t.uploader.clearedMessage); }}
-                className="inline-flex items-center gap-2 rounded-full border border-red-500/35 bg-red-950/20 px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-red-300 transition-all hover:scale-[1.03] hover:border-red-400/60"
+                type="button"
+                onClick={() => setShowClearConfirmation(true)}
+                disabled={operationBusy}
+                aria-describedby="archive-operation-note"
+                aria-expanded={showClearConfirmation}
+                aria-controls="clear-archive-confirmation"
+                className="inline-flex items-center gap-2 rounded-full border border-red-500/35 bg-red-950/20 px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-red-300 transition-all hover:scale-[1.03] hover:border-red-400/60 disabled:cursor-wait disabled:opacity-50 disabled:hover:scale-100"
               >
                 <Trash2 className="h-4 w-4" />
-                {t.uploader.clearButton}
+                {activeClear ? clearCopy.busy : t.uploader.clearButton}
               </button>
             )}
           </div>
         </div>
+
+        {storedMeta && showClearConfirmation && (
+          <div
+            id="clear-archive-confirmation"
+            role="alertdialog"
+            aria-labelledby="clear-archive-title"
+            aria-describedby="clear-archive-description clear-archive-identity"
+            className="mt-5 rounded-2xl border border-red-400/35 bg-red-950/25 p-4 shadow-lg"
+          >
+            <div className="flex items-start gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-red-400/35 bg-red-500/10 text-red-200">
+                <AlertTriangle aria-hidden="true" className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h4 id="clear-archive-title" className="font-black text-white">
+                  {clearCopy.confirmTitle}
+                </h4>
+                <p id="clear-archive-description" className="mt-1 text-xs leading-relaxed text-gray-300">
+                  {clearCopy.confirmBody}
+                </p>
+                <dl id="clear-archive-identity" className="mt-3 grid gap-2 text-xs sm:grid-cols-2">
+                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                    <dt className="font-mono text-[10px] font-black uppercase tracking-wider text-red-200">
+                      {clearCopy.source}
+                    </dt>
+                    <dd className="mt-1 break-words font-semibold text-white">
+                      <bdi dir="auto">{storedMeta.sourceLabel}</bdi>
+                    </dd>
+                  </div>
+                  <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                    <dt className="font-mono text-[10px] font-black uppercase tracking-wider text-red-200">
+                      {clearCopy.saved}
+                    </dt>
+                    <dd className="mt-1 font-semibold text-white">
+                      <time dateTime={storedMeta.savedAt}>
+                        {new Date(storedMeta.savedAt).toLocaleString(locale, {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                        })}
+                      </time>
+                    </dd>
+                  </div>
+                </dl>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <button
+                    ref={cancelClearRef}
+                    type="button"
+                    onClick={() => setShowClearConfirmation(false)}
+                    disabled={operationBusy}
+                    className="min-h-11 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-white transition-colors hover:bg-white/10 disabled:cursor-wait disabled:opacity-50"
+                  >
+                    {clearCopy.cancel}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { void handleClearStored(); }}
+                    disabled={operationBusy}
+                    aria-describedby="clear-archive-description clear-archive-identity archive-operation-note"
+                    className="min-h-11 rounded-full border border-red-300/50 bg-red-500/20 px-4 py-2 text-xs font-mono font-black uppercase tracking-wider text-red-100 transition-colors hover:bg-red-500/30 disabled:cursor-wait disabled:opacity-50"
+                  >
+                    {activeClear ? clearCopy.busy : clearCopy.confirm}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {successMsg && knowledgeSummary && (

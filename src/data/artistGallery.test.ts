@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import gallery from './artist_gallery.json';
+import identityPolicy from './artist_gallery_identity_policy.json';
 import artistImages from './artist_images.json';
 import knowledge from './offline_artist_knowledge.json';
 import { getDailyPhotoIndex } from '../utils/artistGallery';
@@ -7,6 +8,51 @@ import { getDailyPhotoIndex } from '../utils/artistGallery';
 const entries = gallery as Record<string, Array<{ url: string; source: string }>>;
 const primaryEntries = artistImages as Record<string, { thumb: string; source: string }>;
 const VALID_SOURCES = new Set(['wikipedia', 'spotify', 'deezer', 'wikimedia']);
+const GALLERY_ARTIFACT_PATTERN = /file-type-icons|fileicon|\.pdf(?:\/|\.|$)|\.stl(?:\/|\.|$)/i;
+
+interface GalleryIdentityRule {
+  identity: string;
+  galleryKeys: string[];
+  forbiddenGalleryKeys: string[];
+  allowedOpenMediaSubjects: string[];
+  requiredOpenMediaSubjects: string[];
+  approvedDirectAssets: Array<{ source: string; urlToken: string }>;
+  requiredDirectSources: string[];
+}
+
+const galleryIdentityPolicy = identityPolicy as {
+  schemaVersion: number;
+  rules: GalleryIdentityRule[];
+};
+
+function normalizeGallerySubject(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’']/g, '')
+    .replace(/&/g, 'and')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function gallerySubject(url: string): string {
+  try {
+    return normalizeGallerySubject(decodeURIComponent(new URL(url).pathname));
+  } catch {
+    return normalizeGallerySubject(url);
+  }
+}
+
+function isOpenMediaPhoto(photo: { url: string; source: string }): boolean {
+  if (photo.source === 'wikipedia' || photo.source === 'wikimedia') return true;
+  try {
+    return ['upload.wikimedia.org', 'commons.wikimedia.org'].includes(new URL(photo.url).hostname.toLowerCase());
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Commons serves the same file through multiple URL shapes
@@ -83,6 +129,68 @@ describe('artist_gallery.json stability', () => {
     expect(slaves[0]?.url).toContain('Slaves_American_band.jpg');
     for (const photo of slaves) {
       expect(photo.url).not.toMatch(/fileicon|Newly_released_Slaves|Cargo_of_Newly_released_Slaves|Slavery/i);
+    }
+  });
+
+  it('rejects identity-ambiguous open media while preserving verified art and provider fallbacks', () => {
+    expect(galleryIdentityPolicy.schemaVersion).toBe(1);
+
+    for (const rule of galleryIdentityPolicy.rules) {
+      const allowedSubjects = rule.allowedOpenMediaSubjects.map(normalizeGallerySubject);
+      const requiredSubjects = rule.requiredOpenMediaSubjects.map(normalizeGallerySubject);
+
+      for (const forbiddenKey of rule.forbiddenGalleryKeys) {
+        expect(entries, `${rule.identity}: forbidden alias key ${forbiddenKey}`).not.toHaveProperty(forbiddenKey);
+      }
+
+      for (const galleryKey of rule.galleryKeys) {
+        const photos = entries[galleryKey] ?? [];
+        expect(photos.length, `${rule.identity}: ${galleryKey} fallback coverage`).toBeGreaterThan(0);
+
+        for (const photo of photos.filter(isOpenMediaPhoto)) {
+          const subject = gallerySubject(photo.url);
+          expect(
+            allowedSubjects.some(allowed => subject.includes(allowed)),
+            `${rule.identity}: unrelated open-media subject ${photo.url}`,
+          ).toBe(true);
+        }
+
+        for (const photo of photos.filter(candidate => !isOpenMediaPhoto(candidate))) {
+          expect(
+            rule.approvedDirectAssets.some(asset => (
+              asset.source === photo.source && photo.url.includes(asset.urlToken)
+            )),
+            `${rule.identity}: unapproved direct-provider asset ${photo.url}`,
+          ).toBe(true);
+        }
+
+        for (const required of requiredSubjects) {
+          expect(
+            photos.some(photo => isOpenMediaPhoto(photo) && gallerySubject(photo.url).includes(required)),
+            `${rule.identity}: missing approved open-media subject ${required}`,
+          ).toBe(true);
+        }
+
+        for (const source of rule.requiredDirectSources) {
+          expect(
+            photos.some(photo => (
+              photo.source === source
+              && rule.approvedDirectAssets.some(asset => (
+                asset.source === photo.source && photo.url.includes(asset.urlToken)
+              ))
+            )),
+            `${rule.identity}: missing trusted ${source} fallback`,
+          ).toBe(true);
+        }
+      }
+    }
+  });
+
+  it('never accepts document thumbnails, 3D renders or file-type icons as artist photos', () => {
+    for (const [artist, photos] of Object.entries(entries)) {
+      for (const photo of photos) {
+        expect(photo.url, `${artist}: gallery artifact`).not.toMatch(GALLERY_ARTIFACT_PATTERN);
+      }
     }
   });
 

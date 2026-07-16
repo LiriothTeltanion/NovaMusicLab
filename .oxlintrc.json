@@ -8,5 +8,13 @@
     "react/exhaustive-deps": "error",
     "no-console": ["warn", { "allow": ["warn", "error"] }],
     "typescript/no-floating-promises": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["scripts/**/*.mjs"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 }

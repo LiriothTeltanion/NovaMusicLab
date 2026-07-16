@@ -80,4 +80,34 @@ describe('CulturalMap responsive structure', () => {
     expect(firstCard).toHaveAttribute('aria-pressed', 'false');
     expect(screen.getByTestId('globe-selected-country')).toHaveTextContent('none');
   });
+
+  it('derives visitor geography without leaking flagship roots, scenes or conclusions', () => {
+    const visitorData = {
+      ...data,
+      core_metrics: { ...data.core_metrics, total_plays: 1_000 },
+      artist_origin_countries: [
+        { country: 'Japan', plays: 700 },
+        { country: 'Australia', plays: 300 },
+      ],
+      countries: [{ country: 'JP', plays: 1_000 }],
+    } satisfies MusicDnaData;
+
+    render(
+      <AppProvider>
+        <CulturalMap data={visitorData} isPersonalArchive />
+      </AppProvider>,
+    );
+
+    expect(screen.getByText('Map the music without inventing the listener.')).toBeInTheDocument();
+    expect(screen.getByText('Artist-origin footprint')).toBeInTheDocument();
+    expect(screen.getAllByText(/Japan/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Australia/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/not a claim about the listener’s nationality or personal identity/i)).toBeInTheDocument();
+    expect(screen.getByText(/does not prove a song’s language/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Venezuelan roots/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Israeli experience/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Nordic melancholic guitars/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Israeli Rock/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Cyberpunk Darksynth/i)).not.toBeInTheDocument();
+  });
 });

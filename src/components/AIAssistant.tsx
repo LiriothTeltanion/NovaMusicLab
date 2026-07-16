@@ -17,7 +17,6 @@ interface Message {
   timestamp: Date;
 }
 
-const STORAGE_KEY = 'nml_gemini_api_key';
 const GENERIC_GENRE_BUCKETS = new Set(['alternative', 'unclassified']);
 
 function isGenericGenreBucket(name: string) {
@@ -52,9 +51,9 @@ interface AssistantCopy {
   promptChips: PromptChip[];
   artistLine: (name: string, plays: string) => string;
   trackLine: (title: string, artist: string, plays: string) => string;
-  playlistResponse: string;
-  obsessionResponse: (topTracks: string) => string;
-  daypartResponse: (daypart: string) => string;
+  playlistResponse: (tracks: string) => string;
+  obsessionResponse: (topTracks: string, leader: string, share: string) => string;
+  daypartResponse: (daypart: string, evidence: string) => string;
   morningFallback: string;
   defaultResponse: (query: string, totalPlays: string, uniqueArtists: string, topArtists: string) => string;
   apiRequestFailed: string;
@@ -76,7 +75,8 @@ interface AssistantCopy {
   apiKeyAria: string;
   hideApiKey: string;
   showApiKey: string;
-  keySaved: string;
+  keySession: string;
+  clearKey: string;
   sandboxActive: string;
   freeGeminiKey: string;
   opensNewTab: string;
@@ -103,9 +103,9 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     ],
     artistLine: (name, plays) => `**${name}** (${plays} escuchas)`,
     trackLine: (title, artist, plays) => `*"${title}"* de **${artist}** (${plays} escuchas)`,
-    playlistResponse: `### 🎵 Playlist simulada personalizada: *Catarsis de Neón*\n\nAquí tienes una selección de 5 canciones creada a partir de tu ADN musical:\n\n1. **In Blur** — Deafheaven (tu himno absoluto, ideal para ganar claridad emocional por la mañana)\n2. **Shadow** — Bring Me the Horizon (un impulso de energía para concentrarte al mediodía)\n3. **Looping** — Bilmuri (groove post-hardcore para mantenerte en movimiento)\n4. **Vampires** — The Midnight (atmósfera synthwave retro para la transición de la tarde)\n5. **Aperol Spritz** — The Kid LAROI (pop moderno de alta energía para cerrar el día)\n\n*Nota: para consultar a Gemini en vivo y crear listas contextuales ilimitadas, introduce tu clave de API en los ajustes de abajo.*`,
-    obsessionResponse: topTracks => `### 🔥 Resumen de obsesiones de escucha\n\nSegún tus registros:\n- Canciones principales:\n- ${topTracks}\n\nSe observa una fuerte tendencia a repetir *In Blur* de Deafheaven. Tus registros incluyen sesiones con reproducciones consecutivas de esta canción durante la mañana, por lo que funciona como un refugio emocional destacado.`,
-    daypartResponse: daypart => `### ⚡ Análisis de la franja horaria dominante\n\nTus registros indican que tu franja horaria dominante es **${daypart}**.\n\nEste patrón sugiere que utilizas la música como catalizador de productividad —por ejemplo, metal progresivo o pop punk al programar o trabajar— o como apoyo emocional matutino, con blackgaze durante los trayectos o al despertar.`,
+    playlistResponse: tracks => `### 🎵 Playlist simulada personalizada: *Cartografía del momento*\n\nEsta selección se genera únicamente con las canciones mejor posicionadas del archivo activo:\n\n${tracks}\n\n*Es una propuesta local basada en ranking y repetición, no una afirmación sobre tu estado emocional. Con Gemini activo, Nova puede adaptar el contexto con tu pregunta.*`,
+    obsessionResponse: (topTracks, leader, share) => `### 🔥 Resumen de escucha repetida\n\nLas canciones principales del archivo activo son:\n- ${topTracks}\n\nLa señal de repetición más fuerte es ${leader}, con **${share}%** de las escuchas contadas. Esto describe frecuencia observada; no presupone una rutina, hora del día ni significado emocional.`,
+    daypartResponse: (daypart, evidence) => `### ⚡ Análisis de la franja horaria dominante\n\nLa franja registrada con mayor peso es **${daypart}**.\n\nLas señales musicales principales del archivo son ${evidence}. Esta lectura describe coincidencias del archivo activo y evita atribuir hábitos personales que los datos no demuestran.`,
     morningFallback: 'Mañana',
     defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Modo Sandbox de Nova\n\nHe procesado tu consulta: *"${query}"*\n\nEstas son algunas métricas clave:\n- **Reproducciones totales**: ${totalPlays} escuchas\n- **Artistas únicos**: ${uniqueArtists}\n- **Artistas principales**: ${topArtists}\n\n*🔧 **¿Cómo activar el razonamiento de IA en vivo?***\n1. Consigue una clave de API gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** de abajo.\n3. Pega tu clave.\n4. Pregúntame lo que quieras; analizaré tus datos en tiempo real con **Gemini 2.5 Flash**.`,
     apiRequestFailed: 'La solicitud a la API falló. Verifica tu clave.',
@@ -122,12 +122,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'Pregunta a Nova sobre tu historial musical',
     sendMessage: 'Enviar mensaje',
     apiSettings: 'Configurar clave de API',
-    apiDescription: 'Tu clave se guarda en el almacenamiento local del navegador. Cuando envías un mensaje, Gemini recibe tu pregunta y un resumen compacto de escucha —totales, artistas, canciones, géneros, países y eras—, nunca los archivos de exportación en bruto.',
+    apiDescription: 'Tu clave permanece sólo en la memoria de esta página: nunca se guarda en localStorage ni sessionStorage y se elimina al recargar o salir. Al enviar un mensaje, Gemini recibe tu pregunta y un resumen compacto —nunca los archivos de exportación en bruto—.',
     apiPlaceholder: 'Clave de API de Gemini…',
     apiKeyAria: 'Clave de API de Gemini',
     hideApiKey: 'Ocultar clave de API',
     showApiKey: 'Mostrar clave de API',
-    keySaved: 'Clave guardada en el almacenamiento local del navegador.',
+    keySession: 'Clave sólo en memoria; no se guarda en el almacenamiento del navegador.',
+    clearKey: 'Olvidar y borrar la clave',
     sandboxActive: 'Modo Sandbox simulado activo.',
     freeGeminiKey: 'Obtener una clave de Gemini gratis',
     opensNewTab: 'se abre en una pestaña nueva',
@@ -152,9 +153,9 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     ],
     artistLine: (name, plays) => `**${name}** (${plays} plays)`,
     trackLine: (title, artist, plays) => `*"${title}"* by **${artist}** (${plays} plays)`,
-    playlistResponse: `### 🎵 Simulated Custom Playlist: *Neon Catharsis*\n\nHere is a curated 5-track selection compiled from your music DNA:\n\n1. **In Blur** — Deafheaven (your absolute anthem, perfect for emotional clarity in the morning)\n2. **Shadow** — Bring Me the Horizon (an energy boost for midday focus)\n3. **Looping** — Bilmuri (post-hardcore groove to keep you moving)\n4. **Vampires** — The Midnight (retro synthwave atmosphere for the afternoon transition)\n5. **Aperol Spritz** — The Kid LAROI (modern high-energy pop to close the day)\n\n*Note: to query Gemini live and build unlimited contextual lists, enter your API key in the settings below.*`,
-    obsessionResponse: topTracks => `### 🔥 Listening Obsessions Summary\n\nAccording to your records:\n- Top tracks:\n- ${topTracks}\n\nYou show a strong tendency to replay *In Blur* by Deafheaven. Your records include sessions with consecutive morning replays, making it a prominent emotional refuge.`,
-    daypartResponse: daypart => `### ⚡ Dominant Daypart Analysis\n\nYour records indicate that your dominant daypart is **${daypart}**.\n\nThis pattern suggests that you use music as a productivity catalyst —for example, progressive metal or pop punk while coding or working— or as morning emotional support, with blackgaze during a commute or while waking up.`,
+    playlistResponse: tracks => `### 🎵 Simulated Custom Playlist: *Cartography of Now*\n\nThis selection is generated only from the active archive's highest-ranked tracks:\n\n${tracks}\n\n*It is a local ranking-and-repetition suggestion, not a claim about your emotional state. With Gemini enabled, Nova can adapt the context to your question.*`,
+    obsessionResponse: (topTracks, leader, share) => `### 🔥 Repeated Listening Summary\n\nThe active archive's leading tracks are:\n- ${topTracks}\n\nThe strongest repetition signal is ${leader}, representing **${share}%** of counted plays. This describes observed frequency; it does not assume a routine, time of day or emotional meaning.`,
+    daypartResponse: (daypart, evidence) => `### ⚡ Dominant Daypart Analysis\n\nThe highest-weight recorded window is **${daypart}**.\n\nThe archive's leading musical signals are ${evidence}. This reading describes the active archive and avoids assigning personal habits that the evidence cannot prove.`,
     morningFallback: 'Morning',
     defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Nova Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some key metrics:\n- **Total plays**: ${totalPlays}\n- **Unique artists**: ${uniqueArtists}\n- **Top artists**: ${topArtists}\n\n*🔧 **How do I enable live AI reasoning?***\n1. Get a free API key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key.\n4. Ask me anything; I will analyze your data in real time with **Gemini 2.5 Flash**.`,
     apiRequestFailed: 'The API request failed. Verify your key.',
@@ -171,12 +172,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'Ask Nova about your music history',
     sendMessage: 'Send message',
     apiSettings: 'API key settings',
-    apiDescription: 'Your key stays in browser local storage. When you send a message, Gemini receives your question plus a compact listening summary —totals, top artists, tracks, genres, countries and eras—, never the raw export files.',
+    apiDescription: 'Your key stays only in this page\'s memory: it is never written to localStorage or sessionStorage and is cleared when you reload or leave. When you send a message, Gemini receives your question plus a compact summary, never the raw export files.',
     apiPlaceholder: 'Gemini API key…',
     apiKeyAria: 'Gemini API key',
     hideApiKey: 'Hide API key',
     showApiKey: 'Show API key',
-    keySaved: 'Key saved in browser local storage.',
+    keySession: 'Key held only in memory; it is never saved to browser storage.',
+    clearKey: 'Forget and clear key',
     sandboxActive: 'Simulated Sandbox Mode is active.',
     freeGeminiKey: 'Get a free Gemini key',
     opensNewTab: 'opens in a new tab',
@@ -201,9 +203,9 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     ],
     artistLine: (name, plays) => `**${name}** (${plays} השמעות)`,
     trackLine: (title, artist, plays) => `*"${title}"* מאת **${artist}** (${plays} השמעות)`,
-    playlistResponse: `### 🎵 פלייליסט מותאם אישית במצב הדמיה: *קתרזיס ניאון*\n\nהנה בחירה של 5 שירים שנבנתה מתוך ה-DNA המוזיקלי שלך:\n\n1. **In Blur** — Deafheaven (ההמנון המובהק שלך, לבהירות רגשית בשעות הבוקר)\n2. **Shadow** — Bring Me the Horizon (זריקת אנרגיה לריכוז באמצע היום)\n3. **Looping** — Bilmuri (גרוב פוסט-הארדקור שמחזיק את התנועה)\n4. **Vampires** — The Midnight (אווירת synthwave רטרו למעבר אל שעות הערב)\n5. **Aperol Spritz** — The Kid LAROI (פופ מודרני עתיר אנרגיה לסיום היום)\n\n*הערה: כדי לפנות אל Gemini בזמן אמת ולבנות פלייליסטים הקשריים ללא הגבלה, יש להזין את מפתח ה-API בהגדרות שלמטה.*`,
-    obsessionResponse: topTracks => `### 🔥 סיכום דפוסי ההאזנה החוזרת\n\nלפי הרשומות שלך:\n- השירים המובילים:\n- ${topTracks}\n\nניכרת נטייה חזקה לחזור אל *In Blur* של Deafheaven. ברשומות מופיעים רצפים של השמעות חוזרות בשעות הבוקר, ולכן השיר מתפקד כעוגן רגשי בולט.`,
-    daypartResponse: daypart => `### ⚡ ניתוח חלון ההאזנה הדומיננטי\n\nלפי הרשומות, חלון ההאזנה הדומיננטי שלך הוא **${daypart}**.\n\nהדפוס הזה מצביע על שימוש במוזיקה כזרז לפרודוקטיביות —למשל metal מתקדם או pop punk בזמן תכנות ועבודה— או כתמיכה רגשית בבוקר, עם blackgaze בדרך או בזמן ההתעוררות.`,
+    playlistResponse: tracks => `### 🎵 פלייליסט מותאם אישית במצב הדמיה: *המפה של עכשיו*\n\nהבחירה הזאת נוצרת אך ורק מהשירים המדורגים גבוה בארכיון הפעיל:\n\n${tracks}\n\n*זו הצעה מקומית המבוססת על דירוג וחזרתיות, ולא קביעה לגבי המצב הרגשי שלך. עם Gemini פעיל, Nova יכולה להתאים את ההקשר לשאלה שלך.*`,
+    obsessionResponse: (topTracks, leader, share) => `### 🔥 סיכום דפוסי ההאזנה החוזרת\n\nהשירים המובילים בארכיון הפעיל הם:\n- ${topTracks}\n\nאות החזרתיות החזק ביותר הוא ${leader}, עם **${share}%** מההשמעות שנספרו. זהו תיאור של תדירות נצפית בלבד, ללא הנחה על שגרה, שעה ביום או משמעות רגשית.`,
+    daypartResponse: (daypart, evidence) => `### ⚡ ניתוח חלון ההאזנה הדומיננטי\n\nחלון הזמן בעל המשקל הגבוה ביותר ברשומות הוא **${daypart}**.\n\nהאותות המוזיקליים המובילים בארכיון הם ${evidence}. הקריאה מתארת את הארכיון הפעיל ונמנעת מייחוס הרגלים אישיים שהנתונים אינם מוכיחים.`,
     morningFallback: 'בוקר',
     defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 מצב ה-Sandbox של Nova\n\nעיבדתי את הבקשה: *"${query}"*\n\nהנה כמה מדדים מרכזיים:\n- **סך כל ההשמעות**: ${totalPlays}\n- **אמנים ייחודיים**: ${uniqueArtists}\n- **האמנים המובילים**: ${topArtists}\n\n*🔧 **איך מפעילים ניתוח AI בזמן אמת?***\n1. לקבל מפתח API בחינם דרך [Google AI Studio](https://aistudio.google.com/).\n2. לפתוח את חלונית **הגדרות ה-API** שלמטה.\n3. להדביק את המפתח.\n4. לשאול אותי כל דבר; אנתח את הנתונים בזמן אמת באמצעות **Gemini 2.5 Flash**.`,
     apiRequestFailed: 'הבקשה ל-API נכשלה. כדאי לבדוק את המפתח.',
@@ -220,12 +222,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'שליחת שאלה ל-Nova על היסטוריית ההאזנה שלך',
     sendMessage: 'שליחת הודעה',
     apiSettings: 'הגדרות מפתח API',
-    apiDescription: 'המפתח נשמר באחסון המקומי של הדפדפן. בעת שליחת הודעה, Gemini מקבלת את השאלה יחד עם סיכום האזנה מצומצם —סכומים, אמנים, שירים, ז׳אנרים, מדינות ותקופות— ולעולם לא את קובצי הייצוא הגולמיים.',
+    apiDescription: 'המפתח נשאר רק בזיכרון של העמוד הזה: הוא לעולם לא נכתב ל-localStorage או ל-sessionStorage, ונמחק ברענון או ביציאה. בעת שליחת הודעה, Gemini מקבלת את השאלה וסיכום מצומצם בלבד, ולעולם לא את קובצי הייצוא הגולמיים.',
     apiPlaceholder: 'מפתח API של Gemini…',
     apiKeyAria: 'מפתח API של Gemini',
     hideApiKey: 'הסתרת מפתח ה-API',
     showApiKey: 'הצגת מפתח ה-API',
-    keySaved: 'המפתח נשמר באחסון המקומי של הדפדפן.',
+    keySession: 'המפתח נשמר בזיכרון בלבד ולעולם לא באחסון הדפדפן.',
+    clearKey: 'לשכוח ולמחוק את המפתח',
     sandboxActive: 'מצב Sandbox מדומה פעיל.',
     freeGeminiKey: 'קבלת מפתח Gemini בחינם',
     opensNewTab: 'נפתח בכרטיסייה חדשה',
@@ -320,9 +323,25 @@ export function buildSandboxResponse(data: MusicDnaData, lang: Lang, query: stri
     .slice(0, 5)
     .map(track => copy.trackLine(track.title, track.artist, number.format(track.plays)))
     .join('\n- ');
+  const playlistTracks = data.top_tracks
+    .slice(0, 5)
+    .map((track, index) => `${index + 1}. **${track.title}** — ${track.artist} (${number.format(track.plays)} ${copy.playsUnit})`)
+    .join('\n');
+  const leadingTrack = data.top_tracks[0];
+  const leadingTrackLabel = leadingTrack
+    ? `**${leadingTrack.title}** — ${leadingTrack.artist}`
+    : copy.none;
+  const leadingTrackShare = leadingTrack
+    ? genreShare(leadingTrack.plays, data.core_metrics.total_plays)
+    : '0.0';
+  const leadingGenres = data.top_genres
+    .filter(genre => !isGenericGenreBucket(genre.name))
+    .slice(0, 3)
+    .map(genre => `**${localizeGenreName(genre.name, lang)}**`)
+    .join(', ') || copy.notEnoughClassified;
 
   if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.playlist)) {
-    return copy.playlistResponse;
+    return copy.playlistResponse(playlistTracks || copy.none);
   }
 
   if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.genre)) {
@@ -330,15 +349,17 @@ export function buildSandboxResponse(data: MusicDnaData, lang: Lang, query: stri
   }
 
   if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.obsession)) {
-    return copy.obsessionResponse(topTracks);
+    return copy.obsessionResponse(topTracks || copy.none, leadingTrackLabel, leadingTrackShare);
   }
 
   if (includesAny(normalizedQuery, SANDBOX_QUERY_TERMS.daypart)) {
-    const sourceDaypart = data.yearly_eras[0]?.dominant_daypart;
+    const sourceDaypart = data.yearly_eras.reduce((best, era) => (
+      !best || era.plays > best.plays ? era : best
+    ), data.yearly_eras[0])?.dominant_daypart;
     const localizedDaypart = sourceDaypart
       ? DAYPART_LABELS[lang][sourceDaypart] ?? sourceDaypart
       : copy.morningFallback;
-    return copy.daypartResponse(localizedDaypart);
+    return copy.daypartResponse(localizedDaypart, leadingGenres);
   }
 
   return copy.defaultResponse(
@@ -365,13 +386,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   ]);
 
   const [input, setInput] = useState('');
-  const [apiKey, setApiKey] = useState(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEY) || '';
-    } catch {
-      return '';
-    }
-  });
+  const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -397,17 +412,12 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   }, [copy, data.project]);
 
   const saveKey = (key: string) => {
-    const cleanKey = key.trim();
-    setApiKey(cleanKey);
-    try {
-      if (cleanKey) {
-        localStorage.setItem(STORAGE_KEY, cleanKey);
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch {
-      /* ignore localstorage security errors */
-    }
+    setApiKey(key.trim());
+  };
+
+  const clearApiKey = () => {
+    setApiKey('');
+    setShowKey(false);
   };
 
   const clearChat = () => {
@@ -728,15 +738,26 @@ The user asks: "${prompt}"
                 </button>
               </div>
 
+              {apiKey && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={clearApiKey}
+                    className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-rose-500/25 bg-rose-950/15 px-3 py-2 font-mono text-[10px] font-bold uppercase tracking-wider text-rose-300 transition-colors hover:border-rose-400/50"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    {copy.clearKey}
+                  </button>
+                </div>
+              )}
+
               {apiKey ? (
-                <div className="nova-on-dark flex items-center space-x-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
+                <div className="nova-on-dark flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  {/* Honest copy in every language: plain localStorage is local,
-                      not "secure" - never overclaim how a billable key is kept. */}
-                  <span>{copy.keySaved}</span>
+                  <span>{copy.keySession}</span>
                 </div>
               ) : (
-                <div className="nova-on-dark flex items-center space-x-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">
+                <div className="nova-on-dark flex items-center gap-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
                   <span>{copy.sandboxActive}</span>
                 </div>
