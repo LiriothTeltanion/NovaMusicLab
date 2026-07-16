@@ -54,19 +54,19 @@ export default function NovaMark({
           gradientTransform="translate(19 12) rotate(48) scale(62)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#123454" />
-          <stop offset=".43" stopColor="#0b1028" />
-          <stop offset="1" stopColor="#050713" />
+          <stop stopColor="#163c52" />
+          <stop offset=".43" stopColor="#0b132c" />
+          <stop offset="1" stopColor="#050816" />
         </radialGradient>
         <linearGradient id={orbitId} x1="11" y1="13" x2="54" y2="49" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#83f3ff" />
-          <stop offset=".55" stopColor="#6878ff" />
-          <stop offset="1" stopColor="#b867ff" />
+          <stop stopColor="#2de2e6" />
+          <stop offset=".52" stopColor="#8b5cf6" />
+          <stop offset="1" stopColor="#ec4899" />
         </linearGradient>
         <linearGradient id={signalId} x1="18" y1="21" x2="47" y2="43" gradientUnits="userSpaceOnUse">
           <stop stopColor="#f8fdff" />
-          <stop offset=".48" stopColor="#8cecff" />
-          <stop offset="1" stopColor="#d9c1ff" />
+          <stop offset=".48" stopColor="#74edf0" />
+          <stop offset="1" stopColor="#d8c7ff" />
         </linearGradient>
         <clipPath id={clipId}>
           <rect width="64" height="64" rx="15" />
@@ -76,9 +76,15 @@ export default function NovaMark({
       <g clipPath={surface ? `url(#${clipId})` : undefined}>
         {surface ? (
           <>
-            <rect width="64" height="64" fill="#050713" />
+            <rect width="64" height="64" fill="#050816" />
             <rect width="64" height="64" fill={`url(#${surfaceId})`} />
-            <circle cx="32" cy="32" r="18" fill="#080b1d" opacity=".42" />
+            <path
+              d="M-3 39c7-10 12 9 19 0s12-9 19 0 12 9 32-2"
+              stroke="#2de2e6"
+              strokeOpacity=".13"
+              strokeWidth=".8"
+            />
+            <circle cx="32" cy="32" r="18" fill="#080d22" opacity=".46" />
           </>
         ) : null}
         <path
@@ -87,10 +93,10 @@ export default function NovaMark({
           strokeWidth="3.25"
           strokeLinecap="round"
         />
-        <circle cx="15.03" cy="15.03" r="2.45" fill="#a8f7ff" />
+        <circle cx="15.03" cy="15.03" r="2.45" fill="#b7fbff" />
         <path
           d="M18 43V21l13 14 6-8 9 16V21"
-          stroke="#02040d"
+          stroke="#02040f"
           strokeOpacity=".82"
           strokeWidth="9.25"
           strokeLinecap="round"
@@ -103,7 +109,7 @@ export default function NovaMark({
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <circle cx="37" cy="27" r="2.35" fill="#ffc857" />
+        <circle cx="37" cy="27" r="2.35" fill="#f6b73c" />
         {surface ? (
           <rect
             x=".75"

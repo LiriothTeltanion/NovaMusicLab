@@ -37,6 +37,26 @@ describe('MuseumChapterHeader', () => {
     expect(screen.getAllByText(expectedRange)).not.toHaveLength(0);
   });
 
+  it.each([
+    ['en', 'time span', 'highest-volume observed year', 'Unavailable'],
+    ['es', 'arco temporal', 'año observado con más reproducciones', 'No disponible'],
+    ['he', 'טווח הזמן', 'השנה הנצפית עם מספר ההשמעות הגבוה ביותר', 'לא זמין'],
+  ] as const)('shows localized unavailable timeline evidence in %s instead of core max_year', (lang, spanLabel, peakLabel, unavailable) => {
+    const emptyTimeline: MusicDnaData = {
+      ...data,
+      core_metrics: { ...data.core_metrics, max_year: 2026 },
+      yearly_eras: [],
+    };
+
+    render(<MuseumChapterHeader activeTab="eras" data={emptyTimeline} lang={lang} />);
+
+    expect(screen.getByText(spanLabel)).toBeInTheDocument();
+    expect(screen.getByText(peakLabel)).toBeInTheDocument();
+    expect(screen.getAllByText(unavailable)).toHaveLength(2);
+    expect(document.body).not.toHaveTextContent('2026');
+    expect(document.body).not.toHaveTextContent(/peak activity year/i);
+  });
+
   it('uses artist origins for the cultural room and never listener-location telemetry', () => {
     const legacyData: MusicDnaData = {
       ...data,

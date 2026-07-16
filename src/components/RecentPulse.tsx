@@ -11,6 +11,7 @@ import { localeFor } from '../utils/i18n';
 
 interface RecentPulseProps {
   data: MusicDnaData;
+  isPersonalArchive?: boolean;
 }
 
 interface PulseArtist {
@@ -33,6 +34,24 @@ interface PulseSnapshot {
 }
 
 const pulse = pulseData as PulseSnapshot;
+
+const VISITOR_PULSE_COPY = {
+  en: {
+    title: 'Current snapshot unavailable for this archive',
+    body: 'Current Pulse is a dated local Spotify snapshot that belongs only to the flagship exhibition. Nova never relabels it as a visitor’s present listening.',
+    next: 'Import a compatible recent listening export when you want this archive to receive its own current-vs-history comparison.',
+  },
+  es: {
+    title: 'La instantánea actual no está disponible para este archivo',
+    body: 'Pulso Actual es una instantánea local fechada de Spotify que pertenece únicamente a la exposición insignia. Nova nunca la presenta como la escucha presente de un visitante.',
+    next: 'Importa un export reciente compatible cuando quieras crear una comparación propia entre presente e historial.',
+  },
+  he: {
+    title: 'תמונת המצב הנוכחית אינה זמינה לארכיון הזה',
+    body: 'הדופק הנוכחי הוא תמונת מצב מקומית ומתוארכת של Spotify ששייכת רק לתערוכת הדגל. Nova לעולם לא מציגה אותה כהאזנה הנוכחית של מבקר.',
+    next: 'כדי ליצור השוואה אישית בין ההווה להיסטוריה, יש לייבא ייצוא האזנה עדכני ותואם.',
+  },
+} as const;
 
 /* ── framer-motion variants ── */
 const containerVariants = {
@@ -100,9 +119,23 @@ function AlbumArt({ title, image, size, rounded = 'rounded-xl' }: { title: strin
   );
 }
 
-export default function RecentPulse({ data }: RecentPulseProps) {
+export default function RecentPulse({ data, isPersonalArchive = false }: RecentPulseProps) {
   const { tc, t, lang, setActiveTab, setSelectedArtistName, setSelectedTrackKey, setTopSubTab } = useApp();
   const fmtNum = (n: number) => Math.round(n).toLocaleString(localeFor(lang));
+
+  if (isPersonalArchive) {
+    const copy = VISITOR_PULSE_COPY[lang];
+    return (
+      <section
+        className="glass-panel space-y-4 rounded-3xl border border-white/10 p-6 sm:p-8"
+        data-testid="visitor-pulse-unavailable"
+      >
+        <p className="type-label" style={{ color: tc.c3 }}>📡 {copy.title}</p>
+        <p className="max-w-3xl text-sm leading-relaxed text-gray-300">{copy.body}</p>
+        <p className="max-w-3xl text-xs leading-relaxed text-gray-500">{copy.next}</p>
+      </section>
+    );
+  }
 
   const formatDate = (dateStr: string) => {
     try {

@@ -2,9 +2,11 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { MusicDnaData } from '../types';
 import { buildCoreArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/moodCore';
+import type { MotionMode } from './museumVisualIdentity';
 
 interface InteractiveBackdropProps {
   data: MusicDnaData;
+  motionMode?: MotionMode;
 }
 
 const SONIC_CARTOGRAPHY_URL = `${import.meta.env.BASE_URL}visuals/sonic-cartography-bg-v2.jpg`;
@@ -51,7 +53,7 @@ function lerpColor(c1: string, c2: string, amt: number): string {
   }
 }
 
-export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) {
+export default function InteractiveBackdrop({ data, motionMode = 'calm' }: InteractiveBackdropProps) {
   const { tc, selectedArtistName, selectedAlbumKey, selectedTrackKey } = useApp();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1000, y: -1000 });
@@ -92,22 +94,22 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Half-resolution is enough behind the 75px blur. The loop is capped at
-    // 30fps and fully pauses while the tab is hidden or motion is reduced.
-    const scale = 0.5;
-    const resize = () => {
+    // The canvas is atmosphere, never content. Calm mode uses fewer pixels and
+    // frames; Static and reduced-motion users receive one deterministic paint.
+    const scale = motionMode === 'expressive' ? 0.5 : 0.34;
+    const resizeCanvas = () => {
       canvas.width = Math.max(1, Math.round(window.innerWidth * scale));
       canvas.height = Math.max(1, Math.round(window.innerHeight * scale));
     };
-    resize();
+    resizeCanvas();
 
     // Initial setup for blobs
-    const blobs: Blob[] = targetPalette.map((color) => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 1.2,
-      vy: (Math.random() - 0.5) * 1.2,
-      radius: (200 + Math.random() * 100) * scale,
+    const blobs: Blob[] = targetPalette.map((color, index) => ({
+      x: canvas.width * [0.22, 0.76, 0.48][index % 3],
+      y: canvas.height * [0.28, 0.62, 0.78][index % 3],
+      vx: [0.28, -0.22, 0.18][index % 3],
+      vy: [0.16, 0.2, -0.18][index % 3],
+      radius: (220 + index * 34) * scale,
       currentColor: color,
       targetColor: color,
     }));
@@ -124,7 +126,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
     let animationId: number | null = null;
     let lastFrame = 0;
     let time = 0;
-    const frameInterval = 1000 / 30;
+    const frameInterval = 1000 / (motionMode === 'expressive' ? 30 : 12);
 
     const paint = (elapsedMs: number) => {
       const step = Math.min(elapsedMs / (1000 / 60), 2);
@@ -160,7 +162,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
         const dist = Math.sqrt(dx * dx + dy * dy);
         const activeRadius = 300 * scale;
 
-        if (dist < activeRadius) {
+        if (motionMode === 'expressive' && dist < activeRadius) {
           const force = (activeRadius - dist) / activeRadius;
           const angle = Math.atan2(dy, dx);
           blob.x += Math.cos(angle) * force * 3;
@@ -192,7 +194,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
 
     const animate = (timestamp: number) => {
       animationId = null;
-      if (document.hidden || reduceMotion) return;
+      if (document.hidden || reduceMotion || motionMode !== 'expressive') return;
 
       if (!lastFrame) lastFrame = timestamp;
       const elapsed = timestamp - lastFrame;
@@ -204,7 +206,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
     };
 
     const start = () => {
-      if (animationId !== null || document.hidden || reduceMotion) return;
+      if (animationId !== null || document.hidden || reduceMotion || motionMode !== 'expressive') return;
       lastFrame = 0;
       animationId = requestAnimationFrame(animate);
     };
@@ -221,20 +223,37 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
         stop();
         paint(0);
       } else {
-        window.addEventListener('mousemove', handleMouseMove, { passive: true });
+        if (motionMode === 'expressive') window.addEventListener('mousemove', handleMouseMove, { passive: true });
         start();
       }
     };
 
     const handleResize = () => {
-      resize();
+      const previousWidth = canvas.width;
+      const previousHeight = canvas.height;
+      resizeCanvas();
+
+      // Canvas dimensions are reset on resize, but blob positions are stored
+      // in its internal coordinate space. Preserve each blob's relative
+      // location instead of leaving the composition stranded in the old
+      // viewport geometry.
+      const widthRatio = canvas.width / previousWidth;
+      const heightRatio = canvas.height / previousHeight;
+      blobs.forEach((blob) => {
+        blob.x *= widthRatio;
+        blob.y *= heightRatio;
+      });
+      if (mouseRef.current.x >= 0 && mouseRef.current.y >= 0) {
+        mouseRef.current.x *= widthRatio;
+        mouseRef.current.y *= heightRatio;
+      }
       paint(0);
     };
 
     // Always paint a useful static backdrop before deciding whether to animate.
     paint(0);
     window.addEventListener('resize', handleResize);
-    if (!reduceMotion) window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    if (!reduceMotion && motionMode === 'expressive') window.addEventListener('mousemove', handleMouseMove, { passive: true });
     document.addEventListener('visibilitychange', handleVisibilityChange);
     motionQuery.addEventListener('change', handleMotionPreference);
     start();
@@ -246,7 +265,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
       motionQuery.removeEventListener('change', handleMotionPreference);
       stop();
     };
-  }, [tc, targetPalette]); // Re-run effect only when theme or target palette changes
+  }, [motionMode, tc, targetPalette]); // Re-run when atmosphere quality, theme or artist palette changes.
 
   return (
     <>
@@ -274,6 +293,7 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
       <canvas
         ref={canvasRef}
         aria-hidden="true"
+        data-motion={motionMode}
         className="fixed inset-0 w-full h-full pointer-events-none z-0"
         style={{
           filter: 'blur(75px)',
@@ -281,7 +301,9 @@ export default function InteractiveBackdrop({ data }: InteractiveBackdropProps) 
           // A full-strength multiply layer turns every light museum theme into a
           // dark veil. Keep just enough pigment for atmosphere while preserving
           // the intended paper-like luminance and text contrast.
-          opacity: tc.mode === 'light' ? 0.22 : 1,
+          opacity: tc.mode === 'light'
+            ? (motionMode === 'expressive' ? 0.22 : 0.14)
+            : (motionMode === 'expressive' ? 0.82 : 0.5),
           transition: 'background-color 0.4s ease, opacity 0.4s ease',
         }}
       />

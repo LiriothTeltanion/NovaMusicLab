@@ -83,13 +83,13 @@ describe('deep links', () => {
 
   it('retains a GitHub Pages base path when building the copied URL', () => {
     expect(buildShareUrl({
-      origin: 'https://lirioth.github.io',
-      pathname: '/nova-music-dashboard/',
+      origin: 'https://liriothteltanion.github.io',
+      pathname: '/NovaMusicLab/',
       search: '?preview=1',
     }, {
       ...DEFAULT_DEEP_LINK_STATE,
       tab: 'quality',
-    })).toBe('https://lirioth.github.io/nova-music-dashboard/?preview=1#/data-quality');
+    })).toBe('https://liriothteltanion.github.io/NovaMusicLab/?preview=1#/data-quality');
   });
 
   it('pushes room changes, replaces selection changes and skips canonical state', () => {

@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { AppProvider } from '../context/AppContext';
 import defaultMusicData from '../data/music_dna_compiled.json';
@@ -10,12 +11,14 @@ const data = defaultMusicData as unknown as MusicDnaData;
 
 describe('AIAssistant accessibility', () => {
   beforeEach(() => {
+    window.sessionStorage.clear();
     window.localStorage.setItem('nml_lang', 'en');
   });
 
   afterEach(() => {
     cleanup();
     window.localStorage.clear();
+    window.sessionStorage.clear();
     document.documentElement.lang = 'en';
     document.documentElement.dir = 'ltr';
   });
@@ -43,6 +46,33 @@ describe('AIAssistant accessibility', () => {
     const link = screen.getByRole('link', { name: /Get a free Gemini key.*opens in a new tab/i });
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  });
+
+  it('keeps the Gemini key session-only until explicit remember consent and supports clear', async () => {
+    const user = userEvent.setup();
+    render(
+      <AppProvider>
+        <AIAssistant data={data} />
+      </AppProvider>
+    );
+
+    const input = screen.getByLabelText('Gemini API key');
+    const remember = screen.getByRole('checkbox', { name: 'Remember key on this browser' });
+    await user.type(input, 'test-session-key');
+
+    expect(window.sessionStorage.getItem('nml_gemini_api_key_session')).toBe('test-session-key');
+    expect(window.localStorage.getItem('nml_gemini_api_key')).toBeNull();
+    expect(screen.getByText('Key available only for this browser session.')).toBeInTheDocument();
+
+    await user.click(remember);
+    expect(window.localStorage.getItem('nml_gemini_api_key')).toBe('test-session-key');
+    expect(screen.getByText('Key explicitly remembered in browser local storage.')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Forget and clear key' }));
+    expect(input).toHaveValue('');
+    expect(window.sessionStorage.getItem('nml_gemini_api_key_session')).toBeNull();
+    expect(window.localStorage.getItem('nml_gemini_api_key')).toBeNull();
+    expect(remember).not.toBeChecked();
   });
 
   it('renders complete Hebrew controls, status copy and RTL semantics', async () => {
@@ -118,5 +148,43 @@ describe('AIAssistant accessibility', () => {
     expect(fallback).toContain('מצב ה-Sandbox של Nova');
     expect(fallback).toContain(new Intl.NumberFormat('he-IL').format(data.core_metrics.total_plays));
     expect([playlist, obsessions, daypart, fallback].join('\n')).not.toContain('escuchas');
+  });
+
+  it('builds playlist, repetition and daypart answers only from the active archive', () => {
+    const foreignArchive: MusicDnaData = {
+      ...data,
+      core_metrics: { ...data.core_metrics, total_plays: 100 },
+      top_artists: [
+        { name: 'Signal Nomad', plays: 40, genre: 'Ambient', country: 'Iceland' },
+        { name: 'Glass Harbour', plays: 25, genre: 'Art Pop', country: 'Canada' },
+      ],
+      top_tracks: [
+        { artist: 'Signal Nomad', title: 'Glass Orbit', plays: 25, genre: 'Ambient' },
+        { artist: 'Glass Harbour', title: 'Northern Static', plays: 15, genre: 'Art Pop' },
+      ],
+      top_genres: [
+        { name: 'Ambient', plays: 55 },
+        { name: 'Art Pop', plays: 45 },
+      ],
+      yearly_eras: data.yearly_eras.map((era, index) => ({
+        ...era,
+        plays: index === 0 ? 80 : 10,
+        dominant_daypart: 'Noche 18-23',
+      })),
+    };
+
+    const answers = [
+      buildSandboxResponse(foreignArchive, 'en', 'suggest a playlist'),
+      buildSandboxResponse(foreignArchive, 'en', 'analyze my obsession'),
+      buildSandboxResponse(foreignArchive, 'en', 'explain my daypart'),
+    ].join('\n');
+
+    expect(answers).toContain('Glass Orbit');
+    expect(answers).toContain('Signal Nomad');
+    expect(answers).toContain('**25.0%**');
+    expect(answers).toContain('**Ambient**');
+    expect(answers).not.toContain('In Blur');
+    expect(answers).not.toContain('Deafheaven');
+    expect(answers).not.toContain('coding or working');
   });
 });

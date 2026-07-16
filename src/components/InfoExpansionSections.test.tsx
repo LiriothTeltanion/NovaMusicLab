@@ -88,6 +88,20 @@ describe('expanded info sections', () => {
     expect(screen.getByText('Historical match')).toBeInTheDocument();
   });
 
+  it('does not relabel the flagship pulse snapshot as a visitor archive current state', () => {
+    localStorage.setItem('nml_lang', 'en');
+
+    render(
+      <AppProvider>
+        <RecentPulse data={data} isPersonalArchive />
+      </AppProvider>
+    );
+
+    expect(screen.getByTestId('visitor-pulse-unavailable')).toHaveTextContent('Current snapshot unavailable for this archive');
+    expect(screen.queryByText('Present vs archive')).not.toBeInTheDocument();
+    expect(screen.queryByText('Local Spotify snapshot')).not.toBeInTheDocument();
+  });
+
   it('renders the Data Quality dictionary with grouped definitions', () => {
     localStorage.setItem('nml_lang', 'en');
 

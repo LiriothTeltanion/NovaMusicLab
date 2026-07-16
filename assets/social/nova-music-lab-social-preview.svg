@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title description">
+  <title id="title">Nova Music Lab — Living Sonic Cartography</title>
+  <desc id="description">Static social preview for a local-first, trilingual digital museum of listening history.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#030611"/>
+      <stop offset="0.48" stop-color="#080d25"/>
+      <stop offset="1" stop-color="#160a28"/>
+    </linearGradient>
+    <linearGradient id="nova" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2de2e6"/>
+      <stop offset="0.52" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+    <radialGradient id="cyanAura">
+      <stop offset="0" stop-color="#2de2e6" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#2de2e6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pinkAura">
+      <stop offset="0" stop-color="#ec4899" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#ec4899" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#9feff2" stroke-opacity="0.055"/>
+    </pattern>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="mapClip"><circle cx="992" cy="320" r="224"/></clipPath>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#background)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <circle cx="1050" cy="110" r="360" fill="url(#pinkAura)"/>
+  <circle cx="790" cy="600" r="390" fill="url(#cyanAura)"/>
+  <path d="M0 523C126 467 177 576 303 519S503 454 624 510 815 579 938 498s218-82 342-19" fill="none" stroke="#2de2e6" stroke-opacity="0.18" stroke-width="2"/>
+  <path d="M0 548c138 45 190-56 316-5s209 58 332-5 227-42 345 7 188 33 287-19" fill="none" stroke="#ec4899" stroke-opacity="0.14" stroke-width="2" stroke-dasharray="8 13"/>
+
+  <!-- Nova's open orbit and waveform N mark. -->
+  <g transform="translate(82 74)" filter="url(#softGlow)">
+    <path d="M82 6A76 76 0 1 0 148 121" fill="none" stroke="url(#nova)" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="149" cy="121" r="7" fill="#f6b73c"/>
+    <path d="M42 112V45l80 76V47" fill="none" stroke="#f8fbff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28 84h21l8-20 12 38 13-30 11 16 12-10 14 6h28" fill="none" stroke="#2de2e6" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <text x="82" y="258" fill="#80f4f5" font-size="18" font-weight="700" letter-spacing="5">LIVING SONIC CARTOGRAPHY ✦</text>
+    <text x="78" y="344" fill="#f8fbff" font-size="76" font-weight="900" letter-spacing="-3">NOVA</text>
+    <text x="310" y="344" fill="url(#nova)" font-size="76" font-weight="900" letter-spacing="-3">MUSIC LAB</text>
+    <text x="82" y="394" fill="#cbd5e1" font-size="24" font-weight="500">Your listening history, transformed into a living digital museum.</text>
+    <text x="82" y="430" fill="#8ea0b8" font-size="18">Evidence-linked stories · artist intelligence · generative identity</text>
+
+    <g transform="translate(82 475)" font-size="14" font-weight="800" letter-spacing="1.6">
+      <rect width="150" height="42" rx="21" fill="#2de2e6" fill-opacity="0.1" stroke="#2de2e6" stroke-opacity="0.5"/>
+      <text x="75" y="27" fill="#80f4f5" text-anchor="middle">LOCAL-FIRST</text>
+      <rect x="164" width="138" height="42" rx="21" fill="#8b5cf6" fill-opacity="0.1" stroke="#a78bfa" stroke-opacity="0.5"/>
+      <text x="233" y="27" fill="#c4b5fd" text-anchor="middle">EN · ES · HE</text>
+      <rect x="316" width="118" height="42" rx="21" fill="#ec4899" fill-opacity="0.1" stroke="#ec4899" stroke-opacity="0.5"/>
+      <text x="375" y="27" fill="#f9a8d4" text-anchor="middle">V1.0 RC</text>
+    </g>
+  </g>
+
+  <!-- A static map of listening signals: orbit, coordinates and waveform. -->
+  <g clip-path="url(#mapClip)">
+    <circle cx="992" cy="320" r="224" fill="#070b1c" fill-opacity="0.82" stroke="#2de2e6" stroke-opacity="0.42" stroke-width="2"/>
+    <g fill="none" stroke="#94a3b8" stroke-opacity="0.14">
+      <circle cx="992" cy="320" r="176"/><circle cx="992" cy="320" r="126"/><circle cx="992" cy="320" r="72"/>
+      <path d="M768 320h448M992 96v448M804 198l376 244M804 442l376-244"/>
+    </g>
+    <path d="M792 362c55-7 67-94 124-73s47 109 111 76 78-111 166-71" fill="none" stroke="url(#nova)" stroke-width="7" stroke-linecap="round" filter="url(#softGlow)"/>
+    <path d="M802 388c47 23 76-29 119-6s87 17 126-9 85-19 143 7" fill="none" stroke="#f6b73c" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="5 10"/>
+    <g fill="#2de2e6" stroke="#d9ffff" stroke-width="2" filter="url(#softGlow)">
+      <circle cx="842" cy="311" r="6"/><circle cx="916" cy="289" r="8"/><circle cx="1027" cy="365" r="7"/><circle cx="1134" cy="298" r="9"/>
+    </g>
+    <g fill="#ec4899"><circle cx="875" cy="410" r="5"/><circle cx="1075" cy="234" r="6"/><circle cx="1162" cy="399" r="5"/></g>
+  </g>
+  <circle cx="992" cy="320" r="225" fill="none" stroke="url(#nova)" stroke-width="3" stroke-dasharray="3 11"/>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" text-anchor="middle">
+    <text x="992" y="569" fill="#8ea0b8" font-size="13" font-weight="700" letter-spacing="3">100 ARTISTS · CURATED VISUALS</text>
+  </g>
+
+  <rect x="20" y="20" width="1240" height="600" rx="28" fill="none" stroke="#e2f9ff" stroke-opacity="0.14"/>
+  <path d="M20 110V48a28 28 0 0 1 28-28h62M1170 620h62a28 28 0 0 0 28-28v-62" fill="none" stroke="url(#nova)" stroke-width="3"/>
+</svg>

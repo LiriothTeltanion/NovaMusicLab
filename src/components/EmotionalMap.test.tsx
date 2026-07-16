@@ -45,10 +45,10 @@ vi.mock('./ArtistAvatar', () => ({ default: ({ name }: { name: string }) => <spa
 
 const data = defaultMusicData as unknown as MusicDnaData;
 
-function renderMap() {
+function renderMap(dataset: MusicDnaData = data) {
   return render(
     <AppProvider>
-      <EmotionalMap data={data} />
+      <EmotionalMap data={dataset} />
     </AppProvider>,
   );
 }
@@ -86,5 +86,24 @@ describe('EmotionalMap primary workspace', () => {
     expect(screen.getByTestId('emotional-scatter-plot')).toHaveAttribute('dir', 'ltr');
     expect(screen.getByTestId('emotional-scatter-plot')).toHaveClass('nova-data-ltr');
     expect(screen.getByText(/מוצגים · .* נותחו/)).toBeInTheDocument();
+  });
+
+  it('never falls back to the bundled demo artists for a foreign archive', () => {
+    renderMap({
+      ...data,
+      top_artists: [
+        { name: 'Signal Nomad', plays: 90, genre: 'Ambient', country: 'Iceland' },
+        { name: 'Glass Harbour', plays: 60, genre: 'Art Pop', country: 'Canada' },
+      ],
+      top_tracks: [
+        { artist: 'Signal Nomad', title: 'Glass Orbit', plays: 25, genre: 'Ambient' },
+        { artist: 'Glass Harbour', title: 'Northern Static', plays: 15, genre: 'Art Pop' },
+      ],
+    });
+
+    expect(screen.getAllByText('Signal Nomad').length).toBeGreaterThan(0);
+    expect(screen.queryByText('Deafheaven')).not.toBeInTheDocument();
+    expect(screen.queryByText('In Blur')).not.toBeInTheDocument();
+    expect(screen.queryByText(/BMTH/)).not.toBeInTheDocument();
   });
 });

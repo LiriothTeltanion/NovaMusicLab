@@ -1,0 +1,17 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+  categories:
+    - title: New museum experiences 🏛️
+      labels: [feature, enhancement]
+    - title: Data truth and privacy 🔒
+      labels: [area-data, area-privacy]
+    - title: Visuals and accessibility 🎨
+      labels: [area-visual, accessibility]
+    - title: Reliability and performance ⚡
+      labels: [bug, performance, area-infrastructure]
+    - title: Documentation 📚
+      labels: [documentation]
+    - title: Other changes
+      labels: ['*']

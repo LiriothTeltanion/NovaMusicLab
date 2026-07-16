@@ -1,14 +1,18 @@
 {
   "name": "Nova Music Lab",
   "short_name": "Nova Lab",
-  "description": "A bilingual visual music-history dashboard for listening data, emotional analysis, artist dossiers, and personal archive exploration.",
+  "id": "./",
+  "description": "A local-first, trilingual personal music museum that turns Spotify, Last.fm, Apple Music, ListenBrainz and YouTube exports into evidence-linked stories, analytics and generative art.",
+  "lang": "en",
+  "dir": "auto",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#030712",
-  "theme_color": "#00f2fe",
-  "categories": ["music", "entertainment", "productivity"],
+  "orientation": "any",
+  "background_color": "#050816",
+  "theme_color": "#050816",
+  "categories": ["music", "entertainment", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "./favicon.svg",
@@ -33,6 +37,28 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "./icon-monochrome.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "monochrome"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open the museum",
+      "short_name": "Museum",
+      "description": "Continue exploring your active music archive.",
+      "url": "./#/dashboard",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Build my museum",
+      "short_name": "Import",
+      "description": "Import a music archive locally in this browser.",
+      "url": "./#/upload",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }

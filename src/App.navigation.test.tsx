@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import App, { resetRoomViewport, writeClipboardText } from './App';
+import App, { nextMotionMode, resetRoomViewport, writeClipboardText } from './App';
 import { parseDeepLink } from './utils/deepLinks';
 
 vi.mock('framer-motion', async (importOriginal) => {
@@ -18,6 +18,12 @@ describe('room navigation focus', () => {
     window.history.replaceState(null, '', '/');
     Reflect.deleteProperty(window.navigator, 'clipboard');
     document.body.replaceChildren();
+  });
+
+  it('cycles through the three museum motion atmospheres', () => {
+    expect(nextMotionMode('expressive')).toBe('calm');
+    expect(nextMotionMode('calm')).toBe('static');
+    expect(nextMotionMode('static')).toBe('expressive');
   });
 
   it('resets the page and focuses the resolved room heading without scrolling it away', () => {
@@ -63,9 +69,24 @@ describe('room navigation focus', () => {
     window.localStorage.setItem('nml_tour_seen', 'true');
     render(<App />);
 
-    const cvLink = await screen.findByTestId('header-cv-link', {}, { timeout: 8000 });
-    expect(cvLink).toHaveAttribute('href', '/cv/kevin-cusnir-cv-en.pdf');
-    expect(cvLink).toHaveAttribute('target', '_blank');
+    await screen.findByTestId('museum-app-header', {}, { timeout: 8000 });
+    expect(screen.queryByTestId('header-cv-link')).not.toBeInTheDocument();
+
+    const languageSelect = screen.getByRole('combobox', { name: /select interface language/i });
+    languageSelect.focus();
+    expect(languageSelect).toHaveFocus();
+    expect(languageSelect).toHaveClass('nova-language-select');
+    expect(languageSelect).not.toHaveClass('outline-none');
+
+    await user.click(screen.getByRole('button', { name: /open theme selector/i }));
+    const themeMenu = screen.getByRole('menu');
+    expect(themeMenu).toHaveClass('nova-anchor-end');
+    expect(themeMenu).not.toHaveClass('right-0');
+
+    await user.click(screen.getByRole('button', { name: /open quick controls/i }));
+    const quickControls = screen.getByRole('dialog', { name: /quick controls/i });
+    expect(quickControls).toHaveClass('nova-anchor-end');
+    expect(quickControls).not.toHaveClass('right-0');
 
     await user.click(await screen.findByRole('button', { name: /enter the sound museum/i }, { timeout: 8000 }));
     await waitFor(

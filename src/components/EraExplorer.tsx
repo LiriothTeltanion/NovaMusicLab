@@ -28,6 +28,7 @@ import {
 
 interface EraExplorerProps {
   data: MusicDnaData;
+  isPersonalArchive?: boolean;
 }
 
 const ERA_INTERPRETATIONS: Record<Lang, Record<number, string>> = {
@@ -294,7 +295,7 @@ function EraMotifArt({ identity, reducedMotion }: { identity: EraVisualIdentity;
   );
 }
 
-export default function EraExplorer({ data }: EraExplorerProps) {
+export default function EraExplorer({ data, isPersonalArchive = false }: EraExplorerProps) {
   const eras = data.yearly_eras;
   const [selectedYear, setSelectedYear] = useState<number | null>(() => eras.at(-1)?.year ?? null);
   const timelineScrollRef = useRef<HTMLDivElement | null>(null);
@@ -355,14 +356,16 @@ export default function EraExplorer({ data }: EraExplorerProps) {
   const currentEraLabel = localizeEraLabel(currentEra.era_label, lang);
   const currentDaypartLabel = localizeDaypart(currentEra.dominant_daypart, lang);
   const currentEraDescription = localizeEraDescription(currentEra, lang, locale);
-  const interpretation = ERA_INTERPRETATIONS[lang][currentEra.year]
-    ?? t.eraExplorer.fallbackInterpretation(
-      currentEra.year,
-      currentEra.top_artist,
-      fmtNum(currentEra.plays),
-      currentEra.unique_artists,
-      currentDaypartLabel.toLowerCase(),
-    );
+  const interpretation = isPersonalArchive
+    ? currentEraDescription
+    : ERA_INTERPRETATIONS[lang][currentEra.year]
+      ?? t.eraExplorer.fallbackInterpretation(
+        currentEra.year,
+        currentEra.top_artist,
+        fmtNum(currentEra.plays),
+        currentEra.unique_artists,
+        currentDaypartLabel.toLowerCase(),
+      );
   const localizedMood = identity.mood[lang];
   const localizedEnergyBand = identity.energyBand[lang];
   // Rides the app-wide shared swap timing (chartKit) so era changes feel like

@@ -15,11 +15,21 @@ coverage
 .cache
 scripts/.cache
 lint_output.txt
+.nova-readme-backups/
+.nova-readme-preview/
 
 # Env
 .env
 .env.local
 .env.*.local
+
+# Raw listening exports stay outside version control.
+/private-exports/
+/local-exports/
+/my_spotify_data/
+/historial de videos/
+/Streaming_History_Audio_*.json
+/endsong_*.json
 
 # Editor directories and files
 .vscode/*

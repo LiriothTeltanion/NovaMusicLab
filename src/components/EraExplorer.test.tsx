@@ -187,4 +187,28 @@ describe('EraExplorer visual identity', () => {
     expect(screen.getByText(/Todavía no hay años suficientes/i)).toBeInTheDocument();
     expect(screen.queryByTestId('era-poster')).not.toBeInTheDocument();
   });
+
+  it('never applies flagship year lore to a visitor archive with overlapping years', () => {
+    const sourceEra = data.yearly_eras.find(era => era.year === 2022)!;
+    const visitorData: MusicDnaData = {
+      ...data,
+      yearly_eras: [{
+        ...sourceEra,
+        top_artist: 'Foreign Archive Artist',
+        top_track: 'Foreign Archive Track',
+        era_label: 'Visitor archive chapter',
+        era_desc: 'Visitor evidence only.',
+      }],
+    };
+
+    render(
+      <AppProvider>
+        <EraExplorer data={visitorData} isPersonalArchive />
+      </AppProvider>,
+    );
+
+    expect(screen.getAllByText(/Visitor evidence only/i)).toHaveLength(2);
+    expect(screen.queryByText(/La era Deafheaven se consolida/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('Deafheaven')).not.toBeInTheDocument();
+  });
 });

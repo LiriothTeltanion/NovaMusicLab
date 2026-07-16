@@ -7,7 +7,10 @@ import { pickLanguage, type Lang } from '../utils/i18n';
 import SectionNarrative from './SectionNarrative';
 import GenreConstellation from './GenreConstellation';
 
-interface InnerWorldProps { data: MusicDnaData; }
+interface InnerWorldProps {
+  data: MusicDnaData;
+  isPersonalArchive?: boolean;
+}
 
 const cardVariants = {
   initial: { opacity: 0, y: 24 },
@@ -86,10 +89,42 @@ const INNER_WORLD_LOCAL_COPY: Record<Lang, InnerWorldLocalCopy> = {
   },
 };
 
-export default function InnerWorld({ data }: InnerWorldProps) {
+const VISITOR_ARCHIVE_COPY: Record<Lang, { title: string; body: string; evidence: string }> = {
+  en: {
+    title: 'Archive-derived constellation',
+    body: 'This imported archive contains listening evidence, but no trustworthy evidence about its owner’s gaming, lyrics, visual preferences, or creative intentions.',
+    evidence: 'The authored flagship identity essay is hidden here. Only the genre relationships supported by this active archive are shown below.',
+  },
+  es: {
+    title: 'Constelación derivada del archivo',
+    body: 'Este archivo importado contiene evidencia de escucha, pero no evidencia fiable sobre videojuegos, letras, preferencias visuales o intenciones creativas de su propietario.',
+    evidence: 'El ensayo de identidad escrito para la exposición insignia se oculta aquí. Abajo sólo aparecen relaciones de género respaldadas por este archivo activo.',
+  },
+  he: {
+    title: 'מפת ז׳אנרים שנגזרה מהארכיון',
+    body: 'הארכיון המיובא כולל עדויות האזנה, אך אינו כולל עדויות אמינות על משחקים, כתיבה, העדפות חזותיות או כוונות יצירתיות של בעליו.',
+    evidence: 'מאמר הזהות שנכתב לתערוכת הדגל מוסתר כאן. למטה מוצגים רק קשרי ז׳אנר שנתמכים בארכיון הפעיל.',
+  },
+};
+
+export default function InnerWorld({ data, isPersonalArchive = false }: InnerWorldProps) {
   const [viewMode, setViewMode] = useState<'identity' | 'constellation'>('identity');
   const { lang, tc, t } = useApp();
   const localCopy = pickLanguage(lang, INNER_WORLD_LOCAL_COPY);
+
+  if (isPersonalArchive) {
+    const visitorCopy = pickLanguage(lang, VISITOR_ARCHIVE_COPY);
+    return (
+      <div className="space-y-8 animate-fade-in" data-testid="visitor-inner-world">
+        <section className="glass-panel rounded-3xl border border-white/10 p-6 sm:p-8">
+          <p className="type-label mb-3" style={{ color: tc.c3 }}>🧭 {visitorCopy.title}</p>
+          <p className="max-w-3xl text-sm leading-relaxed text-gray-300">{visitorCopy.body}</p>
+          <p className="mt-3 max-w-3xl text-xs leading-relaxed text-gray-500">{visitorCopy.evidence}</p>
+        </section>
+        <GenreConstellation data={data} />
+      </div>
+    );
+  }
 
   const CARDS = [
     {

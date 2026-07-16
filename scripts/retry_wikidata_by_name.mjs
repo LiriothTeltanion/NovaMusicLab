@@ -21,7 +21,7 @@ const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json'
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'wikidata_by_name');
 mkdirSync(CACHE_DIR, { recursive: true });
 
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const BAND_TYPES = new Set(['Q215380', 'Q2088357', 'Q5741069', 'Q1249737', 'Q125191']); // musical group / ensemble / rock band / musical duo / hip hop group

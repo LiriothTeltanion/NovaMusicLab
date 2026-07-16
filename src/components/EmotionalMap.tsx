@@ -744,16 +744,42 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   }, [galaxyArtists]);
 
   const copy = EMOTIONAL_MAP_COPY[lang];
+  const activeEvidenceCopy = {
+    es: {
+      artists: (names: string) => `Señal observada en el archivo activo: ${names}. La agrupación procede del motor emocional y no de una historia demo fija.`,
+      empty: 'El archivo activo todavía no contiene artistas clasificados en este estado emocional.',
+      track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} escuchas observadas · ${genre}`,
+    },
+    en: {
+      artists: (names: string) => `Observed signal in the active archive: ${names}. The grouping comes from the emotional engine, never from a fixed demo story.`,
+      empty: 'The active archive does not yet contain artists classified in this emotional state.',
+      track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} observed plays · ${genre}`,
+    },
+    he: {
+      artists: (names: string) => `אות שנצפה בארכיון הפעיל: ${names}. הקיבוץ מגיע מהמנוע הרגשי ולא מסיפור הדגמה קבוע.`,
+      empty: 'בארכיון הפעיל עדיין אין אמנים שסווגו למצב הרגשי הזה.',
+      track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} השמעות שנצפו · ${genre}`,
+    },
+  }[lang];
   const emotionDetails = Object.fromEntries(
     EMOTION_KEYS.map(key => {
       const detail = EMOTION_DETAILS[key];
+      const artists = moodArtistsByKey[key].slice(0, 4).map(profile => profile.artist.name);
+      const artistSet = new Set(artists.map(name => name.toLocaleLowerCase('en-US')));
+      const tracks = data.top_tracks
+        .filter(track => artistSet.has(track.artist.toLocaleLowerCase('en-US')))
+        .slice(0, 4);
       return [
         key,
         {
           ...detail[lang],
-          artists: detail.artists,
-          tracks: detail.tracks,
-          trackNotes: detail.trackNotes[lang],
+          evidence: artists.length
+            ? activeEvidenceCopy.artists(artists.join(', '))
+            : activeEvidenceCopy.empty,
+          artists,
+          tracks: tracks.map(track => track.title),
+          trackArtists: tracks.map(track => track.artist),
+          trackNotes: tracks.map(track => activeEvidenceCopy.track(track.plays, track.genre)),
           color: detail.color,
         },
       ];
@@ -761,6 +787,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   ) as Record<EmotionKey, typeof EMOTION_DETAILS[EmotionKey][typeof lang] & {
     artists: string[];
     tracks: string[];
+    trackArtists: string[];
     trackNotes: string[];
     color: string;
   }>;
@@ -798,16 +825,10 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
     },
   ];
 
-  const personalizedArtistEvidence = moodArtistsByKey[selectedEmotion].slice(0, 4);
-  const selectedArtistEvidence = personalizedArtistEvidence.length
-    ? personalizedArtistEvidence.map(profile => ({
-        name: profile.artist.name,
-        plays: profile.artist.plays,
-      }))
-    : currentEmotion.artists.map(name => ({
-        name,
-        plays: data.top_artists.find(artist => artist.name === name)?.plays,
-      }));
+  const selectedArtistEvidence = moodArtistsByKey[selectedEmotion].slice(0, 4).map(profile => ({
+    name: profile.artist.name,
+    plays: profile.artist.plays,
+  }));
 
   const emotionDossierLines = [
     { label: copy.labels.meaning, value: currentEmotion.desc },
@@ -1021,8 +1042,8 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">{copy.labels.tracks}</span>
                 <div className="space-y-1">
                   {currentEmotion.tracks.map((track, index) => (
-                    <div key={`${currentEmotion.artists[index] ?? index}-${track}`} className="flex items-start gap-2.5 rounded-lg border border-cyan-500/10 bg-[#0a0f1d] px-3 py-2 text-xs">
-                      <CoverArt artist={currentEmotion.artists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
+                    <div key={`${currentEmotion.trackArtists[index] ?? index}-${track}`} className="flex items-start gap-2.5 rounded-lg border border-cyan-500/10 bg-[#0a0f1d] px-3 py-2 text-xs">
+                      <CoverArt artist={currentEmotion.trackArtists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
                       <div className="min-w-0">
                         <p className="break-words font-mono text-gray-200"><bdi dir="auto">{track}</bdi></p>
                         <p className="mt-1 text-[10px] leading-relaxed text-gray-500">{currentEmotion.trackNotes[index]}</p>

@@ -11,6 +11,10 @@
 
 .nova-hero__mood-art {
   z-index: -4;
+  background-image:
+    radial-gradient(circle at 28% 18%, color-mix(in srgb, var(--hero-cyan) 18%, transparent), transparent 38%),
+    radial-gradient(circle at 76% 34%, color-mix(in srgb, var(--hero-pink) 15%, transparent), transparent 42%),
+    linear-gradient(145deg, color-mix(in srgb, var(--hero-violet) 9%, transparent), transparent 58%);
   background-position: center top;
   background-size: cover;
   opacity: 0.28;
@@ -116,7 +120,7 @@
   margin-top: 0.28rem;
   color: color-mix(in srgb, var(--hero-cyan) 74%, var(--fg));
   font-family: var(--font-mono);
-  font-size: 0.48rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.24em;
 }
@@ -136,9 +140,57 @@
   align-items: center;
   gap: 0.48rem;
   color: var(--type-ink-muted);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
+}
+
+.nova-hero__masthead-meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.nova-hero__archive-state {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--hero-cyan) 22%, transparent);
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  color: color-mix(in srgb, var(--hero-cyan) 78%, var(--fg));
+  background: color-mix(in srgb, var(--bg) 66%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 7%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.nova-hero__archive-state > span {
+  display: grid;
+  min-width: 0;
+}
+
+.nova-hero__archive-state strong,
+.nova-hero__archive-state small {
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nova-hero__archive-state strong {
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nova-hero__archive-state small {
+  margin-top: 0.15rem;
+  color: var(--type-ink-muted);
 }
 
 .nova-hero__live-dot {
@@ -171,7 +223,7 @@
   gap: 0.55rem;
   margin: 0 0 1.15rem;
   color: color-mix(in srgb, var(--hero-cyan) 84%, var(--fg));
-  font-size: clamp(0.62rem, 0.58rem + 0.12vw, 0.72rem);
+  font-size: clamp(0.75rem, 0.71rem + 0.12vw, 0.82rem);
   font-weight: 700;
   letter-spacing: 0.19em;
 }
@@ -181,9 +233,9 @@
   margin: 0;
   color: var(--fg);
   font-family: var(--font-display);
-  font-size: clamp(4.1rem, 8.7vw, 8.7rem);
+  font-size: clamp(3.75rem, 7.25vw, 7.45rem);
   font-weight: 700;
-  letter-spacing: -0.078em;
+  letter-spacing: -0.068em;
   line-height: 0.78;
   text-wrap: nowrap;
   direction: ltr;
@@ -249,7 +301,7 @@
   overflow: hidden;
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.55rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-overflow: ellipsis;
@@ -286,7 +338,7 @@
   border-radius: 1rem;
   padding: 0.8rem 1.2rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -321,8 +373,10 @@
 
 .nova-hero__assistant-link {
   display: inline-flex;
+  min-height: 2.75rem;
   align-items: center;
   gap: 0.48rem;
+  padding-block: 0.45rem;
   color: var(--type-ink-muted);
   font-size: 0.78rem;
   font-weight: 600;
@@ -351,7 +405,7 @@
   color: color-mix(in srgb, var(--hero-cyan) 76%, var(--fg));
   background: color-mix(in srgb, var(--hero-cyan) 6%, transparent);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -409,7 +463,7 @@
   top: 8%;
   inset-inline-end: 8%;
   color: color-mix(in srgb, var(--hero-cyan) 60%, transparent);
-  font-size: 0.52rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.17em;
 }
@@ -510,7 +564,7 @@
 .nova-hero__track-note small {
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -530,7 +584,7 @@
 .nova-hero__artist-caption small {
   margin-top: 0.16rem;
   color: var(--type-ink-muted);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 
 .nova-hero__track-note {
@@ -571,7 +625,7 @@
   gap: 0.7rem;
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.52rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -597,7 +651,7 @@
 .nova-hero__section-heading > span {
   color: var(--hero-cyan);
   font-family: var(--font-mono);
-  font-size: 0.64rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -660,7 +714,7 @@
 
 .nova-hero__panel-kicker {
   color: color-mix(in srgb, var(--hero-cyan) 76%, var(--fg));
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.15em;
 }
@@ -675,7 +729,7 @@
   padding: 0.26rem 0.48rem;
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.48rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -701,12 +755,14 @@
 
 .nova-hero__panel-action {
   display: inline-flex;
+  min-height: 2.75rem;
   align-items: center;
   gap: 0.55rem;
   margin-top: 1.15rem;
+  padding-block: 0.45rem;
   color: color-mix(in srgb, var(--hero-pink) 78%, var(--fg));
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -738,7 +794,7 @@
   align-items: center;
   gap: 0.45rem;
   color: var(--type-ink-muted);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
 }
 
 .nova-hero__source-legend i {
@@ -778,7 +834,7 @@
 
 .nova-hero__telemetry-totals dt {
   color: var(--type-ink-muted);
-  font-size: 0.56rem;
+  font-size: 0.75rem;
   line-height: 1.25;
 }
 
@@ -786,7 +842,7 @@
   margin: 0.26rem 0 0;
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -810,7 +866,7 @@
   align-items: center;
   gap: 0.45rem;
   color: color-mix(in srgb, var(--archive-accent) 78%, var(--fg));
-  font-size: 0.54rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.11em;
 }
@@ -837,7 +893,7 @@
 .nova-hero__archive-card > p {
   margin: 0.55rem 0 0;
   color: var(--type-ink-muted);
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   line-height: 1.42;
   unicode-bidi: plaintext;
 }
@@ -863,7 +919,7 @@
   overflow: hidden;
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.52rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-overflow: ellipsis;
@@ -908,7 +964,7 @@
   padding: 0.32rem 0.55rem;
   color: var(--type-ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
@@ -939,20 +995,35 @@
 
 .nova-hero__warp-copy strong {
   margin-top: 0.75rem;
-  font-size: clamp(0.68rem, 1.5vw, 0.9rem);
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
   letter-spacing: 0.16em;
 }
 
 .nova-hero__warp-copy small {
   margin-top: 0.4rem;
   color: var(--type-ink-muted);
-  font-size: 0.58rem;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
 }
 
 [data-mode='light'] .nova-hero__mood-art {
   opacity: 0.1;
   mix-blend-mode: multiply;
+}
+
+[data-mode='light'] .nova-hero {
+  background:
+    linear-gradient(color-mix(in srgb, var(--hero-blue) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--hero-blue) 7%, transparent) 1px, transparent 1px),
+    radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--hero-cyan) 16%, transparent), transparent 34%),
+    linear-gradient(155deg, #fbfdff, color-mix(in srgb, var(--bg) 92%, #e8f1ff));
+  background-size: 32px 32px, 32px 32px, auto, auto;
+}
+
+[data-mode='light'] .nova-hero__archive-state {
+  border-color: color-mix(in srgb, var(--hero-blue) 28%, transparent);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 22px rgba(39, 72, 120, 0.08);
 }
 
 [data-mode='light'] .nova-hero__panel,
@@ -972,6 +1043,26 @@
     color-mix(in srgb, var(--hero-blue) 76%, #0f172a)
   );
   text-shadow: 0 1px 1px rgba(15, 23, 42, 0.32);
+}
+
+.nova-hero[data-motion='calm'] .nova-hero__orbit--inner {
+  animation: none;
+  opacity: 0.48;
+}
+
+.nova-hero[data-motion='calm'] .nova-hero__scan::after {
+  animation-duration: 11.5s;
+}
+
+.nova-hero[data-motion='static'] .nova-hero__aurora,
+.nova-hero[data-motion='static'] .nova-hero__live-dot,
+.nova-hero[data-motion='static'] .nova-hero__orbit,
+.nova-hero[data-motion='static'] .nova-hero__scan::after {
+  animation: none;
+}
+
+.nova-hero[data-motion='static'] .nova-hero__scan {
+  display: none;
 }
 
 @keyframes nova-hero-drift {
@@ -1006,7 +1097,15 @@
   }
 
   .nova-hero__title {
-    font-size: clamp(4rem, 8.5vw, 6.3rem);
+    font-size: clamp(3.65rem, 7.8vw, 5.8rem);
+  }
+
+  .nova-hero__masthead-meta {
+    max-width: min(58vw, 34rem);
+  }
+
+  .nova-hero__source > span:last-child {
+    display: none;
   }
 
   .nova-hero__deep-grid {
@@ -1082,13 +1181,35 @@
     min-height: 2.8rem;
   }
 
-  .nova-hero__source span:nth-last-child(-n + 2) {
+  .nova-hero__masthead-meta {
+    gap: 0.45rem;
+  }
+
+  .nova-hero__archive-state {
+    max-width: min(58vw, 13rem);
+    padding: 0.4rem 0.6rem;
+  }
+
+  .nova-hero__archive-state strong,
+  .nova-hero__archive-state small {
+    overflow: visible;
+    font-size: 0.625rem;
+    line-height: 1.25;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .nova-hero__archive-state small {
+    display: block;
+  }
+
+  .nova-hero__source {
     display: none;
   }
 
   .nova-hero__title {
-    font-size: clamp(3.55rem, 18.5vw, 5rem);
-    letter-spacing: -0.07em;
+    font-size: clamp(3.2rem, 15.6vw, 4.55rem);
+    letter-spacing: -0.062em;
   }
 
   .nova-hero__subtitle {
@@ -1100,7 +1221,7 @@
   }
 
   .nova-hero__stats dt {
-    font-size: 0.48rem;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
   }
 

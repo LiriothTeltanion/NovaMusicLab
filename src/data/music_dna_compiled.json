@@ -6686,124 +6686,32 @@
   ],
   "platform_breakdown": [
     {
-      "platform": "android",
-      "plays": 12030
+      "platform": "Android phone",
+      "plays": 38983
     },
     {
-      "platform": "Android OS 11 API 30 (Xiaomi, Mi 10)",
-      "plays": 11183
+      "platform": "Windows desktop",
+      "plays": 19090
     },
     {
-      "platform": "Android OS 8.0.0 API 26 (samsung, SM-N950F)",
-      "plays": 8635
+      "platform": "Smart TV",
+      "plays": 2840
     },
     {
-      "platform": "Windows 8 (6.2.9200; x64)",
-      "plays": 4296
-    },
-    {
-      "platform": "Windows 10 (10.0.14393; x64)",
-      "plays": 3548
-    },
-    {
-      "platform": "Windows 10 (10.0.10586; x64)",
-      "plays": 3507
-    },
-    {
-      "platform": "Android OS 12 API 31 (Xiaomi, Mi 10)",
-      "plays": 3208
-    },
-    {
-      "platform": "windows",
-      "plays": 2965
-    },
-    {
-      "platform": "Android OS 9 API 28 (samsung, SM-N950F)",
-      "plays": 2913
-    },
-    {
-      "platform": "Partner android_tv Xiaomi;MIBOX4;756a522d9f1648b89e76e80be654456a;;tpapi",
-      "plays": 2769
-    },
-    {
-      "platform": "cast",
+      "platform": "Cast",
       "plays": 1970
     },
     {
-      "platform": "YouTube Takeout HTML",
+      "platform": "YouTube import",
       "plays": 1766
     },
     {
-      "platform": "Windows 10 (10.0.15063; x64)",
-      "plays": 970
+      "platform": "PlayStation",
+      "plays": 865
     },
     {
-      "platform": "Windows 10 (10.0.17134; x64; AppX)",
-      "plays": 938
-    },
-    {
-      "platform": "Android OS 7.1.1 API 25 (samsung, SM-N950F)",
-      "plays": 774
-    },
-    {
-      "platform": "Partner SCEI sony_tv;ps4;9b18101888dd42948afd0b8792122bec;;tpapi",
-      "plays": 672
-    },
-    {
-      "platform": "Windows 8.1 (6.3.9600; x64)",
-      "plays": 599
-    },
-    {
-      "platform": "Windows 10 (10.0.19041; x64; AppX)",
-      "plays": 529
-    },
-    {
-      "platform": "Windows 10 (10.0.18363; x64; AppX)",
-      "plays": 378
-    },
-    {
-      "platform": "Windows 10 (10.0.22622; x64; AppX)",
-      "plays": 368
-    },
-    {
-      "platform": "Android OS 10 API 29 (Xiaomi, Mi 10)",
-      "plays": 240
-    },
-    {
-      "platform": "Windows 10 (10.0.10240; x64)",
-      "plays": 225
-    },
-    {
-      "platform": "Windows 10 (10.0.17763; x64; AppX)",
-      "plays": 201
-    },
-    {
-      "platform": "playstation",
-      "plays": 193
-    },
-    {
-      "platform": "Windows 10 (10.0.18362; x64; AppX)",
-      "plays": 183
-    },
-    {
-      "platform": "Windows 10 (10.0.16299; x64)",
-      "plays": 166
-    },
-    {
-      "platform": "Android-tablet OS 8.1.0 API 27 (Xiaomi, MI PAD 4 PLUS)",
+      "platform": "Android tablet",
       "plays": 145
-    },
-    {
-      "platform": "Windows 7 (6.1.7601; x64; SP1; S)",
-      "plays": 140
-    },
-    {
-      "platform": "Windows 10 (10.0.19042; x64; AppX)",
-      "plays": 77
-    },
-    {
-      "platform": "Partner tizen_tv samsung;UJ5500;568a50c7e7f64fe3b44a3316ef5590fd;",
-      "plays": 71
     }
   ],
   "source_summary": {

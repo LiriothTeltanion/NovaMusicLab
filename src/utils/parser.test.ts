@@ -50,7 +50,7 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_skips).toBe(1);
     expect(data.source_summary?.spotify_short_plays).toBe(1);
     expect(data.countries[0]).toEqual({ country: 'Israel', plays: 1 });
-    expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['windows']);
+    expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['Windows desktop']);
   });
 
   it('parses YouTube Takeout watch history JSON as listening events', () => {
@@ -137,7 +137,7 @@ describe('music data parser', () => {
 
     expect(data.source_summary?.source_type).toBe('youtube');
     expect(data.source_summary?.youtube_plays).toBe(2);
-    expect(data.platform_breakdown?.[0]).toEqual({ platform: 'YouTube Takeout HTML', plays: 2 });
+    expect(data.platform_breakdown?.[0]).toEqual({ platform: 'YouTube import', plays: 2 });
     expect(data.knowledge_summary?.matched_artists).toBe(2);
     expect(data.top_tracks.map(track => track.title)).toContain('MANTRA');
     expect(data.top_tracks.map(track => track.title)).toContain('In Blur');

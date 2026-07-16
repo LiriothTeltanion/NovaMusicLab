@@ -13,9 +13,19 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ASSETS = path.join(ROOT, 'dist', 'assets');
+const COMPILED_DATASET_PATH = path.join(ROOT, 'src', 'data', 'music_dna_compiled.json');
+const compiledDataset = JSON.parse(fs.readFileSync(COMPILED_DATASET_PATH, 'utf8'));
+const compiledDatasetDates = Object.keys(compiledDataset.daily_plays ?? {}).sort();
+const COMPILED_DATASET_SENTINELS = [
+  String(compiledDataset.core_metrics?.total_plays ?? ''),
+  String(compiledDataset.core_metrics?.unique_artists ?? ''),
+  compiledDataset.top_artists?.[0]?.name ?? '',
+  compiledDatasetDates[0] ?? '',
+  compiledDatasetDates.at(-1) ?? '',
+].filter(Boolean);
 
 const ENTRY_BUDGET_KB = 300;
-// Current landing JS closure is ~245KB gzip after moodCore stopped the 600KB
+// Current landing JS closure is ~268KB gzip after moodCore stopped the 600KB
 // offline knowledge file from being fetched on first paint. The margin allows
 // normal UI growth while any knowledge-base regression still fails loudly.
 const SHELL_LANDING_GZIP_BUDGET_KB = 285;
@@ -123,6 +133,14 @@ function hasArtistEnrichmentPayload(source) {
     && source.includes('signature_moods');
 }
 
+function hasCompiledDatasetPayload(source) {
+  // Structural field names also exist in the runtime trust-boundary validator,
+  // so they cannot distinguish schema code from bundled listener data. Derive
+  // several current payload sentinels instead; a real inline copy contains the
+  // aggregate total, archive leaders and boundary dates together.
+  return COMPILED_DATASET_SENTINELS.filter(value => source.includes(value)).length >= 3;
+}
+
 const entry = findChunk('index-');
 if (entry) {
   const entryPath = path.join(ASSETS, entry);
@@ -136,7 +154,7 @@ if (entry) {
   if (hasOfflineKnowledgePayload(source)) {
     failures.push('offline_artist_knowledge.json content found INSIDE the entry chunk.');
   }
-  if (source.includes('cross_source_duplicates') && source.includes('artist_origin_countries')) {
+  if (hasCompiledDatasetPayload(source)) {
     failures.push('music_dna_compiled.json content found INSIDE the entry chunk.');
   }
 }
@@ -180,6 +198,9 @@ const shellLandingRoots = SHELL_LANDING_ROOT_PREFIXES.map(findChunk);
 const shellLandingClosure = buildStaticClosure(shellLandingRoots);
 const shellLandingMeasurement = measureFiles(shellLandingClosure);
 const demoDatasetRoot = findChunk(DEMO_DATASET_ROOT_PREFIX);
+if (!demoDatasetRoot) {
+  failures.push(`Expected lazy dataset chunk "${DEMO_DATASET_ROOT_PREFIX}*.js" is missing.`);
+}
 const demoLandingClosure = buildStaticClosure([...shellLandingRoots, demoDatasetRoot]);
 const demoLandingMeasurement = measureFiles(demoLandingClosure);
 

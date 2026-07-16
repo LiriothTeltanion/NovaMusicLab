@@ -20,7 +20,7 @@ const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json'
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'media_links');
 mkdirSync(CACHE_DIR, { recursive: true });
 
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function cacheGet(key) {

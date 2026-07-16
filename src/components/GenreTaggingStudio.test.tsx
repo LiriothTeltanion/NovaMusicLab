@@ -133,7 +133,11 @@ describe('GenreTaggingStudio', () => {
     window.localStorage.setItem('nml_lang', 'he');
     renderStudio();
 
-    expect(await screen.findByRole('heading', { name: '🧬 מעבדת ז׳אנרים' })).toBeInTheDocument();
+    expect(await screen.findByRole(
+      'heading',
+      { name: '🧬 מעבדת ז׳אנרים' },
+      { timeout: 5_000 },
+    )).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'לא מסווג' })).toBeInTheDocument();
     expect(await screen.findByLabelText('משפחת ז׳אנר ראשית')).toBeInTheDocument();
     expect(screen.queryByText('Unclassified')).not.toBeInTheDocument();

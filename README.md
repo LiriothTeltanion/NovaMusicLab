@@ -1,316 +1,230 @@
 <div align="center">
 
-<img src="./assets/readme/nova-music-lab-banner.svg" width="100%" alt="Animated Nova Music Lab banner">
+<img src="./public/social-preview.png" width="100%" alt="Nova Music Lab Living Sonic Cartography — your listening history as a living digital museum">
 
 <br>
 
-[![Live demo](https://img.shields.io/badge/ENTER%20THE%20MUSEUM-Live%20Demo-22d3ee?style=for-the-badge&logo=githubpages&logoColor=white)](https://lirioth.github.io/NovaMusicLab/)
-[![React](https://img.shields.io/badge/React-^19.2.7-61dafb?style=for-the-badge&logo=react&logoColor=06111f)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-~6.0.2-3178c6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Vite](https://img.shields.io/badge/Vite-^8.1.1-646cff?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
-[![Privacy](https://img.shields.io/badge/Privacy-Local--first-22c55e?style=for-the-badge&logo=shield&logoColor=white)](#-privacy-architecture)
-[![GitHub Pages](https://img.shields.io/badge/Deployment-GitHub%20Pages-7c3aed?style=for-the-badge&logo=github)](https://lirioth.github.io/NovaMusicLab/)
+[![Quality and Pages](https://github.com/LiriothTeltanion/NovaMusicLab/actions/workflows/quality-and-pages.yml/badge.svg)](https://github.com/LiriothTeltanion/NovaMusicLab/actions/workflows/quality-and-pages.yml)
+[![Live museum](https://img.shields.io/badge/ENTER_THE_MUSEUM-GitHub_Pages-22d3ee?style=for-the-badge&logo=githubpages&logoColor=white)](https://liriothteltanion.github.io/NovaMusicLab/)
+[![Local first](https://img.shields.io/badge/ARCHIVE-Local--first-22c55e?style=for-the-badge&logo=shield&logoColor=white)](#-privacy-and-network-boundary)
+[![Languages](https://img.shields.io/badge/LANGUAGES-EN_·_ES_·_HE-8b5cf6?style=for-the-badge)](#-language-themes-and-accessibility)
 
-### Turn years of listening history into an interactive personal music museum
+### Your listening history, transformed into a living personal museum 🎧
 
-**Multi-source imports · honest analytics · emotional maps · cultural DNA · artist identity · shareable reports**
+Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive. Nova Music Lab processes raw files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
+
+**Current code version:** `1.0.0-rc.1`, the release-candidate foundation for **Nova Music Lab v1.0 — The Evidence-First Museum**. No version tag or GitHub Release exists until that exact commit completes release acceptance. IndexedDB **schema v4** is a storage contract, not the product's major version.
+
+[Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
+[Read the architecture](./docs/architecture/OVERVIEW.md) ·
+[Follow the v1 roadmap](./ROADMAP.md)
 
 </div>
 
 ---
 
-## 🧭 Explore this README
+## 🌌 Why Nova Music Lab exists
 
-[Vision](#-the-vision) ·
-[Sources](#-supported-listening-archives) ·
-[Museum rooms](#-museum-rooms) ·
-[Privacy](#-privacy-architecture) ·
-[Architecture](#-application-architecture) ·
-[Quality](#-quality-gates) ·
-[Setup](#-local-development) ·
-[Deployment](#-deployment) ·
-[Roadmap](#-roadmap)
+Streaming platforms usually reduce years of listening to a short recap. Nova Music Lab treats an archive as a personal cultural artifact: something to investigate, revisit and interpret without surrendering the raw history to another analytics backend.
 
----
+The project is built around four commitments:
 
-## 🌌 The vision
-
-**Nova Music Lab** is a local-first music analytics museum.
-
-Instead of reducing a listening archive to a few charts, the application turns it into a guided digital exhibition: historical eras, records, obsessions, emotional patterns, geography, platforms, achievements, generative visual identity, and a final narrative report.
-
-The project is designed around four principles:
-
-1. **Personal:** every insight is derived from the archive currently loaded.
-2. **Private:** raw files are parsed in the browser and remain on the device.
-3. **Source-aware:** Last.fm, Spotify, Apple Music, ListenBrainz, and YouTube provide different fields; the UI labels those differences honestly.
-4. **Data-honest:** unknown information remains unknown instead of being filled with fabricated certainty.
-
-> Nova Music Lab is not a streaming service and does not need a backend database. It is a static React application that transforms user-selected exports into an explorable museum.
+1. **Evidence before spectacle.** Unknown information remains unknown; estimates and interpretations must be distinguishable from observed facts.
+2. **Local-first ownership.** Visitor-selected archives are parsed and stored in the browser.
+3. **Source awareness.** Each provider exposes different fields, so rooms only claim capabilities their active archive can support.
+4. **A museum, not a spreadsheet.** Motion, sound-inspired art, narrative and exploration make the evidence emotionally legible.
 
 ---
 
-## 📊 Repository snapshot
+## 🪞 Two museum modes
 
-| Metric | Current local value |
-|---|---:|
-| Branch | `main` |
-| Revision | `6732b65` |
-| Commit count | 61 |
-| Tracked files | 249 |
-| React component modules detected | 60 |
-| GitHub workflow files detected | 2 |
-| Source size excluding `.git`, `node_modules`, and `dist` | 7.25 MB |
-| Last commit date | 2026-07-14 |
-| Last commit | S |
-| Origin | `https://github.com/LiriothTeltanion/NovaMusicLab.git` |
-| Remote `main` revision | `6732b65` |
-| Local sync position | ahead 0 · behind 0 |
-| README generated | 2026-07-14 |
+| Mode | Purpose | Data boundary |
+|---|---|---|
+| **Flagship Exhibition** | A curated demonstration of Kevin's personal music museum and Nova's full visual language. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
+| **My Museum** | A visitor imports supported exports and rebuilds the quantitative museum from the active archive. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. |
 
-**Most common tracked extensions:** `.tsx` 106 · `.ts` 61 · `.mjs` 31 · `.json` 24 · `.png` 7 · `.md` 4 · `.css` 4 · `.js` 3 · `.yml` 2
+The v1 milestone is formalizing this boundary everywhere: flagship-only stories must never masquerade as visitor-derived analysis, and every interpretive room must disclose its evidence level.
 
 ---
 
 ## 🛰️ Supported listening archives
 
-<img src="./assets/readme/source-constellation.svg" width="100%" alt="Animated source constellation">
+<img src="./assets/readme/source-constellation.svg" width="100%" alt="Five listening sources orbit a local browser analysis core">
 
-| Source | Supported export | Typical strengths |
+| Source | Supported export | Strongest evidence |
 |---|---|---|
-| **Last.fm** | CSV with artist, album, track, and timestamp | Long-term scrobble history, sessions, streaks, and chronology |
-| **Spotify** | Extended Streaming History JSON | Listening duration, platform, country, skip behavior, and short plays |
+| **Last.fm** | CSV export | Long chronology, scrobbles, sessions and streaks |
+| **Spotify** | Extended Streaming History JSON | Duration, platforms, country, skips and short plays |
 | **Apple Music** | `Play Activity.csv` | Apple listening activity and playback history |
-| **ListenBrainz** | Listen JSON export | Open listening-history records and timestamps |
-| **YouTube / YouTube Music** | Google Takeout JSON or HTML watch history | Music-video and YouTube Music activity |
-| **Combined museum** | Any supported combination | Normalization, source labels, overlap handling, and cross-source deduplication |
+| **ListenBrainz** | Listen JSON export | Open timestamped listening records |
+| **YouTube / YouTube Music** | Google Takeout JSON or HTML history | Music video and YouTube Music activity |
+| **Combined museum** | Any supported combination | Source labels, normalization and evidence-aware overlap handling |
 
-Uploads can be mixed. Nova Music Lab rebuilds the analytics from the selected archive rather than forcing every visitor into the bundled demonstration dataset.
-
----
-
-## 🏛️ Museum journey
-
-<img src="./assets/readme/museum-journey.svg" width="100%" alt="Animated Nova Music Lab museum journey">
-
-```text
-Private export files
-        ↓
-Source-specific parsers
-        ↓
-Normalized listening events
-        ↓
-Cross-source deduplication
-        ↓
-Shared analytics engine
-        ↓
-Interactive museum rooms
-        ↓
-Narrative report and shareable artifacts
-```
-
-Listening platforms expose different fields. A Last.fm-only archive cannot produce Spotify device or skip metrics; a Spotify-only archive cannot reconstruct Last.fm scrobbles. Missing data is presented as a source limitation, never as invented data.
+Imports can be mixed. Source-specific fields remain source-specific: for example, Last.fm alone cannot prove Spotify device or skip behavior.
 
 ---
 
-## 🖼️ Museum rooms
+## 🏛️ The museum journey
 
-| Room or system | Purpose |
+<img src="./assets/readme/museum-journey.svg" width="100%" alt="Nova Music Lab journey from private archive to evidence-linked report">
+
+Nova Music Lab is being organized into three paths:
+
+- **Quick Tour** — Overview → Eras → Historical Top → Personality → Emotions → Final Report.
+- **Full Museum** — every narrative, cultural, identity and archive room.
+- **Lab Tools** — Import, Compare, Platforms, Data Quality, Stats, Genre Studio and exports.
+
+Representative rooms include:
+
+| Experience | What it explores |
 |---|---|
-| **Achievements** | Milestones and record-style achievements. |
-| **AIAssistant** | Optional Gemini conversation over aggregate insights. |
-| **ArtistIdentity** | Generative alias, sound, visual identity, and cover art. |
-| **CulturalMap** | Artist origins and listening geography. |
-| **Dashboard** | High-level listening metrics and archive overview. |
-| **DataQualityCenter** | Coverage, missing fields, and source limitations. |
-| **DataUploader** | Multi-source import and local parsing interface. |
-| **EmotionalMap** | Mood-driven interpretation and listening stations. |
-| **EraExplorer** | Yearly eras and changes in listening identity. |
-| **FinalReport** | Long-form narrative summary and closing report. |
-| **HiddenInsights** | Less obvious patterns across the archive. |
-| **InnerWorld** | Narrative interpretation of patterns and tendencies. |
-| **MuseumComparator** | Compare museum states or archive snapshots. |
-| **ObsessionDetector** | Repeated tracks, streaks, and focused listening periods. |
-| **PersonalityRadar** | Data-derived musical personality signals. |
-| **PlatformsDevices** | Platforms, devices, countries, skips, and short plays. |
-| **RecentPulse** | Recent listening activity. |
-| **SpotifyVsLastfm** | Cross-source comparison and overlap analysis. |
-| **StatsDeepDive** | Detailed metrics beyond the main dashboard. |
-| **TimeCapsule** | Historical archive exploration through time. |
-| **TopHistorico** | Historical leaders across artists, tracks, and albums. |
-| **WrappedCard** | Shareable recap card. |
+| **Dashboard** | Archive identity, coverage and high-level signals |
+| **Era Explorer** | How listening identity changes across years |
+| **Top Histórico** | Artist, track and album dossiers with evidence-linked context |
+| **Obsession Detector** | Repetition, streaks and concentrated listening periods |
+| **Emotional Map** | Interpretive mood stations grounded in available signals |
+| **Cultural Map** | Artist origins and listening geography |
+| **Artist Identity** | Deterministic generative visual and sonic identity |
+| **Data Quality Center** | Coverage, limitations and enrichment priorities |
+| **Final Report** | A guided closing narrative and exportable summary |
 
-The application lazy-loads museum rooms so the shell can appear before heavy charts, offline knowledge, and rarely opened sections are downloaded.
+Heavy rooms and data catalogs are lazy-loaded so the museum shell can appear before rarely visited analysis code is downloaded.
 
 ---
 
-## 🔒 Privacy architecture
+## 🔒 Privacy and network boundary
 
-<img src="./assets/readme/privacy-pulse.svg" width="100%" alt="Animated privacy architecture">
+<img src="./assets/readme/privacy-pulse.svg" width="100%" alt="Nova Music Lab local-first privacy boundary">
 
-### Local processing
+### What stays local
 
-- Raw imports are parsed in the browser.
-- The static application has no backend database for listening archives.
-- Raw Spotify fields that are not required for analytics, such as IP addresses, are not retained.
-- Stored browser data remains tied to the current browser profile and device.
+- Visitor-selected raw exports are parsed in the browser.
+- Imported museum state is stored in browser IndexedDB, not in a Nova backend database.
+- Raw Spotify fields that are not required for analysis, such as IP addresses, are not retained.
+- Clearing browser storage removes the local visitor museum from that browser profile.
 
-### Optional Gemini assistant
+### What is public
 
-The AI assistant remains disabled until the visitor provides a personal Gemini API key.
+- The GitHub repository and Pages site contain a reviewed flagship aggregate dataset.
+- Exact-granularity flagship sections require an explicit declaration in the public dataset manifest.
+- CI audits the bundle for undeclared sections and raw identity/network fields.
 
-When enabled:
+### Optional and external requests
 
-- The browser sends the question and an aggregate listening summary.
-- Raw export files are not sent.
-- The key is stored in browser `localStorage`.
-- It should only be enabled in a trusted browser profile.
-- Requests are governed by Google's API and privacy policies.
+| Request | When it happens | What leaves the device |
+|---|---|---|
+| Google Fonts | Initial document load | Normal font request metadata |
+| Remote artwork | A room displays curated external media | Image request metadata |
+| YouTube/Spotify media | A visitor opens an embed or verified external link | The provider receives the request |
+| Gemini | Only after a visitor explicitly configures a personal key and sends a question | The question and a bounded aggregate summary; never the raw export file |
 
----
+Nova Music Lab is therefore **local-first**, not network-isolated. A stricter no-remote-media Privacy Mode is tracked in the [roadmap](./ROADMAP.md).
 
-## 🧠 Data-honesty contract
-
-- Unknown genres remain unclassified until curated or resolved.
-- Source-specific gaps are labeled.
-- Artist identity is derived from the loaded archive.
-- Generative cover art is deterministic and based on real signals.
-- Cross-source overlap is normalized before totals are shown.
-- Curated media links are audited instead of accepted from name matching alone.
-- Data-quality checks can fail the build when strict expectations are violated.
+Read the full [privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) and [public data policy](./docs/data/PUBLIC_DATA_POLICY.md).
 
 ---
 
-## 🧩 Application architecture
+## 🧠 Evidence contract
+
+Every analytical or narrative output should be classified as one of:
+
+- **Observed** — directly supported by normalized archive events.
+- **Derived** — deterministically calculated from observed data.
+- **Inferred** — an interpretation with visible evidence and limitations.
+- **Unavailable** — the active source cannot support the claim.
+
+The project deliberately rejects plausible-looking fabricated numbers. Data reconciliation, source coverage, media identities and public-bundle privacy are enforced through scripts and tests.
+
+## 🎨 Artist knowledge and Living Sonic Cartography
+
+The generated artist manifest currently contains **100 artist records** and **295 provenance-aware visual assets**. Artist aliases, MusicBrainz/Wikidata identifiers, countries, genres, releases, members and official links remain separate from private play counts. Each image record carries its source, license-review state, attribution, focal point and cache/privacy policy; **171 legacy assets remain visibly queued for license review** rather than being mislabeled as reusable.
+
+The manifest installs into the local Dexie database only when its source fingerprint changes. Returning visitors download the small metadata fingerprint during idle bootstrap, not the complete artist catalog on every visit.
+
+The interface uses a shared **Living Sonic Cartography** registry for room palettes, atmospheric geometry and semantic navigation icons. The Nova orbit/waveform mark now drives crisp favicon, PWA, maskable and monochrome icon variants as well as the repository's static social preview.
+
+---
+
+## 🧩 Architecture
 
 ```mermaid
 flowchart LR
-    F[Listening exports] --> P[Source parsers]
-    P --> N[Normalization and deduplication]
-    N --> A[Shared analytics]
-    A --> C[React context and data gate]
-    C --> R[Lazy museum rooms]
-    R --> V[Charts, maps, narratives, exports]
-    A --> I[Identity engine]
-    I --> V
-    C --> S[Indexed browser storage]
-    C -. aggregate summary only .-> G[Optional Gemini assistant]
+    F["Listening exports"] --> P["Source adapters"]
+    P --> N["Normalize and validate"]
+    N --> D["Cross-source deduplication"]
+    D --> A["Shared analytics"]
+    A --> S["Archive capability and provenance"]
+    S --> R["Lazy museum rooms"]
+    R --> V["Charts, stories and exports"]
+    S --> I["Browser IndexedDB"]
+    A -. "bounded aggregate, opt-in" .-> G["Gemini"]
 ```
 
-### Key modules
-
-| Module | Responsibility |
+| Layer | Primary responsibility |
 |---|---|
-| `src/utils/parser.ts` | Parse exports and create one normalized dataset |
-| `src/utils/analytics.ts` | Shared calculations used by rooms and reports |
-| `src/utils/identityEngine.ts` | Build data-derived personality, alias, sound, and visual identity |
-| `src/utils/datasetStorage.ts` | Browser-side dataset persistence |
-| `src/utils/deepLinks.ts` | Shareable navigation and museum deep links |
-| `src/utils/i18n.ts` | Language, locale, and text direction |
-| `src/context/AppContext.tsx` | Shared language, theme, and UI state |
-| `src/App.tsx` | Museum shell, routing, lazy rooms, and transitions |
-| `src/data/music_dna_compiled.json` | Bundled demonstration dataset |
+| `src/utils/parser.ts` | Source parsing, normalization and merged dataset construction |
+| `src/utils/analytics.ts` | Shared quantitative calculations |
+| `src/utils/datasetStorage.ts` | Local browser persistence and portable dataset validation |
+| `src/db/` | Dexie/IndexedDB schema v4, typed storage outcomes, atomic museum activation and compatibility stores |
+| `src/knowledge/` | Validated artist-knowledge manifest and provenance-rich visual records |
+| `src/components/museumVisualIdentity.ts` | Shared room families, palettes, motion atmospheres and icon identity |
+| `src/utils/identityEngine.ts` | Deterministic generative identity |
+| `src/context/AppContext.tsx` | Language, theme and navigation state |
+| `src/App.tsx` | Museum shell, routing, transitions and data gate |
+| `src/data/` | Curated public enrichment and the reviewed flagship bundle |
+
+Database design, migrations and failure states are documented in [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md).
 
 ---
 
-## ⚙️ Technology stack
+## 🌍 Language, themes and accessibility
 
-| Layer | Technology |
-|---|---|
-| UI | React ^19.2.7 + TypeScript ~6.0.2 |
-| Build | Vite ^8.1.1 |
-| Styling | Tailwind CSS |
-| Animation | Framer Motion + Canvas Confetti + animated SVG |
-| Visualization | Recharts and custom canvas/SVG systems |
-| Icons | Lucide React |
-| Testing | Vitest ^4.1.9 + Testing Library + jsdom |
-| Linting | Oxlint |
-| Hosting | GitHub Pages |
-| Runtime model | Fully static and local-first |
+<img src="./assets/readme/theme-spectrum.svg" width="100%" alt="Fourteen dark and light museum themes with English, Spanish and Hebrew support">
 
-**Node requirement:** `>=22.12.0`
+- English, Spanish and Hebrew interfaces.
+- Correct Hebrew RTL document direction and `he-IL` formatting.
+- Fourteen dark and light museum themes.
+- Keyboard-aware navigation, focus restoration and mobile drawer behavior.
+- Expressive, Calm and Static atmosphere modes; Calm is the default and the operating-system reduced-motion preference overrides animation.
+- Reduced-motion behavior across application transitions, charts, canvas art and static repository artwork.
+- Exact-value chart tables and CSV exports for non-visual access.
 
----
-
-## 🎨 Themes, motion, and multilingual experience
-
-<img src="./assets/readme/theme-spectrum.svg" width="100%" alt="Animated theme and language spectrum">
-
-Nova Music Lab treats presentation as part of the analysis rather than a decorative afterthought.
-
-- Fourteen selectable themes span dark and light museum atmospheres.
-- Framer Motion drives room transitions, tactile controls, and staged reveals.
-- Custom canvas and SVG systems generate mood-responsive visual art.
-- English and Spanish are available in the interface.
-- Hebrew-generation tooling supports right-to-left interface resources.
-- Motion-sensitive visitors can rely on reduced-motion behavior where the application exposes it.
-
-The README animations are repository-hosted SVG files. They do not execute JavaScript and do not contact an external animation service.
-
----
-
-## ⚡ Performance design
-
-- Museum rooms are loaded with `React.lazy`.
-- Heavy charts and motion libraries are split into stable vendor chunks.
-- The bundled demonstration dataset loads asynchronously.
-- Offline artist knowledge stays outside the entry bundle until needed.
-- A bundle-budget script checks the production output.
-- Pages deployment refuses to upload an artifact when verification fails.
+The v1 accessibility pass expands automated contrast, axe, browser-matrix and visual-regression coverage. See [Accessibility](./docs/design/ACCESSIBILITY.md).
 
 ---
 
 ## ✅ Quality gates
 
-<img src="./assets/readme/quality-gates.svg" width="100%" alt="Animated Nova Music Lab quality pipeline">
+<img src="./assets/readme/quality-gates.svg" width="100%" alt="Nova Music Lab verification pipeline">
 
 ```bash
 npm run verify
+node scripts/audit_public_bundle_privacy.mjs
 ```
 
-The complete check runs:
+The verified Pages pipeline runs:
 
 ```text
 lint
 → strict data audit
 → strict media-link audit
+→ artist-knowledge manifest audit
+→ public-bundle privacy audit
+→ PWA/installability contract audit
 → tests
-→ production build
-→ bundle-budget verification
+→ TypeScript + production build
+→ bundle budgets
+→ Pages artifact
+→ exact commit/version deployment smoke test
 ```
 
-### Available commands
-
-| Command | Purpose |
-|---|---|
-| `npm run dev` | Start the Vite development server. |
-| `npm run build` | Type-check and create the production bundle. |
-| `npm run build:check` | Build and enforce the bundle budget. |
-| `npm run verify` | Run lint, strict data audit, media-link audit, tests, and build checks. |
-| `npm run lint` | Run Oxlint. |
-| `npm run compile:data` | Compile an explicitly selected local listening archive. |
-| `npm run audit:data` | Inspect data quality and coverage. |
-| `npm run audit:data:strict` | Fail when strict data-quality rules are violated. |
-| `npm run audit:links` | Validate curated media links in strict mode. |
-| `npm run knowledge:artists` | Build the offline artist-knowledge cache. |
-| `npm run i18n:hebrew` | Generate Hebrew UI resources. |
-| `npm run i18n:hebrew:central` | Generate central Hebrew resources. |
-| `npm run i18n:hebrew:data` | Generate Hebrew JSON resources. |
-| `npm run icons:generate` | Generate the Nova icon collection. |
-| `npm run test` | Run Vitest. |
-| `npm run preview` | Serve the production build locally. |
-
-### Recommended pre-push workflow
-
-```bash
-npm ci
-npm run verify
-git status
-```
+GitHub also runs CodeQL and dependency review. The Pages job can only deploy the artifact produced by the successful verification job.
 
 ---
 
 ## 💻 Local development
+
+Requirements: Git and the Node version declared in `.nvmrc`.
 
 ```bash
 git clone https://github.com/LiriothTeltanion/NovaMusicLab.git
@@ -319,144 +233,73 @@ npm ci
 npm run dev
 ```
 
-### Production verification
+Before opening a pull request:
 
 ```bash
 npm run verify
-npm run preview
+node scripts/audit_public_bundle_privacy.mjs
+git diff --check
+git status
 ```
 
-### Compile an explicitly selected personal archive
+Useful commands:
 
-```bash
-npm run compile:data -- --source-dir "/path/to/your/exports"
-```
-
-The compiler requires an explicit source folder and does not search personal directories automatically. Use `--output <path>` to create a review copy before replacing the bundled dataset.
-
----
-
-## 🚀 Deployment
-
-`.github/workflows/deploy.yml` runs on pushes to `main`:
-
-1. Checkout
-2. Node from `.nvmrc`
-3. `npm ci`
-4. `npm run verify`
-5. Upload `dist`
-6. Deploy GitHub Pages
-
-Vite uses a relative base so the static bundle works from a project-site subdirectory.
-
-**Live museum:** [lirioth.github.io/NovaMusicLab](https://lirioth.github.io/NovaMusicLab/)
-
----
-
-## 📁 Project structure
-
-```text
-NovaMusicLab/
-├─ .github/workflows/deploy.yml
-├─ public/
-├─ scripts/
-├─ src/
-│  ├─ components/
-│  ├─ context/
-│  ├─ data/
-│  ├─ utils/
-│  ├─ App.tsx
-│  └─ types.ts
-├─ assets/readme/
-│  ├─ nova-music-lab-banner.svg
-│  ├─ source-constellation.svg
-│  ├─ museum-journey.svg
-│  ├─ privacy-pulse.svg
-│  ├─ quality-gates.svg
-│  └─ theme-spectrum.svg
-├─ package.json
-├─ vite.config.ts
-├─ vitest.config.ts
-└─ README.md
-```
-
----
-
-## 🧪 Engineering case study
-
-Nova Music Lab is useful as a portfolio project because it combines multiple difficult concerns in one static application:
-
-| Challenge | Engineering response |
+| Command | Purpose |
 |---|---|
-| Different export formats | Source-specific parsers feeding one normalized model |
-| Duplicate plays across services | Timestamp and normalized artist/track overlap logic |
-| Missing source fields | Source-aware gaps instead of fabricated values |
-| Heavy museum interface | Lazy rooms, vendor chunks, and asynchronous data loading |
-| Curated artist/media knowledge | Offline enrichment plus strict link audits |
-| Personal AI interaction | Optional aggregate-only Gemini boundary |
-| Reliable static deployment | One verification command before GitHub Pages upload |
-| Multilingual UI | Central language utilities and generated Hebrew resources |
+| `npm run dev` | Start the local Vite server |
+| `npm run build:check` | Build and enforce bundle budgets |
+| `npm run verify` | Run the canonical code/data/test/build gate |
+| `npm run audit:data` | Print current data coverage and priority queues |
+| `npm run audit:links` | Validate curated media profiles and embeds |
+| `npm run compile:data -- --source-dir <path> [--lastfm-file <csv>]` | Compile an explicitly selected local archive; ambiguous CSVs require an explicit path |
+| `npm run preview` | Preview the production bundle locally |
 
-This makes the repository more than a dashboard: it is a privacy-conscious data product, visualization system, importer suite, and creative museum interface.
-
----
-
-## 🗺️ Roadmap
-
-### Documentation and presentation
-
-- [x] Explain every supported data source
-- [x] Document local-first privacy and the optional AI boundary
-- [x] Document the quality and deployment pipelines
-- [ ] Add real desktop, tablet, and mobile screenshots
-- [ ] Add a short museum walkthrough video or GIF
-- [ ] Add a public sample export for importer testing
-
-### Product and engineering
-
-- [ ] Expand accessibility audits and keyboard-only navigation
-- [ ] Add exportable museum-state and report packages
-- [ ] Continue reducing initial and chart-room bundle costs
-- [ ] Expand importer fixtures for locale and format variants
-- [ ] Add clearer coverage indicators to inference-heavy rooms
-- [ ] Publish architecture decisions and performance measurements
+The compiler never searches personal directories automatically. Use a review output and run the public-data audit before replacing any bundled flagship data.
 
 ---
 
-## 🌍 Multilingual summary
+## 📚 Documentation
 
-<details>
-<summary><strong>🇻🇪 Español</strong></summary>
+| Guide | Purpose |
+|---|---|
+| [Architecture overview](./docs/architecture/OVERVIEW.md) | System boundaries and data flow |
+| [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
+| [Privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) | Assets, imports, network and public-data risks |
+| [Data sources](./docs/product/DATA_SOURCES.md) | Source capabilities and honest limitations |
+| [Public data policy](./docs/data/PUBLIC_DATA_POLICY.md) | Rules for the published flagship bundle |
+| [Artwork schema](./docs/data/ARTWORK_SCHEMA.md) | Artist, album, track and gallery asset contracts |
+| [Visual system](./docs/design/VISUAL_SYSTEM.md) | Living Sonic Cartography, icons and motion tiers |
+| [Quality gates](./docs/operations/QUALITY_GATES.md) | Local and CI verification |
+| [Release guide](./docs/operations/RELEASE.md) | Release candidate, tag, Pages and rollback process |
+| [Contributing](./CONTRIBUTING.md) | Branch, commit, privacy and review expectations |
+| [Security](./SECURITY.md) | Private vulnerability reporting |
+| [Roadmap](./ROADMAP.md) | Ordered v1 and post-v1 priorities |
+| [Changelog](./CHANGELOG.md) | Durable release history |
 
-Nova Music Lab convierte historiales de Last.fm, Spotify, Apple Music, ListenBrainz y YouTube en un museo musical interactivo. Los archivos se procesan localmente en el navegador y pueden combinarse de manera consciente de su fuente.
+---
 
-La aplicación presenta estadísticas, épocas, récords, obsesiones, mapas emocionales y culturales, identidad artística generativa y un informe narrativo final. Cuando una fuente no contiene un tipo de información, la interfaz lo indica con honestidad en lugar de inventarlo.
+## 🚀 Deployment and releases
 
-</details>
+The production museum is deployed through GitHub Pages from the verified `main` artifact:
 
-<details>
-<summary><strong>🇮🇱 עברית</strong></summary>
+**https://liriothteltanion.github.io/NovaMusicLab/**
 
-Nova Music Lab הופך היסטוריית האזנה מ-Last.fm, Spotify, Apple Music, ListenBrainz ו-YouTube למוזיאון מוזיקלי אינטראקטיבי.
+`main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-הקבצים מעובדים באופן מקומי בדפדפן. האפליקציה מציגה סטטיסטיקות, תקופות, שיאים, דפוסי האזנה, מפות רגשיות ותרבותיות, זהות אמן שנוצרת מהנתונים ודוח מסכם. כאשר מקור מסוים אינו כולל מידע מסוים, המערכת מסמנת את החוסר במקום להמציא נתונים.
-
-</details>
+No formal GitHub release has been published yet. The package and working tree identify this candidate as `1.0.0-rc.1`; publishing that RC still requires a verified `main` deployment and release tag. Stable `v1.0.0` follows only after privacy, import/storage, accessibility, browser and live Pages acceptance checks pass.
 
 ---
 
 ## 👨‍💻 Creator
 
-**Kevin Cusnir** — [`LiriothTeltanion`](https://github.com/LiriothTeltanion)
+**Kevin Cusnir** — [LiriothTeltanion on GitHub](https://github.com/LiriothTeltanion)
 
-Nova Music Lab combines frontend engineering, data visualization, music technology, privacy-conscious personal analytics, AI-assisted development, and generative art.
+Nova Music Lab combines frontend engineering, data visualization, music technology, privacy-conscious personal analytics, multilingual interaction, accessibility and generative art.
 
----
+Third-party software, services, fonts and media remain subject to their own terms; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md). A repository-wide open-source license has not yet been selected.
 
 <div align="center">
 
-### Your archive is not just a list of plays. It is a map of who you were, what you felt, and how your sound evolved.
-
-**README edition 4.0 · Generated 2026-07-14**
+### Your archive is not just a list of plays. It is a map of who you were, what you felt and how your sound evolved. ✨
 
 </div>

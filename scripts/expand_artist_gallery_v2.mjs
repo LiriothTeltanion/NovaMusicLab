@@ -15,12 +15,13 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json');
 const GALLERY_PATH = join(ROOT, 'src', 'data', 'artist_gallery.json');
+const IDENTITY_POLICY_PATH = join(ROOT, 'src', 'data', 'artist_gallery_identity_policy.json');
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'commons_gallery');
 mkdirSync(CACHE_DIR, { recursive: true });
 
 const TARGET_PHOTOS = 4;
 const SKIP_CHECK = process.argv.includes('--skip-check');
-const UA = 'NovaMusicLab/1.0 (https://github.com/kevincusnir/nova-music-lab; kevincusnir@gmail.com)';
+const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const EXCLUDE_FILENAME_SIGNALS = [
@@ -34,7 +35,7 @@ const EXCLUDE_FILENAME_SIGNALS = [
   // literally titled "Slaves_American_band.jpg" and would match otherwise.
   'newly_released_slaves', 'cargo_of_newly_released', 'slavery',
   'plantation', 'auschwitz', 'holocaust', 'genocide', 'lynching', 'massacre',
-  'file-type-icons', 'fileicon',
+  'file-type-icons', 'fileicon', '.pdf', '.stl', 'page1-',
 ];
 
 // A pure ASCII-strip key collapses any non-Latin-script name (Hebrew, etc.)
@@ -95,6 +96,28 @@ function looksLikePortrait(title) {
   const lower = title.toLowerCase();
   if (lower.endsWith('.svg')) return false;
   return !EXCLUDE_FILENAME_SIGNALS.some((signal) => lower.includes(signal));
+}
+
+function normalizeGallerySubject(value) {
+  return String(value ?? '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’']/g, '')
+    .replace(/&/g, 'and')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function identityAllowsOpenMedia(rule, title, url) {
+  if (!rule) return true;
+  let decodedUrl = url;
+  try { decodedUrl = decodeURIComponent(url); } catch { /* keep the literal URL */ }
+  const subject = normalizeGallerySubject(`${title} ${decodedUrl}`);
+  return rule.allowedOpenMediaSubjects
+    .map(normalizeGallerySubject)
+    .some(allowed => subject.includes(allowed));
 }
 
 async function commonsCategoryFiles(categoryTitle) {
@@ -175,11 +198,16 @@ async function wikipediaMediaImages(title) {
 
 const knowledge = JSON.parse(readFileSync(KNOWLEDGE_PATH, 'utf8'));
 const gallery = JSON.parse(readFileSync(GALLERY_PATH, 'utf8'));
+const identityPolicy = JSON.parse(readFileSync(IDENTITY_POLICY_PATH, 'utf8'));
+const identityRuleByGalleryKey = new Map(
+  identityPolicy.rules.flatMap(rule => rule.galleryKeys.map(key => [key, rule])),
+);
 
 let artistsImproved = 0, photosAdded = 0, artistsChecked = 0;
 
 for (const artist of knowledge.artists) {
   const key = artist.name.toLowerCase();
+  const identityRule = identityRuleByGalleryKey.get(key);
   const existing = gallery[key] ?? [];
   if (existing.length >= TARGET_PHOTOS) continue;
   artistsChecked++;
@@ -207,6 +235,10 @@ for (const artist of knowledge.artists) {
     if (newPhotos.length >= needed) break;
     const url = thumbs.get(title);
     if (!url || existingKeys.has(wikimediaFileKey(url))) continue;
+    // Ambiguous artist names require a reviewed semantic subject. An HTTP 200
+    // and portrait-like filename do not prove identity (for example nightlife
+    // cityscapes or Roosevelt historical documents).
+    if (!identityAllowsOpenMedia(identityRule, title, url)) continue;
     // Re-check the FINAL URL against the exclusion signals, not just the file
     // title: an .ogg/.pdf page passes the title filter but its "thumbnail" is
     // a generic file-type icon (this exact hole once put fileicon-ogg.png in

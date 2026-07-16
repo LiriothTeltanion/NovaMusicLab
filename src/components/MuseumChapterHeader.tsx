@@ -4,53 +4,16 @@ import type { MusicDnaData } from '../types';
 import { getArtistOriginGeography } from '../utils/analytics';
 import { localizeCountryName, localizeGenreName } from '../utils/localizedDatasetText';
 import { directionFor, localeFor, pickLanguage, type Lang } from '../utils/i18n';
+import {
+  MUSEUM_CHAPTER_TABS,
+  museumVisualFor,
+  type MuseumChapterMotif,
+  type MuseumChapterTab,
+} from './museumVisualIdentity';
 import './MuseumChapterHeader.css';
 
-export type MuseumChapterTab =
-  | 'dashboard'
-  | 'aiassistant'
-  | 'eras'
-  | 'top'
-  | 'timecapsule'
-  | 'personality'
-  | 'emotions'
-  | 'cultural'
-  | 'inner'
-  | 'artist'
-  | 'obsessions'
-  | 'insights'
-  | 'achievements'
-  | 'wrapped'
-  | 'pulse'
-  | 'compare'
-  | 'museums'
-  | 'platforms'
-  | 'quality'
-  | 'statsdeep'
-  | 'report';
-
-type ChapterMotif =
-  | 'atlas'
-  | 'neural'
-  | 'timeline'
-  | 'crown'
-  | 'hourglass'
-  | 'orbit'
-  | 'wave'
-  | 'globe'
-  | 'prism'
-  | 'star'
-  | 'spiral'
-  | 'anomaly'
-  | 'medal'
-  | 'burst'
-  | 'signal'
-  | 'bridge'
-  | 'constellation'
-  | 'devices'
-  | 'shield'
-  | 'spectrum'
-  | 'archive';
+export type { MuseumChapterTab } from './museumVisualIdentity';
+export { MUSEUM_CHAPTER_TABS } from './museumVisualIdentity';
 
 type MetricKind =
   | 'plays'
@@ -82,8 +45,6 @@ interface ChapterDefinition {
   eyebrow: LocalizedText;
   title: LocalizedText;
   description: LocalizedText;
-  palette: readonly [string, string, string];
-  motif: ChapterMotif;
   metrics: readonly [MetricKind, MetricKind];
 }
 
@@ -100,134 +61,132 @@ interface ChapterMetric {
 
 const CHAPTERS: Record<MuseumChapterTab, ChapterDefinition> = {
   dashboard: {
-    number: '01', emoji: '🧭', motif: 'atlas', palette: ['#22d3ee', '#818cf8', '#f472b6'], metrics: ['plays', 'artists'],
+    number: '01', emoji: '🧭', metrics: ['plays', 'artists'],
     eyebrow: { es: 'Panorama maestro', en: 'Master overview', he: 'סקירת־על' },
     title: { es: 'Sala de Control', en: 'The Control Room', he: 'חדר הבקרה' },
     description: { es: 'Tu archivo completo se ordena como una exposición viva.', en: 'Your complete archive, arranged as a living exhibition.', he: 'הארכיון המלא שלך מסודר כתערוכה חיה.' },
   },
   aiassistant: {
-    number: '02', emoji: '🔮', motif: 'neural', palette: ['#a78bfa', '#f72585', '#22d3ee'], metrics: ['artists', 'tracks'],
+    number: '02', emoji: '🔮', metrics: ['artists', 'tracks'],
     eyebrow: { es: 'Inteligencia curatorial', en: 'Curatorial intelligence', he: 'אוצרות חכמה' },
     title: { es: 'Oráculo de Escucha', en: 'The Listening Oracle', he: 'אורקל ההאזנה' },
     description: { es: 'Conversaciones guiadas por las huellas reales de tu colección.', en: 'Conversations guided by the real traces inside your collection.', he: 'שיחות המונחות בידי העקבות האמיתיים שבאוסף שלך.' },
   },
   eras: {
-    number: '03', emoji: '⏳', motif: 'timeline', palette: ['#60a5fa', '#f59e0b', '#f472b6'], metrics: ['years', 'peakYear'],
+    number: '03', emoji: '⏳', metrics: ['years', 'peakYear'],
     eyebrow: { es: 'Cronología personal', en: 'Personal chronology', he: 'כרונולוגיה אישית' },
     title: { es: 'Archivo de Eras', en: 'The Era Archive', he: 'ארכיון התקופות' },
     description: { es: 'Cada año conserva un clima, un protagonista y una transformación.', en: 'Every year preserves a mood, a protagonist and a transformation.', he: 'כל שנה משמרת אווירה, דמות מובילה ושינוי.' },
   },
   top: {
-    number: '04', emoji: '🏆', motif: 'crown', palette: ['#facc15', '#f97316', '#ef4444'], metrics: ['topArtist', 'topArtistPlays'],
+    number: '04', emoji: '🏆', metrics: ['topArtist', 'topArtistPlays'],
     eyebrow: { es: 'Colección permanente', en: 'Permanent collection', he: 'אוסף קבוע' },
     title: { es: 'Panteón Sonoro', en: 'The Sonic Pantheon', he: 'היכל הצלילים' },
     description: { es: 'Los nombres y canciones que ganaron un lugar permanente.', en: 'The names and songs that earned a permanent place.', he: 'השמות והשירים שזכו במקום קבוע.' },
   },
   timecapsule: {
-    number: '05', emoji: '🕰️', motif: 'hourglass', palette: ['#818cf8', '#f472b6', '#38bdf8'], metrics: ['years', 'hours'],
+    number: '05', emoji: '🕰️', metrics: ['years', 'hours'],
     eyebrow: { es: 'Memoria en movimiento', en: 'Memory in motion', he: 'זיכרון בתנועה' },
     title: { es: 'Cámara del Tiempo', en: 'The Time Chamber', he: 'חדר הזמן' },
     description: { es: 'Momentos distantes vuelven a sonar dentro de una sola línea vital.', en: 'Distant moments sound again along one continuous life line.', he: 'רגעים רחוקים נשמעים מחדש לאורך קו חיים אחד רציף.' },
   },
   personality: {
-    number: '06', emoji: '🧠', motif: 'orbit', palette: ['#a78bfa', '#22d3ee', '#f0abfc'], metrics: ['topGenre', 'artists'],
+    number: '06', emoji: '🧠', metrics: ['topGenre', 'artists'],
     eyebrow: { es: 'Espejo conductual', en: 'Behavioral mirror', he: 'מראה התנהגותית' },
     title: { es: 'Espejo de Personalidad', en: 'The Personality Mirror', he: 'מראת האישיות' },
     description: { es: 'Tus patrones musicales se convierten en rasgos, tensiones y fortalezas.', en: 'Your musical patterns become traits, tensions and strengths.', he: 'הדפוסים המוזיקליים שלך הופכים לתכונות, מתחים וחוזקות.' },
   },
   emotions: {
-    number: '07', emoji: '💗', motif: 'wave', palette: ['#fb7185', '#f0abfc', '#818cf8'], metrics: ['topGenre', 'hours'],
+    number: '07', emoji: '💗', metrics: ['topGenre', 'hours'],
     eyebrow: { es: 'Frecuencia afectiva', en: 'Emotional frequency', he: 'תדר רגשי' },
     title: { es: 'Galería Emocional', en: 'The Emotional Gallery', he: 'הגלריה הרגשית' },
     description: { es: 'La intensidad de tu escucha dibuja un paisaje de energía y refugio.', en: 'The intensity of your listening draws a landscape of energy and refuge.', he: 'עוצמת ההאזנה שלך מציירת נוף של אנרגיה ומפלט.' },
   },
   cultural: {
-    number: '08', emoji: '🌍', motif: 'globe', palette: ['#34d399', '#38bdf8', '#fbbf24'], metrics: ['countries', 'topCountry'],
+    number: '08', emoji: '🌍', metrics: ['countries', 'topCountry'],
     eyebrow: { es: 'Geografía de artistas', en: 'Artist geography', he: 'הגאוגרפיה של האמנים' },
     title: { es: 'Atlas de Orígenes', en: 'The Atlas of Origins', he: 'אטלס המקורות' },
     description: { es: 'Un mapa de los lugares que alimentan tu universo musical.', en: 'A map of the places that feed your musical universe.', he: 'מפה של המקומות שמזינים את היקום המוזיקלי שלך.' },
   },
   inner: {
-    number: '09', emoji: '🎨', motif: 'prism', palette: ['#f472b6', '#8b5cf6', '#22d3ee'], metrics: ['hours', 'activeDays'],
+    number: '09', emoji: '🎨', metrics: ['hours', 'activeDays'],
     eyebrow: { es: 'Paisaje simbólico', en: 'Symbolic landscape', he: 'נוף סמלי' },
     title: { es: 'Paisaje Interior', en: 'The Inner Landscape', he: 'הנוף הפנימי' },
     description: { es: 'Color, arquetipos y atmósfera revelan la forma de tu mundo íntimo.', en: 'Color, archetypes and atmosphere reveal the shape of your inner world.', he: 'צבע, ארכיטיפים ואווירה חושפים את צורת עולמך הפנימי.' },
   },
   artist: {
-    number: '10', emoji: '✨', motif: 'star', palette: ['#fbbf24', '#22d3ee', '#f472b6'], metrics: ['topArtist', 'topGenre'],
+    number: '10', emoji: '✨', metrics: ['topArtist', 'topGenre'],
     eyebrow: { es: 'Alter ego creativo', en: 'Creative alter ego', he: 'אלטר־אגו יצירתי' },
     title: { es: 'Identidad de Artista', en: 'The Artist Identity', he: 'זהות האמן' },
     description: { es: 'Tu historial imagina una voz, una estética y un escenario propios.', en: 'Your history imagines a voice, an aesthetic and a stage of your own.', he: 'ההיסטוריה שלך מדמיינת קול, אסתטיקה ובמה משלך.' },
   },
   obsessions: {
-    number: '11', emoji: '🔁', motif: 'spiral', palette: ['#fb923c', '#ef4444', '#facc15'], metrics: ['obsessions', 'streak'],
+    number: '11', emoji: '🔁', metrics: ['obsessions', 'streak'],
     eyebrow: { es: 'Gravedad repetitiva', en: 'Repeat gravity', he: 'כוח המשיכה של החזרות' },
     title: { es: 'Bucle de Obsesiones', en: 'The Obsession Loop', he: 'לולאת האובססיות' },
     description: { es: 'Las repeticiones dejan de ser números y se vuelven rituales.', en: 'Repeats stop being numbers and become rituals.', he: 'החזרות מפסיקות להיות מספרים והופכות לטקסים.' },
   },
   insights: {
-    number: '12', emoji: '🕵️', motif: 'anomaly', palette: ['#f43f5e', '#f97316', '#a78bfa'], metrics: ['matchRate', 'tracks'],
+    number: '12', emoji: '🕵️', metrics: ['matchRate', 'tracks'],
     eyebrow: { es: 'Señales bajo la superficie', en: 'Signals beneath the surface', he: 'אותות מתחת לפני השטח' },
     title: { es: 'Cámara Oculta', en: 'The Hidden Chamber', he: 'החדר הנסתר' },
     description: { es: 'Anomalías y conexiones inesperadas emergen del archivo.', en: 'Anomalies and unexpected connections emerge from the archive.', he: 'חריגות וקשרים בלתי צפויים עולים מן הארכיון.' },
   },
   achievements: {
-    number: '13', emoji: '🥇', motif: 'medal', palette: ['#f59e0b', '#facc15', '#fb7185'], metrics: ['streak', 'maxDay'],
+    number: '13', emoji: '🥇', metrics: ['streak', 'maxDay'],
     eyebrow: { es: 'Hitos de escucha', en: 'Listening milestones', he: 'אבני דרך בהאזנה' },
     title: { es: 'Salón de Logros', en: 'The Hall of Achievements', he: 'היכל ההישגים' },
     description: { es: 'Tus extremos, constancia y récords reciben su propia vitrina.', en: 'Your extremes, consistency and records receive their own display case.', he: 'השיאים, ההתמדה והרשומות שלך מקבלים ויטרינה משלהם.' },
   },
   wrapped: {
-    number: '14', emoji: '🎁', motif: 'burst', palette: ['#ec4899', '#facc15', '#8b5cf6'], metrics: ['plays', 'peakYear'],
+    number: '14', emoji: '🎁', metrics: ['plays', 'peakYear'],
     eyebrow: { es: 'Celebración condensada', en: 'Condensed celebration', he: 'חגיגה מרוכזת' },
     title: { es: 'Ritual Wrapped', en: 'The Wrapped Ritual', he: 'טקס ה־Wrapped' },
     description: { es: 'Una síntesis brillante de lo que más definió tu recorrido.', en: 'A vivid synthesis of what defined your journey most.', he: 'סינתזה זוהרת של הדברים שהגדירו יותר מכול את המסע שלך.' },
   },
   pulse: {
-    number: '15', emoji: '📡', motif: 'signal', palette: ['#22d3ee', '#10b981', '#818cf8'], metrics: ['maxDay', 'activeDays'],
+    number: '15', emoji: '📡', metrics: ['maxDay', 'activeDays'],
     eyebrow: { es: 'Señal en presente', en: 'Present-tense signal', he: 'אות בזמן הווה' },
     title: { es: 'Pulso Reciente', en: 'The Recent Pulse', he: 'הדופק האחרון' },
     description: { es: 'La actividad más cercana revela hacia dónde se mueve tu gusto.', en: 'Your nearest activity reveals where your taste is moving.', he: 'הפעילות העדכנית ביותר חושפת לאן הטעם שלך מתקדם.' },
   },
   compare: {
-    number: '16', emoji: '⚖️', motif: 'bridge', palette: ['#1DB954', '#e8334a', '#38bdf8'], metrics: ['sources', 'plays'],
+    number: '16', emoji: '⚖️', metrics: ['sources', 'plays'],
     eyebrow: { es: 'Fuentes en diálogo', en: 'Sources in dialogue', he: 'מקורות בדיאלוג' },
     title: { es: 'Sala de Contrastes', en: 'The Contrast Room', he: 'חדר הניגודים' },
     description: { es: 'Plataformas distintas cuentan versiones complementarias de la misma historia.', en: 'Different platforms tell complementary versions of the same story.', he: 'פלטפורמות שונות מספרות גרסאות משלימות של אותו סיפור.' },
   },
   museums: {
-    number: '17', emoji: '🪞', motif: 'constellation', palette: ['#84cc16', '#0ea5e9', '#f472b6'], metrics: ['artists', 'albums'],
+    number: '17', emoji: '🪞', metrics: ['artists', 'albums'],
     eyebrow: { es: 'Colecciones paralelas', en: 'Parallel collections', he: 'אוספים מקבילים' },
     title: { es: 'Museos Paralelos', en: 'Parallel Museums', he: 'מוזיאונים מקבילים' },
     description: { es: 'Dos archivos se encuentran para mostrar coincidencias y singularidades.', en: 'Two archives meet to reveal overlaps and singularities.', he: 'שני ארכיונים נפגשים כדי לחשוף חפיפות וייחודיות.' },
   },
   platforms: {
-    number: '18', emoji: '🎛️', motif: 'devices', palette: ['#38bdf8', '#10b981', '#f59e0b'], metrics: ['platforms', 'sources'],
+    number: '18', emoji: '🎛️', metrics: ['platforms', 'sources'],
     eyebrow: { es: 'Infraestructura de escucha', en: 'Listening infrastructure', he: 'תשתית ההאזנה' },
     title: { es: 'Mesa de Dispositivos', en: 'The Device Console', he: 'קונסולת המכשירים' },
     description: { es: 'Contextos, plataformas y formatos trazan cómo llega la música a ti.', en: 'Contexts, platforms and formats trace how music reaches you.', he: 'הקשרים, פלטפורמות ופורמטים משרטטים כיצד המוזיקה מגיעה אליך.' },
   },
   quality: {
-    number: '19', emoji: '🛡️', motif: 'shield', palette: ['#2dd4bf', '#60a5fa', '#a78bfa'], metrics: ['matchRate', 'tracks'],
+    number: '19', emoji: '🛡️', metrics: ['matchRate', 'tracks'],
     eyebrow: { es: 'Transparencia del archivo', en: 'Archive transparency', he: 'שקיפות הארכיון' },
     title: { es: 'Laboratorio de Evidencia', en: 'The Evidence Lab', he: 'מעבדת הראיות' },
     description: { es: 'Cobertura, límites y confianza permanecen visibles junto a los hallazgos.', en: 'Coverage, limits and confidence remain visible beside every finding.', he: 'הכיסוי, המגבלות ורמת הביטחון נשארים גלויים לצד כל ממצא.' },
   },
   statsdeep: {
-    number: '20', emoji: '📊', motif: 'spectrum', palette: ['#38bdf8', '#a78bfa', '#f472b6'], metrics: ['activeDays', 'sessions'],
+    number: '20', emoji: '📊', metrics: ['activeDays', 'sessions'],
     eyebrow: { es: 'Observación de alta resolución', en: 'High-resolution observation', he: 'תצפית ברזולוציה גבוהה' },
     title: { es: 'Observatorio Estadístico', en: 'The Statistics Observatory', he: 'המצפה הסטטיסטי' },
     description: { es: 'Ritmos, densidad y evolución se estudian con el máximo detalle.', en: 'Rhythm, density and evolution are studied at maximum detail.', he: 'קצב, צפיפות והתפתחות נבחנים ברמת הפירוט המרבית.' },
   },
   report: {
-    number: '21', emoji: '📜', motif: 'archive', palette: ['#c084fc', '#60a5fa', '#fbbf24'], metrics: ['plays', 'hours'],
+    number: '21', emoji: '📜', metrics: ['plays', 'hours'],
     eyebrow: { es: 'Conclusión curatorial', en: 'Curatorial conclusion', he: 'סיכום אוצרותי' },
     title: { es: 'Archivo Final', en: 'The Final Archive', he: 'הארכיון הסופי' },
     description: { es: 'La exposición termina en un retrato completo, listo para conservar.', en: 'The exhibition closes with a complete portrait, ready to preserve.', he: 'התערוכה נחתמת בדיוקן שלם, מוכן לשימור.' },
   },
 };
-
-export const MUSEUM_CHAPTER_TABS = Object.freeze(Object.keys(CHAPTERS) as MuseumChapterTab[]);
 
 function formatNumber(value: number, lang: Lang) {
   return new Intl.NumberFormat(localeFor(lang), { maximumFractionDigits: 0 }).format(value);
@@ -236,10 +195,11 @@ function formatNumber(value: number, lang: Lang) {
 function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMetric {
   const core = data.core_metrics;
   const eras = data.yearly_eras ?? [];
-  const years = eras.map(era => era.year).filter(Number.isFinite);
-  const minYear = years.length > 0 ? Math.min(...years) : core.max_year;
-  const maxYear = years.length > 0 ? Math.max(...years) : core.max_year;
-  const peakEra = [...eras].sort((a, b) => b.plays - a.plays)[0];
+  const observedEras = eras.filter(era => era.plays > 0 && Number.isFinite(era.year));
+  const years = observedEras.map(era => era.year);
+  const minYear = years.length > 0 ? Math.min(...years) : null;
+  const maxYear = years.length > 0 ? Math.max(...years) : null;
+  const peakEra = [...observedEras].sort((a, b) => b.plays - a.plays)[0];
   const topArtist = data.top_artists?.[0];
   const sourceSummary = data.source_summary;
   const sourceCount = sourceSummary
@@ -250,6 +210,7 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
 
   const numeric = (value: number) => formatNumber(value, lang);
   const label = (values: Record<Lang, string>) => pickLanguage(lang, values);
+  const unavailable = label({ es: 'No disponible', en: 'Unavailable', he: 'לא זמין' });
 
   switch (kind) {
     case 'plays': return { label: label({ es: 'reproducciones', en: 'total plays', he: 'סך ההשמעות' }), value: numeric(core.total_plays) };
@@ -258,8 +219,20 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
     case 'albums': return { label: label({ es: 'álbumes únicos', en: 'unique albums', he: 'אלבומים ייחודיים' }), value: numeric(core.unique_albums) };
     case 'hours': return { label: label({ es: 'horas de escucha', en: 'listening hours', he: 'שעות האזנה' }), value: numeric(core.listening_hours) };
     case 'activeDays': return { label: label({ es: 'días activos', en: 'active days', he: 'ימי פעילות' }), value: numeric(core.active_days) };
-    case 'years': return { label: label({ es: 'arco temporal', en: 'time span', he: 'טווח הזמן' }), value: minYear === maxYear ? String(maxYear) : `${minYear}—${maxYear}` };
-    case 'peakYear': return { label: label({ es: 'año de máxima actividad', en: 'peak activity year', he: 'שנת שיא הפעילות' }), value: String(peakEra?.year ?? core.max_year) };
+    case 'years': return {
+      label: label({ es: 'arco temporal', en: 'time span', he: 'טווח הזמן' }),
+      value: minYear === null || maxYear === null
+        ? unavailable
+        : minYear === maxYear ? String(maxYear) : `${minYear}—${maxYear}`,
+    };
+    case 'peakYear': return {
+      label: label({
+        es: 'año observado con más reproducciones',
+        en: 'highest-volume observed year',
+        he: 'השנה הנצפית עם מספר ההשמעות הגבוה ביותר',
+      }),
+      value: peakEra ? String(peakEra.year) : unavailable,
+    };
     case 'topArtist': return { label: label({ es: 'obra central', en: 'central artist', he: 'האמן המרכזי' }), value: topArtist?.name ?? '—' };
     case 'topArtistPlays': return { label: label({ es: 'plays del artista #1', en: '#1 artist plays', he: 'השמעות של האמן במקום הראשון' }), value: numeric(topArtist?.plays ?? 0) };
     case 'topGenre': {
@@ -294,7 +267,7 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
   }
 }
 
-function MotifGeometry({ motif }: { motif: ChapterMotif }) {
+function MotifGeometry({ motif }: { motif: MuseumChapterMotif }) {
   switch (motif) {
     case 'atlas': return (
       <>
@@ -453,7 +426,7 @@ function MotifGeometry({ motif }: { motif: ChapterMotif }) {
   }
 }
 
-function ChapterArtwork({ motif }: { motif: ChapterMotif }) {
+function ChapterArtwork({ motif }: { motif: MuseumChapterMotif }) {
   return (
     <div className="museum-chapter__art" aria-hidden="true">
       <span className="museum-chapter__halo museum-chapter__halo--one" />
@@ -468,6 +441,7 @@ function ChapterArtwork({ motif }: { motif: ChapterMotif }) {
 
 export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumChapterHeaderProps) {
   const definition = CHAPTERS[activeTab as MuseumChapterTab];
+  const visualIdentity = museumVisualFor(activeTab);
   const reactId = useId();
 
   if (!definition) return null;
@@ -480,9 +454,9 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
   const tempoSeconds = Math.max(9, 17 - topShare * 24);
   const headingId = `museum-chapter-${reactId.replace(/:/g, '')}`;
   const style = {
-    '--chapter-primary': definition.palette[0],
-    '--chapter-secondary': definition.palette[1],
-    '--chapter-tertiary': definition.palette[2],
+    '--chapter-primary': visualIdentity.palette[0],
+    '--chapter-secondary': visualIdentity.palette[1],
+    '--chapter-tertiary': visualIdentity.palette[2],
     '--chapter-grid-opacity': 0.2 + archiveDensity * 0.34,
     '--chapter-scan-opacity': 0.08 + topShare * 0.4,
     '--chapter-halo-opacity': 0.16 + topShare * 0.6,
@@ -502,7 +476,8 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
       aria-labelledby={headingId}
       data-testid="museum-chapter"
       data-chapter={activeTab}
-      data-motif={definition.motif}
+      data-family={visualIdentity.family}
+      data-motif={visualIdentity.chapterMotif}
       data-density="compact"
       dir={directionFor(lang)}
     >
@@ -536,7 +511,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
           ))}
         </dl>
 
-        <ChapterArtwork motif={definition.motif} />
+        <ChapterArtwork motif={visualIdentity.chapterMotif} />
       </div>
 
       <div className="museum-chapter__footer" aria-hidden="true">

@@ -54,15 +54,20 @@ export interface NormalizedPlatformRow extends PlatformPlay {
 export function platformFamily(rawPlatform: string): string {
   const platform = rawPlatform.trim().toLowerCase();
   if (!platform) return 'Other';
-  if (/android[-_ ]?tv|tizen|sony_tv|smart[ _-]?tv/.test(platform)) return 'Smart TV';
   if (/playstation|\bps4\b|\bscei\b/.test(platform)) return 'PlayStation';
+  if (/android[-_ ]?tv|tizen|sony_tv|smart[ _-]?tv/.test(platform)) return 'Smart TV';
   if (/chromecast|^cast$|google cast/.test(platform)) return 'Cast';
-  if (/youtube.+takeout/.test(platform)) return 'YouTube import';
+  if (/youtube.+(?:takeout|import)/.test(platform)) return 'YouTube import';
   if (/android[-_ ]?tablet|\btablet\b/.test(platform)) return 'Android tablet';
   if (/android/.test(platform)) return 'Android phone';
   if (/windows/.test(platform)) return 'Windows desktop';
   if (/iphone|\bios\b|ipad/.test(platform)) return 'Apple mobile';
   if (/macintosh|macos|mac os/.test(platform)) return 'Mac';
+  if (/apple music/.test(platform)) return 'Apple Music';
+  if (/listenbrainz/.test(platform)) return 'ListenBrainz';
+  if (/\bxbox\b/.test(platform)) return 'Xbox';
+  if (/\broku\b/.test(platform)) return 'Roku';
+  if (/\blinux\b/.test(platform)) return 'Linux';
   if (/web|browser|chrome|firefox|safari/.test(platform)) return 'Web player';
   return 'Other';
 }

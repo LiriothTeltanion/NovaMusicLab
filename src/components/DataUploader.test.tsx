@@ -1,16 +1,52 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import DataUploader from './DataUploader';
+import DataUploader, {
+  type DatasetOperationCoordinator,
+  type DatasetOperationToken,
+} from './DataUploader';
 import { AppProvider } from '../context/AppContext';
 import defaultMusicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import { localeFor, type Lang } from '../utils/i18n';
+
+function createOperationCoordinator(): DatasetOperationCoordinator {
+  let nextId = 0;
+  const coordinator: DatasetOperationCoordinator = {
+    active: null,
+    acquire(kind) {
+      if (coordinator.active) return null;
+      const operation: DatasetOperationToken = { id: ++nextId, kind };
+      coordinator.active = operation;
+      return operation;
+    },
+    isCurrent(operation) {
+      return coordinator.active?.id === operation.id && coordinator.active.kind === operation.kind;
+    },
+    release(operation) {
+      if (coordinator.isCurrent(operation)) coordinator.active = null;
+    },
+  };
+  return coordinator;
+}
 
 const baseProps = {
   currentData: defaultMusicData as unknown as MusicDnaData,
   storedMeta: null,
   onClearStored: vi.fn(),
+  operationCoordinator: createOperationCoordinator(),
 };
+
+function listenBrainzFile(name: string, trackName = 'In Blur') {
+  return new File([JSON.stringify([{
+    listened_at: 1770000000,
+    track_metadata: {
+      artist_name: 'Deafheaven',
+      track_name: trackName,
+      release_name: 'Infinite Granite',
+    },
+  }])], name, { type: 'application/json' });
+}
 
 // STRINGS itself isn't exported from AppContext.tsx, so the expected copy is
 // mirrored here from the es/en `uploader` blocks to keep assertions exact.
@@ -51,6 +87,7 @@ const STRINGS = {
 describe('DataUploader', () => {
   beforeEach(() => {
     window.localStorage.clear();
+    baseProps.operationCoordinator = createOperationCoordinator();
   });
 
   afterEach(() => {
@@ -175,6 +212,176 @@ describe('DataUploader', () => {
     expect(screen.getByRole('status')).toHaveTextContent(/Loaded 1 file/i);
   });
 
+  it('keeps import single-flight through async persistence and blocks browse/drop re-entry', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    let finishPersistence: (() => void) | undefined;
+    const persistencePending = new Promise<void>(resolve => {
+      finishPersistence = resolve;
+    });
+    const onDataLoaded = vi.fn(() => persistencePending);
+
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const browseButton = screen.getByRole('button', { name: STRINGS.en.uploader.browseButton });
+    const dropZone = screen.getByRole('region', { name: STRINGS.en.uploader.dropZoneAriaLabel });
+
+    await user.upload(input, listenBrainzFile('first.json'));
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+
+    expect(input).toBeDisabled();
+    expect(browseButton).toBeDisabled();
+    expect(dropZone).toHaveAttribute('aria-busy', 'true');
+
+    fireEvent.drop(dropZone, {
+      dataTransfer: { files: [listenBrainzFile('second.json', 'Dream House')] },
+    });
+    await act(async () => Promise.resolve());
+    expect(onDataLoaded).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      finishPersistence?.();
+      await persistencePending;
+    });
+    await waitFor(() => expect(browseButton).toBeEnabled());
+    expect(dropZone).toHaveAttribute('aria-busy', 'false');
+  });
+
+  it('keeps Clear disabled until a slow import and its local save have finished', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    let finishPersistence: (() => void) | undefined;
+    const persistencePending = new Promise<void>(resolve => {
+      finishPersistence = resolve;
+    });
+    const onDataLoaded = vi.fn(() => persistencePending);
+    const onClearStored = vi.fn(async () => ({ ok: true, status: 'cleared' } as const));
+
+    render(
+      <AppProvider>
+        <DataUploader
+          {...baseProps}
+          storedMeta={{ savedAt: '2026-07-16T07:00:00.000Z', sourceLabel: 'Saved archive' }}
+          onDataLoaded={onDataLoaded}
+          onClearStored={onClearStored}
+        />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const clearButton = screen.getByRole('button', { name: 'Clear saved data' });
+
+    await user.upload(input, listenBrainzFile('slow-import.json'));
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+
+    expect(clearButton).toBeDisabled();
+    expect(screen.getByText(/Import and local save are still running/i)).toBeInTheDocument();
+    await user.click(clearButton);
+    expect(onClearStored).not.toHaveBeenCalled();
+
+    await act(async () => {
+      finishPersistence?.();
+      await persistencePending;
+    });
+    await waitFor(() => expect(clearButton).toBeEnabled());
+
+    await user.click(clearButton);
+    expect(onClearStored).not.toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: 'Yes, clear this archive' }));
+    await waitFor(() => expect(onClearStored).toHaveBeenCalledTimes(1));
+  });
+
+  it.each([
+    {
+      lang: 'en' as Lang,
+      clearButton: 'Clear saved data',
+      title: 'Confirm local archive removal',
+      cancel: 'Cancel',
+      confirm: 'Yes, clear this archive',
+      acknowledged: 'Local data cleared. You are back on the demo archive.',
+    },
+    {
+      lang: 'es' as Lang,
+      clearButton: 'Borrar datos guardados',
+      title: 'Confirma el borrado del archivo local',
+      cancel: 'Cancelar',
+      confirm: 'Sí, borrar este archivo',
+      acknowledged: 'Datos locales borrados. Volviste al archivo de demostración.',
+    },
+    {
+      lang: 'he' as Lang,
+      clearButton: 'נקה נתונים שמורים',
+      title: 'אישור מחיקת הארכיון המקומי',
+      cancel: 'ביטול',
+      confirm: 'כן, למחוק את הארכיון',
+      acknowledged: 'הנתונים המקומיים נוקו. חזרת לארכיון ההדגמה.',
+    },
+  ])('confirms and acknowledges Clear inline in $lang with the exact stored identity', async ({
+    lang,
+    clearButton,
+    title,
+    cancel,
+    confirm,
+    acknowledged,
+  }) => {
+    window.localStorage.setItem('nml_lang', lang);
+    const user = userEvent.setup();
+    const savedAt = '2026-07-16T07:04:00.000Z';
+    const sourceLabel = `Exact source · ${lang} · האוסף`;
+    let finishClear!: (result: { ok: true; status: 'cleared' }) => void;
+    const pendingClear = new Promise<{ ok: true; status: 'cleared' }>(resolve => {
+      finishClear = resolve;
+    });
+    const onClearStored = vi.fn(() => pendingClear);
+
+    render(
+      <AppProvider>
+        <DataUploader
+          {...baseProps}
+          storedMeta={{ savedAt, sourceLabel }}
+          onDataLoaded={vi.fn()}
+          onClearStored={onClearStored}
+        />
+      </AppProvider>
+    );
+
+    await user.click(await screen.findByRole('button', { name: clearButton }));
+    const firstDialog = screen.getByRole('alertdialog', { name: title });
+    expect(within(firstDialog).getByText(sourceLabel, { exact: true })).toBeInTheDocument();
+    const savedTime = firstDialog.querySelector('time');
+    expect(savedTime).toHaveAttribute('dateTime', savedAt);
+    expect(savedTime).toHaveTextContent(new Date(savedAt).toLocaleString(localeFor(lang), {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    }));
+    const cancelButton = within(firstDialog).getByRole('button', { name: cancel });
+    expect(cancelButton).toHaveFocus();
+    await user.click(cancelButton);
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+    expect(onClearStored).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: clearButton }));
+    const secondDialog = screen.getByRole('alertdialog', { name: title });
+    const confirmButton = within(secondDialog).getByRole('button', { name: confirm });
+    const secondCancelButton = within(secondDialog).getByRole('button', { name: cancel });
+    await user.click(confirmButton);
+    expect(onClearStored).toHaveBeenCalledTimes(1);
+    expect(confirmButton).toBeDisabled();
+    expect(secondCancelButton).toBeDisabled();
+
+    await act(async () => {
+      finishClear({ ok: true, status: 'cleared' });
+      await pendingClear;
+    });
+    expect(await screen.findByText(acknowledged)).toBeInTheDocument();
+    expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument();
+  });
+
   it('does not call onDataLoaded when an unsupported file extension is selected', async () => {
     window.localStorage.setItem('nml_lang', 'es');
     const user = userEvent.setup({ applyAccept: false });
@@ -278,6 +485,69 @@ describe('DataUploader', () => {
     expect(parsed.source_summary?.source_type).toBe('listenbrainz');
     expect(parsed.source_summary?.listenbrainz_plays).toBe(1);
     expect(parsed.top_artists[0].name).toBe('Deafheaven');
+  });
+
+  it('rejects a corrupt Nova marker with a localized backup error', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const corruptBackup = new File(
+      ['{"nova_music_export":true,"version":3,"data":'],
+      'nova-backup-corrupt.json',
+      { type: 'application/json' },
+    );
+
+    await user.upload(input, corruptBackup);
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(
+      'Este archivo parece una copia de seguridad de Nova, pero su contenido no es válido o está dañado.',
+    );
+    expect(onDataLoaded).not.toHaveBeenCalled();
+  });
+
+  it('ignores a corrupt Nova near-match without suppressing valid files in a mixed batch', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const corruptBackup = new File(
+      [JSON.stringify({ nova_music_export: true, version: 3, data: { project: 'damaged' } })],
+      'nova-backup-near-match.json',
+      { type: 'application/json' },
+    );
+    const validListenBrainz = new File([JSON.stringify([
+      {
+        listened_at: 1770000000,
+        track_metadata: {
+          artist_name: 'Deafheaven',
+          track_name: 'In Blur',
+          release_name: 'Infinite Granite',
+        },
+      },
+    ])], 'listenbrainz-export.json', { type: 'application/json' });
+
+    await user.upload(input, [corruptBackup, validListenBrainz]);
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    const parsed = onDataLoaded.mock.calls[0][0];
+    expect(parsed.source_summary?.source_type).toBe('listenbrainz');
+    expect(parsed.core_metrics.total_plays).toBe(1);
+    expect(await screen.findByText(/Loaded 1 file\(s\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/1 invalid Nova backup file\(s\) were ignored/i)).toBeInTheDocument();
   });
 
   it('renders English strings when nml_lang is set to "en"', () => {

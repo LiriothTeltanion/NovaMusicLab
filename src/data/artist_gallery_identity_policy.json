@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "identity": "Santa Cruz (Finnish band)",
+      "galleryKeys": ["santa cruz"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": ["Santa Cruz (band) at Tavastia"],
+      "requiredOpenMediaSubjects": ["Santa Cruz (band) at Tavastia"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "f5e6678869eb6d3e004423c785b290ef" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Normandie (Swedish band)",
+      "galleryKeys": ["normandie"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [],
+      "requiredOpenMediaSubjects": [],
+      "approvedDirectAssets": [
+        { "source": "spotify", "urlToken": "b10187f9986fe2920ff5de99" },
+        { "source": "deezer", "urlToken": "026ad33442401879bbf631239a5ad5aa" }
+      ],
+      "requiredDirectSources": ["spotify", "deezer"]
+    },
+    {
+      "identity": "mgk / Machine Gun Kelly (musician)",
+      "galleryKeys": ["mgk", "machine gun kelly"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [
+        "Machine Gun Kelly Charity Softball",
+        "Machine Gun Kelly (rapper) 03"
+      ],
+      "requiredOpenMediaSubjects": [
+        "Machine Gun Kelly Charity Softball",
+        "Machine Gun Kelly (rapper) 03"
+      ],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "120b8cdace018519109d162495103da8" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Ghost (Swedish rock band)",
+      "galleryKeys": ["ghost"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [
+        "2023 Sweden Rock - 4309",
+        "Ghost Rockavaria 2016"
+      ],
+      "requiredOpenMediaSubjects": ["Ghost Rockavaria 2016"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "da23d5c8a0b40adefa6424ec4b357fd1" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Roosevelt (German musician)",
+      "galleryKeys": ["roosevelt"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": ["Roosevelt - Way Back When Festival"],
+      "requiredOpenMediaSubjects": ["Roosevelt - Way Back When Festival"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "08730012aa265aaab7184051fa9f31aa" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Perturbator (French musician)",
+      "galleryKeys": ["perturbator"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [
+        "Perturbator (3x4 close portrait)",
+        "Perturbator - Rock am Ring"
+      ],
+      "requiredOpenMediaSubjects": ["Perturbator (3x4 close portrait)"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "fe0fbcbf813c3f4986602565e918a863" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "nightlife (Baltimore band)",
+      "galleryKeys": ["nightlife"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [],
+      "requiredOpenMediaSubjects": [],
+      "approvedDirectAssets": [
+        { "source": "spotify", "urlToken": "55720c24271a9861b695ac4c" }
+      ],
+      "requiredDirectSources": ["spotify"]
+    },
+    {
+      "identity": "SOM (US band)",
+      "galleryKeys": ["som"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": [],
+      "requiredOpenMediaSubjects": [],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "cf1857ae58a718afe8a342093857a109" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Nine Inch Nails / NIN",
+      "galleryKeys": ["nine inch nails"],
+      "forbiddenGalleryKeys": ["nin"],
+      "allowedOpenMediaSubjects": [
+        "Nine Inch Nails - 20.06.2022",
+        "NIN Munich 2007"
+      ],
+      "requiredOpenMediaSubjects": [
+        "Nine Inch Nails - 20.06.2022",
+        "NIN Munich 2007"
+      ],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "cb15e0065ad89b90f688a250f46001f4" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Volumes (US band)",
+      "galleryKeys": ["volumes"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": ["Volumes 2017"],
+      "requiredOpenMediaSubjects": ["Volumes 2017"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "422a3f6f4bf96a53c23e6aaa350cb3e8" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    },
+    {
+      "identity": "Thornhill (Australian band)",
+      "galleryKeys": ["thornhill"],
+      "forbiddenGalleryKeys": [],
+      "allowedOpenMediaSubjects": ["Thornhill Live at the Great American Music Hall"],
+      "requiredOpenMediaSubjects": ["Thornhill Live at the Great American Music Hall"],
+      "approvedDirectAssets": [
+        { "source": "deezer", "urlToken": "8dbda8e9fb5293f0f6a12fccb951026b" }
+      ],
+      "requiredDirectSources": ["deezer"]
+    }
+  ]
+}
