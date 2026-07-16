@@ -4,7 +4,7 @@ Nova Music Lab is a static, local-first web application, but its browser storage
 
 ## Supported versions
 
-Until the first stable release, security fixes target the current `main` branch and the live GitHub Pages deployment. After v1.0, the latest stable release will be the supported public version.
+Security fixes target the latest stable release, the current `main` branch and the live GitHub Pages deployment. Older release lines are not actively supported unless a security advisory says otherwise.
 
 ## Report a vulnerability privately
 

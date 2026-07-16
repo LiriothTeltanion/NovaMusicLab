@@ -13,7 +13,7 @@
 
 Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive. Nova Music Lab processes raw files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Current code version:** `1.0.0-rc.1`, the release-candidate foundation for **Nova Music Lab v1.0 — The Evidence-First Museum**. No version tag or GitHub Release exists until that exact commit completes release acceptance. IndexedDB **schema v4** is a storage contract, not the product's major version.
+**Current code version:** `1.0.0`, the first stable release of **Nova Music Lab v1.0 — The Evidence-First Museum**. The release is built, stamped and smoke-tested from its exact protected `main` commit. IndexedDB **schema v4** is a storage contract, not the product's major version.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -270,7 +270,7 @@ The compiler never searches personal directories automatically. Use a review out
 | [Artwork schema](./docs/data/ARTWORK_SCHEMA.md) | Artist, album, track and gallery asset contracts |
 | [Visual system](./docs/design/VISUAL_SYSTEM.md) | Living Sonic Cartography, icons and motion tiers |
 | [Quality gates](./docs/operations/QUALITY_GATES.md) | Local and CI verification |
-| [Release guide](./docs/operations/RELEASE.md) | Release candidate, tag, Pages and rollback process |
+| [Release guide](./docs/operations/RELEASE.md) | Versioning, tags, Pages and rollback process |
 | [Contributing](./CONTRIBUTING.md) | Branch, commit, privacy and review expectations |
 | [Security](./SECURITY.md) | Private vulnerability reporting |
 | [Roadmap](./ROADMAP.md) | Ordered v1 and post-v1 priorities |
@@ -286,7 +286,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-No formal GitHub release has been published yet. The package and working tree identify this candidate as `1.0.0-rc.1`; publishing that RC still requires a verified `main` deployment and release tag. Stable `v1.0.0` follows only after privacy, import/storage, accessibility, browser and live Pages acceptance checks pass.
+`v1.0.0` is the first stable release line. Its verified Pages artifact must match the tagged commit and package version; `v1.0.0-rc.1` remains preserved as the accepted release candidate. Future changes follow the same protected-PR, privacy, accessibility, browser and live Pages acceptance process.
 
 ---
 

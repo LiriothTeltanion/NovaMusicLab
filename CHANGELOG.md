@@ -6,6 +6,20 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-16
+
+### Released
+
+- Promoted the accepted Living Sonic Cartography candidate to the first stable Nova Music Lab release.
+- Published the protected `main` artifact only after EN/ES/HE, RTL, responsive, reduced-motion, persistence, privacy and live Pages acceptance.
+- Preserved `v1.0.0-rc.1` as the immutable release-candidate checkpoint.
+
+### Verified
+
+- 83 test files and 467 tests pass alongside TypeScript, strict data/media/artist-knowledge/privacy/PWA audits and bundle budgets.
+- GitHub CodeQL reports zero open alerts; secret scanning, push protection, Dependabot security updates and private vulnerability reporting are enabled.
+- The deployed `build-meta.json` proves the exact release commit and package version served by GitHub Pages.
+
 ## [1.0.0-rc.1] - 2026-07-16
 
 ### Added

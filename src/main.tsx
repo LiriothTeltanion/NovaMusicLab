@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')!).render(
 )
 
 // Initialize the schema-v4 local database after load and idle time. The app
-// product itself is v1.0 RC; "v4" is strictly the IndexedDB schema version.
+// product itself is v1.0; "v4" is strictly the IndexedDB schema version.
 scheduleLocalDataBootstrap()
 
 // Offline support is progressive enhancement: production only, never blocking.

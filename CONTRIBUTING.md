@@ -50,7 +50,7 @@ style(museum): unify room typography and motion
 docs: document the public data boundary
 test(parser): add a foreign-archive privacy fixture
 ci: protect verified Pages deployments
-chore(release): prepare v1.0.0-rc.1
+chore(release): prepare v1.0.1
 ```
 
 Avoid single-character or ambiguous commit messages.

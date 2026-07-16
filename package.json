@@ -1,7 +1,7 @@
 {
   "name": "nova-music-lab",
   "private": true,
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
