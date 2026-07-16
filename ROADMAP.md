@@ -8,9 +8,9 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Add the v1 documentation and GitHub governance foundation.
 - [x] Make creator CV links optional instead of requiring private PDFs.
 - [x] Add a public flagship manifest and privacy audit.
-- [ ] Align package metadata and Node requirements.
-- [ ] Make the complete verification and Pages pipeline green.
-- [ ] Configure branch rules, repository About fields and a custom social preview on GitHub.
+- [x] Align package metadata and Node requirements.
+- [x] Make the complete verification and Pages pipeline green.
+- [x] Configure branch rules, repository About fields and a custom social preview on GitHub.
 
 ## Phase 1 — Truth and privacy boundary
 
@@ -52,7 +52,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Add bookmarks, memory notes and evidence-backed recent windows.
 - [ ] Add a local playlist builder and richer export package.
 - [ ] Publish privacy-safe product screenshots, walkthrough media and an engineering case study.
-- [ ] Publish `v1.0.0-rc.1`, complete acceptance testing, then tag `v1.0.0`.
+- [x] Publish `v1.0.0-rc.1`, complete acceptance testing, then tag `v1.0.0`.
 
 ## Definition of v1.0 done
 

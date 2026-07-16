@@ -7,9 +7,9 @@ Nova Music Lab uses Semantic Versioning beginning with the first stable `v1.0.0`
 - `main` is production and must remain deployable.
 - Use focused `codex/<scope>` branches and pull requests.
 - Use squash merge and delete merged branches.
-- Create `codex/v1-release-candidate` only for final cross-cutting release preparation.
+- Use a focused `codex/<release-scope>` branch for final cross-cutting release preparation.
 
-## Release progression
+## v1 launch progression
 
 1. Prepare `1.0.0-rc.1` after all v1 feature and migration work is integrated.
 2. Run the complete automated and browser acceptance matrix.
@@ -18,18 +18,20 @@ Nova Music Lab uses Semantic Versioning beginning with the first stable `v1.0.0`
 5. Promote the proven commit to `1.0.0` without unrelated feature changes.
 6. Create annotated tag `v1.0.0` and a GitHub Release.
 
-## Pre-release checklist
+## v1.0 acceptance record
 
-- [ ] `npm ci` succeeds on the supported Node version.
-- [ ] `npm run verify` is green and warning policy is intentional.
-- [ ] Public bundle privacy audit is green.
-- [ ] CodeQL and dependency review are green.
-- [ ] Flagship/visitor boundary tests pass with an unrelated archive.
-- [ ] Import, save, restore, export and clear journeys pass.
-- [ ] EN/ES/HE, RTL, mobile, desktop, keyboard, contrast and reduced motion pass.
-- [ ] README, metadata, manifest, changelog and package version agree.
-- [ ] No raw archive, API key or private CV exists in the diff or build artifact.
-- [ ] Pages deploy and post-deploy smoke test pass.
+This record captures the accepted release candidate. The exact commit/version and Pages checks are repeated after the stable promotion merges, before the immutable stable tag is created.
+
+- [x] `npm ci` succeeds on the supported Node version.
+- [x] `npm run verify` is green and warning policy is intentional.
+- [x] Public bundle privacy audit is green.
+- [x] CodeQL and dependency review are green.
+- [x] Flagship/visitor boundary tests pass with an unrelated archive.
+- [x] Import, save, restore, export and clear journeys pass.
+- [x] EN/ES/HE, RTL, mobile, desktop, keyboard, contrast and reduced motion pass.
+- [x] README, metadata, manifest, changelog and package version agree.
+- [x] No raw archive, API key or private CV exists in the diff or build artifact.
+- [x] Pages deploy and post-deploy smoke test pass.
 
 The Pages workflow cancels any older run for the same branch when a newer push arrives. Before upload, it writes `dist/build-meta.json` with the verified Git commit and package version. The smoke job accepts the deployment only when both the museum HTML and that exact commit/version marker are live, preventing a healthy but stale Pages artifact from passing release acceptance.
 
@@ -57,4 +59,4 @@ If the deployed build fails acceptance:
 
 ## External GitHub settings
 
-Before v1.0, configure repository rules to require `Verify`, `Analyze JavaScript and TypeScript`, and `Dependency review` where applicable; block force pushes/deletion; require resolved conversations; enable automatic branch deletion; upload the custom social preview; and enable Dependabot security updates and private vulnerability reporting.
+The v1 baseline requires `Verify`, `Analyze JavaScript and TypeScript`, and `Dependency review`; blocks force pushes/deletion; requires resolved conversations; enables automatic branch deletion; restricts Pages to protected branches; and enables secret scanning, push protection, Dependabot security updates and private vulnerability reporting. The tracked social preview is uploaded through repository settings because GitHub does not expose that field through the repository contents API.
