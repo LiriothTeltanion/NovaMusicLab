@@ -17,8 +17,6 @@ interface Message {
   timestamp: Date;
 }
 
-const STORAGE_KEY = 'nml_gemini_api_key';
-const SESSION_KEY = 'nml_gemini_api_key_session';
 const GENERIC_GENRE_BUCKETS = new Set(['alternative', 'unclassified']);
 
 function isGenericGenreBucket(name: string) {
@@ -77,9 +75,7 @@ interface AssistantCopy {
   apiKeyAria: string;
   hideApiKey: string;
   showApiKey: string;
-  keySaved: string;
   keySession: string;
-  rememberKey: string;
   clearKey: string;
   sandboxActive: string;
   freeGeminiKey: string;
@@ -126,14 +122,12 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'Pregunta a Nova sobre tu historial musical',
     sendMessage: 'Enviar mensaje',
     apiSettings: 'Configurar clave de API',
-    apiDescription: 'Por defecto, tu clave permanece sólo en esta sesión/pestaña. Puedes elegir recordarla explícitamente en este navegador. Al enviar un mensaje, Gemini recibe tu pregunta y un resumen compacto —nunca los archivos de exportación en bruto—.',
+    apiDescription: 'Tu clave permanece sólo en la memoria de esta página: nunca se guarda en localStorage ni sessionStorage y se elimina al recargar o salir. Al enviar un mensaje, Gemini recibe tu pregunta y un resumen compacto —nunca los archivos de exportación en bruto—.',
     apiPlaceholder: 'Clave de API de Gemini…',
     apiKeyAria: 'Clave de API de Gemini',
     hideApiKey: 'Ocultar clave de API',
     showApiKey: 'Mostrar clave de API',
-    keySaved: 'Clave recordada explícitamente en el almacenamiento local del navegador.',
-    keySession: 'Clave disponible sólo durante esta sesión del navegador.',
-    rememberKey: 'Recordar la clave en este navegador',
+    keySession: 'Clave sólo en memoria; no se guarda en el almacenamiento del navegador.',
     clearKey: 'Olvidar y borrar la clave',
     sandboxActive: 'Modo Sandbox simulado activo.',
     freeGeminiKey: 'Obtener una clave de Gemini gratis',
@@ -178,14 +172,12 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'Ask Nova about your music history',
     sendMessage: 'Send message',
     apiSettings: 'API key settings',
-    apiDescription: 'By default, your key stays only in this browser tab/session. You can explicitly choose to remember it on this browser. When you send a message, Gemini receives your question plus a compact summary, never the raw export files.',
+    apiDescription: 'Your key stays only in this page\'s memory: it is never written to localStorage or sessionStorage and is cleared when you reload or leave. When you send a message, Gemini receives your question plus a compact summary, never the raw export files.',
     apiPlaceholder: 'Gemini API key…',
     apiKeyAria: 'Gemini API key',
     hideApiKey: 'Hide API key',
     showApiKey: 'Show API key',
-    keySaved: 'Key explicitly remembered in browser local storage.',
-    keySession: 'Key available only for this browser session.',
-    rememberKey: 'Remember key on this browser',
+    keySession: 'Key held only in memory; it is never saved to browser storage.',
     clearKey: 'Forget and clear key',
     sandboxActive: 'Simulated Sandbox Mode is active.',
     freeGeminiKey: 'Get a free Gemini key',
@@ -230,14 +222,12 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     askAria: 'שליחת שאלה ל-Nova על היסטוריית ההאזנה שלך',
     sendMessage: 'שליחת הודעה',
     apiSettings: 'הגדרות מפתח API',
-    apiDescription: 'כברירת מחדל, המפתח נשמר רק בכרטיסייה ובסשן הנוכחיים. אפשר לבחור במפורש לזכור אותו בדפדפן הזה. בעת שליחת הודעה, Gemini מקבלת את השאלה וסיכום מצומצם בלבד, ולעולם לא את קובצי הייצוא הגולמיים.',
+    apiDescription: 'המפתח נשאר רק בזיכרון של העמוד הזה: הוא לעולם לא נכתב ל-localStorage או ל-sessionStorage, ונמחק ברענון או ביציאה. בעת שליחת הודעה, Gemini מקבלת את השאלה וסיכום מצומצם בלבד, ולעולם לא את קובצי הייצוא הגולמיים.',
     apiPlaceholder: 'מפתח API של Gemini…',
     apiKeyAria: 'מפתח API של Gemini',
     hideApiKey: 'הסתרת מפתח ה-API',
     showApiKey: 'הצגת מפתח ה-API',
-    keySaved: 'המפתח נשמר במפורש באחסון המקומי של הדפדפן.',
-    keySession: 'המפתח זמין רק במהלך סשן הדפדפן הנוכחי.',
-    rememberKey: 'לזכור את המפתח בדפדפן הזה',
+    keySession: 'המפתח נשמר בזיכרון בלבד ולעולם לא באחסון הדפדפן.',
     clearKey: 'לשכוח ולמחוק את המפתח',
     sandboxActive: 'מצב Sandbox מדומה פעיל.',
     freeGeminiKey: 'קבלת מפתח Gemini בחינם',
@@ -396,20 +386,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   ]);
 
   const [input, setInput] = useState('');
-  const [rememberApiKey, setRememberApiKey] = useState(() => {
-    try {
-      return Boolean(localStorage.getItem(STORAGE_KEY));
-    } catch {
-      return false;
-    }
-  });
-  const [apiKey, setApiKey] = useState(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(SESSION_KEY) || '';
-    } catch {
-      return '';
-    }
-  });
+  const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -435,45 +412,12 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   }, [copy, data.project]);
 
   const saveKey = (key: string) => {
-    const cleanKey = key.trim();
-    setApiKey(cleanKey);
-    try {
-      if (cleanKey) {
-        sessionStorage.setItem(SESSION_KEY, cleanKey);
-        if (rememberApiKey) localStorage.setItem(STORAGE_KEY, cleanKey);
-      } else {
-        sessionStorage.removeItem(SESSION_KEY);
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch {
-      /* ignore browser-storage security errors; the in-memory key still works */
-    }
-  };
-
-  const setKeyPersistence = (remember: boolean) => {
-    setRememberApiKey(remember);
-    try {
-      if (apiKey) sessionStorage.setItem(SESSION_KEY, apiKey);
-      if (remember && apiKey) {
-        localStorage.setItem(STORAGE_KEY, apiKey);
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    } catch {
-      /* ignore browser-storage security errors */
-    }
+    setApiKey(key.trim());
   };
 
   const clearApiKey = () => {
     setApiKey('');
-    setRememberApiKey(false);
     setShowKey(false);
-    try {
-      sessionStorage.removeItem(SESSION_KEY);
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {
-      /* ignore browser-storage security errors */
-    }
   };
 
   const clearChat = () => {
@@ -794,18 +738,8 @@ The user asks: "${prompt}"
                 </button>
               </div>
 
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-xs text-gray-300">
-                  <input
-                    type="checkbox"
-                    checked={rememberApiKey}
-                    disabled={!apiKey}
-                    onChange={event => setKeyPersistence(event.target.checked)}
-                    className="h-4 w-4 rounded border-white/20 bg-black/50 accent-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-                  <span>{copy.rememberKey}</span>
-                </label>
-                {apiKey && (
+              {apiKey && (
+                <div className="flex justify-end">
                   <button
                     type="button"
                     onClick={clearApiKey}
@@ -814,13 +748,13 @@ The user asks: "${prompt}"
                     <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
                     {copy.clearKey}
                   </button>
-                )}
-              </div>
+                </div>
+              )}
 
               {apiKey ? (
                 <div className="nova-on-dark flex items-center gap-1.5 text-[10px] font-mono text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 p-2.5 rounded-xl">
                   <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span>{rememberApiKey ? copy.keySaved : copy.keySession}</span>
+                  <span>{copy.keySession}</span>
                 </div>
               ) : (
                 <div className="nova-on-dark flex items-center gap-1.5 text-[10px] font-mono text-amber-400 bg-amber-950/20 border border-amber-500/20 p-2.5 rounded-xl">

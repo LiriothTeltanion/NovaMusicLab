@@ -32,7 +32,7 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 - Deferred local database bootstrap until load/idle and split the large artist manifest behind a fingerprint check so unchanged catalogs are not downloaded again.
 - Stamped Pages artifacts with their source commit and package version; the live smoke test now verifies that exact identity.
 - Made sandbox assistant, emotional-map and genre workflows derive from the active archive instead of leaking fixed flagship/demo examples.
-- Made Gemini credentials session-only by default, with explicit remember and forget controls.
+- Kept Gemini credentials only in page memory, with no `localStorage` or `sessionStorage` persistence and an explicit forget control.
 - Reclassified remote artist artwork by its real browser-loaded cache and privacy behavior instead of implying visitor opt-in.
 
 ### Security

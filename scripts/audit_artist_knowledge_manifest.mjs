@@ -1,7 +1,8 @@
-import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { fingerprintSourceFiles } from './lib/sourceFingerprint.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'src', 'data', 'artist_knowledge_manifest.json');
@@ -21,19 +22,19 @@ if (manifest.meta?.schemaVersion !== 1) errors.push('Unsupported schema version.
 if (!Number.isFinite(Date.parse(manifest.meta?.generatedAt))) errors.push('Invalid generatedAt.');
 if (!/^[a-f0-9]{64}$/.test(manifest.meta?.sourceFingerprint ?? '')) errors.push('Invalid source fingerprint.');
 if (Array.isArray(manifest.meta?.sourceFiles)) {
-  const fingerprint = createHash('sha256');
+  const existingSourceFiles = [];
   for (const relativePath of manifest.meta.sourceFiles) {
     const sourcePath = path.join(root, relativePath);
     if (!fs.existsSync(sourcePath)) {
       errors.push(`Missing manifest source: ${relativePath}.`);
       continue;
     }
-    fingerprint.update(relativePath);
-    fingerprint.update('\0');
-    fingerprint.update(fs.readFileSync(sourcePath));
-    fingerprint.update('\0');
+    existingSourceFiles.push(relativePath);
   }
-  if (fingerprint.digest('hex') !== manifest.meta.sourceFingerprint) {
+  if (
+    existingSourceFiles.length === manifest.meta.sourceFiles.length
+    && fingerprintSourceFiles(root, existingSourceFiles) !== manifest.meta.sourceFingerprint
+  ) {
     errors.push('Manifest source fingerprint is stale; run npm run knowledge:manifest.');
   }
 } else {

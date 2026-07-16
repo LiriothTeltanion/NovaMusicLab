@@ -48,7 +48,7 @@ describe('AIAssistant accessibility', () => {
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('keeps the Gemini key session-only until explicit remember consent and supports clear', async () => {
+  it('keeps the Gemini key only in page memory and supports clear', async () => {
     const user = userEvent.setup();
     render(
       <AppProvider>
@@ -57,22 +57,18 @@ describe('AIAssistant accessibility', () => {
     );
 
     const input = screen.getByLabelText('Gemini API key');
-    const remember = screen.getByRole('checkbox', { name: 'Remember key on this browser' });
     await user.type(input, 'test-session-key');
 
-    expect(window.sessionStorage.getItem('nml_gemini_api_key_session')).toBe('test-session-key');
+    expect(window.sessionStorage.getItem('nml_gemini_api_key_session')).toBeNull();
     expect(window.localStorage.getItem('nml_gemini_api_key')).toBeNull();
-    expect(screen.getByText('Key available only for this browser session.')).toBeInTheDocument();
-
-    await user.click(remember);
-    expect(window.localStorage.getItem('nml_gemini_api_key')).toBe('test-session-key');
-    expect(screen.getByText('Key explicitly remembered in browser local storage.')).toBeInTheDocument();
+    expect(screen.getByText('Key held only in memory; it is never saved to browser storage.'))
+      .toBeInTheDocument();
+    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Forget and clear key' }));
     expect(input).toHaveValue('');
     expect(window.sessionStorage.getItem('nml_gemini_api_key_session')).toBeNull();
     expect(window.localStorage.getItem('nml_gemini_api_key')).toBeNull();
-    expect(remember).not.toBeChecked();
   });
 
   it('renders complete Hebrew controls, status copy and RTL semantics', async () => {

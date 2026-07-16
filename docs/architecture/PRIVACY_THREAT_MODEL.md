@@ -39,7 +39,7 @@ Controls include clear documentation, referrer restrictions where compatible and
 
 Gemini requests are browser-to-provider and require an explicit visitor action and personal key. Risks include key exposure to same-origin scripts, over-broad summaries and unsafe generated content.
 
-Controls include session-first key storage, explicit remember/clear choices, a bounded aggregate schema, safe React text rendering and no raw-file inclusion.
+Controls include memory-only key handling, explicit clearing, a bounded aggregate schema, safe React text rendering and no raw-file inclusion. Reloading or leaving the assistant discards the key; it is never written to `localStorage`, `sessionStorage` or IndexedDB.
 
 ## Explicit non-goals
 

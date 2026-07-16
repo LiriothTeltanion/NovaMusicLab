@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { fingerprintSourceFiles } from './lib/sourceFingerprint.mjs';
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE_FILES = [
   'src/data/offline_artist_knowledge.json',
@@ -38,22 +40,15 @@ function stableHash(value) {
 }
 
 function sourceFingerprint() {
-  const hash = createHash('sha256');
-  for (const relativePath of SOURCE_FILES) {
-    hash.update(relativePath);
-    hash.update('\0');
-    hash.update(fs.readFileSync(path.join(root, relativePath)));
-    hash.update('\0');
-  }
-  return hash.digest('hex');
+  return fingerprintSourceFiles(root, SOURCE_FILES);
 }
 
 function providerFor(url, legacySource) {
   const host = new URL(url).hostname.toLowerCase();
   if (host === 'upload.wikimedia.org' || host === 'commons.wikimedia.org') return 'wikimedia-commons';
-  if (host.endsWith('scdn.co') || legacySource === 'spotify') return 'spotify';
-  if (host.endsWith('dzcdn.net') || legacySource === 'deezer') return 'deezer';
-  if (host.endsWith('wikipedia.org') || legacySource === 'wikipedia') return 'wikipedia';
+  if (host === 'scdn.co' || host.endsWith('.scdn.co') || legacySource === 'spotify') return 'spotify';
+  if (host === 'dzcdn.net' || host.endsWith('.dzcdn.net') || legacySource === 'deezer') return 'deezer';
+  if (host === 'wikipedia.org' || host.endsWith('.wikipedia.org') || legacySource === 'wikipedia') return 'wikipedia';
   return 'other';
 }
 

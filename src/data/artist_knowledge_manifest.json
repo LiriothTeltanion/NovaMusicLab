@@ -2,7 +2,7 @@
   "meta": {
     "schemaVersion": 1,
     "generatedAt": "2026-07-13T18:37:51.880Z",
-    "sourceFingerprint": "da2c0eb6bb33fea0b29c22a153d3b711946d6ddc5665983dbf499d6dc8d22146",
+    "sourceFingerprint": "c78943c9290bf5c35655b5c2d4faf1460d63d4ee1e03930570daf97f8bd8752e",
     "sourceFiles": [
       "src/data/offline_artist_knowledge.json",
       "src/data/artist_images.json",
