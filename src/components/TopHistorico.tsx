@@ -32,6 +32,7 @@ import MediaEmbedHub from './MediaEmbedHub';
 import { axisProps, ChartCanvas, ChartFrame, gridStroke, SWAP_POSES, SWAP_TRANSITION, useChartAnimation } from './chartKit';
 import { localizeEraLabel } from '../utils/localeText';
 import { localizeGenreName } from '../utils/localizedDatasetText';
+import { externalUrlProvider, isBandcampSearchUrl, toSafeExternalUrl } from '../utils/externalUrl';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
 import ArtistPhotoCarousel from './ArtistPhotoCarousel';
@@ -53,35 +54,37 @@ import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 import MobileDetailDrawer from './MobileDetailDrawer';
 
 function getLinkLabel(url: string, officialWebsiteLabel: string): string {
-  const lowercase = url.toLowerCase();
-  if (lowercase.includes('wikipedia.org')) return 'Wikipedia';
-  if (lowercase.includes('wikidata.org')) return 'Wikidata';
-  if (lowercase.includes('bandcamp.com')) return 'Bandcamp';
-  if (lowercase.includes('spotify.com')) return 'Spotify';
-  if (lowercase.includes('youtube.com') || lowercase.includes('youtu.be')) return 'YouTube';
-  if (lowercase.includes('discogs.com')) return 'Discogs';
-  if (lowercase.includes('musicbrainz.org')) return 'MusicBrainz';
-  return officialWebsiteLabel;
+  const labels = {
+    wikipedia: 'Wikipedia',
+    wikidata: 'Wikidata',
+    bandcamp: 'Bandcamp',
+    spotify: 'Spotify',
+    youtube: 'YouTube',
+    discogs: 'Discogs',
+    musicbrainz: 'MusicBrainz',
+    other: officialWebsiteLabel,
+  } as const;
+  return labels[externalUrlProvider(url)];
 }
 
 function getLinkColor(url: string, defaultColor: string): { color: string; borderColor: string; backgroundColor: string } {
-  const lowercase = url.toLowerCase();
-  if (lowercase.includes('wikipedia.org')) {
+  const provider = externalUrlProvider(url);
+  if (provider === 'wikipedia') {
     return { color: '#e5e7eb', borderColor: 'rgba(255, 255, 255, 0.18)', backgroundColor: 'rgba(255, 255, 255, 0.05)' };
   }
-  if (lowercase.includes('wikidata.org')) {
+  if (provider === 'wikidata') {
     return { color: '#60a5fa', borderColor: 'rgba(96, 165, 250, 0.3)', backgroundColor: 'rgba(96, 165, 250, 0.08)' };
   }
-  if (lowercase.includes('bandcamp.com')) {
+  if (provider === 'bandcamp') {
     return { color: '#22d3ee', borderColor: 'rgba(34, 211, 238, 0.3)', backgroundColor: 'rgba(34, 211, 238, 0.08)' };
   }
-  if (lowercase.includes('spotify.com')) {
+  if (provider === 'spotify') {
     return { color: '#1DB954', borderColor: 'rgba(29, 185, 84, 0.3)', backgroundColor: 'rgba(29, 185, 84, 0.08)' };
   }
-  if (lowercase.includes('youtube.com') || lowercase.includes('youtu.be')) {
+  if (provider === 'youtube') {
     return { color: '#f87171', borderColor: 'rgba(248, 113, 113, 0.3)', backgroundColor: 'rgba(248, 113, 113, 0.08)' };
   }
-  if (lowercase.includes('discogs.com')) {
+  if (provider === 'discogs') {
     return { color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.3)', backgroundColor: 'rgba(251, 191, 36, 0.08)' };
   }
   return { color: defaultColor, borderColor: `${defaultColor}35`, backgroundColor: `${defaultColor}10` };
@@ -1095,13 +1098,15 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       `https://www.discogs.com/search/?q=${encodeURIComponent(selectedKnowledge.name)}&type=artist`
     ];
     // Deduplicate and filter links
-    const links = Array.from(new Set(rawLinks)).filter((url, idx, self) => {
-      const isSearchBc = url.includes('bandcamp.com/search');
-      if (isSearchBc && self.some(s => s.includes('bandcamp.com') && !s.includes('search'))) {
-        return false;
-      }
-      return true;
-    });
+    const uniqueSafeLinks = Array.from(new Set(
+      rawLinks
+        .map(toSafeExternalUrl)
+        .filter((url): url is string => Boolean(url)),
+    ));
+    const hasDirectBandcampLink = uniqueSafeLinks.some(url => (
+      externalUrlProvider(url) === 'bandcamp' && !isBandcampSearchUrl(url)
+    ));
+    const links = uniqueSafeLinks.filter(url => !isBandcampSearchUrl(url) || !hasDirectBandcampLink);
 
     return { description, facts, members, links };
   }, [artistCopy, fmtList, selectedKnowledge]);

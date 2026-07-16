@@ -42,6 +42,8 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 - Pull requests and issues explicitly prohibit raw listening exports, API keys and private CV files.
 - GitHub Actions are pinned to reviewed release commits and use job-scoped minimal permissions.
 - Maintenance fetchers no longer publish a personal email address in their request user agent.
+- External artist links now require credential-free HTTPS URLs and classify providers only by exact hosts or real subdomains.
+- YouTube Takeout HTML entities are decoded exactly once, preventing double-unescape ambiguity.
 - The local compiler no longer embeds a personalized Last.fm export filename; it uses explicit configuration or safe single-file discovery, and the privacy gate scans repository text as well as public JSON.
 
 ### Fixed

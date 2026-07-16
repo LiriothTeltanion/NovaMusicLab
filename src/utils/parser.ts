@@ -536,7 +536,7 @@ const YT_MUSIC_TITLE_MARKERS = /[[(](official\s+)?(music\s+)?(video|audio|visual
  * counted as a song is not.
  */
 function youtubeMusicAttribution(title: string, channelName: string): { artist: string; track: string } | undefined {
-  const channel = channelName.trim();
+  const channel = decodeHtmlEntities(channelName).trim();
   const dashParts = title.replace(/[–—]/g, '-').split(/\s+-\s+/);
 
   if (/\s-\s*Topic$/i.test(channel)) {
@@ -572,6 +572,7 @@ function youtubeSubtitleName(item: any) {
 
 function decodeHtmlEntities(value: string) {
   return value
+    .replace(/&nbsp;/g, '\u00a0')
     .replace(/&amp;/g, '&')
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
@@ -582,10 +583,10 @@ function decodeHtmlEntities(value: string) {
 
 function htmlToLines(html: string) {
   const inlineAnchors = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, (_, inner: string) => (
-    decodeHtmlEntities(inner.replace(/<[^>]+>/g, ' '))
+    inner.replace(/<[^>]+>/g, ' ')
   ));
 
-  return decodeHtmlEntities(inlineAnchors)
+  return inlineAnchors
     .replace(/<br\s*\/?>/gi, '\n')
     .replace(/<\/(div|p|li|tr|td|h[1-6])>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
