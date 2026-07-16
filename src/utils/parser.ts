@@ -570,15 +570,21 @@ function youtubeSubtitleName(item: any) {
   return first?.name?.trim();
 }
 
+const HTML_ENTITY_VALUES: Record<string, string> = {
+  '&nbsp;': '\u00a0',
+  '&amp;': '&',
+  '&quot;': '"',
+  '&#39;': "'",
+  '&apos;': "'",
+  '&lt;': '<',
+  '&gt;': '>',
+};
+
 function decodeHtmlEntities(value: string) {
-  return value
-    .replace(/&nbsp;/g, '\u00a0')
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+  return value.replace(
+    /&(nbsp|amp|quot|#39|apos|lt|gt);/g,
+    entity => HTML_ENTITY_VALUES[entity] ?? entity,
+  );
 }
 
 function htmlToLines(html: string) {

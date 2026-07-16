@@ -145,16 +145,16 @@ describe('music data parser', () => {
 
   it('decodes each Takeout HTML field once without double-unescaping entities', () => {
     const youtubeHtml = `
-      Watched <a href="https://www.youtube.com/watch?v=secure">AC&amp;amp;DC - Thunderstruck (Official Audio)</a><br>
-      <a href="https://www.youtube.com/channel/secure">AC&amp;amp;DC</a><br>
+      Watched <a href="https://www.youtube.com/watch?v=secure">AC&amp;amp;DC &amp;quot;Archive&amp;quot; - Thunderstruck (Official Audio)</a><br>
+      <a href="https://www.youtube.com/channel/secure">AC&amp;amp;DC &amp;quot;Archive&amp;quot;</a><br>
       Feb 3, 2026, 8:15:00 PM UTC<br>
     `;
 
     const data = parseMusicSources({ youtubeHtmlTexts: [youtubeHtml] });
 
     expect(data.source_summary?.youtube_plays).toBe(1);
-    expect(data.top_artists[0].name).toBe('AC&amp;DC');
-    expect(data.top_artists[0].name).not.toBe('AC&DC');
+    expect(data.top_artists[0].name).toBe('AC&amp;DC &quot;Archive&quot;');
+    expect(data.top_artists[0].name).not.toContain('"Archive"');
   });
 
   it('computes offline artist knowledge coverage for uploaded histories', () => {
