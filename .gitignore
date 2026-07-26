@@ -41,3 +41,11 @@ lint_output.txt
 *.njsproj
 *.sln
 *.sw?
+
+# OneDrive multi-machine sync artifacts (see CONTRIBUTING: never work a repo inside OneDrive)
+*AsusVivobookDeKevin*
+desktop.ini
+
+# Transient README preview/backup scratch
+.nova-readme-backups/
+.nova-readme-preview/
