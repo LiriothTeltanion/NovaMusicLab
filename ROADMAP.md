@@ -20,6 +20,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Redact, omit or explicitly review every exact-granularity public section.
 - [ ] Add a no-remote-media Privacy Mode.
 - [ ] Make Gemini key retention session-first with explicit remember and clear controls.
+- [x] Govern duplicate/transliterated/historical artist identities and rejected external matches with an auditable policy.
 
 ## Phase 2 — Parser, import and storage reliability
 
@@ -31,8 +32,11 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 
 ## Phase 3 — Museum journey and visual system
 
-- [ ] Ship Quick Tour, Full Museum and Lab Tools navigation.
-- [ ] Show active archive identity, capability and save status in the shell.
+- [x] Ship Quick Tour, Full Museum and Lab Tools navigation.
+- [x] Show active archive mode, source, dataset date, privacy boundary and save status in the shell.
+- [x] Add a keyboard-first command palette for rooms and journey switching.
+- [x] Promote Artist Identity into a Living Artist Atlas with progressive media, offline evidence and honest unavailable states.
+- [x] Keep Spotify and YouTube artist players behind explicit opt-in controls.
 - [ ] Replace tiny one-off text styles with semantic typography tokens.
 - [ ] Complete automated contrast, axe and visual-regression testing.
 - [ ] Add real desktop, mobile and Hebrew/RTL product screenshots.
@@ -53,6 +57,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Add a local playlist builder and richer export package.
 - [ ] Publish privacy-safe product screenshots, walkthrough media and an engineering case study.
 - [x] Publish `v1.0.0-rc.1`, complete acceptance testing, then tag `v1.0.0`.
+- [x] Publish `v1.1.0` with Expedition Console, Living Artist Atlas and governed artist identities.
 
 ## Definition of v1.0 done
 

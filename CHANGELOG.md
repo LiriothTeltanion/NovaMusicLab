@@ -6,6 +6,38 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-07-22
+
+### Added
+
+- Expedition Console with persistent Quick Tour, Full Museum and Lab Tools journeys across sidebar, room rail, mobile navigation and previous/next sequencing.
+- Active archive capsule showing the real exhibition mode, source, dataset date, public/local privacy boundary and browser persistence state.
+- Keyboard-accessible Nova Command palette with `Ctrl/Cmd+K` room search and journey switching.
+- Living Artist Atlas with searchable territories, progressive galleries, archive-ranked tracks and albums, offline discography, official links and honest deterministic visual fallbacks.
+- Opt-in Spotify/YouTube media portal and on-demand artist evidence panel for source confidence, attribution, licensing and review status.
+- Explicit external-identity policy and audit for transliterations, historical renames and rejected third-party matches.
+
+### Changed
+
+- Promoted the artist room into a cinematic evidence-led Atlas while retaining the imagined generative identity as a clearly labelled second chapter.
+- Extended museum headers with compact and cinematic modes while preserving EN/ES/HE, RTL, theme and reduced-motion behavior.
+- Advanced the product from `1.0.0` to the stable `1.1.0` Expedition Console release while retaining IndexedDB schema v4.
+
+### Fixed
+
+- Replaced the incorrect `nightlife` MusicBrainz match with a curated, source-linked offline profile and blocked the rejected identity from future audits.
+- Made targeted artist-knowledge merges preserve the existing catalog order and replace records in place.
+- Reset remote artist-image fallback state when the active artist changes and suppress referrer data on artist, gallery, cover and Atlas images.
+- Distinguished the reviewed public flagship bundle from local-only visitor data in the archive capsule.
+- Prevented the Atlas ambient layer from creating mobile page overflow and kept the sticky sidebar below the Expedition Console.
+- Kept compact journey names visible on mobile, replaced invalid button content with phrasing-safe archive details and prevented transitional `Rank #0` output.
+
+### Verified
+
+- 87 test files and 487 tests pass with lint, TypeScript, production build, strict data, artist identity, media-link, artist-knowledge, public-privacy, PWA and bundle-budget gates.
+- Browser acceptance passes at 390, 430, 768 and 1440 pixels in light and dark themes across English, Spanish and Hebrew RTL, with zero console errors.
+- Identity coverage contains 10 governed names, two declared relationship groups and one rejected external match; the public artist catalog contains 100 artists and 295 visual assets, with 171 assets honestly retained in license review.
+
 ## [1.0.0] - 2026-07-16
 
 ### Released

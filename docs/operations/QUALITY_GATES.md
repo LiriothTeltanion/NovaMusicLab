@@ -8,7 +8,7 @@ node scripts/audit_public_bundle_privacy.mjs
 git diff --check
 ```
 
-`npm run verify` runs lint; strict data and media-link audits; artist-knowledge, public-bundle privacy and PWA contract audits; the Vitest suite; TypeScript compilation; the production build; and bundle-budget checks.
+`npm run verify` runs lint; strict data, external-identity and media-link audits; artist-knowledge, public-bundle privacy and PWA contract audits; the Vitest suite; TypeScript compilation; the production build; and bundle-budget checks.
 
 ## Targeted iteration
 
@@ -19,6 +19,7 @@ npx vitest run src/utils/parser.test.ts
 npx vitest run src/utils/datasetStorage.test.ts
 npx vitest run src/components/CreatorCvLink.test.tsx scripts/cv_asset.test.mjs
 npm run audit:data
+npm run audit:identity
 ```
 
 ## GitHub pipeline

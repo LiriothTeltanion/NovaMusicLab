@@ -9,6 +9,28 @@ Nova Music Lab's visual system treats every room as a coordinate in one living m
 - **Atmosphere:** deterministic SVG/canvas geometry reacts to the active room and artist without becoming content or blocking interaction.
 - **Repository art:** the README banner and 1280×640 social preview use the same cyan, violet, magenta and amber Living Sonic Cartography palette.
 
+## Expedition Console
+
+The application shell is a navigation instrument rather than a generic dashboard frame:
+
+- **Quick Tour** uses cinematic chapter emphasis for a guided nine-room story.
+- **Full Museum** preserves access to every room and the complete curatorial sequence.
+- **Lab Tools** narrows navigation to import, comparison, quality and reporting work.
+- **Archive Capsule** exposes active mode, source, date, privacy and persistence without inventing unavailable metadata.
+- **Nova Command** provides keyboard-first room search and journey switching with focus restoration.
+
+The chosen journey changes sequencing, sidebar groups, the horizontal rail and mobile controls together. A control must never look selected while another navigation surface follows a different route.
+
+## Living Artist Atlas
+
+The Atlas is the flagship visual room for v1.1. It combines three explicit layers:
+
+1. **Archive evidence:** rank, plays, share, tracks and albums from the active dataset.
+2. **Offline knowledge:** documented profiles, releases, external identities and provenance loaded outside the entry bundle.
+3. **Remote media:** provider-labelled portraits and explicitly opt-in Spotify/YouTube players.
+
+Remote photographs progressively reveal over deterministic local cartography so missing or failed media never produces a fabricated portrait or empty visual hole. The later generative identity chapter remains clearly labelled as an imagined interpretation.
+
 ## Motion tiers
 
 | Mode | Behavior |
