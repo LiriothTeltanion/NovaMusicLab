@@ -264,6 +264,24 @@ Useful commands:
 
 The compiler never searches personal directories automatically. Use a review output and run the public-data audit before replacing any bundled flagship data.
 
+### Optional build configuration
+
+The creator CV call-to-action is **off by default** and is never bundled as a file. `CreatorCvLink` reads a public HTTPS URL from the environment, validates the protocol, and omits the link entirely when unset — so a fork never ships a broken or borrowed CV link.
+
+| Variable | Effect |
+|---|---|
+| `VITE_CREATOR_CV_EN_URL` | Enables the CV link in English |
+| `VITE_CREATOR_CV_ES_URL` | Enables the CV link in Spanish |
+| `VITE_CREATOR_CV_HE_URL` | Enables the CV link in Hebrew (falls back to the English URL when unset, and the Hebrew label says so) |
+
+Set them in `.env.local` for local runs, or as repository variables for the Pages build:
+
+```bash
+VITE_CREATOR_CV_EN_URL="https://example.com/cv-en.pdf"
+```
+
+Only `https:` URLs are accepted; anything else is ignored and the link stays hidden.
+
 ---
 
 ## 📚 Documentation
