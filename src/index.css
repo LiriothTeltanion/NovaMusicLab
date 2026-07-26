@@ -74,7 +74,45 @@
   --motion-narrative: 560ms;
   --motion-ambient: 36s;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  
+
+  /* ── Glass surface tokens ──────────────────────────────────────────────────
+   * One source of truth for every translucent panel in the museum. Components
+   * pick a `.nova-surface` tier instead of hand-writing `rgba()` or
+   * `bg-black/20`, so glass depth stays consistent across all 14 themes and
+   * both light/dark modes. Derived from --bg/--fg/--c1 via color-mix, so they
+   * re-resolve automatically as the theme transition animates those. */
+  --surface-blur-soft: 10px;
+  --surface-blur: 14px;
+  --surface-blur-strong: 18px;
+
+  --surface-bg-soft: color-mix(in srgb, var(--bg) 62%, transparent);
+  --surface-bg: color-mix(in srgb, var(--bg) 78%, transparent);
+  --surface-bg-raised: color-mix(in srgb, var(--bg) 83%, transparent);
+  --surface-bg-solid: color-mix(in srgb, var(--bg) 94%, #020617 6%);
+
+  --surface-border-soft: color-mix(in srgb, var(--fg) 8%, transparent);
+  --surface-border: color-mix(in srgb, var(--fg) 9%, transparent);
+  --surface-border-accent: color-mix(in srgb, var(--c1) 24%, transparent);
+  --surface-border-hover: color-mix(in srgb, var(--c1) 30%, transparent);
+  --surface-border-focus: color-mix(in srgb, var(--c1) 42%, transparent);
+
+  --surface-highlight: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
+  --surface-highlight-strong: inset 0 1px 0 color-mix(in srgb, var(--fg) 7%, transparent);
+
+  --surface-elev-1: 0 14px 34px color-mix(in srgb, #020617 24%, transparent);
+  --surface-elev-2: 0 24px 64px color-mix(in srgb, #020617 38%, transparent);
+  --surface-elev-tooltip: 0 16px 38px color-mix(in srgb, #020617 38%, transparent);
+
+  /* Mouse-tracked torchlight, inherited from the retired .glass-panel. */
+  --surface-torch-size: 280px;
+  --surface-torch-tint: color-mix(in srgb, var(--c1) 9%, transparent);
+
+  /* Inline tint scale, replacing ad-hoc bg-black/NN and bg-white/[0.0N]. */
+  --surface-wash-1: color-mix(in srgb, var(--fg) 2.5%, transparent);
+  --surface-wash-2: color-mix(in srgb, var(--fg) 5%, transparent);
+  --surface-wash-3: color-mix(in srgb, var(--fg) 8%, transparent);
+
+
   /* Smoothly transition theme variables */
   transition: --c1 0.6s cubic-bezier(0.4, 0, 0.2, 1),
               --c2 0.6s cubic-bezier(0.4, 0, 0.2, 1),
@@ -795,37 +833,35 @@ bdi {
   position: relative;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--fg) 9%, transparent);
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  box-shadow: var(--surface-highlight);
+  backdrop-filter: blur(var(--surface-blur));
+  -webkit-backdrop-filter: blur(var(--surface-blur));
 }
 
 .nova-surface--featured {
-  border-color: color-mix(in srgb, var(--c1) 24%, transparent);
+  border-color: var(--surface-border-accent);
   background:
     radial-gradient(circle at 10% 0%, color-mix(in srgb, var(--c1) 13%, transparent), transparent 38%),
     radial-gradient(circle at 92% 100%, color-mix(in srgb, var(--c3) 10%, transparent), transparent 42%),
-    color-mix(in srgb, var(--bg) 83%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--fg) 7%, transparent),
-    0 24px 64px color-mix(in srgb, #020617 38%, transparent);
+    var(--surface-bg-raised);
+  box-shadow: var(--surface-highlight-strong), var(--surface-elev-2);
 }
 
 .nova-surface--analysis {
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--fg) 2.5%, transparent), transparent 52%),
+    linear-gradient(145deg, var(--surface-wash-1), transparent 52%),
     color-mix(in srgb, var(--bg) 76%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--fg) 5%, transparent);
+  box-shadow: var(--surface-highlight);
 }
 
 .nova-surface--utility {
-  border-color: color-mix(in srgb, var(--fg) 8%, transparent);
-  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  border-color: var(--surface-border-soft);
+  background: var(--surface-bg-soft);
   box-shadow: none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--surface-blur-soft));
+  -webkit-backdrop-filter: blur(var(--surface-blur-soft));
 }
 
 .nova-surface--interactive {
@@ -838,19 +874,41 @@ bdi {
 }
 
 .nova-surface--interactive:hover {
-  border-color: color-mix(in srgb, var(--c1) 30%, transparent);
-  box-shadow: 0 14px 34px color-mix(in srgb, #020617 24%, transparent);
+  border-color: var(--surface-border-hover);
+  box-shadow: var(--surface-elev-1);
   transform: translateY(-2px);
 }
 
 .nova-surface--interactive:focus-within {
-  border-color: color-mix(in srgb, var(--c1) 42%, transparent);
+  border-color: var(--surface-border-focus);
+}
+
+/* Mouse-tracked torchlight, preserved from the retired .glass-panel. Opt in
+ * with `nova-surface--torch`; --mouse-x/--mouse-y are set by App.tsx. */
+.nova-surface--torch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    var(--surface-torch-size) circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    var(--surface-torch-tint),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nova-surface--torch:hover::after {
+  opacity: 1;
 }
 
 .nova-chart-tooltip {
   color: var(--fg);
-  background: color-mix(in srgb, var(--bg) 94%, #020617 6%);
-  box-shadow: 0 16px 38px color-mix(in srgb, #020617 38%, transparent);
+  background: var(--surface-bg-solid);
+  box-shadow: var(--surface-elev-tooltip);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -860,29 +918,39 @@ bdi {
   font-weight: 700;
 }
 
-[data-mode='light'] .nova-surface {
-  border-color: color-mix(in srgb, #334155 14%, transparent);
-  background-color: rgba(255, 255, 255, 0.7);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
-}
+/* Light mode re-points the surface tokens once, so every tier, the tooltip and
+ * the torchlight follow without per-rule overrides. */
+[data-mode='light'] {
+  --surface-bg-soft: rgba(255, 255, 255, 0.46);
+  --surface-bg: rgba(255, 255, 255, 0.7);
+  --surface-bg-raised: rgba(255, 255, 255, 0.78);
+  --surface-bg-solid: rgba(255, 255, 255, 0.96);
 
-[data-mode='light'] .nova-surface--featured {
-  border-color: color-mix(in srgb, var(--c1) 24%, transparent);
-  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.09);
+  --surface-border-soft: color-mix(in srgb, #334155 11%, transparent);
+  --surface-border: color-mix(in srgb, #334155 14%, transparent);
+
+  --surface-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  --surface-highlight-strong: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  --surface-elev-1: 0 12px 30px rgba(15, 23, 42, 0.07);
+  --surface-elev-2: 0 22px 54px rgba(15, 23, 42, 0.09);
+  --surface-elev-tooltip: 0 16px 38px rgba(15, 23, 42, 0.14);
+
+  --surface-torch-tint: color-mix(in srgb, var(--c1) 14%, transparent);
+
+  --surface-wash-1: color-mix(in srgb, #334155 3%, transparent);
+  --surface-wash-2: color-mix(in srgb, #334155 6%, transparent);
+  --surface-wash-3: color-mix(in srgb, #334155 9%, transparent);
 }
 
 [data-mode='light'] .nova-surface--analysis {
-  background-color: rgba(255, 255, 255, 0.62);
+  background:
+    linear-gradient(145deg, var(--surface-wash-1), transparent 52%),
+    rgba(255, 255, 255, 0.62);
 }
 
 [data-mode='light'] .nova-surface--utility {
-  background-color: rgba(255, 255, 255, 0.46);
   box-shadow: none;
-}
-
-[data-mode='light'] .nova-chart-tooltip {
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.14);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -895,7 +963,12 @@ bdi {
   }
 }
 
-/* Glassmorphism Styles */
+/* ── .glass-panel — DEPRECATED alias, being migrated to .nova-surface ────────
+ * Kept as a token-backed shim so the ~104 remaining call sites render
+ * identically to the new system while they are converted file by file.
+ * Do not add new `.glass-panel` usages: use
+ *   `nova-surface nova-surface--analysis nova-surface--interactive nova-surface--torch`
+ * which is this panel's exact equivalent. */
 .glass-panel {
   position: relative;
   background: var(--glass-bg);
