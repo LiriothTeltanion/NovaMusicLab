@@ -64,6 +64,7 @@ export default function ArtistPhotoCarousel({ name, size = 88, intervalMs = 7000
           alt={i === active ? name : ''}
           loading={i === active ? 'eager' : 'lazy'}
           decoding="async"
+          referrerPolicy="no-referrer"
           onError={() => setFailed(prev => new Set(prev).add(photo.url))}
           className="absolute inset-0 w-full h-full rounded-full object-cover transition-opacity duration-700"
           style={{

@@ -76,6 +76,22 @@ File: `src/data/artist_media_links.json`
 
 Spotify, YouTube, Wikipedia and official links carry verification/confidence metadata. YouTube embeds must remain embeddable and identity-verified; a search result alone is not a verified profile.
 
+## External identity policy
+
+File: `src/data/artist_external_identity_policy.json`
+
+Provider identifiers are unique by default. A repeated MusicBrainz or Wikidata
+identifier is accepted only when the policy declares the exact archive names,
+relationship and whether the historical names must remain separate in published
+analytics. Rejected provider matches are recorded so a future enrichment pass
+cannot silently reintroduce them.
+
+`nightlife` is intentionally curated without its rejected barbershop-quartet
+MusicBrainz match. `Girafot` / `ג'ירפות` remain separate published aggregate
+rows until the private source archive can be recompiled, while their shared
+identity is explicit. `Slaves` / `Rain City Drive` preserve their historical
+names by design.
+
 ## Fetch-script safeguards
 
 - Cache keys include a stable hash of the full Unicode input; ASCII-only normalization can collapse non-Latin names.
@@ -101,6 +117,7 @@ before committing generated artwork metadata.
 
 ```bash
 npm run audit:data
+npm run audit:identity
 npm run audit:links
 npm run audit:knowledge
 npm run audit:pwa

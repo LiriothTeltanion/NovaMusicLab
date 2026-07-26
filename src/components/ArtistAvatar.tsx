@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import artistImages from '../data/artist_images.json';
 import artistMeta from '../data/artist_meta.json';
@@ -80,6 +80,11 @@ export default function ArtistAvatar({
   const memberPhoto = MEMBER_ENRICHMENT[key]?.photo || MEMBER_IMAGES[key];
   const hasPhoto = Boolean(overrideSrc || memberPhoto || entry || dailyUrl);
 
+  useEffect(() => {
+    setStage(hiRes ? 'hi' : 'std');
+    setLoaded(false);
+  }, [dailyUrl, hiRes, memberPhoto, name, overrideSrc]);
+
   const avatar = (() => {
     if (hasPhoto && stage !== 'failed') {
       const src = overrideSrc || memberPhoto || (stage === 'hi' && hiRes
@@ -98,6 +103,7 @@ export default function ArtistAvatar({
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
+            referrerPolicy="no-referrer"
             width={size}
             height={size}
             onLoad={() => setLoaded(true)}

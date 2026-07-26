@@ -13,11 +13,11 @@
 
 Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive. Nova Music Lab processes raw files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Current code version:** `1.0.0`, the first stable release of **Nova Music Lab v1.0 — The Evidence-First Museum**. The release is built, stamped and smoke-tested from its exact protected `main` commit. IndexedDB **schema v4** is a storage contract, not the product's major version.
+**Current stable version:** `1.1.0` — **Nova Music Lab v1.1: Expedition Console**. It adds the Living Artist Atlas, functional museum journeys and stricter artist-identity evidence while preserving the v1 evidence-first contract. IndexedDB **schema v4** is a storage contract, not the product version.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
-[Follow the v1 roadmap](./ROADMAP.md)
+[Follow the product roadmap](./ROADMAP.md)
 
 </div>
 
@@ -68,11 +68,13 @@ Imports can be mixed. Source-specific fields remain source-specific: for example
 
 <img src="./assets/readme/museum-journey.svg" width="100%" alt="Nova Music Lab journey from private archive to evidence-linked report">
 
-Nova Music Lab is being organized into three paths:
+Nova Music Lab offers three persistent expedition paths:
 
-- **Quick Tour** — Overview → Eras → Historical Top → Personality → Emotions → Final Report.
-- **Full Museum** — every narrative, cultural, identity and archive room.
-- **Lab Tools** — Import, Compare, Platforms, Data Quality, Stats, Genre Studio and exports.
+- **Quick Tour** — a nine-room guided route from archive overview to the Living Artist Atlas and final report.
+- **Full Museum** — all 22 narrative, cultural, identity, archive and laboratory rooms.
+- **Lab Tools** — an eight-room working route for AI assistance, comparison, museums, platforms, data quality, deep statistics, reports and import.
+
+The **Expedition Console** keeps the chosen journey, room sequence and active-archive capsule visible across desktop, mobile and command-palette navigation. `Ctrl/Cmd+K` opens Nova Command for keyboard-first room and journey access.
 
 Representative rooms include:
 
@@ -84,7 +86,7 @@ Representative rooms include:
 | **Obsession Detector** | Repetition, streaks and concentrated listening periods |
 | **Emotional Map** | Interpretive mood stations grounded in available signals |
 | **Cultural Map** | Artist origins and listening geography |
-| **Artist Identity** | Deterministic generative visual and sonic identity |
+| **Living Artist Atlas** | Searchable artist territories with archive weight, galleries, tracks, albums, offline profiles, provenance and opt-in official media |
 | **Data Quality Center** | Coverage, limitations and enrichment priorities |
 | **Final Report** | A guided closing narrative and exportable summary |
 
@@ -135,9 +137,13 @@ Every analytical or narrative output should be classified as one of:
 
 The project deliberately rejects plausible-looking fabricated numbers. Data reconciliation, source coverage, media identities and public-bundle privacy are enforced through scripts and tests.
 
-## 🎨 Artist knowledge and Living Sonic Cartography
+## 🎨 Living Artist Atlas and Living Sonic Cartography
 
 The generated artist manifest currently contains **100 artist records** and **295 provenance-aware visual assets**. Artist aliases, MusicBrainz/Wikidata identifiers, countries, genres, releases, members and official links remain separate from private play counts. Each image record carries its source, license-review state, attribution, focal point and cache/privacy policy; **171 legacy assets remain visibly queued for license review** rather than being mislabeled as reusable.
+
+The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
+
+External identity relationships and rejected matches are governed by [`artist_external_identity_policy.json`](./src/data/artist_external_identity_policy.json). The identity audit detects duplicate external IDs unless an exact transliteration or historical-rename relationship is declared; it also prevents known bad matches, including the rejected `nightlife` MusicBrainz identity, from returning silently.
 
 The manifest installs into the local Dexie database only when its source fingerprint changes. Returning visitors download the small metadata fingerprint during idle bootstrap, not the complete artist catalog on every visit.
 
@@ -207,6 +213,7 @@ The verified Pages pipeline runs:
 ```text
 lint
 → strict data audit
+→ artist-identity relationship audit
 → strict media-link audit
 → artist-knowledge manifest audit
 → public-bundle privacy audit
@@ -250,6 +257,7 @@ Useful commands:
 | `npm run build:check` | Build and enforce bundle budgets |
 | `npm run verify` | Run the canonical code/data/test/build gate |
 | `npm run audit:data` | Print current data coverage and priority queues |
+| `npm run audit:identity` | Reject undeclared duplicate artist identities and known bad external matches |
 | `npm run audit:links` | Validate curated media profiles and embeds |
 | `npm run compile:data -- --source-dir <path> [--lastfm-file <csv>]` | Compile an explicitly selected local archive; ambiguous CSVs require an explicit path |
 | `npm run preview` | Preview the production bundle locally |
@@ -286,7 +294,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`v1.0.0` is the first stable release line. Its verified Pages artifact must match the tagged commit and package version; `v1.0.0-rc.1` remains preserved as the accepted release candidate. Future changes follow the same protected-PR, privacy, accessibility, browser and live Pages acceptance process.
+`v1.1.0` is the latest tagged stable release and the version served by the protected GitHub Pages deployment. Its release acceptance covers the full automated gate plus English, Spanish, Hebrew RTL, mobile, tablet, desktop, light/dark theme and live artifact verification. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 

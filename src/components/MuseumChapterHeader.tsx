@@ -52,6 +52,11 @@ interface MuseumChapterHeaderProps {
   activeTab: string;
   data: MusicDnaData;
   lang: Lang;
+  density?: 'compact' | 'cinematic';
+  routePosition?: {
+    current: number;
+    total: number;
+  };
 }
 
 interface ChapterMetric {
@@ -116,9 +121,9 @@ const CHAPTERS: Record<MuseumChapterTab, ChapterDefinition> = {
   },
   artist: {
     number: '10', emoji: '✨', metrics: ['topArtist', 'topGenre'],
-    eyebrow: { es: 'Alter ego creativo', en: 'Creative alter ego', he: 'אלטר־אגו יצירתי' },
-    title: { es: 'Identidad de Artista', en: 'The Artist Identity', he: 'זהות האמן' },
-    description: { es: 'Tu historial imagina una voz, una estética y un escenario propios.', en: 'Your history imagines a voice, an aesthetic and a stage of your own.', he: 'ההיסטוריה שלך מדמיינת קול, אסתטיקה ובמה משלך.' },
+    eyebrow: { es: 'Territorio vivo de artistas', en: 'Living artist territory', he: 'מרחב אמנים חי' },
+    title: { es: 'Atlas Vivo de Artistas', en: 'Living Artist Atlas', he: 'אטלס האמנים החי' },
+    description: { es: 'Evidencia del archivo, imágenes y media oficial disponible convierten cada artista en un territorio explorable.', en: 'Archive evidence, imagery and available official media turn every artist into an explorable territory.', he: 'ראיות מן הארכיון, דימויים ומדיה רשמית זמינה הופכים כל אמן למרחב שאפשר לחקור.' },
   },
   obsessions: {
     number: '11', emoji: '🔁', metrics: ['obsessions', 'streak'],
@@ -439,7 +444,7 @@ function ChapterArtwork({ motif }: { motif: MuseumChapterMotif }) {
   );
 }
 
-export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumChapterHeaderProps) {
+export default function MuseumChapterHeader({ activeTab, data, lang, density = 'compact', routePosition }: MuseumChapterHeaderProps) {
   const definition = CHAPTERS[activeTab as MuseumChapterTab];
   const visualIdentity = museumVisualFor(activeTab);
   const reactId = useId();
@@ -453,6 +458,10 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
   const archiveDensity = Math.min(0.9, Math.max(0.18, data.core_metrics.unique_artists / Math.max(data.core_metrics.unique_tracks, 1)));
   const tempoSeconds = Math.max(9, 17 - topShare * 24);
   const headingId = `museum-chapter-${reactId.replace(/:/g, '')}`;
+  const displayChapter = routePosition
+    ? String(routePosition.current).padStart(2, '0')
+    : definition.number;
+  const displayTotal = routePosition?.total ?? MUSEUM_CHAPTER_TABS.length;
   const style = {
     '--chapter-primary': visualIdentity.palette[0],
     '--chapter-secondary': visualIdentity.palette[1],
@@ -471,14 +480,14 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
 
   return (
     <section
-      className="museum-chapter"
+      className={`museum-chapter museum-chapter--${density}`}
       style={style}
       aria-labelledby={headingId}
       data-testid="museum-chapter"
       data-chapter={activeTab}
       data-family={visualIdentity.family}
       data-motif={visualIdentity.chapterMotif}
-      data-density="compact"
+      data-density={density}
       dir={directionFor(lang)}
     >
       <div className="museum-chapter__ambient" aria-hidden="true">
@@ -490,7 +499,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
         <div className="museum-chapter__copy">
           <p className="museum-chapter__eyebrow">
             <span className="museum-chapter__emoji" aria-hidden="true">{definition.emoji}</span>
-            <span>{pickLanguage(lang, { es: 'Capítulo', en: 'Chapter', he: 'פרק' })} {definition.number}</span>
+            <span>{pickLanguage(lang, { es: 'Capítulo', en: 'Chapter', he: 'פרק' })} {displayChapter}</span>
             <span className="museum-chapter__eyebrow-separator" aria-hidden="true">/</span>
             <span>{copy('eyebrow')}</span>
           </p>
@@ -517,7 +526,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang }: MuseumCha
       <div className="museum-chapter__footer" aria-hidden="true">
         <span>NOVA MUSIC LAB</span>
         <span className="museum-chapter__footer-line" />
-        <span>{definition.number} / {MUSEUM_CHAPTER_TABS.length}</span>
+        <span>{displayChapter} / {displayTotal}</span>
       </div>
     </section>
   );

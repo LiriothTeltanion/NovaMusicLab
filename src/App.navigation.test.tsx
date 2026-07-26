@@ -170,4 +170,27 @@ describe('room navigation focus', () => {
     );
     expect(screen.getByRole('status')).toHaveTextContent('Link copied to the clipboard');
   }, 20_000);
+
+  it('turns the journey switcher into scoped navigation instead of a decorative control', async () => {
+    const user = userEvent.setup();
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => null);
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.history.replaceState(null, '', '/#/artist');
+
+    render(<App />);
+
+    const switcher = await screen.findByTestId('journey-switcher', {}, { timeout: 8000 });
+    const labTools = screen.getByRole('button', { name: 'Lab Tools' });
+    expect(switcher).toContainElement(labTools);
+
+    await user.click(labTools);
+
+    await waitFor(() => expect(window.location.hash).toBe('#/assistant'));
+    expect(labTools).toHaveAttribute('aria-pressed', 'true');
+    expect(window.localStorage.getItem('nml_expedition_journey')).toBe('lab');
+    expect(screen.getAllByRole('button', { name: /ai assistant - overview/i }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole('button', { name: /if i were an artist - identity/i })).not.toBeInTheDocument();
+  }, 15_000);
 });

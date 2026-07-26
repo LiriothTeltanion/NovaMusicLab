@@ -35,6 +35,19 @@ This record captures the accepted release candidate. The exact commit/version an
 
 The Pages workflow cancels any older run for the same branch when a newer push arrives. Before upload, it writes `dist/build-meta.json` with the verified Git commit and package version. The smoke job accepts the deployment only when both the museum HTML and that exact commit/version marker are live, preventing a healthy but stale Pages artifact from passing release acceptance.
 
+## v1.1 acceptance record
+
+- [x] Expedition Console journeys stay synchronized across sidebar, room rail, mobile controls and Nova Command.
+- [x] Living Artist Atlas keeps factual profiles, archive analytics and the explicitly imagined creative chapter distinct.
+- [x] Artist media embeds require per-artist consent; provenance remains artist-scoped and lazy-loaded.
+- [x] Artist identity relationships and rejected third-party matches pass the dedicated audit.
+- [x] Public bundle privacy, artist-knowledge, data, media, PWA and bundle-budget audits pass.
+- [x] Lint, TypeScript, production build and all 487 tests pass.
+- [x] English, Spanish and Hebrew RTL pass at 390, 430, 768 and 1440 pixels in light and dark themes with zero browser console errors.
+- [x] Package, changelog, README and storage documentation agree on product `1.1.0` and IndexedDB schema v4.
+
+Known release boundaries remain explicit: remote artwork creates disclosed provider requests, official players remain opt-in, and 171 visual assets stay marked for license review rather than being presented as redistributable.
+
 ## Release metadata
 
 Title:
@@ -46,6 +59,16 @@ Summary:
 > The first stable Nova Music Lab release separates the public flagship exhibition from private visitor archives, strengthens import and storage reliability, refreshes the visual system, and formalizes privacy, accessibility and release governance.
 
 Attach privacy-safe screenshots and link to the live museum, changelog, security policy and architecture overview.
+
+### v1.1 metadata
+
+Title:
+
+> Nova Music Lab v1.1 — Expedition Console & Living Artist Atlas
+
+Summary:
+
+> A more navigable and cinematic music museum: three persistent expedition paths, keyboard-first Nova Command, an evidence-led Living Artist Atlas, opt-in official media and auditable artist identities across English, Spanish and Hebrew RTL.
 
 ## Rollback
 

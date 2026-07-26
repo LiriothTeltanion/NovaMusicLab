@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-13T18:37:51.880Z",
-  "sourceFingerprint": "c78943c9290bf5c35655b5c2d4faf1460d63d4ee1e03930570daf97f8bd8752e",
+  "generatedAt": "2026-07-22T00:57:17.060Z",
+  "sourceFingerprint": "cef00df8a11b31b7da31c0d1afcc0513ab1e8a2fbc96f1a45520a077a3d831b9",
   "sourceFiles": [
     "src/data/offline_artist_knowledge.json",
     "src/data/artist_images.json",

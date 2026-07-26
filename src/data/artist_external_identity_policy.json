@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "matchingPolicy": "External identifiers must be unique unless every repeated identifier belongs to an explicitly reviewed relationship group. Rejected provider matches must not remain in the public offline knowledge artifact.",
+  "relationshipGroups": [
+    {
+      "canonical": "Girafot",
+      "archiveNames": [
+        "Girafot",
+        "ג'ירפות"
+      ],
+      "relationship": "same-artist-transliteration",
+      "preserveArchiveNames": true,
+      "evidence": {
+        "musicbrainz": "8ae967b0-34de-43c8-bae1-8d0773b80970",
+        "wikidata": "Q7049386"
+      }
+    },
+    {
+      "canonical": "Rain City Drive",
+      "archiveNames": [
+        "Rain City Drive",
+        "Slaves"
+      ],
+      "relationship": "historical-rename",
+      "preserveArchiveNames": true,
+      "evidence": {
+        "musicbrainz": "bd0f203c-6d4b-4c44-89d1-63be9c60acc3",
+        "wikidata": "Q17088326"
+      }
+    }
+  ],
+  "rejectedMatches": [
+    {
+      "archiveName": "nightlife",
+      "provider": "musicbrainz",
+      "externalId": "a8fba99c-f74d-4f5e-aee0-11a91d3e0573",
+      "reason": "The provider record is disambiguated as a Barbershop Quartet and its members and releases conflict with the reviewed archive identity anchored by all i know and new low."
+    }
+  ]
+}

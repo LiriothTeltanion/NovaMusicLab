@@ -44,6 +44,7 @@ failures are surfaced once in the console while the museum shell remains usable.
 
 ```bash
 npm run knowledge:manifest
+npm run audit:identity
 npm run audit:knowledge
 ```
 
@@ -56,6 +57,10 @@ links, license state, attribution, focal coordinates, cache/privacy policy and
 summary counts. It rejects generated remote images mislabeled as
 `remote-opt-in`, because the current UI loads them directly rather than behind
 a consent action. `npm run verify` includes this audit.
+
+External-identifier reuse and rejected catalog matches are verified separately
+by `npm run audit:identity`. This keeps historical/transliterated archive labels
+explicit without allowing unrelated provider records to contaminate dossiers.
 
 ## Next enrichment priorities
 

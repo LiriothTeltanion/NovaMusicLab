@@ -37,6 +37,17 @@ describe('MuseumChapterHeader', () => {
     expect(screen.getAllByText(expectedRange)).not.toHaveLength(0);
   });
 
+  it('supports a cinematic expedition portal without changing its room evidence', () => {
+    render(<MuseumChapterHeader activeTab="artist" data={data} lang="en" density="cinematic" routePosition={{ current: 7, total: 9 }} />);
+
+    const chapter = screen.getByTestId('museum-chapter');
+    expect(chapter).toHaveAttribute('data-density', 'cinematic');
+    expect(chapter).toHaveClass('museum-chapter--cinematic');
+    expect(screen.getAllByRole('definition')).toHaveLength(2);
+    expect(screen.getByText('Chapter 07', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('07 / 9')).toBeInTheDocument();
+  });
+
   it.each([
     ['en', 'time span', 'highest-volume observed year', 'Unavailable'],
     ['es', 'arco temporal', 'año observado con más reproducciones', 'No disponible'],
