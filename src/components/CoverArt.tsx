@@ -47,6 +47,7 @@ export default function CoverArt({ artist, title, kind, size = 44, className = '
           alt={`${title} — ${artist}`}
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           width={size}
           height={size}
           onLoad={() => setLoaded(true)}

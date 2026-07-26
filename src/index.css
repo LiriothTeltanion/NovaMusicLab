@@ -49,6 +49,7 @@
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
   --nova-app-header-height: 69px;
+  --nova-expedition-console-height: 74px;
 
   /* Three deliberate voices: editorial display, highly legible reading text,
      and a real technical monospace. The remote font request stays unchanged;
@@ -134,10 +135,10 @@
   }
 
   .nova-app-sidebar {
-    inset-block-start: var(--nova-app-header-height);
+    inset-block-start: calc(var(--nova-app-header-height) + var(--nova-expedition-console-height));
     flex: 0 0 5rem;
     inline-size: 5rem;
-    max-block-size: calc(100dvh - var(--nova-app-header-height));
+    max-block-size: calc(100dvh - var(--nova-app-header-height) - var(--nova-expedition-console-height));
     padding: 0.5rem;
     border-inline-end-style: solid;
     border-inline-end-width: 1px;

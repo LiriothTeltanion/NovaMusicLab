@@ -599,3 +599,105 @@
     animation: none !important;
   }
 }
+
+/* Expedition journeys deliberately change the editorial rhythm without
+   duplicating the chapter component. Full Museum and Lab Tools stay compact;
+   Quick Tour and Artist Atlas receive a larger, cinematic portal. */
+@media (min-width: 921px) {
+  .museum-chapter--compact,
+  .museum-chapter--compact .museum-chapter__content {
+    min-height: 9.75rem;
+  }
+
+  .museum-chapter--compact .museum-chapter__content {
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, 11.5rem) minmax(10rem, 13rem);
+    padding-block: 0.9rem 1.65rem;
+  }
+
+  .museum-chapter--compact .museum-chapter__art {
+    min-height: 7rem;
+  }
+
+  .museum-chapter--compact h1 {
+    font-size: clamp(1.85rem, 2.8vw, 2.65rem);
+  }
+
+  .museum-chapter--cinematic,
+  .museum-chapter--cinematic .museum-chapter__content {
+    min-height: clamp(17rem, 29vw, 21rem);
+  }
+
+  .museum-chapter--cinematic .museum-chapter__content {
+    grid-template-columns: minmax(0, 1.35fr) minmax(12rem, 14rem) minmax(18rem, 24rem);
+    gap: clamp(1.2rem, 2.6vw, 2.4rem);
+    padding: clamp(1.5rem, 3vw, 2.6rem);
+    padding-bottom: clamp(2.2rem, 3.6vw, 2.9rem);
+  }
+
+  .museum-chapter--cinematic h1 {
+    max-width: 14ch;
+    font-size: clamp(3.15rem, 5.2vw, 5.35rem);
+    line-height: 0.9;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__description {
+    max-width: 44rem;
+    margin-top: 0.9rem;
+    font-size: clamp(0.9rem, 1.28vw, 1.04rem);
+    line-height: 1.55;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__metrics {
+    gap: 0.75rem;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__metric {
+    min-height: 4.45rem;
+    align-content: center;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__art {
+    min-height: 14.5rem;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__art svg {
+    width: min(100%, 22rem);
+  }
+}
+
+@media (min-width: 681px) and (max-width: 920px) {
+  .museum-chapter--cinematic,
+  .museum-chapter--cinematic .museum-chapter__content {
+    min-height: 16rem;
+  }
+
+  .museum-chapter--cinematic h1 {
+    font-size: clamp(2.6rem, 6vw, 4rem);
+  }
+
+  .museum-chapter--cinematic .museum-chapter__art {
+    min-height: 12rem;
+  }
+}
+
+@media (max-width: 680px) {
+  .museum-chapter--cinematic {
+    min-height: 13rem;
+  }
+
+  .museum-chapter--cinematic .museum-chapter__content {
+    min-height: 13rem;
+    padding-block: 1rem 1.8rem;
+  }
+
+  .museum-chapter--cinematic h1 {
+    max-width: 14ch;
+    font-size: clamp(2.15rem, 10.5vw, 3.15rem);
+  }
+
+  .museum-chapter--cinematic .museum-chapter__art {
+    width: 68%;
+    opacity: 0.28;
+  }
+}
