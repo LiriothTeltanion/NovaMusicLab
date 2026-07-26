@@ -14,6 +14,7 @@ import { useApp } from '../context/AppContext';
 import ArtistAvatar from './ArtistAvatar';
 import ExpandableInsightCard from './ExpandableInsightCard';
 import MoodArtCanvas from './MoodArtCanvas';
+import LivingArtistAtlas from './artist-atlas/LivingArtistAtlas';
 import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
@@ -355,6 +356,23 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
     plays: data.top_artists.find(artist => artist.name === name)?.plays,
   }));
   const formatNum = (value: number) => value.toLocaleString(localeFor(lang));
+  const creativeChapter = pickLanguage(lang, {
+    es: {
+      eyebrow: 'Capítulo creativo',
+      title: 'Del archivo a una identidad artística propia',
+      body: 'Después de explorar artistas reales y fuentes verificadas, este laboratorio transforma patrones del archivo en una propuesta creativa. Es una lectura imaginada, no una biografía ni una atribución sobre los artistas del Atlas.',
+    },
+    en: {
+      eyebrow: 'Creative chapter',
+      title: 'From the archive to an original artist identity',
+      body: 'After exploring real artists and verified sources, this lab transforms archive patterns into a creative concept. It is an imagined reading, not a biography or attribution about the artists in the Atlas.',
+    },
+    he: {
+      eyebrow: 'פרק יצירתי',
+      title: 'מן הארכיון אל זהות אמנותית מקורית',
+      body: 'אחרי חקר אמנים אמיתיים ומקורות מאומתים, המעבדה הופכת דפוסים מן הארכיון לקונספט יצירתי. זו פרשנות מדומיינת, לא ביוגרפיה או ייחוס לאמני האטלס.',
+    },
+  });
 
   // Every dossier layer's line VALUES are swapped for real-data-driven text
   // (genre/trait/aesthetic-derived, real influences, real top track); the
@@ -437,6 +455,20 @@ export default function ArtistIdentity({ data, isPersonalArchive = false }: Arti
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <LivingArtistAtlas data={data} />
+
+      <div className="pt-6 border-t border-white/10">
+        <span className="text-[10px] font-mono font-black uppercase tracking-[0.2em]" style={{ color: tc.c2 }}>
+          {creativeChapter.eyebrow}
+        </span>
+        <h2 className="mt-2 text-2xl md:text-3xl font-black text-white tracking-tight">
+          {creativeChapter.title}
+        </h2>
+        <p className="mt-2 max-w-4xl text-sm text-gray-400 leading-relaxed">
+          {creativeChapter.body}
+        </p>
+      </div>
+
       <SectionNarrative content={t.deepNarratives.artist} accent="c1" />
 
       <SectionQuickRead items={quickReadItems} />

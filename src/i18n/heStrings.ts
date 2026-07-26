@@ -37,7 +37,7 @@ export const HE_STRINGS = {
       obsessions:  "אובססיות",
       cultural:    "דנ״א תרבותי",
       inner:       "עולם פנימי",
-      artist:      "אילו הייתי אמן",
+      artist:      "אטלס האמנים החי",
       insights:    "תובנות נסתרות",
       compare:     "Spotify מול Last.fm",
       museums:     "השוואת מוזיאונים",
