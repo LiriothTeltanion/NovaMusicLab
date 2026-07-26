@@ -1,7 +1,7 @@
 {
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-07-13T18:37:51.880Z",
+    "generatedAt": "2026-07-22T00:57:17.060Z",
     "artistCount": 100,
     "sources": [
       {
@@ -15722,65 +15722,40 @@
           "new low"
         ]
       },
-      "musicbrainz": {
-        "id": "a8fba99c-f74d-4f5e-aee0-11a91d3e0573",
-        "score": 100,
-        "name": "Nightlife",
-        "sortName": "Nightlife",
-        "type": "Group",
-        "ended": false,
-        "disambiguation": "Barbershop Quartet",
-        "aliases": [],
-        "tags": [
-          "barbershop"
+      "curated": {
+        "name": "nightlife",
+        "sourceName": "Reviewed archive / YouTube Topic",
+        "sourceUrls": [
+          "https://www.youtube.com/watch?v=-yQ7_ziGsU8"
         ],
-        "isnis": []
+        "origin": "United States",
+        "country": "United States",
+        "description": "Alternative project represented in the archive by all i know and new low.",
+        "background": "This reviewed profile intentionally rejects the unrelated MusicBrainz match disambiguated as a Barbershop Quartet.",
+        "tags": [
+          "alternative",
+          "nocturnal alt pop",
+          "recent fixation"
+        ],
+        "activeYears": [
+          "2026"
+        ]
       },
-      "releaseGroups": [
-        {
-          "id": "22042f22-3676-3ebb-8752-7efbb0c8fd97",
-          "title": "Basin Street Blues",
-          "primaryType": "Album"
-        },
-        {
-          "id": "c5025e68-8c04-3d48-9760-29c15616b390",
-          "title": "Songs at Twilight",
-          "primaryType": "Album"
-        }
-      ],
+      "releaseGroups": [],
       "emotionalSeeds": {
-        "sourceText": "nightlife Alternative United States Group Barbershop Quartet Alternative barbershop Basin Street Blues Songs at Twilight",
+        "sourceText": "nightlife Alternative United States nightlife United States United States Alternative project represented in the archive by all i know and new low. This reviewed profile intentionally rejects the unrelated MusicBrainz match disambiguated as a Barbershop Quartet. Alternative alternative nocturnal alt pop recent fixation",
         "tags": [
           "Alternative",
-          "barbershop"
+          "alternative",
+          "nocturnal alt pop",
+          "recent fixation"
         ],
-        "activeYears": [],
+        "activeYears": [
+          "2026"
+        ],
         "releaseYears": []
       },
-      "fetchStatus": "matched",
-      "bandMembers": [
-        {
-          "name": "Errol Lafleur",
-          "roles": [],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Mark Nieuwenhuijzen",
-          "roles": [],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Steven Renes",
-          "roles": [],
-          "begin": null,
-          "end": null,
-          "current": false
-        }
-      ]
+      "fetchStatus": "matched"
     },
     {
       "name": "Treat",

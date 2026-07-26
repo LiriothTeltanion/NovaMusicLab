@@ -29,6 +29,23 @@ const ARTIST_QUERY_ALIASES = new Map([
 ]);
 
 const ARTIST_KNOWLEDGE_OVERRIDES = new Map([
+  ['nightlife', {
+    skipMusicBrainz: true,
+    curated: {
+      name: 'nightlife',
+      sourceName: 'Reviewed archive / YouTube Topic',
+      sourceUrls: [
+        'https://www.youtube.com/watch?v=-yQ7_ziGsU8',
+      ],
+      origin: 'United States',
+      country: 'United States',
+      description: 'Alternative project represented in the archive by all i know and new low.',
+      background: 'This reviewed profile intentionally rejects the unrelated MusicBrainz match disambiguated as a Barbershop Quartet.',
+      tags: ['alternative', 'nocturnal alt pop', 'recent fixation'],
+      activeYears: ['2026'],
+    },
+    releaseGroups: [],
+  }],
   ['odeon', {
     skipMusicBrainz: true,
     curated: {
@@ -608,14 +625,14 @@ async function main() {
     const existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
     const exactName = value => String(value ?? '').normalize('NFC').trim();
     const topArtistKeys = new Set(data.top_artists.map(artist => exactName(artist.name)));
-    const replacementKeys = new Set(artists.map(artist => exactName(artist.name)));
-    const mergedArtists = [
-      ...(existing.artists ?? []).filter(artist => {
-        const key = exactName(artist.name);
-        return topArtistKeys.has(key) && !replacementKeys.has(key);
-      }),
-      ...artists,
-    ];
+    const replacements = new Map(artists.map(artist => [exactName(artist.name), artist]));
+    const existingKeys = new Set((existing.artists ?? []).map(artist => exactName(artist.name)));
+    const mergedArtists = (existing.artists ?? [])
+      .filter(artist => topArtistKeys.has(exactName(artist.name)))
+      .map(artist => replacements.get(exactName(artist.name)) ?? artist);
+    for (const artist of artists) {
+      if (!existingKeys.has(exactName(artist.name))) mergedArtists.push(artist);
+    }
     database = {
       ...existing,
       meta: {

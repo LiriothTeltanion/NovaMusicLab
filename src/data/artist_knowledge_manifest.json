@@ -1,8 +1,8 @@
 {
   "meta": {
     "schemaVersion": 1,
-    "generatedAt": "2026-07-13T18:37:51.880Z",
-    "sourceFingerprint": "c78943c9290bf5c35655b5c2d4faf1460d63d4ee1e03930570daf97f8bd8752e",
+    "generatedAt": "2026-07-22T00:57:17.060Z",
+    "sourceFingerprint": "cef00df8a11b31b7da31c0d1afcc0513ab1e8a2fbc96f1a45520a077a3d831b9",
     "sourceFiles": [
       "src/data/offline_artist_knowledge.json",
       "src/data/artist_images.json",
@@ -241,7 +241,7 @@
         "visual:0128964571a6fcce0b1591bd",
         "visual:69e60129a4b8ac837f822c2e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:bilmuri",
@@ -440,7 +440,7 @@
         "visual:8f5427e4195f0a0ee1a44560",
         "visual:a5b7583bbea39c36daba51d2"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:rain city drive",
@@ -695,7 +695,7 @@
         "visual:8c6400b656549b60437755ca",
         "visual:d37ac1b54e2ac998e8645abc"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:tesseract",
@@ -914,7 +914,7 @@
         "visual:9e73a2ee228030dd4b7947c0",
         "visual:17f73023d23f20f1302f93e9"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:jonny craig",
@@ -1068,7 +1068,7 @@
         "visual:2a36f921c063d6120f4c6fb7",
         "visual:b27ed563479694ac7f6f8f59"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:santa cruz",
@@ -1249,7 +1249,7 @@
         "visual:329f11a1de42c2298cfc9cef",
         "visual:941f50546c061dfb436be2d4"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:nevertel",
@@ -1351,7 +1351,7 @@
         "visual:f0ce8a6c3bc8ec99a27bb838",
         "visual:23109256aa2c2084bafb7aaa"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:hayehudim",
@@ -1544,7 +1544,7 @@
         "visual:cab23249de4e07ba916f9e38",
         "visual:6379a1c98b88a63ba397b57a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:normandie",
@@ -1647,7 +1647,7 @@
         "visual:9283a34295bcc2b6efd1acda",
         "visual:ba9b1e1fb2b9ed82a137bf81"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:dance with the dead",
@@ -1784,7 +1784,7 @@
         "visual:7107b5247d8df04404d2a552",
         "visual:9b189d638c767a44722a67fa"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:odeon",
@@ -1856,7 +1856,7 @@
         "visual:6f8697befcc0ad94a79a2bbe",
         "visual:2685b8000466796b3fd936c9"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:emarosa",
@@ -2008,7 +2008,7 @@
         "visual:dbcffc94279b342850692335",
         "visual:5666396dbf9fcde30b089fe9"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the midnight",
@@ -2154,7 +2154,7 @@
         "visual:0f591519bec2970dde312070",
         "visual:c373aaeac6d7366131a9715e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:hammock",
@@ -2410,7 +2410,7 @@
         "visual:c16bca92e227ff5f806dc726",
         "visual:1366935a5b2874b293956e4a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:holding absence",
@@ -2530,7 +2530,7 @@
         "visual:d7e9b7dd74d56a4895c19b90",
         "visual:5f20b1a555e2b94cdf8cb98e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the word alive",
@@ -2721,7 +2721,7 @@
         "visual:bf375ec0bc5b5346bca9fea9",
         "visual:c4c40f5a796d15505d4099f8"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:tokio hotel",
@@ -2941,7 +2941,7 @@
         "visual:194bc61fd6607d9258a26a76",
         "visual:5353b5a7a3b63433b57bff29"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:don vedda",
@@ -3010,7 +3010,7 @@
         "visual:d1888865285e45568595e666",
         "visual:60b59ba4100b070c91d0ecb5"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:slaves",
@@ -3265,7 +3265,7 @@
         "visual:6f4313f4da83f2808f09cf75",
         "visual:dc61432287aab2e7c7562da3"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:alcest",
@@ -3438,7 +3438,7 @@
         "visual:7d7868180602ba9a03805b50",
         "visual:16e2d5d259ec543aad88702c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:omnium gatherum",
@@ -3612,7 +3612,7 @@
         "visual:412863f0566db669d69cc1ee",
         "visual:537478ad1401faa489e257de"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:magnolia park",
@@ -3715,7 +3715,7 @@
         "visual:d65daa3358e25adffc48b34a",
         "visual:edcd16690353f7531af45a5c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:h e a t",
@@ -3930,7 +3930,7 @@
         "visual:fd0ab354998b08bc879cac3a",
         "visual:4a8bc89aa44d49d897149cd6"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:mgk",
@@ -4120,7 +4120,7 @@
         "visual:e21a48853405f3dd2d825ec4",
         "visual:311b33ee3de0333587a372e3"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:carpenter brut",
@@ -4266,7 +4266,7 @@
         "visual:fa6ba7409bf25064db34ab2e",
         "visual:84f5e6eb1cc4d25f2571c32a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:bring me the horizon",
@@ -4539,7 +4539,7 @@
         "visual:0d030f7241393492f94c3c2e",
         "visual:c90c8f669e57c8be60ba183c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:myrath",
@@ -4694,7 +4694,7 @@
         "visual:1f50f0a57d16cd305307d090",
         "visual:df2673d1340ce873aa012bed"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:primal fear",
@@ -4998,7 +4998,7 @@
         "visual:3766c8bb1bf28bdca759c810",
         "visual:0b4669cf735ba92ef1ae0b89"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:type o negative",
@@ -5297,7 +5297,7 @@
         "visual:5617f1c039272878e55ce772",
         "visual:7e5b304b819cf1572b02e943"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:perturbator",
@@ -5448,7 +5448,7 @@
         "visual:dbd9dbcb39572bc92a0bab6a",
         "visual:2c07ae35fb326cdb14f186d1"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:nothing nowhere",
@@ -5612,7 +5612,7 @@
         "visual:1530465666f40f947b1e640c",
         "visual:b37d851c6a64a911c5dce3da"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:crazy lixx",
@@ -5755,7 +5755,7 @@
         "visual:ad622215899273412cdf35fd",
         "visual:91ca954ca016a43cb68bbb2c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:dayseeker",
@@ -5953,7 +5953,7 @@
         "visual:d3f3685619a0737f627a047f",
         "visual:c9e85af7ca7365af26896c21"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:blessthefall",
@@ -6130,7 +6130,7 @@
         "visual:91793fd35d113d4560baf901",
         "visual:5eb86abcadff9d2b0584d661"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:annihilator",
@@ -6582,7 +6582,7 @@
         "visual:63fda8d7b3a834ce9dcd65ba",
         "visual:5aaf489a8c7d54da04edefca"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:def leppard",
@@ -6901,7 +6901,7 @@
         "visual:25609ffe1bd59dc70d60823a",
         "visual:3c8540307b2a5b0d92aedfc9"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the story so far",
@@ -7072,7 +7072,7 @@
         "visual:44f00db694cbeb1a2b71abb5",
         "visual:1cd71481315234a9e74ba416"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:roosevelt",
@@ -7184,7 +7184,7 @@
         "visual:bc9f498886ad4ce98e5c2e28",
         "visual:01cdaee8f37621533edb614a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:jordyne",
@@ -7234,7 +7234,7 @@
         "visual:d356bacd1789b86b2f891ed3",
         "visual:77cc360dbe01d9514a332d03"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:thirty seconds to mars",
@@ -7482,7 +7482,7 @@
         "visual:a142c786ff9806e32a9d3abf",
         "visual:003213985bc311af2102d2d3"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:mooki",
@@ -7532,7 +7532,7 @@
         "visual:79ac54aa8a22522a18c176b5",
         "visual:ac4f793c0283d625ea856807"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:anathema",
@@ -7889,7 +7889,7 @@
         "visual:cceee121a577c06c4ffd9d0c",
         "visual:59b8c7a57b6808a9782e21f6"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:ghost",
@@ -8096,7 +8096,7 @@
         "visual:113c64c5fb41d22aa9047464",
         "visual:391388a06b340bc0e6697196"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:skid row",
@@ -8542,7 +8542,7 @@
         "visual:9c10e45696b0b5816769ec07",
         "visual:c977ec712b9b2b1c6e6c302d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:katatonia",
@@ -8915,7 +8915,7 @@
         "visual:cad6b9b2f9d524dcea4c6bc8",
         "visual:f8f938a872e5c4216a453061"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:drake",
@@ -9196,7 +9196,7 @@
         "visual:3c843d94081373f7b34f2b04",
         "visual:72f052c0cca3279517d2726d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:kiremi",
@@ -9254,7 +9254,7 @@
         "visual:c008690b1082040ad7bd5dc2",
         "visual:50bb897972e33968420d2e1a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:enforcer",
@@ -9384,7 +9384,7 @@
       "visualAssetIds": [
         "visual:c63915f96f4acc5a2c7a2047"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:teenage wrist",
@@ -9491,7 +9491,7 @@
         "visual:763052b759dee61e911b72d8",
         "visual:0a501a7a1f7925fe52311c4b"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:silverstein",
@@ -9785,7 +9785,7 @@
         "visual:e971ea471983bc78836a99b7",
         "visual:07a18bfd0f5d3ae0807a1a42"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:diversify",
@@ -9871,7 +9871,7 @@
         "visual:82d71d58382b5da7205b0fae",
         "visual:03303200f41629fcf88a2b0d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the killers",
@@ -10194,7 +10194,7 @@
         "visual:83aa974612f75878c5c64e14",
         "visual:3299ed060454515e6cb38006"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:crown the empire",
@@ -10335,7 +10335,7 @@
         "visual:2f186b758a5493ff6e1f9d95",
         "visual:e262c5e12403344f73a96642"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:landon tewers",
@@ -10433,7 +10433,7 @@
         "visual:1e0ac236c526c337dc85bb24",
         "visual:744a7dda3f76e2c56732e1cb"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:firehouse",
@@ -10644,7 +10644,7 @@
         "visual:33b46a2dd01a90a99a6a1b1f",
         "visual:a7c05c678c2189bc89af039b"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:sweezy",
@@ -10694,7 +10694,7 @@
         "visual:4dbeb53b57d077ca76615d34",
         "visual:a4d9a34180bfc4358e877839"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:trevor something",
@@ -10865,7 +10865,7 @@
         "visual:2fb5cbdf93aa3fa113991b7c",
         "visual:99eecf49b1b7d93eb8bc9069"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:girafot",
@@ -11006,7 +11006,7 @@
       "visualAssetIds": [
         "visual:9ee6812af795d0c3af48f8d2"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the kid laroi",
@@ -11113,7 +11113,7 @@
         "visual:7682ea2dd71b09696435b4f6",
         "visual:d032e91a321c27fdb2ecb8ae"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:erra",
@@ -11303,7 +11303,7 @@
         "visual:38e3945f92724f20dd5495f9",
         "visual:1a186e10a4b87936b5420652"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:entwine",
@@ -11481,7 +11481,7 @@
         "visual:15792a2017f6de8bfa0a7839",
         "visual:342f0e7e6315347a8406629f"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:blackfield",
@@ -11654,7 +11654,7 @@
         "visual:7834cef578080c1e415c69f2",
         "visual:cdd1ac5b4c050ae8b1838c7e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:fm 84",
@@ -11723,7 +11723,7 @@
         "visual:f25a69f9a04ee26dccca99aa",
         "visual:f601574040dc88aa5830e69e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:neck deep",
@@ -11858,7 +11858,7 @@
         "visual:8d1b605ccec58036e05fbf1b",
         "visual:9ff1ea1f37324388ad5ad994"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:lost society",
@@ -11989,7 +11989,7 @@
         "visual:34a971a9eae6abb9c6cb6774",
         "visual:e147885387bfa28c0fafb284"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:thekidszn",
@@ -12041,7 +12041,7 @@
         "visual:13eeb6f80b3c81ae6529cd3e",
         "visual:1eb466c66017562bc2dccc0b"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:paloma",
@@ -12108,7 +12108,7 @@
         "visual:3126fb15cde6f53d76ab5694",
         "visual:c9aa98bbe83c925cb809c91c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:polyphia",
@@ -12264,7 +12264,7 @@
         "visual:f9ab6417e1a9a9ef367883f7",
         "visual:d53553a6872fa65c18eafbb6"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:saurom",
@@ -12531,7 +12531,7 @@
         "visual:3e8db9cbb46bbb84a517e7f2",
         "visual:4facd5a4c3350f22d2b4c7f4"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:sebastian gampl",
@@ -12615,7 +12615,7 @@
         "visual:3ef22eb2367e6f3e0a0ec34f",
         "visual:e5a017cd6f6109968ae8e6d5"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:scar symmetry",
@@ -12824,7 +12824,7 @@
         "visual:84767d1b806f169c57ffe6a5",
         "visual:ff65db8a7ef869708a07280f"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:helloween",
@@ -13171,7 +13171,7 @@
         "visual:38b3228ff2fdbdcb5bfdc79a",
         "visual:0b634be96dede94500bbb60d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:nine inch nails",
@@ -13769,7 +13769,7 @@
         "visual:fa18d7f390a7b684e4a11834",
         "visual:f107bd4efbb5ea046a5e8a05"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:insomnium",
@@ -13968,17 +13968,17 @@
         "visual:d9b0b15e07ff99631f8cf717",
         "visual:3f040fba6e068588897159ae"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:nightlife",
       "name": "nightlife",
       "normalizedName": "nightlife",
-      "sortName": "Nightlife",
-      "artistType": "Group",
+      "sortName": "nightlife",
+      "artistType": null,
       "aliases": [],
       "externalIds": {
-        "musicbrainz": "a8fba99c-f74d-4f5e-aee0-11a91d3e0573",
+        "musicbrainz": null,
         "wikidata": null,
         "isnis": []
       },
@@ -13986,49 +13986,17 @@
         "United States"
       ],
       "genres": [
-        "Alternative",
-        "barbershop"
+        "Alternative"
       ],
       "areas": [],
       "description": null,
       "activeRange": {
         "begin": null,
         "end": null,
-        "ended": false
+        "ended": null
       },
-      "members": [
-        {
-          "name": "Errol Lafleur",
-          "roles": [],
-          "current": true
-        },
-        {
-          "name": "Mark Nieuwenhuijzen",
-          "roles": [],
-          "current": true
-        },
-        {
-          "name": "Steven Renes",
-          "roles": [],
-          "current": false
-        }
-      ],
-      "releases": [
-        {
-          "id": "22042f22-3676-3ebb-8752-7efbb0c8fd97",
-          "title": "Basin Street Blues",
-          "primaryType": "Album",
-          "firstReleaseDate": null,
-          "provider": "musicbrainz"
-        },
-        {
-          "id": "c5025e68-8c04-3d48-9760-29c15616b390",
-          "title": "Songs at Twilight",
-          "primaryType": "Album",
-          "firstReleaseDate": null,
-          "provider": "musicbrainz"
-        }
-      ],
+      "members": [],
+      "releases": [],
       "officialUrls": [],
       "provenance": [
         {
@@ -14039,17 +14007,17 @@
           "confidence": "curated"
         },
         {
-          "provider": "musicbrainz",
-          "sourceId": "a8fba99c-f74d-4f5e-aee0-11a91d3e0573",
-          "sourceUrl": "https://musicbrainz.org/artist/a8fba99c-f74d-4f5e-aee0-11a91d3e0573",
+          "provider": "curated",
+          "sourceId": null,
+          "sourceUrl": "https://www.youtube.com/watch?v=-yQ7_ziGsU8",
           "verifiedAt": null,
-          "confidence": "verified"
+          "confidence": "curated"
         }
       ],
       "visualAssetIds": [
         "visual:247ae8f62f60e4a3fe05d462"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:treat",
@@ -14280,7 +14248,7 @@
         "visual:e3be41ba56bd1aaa62ddfe82",
         "visual:9b542110c0182d1c1382c4e1"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:issues",
@@ -14451,7 +14419,7 @@
         "visual:21b237e52a1828fbc9576805",
         "visual:2d2d4436a86bbe883adb4329"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:blut aus nord",
@@ -14722,7 +14690,7 @@
         "visual:4c373b170b15ba819f65b0d3",
         "visual:359403c1cd1afd22f01d72ba"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:asking alexandria",
@@ -14950,7 +14918,7 @@
         "visual:7c34d9d11f37d3ddd4f2da4b",
         "visual:425219bb57e7da740622a84d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:arrows in action",
@@ -15033,7 +15001,7 @@
         "visual:c405982db88e32ad66b18e83",
         "visual:dbd15ff32af4babb24a2e40b"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:boy pablo",
@@ -15170,7 +15138,7 @@
         "visual:42ae2f1d7fc9d116b2a3a8e1",
         "visual:829cb6e6eaf1057fddb6605d"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:marty friedman",
@@ -15450,7 +15418,7 @@
         "visual:dfa67bbbd6f4b0622d8ff78d",
         "visual:b1f10619e8a7247f153ec0b3"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:גירפות",
@@ -15592,7 +15560,7 @@
         "visual:ab15ffa4e902208f03d3e1c9",
         "visual:9219c914d5b7c03e594d951c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:being as an ocean",
@@ -15719,7 +15687,7 @@
         "visual:fe58152d6d65b3800250874d",
         "visual:5b68193bf6c55466aefef0b4"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:naits",
@@ -15773,7 +15741,7 @@
         "visual:bf923fc64e6b7108a22a511a",
         "visual:10ca83e0b1928f8300652f96"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:the 1975",
@@ -15969,7 +15937,7 @@
         "visual:4d777c29cd36f6567509da9f",
         "visual:f169634a9cf9793c4c8aec06"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:rami kleinstein",
@@ -16165,7 +16133,7 @@
         "visual:eaad495825bf62a6bca415b0",
         "visual:553e814d969f9118f08c46bd"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:skyharbor",
@@ -16280,7 +16248,7 @@
         "visual:76572619d963a8b0de71a59d",
         "visual:231d72d38c0414a5b688d829"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:ryan caraveo",
@@ -16384,7 +16352,7 @@
         "visual:2b140b940343a084c1576cd6",
         "visual:8a075cc832f1cde810815b91"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:som",
@@ -16498,7 +16466,7 @@
       "visualAssetIds": [
         "visual:991715afc89f38dd477ae31c"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:nightbreakers",
@@ -16548,7 +16516,7 @@
         "visual:2e8df317ed5f0fe5a83ff69d",
         "visual:6a40b7a49e4fb3e87e3d58ea"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:my vitriol",
@@ -16694,7 +16662,7 @@
         "visual:5149477d0fac76e581e99ad7",
         "visual:efb92d1ae0652d2d891dd9ca"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:44phantom",
@@ -16763,7 +16731,7 @@
         "visual:9af45953b80dd78bcab26298",
         "visual:a06cdb0ee7ba3dcdf5f3ce3f"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:twin shadow",
@@ -16895,7 +16863,7 @@
         "visual:787000fdb86a68f2daf887e6",
         "visual:b4af20c6ff33643fc5ec415e"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:unprocessed",
@@ -17071,7 +17039,7 @@
         "visual:597049ac571e6f22ef2e138b",
         "visual:8588bebe4c440f44699a612a"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:hurtwave",
@@ -17132,7 +17100,7 @@
         "visual:88b5c5994f4b0a7ae58e9016",
         "visual:d667b3c1a9bd04eafc76d008"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:sigur ros",
@@ -17403,7 +17371,7 @@
         "visual:b13e455899bef1afcaed8559",
         "visual:daec14499663a240dbfb92a7"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:indighxst",
@@ -17460,7 +17428,7 @@
         "visual:6b93b68fd05f2e56a55c0f3d",
         "visual:24a8b7a2a58e6d8041e1fbcc"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:amr diab",
@@ -17728,7 +17696,7 @@
         "visual:9f744b3ba8c5f3177d9388b6",
         "visual:a0e1eb5a0bd2a017dded7079"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     },
     {
       "id": "artist:aviv geffen",
@@ -17943,7 +17911,7 @@
         "visual:4b27e2f1160d908ce7a84da4",
         "visual:cc3d8a9d8d0ec884a3c21b90"
       ],
-      "updatedAt": "2026-07-13T18:37:51.880Z"
+      "updatedAt": "2026-07-22T00:57:17.060Z"
     }
   ],
   "visualAssets": [
