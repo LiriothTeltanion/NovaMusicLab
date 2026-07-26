@@ -59,10 +59,19 @@ import {
 } from './components/museumVisualIdentity';
 import {
   MobileMuseumRoomDock,
+  getMuseumRoomProgress,
   MuseumRoomProgressRail,
   MuseumRoomTransition,
   type MuseumRoomItem,
 } from './components/MuseumRoomNavigator';
+import ExpeditionConsole from './components/shell/ExpeditionConsole';
+import {
+  EXPEDITION_JOURNEY_STORAGE_KEY,
+  isExpeditionJourneyId,
+  journeyContainsRoom,
+  roomIdsForJourney,
+  type ExpeditionJourneyId,
+} from './components/shell/expeditionJourney';
 
 // Lazy: not needed for the very first paint (skipped entirely for returning
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
@@ -590,6 +599,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const [copyLinkStatus, setCopyLinkStatus] = useState<CopyLinkStatus>('idle');
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
   const [isPersonalArchive, setIsPersonalArchive] = useState(Boolean(boot.storedMeta));
+  const [activeJourney, setActiveJourney] = useState<ExpeditionJourneyId>(() => {
+    try {
+      const stored = window.localStorage.getItem(EXPEDITION_JOURNEY_STORAGE_KEY);
+      return isExpeditionJourneyId(stored) && (activeTab === 'hero' || journeyContainsRoom(stored, activeTab))
+        ? stored
+        : 'full';
+    } catch {
+      return 'full';
+    }
+  });
   const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
   const [persistenceNotice, setPersistenceNotice] = useState<PersistenceNotice | null>(() => (
     boot.restoreFailure ? { kind: 'restore-failure', failure: boot.restoreFailure } : null
@@ -774,7 +793,12 @@ function AppInner({ boot }: { boot: AppBoot }) {
     { id: 'export', label: t.navGroups.export, color: '#10b981' },
   ], [t.navGroups, tc.c1]);
 
-  const roomNavigationItems: MuseumRoomItem[] = React.useMemo(() => menuItems.map(item => ({
+  const journeyMenuItems = React.useMemo(() => {
+    const roomIds = new Set(roomIdsForJourney(activeJourney));
+    return menuItems.filter(item => roomIds.has(item.id));
+  }, [activeJourney, menuItems]);
+
+  const roomNavigationItems: MuseumRoomItem[] = React.useMemo(() => journeyMenuItems.map(item => ({
     id: item.id,
     label: item.label,
     groupLabel: navGroups.find(group => group.id === item.group)?.label ?? item.group,
@@ -782,6 +806,19 @@ function AppInner({ boot }: { boot: AppBoot }) {
     secondary: item.secondary,
     icon: item.icon,
     isChapter: item.id !== 'upload',
+  })), [journeyMenuItems, navGroups]);
+
+  const activeRoomProgress = React.useMemo(
+    () => getMuseumRoomProgress(roomNavigationItems, activeTab),
+    [activeTab, roomNavigationItems],
+  );
+
+  const commandRoomItems = React.useMemo(() => menuItems.map(item => ({
+    id: item.id,
+    label: item.label,
+    groupLabel: navGroups.find(group => group.id === item.group)?.label ?? item.group,
+    color: item.color,
+    icon: item.icon,
   })), [menuItems, navGroups]);
 
   useEffect(() => {
@@ -832,6 +869,12 @@ function AppInner({ boot }: { boot: AppBoot }) {
     ));
   }, [activeTab, menuItems]);
 
+  useEffect(() => {
+    if (activeTab === 'hero' || journeyContainsRoom(activeJourney, activeTab)) return;
+    setActiveJourney('full');
+    try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, 'full'); } catch { /* private browsing */ }
+  }, [activeJourney, activeTab]);
+
   const toggleGroup = useCallback((groupId: NavGroupId) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   }, []);
@@ -848,6 +891,25 @@ function AppInner({ boot }: { boot: AppBoot }) {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     });
   }, [menuItems, setActiveTab]);
+
+  const selectJourney = useCallback((journey: ExpeditionJourneyId) => {
+    setActiveJourney(journey);
+    try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, journey); } catch { /* private browsing */ }
+
+    const journeyRooms = roomIdsForJourney(journey);
+    if (activeTab === 'hero' || !journeyContainsRoom(journey, activeTab)) {
+      const firstRoom = journeyRooms[0] as Tab | undefined;
+      if (firstRoom) goToTab(firstRoom);
+    }
+  }, [activeTab, goToTab]);
+
+  const navigateFromCommand = useCallback((roomId: string) => {
+    if (!journeyContainsRoom(activeJourney, roomId)) {
+      setActiveJourney('full');
+      try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, 'full'); } catch { /* private browsing */ }
+    }
+    goToTab(roomId as Tab);
+  }, [activeJourney, goToTab]);
 
   const navigateRoom = useCallback((roomId: string) => {
     goToTab(roomId as Tab);
@@ -1437,6 +1499,23 @@ function AppInner({ boot }: { boot: AppBoot }) {
         </div>
       </header>
 
+      {activeTab !== 'hero' && (
+        <ExpeditionConsole
+          activeJourney={activeJourney}
+          activeRoomId={activeTab}
+          data={filteredData}
+          isPersonalArchive={isPersonalArchive}
+          isPersisted={Boolean(storedMeta)}
+          lang={lang}
+          rooms={commandRoomItems}
+          savedAt={storedMeta?.savedAt ?? null}
+          sourceLabel={storedMeta?.sourceLabel ?? null}
+          onNavigate={navigateFromCommand}
+          onOpenArchive={() => goToTab('upload')}
+          onSelectJourney={selectJourney}
+        />
+      )}
+
       {/* ── Main ── */}
       {activeTab === 'hero' ? (
         <Suspense fallback={<LoadingPanel />}>
@@ -1457,7 +1536,8 @@ function AppInner({ boot }: { boot: AppBoot }) {
             style={{ backgroundColor: `${tc.bg}60`, borderInlineEndColor: `${tc.c1}10` }}>
             <nav className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-3 pb-2 md:pb-0">
               {navGroups.map(group => {
-                const groupItems = menuItems.filter(item => item.group === group.id);
+                const groupItems = journeyMenuItems.filter(item => item.group === group.id);
+                if (groupItems.length === 0) return null;
                 const groupActive = groupItems.some(item => item.id === activeTab);
                 const isExpanded = expandedGroups[group.id];
 
@@ -1551,7 +1631,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
                 transition={reduceMotion ? { duration: 0 } : pageTransition}
                 className="min-h-full">
                 <Suspense fallback={<LoadingPanel />}>
-                  <MuseumChapterHeader activeTab={activeTab} data={filteredData} lang={lang} />
+                  <MuseumChapterHeader
+                    activeTab={activeTab}
+                    data={filteredData}
+                    lang={lang}
+                    density={activeJourney === 'quick' || activeTab === 'artist' ? 'cinematic' : 'compact'}
+                    routePosition={activeRoomProgress.chapterIndex >= 0 ? {
+                      current: activeRoomProgress.chapterIndex + 1,
+                      total: activeRoomProgress.chapterTotal,
+                    } : undefined}
+                  />
                   <ErrorBoundary key={activeTab}>
                     {activeTab === 'dashboard'   && <Dashboard data={filteredData} />}
                     {activeTab === 'aiassistant' && <AIAssistant data={filteredData} />}
