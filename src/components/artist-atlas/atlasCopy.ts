@@ -48,6 +48,20 @@ export interface ArtistAtlasCopy {
   members: string;
   genres: string;
   unavailable: string;
+  lineupTitle: string;
+  lineupSubtitle: string;
+  lineupCurrent: string;
+  lineupFormer: string;
+  lineupFormerCount: (value: number) => string;
+  lineupNoPhoto: string;
+  lineupSince: (year: string) => string;
+  lineupSpan: (from: string, to: string) => string;
+  lineupRolesUnknown: string;
+  memberAge: (value: number) => string;
+  memberAlsoIn: string;
+  memberAlsoInEmpty: string;
+  memberClose: string;
+  memberOpenHint: string;
   mediaTitle: string;
   mediaSubtitle: string;
   mediaPrivacyTitle: string;
@@ -125,6 +139,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'Miembros/roles',
     genres: 'Etiquetas documentadas',
     unavailable: 'No disponible',
+    lineupTitle: 'Formación',
+    lineupSubtitle: 'Miembros documentados en MusicBrainz y Wikidata.',
+    lineupCurrent: 'Actual',
+    lineupFormer: 'Anteriores',
+    lineupFormerCount: (value) => `${value} ${value === 1 ? 'miembro anterior' : 'miembros anteriores'}`,
+    lineupNoPhoto: 'Sin retrato libre documentado',
+    lineupSince: (year) => `Desde ${year}`,
+    lineupSpan: (from, to) => `${from}–${to || '?'}`,
+    lineupRolesUnknown: 'Rol no documentado',
+    memberAge: (value) => `${value} años`,
+    memberAlsoIn: 'También en tu archivo',
+    memberAlsoInEmpty: 'Sin otras bandas en tu archivo.',
+    memberClose: 'Cerrar ficha del miembro',
+    memberOpenHint: 'Abrir ficha del miembro',
     mediaTitle: 'Portal de media oficial',
     mediaSubtitle: 'Spotify, YouTube y enlaces externos permanecen separados de la experiencia local hasta que decidas abrirlos.',
     mediaPrivacyTitle: 'Control de privacidad',
@@ -200,6 +228,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'Members/roles',
     genres: 'Documented tags',
     unavailable: 'Unavailable',
+    lineupTitle: 'Lineup',
+    lineupSubtitle: 'Members documented in MusicBrainz and Wikidata.',
+    lineupCurrent: 'Current',
+    lineupFormer: 'Former',
+    lineupFormerCount: (value) => `${value} former ${value === 1 ? 'member' : 'members'}`,
+    lineupNoPhoto: 'No free portrait on record',
+    lineupSince: (year) => `Since ${year}`,
+    lineupSpan: (from, to) => `${from}–${to || '?'}`,
+    lineupRolesUnknown: 'Role not documented',
+    memberAge: (value) => `${value} years old`,
+    memberAlsoIn: 'Also in your archive',
+    memberAlsoInEmpty: 'No other bands in your archive.',
+    memberClose: 'Close member card',
+    memberOpenHint: 'Open member card',
     mediaTitle: 'Official media portal',
     mediaSubtitle: 'Spotify, YouTube and external links stay separate from the local experience until you choose to open them.',
     mediaPrivacyTitle: 'Privacy control',
@@ -275,6 +317,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'חברים/תפקידים',
     genres: 'תגיות מתועדות',
     unavailable: 'לא זמין',
+    lineupTitle: 'הרכב הלהקה',
+    lineupSubtitle: 'חברים מתועדים ב-MusicBrainz וב-Wikidata.',
+    lineupCurrent: 'נוכחי',
+    lineupFormer: 'לשעבר',
+    lineupFormerCount: (value) => (value === 1 ? 'חבר אחד לשעבר' : `${value} חברים לשעבר`),
+    lineupNoPhoto: 'אין תצלום חופשי מתועד',
+    lineupSince: (year) => `מאז ${year}`,
+    lineupSpan: (from, to) => `${from}–${to || '?'}`,
+    lineupRolesUnknown: 'התפקיד אינו מתועד',
+    memberAge: (value) => `בן ${value}`,
+    memberAlsoIn: 'גם בארכיון שלך',
+    memberAlsoInEmpty: 'אין להקות נוספות בארכיון שלך.',
+    memberClose: 'סגירת כרטיס החבר',
+    memberOpenHint: 'פתיחת כרטיס החבר',
     mediaTitle: 'שער מדיה רשמית',
     mediaSubtitle: 'Spotify, YouTube וקישורים חיצוניים נשארים מופרדים מהחוויה המקומית עד לבחירתך לפתוח אותם.',
     mediaPrivacyTitle: 'בקרת פרטיות',

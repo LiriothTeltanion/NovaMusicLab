@@ -1,6 +1,6 @@
 /**
  * Query Wikidata API to fetch portraits, birthdates (age), and social/streaming links
- * for all band members of Kevin's top 50 artists.
+ * for all band members of Kevin's top 100 artists.
  *
  * Caches Wikidata responses under scripts/.cache/wikidata_members.
  *
@@ -9,6 +9,12 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import {
+  MUSICIAN_OCCUPATIONS as SHARED_MUSICIAN_OCCUPATIONS,
+  cacheKeyFor as cacheKey,
+  mediaKey as memberKey,
+} from './lib/commonsPortraits.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json');
@@ -20,20 +26,7 @@ mkdirSync(CACHE_DIR, { recursive: true });
 const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const MUSICIAN_OCCUPATIONS = new Set([
-  'Q639669', 'Q177220', 'Q36834', 'Q488205', 'Q713200', 'Q130857', 'Q855091', 'Q183945', 'Q207869'
-]); // musician, singer, composer, singer-songwriter, rapper, DJ, guitarist, bassist, drummer
-
-// A pure ASCII-strip cache key collapses any name written in a non-Latin
-// script (Hebrew, etc.) to the same empty string, so two different people's
-// lookups silently share one cache file and one gets the other's data. The
-// hash suffix guarantees uniqueness regardless of script.
-function cacheKey(name) {
-  const ascii = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 60);
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) | 0;
-  return `${ascii || 'x'}_${(hash >>> 0).toString(36)}`;
-}
+const MUSICIAN_OCCUPATIONS = SHARED_MUSICIAN_OCCUPATIONS;
 
 function cacheGet(key) {
   const file = join(CACHE_DIR, `${key}.json`);
@@ -55,16 +48,20 @@ if (existsSync(OUTPUT_PATH)) {
   }
 }
 
-// Find top 50 artist names
+// Find the top artist names. This used to stop at 50, leaving the members of
+// ranks 51-100 unenriched (0.5% had a photo vs 36% in the top 50).
 const compiled = JSON.parse(readFileSync(COMPILED_PATH, 'utf8'));
-const topArtistNames = new Set(compiled.top_artists.slice(0, 50).map((a) => a.name.toLowerCase()));
+const TOP_ARTIST_LIMIT = 100;
+const topArtistNames = new Set(
+  compiled.top_artists.slice(0, TOP_ARTIST_LIMIT).map((a) => memberKey(a.name)),
+);
 
 // Find unique band members
 const knowledge = JSON.parse(readFileSync(KNOWLEDGE_PATH, 'utf8'));
 const targetMembers = new Set();
 
 for (const artist of knowledge.artists) {
-  if (topArtistNames.has(artist.name.toLowerCase())) {
+  if (topArtistNames.has(memberKey(artist.name))) {
     for (const member of artist.bandMembers ?? []) {
       targetMembers.add(member.name);
     }
@@ -76,7 +73,7 @@ console.log(`Analyzing ${targetMembers.size} unique members...`);
 let fetched = 0, cached = 0;
 
 for (const memberName of targetMembers) {
-  const key = memberName.toLowerCase();
+  const key = memberKey(memberName);
   
   // If already processed and has a verified search hit/miss, load from cache
   const cKey = cacheKey(memberName);

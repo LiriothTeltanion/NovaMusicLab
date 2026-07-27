@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useSyncExternalStore } from 'react';
 import { Disc3, Music } from 'lucide-react';
-import albumImages from '../data/album_images.json';
-import trackImages from '../data/track_images.json';
+import { artMapsVersion, ensureArtMaps, lookupArt, subscribeArtMaps } from './artMaps';
 import { hashSeed } from '../utils/seededRandom';
-
-type ArtMap = Record<string, { thumb: string; source: string }>;
-const ALBUMS = albumImages as ArtMap;
-const TRACKS = trackImages as ArtMap;
 
 interface CoverArtProps {
   artist: string;
@@ -20,21 +15,27 @@ interface CoverArtProps {
 const HUES = [188, 330, 271, 152, 38, 199, 0, 258];
 
 /**
- * Square cover art for albums and tracks. Real artwork comes from the
- * one-time dev-side iTunes Search extraction baked into album_images.json /
- * track_images.json (official covers, 600px). Tracks without their own hit
- * fall back to the same-artist album cover when the key matches, then to a
- * deterministic gradient tile with a disc/note icon - so every row has a
- * consistent visual even for unmatched underground releases.
+ * Square cover art for albums and tracks. Real artwork comes from the dev-side
+ * harvest baked into album_images.json / track_images.json (iTunes, Deezer and
+ * Cover Art Archive). Tracks without their own hit fall back to the same-artist
+ * album cover when the key matches, then to a deterministic gradient tile with a
+ * disc/note icon - so every row has a consistent visual even for unmatched
+ * underground releases.
+ *
+ * The lookup tables load lazily (see ./artMaps), so the first paint may show the
+ * gradient tile and swap to the real cover a moment later. That keeps the maps
+ * out of the landing-shell bundle, which they would otherwise blow as the
+ * catalogue grows.
  */
 export default function CoverArt({ artist, title, kind, size = 44, className = '', overrideSrc }: CoverArtProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  ensureArtMaps();
+  // Re-renders every cover together the moment the maps land.
+  useSyncExternalStore(subscribeArtMaps, artMapsVersion, artMapsVersion);
   // NFC-normalize: bundled JSON keys are NFC; uploaded names can arrive NFD.
   const key = `${artist.normalize('NFC').trim().toLowerCase()}|||${title.normalize('NFC').trim().toLowerCase()}`;
-  const entry = overrideSrc ? { thumb: overrideSrc } : (kind === 'album'
-    ? ALBUMS[key]
-    : TRACKS[key] ?? ALBUMS[key]);
+  const entry = overrideSrc ? { thumb: overrideSrc } : lookupArt(kind, key);
 
   if (entry && !imgFailed) {
     return (

@@ -17,11 +17,18 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json');
+const MEMBER_MBIDS_PATH = join(ROOT, 'scripts', 'member_mbids.json');
 const CACHE_DIR = join(ROOT, 'scripts', '.cache', 'media_links');
 mkdirSync(CACHE_DIR, { recursive: true });
 
 const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const normalizeName = (s) => (s || '').normalize('NFC').trim().toLowerCase();
+
+/** name -> member MusicBrainz id, kept beside the scripts rather than shipped. */
+const memberMbids = existsSync(MEMBER_MBIDS_PATH)
+  ? JSON.parse(readFileSync(MEMBER_MBIDS_PATH, 'utf8'))
+  : {};
 
 function cacheGet(key) {
   const file = join(CACHE_DIR, `${key}.json`);
@@ -61,6 +68,7 @@ for (const artist of knowledge.artists) {
       .filter((rel) => rel.type === 'member of band' && rel.artist?.name)
       .map((rel) => ({
         name: rel.artist.name,
+        mbid: rel.artist.id ?? null,
         roles: (rel.attributes ?? []).filter((a) => a !== 'original'),
         begin: rel.begin || null,
         end: rel.end || null,
@@ -76,6 +84,7 @@ for (const artist of knowledge.artists) {
       const key = m.name.toLowerCase();
       const prev = byName.get(key);
       if (!prev) { byName.set(key, { ...m, roles: [...new Set(m.roles)] }); continue; }
+      prev.mbid = prev.mbid ?? m.mbid;
       prev.roles = [...new Set([...prev.roles, ...m.roles])];
       if (m.begin && (!prev.begin || m.begin < prev.begin)) prev.begin = m.begin;
       if (!m.end) prev.end = null;
@@ -83,10 +92,21 @@ for (const artist of knowledge.artists) {
       prev.current = prev.current || m.current;
     }
 
-    artist.bandMembers = [...byName.values()].sort((a, b) => {
+    const lineup = [...byName.values()].sort((a, b) => {
       if (a.current !== b.current) return a.current ? -1 : 1;
       return (a.begin ?? '9999').localeCompare(b.begin ?? '9999');
     });
+
+    // Member MusicBrainz ids stay OUT of the shipped JSON. They are only used by
+    // the portrait scripts, and the room that renders this file has no gzip
+    // budget headroom - carrying 479 ids inside it cost 11 KB and failed
+    // `npm run build:check`. They live in scripts/member_mbids.json instead.
+    for (const member of lineup) {
+      if (member.mbid) memberMbids[normalizeName(member.name)] = member.mbid;
+      delete member.mbid;
+    }
+
+    artist.bandMembers = lineup;
     enriched++;
     totalMembers += artist.bandMembers.length;
   } catch (err) {
@@ -96,4 +116,9 @@ for (const artist of knowledge.artists) {
 }
 
 writeFileSync(KNOWLEDGE_PATH, `${JSON.stringify(knowledge, null, 2)}\n`);
+writeFileSync(
+  MEMBER_MBIDS_PATH,
+  `${JSON.stringify(Object.fromEntries(Object.keys(memberMbids).sort().map(k => [k, memberMbids[k]])), null, 1)}\n`,
+);
 console.log(`Members: ${enriched} artists enriched, ${totalMembers} member rows (${live} live requests)`);
+console.log(`Member ids: ${Object.keys(memberMbids).length} -> ${MEMBER_MBIDS_PATH}`);

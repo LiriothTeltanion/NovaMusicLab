@@ -134,6 +134,40 @@ export function getArtistBandMembers(artistName: string): OfflineArtistBandMembe
   return getOfflineArtistKnowledge(artistName)?.bandMembers ?? [];
 }
 
+export interface MemberBandAppearance {
+  band: string;
+  roles: string[];
+  current: boolean;
+  begin: string | null;
+  end: string | null;
+}
+
+/**
+ * Every band in the knowledge base that lists this person, built once and
+ * cached. This is what makes a member worth clicking: the archive already knows
+ * that a drummer turns up in three of your bands, it just never said so.
+ */
+const memberBandIndex = new Map<string, MemberBandAppearance[]>();
+for (const artist of database.artists) {
+  for (const member of artist.bandMembers ?? []) {
+    const key = normalizeCatalogName(member.name);
+    if (!key) continue;
+    const appearances = memberBandIndex.get(key) ?? [];
+    appearances.push({
+      band: artist.name,
+      roles: member.roles ?? [],
+      current: member.current,
+      begin: member.begin ?? null,
+      end: member.end ?? null,
+    });
+    memberBandIndex.set(key, appearances);
+  }
+}
+
+export function getBandsForMember(memberName: string): MemberBandAppearance[] {
+  return memberBandIndex.get(normalizeCatalogName(memberName)) ?? [];
+}
+
 export function getOfflineArtistSourceText(artistName: string) {
   const knowledge = getOfflineArtistKnowledge(artistName);
   return knowledge?.emotionalSeeds.sourceText ?? '';

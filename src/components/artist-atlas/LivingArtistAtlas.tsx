@@ -35,6 +35,7 @@ import ArtistAvatar from '../ArtistAvatar';
 import CoverArt from '../CoverArt';
 import ArtistEvidencePanel from './ArtistEvidencePanel';
 import ArtistMediaStage from './ArtistMediaStage';
+import BandLineup from './BandLineup';
 import { ARTIST_ATLAS_COPY } from './atlasCopy';
 import './artistAtlas.css';
 
@@ -149,6 +150,9 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
     ?? [knowledge?.musicbrainz?.lifeSpanBegin, knowledge?.musicbrainz?.lifeSpanEnd]
       .filter(Boolean)
       .join(' — ');
+  // Full lineup (current + former) drives the BandLineup section; the flat name
+  // list is only the fallback for artists with no MusicBrainz member relations.
+  const lineup = knowledge?.bandMembers ?? [];
   const members = knowledge?.bandMembers?.filter(member => member.current).map(member => member.name)
     ?? knowledge?.wikidata?.members
     ?? [];
@@ -344,14 +348,26 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                 <dt><CalendarDays className="h-4 w-4" />{copy.activeYears}</dt>
                 <dd><bdi dir={activeYears ? 'ltr' : 'auto'}>{activeYears || copy.unavailable}</bdi></dd>
               </div>
-              <div>
-                <dt><Users className="h-4 w-4" />{copy.members}</dt>
-                <dd>{members.length ? members.slice(0, 5).join(' · ') : copy.unavailable}</dd>
-              </div>
+              {/* The lineup gets its own section below with photos and roles.
+                * This row stays only for artists MusicBrainz has no member
+                * relations for, where a Wikidata name list is all we have. */}
+              {!lineup.length && (
+                <div>
+                  <dt><Users className="h-4 w-4" />{copy.members}</dt>
+                  <dd>{members.length ? members.slice(0, 5).join(' · ') : copy.unavailable}</dd>
+                </div>
+              )}
             </dl>
             <div className="artist-atlas__tag-cloud" aria-label={copy.genres}>
               {tags.map(tag => <span key={tag}><bdi dir="auto">{tag}</bdi></span>)}
             </div>
+
+            <BandLineup
+              band={selectedArtist.name}
+              members={lineup}
+              copy={copy}
+              accent={tc.c3}
+            />
           </aside>
         </div>
       </section>

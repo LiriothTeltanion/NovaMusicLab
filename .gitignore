@@ -49,3 +49,8 @@ desktop.ini
 # Transient README preview/backup scratch
 .nova-readme-backups/
 .nova-readme-preview/
+
+# Rebuilt on demand by scripts/build_media_progress.mjs - a view of the data
+# files, not a source of truth, so it would only add churn to the history.
+scripts/media_progress.html
+scripts/media_progress.json

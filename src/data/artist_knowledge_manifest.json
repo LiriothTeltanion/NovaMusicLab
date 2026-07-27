@@ -2,7 +2,7 @@
   "meta": {
     "schemaVersion": 1,
     "generatedAt": "2026-07-22T00:57:17.060Z",
-    "sourceFingerprint": "cef00df8a11b31b7da31c0d1afcc0513ab1e8a2fbc96f1a45520a077a3d831b9",
+    "sourceFingerprint": "18feef29f2f3f1435d243b5322c85f92859f63bbec81e4cd8392e25cd17c0065",
     "sourceFiles": [
       "src/data/offline_artist_knowledge.json",
       "src/data/artist_images.json",
@@ -10380,7 +10380,9 @@
       "members": [
         {
           "name": "The Plot in You",
-          "roles": [],
+          "roles": [
+            "lead vocals"
+          ],
           "current": true
         },
         {
@@ -12880,6 +12882,13 @@
       },
       "members": [
         {
+          "name": "Kai Hansen",
+          "roles": [
+            "guitar"
+          ],
+          "current": true
+        },
+        {
           "name": "Markus Grosskopf",
           "roles": [
             "bass"
@@ -12913,13 +12922,6 @@
             "drums (drum set)"
           ],
           "current": true
-        },
-        {
-          "name": "Kai Hansen",
-          "roles": [
-            "guitar"
-          ],
-          "current": false
         },
         {
           "name": "Ingo Schwichtenberg",
@@ -13814,6 +13816,20 @@
       },
       "members": [
         {
+          "name": "Markus Vanhala",
+          "roles": [
+            "electric guitar"
+          ],
+          "current": true
+        },
+        {
+          "name": "Tomy Laisto",
+          "roles": [
+            "guitar"
+          ],
+          "current": true
+        },
+        {
           "name": "Ville Friman",
           "roles": [
             "electric guitar"
@@ -13836,13 +13852,6 @@
           "current": true
         },
         {
-          "name": "Markus Vanhala",
-          "roles": [
-            "electric guitar"
-          ],
-          "current": true
-        },
-        {
           "name": "Tapani Pesonen",
           "roles": [
             "drums (drum set)"
@@ -13860,6 +13869,14 @@
           "name": "Ville Vänni",
           "roles": [
             "electric guitar"
+          ],
+          "current": false
+        },
+        {
+          "name": "Jani Liimatainen",
+          "roles": [
+            "background vocals",
+            "guitar"
           ],
           "current": false
         }
@@ -17069,7 +17086,22 @@
         "end": null,
         "ended": false
       },
-      "members": [],
+      "members": [
+        {
+          "name": "Mike Karle",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "current": true
+        },
+        {
+          "name": "Rory Rodriguez",
+          "roles": [
+            "lead vocals"
+          ],
+          "current": true
+        }
+      ],
       "releases": [
         {
           "id": "2862be82-8f7b-48dc-ba8e-4cda692be90b",
@@ -17162,7 +17194,66 @@
         "end": null,
         "ended": false
       },
-      "members": [],
+      "members": [
+        {
+          "name": "Georg Hólm",
+          "roles": [
+            "background vocals",
+            "bass guitar",
+            "glockenspiel",
+            "keyboard",
+            "toy piano"
+          ],
+          "current": true
+        },
+        {
+          "name": "Jónsi",
+          "roles": [
+            "banjo",
+            "bass guitar",
+            "bowed string instruments",
+            "guitar",
+            "harmonica",
+            "keyboard",
+            "lead vocals"
+          ],
+          "current": true
+        },
+        {
+          "name": "Kjartan Sveinsson",
+          "roles": [
+            "background vocals",
+            "banjo",
+            "flute",
+            "guitar",
+            "keyboard",
+            "oboe",
+            "organ",
+            "piano",
+            "synthesizer",
+            "tin whistle"
+          ],
+          "current": true
+        },
+        {
+          "name": "Ágúst Ævar Gunnarsson",
+          "roles": [
+            "membranophone",
+            "percussion"
+          ],
+          "current": false
+        },
+        {
+          "name": "Orri Páll Dýrason",
+          "roles": [
+            "keyboard",
+            "membranophone",
+            "percussion",
+            "sampler"
+          ],
+          "current": false
+        }
+      ],
       "releases": [
         {
           "id": "7b3844d1-5125-3158-8aed-90e0b6f61def",
@@ -17739,7 +17830,18 @@
         "end": null,
         "ended": false
       },
-      "members": [],
+      "members": [
+        {
+          "name": "התעויוט",
+          "roles": [],
+          "current": true
+        },
+        {
+          "name": "Blackfield",
+          "roles": [],
+          "current": true
+        }
+      ],
       "releases": [
         {
           "id": "4eb67554-8739-35d8-9d16-0add3338034f",

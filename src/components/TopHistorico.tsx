@@ -2064,7 +2064,10 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 <p className="mb-3 text-[11px] leading-relaxed text-gray-500">{artistCopy.lineupHint}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
                   {selectedLineup.slice(0, 9).map(member => {
-                    const enrichment = MEMBER_ENRICHMENT[member.name.toLowerCase()];
+                    // NFC-normalize like ArtistAvatar does: a bare toLowerCase
+                    // leaves an NFD name (macOS exports) showing a photo but
+                    // silently losing its age/birthdate tooltip.
+                    const enrichment = MEMBER_ENRICHMENT[member.name.normalize('NFC').trim().toLowerCase()];
                     return (
                       <div key={member.name} className="group relative flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-2 transition-all hover:bg-white/[0.07] hover:border-white/15 cursor-help">
                         <ArtistAvatar name={member.name} size={28} tooltip={false} />
