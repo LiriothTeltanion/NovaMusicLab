@@ -1623,7 +1623,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       <div className="flex items-start gap-4">
         <div className="relative shrink-0">
           <CoverArt artist={albumArtist} title={album.title} kind="album" size={58} className="rounded-2xl" />
-          <span className="absolute -right-2 -top-2 rounded-lg px-1.5 py-0.5 text-[9px] font-mono font-black"
+          <span className="absolute -end-2 -top-2 rounded-lg px-1.5 py-0.5 text-[9px] font-mono font-black"
             style={{ color: '#020617', backgroundColor: color }}>
             {album.year}
           </span>

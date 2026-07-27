@@ -694,7 +694,7 @@ export default function Dashboard({ data }: DashboardProps) {
                   <ArtistAvatar name={topArtist.name} size={92} tooltip={false} className="relative ring-2 ring-white/20 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
                 </div>
                 <div className="min-w-0 max-w-full flex-1 pe-8 sm:pe-0">
-                  <p className="type-section type-strong break-words text-xl [overflow-wrap:anywhere] md:text-2xl"><bdi dir="auto">{topArtist.name}</bdi></p>
+                  <p className="type-section type-strong break-words text-xl md:text-2xl"><bdi dir="auto">{topArtist.name}</bdi></p>
                   <p className="type-caption type-muted mt-2 max-w-full truncate"><bdi dir="auto">{topArtist.genre}</bdi></p>
                 </div>
                 <ArrowUpRight className="nova-mirror-rtl absolute end-1 top-1 h-5 w-5 shrink-0 text-gray-500 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white motion-reduce:transform-none sm:static" aria-hidden="true" />
@@ -787,7 +787,7 @@ export default function Dashboard({ data }: DashboardProps) {
               <div key={genre.name} className="flex min-h-8 items-center justify-between gap-3 text-xs">
                 <div className="flex min-w-0 items-center gap-2">
                   <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                  <span className="min-w-0 break-words text-gray-300 [overflow-wrap:anywhere]"><bdi dir="auto">{genre.name}</bdi></span>
+                  <span className="min-w-0 break-words text-gray-300"><bdi dir="auto">{genre.name}</bdi></span>
                 </div>
                 <span className="ms-2 shrink-0 font-mono font-bold" style={{ color: COLORS[idx % COLORS.length] }}>
                   {genre.plays.toLocaleString(locale)} · {genre.share}%

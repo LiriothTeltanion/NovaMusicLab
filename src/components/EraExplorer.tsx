@@ -629,7 +629,7 @@ export default function EraExplorer({ data, isPersonalArchive = false }: EraExpl
                       style={{ boxShadow: `0 30px 80px -24px ${identity.palette.primary}` }}
                     >
                       <CoverArt artist={currentEra.top_artist} title={currentEra.top_track} kind="track" size={214} className="rounded-2xl" />
-                      <span className="absolute -right-2 -top-2 rounded-full border border-white/15 bg-black/80 px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-widest text-white">
+                      <span className="absolute -end-2 -top-2 rounded-full border border-white/15 bg-black/80 px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-widest text-white">
                         {copy.archive}
                       </span>
                     </div>

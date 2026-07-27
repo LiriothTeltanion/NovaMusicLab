@@ -374,8 +374,8 @@ export default function CulturalMap({ data, isPersonalArchive = false }: Cultura
                       {c.plays.toLocaleString(locale)}
                     </span>
                   </div>
-                  <p className="break-words text-sm font-bold leading-tight text-white [overflow-wrap:anywhere]">{localizeCountryName(c.country, lang)}</p>
-                  <p className="mt-0.5 break-words text-xs font-mono text-gray-500 [overflow-wrap:anywhere]">
+                  <p className="break-words text-sm font-bold leading-tight text-white">{localizeCountryName(c.country, lang)}</p>
+                  <p className="mt-0.5 break-words text-xs font-mono text-gray-500">
                     {isPersonalArchive ? visitorOriginLabel : localeMeta.lang}
                   </p>
                   <div className="mt-2.5 h-1.5 rounded-full bg-white/5">
@@ -433,7 +433,7 @@ export default function CulturalMap({ data, isPersonalArchive = false }: Cultura
                 {languageData.map(({ label, pct, pctLabel, color }, i) => (
                   <div key={label} className="space-y-1.5">
                     <div className="flex min-w-0 justify-between gap-3 text-xs font-mono">
-                      <span className="min-w-0 break-words font-bold text-gray-300 [overflow-wrap:anywhere]">{label}</span>
+                      <span className="min-w-0 break-words font-bold text-gray-300">{label}</span>
                       <span style={{ color }} className="font-bold">{pctLabel}</span>
                     </div>
                     <div className="h-2.5 rounded-full bg-white/5 overflow-hidden">
