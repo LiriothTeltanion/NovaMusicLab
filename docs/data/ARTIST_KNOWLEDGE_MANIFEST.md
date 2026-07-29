@@ -35,10 +35,15 @@ claim that the visitor opted in. `maxAgeDays` stays `null` because the app does
 not control that cache lifetime. Spotify and Deezer licensing remains marked
 `restricted` independently of this delivery strategy.
 
-The generator also writes `src/data/artist_knowledge_manifest_meta.json`. Idle
-bootstrap checks this small file's SHA-256 source fingerprint first and imports
-the full manifest only for a fresh database or changed knowledge build. Bootstrap
-failures are surfaced once in the console while the museum shell remains usable.
+The generator also writes `src/data/artist_knowledge_manifest_meta.json` and
+`src/data/artist_open_primary_images.json`. Idle bootstrap checks the small
+metadata file's SHA-256 source fingerprint first and imports the full manifest
+only for a fresh database or changed knowledge build. The compact image index
+is the only manifest-derived artwork data imported by the entry experience. It
+contains primary Wikimedia URLs only when the canonical asset's license state
+is `declared` or `verified`; `unverified` and `restricted` assets remain absent.
+Bootstrap failures are surfaced once in the console while the museum shell
+remains usable.
 
 ## Maintenance
 
@@ -54,9 +59,12 @@ file. The audit fails when source data changes without rebuilding the manifest.
 
 The audit also checks unique artist/asset ids, HTTPS provenance, relational
 links, license state, attribution, focal coordinates, cache/privacy policy and
-summary counts. It rejects generated remote images mislabeled as
-`remote-opt-in`, because the current UI loads them directly rather than behind
-a consent action. `npm run verify` includes this audit.
+summary counts. It requires both generated companions to match the canonical
+manifest exactly: metadata must equal `manifest.meta`, and the open-primary
+index must equal the rights-filtered primary Wikimedia set. It rejects generated
+remote images mislabeled as `remote-opt-in`, because the current UI loads them
+directly rather than behind a consent action. `npm run verify` includes this
+audit.
 
 External-identifier reuse and rejected catalog matches are verified separately
 by `npm run audit:identity`. This keeps historical/transliterated archive labels

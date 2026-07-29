@@ -41,6 +41,23 @@ Gemini requests are browser-to-provider and require an explicit visitor action a
 
 Controls include memory-only key handling, explicit clearing, a bounded aggregate schema, safe React text rendering and no raw-file inclusion. Reloading or leaving the assistant discards the key; it is never written to `localStorage`, `sessionStorage` or IndexedDB.
 
+### Proposed cloud control-plane boundary
+
+This boundary is **planned, not implemented**. A future optional control plane
+may receive authentication identity, bounded aggregate snapshots, revocable
+share metadata, feedback and synchronization receipts. Raw listening events and
+audio remain browser-local.
+
+Risks include over-broad snapshots, exposed provider tokens, broken tenant
+isolation, unsafe anonymous writes, replayed synchronization requests and a
+cloud outage becoming an accidental entry requirement.
+
+Required controls include preview and explicit consent, versioned size limits,
+Row Level Security with deny-by-default policies, server-only secrets, strict
+redirect and CORS allowlists, expiry and revocation, idempotency, rate limits,
+audit receipts and a complete local degraded state. See
+[ADR 0004](./decisions/0004-optional-cloud-control-plane.md).
+
 ## Explicit non-goals
 
 - Nova Music Lab does not provide cloud accounts, cross-device sync or encrypted vault storage.

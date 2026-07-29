@@ -2,8 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Check,
   DatabaseZap,
+  LibraryBig,
   RotateCcw,
   Search,
+  ShieldCheck,
   Sparkles,
   Tags,
 } from 'lucide-react';
@@ -15,10 +17,19 @@ import type {
 import { useApp } from '../context/AppContext';
 import { loadDefaultGenreCatalog } from '../data/defaultGenreCatalog';
 import {
+  loadGenreKnowledge,
+  type GenreKnowledgeBundle,
+} from '../genres/genreKnowledge';
+import type { ArtistGenreAssertion } from '../genres/types';
+import {
+  canonicalGenreFamily,
   GENRE_FAMILY_IDS,
+  MAX_ARTIST_GENRE_TAGS,
   genreFamilyLabel,
-  sanitizeSecondaryTags,
+  isGenreFamily,
+  sanitizeGenreTags,
   secondaryTagsForFamily,
+  type GenreFamilyId,
 } from '../utils/genreTaxonomy';
 import { localeFor, pickLanguage } from '../utils/i18n';
 
@@ -87,7 +98,20 @@ export default function GenreTaggingStudio({
       primaryPlaceholder: 'Choose the family that controls charts',
       primaryHint: 'Exactly one primary family receives this artist’s listens, so the archive total never changes.',
       tags: 'Secondary tags',
-      tagsHint: 'Optional context for dossiers and search. Tags never inflate chart totals.',
+      tagsHint: 'Add several genres, subgenres and scenes. They enrich search and dossiers but never inflate chart totals.',
+      vocabulary: 'Open genre vocabulary',
+      vocabularyLoading: 'Loading the complete genre vocabulary…',
+      vocabularyError: 'The extended vocabulary is unavailable. Reviewed starter tags still work.',
+      vocabularyCount: (count: number) => `${count.toLocaleString('en-US')} searchable terms from MusicBrainz plus the Nova catalog.`,
+      tagSearch: 'Find a genre or subgenre',
+      tagSearchPlaceholder: 'Try blackgaze, corrido, ambient techno…',
+      evidence: 'Evidence attached to this artist',
+      evidenceEmpty: 'No provider-backed genre evidence is stored for this artist yet.',
+      accepted: 'Accepted',
+      candidate: 'Candidate',
+      rejectedGuard: (count: number) => `${count} unsafe match${count === 1 ? '' : 'es'} remains blocked and hidden.`,
+      tagLimit: `Up to ${MAX_ARTIST_GENRE_TAGS} detailed terms per artist.`,
+      maxTags: `You can keep up to ${MAX_ARTIST_GENRE_TAGS} detailed genre terms per artist.`,
       save: 'Save local correction',
       reset: 'Restore automatic genre',
       saved: (artist: string) => `${artist} was classified and every genre chart is now synchronized.`,
@@ -126,7 +150,20 @@ export default function GenreTaggingStudio({
       primaryPlaceholder: 'Elige la familia que controla los gráficos',
       primaryHint: 'Exactamente una familia recibe las escuchas del artista, por lo que el total del archivo nunca cambia.',
       tags: 'Etiquetas secundarias',
-      tagsHint: 'Contexto opcional para fichas y búsqueda. Las etiquetas nunca inflan los totales.',
+      tagsHint: 'Añade varios géneros, subgéneros y escenas. Enriquecen búsquedas y fichas sin inflar los gráficos.',
+      vocabulary: 'Vocabulario abierto de géneros',
+      vocabularyLoading: 'Cargando el vocabulario completo de géneros…',
+      vocabularyError: 'El vocabulario extendido no está disponible. Las etiquetas iniciales revisadas siguen funcionando.',
+      vocabularyCount: (count: number) => `${count.toLocaleString('es-ES')} términos buscables de MusicBrainz y del catálogo Nova.`,
+      tagSearch: 'Buscar género o subgénero',
+      tagSearchPlaceholder: 'Prueba blackgaze, corrido, ambient techno…',
+      evidence: 'Evidencia vinculada a este artista',
+      evidenceEmpty: 'Todavía no hay evidencia de género respaldada por proveedores para este artista.',
+      accepted: 'Aceptado',
+      candidate: 'Candidato',
+      rejectedGuard: (count: number) => `${count} coincidencia${count === 1 ? '' : 's'} insegura${count === 1 ? '' : 's'} permanece${count === 1 ? '' : 'n'} bloqueada${count === 1 ? '' : 's'} y oculta${count === 1 ? '' : 's'}.`,
+      tagLimit: `Hasta ${MAX_ARTIST_GENRE_TAGS} términos detallados por artista.`,
+      maxTags: `Puedes conservar hasta ${MAX_ARTIST_GENRE_TAGS} términos detallados por artista.`,
       save: 'Guardar corrección local',
       reset: 'Restaurar género automático',
       saved: (artist: string) => `${artist} fue clasificado y todos los gráficos de género quedaron sincronizados.`,
@@ -165,7 +202,20 @@ export default function GenreTaggingStudio({
       primaryPlaceholder: 'בחירת המשפחה ששולטת בתרשימים',
       primaryHint: 'בדיוק משפחה ראשית אחת מקבלת את ההשמעות, ולכן סך הארכיון לעולם אינו משתנה.',
       tags: 'תגים משניים',
-      tagsHint: 'הקשר אופציונלי לתיקים ולחיפוש. התגים אינם מנפחים את סך ההשמעות.',
+      tagsHint: 'אפשר להוסיף כמה ז׳אנרים, תתי־ז׳אנרים וסצנות. הם מעשירים חיפוש ותיקים בלי לנפח גרפים.',
+      vocabulary: 'אוצר ז׳אנרים פתוח',
+      vocabularyLoading: 'טוענים את אוצר הז׳אנרים המלא…',
+      vocabularyError: 'אוצר הז׳אנרים המורחב אינו זמין. תגיות הפתיחה שנבדקו עדיין פעילות.',
+      vocabularyCount: (count: number) => `${count.toLocaleString('he-IL')} מונחים לחיפוש מ־MusicBrainz ומקטלוג Nova.`,
+      tagSearch: 'חיפוש ז׳אנר או תת־ז׳אנר',
+      tagSearchPlaceholder: 'למשל blackgaze, corrido, ambient techno…',
+      evidence: 'ראיות ז׳אנר המקושרות לאמן',
+      evidenceEmpty: 'עדיין אין לאמן הזה ראיות ז׳אנר מגובות ספק.',
+      accepted: 'התקבל',
+      candidate: 'מועמד',
+      rejectedGuard: (count: number) => `${count} התאמות לא בטוחות נשארות חסומות ומוסתרות.`,
+      tagLimit: `עד ${MAX_ARTIST_GENRE_TAGS} מונחים מפורטים לכל אמן.`,
+      maxTags: `אפשר לשמור עד ${MAX_ARTIST_GENRE_TAGS} מונחי ז׳אנר מפורטים לכל אמן.`,
       save: 'שמירת תיקון מקומי',
       reset: 'שחזור הז׳אנר האוטומטי',
       saved: (artist: string) => `${artist} סווג וכל תרשימי הז׳אנרים סונכרנו.`,
@@ -187,11 +237,14 @@ export default function GenreTaggingStudio({
   );
   const [loading, setLoading] = useState(!data.artist_genre_catalog?.length && useBundledCatalog);
   const [loadError, setLoadError] = useState(false);
+  const [genreKnowledge, setGenreKnowledge] = useState<GenreKnowledgeBundle | null>(null);
+  const [genreKnowledgeError, setGenreKnowledgeError] = useState(false);
   const [query, setQuery] = useState('');
+  const [tagQuery, setTagQuery] = useState('');
   const [filter, setFilter] = useState<StudioFilter>('review');
   const [visibleLimit, setVisibleLimit] = useState(PAGE_SIZE);
   const [selectedKey, setSelectedKey] = useState('');
-  const [family, setFamily] = useState('');
+  const [family, setFamily] = useState<GenreFamilyId | ''>('');
   const [tags, setTags] = useState<string[]>([]);
   const [status, setStatus] = useState('');
 
@@ -225,10 +278,25 @@ export default function GenreTaggingStudio({
     return () => { active = false; };
   }, [data.artist_genre_catalog, useBundledCatalog]);
 
+  useEffect(() => {
+    let active = true;
+    setGenreKnowledgeError(false);
+    void loadGenreKnowledge()
+      .then(bundle => {
+        if (active) setGenreKnowledge(bundle);
+      })
+      .catch(() => {
+        if (active) setGenreKnowledgeError(true);
+      });
+    return () => { active = false; };
+  }, []);
+
   const assignmentsByArtist = useMemo(() => assignmentMap(assignments), [assignments]);
   const rows = useMemo<EffectiveCatalogRow[]>(() => (catalog ?? []).map(entry => {
     const assignment = assignmentsByArtist.get(entry.artistKey);
-    const effectiveFamily = assignment?.family ?? entry.automaticFamily;
+    const effectiveFamily = assignment
+      ? canonicalGenreFamily(assignment.family)
+      : canonicalGenreFamily(entry.automaticFamily);
     return {
       ...entry,
       assignment,
@@ -236,6 +304,17 @@ export default function GenreTaggingStudio({
       needsReview: !assignment && (entry.automaticFamily === 'Unclassified' || entry.automaticFamily === 'Alternative'),
     };
   }), [assignmentsByArtist, catalog]);
+  const evidenceSearchByArtist = useMemo(() => {
+    const searchByArtist = new Map<string, string[]>();
+    if (!genreKnowledge) return searchByArtist;
+    genreKnowledge.assertionsByArtist.forEach((assertions, key) => {
+      searchByArtist.set(key, assertions
+        .filter(assertion => assertion.status !== 'rejected')
+        .map(assertion => genreKnowledge.termsById.get(assertion.termId)?.canonicalName)
+        .filter((name): name is string => Boolean(name)));
+    });
+    return searchByArtist;
+  }, [genreKnowledge]);
 
   const filteredRows = useMemo(() => {
     const normalizedQuery = searchable(query);
@@ -252,13 +331,43 @@ export default function GenreTaggingStudio({
           row.automaticFamily,
           row.assignment?.family ?? '',
           ...(row.assignment?.tags ?? []),
+          ...(evidenceSearchByArtist.get(row.artistKey) ?? []),
         ].join(' '));
         return haystack.includes(normalizedQuery);
       })
       .sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name, locale));
-  }, [filter, locale, query, rows]);
+  }, [evidenceSearchByArtist, filter, locale, query, rows]);
 
   const selected = rows.find(row => row.artistKey === selectedKey);
+  const selectedAssertions = useMemo<ArtistGenreAssertion[]>(() => (
+    selected ? genreKnowledge?.assertionsByArtist.get(selected.artistKey) ?? [] : []
+  ), [genreKnowledge, selected]);
+  const visibleEvidenceAssertions = useMemo(
+    () => selectedAssertions.filter(assertion => assertion.status !== 'rejected'),
+    [selectedAssertions],
+  );
+  const evidenceTagNames = useMemo(() => visibleEvidenceAssertions
+    .map(assertion => genreKnowledge?.termsById.get(assertion.termId)?.canonicalName)
+    .filter((name): name is string => Boolean(name)), [
+    genreKnowledge,
+    visibleEvidenceAssertions,
+  ]);
+  const starterTags = useMemo(() => sanitizeGenreTags([
+    ...tags,
+    ...evidenceTagNames,
+    ...secondaryTagsForFamily(family),
+  ]), [evidenceTagNames, family, tags]);
+  const tagSearchResults = useMemo(() => {
+    const normalizedQuery = searchable(tagQuery);
+    if (!normalizedQuery || !genreKnowledge) return [];
+    return genreKnowledge.ontology.terms
+      .filter(term => {
+        if (tags.some(tag => searchable(tag) === searchable(term.canonicalName))) return false;
+        return searchable([term.canonicalName, ...term.aliases].join(' ')).includes(normalizedQuery);
+      })
+      .slice(0, 24);
+  }, [genreKnowledge, tagQuery, tags]);
+  const rejectedEvidenceCount = genreKnowledge?.knowledge.stats.rejectedAssertionCount ?? 0;
   const visibleRows = filteredRows.slice(0, visibleLimit);
   const unclassifiedPlays = rows
     .filter(row => row.effectiveFamily === 'Unclassified')
@@ -286,8 +395,11 @@ export default function GenreTaggingStudio({
       setTags([]);
       return;
     }
-    setFamily(selected.assignment?.family ?? (selected.needsReview ? '' : selected.automaticFamily));
+    setFamily(selected.assignment
+      ? canonicalGenreFamily(selected.assignment.family)
+      : selected.needsReview ? '' : canonicalGenreFamily(selected.automaticFamily));
     setTags(selected.assignment?.tags ?? []);
+    setTagQuery('');
   }, [selected]);
 
   const selectArtist = (artistKey: string) => {
@@ -295,15 +407,17 @@ export default function GenreTaggingStudio({
     setStatus('');
   };
 
-  const chooseFamily = (nextFamily: string) => {
+  const chooseFamily = (nextFamily: GenreFamilyId | '') => {
     setFamily(nextFamily);
-    setTags(current => sanitizeSecondaryTags(nextFamily, current));
   };
 
   const toggleTag = (tag: string) => {
-    setTags(current => current.includes(tag)
-      ? current.filter(value => value !== tag)
-      : sanitizeSecondaryTags(family, [...current, tag]));
+    setTags(current => {
+      if (current.includes(tag)) return current.filter(value => value !== tag);
+      const next = sanitizeGenreTags([...current, tag]);
+      if (next.length === current.length) setStatus(copy.maxTags);
+      return next;
+    });
   };
 
   const saveAssignment = () => {
@@ -312,7 +426,7 @@ export default function GenreTaggingStudio({
       artistKey: selected.artistKey,
       artistName: selected.name,
       family,
-      tags: sanitizeSecondaryTags(family, tags),
+      tags: sanitizeGenreTags(tags),
       updatedAt: new Date().toISOString(),
     };
     const next = [
@@ -329,7 +443,7 @@ export default function GenreTaggingStudio({
       assignments.filter(item => item.artistKey !== selected.artistKey),
       catalog,
     );
-    setFamily(selected.needsReview ? '' : selected.automaticFamily);
+    setFamily(selected.needsReview ? '' : canonicalGenreFamily(selected.automaticFamily));
     setTags([]);
     setStatus(copy.restored(selected.name));
   };
@@ -389,6 +503,26 @@ export default function GenreTaggingStudio({
           <p className="rounded-xl border border-emerald-400/15 bg-emerald-400/[0.05] px-3 py-2 text-[10px] leading-relaxed text-emerald-200/80">
             {copy.exactNote}
           </p>
+
+          <div className="grid gap-3 rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-4 sm:grid-cols-[auto_1fr] sm:items-center">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+              <LibraryBig className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div className="min-w-0">
+              <p className="text-xs font-black text-cyan-100">{copy.vocabulary}</p>
+              <p className="mt-1 text-[10px] leading-relaxed text-gray-400">
+                {!genreKnowledge && !genreKnowledgeError && copy.vocabularyLoading}
+                {genreKnowledge && copy.vocabularyCount(genreKnowledge.ontology.stats.termCount)}
+                {genreKnowledgeError && copy.vocabularyError}
+              </p>
+              {rejectedEvidenceCount > 0 && (
+                <p className="mt-1 flex items-center gap-1.5 text-[10px] text-emerald-200/80">
+                  <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                  {copy.rejectedGuard(rejectedEvidenceCount)}
+                </p>
+              )}
+            </div>
+          </div>
 
           <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(18rem,0.82fr)_minmax(0,1.18fr)]">
             <div className="min-w-0 space-y-3">
@@ -500,7 +634,12 @@ export default function GenreTaggingStudio({
                     <select
                       id="genre-primary-family"
                       value={family}
-                      onChange={event => chooseFamily(event.target.value)}
+                      onChange={event => {
+                        const nextFamily = event.target.value;
+                        if (nextFamily === '' || isGenreFamily(nextFamily)) {
+                          chooseFamily(nextFamily);
+                        }
+                      }}
                       className="mt-2 min-h-11 w-full rounded-xl border border-white/10 bg-[#0b0d18] px-3 text-sm text-white outline-none focus:border-white/25 focus:ring-2 focus:ring-white/10"
                     >
                       <option value="">{copy.primaryPlaceholder}</option>
@@ -514,8 +653,9 @@ export default function GenreTaggingStudio({
                   <div>
                     <p className="text-xs font-black text-white">{copy.tags}</p>
                     <p className="mt-1 text-[10px] leading-relaxed text-gray-500">{copy.tagsHint}</p>
+                    <p className="mt-1 text-[9px] font-mono text-gray-600">{copy.tagLimit}</p>
                     <div className="mt-3 flex flex-wrap gap-2">
-                      {family && secondaryTagsForFamily(family).map(tag => {
+                      {starterTags.map(tag => {
                         const active = tags.includes(tag);
                         return (
                           <button
@@ -533,10 +673,75 @@ export default function GenreTaggingStudio({
                           </button>
                         );
                       })}
-                      {family && !secondaryTagsForFamily(family).length && (
+                      {family && !starterTags.length && (
                         <span className="text-xs text-gray-600">—</span>
                       )}
                     </div>
+
+                    <label htmlFor="genre-term-search" className="mt-5 block text-[10px] font-mono font-black uppercase tracking-widest text-gray-400">
+                      {copy.tagSearch}
+                    </label>
+                    <div className="relative mt-2">
+                      <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" aria-hidden="true" />
+                      <input
+                        id="genre-term-search"
+                        type="search"
+                        value={tagQuery}
+                        onChange={event => setTagQuery(event.target.value)}
+                        placeholder={copy.tagSearchPlaceholder}
+                        className="min-h-11 w-full rounded-xl border border-white/10 bg-black/30 pe-3 ps-10 text-sm text-white outline-none transition focus:border-white/25 focus:ring-2 focus:ring-white/10"
+                      />
+                    </div>
+                    {tagSearchResults.length > 0 && (
+                      <div className="mt-3 flex max-h-48 flex-wrap gap-2 overflow-y-auto pe-1">
+                        {tagSearchResults.map(term => (
+                          <button
+                            key={term.id}
+                            type="button"
+                            onClick={() => toggleTag(term.canonicalName)}
+                            className="min-h-11 rounded-xl border border-cyan-300/15 bg-cyan-300/[0.05] px-3 py-2 text-[10px] font-bold text-cyan-100 transition hover:bg-cyan-300/10"
+                          >
+                            {term.canonicalName}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                    <p className="text-xs font-black text-white">{copy.evidence}</p>
+                    {!visibleEvidenceAssertions.length ? (
+                      <p className="mt-2 text-[10px] leading-relaxed text-gray-500">{copy.evidenceEmpty}</p>
+                    ) : (
+                      <div className="mt-3 space-y-2">
+                        {visibleEvidenceAssertions.slice(0, 12).map(assertion => {
+                          const term = genreKnowledge?.termsById.get(assertion.termId);
+                          if (!term) return null;
+                          return (
+                            <div key={assertion.id} className="flex min-w-0 items-center justify-between gap-3 rounded-xl border border-white/7 bg-black/20 px-3 py-2">
+                              <button
+                                type="button"
+                                onClick={() => toggleTag(term.canonicalName)}
+                                className="min-w-0 text-start hover:text-white"
+                              >
+                                <span className="block truncate text-[11px] font-bold text-gray-200">
+                                  {term.canonicalName}
+                                </span>
+                                <span className="mt-0.5 block truncate text-[8px] font-mono uppercase tracking-wide text-gray-600">
+                                  {assertion.evidence.map(item => item.provider).join(' · ')}
+                                </span>
+                              </button>
+                              <span className="shrink-0 rounded-full border px-2 py-0.5 text-[8px] font-mono font-black uppercase tracking-wide"
+                                style={assertion.status === 'accepted'
+                                  ? { color: '#86efac', borderColor: '#22c55e40', backgroundColor: '#22c55e10' }
+                                  : { color: '#fde68a', borderColor: '#f59e0b40', backgroundColor: '#f59e0b10' }}>
+                                {assertion.status === 'accepted' ? copy.accepted : copy.candidate}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                   <div className="grid gap-2 sm:grid-cols-2">

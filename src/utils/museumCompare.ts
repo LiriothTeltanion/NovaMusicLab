@@ -1,11 +1,48 @@
 import type { MusicDnaData, TopArtist } from '../types';
 import { buildEmotionalMapEngineProfile, type EmotionalMapEngineProfile } from '../engines/emotionalEngine';
+import { normalizeCatalogName } from './catalogName';
 
 const MOOD_PROFILE_LIMIT = 24;
 const MAX_SHARED_ARTISTS = 12;
 
-function normalizeArtistName(name: string): string {
-  return name.trim().toLowerCase();
+function comparisonArtists(data: MusicDnaData): TopArtist[] {
+  if (data.artist_genre_catalog?.length) {
+    return data.artist_genre_catalog.map(artist => ({
+      name: artist.name,
+      plays: artist.plays,
+      genre: artist.automaticGenre,
+      country: artist.country,
+    }));
+  }
+  return data.top_artists;
+}
+
+function buildArtistMap(data: MusicDnaData): Map<string, TopArtist> {
+  const artists = new Map<string, TopArtist>();
+  for (const artist of comparisonArtists(data)) {
+    const key = normalizeCatalogName(artist.name);
+    if (!key) continue;
+    const current = artists.get(key);
+    artists.set(key, current
+      ? { ...current, plays: current.plays + artist.plays }
+      : artist);
+  }
+  return artists;
+}
+
+function comparisonScope(
+  data: MusicDnaData,
+  normalizedIdentityCount: number,
+): ArtistComparisonScope {
+  const sourceArtistCount = comparisonArtists(data).length;
+  return {
+    comparedArtists: normalizedIdentityCount,
+    archiveArtists: data.core_metrics.unique_artists,
+    // Normalization can deliberately merge spelling, case and accent variants.
+    // Completeness therefore describes source-catalog coverage, not whether the
+    // normalized identity count still equals the raw unique-artist metric.
+    complete: sourceArtistCount >= data.core_metrics.unique_artists,
+  };
 }
 
 export interface SharedArtist {
@@ -21,16 +58,25 @@ export interface ArtistOverlapResult {
   onlyB: TopArtist[];
   /** shared / (unique artists in A ∪ B) * 100, rounded to 1 decimal. */
   overlapPct: number;
+  scopeA: ArtistComparisonScope;
+  scopeB: ArtistComparisonScope;
+}
+
+export interface ArtistComparisonScope {
+  comparedArtists: number;
+  archiveArtists: number;
+  complete: boolean;
 }
 
 /**
- * Compares the two full top_artists lists (not just the visible top-N), so
- * the overlap percentage reflects the real archive rather than a truncated
- * preview slice.
+ * Uses the archive-wide artist catalog when present. Older/imported datasets
+ * without that catalog fall back to `top_artists`, and the returned scope makes
+ * that limitation visible to the UI instead of presenting a partial overlap as
+ * a full-archive comparison.
  */
 export function compareArtistOverlap(a: MusicDnaData, b: MusicDnaData): ArtistOverlapResult {
-  const mapA = new Map(a.top_artists.map(artist => [normalizeArtistName(artist.name), artist]));
-  const mapB = new Map(b.top_artists.map(artist => [normalizeArtistName(artist.name), artist]));
+  const mapA = buildArtistMap(a);
+  const mapB = buildArtistMap(b);
 
   const shared: SharedArtist[] = [];
   const onlyA: TopArtist[] = [];
@@ -61,6 +107,8 @@ export function compareArtistOverlap(a: MusicDnaData, b: MusicDnaData): ArtistOv
     onlyA,
     onlyB,
     overlapPct,
+    scopeA: comparisonScope(a, mapA.size),
+    scopeB: comparisonScope(b, mapB.size),
   };
 }
 

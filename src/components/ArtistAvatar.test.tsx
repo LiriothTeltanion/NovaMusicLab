@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { AppProvider } from '../context/AppContext';
-import ArtistAvatar from './ArtistAvatar';
+import ArtistAvatar, { getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
 
 function avatar(name: string) {
   return (
@@ -13,6 +13,25 @@ function avatar(name: string) {
 }
 
 describe('ArtistAvatar', () => {
+  it('exposes only reviewed Wikimedia-hosted primary portraits', () => {
+    expect(getOpenKnowledgeArtistImageUrl('Bring Me the Horizon', 96))
+      .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+    expect(getOpenKnowledgeArtistImageUrl('TesseracT', 96)).toBeNull();
+    expect(getOpenKnowledgeArtistImageUrl('Rain City Drive', 96)).toBeNull();
+    expect(getOpenKnowledgeArtistImageUrl('Unknown Artist', 96)).toBeNull();
+  });
+
+  it('keeps licensed portraits reachable through real punctuation and diacritics', () => {
+    expect(getOpenKnowledgeArtistImageUrl('H.E.A.T', 96))
+      .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+    expect(getOpenKnowledgeArtistImageUrl('nothing,nowhere.', 96))
+      .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+    expect(getOpenKnowledgeArtistImageUrl('Sigur Rós', 96))
+      .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+    expect(getOpenKnowledgeArtistImageUrl('Sigur Ro\u0301s', 96))
+      .toBe(getOpenKnowledgeArtistImageUrl('Sigur Rós', 96));
+  });
+
   it('resets a failed media chain when the selected artist changes', async () => {
     const { rerender } = render(avatar('Bring Me the Horizon'));
 

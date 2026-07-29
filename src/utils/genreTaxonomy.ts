@@ -171,6 +171,34 @@ export function sanitizeSecondaryTags(family: string, tags: readonly string[]): 
   });
 }
 
+export const MAX_ARTIST_GENRE_TAGS = 12;
+export const MAX_ARTIST_GENRE_TAG_LENGTH = 80;
+
+/**
+ * Sanitizes an extensible, user-authored genre list without pretending the
+ * current in-app vocabulary is exhaustive. Genre Lab supplies canonical
+ * vocabulary labels, while portable archives may retain a future genre that
+ * was added after this application build.
+ */
+export function sanitizeGenreTags(tags: readonly string[]): string[] {
+  const seen = new Set<string>();
+  const sanitized: string[] = [];
+
+  for (const rawTag of tags) {
+    const tag = rawTag.normalize('NFC').trim().replace(/\s+/g, ' ');
+    if (!tag
+      || tag.length > MAX_ARTIST_GENRE_TAG_LENGTH
+      || /[\p{Cc}\p{Cf}]/u.test(tag)) continue;
+    const key = tag.toLocaleLowerCase('en-US');
+    if (seen.has(key)) continue;
+    seen.add(key);
+    sanitized.push(tag);
+    if (sanitized.length === MAX_ARTIST_GENRE_TAGS) break;
+  }
+
+  return sanitized;
+}
+
 export function genreSearchText(family: GenreFamilyDefinition, lang: Lang): string {
   return [family.id, family.labels[lang], ...family.secondaryTags]
     .join(' ')

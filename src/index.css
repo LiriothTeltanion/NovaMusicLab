@@ -48,8 +48,9 @@
   --bg: #050b14;
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
-  --nova-app-header-height: 69px;
-  --nova-expedition-console-height: 74px;
+  --nova-app-header-height: 60px;
+  --nova-hub-dock-height: 116px;
+  --nova-sticky-shell-height: calc(var(--nova-app-header-height) + var(--nova-hub-dock-height));
 
   /* Three deliberate voices: editorial display, highly legible reading text,
      and a real technical monospace. The remote font request stays unchanged;
@@ -139,6 +140,22 @@
   inline-size: 100%;
 }
 
+.nova-app-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.35rem, 1.2vw, 1rem);
+  min-block-size: var(--nova-app-header-height);
+}
+
+.nova-app-brand__wordmark {
+  display: none;
+}
+
+.museum-room-progress {
+  scroll-margin-block-start: calc(var(--nova-sticky-shell-height) + 1rem);
+}
+
 .nova-room-main {
   container: nova-room / inline-size;
   flex: 1 1 0%;
@@ -163,20 +180,41 @@
   display: none;
 }
 
+@media (min-width: 640px) {
+  :root {
+    --nova-app-header-height: 69px;
+    --nova-hub-dock-height: 116px;
+  }
+}
+
+@media (min-width: 901px) {
+  :root {
+    --nova-hub-dock-height: 71px;
+  }
+}
+
+@media (min-width: 1180px) {
+  .nova-app-brand__wordmark {
+    display: block;
+  }
+}
+
+@media (min-width: 1241px) {
+  :root {
+    --nova-hub-dock-height: 94px;
+  }
+}
+
 @media (min-width: 768px) {
   .nova-room-main {
     inline-size: auto;
   }
 
-  .nova-app-header {
-    min-block-size: var(--nova-app-header-height);
-  }
-
   .nova-app-sidebar {
-    inset-block-start: calc(var(--nova-app-header-height) + var(--nova-expedition-console-height));
+    inset-block-start: var(--nova-sticky-shell-height);
     flex: 0 0 5rem;
     inline-size: 5rem;
-    max-block-size: calc(100dvh - var(--nova-app-header-height) - var(--nova-expedition-console-height));
+    max-block-size: calc(100dvh - var(--nova-sticky-shell-height));
     padding: 0.5rem;
     border-inline-end-style: solid;
     border-inline-end-width: 1px;

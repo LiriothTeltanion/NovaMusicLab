@@ -136,8 +136,9 @@ export function buildDeepLink(state: DeepLinkState) {
   const route = TAB_ROUTES[state.tab] ?? TAB_ROUTES.hero;
   const params = new URLSearchParams();
 
-  // Dossier state belongs to the Top room. Keeping it out of unrelated rooms
-  // avoids carrying three long, stale catalog keys through every museum URL.
+  // Dossier state belongs to Top, while the Living Artist Atlas carries only
+  // its selected artist. Keeping those keys out of unrelated rooms avoids
+  // dragging stale catalog state through every museum URL.
   if (state.tab === 'top') {
     params.set('view', state.topSubTab);
     if (state.topSubTab !== 'genres' && state.topSubTab !== 'years') {
@@ -145,6 +146,8 @@ export function buildDeepLink(state: DeepLinkState) {
       if (state.selectedAlbumKey) params.set('album', state.selectedAlbumKey);
       if (state.selectedTrackKey) params.set('track', state.selectedTrackKey);
     }
+  } else if (state.tab === 'artist' && state.selectedArtistName) {
+    params.set('artist', state.selectedArtistName);
   }
 
   const query = params.toString();

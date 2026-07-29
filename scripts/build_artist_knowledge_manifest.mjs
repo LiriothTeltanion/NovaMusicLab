@@ -4,6 +4,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { fingerprintSourceFiles } from './lib/sourceFingerprint.mjs';
+import {
+  buildOpenPrimaryImageIndex,
+  OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH,
+} from './lib/openPrimaryImageIndex.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE_FILES = [
@@ -281,8 +285,12 @@ const outputPath = path.join(root, outputRelativePath);
 fs.writeFileSync(outputPath, `${JSON.stringify(manifest, null, 2)}\n`);
 const metadataOutputPath = path.join(root, metadataOutputRelativePath);
 fs.writeFileSync(metadataOutputPath, `${JSON.stringify(manifest.meta, null, 2)}\n`);
+const openPrimaryImageIndexPath = path.join(root, OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH);
+const openPrimaryImageIndex = buildOpenPrimaryImageIndex(manifest);
+fs.writeFileSync(openPrimaryImageIndexPath, `${JSON.stringify(openPrimaryImageIndex, null, 2)}\n`);
 process.stdout.write(
   `Artist knowledge manifest v${manifest.meta.schemaVersion}: `
   + `${artists.length} artists, ${visualAssets.length} assets, `
-  + `${manifest.meta.assetsAwaitingLicenseReview} awaiting license review.\n`,
+  + `${manifest.meta.assetsAwaitingLicenseReview} awaiting license review, `
+  + `${Object.keys(openPrimaryImageIndex).length} open primary images.\n`,
 );

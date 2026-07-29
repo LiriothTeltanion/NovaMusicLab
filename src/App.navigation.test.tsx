@@ -99,7 +99,17 @@ describe('room navigation focus', () => {
     const sidebar = screen.getByTestId('museum-sidebar');
     const main = screen.getByTestId('museum-room-main');
 
-    expect(screen.getByTestId('museum-app-header')).toHaveClass('nova-app-header', 'flex-nowrap');
+    const appHeader = screen.getByTestId('museum-app-header');
+    const mapDock = screen.getByTestId('museum-map-dock');
+    const expeditionConsole = screen.getByTestId('expedition-console');
+    const roomNavigator = screen.getByTestId('room-progress');
+    expect(appHeader).toHaveClass('nova-app-header');
+    expect(appHeader).toContainElement(mapDock);
+    expect(appHeader.nextElementSibling).toBe(expeditionConsole);
+    expect(mapDock).toHaveAccessibleName('Museum map');
+    expect(expeditionConsole).toContainElement(roomNavigator);
+    expect(main).not.toContainElement(roomNavigator);
+    expect(screen.getAllByTestId('room-progress')).toHaveLength(1);
     expect(shell).toHaveClass('w-full', 'min-w-0');
     expect(sidebar).toHaveClass('nova-app-sidebar');
     expect(main).toHaveClass('min-w-0', 'flex-1');

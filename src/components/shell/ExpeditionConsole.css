@@ -1,9 +1,9 @@
 .expedition-console {
   position: sticky;
-  top: 4.25rem;
-  z-index: 35;
+  inset-block-start: var(--nova-app-header-height);
+  z-index: 39;
   display: grid;
-  grid-template-columns: minmax(18rem, 0.9fr) minmax(24rem, 1.55fr) minmax(12rem, 0.65fr);
+  grid-template-columns: minmax(17rem, 0.9fr) minmax(22rem, 1.45fr) auto auto;
   align-items: stretch;
   gap: 0.55rem;
   width: 100%;
@@ -14,6 +14,13 @@
     color-mix(in srgb, var(--bg) 88%, transparent);
   box-shadow: 0 16px 32px color-mix(in srgb, var(--bg) 62%, transparent);
   backdrop-filter: blur(22px) saturate(130%);
+}
+
+.expedition-console > .museum-room-progress {
+  display: block;
+  min-width: 0;
+  min-height: 3.25rem;
+  margin: 0;
 }
 
 .expedition-journey {
@@ -79,16 +86,22 @@
   -webkit-line-clamp: 2;
 }
 
+.archive-capsule-shell {
+  position: relative;
+  min-width: 0;
+}
+
 .archive-capsule {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.45rem;
+  width: 8.35rem;
   min-width: 0;
   min-height: 3.25rem;
   border: 1px solid color-mix(in srgb, var(--c3) 22%, transparent);
   border-radius: 1rem;
-  padding: 0.38rem 0.65rem;
+  padding: 0.38rem 0.5rem;
   color: var(--fg);
   background:
     radial-gradient(circle at 0% 50%, color-mix(in srgb, var(--c3) 11%, transparent), transparent 28%),
@@ -130,13 +143,67 @@
 }
 
 .archive-capsule__compact-status {
-  display: none;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  line-height: 1.1;
+}
+
+.archive-capsule__compact-status strong,
+.archive-capsule__compact-status small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.archive-capsule__compact-status strong {
+  color: color-mix(in srgb, var(--c1) 78%, var(--fg));
+  font-size: 0.69rem;
+}
+
+.archive-capsule__compact-status small {
+  margin-top: 0.18rem;
+  color: color-mix(in srgb, var(--fg) 58%, transparent);
+  font-size: 0.62rem;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.archive-capsule__chevron {
+  flex: none;
+  color: color-mix(in srgb, var(--fg) 48%, transparent);
+  transition: rotate 160ms ease, color 160ms ease;
+}
+
+.archive-capsule__chevron[data-open='true'] {
+  rotate: 180deg;
+  color: var(--c1);
+}
+
+.archive-capsule__panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.55rem);
+  inset-inline-end: 0;
+  z-index: 80;
+  width: min(46rem, calc(100vw - 1rem));
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--c1) 30%, transparent);
+  border-radius: 1.1rem;
+  padding: 0.7rem;
+  color: var(--fg);
+  background:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--c1) 12%, transparent), transparent 34%),
+    color-mix(in srgb, var(--bg) 96%, #020617 4%);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.7), 0 0 30px color-mix(in srgb, var(--c1) 10%, transparent);
+  backdrop-filter: blur(22px) saturate(120%);
 }
 
 .archive-capsule__details {
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.85fr 0.75fr 0.75fr;
-  gap: 0.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem 0.5rem;
   min-width: 0;
   margin: 0;
 }
@@ -176,15 +243,38 @@
   white-space: nowrap;
 }
 
+.archive-capsule__manage {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  margin-top: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--c1) 28%, transparent);
+  border-radius: 0.8rem;
+  color: color-mix(in srgb, var(--c1) 82%, var(--fg));
+  background: color-mix(in srgb, var(--c1) 8%, transparent);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.archive-capsule__manage:hover,
+.archive-capsule__manage:focus-visible {
+  border-color: color-mix(in srgb, var(--c1) 48%, transparent);
+  background: color-mix(in srgb, var(--c1) 13%, transparent);
+}
+
 .nova-command-trigger {
-  display: flex;
+  display: grid;
+  width: 3.25rem;
   min-width: 0;
   min-height: 3.25rem;
-  align-items: center;
-  gap: 0.55rem;
+  place-items: center;
   border: 1px solid color-mix(in srgb, var(--c1) 24%, transparent);
   border-radius: 1rem;
-  padding: 0.55rem 0.65rem 0.55rem 0.8rem;
+  padding: 0;
   color: color-mix(in srgb, var(--fg) 68%, transparent);
   background: color-mix(in srgb, var(--bg) 68%, transparent);
   font-size: 0.75rem;
@@ -199,11 +289,14 @@
   background: color-mix(in srgb, var(--c1) 7%, var(--bg));
 }
 
-.nova-command-trigger > span {
-  min-width: 0;
-  flex: 1;
+.nova-command-trigger > span,
+.nova-command-trigger > kbd {
+  position: absolute;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -448,65 +541,42 @@
   box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
 }
 
-@media (max-width: 1120px) {
+:root[data-mode='light'] .archive-capsule__panel {
+  background:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--c1) 10%, transparent), transparent 34%),
+    rgba(248, 250, 252, 0.98);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.2), 0 0 30px color-mix(in srgb, var(--c1) 8%, transparent);
+}
+
+@media (max-width: 1240px) {
   .expedition-console {
-    grid-template-columns: minmax(17rem, 1fr) minmax(20rem, 1.25fr) auto;
+    grid-template-columns: minmax(15rem, 0.8fr) minmax(18rem, 1.35fr) auto auto;
   }
 
-  .archive-capsule__details {
-    grid-template-columns: 1fr 1fr 0.8fr;
+  .expedition-journey__description {
+    display: none;
   }
 
   .archive-capsule {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-  }
-
-  .archive-capsule__compact-status {
-    display: flex;
-    min-width: 3.8rem;
-    flex-direction: column;
-    padding-inline-start: 0.5rem;
-    border-inline-start: 1px solid color-mix(in srgb, var(--c1) 12%, transparent);
-    font-family: var(--font-mono, ui-monospace, monospace);
-    line-height: 1.1;
-  }
-
-  .archive-capsule__compact-status strong {
-    color: color-mix(in srgb, var(--c1) 78%, var(--fg));
-    font-size: 0.7rem;
-    text-transform: uppercase;
-  }
-
-  .archive-capsule__compact-status small {
-    margin-top: 0.18rem;
-    color: color-mix(in srgb, var(--fg) 58%, transparent);
-    font-size: 0.65rem;
-  }
-
-  .archive-capsule__detail:nth-child(4),
-  .archive-capsule__detail:nth-child(5) {
-    display: none;
-  }
-
-  .nova-command-trigger > span,
-  .nova-command-trigger kbd {
-    display: none;
+    width: 7.4rem;
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
   .expedition-console {
-    top: 3.75rem;
     grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 0.4rem;
     padding: 0.42rem 0.55rem;
   }
 
+  .expedition-journey {
+    grid-column: 1 / -1;
+  }
+
   .expedition-journey__option {
-    min-height: 2.65rem;
-    flex-direction: column;
-    gap: 0.12rem;
-    padding-inline: 0.35rem;
+    min-height: 2.55rem;
+    gap: 0.3rem;
+    padding-inline: 0.4rem;
   }
 
   .expedition-journey__label--full {
@@ -517,39 +587,45 @@
     display: block;
     max-width: 100%;
     overflow: hidden;
-    font-size: 0.55rem;
+    font-size: 0.62rem;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .archive-capsule {
-    width: 6.8rem;
+  .expedition-console > .museum-room-progress {
     min-height: 2.9rem;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.35rem;
-    padding: 0.3rem 0.4rem;
+  }
+
+  .archive-capsule {
+    width: 4.75rem;
+    min-height: 2.9rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0.3rem 0.35rem;
   }
 
   .archive-capsule__signal {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .archive-capsule__details {
     display: none;
   }
 
   .archive-capsule__compact-status {
     min-width: 0;
-    overflow: hidden;
-    padding-inline-start: 0.35rem;
+    align-items: center;
+    text-align: center;
   }
 
-  .archive-capsule__compact-status strong,
-  .archive-capsule__compact-status small {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .archive-capsule__compact-status small,
+  .archive-capsule__chevron {
+    display: none;
+  }
+
+  .archive-capsule__panel {
+    position: fixed;
+    inset-block-start: calc(var(--nova-sticky-shell-height) - 0.1rem);
+    inset-inline: 0.5rem;
+    width: auto;
+    max-height: calc(100dvh - var(--nova-sticky-shell-height) - 0.5rem);
+    overflow-y: auto;
   }
 
   .nova-command-trigger {
@@ -580,6 +656,10 @@
 }
 
 @media (max-width: 430px) {
+  .archive-capsule__details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .nova-command__journeys > div {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -588,6 +668,8 @@
 @media (prefers-reduced-motion: reduce) {
   .expedition-journey__option,
   .archive-capsule,
+  .archive-capsule__chevron,
+  .archive-capsule__manage,
   .nova-command-trigger,
   .nova-command__journeys button,
   .nova-command__rooms ul > li > button {

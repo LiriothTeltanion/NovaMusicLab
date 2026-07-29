@@ -13,8 +13,8 @@ createRoot(document.getElementById('root')!).render(
   </StrictMode>,
 )
 
-// Initialize the schema-v4 local database after load and idle time. The app
-// product itself is v1.1; "v4" is strictly the IndexedDB schema version.
+// Initialize the schema-v4 local database after load and idle time. Product
+// releases and IndexedDB schema revisions are deliberately versioned separately.
 scheduleLocalDataBootstrap()
 
 // Offline support is progressive enhancement: production only, never blocking.

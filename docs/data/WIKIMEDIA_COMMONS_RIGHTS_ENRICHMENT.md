@@ -40,7 +40,12 @@ node scripts/enrich_wikimedia_commons_rights.mjs --fetch --write
 
 `--refresh` re-queries cached titles and therefore requires `--fetch`. Both the
 manifest and cache paths must remain inside the repository. Writes use a sibling
-temporary file followed by an atomic rename.
+temporary file followed by an atomic rename. A write also synchronizes
+`artist_knowledge_manifest_meta.json` and regenerates the compact
+`artist_open_primary_images.json` runtime index from the enriched canonical
+manifest. This prevents the Hero from treating a Wikimedia host as license
+evidence: only primary assets whose license status is `declared` or `verified`
+enter the browser-facing index.
 
 The cache lives at
 `scripts/.cache/wikimedia-commons-extmetadata.v1.json`, which is excluded from
@@ -82,7 +87,7 @@ node scripts/enrich_wikimedia_commons_rights.mjs --write
 npm run audit:knowledge
 node scripts/audit_public_bundle_privacy.mjs
 git diff --check
-git diff -- src/data/artist_knowledge_manifest.json
+git diff -- src/data/artist_knowledge_manifest.json src/data/artist_open_primary_images.json
 ```
 
 Before committing, inspect identity, creator, license URL and source page for

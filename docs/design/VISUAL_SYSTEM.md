@@ -13,14 +13,30 @@ Nova Music Lab's visual system treats every room as a coordinate in one living m
 
 The application shell is a navigation instrument rather than a generic dashboard frame:
 
-- **Five hubs** organize the complete museum into Home, Pulse, Atlas, Stories and Data Lab without hiding rooms.
+- **Museum Map:** a dedicated sticky row keeps Home, Pulse, Atlas, Stories and
+  Data Lab reachable while scrolling without crowding the global utilities.
 - **Guided** opens plain-language introductions and gives first-time visitors a clear next step.
 - **Explore** keeps the full museum visual and self-directed without adding explanatory panels automatically.
 - **Deep Dive** opens methodology and foregrounds provenance, limitations and advanced controls.
 - **Archive Capsule** exposes active mode, source, date, privacy and persistence without inventing unavailable metadata.
 - **Nova Command** provides keyboard-first access to every room and experience depth with focus restoration.
 
-The active hub scopes the sidebar, room sequence and mobile controls while Nova Command retains access to the complete museum. Experience depth changes presentation only: it persists between visits but never hides a room or changes a shared URL. A control must never look selected while another navigation surface follows a different state.
+The active hub scopes the sidebar, room sequence and mobile controls while Nova Command retains access to the complete museum. The larger Expedition Console scrolls with the page; the compact Museum Map remains beneath the global header. Experience depth changes presentation only: it persists between visits but never hides a room or changes a shared URL. A control must never look selected while another navigation surface follows a different state.
+
+## Living Constellation
+
+The `1.3.0` private candidate — 2026-07-29, not yet published or deployed —
+turns the entrance portrait into a small daily artist constellation:
+
+- the anchor artist is the only high-priority image;
+- up to four satellites use small lazy-loaded Wikimedia-hosted portraits;
+- selection is deterministic for the local day and archive, never random on
+  every render;
+- each portrait opens that exact Living Artist Atlas territory through a
+  shareable deep link;
+- Static and reduced-motion modes remove autonomous movement; and
+- portrait source and attribution remain accessible through the Atlas evidence
+  view.
 
 ## Living Artist Atlas
 

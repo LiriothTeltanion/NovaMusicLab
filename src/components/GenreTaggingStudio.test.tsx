@@ -129,6 +129,24 @@ describe('GenreTaggingStudio', () => {
     expect(screen.getByRole('status')).toHaveTextContent('returned to its automatic classification');
   });
 
+  it('searches the lazy open vocabulary and keeps detailed terms separate from chart totals', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onAssignmentsChange = vi.fn();
+    renderStudio([], onAssignmentsChange);
+
+    expect(await screen.findByText(/searchable terms from MusicBrainz/i)).toBeInTheDocument();
+    await user.selectOptions(screen.getByLabelText('Primary genre family'), 'Synthwave / Darksynth');
+    await user.type(screen.getByLabelText('Find a genre or subgenre'), 'acid techno');
+    await user.click(await screen.findByRole('button', { name: 'acid techno' }));
+    await user.click(screen.getByRole('button', { name: 'Save local correction' }));
+
+    expect(onAssignmentsChange.mock.calls[0][0][0]).toEqual(expect.objectContaining({
+      family: 'Synthwave / Darksynth',
+      tags: ['acid techno'],
+    }));
+  });
+
   it('renders complete Hebrew controls without leaking the English unclassified label', async () => {
     window.localStorage.setItem('nml_lang', 'he');
     renderStudio();
