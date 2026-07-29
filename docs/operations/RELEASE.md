@@ -5,10 +5,10 @@ Nova Music Lab uses Semantic Versioning beginning with `v1.0.0` — published 20
 Current version states:
 
 - `v1.1.0` — deployed 2026-07-26; superseded 2026-07-29.
-- `v1.2.0` — deployed 2026-07-29; current public GitHub Pages version.
+- `v1.2.0` — deployed and superseded 2026-07-29.
 - `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
-  superseded by the `v1.4.0` candidate.
-- `v1.4.0` — private candidate 2026-07-29; not published or deployed.
+  superseded by `v1.4.0`.
+- `v1.4.0` — deployed 2026-07-29; current public GitHub Pages version.
 
 ## Branch model
 
@@ -76,8 +76,7 @@ Automated accessibility checks do not replace ongoing manual screen-reader, keyb
 ## `v1.3.0` checkpoint record — private checkpoint 2026-07-29
 
 This record describes a preserved local checkpoint only. It was never tagged,
-released or deployed and was superseded by the `v1.4.0` private candidate on
-2026-07-29.
+released or deployed and was superseded by `v1.4.0` — deployed 2026-07-29.
 
 - [x] `npm run verify` passes: 105 test files and 613 tests, plus lint, strict
   data, identity, media-link, artist-knowledge, privacy, PWA, TypeScript,
@@ -93,16 +92,15 @@ released or deployed and was superseded by the `v1.4.0` private candidate on
   screenshots were regenerated and visually reviewed.
 - [x] `git diff --check` passes.
 
-Known candidate boundaries remain explicit: the flagship archive currently ends
-on 2026-07-03; 5960 lower-ranked artists, representing 33.8% of archive plays,
-remain intentionally unclassified rather than receiving guessed genres; remote
-artwork still creates disclosed provider requests; and `TopHistorico` has no
-remaining headroom within its current 360 kB gzip incremental budget.
+## `v1.4.0` acceptance record — deployed 2026-07-29
 
-## `v1.4.0` candidate verification — private candidate 2026-07-29
-
-This record is a live checklist, not evidence of a release, tag, deployment or
-public availability.
+Pull request [#22](https://github.com/LiriothTeltanion/NovaMusicLab/pull/22)
+promoted the accepted product candidate to `main`. GitHub Pages workflow run
+[`30459224429`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30459224429)
+verified, deployed and smoke-tested commit
+`0e6c1e3cbd667dddd78053c7e824b14c030e821b`. The live `build-meta.json`
+and release-profile manifest agreed on version `1.4.0`, deployed status, that
+exact commit and deployment date 2026-07-29.
 
 - [x] Living Artist Atlas consumes the versioned genre ontology and evidence
   artifact while separating accepted facts, candidate suggestions, rejected
@@ -110,24 +108,24 @@ public availability.
 - [x] Guest Museum accepts an optional browser-local display label and compares
   a private visitor archive with the lazy public flagship catalog.
 - [x] The comparator discloses complete versus partial artist scope.
-- [x] The Hero displays the exact candidate version and human-readable release
+- [x] The Hero displays the exact deployed version and human-readable release
   history.
-- [x] `npm run verify` passes locally: 111 test files, 642 tests and every
+- [x] `npm run verify` passes locally: 112 test files, 648 tests and every
   configured audit/build-budget gate on 2026-07-29.
 - [x] `npm run test:e2e` passes 18/18 updated desktop/mobile scenarios,
   including EN/ES, Hebrew RTL, daylight theme and Guest Museum persistence.
-- [x] Nine final candidate screenshots/GIF/reduced-motion/social-preview assets
-  are regenerated and visually reviewed from the working-tree candidate.
-- [x] Public-bundle privacy passes across 24 JSON payloads and 1,795 repository
+- [x] Nine final screenshots/GIF/reduced-motion/social-preview assets are
+  regenerated, source-fingerprinted and visually reviewed.
+- [x] Public-bundle privacy passes across 24 JSON payloads and 1,797 repository
   text files; `git diff --check` passes.
-- [ ] Commit the reviewed candidate cleanly; CI will generate the deployed
+- [x] The reviewed candidate was committed cleanly; CI generated the deployed
   manifest and build marker from that exact commit without changing the
   tracked private-candidate manifest.
-- [ ] CI, GitHub Pages exact commit/version smoke and live browser review pass.
+- [x] CI, GitHub Pages exact commit/version smoke and live browser review pass.
 - [ ] The GitHub profile repository is synchronized only after the deployed
   Nova commit and version are verified.
 
-Known candidate boundaries: no Google, Supabase, Spotify OAuth or live Last.fm
+Known `v1.4.0` boundaries: no Google, Supabase, Spotify OAuth or live Last.fm
 connector is deployed; the optional name is not authentication; raw visitor
 files remain local; and 5,960 long-tail artist rows remain honestly
 unclassified pending evidence.
@@ -165,6 +163,19 @@ Release title:
 Release summary:
 
 > A clearer first visit and a deeper music museum: five stable hubs, Guided/Explore/Deep Dive presentation, a share-and-feedback path, an honest local Audio Lab foundation and browser accessibility gates without weakening the local-first archive boundary.
+
+### `v1.4.0` metadata — deployed 2026-07-29
+
+Release title:
+
+> Nova Music Lab v1.4.0 — Guest Museum & Living Genre Atlas
+
+Release summary:
+
+> A local-first music museum that friends can make their own: a clearer
+> expedition shell, account-free Guest Museum imports and private comparison,
+> a 2,257-term genre ontology with source-aware artist assertions, multilingual
+> release history and reproducible visual/deployment evidence.
 
 ## Rollback
 

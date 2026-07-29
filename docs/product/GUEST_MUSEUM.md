@@ -1,7 +1,6 @@
 # Guest Museum
 
-Status: **implemented and fully verified locally in `1.4.0` — private candidate
-2026-07-29; clean commit, CI and publication still pending**.
+Status: **implemented, verified and deployed in `1.4.0` — 2026-07-29**.
 
 Guest Museum turns Nova Music Lab from one public flagship exhibition into a
 tool any visitor can use from the same GitHub Pages link. It does not require an

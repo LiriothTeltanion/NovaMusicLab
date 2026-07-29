@@ -7,9 +7,9 @@ evergreen decoration. Every product version owns an immutable media directory:
 assets/releases/v<version>/
 ```
 
-`v1.4.0` — private candidate 2026-07-29 — is the first release using this
-contract. It is not published or deployed. The unpublished `v1.3.0` private
-candidate from 2026-07-29 was superseded before it adopted this package.
+`v1.4.0` — deployed 2026-07-29 — is the first release using this contract.
+The unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded
+before it adopted this package.
 
 ## What each candidate must contain
 
@@ -42,7 +42,7 @@ for `LiriothTeltanion/LiriothTeltanion`. The profile must consume only a
 manifest whose `release.status` is `deployed`, whose 40-character commit is
 present, and whose live deployment has been verified independently.
 
-The current uncommitted private candidate deliberately publishes:
+The tracked source handoff deliberately retains:
 
 ```json
 {
@@ -51,6 +51,13 @@ The current uncommitted private candidate deliberately publishes:
   "deployed_on": null
 }
 ```
+
+This does not mean the product is undeployed. `v1.4.0` is deployed as of
+2026-07-29, while the tracked manifest remains neutral so it never predicts
+the SHA of a commit that does not exist yet. CI copies that manifest into
+`dist`, stamps the exact deployment identity there and publishes only the
+stamped artifact. The live `build-meta.json` and live release-profile manifest
+are therefore the authoritative deployment evidence.
 
 The tracked candidate always keeps `commit` and `deployed_on` null. The
 versioned `release-media.json` records the product-source state, file count and

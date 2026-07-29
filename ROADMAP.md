@@ -49,8 +49,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Add reproducible desktop, mobile and Hebrew/RTL product screenshots for local review and the README.
 - [x] Convert README animation to reduced-motion-aware behavior (repository banners are now static).
 - [x] Consolidate hubs, depth, room map, archive/version disclosure and search
-  into the compact two-row sticky shell in `1.4.0` — private candidate
-  2026-07-29.
+  into the compact two-row sticky shell in `1.4.0` — deployed 2026-07-29.
 
 ## Phase 4 — Architecture and long-tail data
 
@@ -63,7 +62,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Replace the single-label genre field with evidence-linked multi-label genre, subgenre, scene and confidence records.
 - [x] Add a parallel versioned ontology and artist-assertion artifact, then
   connect accepted/suggested/unclassified states to Living Artist Atlas in
-  `1.4.0` — private candidate 2026-07-29.
+  `1.4.0` — deployed 2026-07-29.
 - [ ] Expand the reviewed genre layer beyond the current evidence-bearing
   artist set without promoting candidates to facts automatically.
 - [ ] Split offline artist knowledge into a small version/hash index plus
@@ -79,8 +78,8 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Add local Share & Feedback and WhatsApp invitation flows without automatic transmission.
 - [x] Found a local-only Audio Lab with preview, limits and explicit not-analyzed states.
 - [x] Add Guest Museum: optional local display label, account-free import and
-  automatic comparison with Kevin's public flagship in `1.4.0` — private
-  candidate 2026-07-29.
+  automatic comparison with Kevin's public flagship in `1.4.0` — deployed
+  2026-07-29.
 - [ ] Add an optional Supabase control plane for auth, safe snapshots and feedback; raw events remain local.
 - [ ] Implement ListenBrainz as the first live connector, then review Last.fm terms and Spotify beta limits.
 - [ ] Publish privacy-safe product screenshots, walkthrough media and an engineering case study.
@@ -89,9 +88,10 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Publish `v1.2.0` — deployed 2026-07-29 — with five hubs, three experience depths, local Share/Audio foundations and automated browser/accessibility gates.
 - [x] Preserve `v1.3.0` — private checkpoint 2026-07-29, never published or
   deployed — and integrate it into `v1.4.0`.
-- [ ] Publish `v1.4.0` — private candidate 2026-07-29, not published or
-  deployed — only after full verification, visual approval, clean commit, CI,
-  exact Pages smoke verification and profile-media synchronization.
+- [x] Publish `v1.4.0` — deployed 2026-07-29 — after full verification,
+  visual approval, clean commit, CI and exact Pages smoke verification.
+- [ ] Synchronize the separate GitHub profile repository with the verified
+  deployed `v1.4.0` manifest, release media and case-study text.
 - [ ] Plan `v1.5.0` — date not verified — for optional anonymous/Google
   identity, revocable safe snapshots and policy-approved live connectors.
 

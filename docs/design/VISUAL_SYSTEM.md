@@ -25,8 +25,8 @@ The active hub scopes the sidebar, room sequence and mobile controls while Nova 
 
 ## Living Constellation
 
-The `1.3.0` private candidate — 2026-07-29, not yet published or deployed —
-turns the entrance portrait into a small daily artist constellation:
+The `1.3.0` private checkpoint — 2026-07-29, never published and superseded
+by `1.4.0` — introduced the entrance's small daily artist constellation:
 
 - the anchor artist is the only high-priority image;
 - up to four satellites use small lazy-loaded Wikimedia-hosted portraits;

@@ -6,7 +6,12 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-Target: `v1.4.0` — private candidate 2026-07-29; not published or deployed.
+No unreleased product changes are recorded after `v1.4.0` — deployed
+2026-07-29.
+
+## [1.4.0] - 2026-07-29
+
+Status: **deployed 2026-07-29**.
 
 ### Added
 
@@ -41,7 +46,7 @@ Target: `v1.4.0` — private candidate 2026-07-29; not published or deployed.
 - Made the visitor-to-flagship comparison load the public 6,413-artist catalog
   only when needed instead of pulling it into the entry bundle.
 - Preserved the Living Constellation from the private `1.3.0` checkpoint while
-  integrating that work into the larger `1.4.0` candidate.
+  integrating that work into the deployed `1.4.0` release.
 
 ### Fixed
 
@@ -54,7 +59,7 @@ Target: `v1.4.0` — private candidate 2026-07-29; not published or deployed.
 
 ### Verified
 
-- `npm run verify` passes locally on 2026-07-29: 111 test files, 642 tests,
+- `npm run verify` passes locally on 2026-07-29: 112 test files, 648 tests,
   TypeScript production build and every configured data, genre, identity,
   media-link, knowledge, privacy, PWA, release-media and bundle-budget gate.
 - Playwright passes 18/18 desktop/mobile scenarios, including first entry,
@@ -66,16 +71,30 @@ Target: `v1.4.0` — private candidate 2026-07-29; not published or deployed.
 - Nine versioned release visuals were regenerated and reviewed locally,
   including desktop/mobile Hero, Genres, Living Artist Atlas, Guest Museum,
   Hebrew RTL, the five-frame tour, reduced-motion fallback and social preview.
-- Public-bundle privacy passes across 24 public JSON payloads and 1,795
+- Public-bundle privacy passes across 24 public JSON payloads and 1,797
   repository text files; `git diff --check` passes.
-- A clean commit, CI, Pages deployment, exact live commit/version smoke and
-  profile-repository synchronization remain release gates; this section does
-  not claim them complete.
+- Pull request [#22](https://github.com/LiriothTeltanion/NovaMusicLab/pull/22)
+  promoted the candidate to `main`; workflow run
+  [`30459224429`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30459224429)
+  verified, deployed and smoke-tested commit
+  `0e6c1e3cbd667dddd78053c7e824b14c030e821b`.
+- For the initial `v1.4.0` deployment, the live `build-meta.json` and
+  release-profile manifest independently agreed on deployed status, commit
+  `0e6c1e3cbd667dddd78053c7e824b14c030e821b` and date 2026-07-29.
+
+### Known limitations
+
+- No Google, Supabase, Spotify OAuth or live Last.fm connector is deployed;
+  Guest Museum names remain browser-local labels rather than accounts.
+- Raw visitor files remain local, and 5,960 long-tail artist rows remain
+  intentionally unclassified pending trustworthy genre evidence.
+- The separate GitHub profile repository is synchronized through a
+  post-deployment handoff and is not part of the application artifact.
 
 ## [1.3.0] - 2026-07-29
 
-Status: **private checkpoint; never published or deployed; superseded by the
-`1.4.0` private candidate on 2026-07-29**.
+Status: **private checkpoint; never published or deployed; superseded by
+`1.4.0` — deployed 2026-07-29**.
 
 ### Added
 

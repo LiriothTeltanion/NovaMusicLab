@@ -5,6 +5,7 @@
 <br>
 
 [![Quality and Pages](https://github.com/LiriothTeltanion/NovaMusicLab/actions/workflows/quality-and-pages.yml/badge.svg)](https://github.com/LiriothTeltanion/NovaMusicLab/actions/workflows/quality-and-pages.yml)
+[![Latest release](https://img.shields.io/github/v/release/LiriothTeltanion/NovaMusicLab?display_name=tag&sort=semver&style=for-the-badge&color=22d3ee)](https://github.com/LiriothTeltanion/NovaMusicLab/releases/latest)
 [![Live museum](https://img.shields.io/badge/ENTER_THE_MUSEUM-GitHub_Pages-22d3ee?style=for-the-badge&logo=githubpages&logoColor=white)](https://liriothteltanion.github.io/NovaMusicLab/)
 [![Local first](https://img.shields.io/badge/ARCHIVE-Local--first-22c55e?style=for-the-badge&logo=shield&logoColor=white)](#-privacy-and-network-boundary)
 [![Languages](https://img.shields.io/badge/LANGUAGES-EN_·_ES_·_HE-8b5cf6?style=for-the-badge)](#-language-themes-and-accessibility)
@@ -13,9 +14,9 @@
 
 Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Current deployed version:** `1.2.0` — deployed **2026-07-29**. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
+**Current deployed version:** `1.4.0` — deployed **2026-07-29**. It integrates the preserved `1.3.0` private Living Constellation checkpoint into a clearer two-row expedition shell, evidence-linked genres and subgenres, Guest Museum, complete-catalog comparisons when available, visible version history and versioned release media. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
-**Next local version:** `1.4.0` — private candidate **2026-07-29**, not yet published or deployed. It integrates the preserved `1.3.0` Living Constellation checkpoint into a larger release: a clearer two-row expedition shell, evidence-linked genres and subgenres, Guest Museum, complete-catalog comparisons when available, visible version history and versioned release media. The public link above continues to serve `1.2.0` until review and every release gate are complete.
+**Previous public version:** `1.2.0` — deployed and superseded **2026-07-29**. It introduced the five navigation hubs, three experience depths, Share & Feedback, the local Audio Lab foundation and automated browser/accessibility release gates.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -32,15 +33,18 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 3. Open **Atlas** to explore artists, media and archive evidence.
 4. Switch to **Deep Dive** when you want methodology and provenance.
 5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
-6. In `1.4.0` — private candidate **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
+6. In `1.4.0` — deployed **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
 
 No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ Candidate gallery
+## 🖼️ v1.4.0 release gallery
 
-These captures document `1.4.0` — private candidate **2026-07-29**, not yet published or deployed. They are regenerated from the local production build with `npm run screenshots:capture` and remain candidate evidence until the full release gate and visual review pass.
+These captures document `1.4.0` — deployed **2026-07-29**. They were
+recaptured from a deployment-mode production build after live verification,
+audited against its canonical Git source fingerprint and accepted by the full
+release and visual-review gates.
 
 <table>
   <tr>
@@ -87,7 +91,7 @@ The project is built around four commitments:
 | **Flagship Exhibition** | A curated demonstration of Kevin's personal music museum and Nova's full visual language. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
 | **My Museum** | A visitor imports supported exports and rebuilds the quantitative museum from the active archive. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. |
 
-`1.4.0` — private candidate **2026-07-29** — makes **My Museum** a clear
+`1.4.0` — deployed **2026-07-29** — makes **My Museum** a clear
 Guest Museum journey. A visitor may add an optional browser-local display name,
 but that label is not a login, password or public account. Compare Museums loads
 the reviewed public artist catalog only when needed and labels older
@@ -212,7 +216,7 @@ The generated artist manifest currently contains **100 artist records** and **29
 
 The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
 
-The `1.4.0` private candidate adds a separate genre-knowledge layer: **2,257
+The `1.4.0` release — deployed **2026-07-29** — adds a separate genre-knowledge layer: **2,257
 ontology terms** and **1,257 evidence assertions** across **453 of 6,413
 artists**. Accepted assertions appear as documented facts, candidates remain
 visible suggestions, rejected relationships stay hidden and unresolved artists
@@ -395,7 +399,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`1.2.0` — deployed **2026-07-29** — is the version served by the protected GitHub Pages deployment. `v1.1.0` — deployed **2026-07-26** and superseded **2026-07-29** — remains available in release history. Product versions and IndexedDB schema versions remain deliberately independent.
+`1.4.0` — deployed **2026-07-29** — is the version served by the protected GitHub Pages deployment. Pull request [#22](https://github.com/LiriothTeltanion/NovaMusicLab/pull/22) made the initial release promotion, and workflow run [`30459224429`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30459224429) verified, deployed and smoke-tested its commit `0e6c1e3cbd667dddd78053c7e824b14c030e821b`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative identity after later documentation-only deployments. `v1.2.0` — deployed and superseded **2026-07-29** — and `v1.1.0` — deployed **2026-07-26** and superseded **2026-07-29** — remain available in release history. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 
