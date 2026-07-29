@@ -63,6 +63,22 @@
   display: none;
 }
 
+.expedition-journey__description {
+  grid-column: 1 / -1;
+  min-width: 0;
+  margin: 0;
+  padding: 0.2rem 0.45rem 0.12rem;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--fg) 58%, transparent);
+  font-size: 0.68rem;
+  line-height: 1.3;
+  text-align: start;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .archive-capsule {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

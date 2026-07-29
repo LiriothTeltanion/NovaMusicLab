@@ -1,9 +1,13 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AppProvider } from '../context/AppContext';
+import { ExperienceProvider } from '../context/ExperienceContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import {
+  EXPERIENCE_DEPTH_STORAGE_KEY,
+  type ExperienceDepth,
+} from './shell/museumNavigation';
 import ArtistIdentity from './ArtistIdentity';
 import CulturalMap from './CulturalMap';
 import DataQualityCenter from './DataQualityCenter';
@@ -19,9 +23,18 @@ vi.mock('html-to-image', () => ({ toPng: vi.fn() }));
 
 const data = musicData as unknown as MusicDnaData;
 
-function renderInLang(ui: React.ReactElement, lang: 'es' | 'en') {
+function renderInLang(
+  ui: React.ReactElement,
+  lang: 'es' | 'en',
+  experienceDepth: ExperienceDepth = 'explore',
+) {
   localStorage.setItem('nml_lang', lang);
-  return render(<AppProvider>{ui}</AppProvider>);
+  localStorage.setItem(EXPERIENCE_DEPTH_STORAGE_KEY, experienceDepth);
+  return render(
+    <AppProvider>
+      <ExperienceProvider>{ui}</ExperienceProvider>
+    </AppProvider>,
+  );
 }
 
 describe('bilingual dataset text', () => {
@@ -85,23 +98,23 @@ describe('bilingual dataset text', () => {
   it('renders the expanded Emotional Map observatory in both languages', () => {
     renderInLang(<EmotionalMap data={data} />, 'en');
 
-    expect(screen.getByText('Emotional engine mix')).toBeInTheDocument();
-    expect(screen.getByText('Dominant mode')).toBeInTheDocument();
-    expect(screen.getByText('Mood distribution')).toBeInTheDocument();
+    expect(screen.getByText('Heuristic emotional mix')).toBeInTheDocument();
+    expect(screen.getByText('Leading estimated mode')).toBeInTheDocument();
+    expect(screen.getByText('Heuristic distribution')).toBeInTheDocument();
     expect(screen.getByText('Emotional Quadrant Guide')).toBeInTheDocument();
-    expect(screen.getByText('Selected Emotional Dossier')).toBeInTheDocument();
-    expect(screen.getByText('Recommended Rituals')).toBeInTheDocument();
+    expect(screen.getByText('Selected Interpretive Dossier')).toBeInTheDocument();
+    expect(screen.getByText('Listening Prompts')).toBeInTheDocument();
     expect(screen.getByText('Worldbuilding')).toBeInTheDocument();
 
     cleanup();
     renderInLang(<EmotionalMap data={data} />, 'es');
 
-    expect(screen.getByText('Mezcla del motor emocional')).toBeInTheDocument();
-    expect(screen.getByText('Modo dominante')).toBeInTheDocument();
-    expect(screen.getByText('Distribución por mood')).toBeInTheDocument();
+    expect(screen.getByText('Mezcla emocional heurística')).toBeInTheDocument();
+    expect(screen.getByText('Modo estimado principal')).toBeInTheDocument();
+    expect(screen.getByText('Distribución heurística')).toBeInTheDocument();
     expect(screen.getByText('Guía de cuadrantes emocionales')).toBeInTheDocument();
-    expect(screen.getByText('Dossier emocional seleccionado')).toBeInTheDocument();
-    expect(screen.getByText('Rituales recomendados')).toBeInTheDocument();
+    expect(screen.getByText('Dossier interpretativo seleccionado')).toBeInTheDocument();
+    expect(screen.getByText('Propuestas de escucha')).toBeInTheDocument();
     expect(screen.getByText('Construcción de mundos')).toBeInTheDocument();
   });
 
@@ -153,10 +166,12 @@ describe('bilingual dataset text', () => {
   }, 15_000);
 
   it('renders the album dossier in Top Historico in both languages', async () => {
-    const user = userEvent.setup();
-    renderInLang(<TopHistorico data={data} />, 'en');
+    const english = renderInLang(<TopHistorico data={data} />, 'en');
+    const englishAlbums = english.container.querySelector<HTMLButtonElement>('[data-top-tab="albums"]');
+    expect(englishAlbums).not.toBeNull();
+    if (!englishAlbums) return;
 
-    await user.click(screen.getByRole('button', { name: 'Albums' }));
+    fireEvent.click(englishAlbums);
     expect(await screen.findByText('Album Dossier')).toBeInTheDocument();
     expect(screen.getByText('Emotional lens')).toBeInTheDocument();
     expect(screen.getByText('Suggested ritual')).toBeInTheDocument();
@@ -167,10 +182,12 @@ describe('bilingual dataset text', () => {
 
     cleanup();
     localStorage.clear();
-    const spanishUser = userEvent.setup();
-    renderInLang(<TopHistorico data={data} />, 'es');
+    const spanish = renderInLang(<TopHistorico data={data} />, 'es');
+    const spanishAlbums = spanish.container.querySelector<HTMLButtonElement>('[data-top-tab="albums"]');
+    expect(spanishAlbums).not.toBeNull();
+    if (!spanishAlbums) return;
 
-    await spanishUser.click(screen.getByRole('button', { name: 'Álbumes' }));
+    fireEvent.click(spanishAlbums);
     expect(await screen.findByText('Dossier de álbum')).toBeInTheDocument();
     expect(screen.getByText('Lente emocional')).toBeInTheDocument();
     expect(screen.getByText('Ritual sugerido')).toBeInTheDocument();
@@ -178,13 +195,15 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Contexto del álbum')).toBeInTheDocument();
     expect(screen.getByText('Canciones del artista en tu archivo')).toBeInTheDocument();
     expect(screen.getByText('Abrir dossier de artista')).toBeInTheDocument();
-  }, 10000);
+  }, 15_000);
 
   it('renders the track dossier in Top Historico in both languages', async () => {
-    const user = userEvent.setup();
-    renderInLang(<TopHistorico data={data} />, 'en');
+    const english = renderInLang(<TopHistorico data={data} />, 'en');
+    const englishTracks = english.container.querySelector<HTMLButtonElement>('[data-top-tab="canciones"]');
+    expect(englishTracks).not.toBeNull();
+    if (!englishTracks) return;
 
-    await user.click(screen.getByRole('button', { name: 'Tracks' }));
+    fireEvent.click(englishTracks);
     expect(await screen.findByText('Track Dossier')).toBeInTheDocument();
     expect(screen.getByText('Emotional lens')).toBeInTheDocument();
     expect(screen.getByText('Suggested ritual')).toBeInTheDocument();
@@ -196,10 +215,12 @@ describe('bilingual dataset text', () => {
 
     cleanup();
     localStorage.clear();
-    const spanishUser = userEvent.setup();
-    renderInLang(<TopHistorico data={data} />, 'es');
+    const spanish = renderInLang(<TopHistorico data={data} />, 'es');
+    const spanishTracks = spanish.container.querySelector<HTMLButtonElement>('[data-top-tab="canciones"]');
+    expect(spanishTracks).not.toBeNull();
+    if (!spanishTracks) return;
 
-    await spanishUser.click(screen.getByRole('button', { name: 'Canciones' }));
+    fireEvent.click(spanishTracks);
     expect(await screen.findByText('Dossier de canción')).toBeInTheDocument();
     expect(screen.getByText('Lente emocional')).toBeInTheDocument();
     expect(screen.getByText('Ritual sugerido')).toBeInTheDocument();
@@ -208,7 +229,7 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Rol de repetición')).toBeInTheDocument();
     expect(screen.getByText('Más canciones de este artista')).toBeInTheDocument();
     expect(screen.getByText('Álbumes del artista en tu archivo')).toBeInTheDocument();
-  }, 10000);
+  }, 15_000);
 
   it('localizes Cultural DNA labels and scene chips in both languages', () => {
     renderInLang(<CulturalMap data={data} />, 'en');
@@ -223,23 +244,23 @@ describe('bilingual dataset text', () => {
     expect(screen.queryByText(/Internet Culture/i)).not.toBeInTheDocument();
   });
 
-  it('shows the source quality note in Spanish wherever it appears', () => {
+  it('shows the Deep Dive source quality note in Spanish wherever it appears', () => {
     const spanishNote = /Last\.fm es la línea temporal verificada principal/i;
     const englishLeak = /primary verified timeline/i;
 
-    renderInLang(<DataQualityCenter data={data} />, 'es');
+    renderInLang(<DataQualityCenter data={data} />, 'es', 'deep-dive');
     expect(screen.getByText(spanishNote)).toBeInTheDocument();
     expect(screen.getByText('🧠 Cobertura del Cerebro Offline')).toBeInTheDocument();
     expect(screen.queryByText('🧠 Offline Brain Coverage')).not.toBeInTheDocument();
     expect(screen.queryByText(englishLeak)).not.toBeInTheDocument();
 
     cleanup();
-    renderInLang(<HiddenInsights data={data} />, 'es');
+    renderInLang(<HiddenInsights data={data} />, 'es', 'deep-dive');
     expect(screen.getByText(spanishNote)).toBeInTheDocument();
     expect(screen.queryByText(englishLeak)).not.toBeInTheDocument();
 
     cleanup();
-    renderInLang(<SpotifyVsLastfm data={data} />, 'es');
+    renderInLang(<SpotifyVsLastfm data={data} />, 'es', 'deep-dive');
     expect(screen.getByText(spanishNote)).toBeInTheDocument();
     expect(screen.queryByText(englishLeak)).not.toBeInTheDocument();
   });

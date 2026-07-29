@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Cloud, ImageOff, Sparkles } from 'lucide-react';
 import type { EmotionalMoodKey } from '../../engines/moodCore';
+import { useImageLoadTimeout } from '../../hooks/useImageLoadTimeout';
 import type { GalleryPhoto } from '../../utils/artistGallery';
 import { getDailyPhotoIndex } from '../../utils/artistGallery';
+import { optimizeRemoteImageUrl } from '../../utils/remoteImage';
 import MoodArtCanvas from '../MoodArtCanvas';
 import type { ArtistAtlasCopy } from './atlasCopy';
 
@@ -33,11 +35,13 @@ export default function ArtistMediaStage({
   );
   const [activeIndex, setActiveIndex] = useState(() => getDailyPhotoIndex(artistName, photos.length));
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
+  const [useOriginal, setUseOriginal] = useState(false);
 
   useEffect(() => {
     setFailedUrls(new Set());
     setActiveIndex(getDailyPhotoIndex(artistName, photos.length));
     setLoadedUrl(null);
+    setUseOriginal(false);
   }, [artistName, photos.length]);
 
   useEffect(() => {
@@ -49,6 +53,34 @@ export default function ArtistMediaStage({
   const activePhoto = availablePhotos.length
     ? availablePhotos[activeIndex % availablePhotos.length]
     : undefined;
+  const optimizedActiveUrl = activePhoto
+    ? optimizeRemoteImageUrl(activePhoto.url, 720)
+    : undefined;
+  const activeImageUrl = activePhoto
+    ? useOriginal ? activePhoto.url : optimizedActiveUrl
+    : undefined;
+
+  useEffect(() => {
+    setLoadedUrl(null);
+    setUseOriginal(false);
+  }, [activePhoto?.url]);
+
+  const failActivePhoto = () => {
+    setLoadedUrl(null);
+    if (activePhoto && !useOriginal && optimizedActiveUrl !== activePhoto.url) {
+      setUseOriginal(true);
+      return;
+    }
+    if (activePhoto) {
+      setFailedUrls(previous => new Set(previous).add(activePhoto.url));
+    }
+  };
+
+  useImageLoadTimeout(
+    Boolean(activePhoto && activeImageUrl && loadedUrl !== activePhoto.url),
+    `${artistName}:${activePhoto?.url ?? ''}:${activeImageUrl ?? ''}`,
+    failActivePhoto,
+  );
 
   const move = (delta: number) => {
     if (availablePhotos.length < 2) return;
@@ -69,17 +101,14 @@ export default function ArtistMediaStage({
       {activePhoto ? (
         <img
           key={activePhoto.url}
-          src={activePhoto.url}
+          src={activeImageUrl}
           alt={artistName}
           loading="eager"
           fetchPriority="high"
           decoding="async"
           referrerPolicy="no-referrer"
           onLoad={() => setLoadedUrl(activePhoto.url)}
-          onError={() => {
-            setLoadedUrl(null);
-            setFailedUrls(previous => new Set(previous).add(activePhoto.url));
-          }}
+          onError={failActivePhoto}
           className={`artist-atlas__stage-image ${loadedUrl === activePhoto.url ? 'artist-atlas__stage-image--loaded' : ''}`}
         />
       ) : null}
@@ -87,8 +116,14 @@ export default function ArtistMediaStage({
       <div className="artist-atlas__stage-shade" aria-hidden="true" />
 
       <div className="artist-atlas__stage-status">
-        {activePhoto ? <Cloud className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5" />}
-        <span>{activePhoto ? `${copy.remoteArtwork} · ${activePhoto.source}` : copy.generatedFallback}</span>
+        {activePhoto && loadedUrl === activePhoto.url
+          ? <Cloud className="h-3.5 w-3.5" />
+          : <Sparkles className="h-3.5 w-3.5" />}
+        <span>
+          {activePhoto && loadedUrl === activePhoto.url
+            ? `${copy.remoteArtwork} · ${activePhoto.source}`
+            : copy.generatedFallback}
+        </span>
       </div>
 
       {activePhoto ? (
@@ -129,6 +164,7 @@ export default function ArtistMediaStage({
           <div className="artist-atlas__filmstrip-items">
             {availablePhotos.map((photo, index) => {
               const selected = index === activeIndex % availablePhotos.length;
+              const thumbnailUrl = optimizeRemoteImageUrl(photo.url, 64);
               return (
                 <button
                   key={photo.url}
@@ -143,12 +179,21 @@ export default function ArtistMediaStage({
                   style={{ borderColor: selected ? accent : 'rgba(255,255,255,0.16)' }}
                 >
                   <img
-                    src={photo.url}
+                    src={thumbnailUrl}
                     alt=""
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
-                    onError={() => setFailedUrls(previous => new Set(previous).add(photo.url))}
+                    width="64"
+                    height="64"
+                    onError={event => {
+                      if (event.currentTarget.dataset.original !== 'true' && thumbnailUrl !== photo.url) {
+                        event.currentTarget.dataset.original = 'true';
+                        event.currentTarget.src = photo.url;
+                        return;
+                      }
+                      setFailedUrls(previous => new Set(previous).add(photo.url));
+                    }}
                   />
                 </button>
               );

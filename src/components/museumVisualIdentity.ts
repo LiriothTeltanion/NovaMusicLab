@@ -31,7 +31,7 @@ export type MuseumChapterTab =
   | 'statsdeep'
   | 'report';
 
-export type MuseumVisualId = MuseumChapterTab | 'hero' | 'upload';
+export type MuseumVisualId = MuseumChapterTab | 'hero' | 'upload' | 'share' | 'audio';
 
 export type MuseumChapterMotif =
   | 'atlas'
@@ -114,11 +114,13 @@ export const MUSEUM_VISUAL_IDENTITY: Record<MuseumVisualId, MuseumVisualIdentity
   statsdeep:    { family: 'observatory', palette: ['#38bdf8', '#a78bfa', '#f472b6'], chapterMotif: 'spectrum',      navMotif: 'pulse',    background: { density: 0.52, amplitude: 24, tempo: 44, angle: 7,   particleCount: 16, particleIntensity: 'subtle' } },
   report:       { family: 'finale',      palette: ['#c084fc', '#60a5fa', '#fbbf24'], chapterMotif: 'archive',       navMotif: 'stack',    background: { density: 0.36, amplitude: 18, tempo: 58, angle: 5,   particleCount: 12, particleIntensity: 'subtle' } },
   upload:       { family: 'portal',      palette: ['#10b981', '#facc15', '#22d3ee'], chapterMotif: 'archive',       navMotif: 'orbit',    background: { density: 0.30, amplitude: 14, tempo: 58, angle: -3,  particleCount: 10, particleIntensity: 'subtle' } },
+  share:        { family: 'portal',      palette: ['#22d3ee', '#34d399', '#a78bfa'], chapterMotif: 'bridge',        navMotif: 'spark',    background: { density: 0.34, amplitude: 18, tempo: 54, angle: 4,   particleCount: 12, particleIntensity: 'subtle' } },
+  audio:        { family: 'observatory', palette: ['#f0abfc', '#22d3ee', '#a78bfa'], chapterMotif: 'spectrum',      navMotif: 'pulse',    background: { density: 0.44, amplitude: 26, tempo: 46, angle: -7,  particleCount: 14, particleIntensity: 'subtle' } },
 };
 
 export const MUSEUM_CHAPTER_TABS = Object.freeze(
   Object.keys(MUSEUM_VISUAL_IDENTITY).filter(
-    (id): id is MuseumChapterTab => id !== 'hero' && id !== 'upload',
+    (id): id is MuseumChapterTab => !['hero', 'upload', 'share', 'audio'].includes(id),
   ),
 );
 

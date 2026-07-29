@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title description">
-  <title id="title">Nova Music Lab — Living Sonic Cartography</title>
-  <desc id="description">Static social preview for a local-first, trilingual digital museum of listening history.</desc>
+  <title id="title">Nova Music Lab — a living atlas of your music</title>
+  <desc id="description">Social preview for an explorable, trilingual music museum built from verified listening history.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#030611"/>
@@ -46,19 +46,19 @@
   </g>
 
   <g font-family="Inter,Segoe UI,Arial,sans-serif">
-    <text x="82" y="258" fill="#80f4f5" font-size="18" font-weight="700" letter-spacing="5">LIVING SONIC CARTOGRAPHY ✦</text>
+    <text x="82" y="258" fill="#80f4f5" font-size="18" font-weight="700" letter-spacing="5">A LIVING ATLAS OF YOUR MUSIC ✦</text>
     <text x="78" y="344" fill="#f8fbff" font-size="76" font-weight="900" letter-spacing="-3">NOVA</text>
     <text x="310" y="344" fill="url(#nova)" font-size="76" font-weight="900" letter-spacing="-3">MUSIC LAB</text>
-    <text x="82" y="394" fill="#cbd5e1" font-size="24" font-weight="500">Your listening history, transformed into a living digital museum.</text>
-    <text x="82" y="430" fill="#8ea0b8" font-size="18">Evidence-linked stories · artist intelligence · generative identity</text>
+    <text x="82" y="394" fill="#cbd5e1" font-size="24" font-weight="500">11 years of listening, transformed into an explorable museum.</text>
+    <text x="82" y="430" fill="#8ea0b8" font-size="18">80,550 plays · 20,551 tracks · 6,413 artists</text>
 
     <g transform="translate(82 475)" font-size="14" font-weight="800" letter-spacing="1.6">
       <rect width="150" height="42" rx="21" fill="#2de2e6" fill-opacity="0.1" stroke="#2de2e6" stroke-opacity="0.5"/>
-      <text x="75" y="27" fill="#80f4f5" text-anchor="middle">LOCAL-FIRST</text>
+      <text x="75" y="27" fill="#80f4f5" text-anchor="middle">LIVING ATLAS</text>
       <rect x="164" width="138" height="42" rx="21" fill="#8b5cf6" fill-opacity="0.1" stroke="#a78bfa" stroke-opacity="0.5"/>
       <text x="233" y="27" fill="#c4b5fd" text-anchor="middle">EN · ES · HE</text>
-      <rect x="316" width="118" height="42" rx="21" fill="#ec4899" fill-opacity="0.1" stroke="#ec4899" stroke-opacity="0.5"/>
-      <text x="375" y="27" fill="#f9a8d4" text-anchor="middle">V1.0</text>
+      <rect x="316" width="170" height="42" rx="21" fill="#ec4899" fill-opacity="0.1" stroke="#ec4899" stroke-opacity="0.5"/>
+      <text x="401" y="27" fill="#f9a8d4" text-anchor="middle">FILES STAY LOCAL</text>
     </g>
   </g>
 
@@ -78,7 +78,7 @@
   </g>
   <circle cx="992" cy="320" r="225" fill="none" stroke="url(#nova)" stroke-width="3" stroke-dasharray="3 11"/>
   <g font-family="Inter,Segoe UI,Arial,sans-serif" text-anchor="middle">
-    <text x="992" y="569" fill="#8ea0b8" font-size="13" font-weight="700" letter-spacing="3">100 ARTISTS · CURATED VISUALS</text>
+    <text x="992" y="569" fill="#8ea0b8" font-size="13" font-weight="700" letter-spacing="3">SHARE · EXPLORE · BUILD YOUR OWN</text>
   </g>
 
   <rect x="20" y="20" width="1240" height="600" rx="28" fill="none" stroke="#e2f9ff" stroke-opacity="0.14"/>

@@ -1,7 +1,7 @@
 {
   "name": "nova-music-lab",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
@@ -26,7 +26,10 @@
     "i18n:hebrew:central": "node scripts/generate_hebrew_ui.mjs --central-only",
     "i18n:hebrew:data": "node scripts/generate_hebrew_ui.mjs --json-only",
     "icons:generate": "node scripts/generate_nova_icons.mjs",
+    "screenshots:capture": "node scripts/capture_readme_visuals.mjs",
     "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install chromium",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -39,6 +42,8 @@
     "recharts": "^3.9.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -52,7 +57,7 @@
     "html-to-image": "^1.11.13",
     "jsdom": "^29.1.1",
     "oxlint": "^1.71.0",
-    "postcss": "^8.5.16",
+    "postcss": "^8.5.23",
     "tailwindcss": "^3.4.19",
     "typescript": "~6.0.2",
     "vite": "^8.1.1",

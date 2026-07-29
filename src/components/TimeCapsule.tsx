@@ -105,34 +105,6 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
             {t.timeCapsule.statusLine(fadedCount, stillCount, capsules.length)}
           </div>
 
-          <MethodologyPanel
-            eyebrow={t.timeCapsule.methodEyebrow}
-            title={t.timeCapsule.methodTitle}
-            subtitle={t.timeCapsule.methodSubtitle}
-            accent="c2"
-            stats={[
-              {
-                label: t.timeCapsule.methodStats.closedEras,
-                value: fmtNum(capsules.length),
-                note: t.timeCapsule.methodStats.closedErasNote,
-              },
-              {
-                label: t.timeCapsule.methodStats.recentWindow,
-                value: t.timeCapsule.methodStats.recentWindowValue(recentStart, recentEnd),
-                note: t.timeCapsule.methodStats.recentWindowNote,
-              },
-              {
-                label: t.timeCapsule.methodStats.matchRule,
-                value: t.timeCapsule.methodStats.matchRuleValue,
-              },
-              {
-                label: t.timeCapsule.methodStats.confidence,
-                value: t.timeCapsule.methodStats.confidenceValue,
-              },
-            ]}
-            points={t.timeCapsule.methodPoints}
-          />
-
           {/* Vertical timeline */}
           <div className="relative pl-8 md:pl-10">
             {/* Timeline spine */}
@@ -276,6 +248,34 @@ export default function TimeCapsule({ data }: TimeCapsuleProps) {
               })}
             </div>
           </div>
+
+          <MethodologyPanel
+            eyebrow={t.timeCapsule.methodEyebrow}
+            title={t.timeCapsule.methodTitle}
+            subtitle={t.timeCapsule.methodSubtitle}
+            accent="c2"
+            stats={[
+              {
+                label: t.timeCapsule.methodStats.closedEras,
+                value: fmtNum(capsules.length),
+                note: t.timeCapsule.methodStats.closedErasNote,
+              },
+              {
+                label: t.timeCapsule.methodStats.recentWindow,
+                value: t.timeCapsule.methodStats.recentWindowValue(recentStart, recentEnd),
+                note: t.timeCapsule.methodStats.recentWindowNote,
+              },
+              {
+                label: t.timeCapsule.methodStats.matchRule,
+                value: t.timeCapsule.methodStats.matchRuleValue,
+              },
+              {
+                label: t.timeCapsule.methodStats.confidence,
+                value: t.timeCapsule.methodStats.confidenceValue,
+              },
+            ]}
+            points={t.timeCapsule.methodPoints}
+          />
         </>
       )}
     </div>

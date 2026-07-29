@@ -9,15 +9,15 @@ type ArtMap = Record<string, { thumb: string; source: string }>;
  * the landing-shell closure, which sits within ~11 KB of its gzip budget. A
  * single enrichment pass would have failed `npm run build:check`.
  *
- * Loading them lazily keeps the landing shell flat no matter how large the
- * catalogue gets. Callers render the deterministic gradient tile until the maps
- * arrive, then swap to the real cover - the same "generative first, swap when
- * loaded" behaviour the remote images themselves already use.
+ * Loading stays off the landing-shell path. Track rooms may also request the
+ * album map as a secondary exact-key fallback because some title tracks share
+ * their album title; this still happens only after a cover-bearing room opens.
  */
 let albums: ArtMap | null = null;
 let tracks: ArtMap | null = null;
 
-let loadStarted = false;
+let albumLoadStarted = false;
+let trackLoadStarted = false;
 let version = 0;
 const listeners = new Set<() => void>();
 
@@ -26,23 +26,31 @@ function emit() {
   for (const listener of listeners) listener();
 }
 
-/** Kick off the one-time load. Safe to call from render - it self-deduplicates. */
-export function ensureArtMaps(): void {
-  if (loadStarted) return;
-  loadStarted = true;
-  void Promise.all([
-    import('../data/album_images.json'),
-    import('../data/track_images.json'),
-  ])
-    .then(([albumModule, trackModule]) => {
-      albums = albumModule.default as ArtMap;
+/** Load only the map requested by the current visual. */
+export function ensureArtMaps(kind: 'album' | 'track'): void {
+  if (kind === 'album') {
+    if (albumLoadStarted) return;
+    albumLoadStarted = true;
+    void import('../data/album_images.json')
+      .then(albumModule => {
+        albums = albumModule.default as ArtMap;
+        emit();
+      })
+      .catch(() => {
+        albums = {};
+        emit();
+      });
+    return;
+  }
+
+  if (trackLoadStarted) return;
+  trackLoadStarted = true;
+  void import('../data/track_images.json')
+    .then(trackModule => {
       tracks = trackModule.default as ArtMap;
       emit();
     })
     .catch(() => {
-      // An artwork map that will not load is an honest gap, not an error state:
-      // every caller already renders a deterministic tile when a key is missing.
-      albums = {};
       tracks = {};
       emit();
     });

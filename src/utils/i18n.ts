@@ -17,18 +17,25 @@ export const LANGUAGE_OPTIONS: readonly LanguageOption[] = [
   { code: 'he', shortLabel: 'עב', nativeLabel: 'עברית', locale: 'he-IL', direction: 'rtl', emoji: '🇮🇱' },
 ] as const;
 
+/**
+ * Written for someone who just tapped a link a friend sent them, not for a
+ * technical reader. "local-first", "evidence-linked", "trilingual" and
+ * "ListenBrainz" carry no meaning in a chat preview or a browser tab; the
+ * concrete numbers do the work instead. Keep in step with the og:/twitter:
+ * tags in index.html, which is what link scrapers actually read.
+ */
 export const DOCUMENT_METADATA: Record<Lang, { title: string; description: string }> = {
   es: {
-    title: 'Nova Music Lab ✧ Tu ADN musical',
-    description: 'Un museo musical trilingüe y local que convierte exportaciones de Spotify, Last.fm, Apple Music, ListenBrainz y YouTube en análisis, historias y arte generativo con evidencia.',
+    title: '11 años de música, convertidos en museo',
+    description: '80.550 reproducciones. 20.551 canciones. 6.413 artistas. Explora 11 años de escucha como un museo vivo y crea el tuyo en privado.',
   },
   en: {
-    title: 'Nova Music Lab ✧ Your Musical DNA',
-    description: 'A trilingual, local-first music museum that turns Spotify, Last.fm, Apple Music, ListenBrainz and YouTube exports into evidence-linked analytics, stories and generative art.',
+    title: '11 years of music, turned into a living museum',
+    description: '80,550 plays. 20,551 tracks. 6,413 artists. Explore 11 years of listening as a living museum, then build yours from files processed on your device.',
   },
   he: {
-    title: 'Nova Music Lab ✧ הדנ״א המוזיקלי שלך',
-    description: 'מוזיאון מוזיקלי תלת־לשוני ומקומי שהופך את היסטוריית ההאזנה שלך מייצואי Spotify, Last.fm, Apple Music, ListenBrainz ו-YouTube לניתוחים, סיפורים ואמנות גנרטיבית מבוססי ראיות.',
+    title: '11 שנים של מוזיקה, שהפכו למוזיאון',
+    description: '80,550 השמעות. 20,551 שירים. 6,413 אמנים. חקרו 11 שנות האזנה כמוזיאון חי, ואז בנו אחד משלכם באופן פרטי.',
   },
 };
 

@@ -1,19 +1,24 @@
-// Fills cover art for EmotionalMap's hand-picked mood tracks: these are
-// editorial "signature song" choices (Alcest - Shellstar, Carpenter Brut -
-// Turbo Killer, etc.), not necessarily part of the top-100-by-plays list, so
-// they never got covers from the main extraction passes. Same Deezer+iTunes
-// pattern as fetch_art_pass3.mjs. Dev-time only; writes into track_images.json.
+// Fills cover art for hand-picked rooms. Emotional Map signatures are public
+// editorial choices; personal obsession peaks and annual headlines are opt-in
+// because fetching them discloses those artist/track pairs to Deezer/iTunes.
+// Dev-time only; writes verified exact/alias matches into track_images.json.
 //
-// Run from the repo root: node scripts/fetch_curated_track_art.mjs
+// Public signatures only:
+//   node scripts/fetch_curated_track_art.mjs
+// Include private-history-derived room rows after explicit consent:
+//   node scripts/fetch_curated_track_art.mjs --include-personal-rooms
 import fs from 'node:fs';
 
 const tracks = JSON.parse(fs.readFileSync('src/data/track_images.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('src/data/music_dna_compiled.json', 'utf8'));
+const INCLUDE_PERSONAL_ROOMS = process.argv.includes('--include-personal-rooms');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 const ARTIST_ALIASES = {
   'slaves': ['rain city drive'],
   "h.e.a.t": ['heat'],
+  'hayehudim': ['היהודים', 'ha-yehudim'],
 };
 
 const norm = (s) => (s || '')
@@ -75,7 +80,7 @@ async function itunesTrack(artist, title) {
   return null;
 }
 
-const PAIRS = [
+const SIGNATURE_PAIRS = [
   ['Alcest', 'Shellstar'],
   ['nothingnowhere.', 'Great Mass of Color'],
   ['Hammock', 'Love Who Loves You Back'],
@@ -98,7 +103,24 @@ const PAIRS = [
   ['Holding Absence', 'Wilt'],
 ];
 
+const featuredPairs = [
+  ...SIGNATURE_PAIRS,
+  ...(INCLUDE_PERSONAL_ROOMS
+    ? [
+        ...(data.obsessions ?? []).map(row => [row.artist, row.track]),
+        ...(data.yearly_eras ?? []).map(row => [row.top_artist, row.top_track]),
+      ]
+    : []),
+].filter(([artist, title]) => artist && title);
+
+const PAIRS = [...new Map(
+  featuredPairs.map(pair => [`${norm(pair[0])}|||${norm(pair[1])}`, pair]),
+).values()];
+
 let filled = 0;
+if (!INCLUDE_PERSONAL_ROOMS) {
+  console.log('[privacy] Personal Obsessions and Annual Summary rows are excluded. Pass --include-personal-rooms only after explicit consent.');
+}
 for (const [artist, title] of PAIRS) {
   const key = `${artist.toLowerCase()}|||${title.toLowerCase()}`;
   if (tracks[key]) { console.log(`[skip] ${artist} - ${title}: already covered`); continue; }

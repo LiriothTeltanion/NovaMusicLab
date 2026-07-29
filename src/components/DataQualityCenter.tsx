@@ -26,6 +26,7 @@ import {
   getPeakYear,
 } from '../utils/analytics';
 import { useApp } from '../context/AppContext';
+import { useExperienceDepth } from '../context/ExperienceContext';
 import SectionNarrative from './SectionNarrative';
 import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
 import MediaCoverageAudit from './MediaCoverageAudit';
@@ -114,6 +115,8 @@ export default function DataQualityCenter({
   onGenreAssignmentsChange,
 }: DataQualityCenterProps) {
   const { t, tc, lang } = useApp();
+  const experienceDepth = useExperienceDepth();
+  const isDeepDive = experienceDepth === 'deep-dive';
   const source = deriveSourceSummary(data);
   const locale = localeFor(lang);
   const sourceNote = localizeSourceNote(source, lang);
@@ -149,6 +152,108 @@ export default function DataQualityCenter({
     : t.dataQuality.activeDatasetLabel;
   const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;
   const gapLabel = (gap: ArtistEnrichmentGap) => t.dataQuality.knowledge.gaps[gap] ?? gap;
+  const friendlyCopy = pickLanguage(lang, {
+    en: {
+      statusLabel: 'Overall coverage',
+      strong: 'Strong coverage',
+      mixed: 'Mixed coverage',
+      limited: 'Limited coverage',
+      simpleTitle: 'What you can trust at a glance',
+      simpleBody: 'Counts, dates and imported services are shown directly. Genres, emotions and personality are interpretations and keep their limits visible.',
+      importedTitle: 'What did Nova read?',
+      importedBody: (services: string, listens: string) => `Sources: ${services} · ${listens} counted listens.`,
+      missingTitle: 'What is still incomplete?',
+      missingBody: (missing: number) => missing
+        ? `${missing.toLocaleString(locale)} artist profiles still need more trustworthy public information.`
+        : 'Every artist shown here has a local information profile.',
+      interpretedTitle: 'What is interpreted?',
+      interpretedBody: 'Genres, emotional patterns and personality language are discovery aids—not clinical or universal facts.',
+      timelineReady: 'Timeline available',
+      countsReady: 'Counts available',
+      noData: 'No active history',
+      heuristicLabel: 'Heuristic completeness indicator',
+      heuristicBody: 'Internal formula: base 52 plus source, record, platform, monthly, top-list and overlap coverage bonuses; capped at 96. It is not an accuracy probability.',
+    },
+    es: {
+      statusLabel: 'Cobertura general',
+      strong: 'Cobertura sólida',
+      mixed: 'Cobertura mixta',
+      limited: 'Cobertura limitada',
+      simpleTitle: 'En qué puedes confiar de un vistazo',
+      simpleBody: 'Los conteos, fechas y servicios importados se muestran directamente. Los géneros, emociones y rasgos de personalidad son interpretaciones y mantienen sus límites visibles.',
+      importedTitle: '¿Qué leyó Nova?',
+      importedBody: (services: string, listens: string) => `Origen: ${services} · ${listens} escuchas contadas.`,
+      missingTitle: '¿Qué falta completar?',
+      missingBody: (missing: number) => missing
+        ? `${missing.toLocaleString(locale)} perfiles de artistas todavía necesitan información pública más confiable.`
+        : 'Todos los artistas mostrados tienen una ficha local de información.',
+      interpretedTitle: '¿Qué es interpretación?',
+      interpretedBody: 'Los géneros, patrones emocionales y rasgos de personalidad ayudan a descubrir; no son hechos clínicos ni universales.',
+      timelineReady: 'Timeline disponible',
+      countsReady: 'Conteos disponibles',
+      noData: 'Sin historial activo',
+      heuristicLabel: 'Indicador heurístico de completitud',
+      heuristicBody: 'Fórmula interna: base 52 más bonos por fuentes, records, plataformas, meses, tops y overlap; máximo 96. No es una probabilidad de precisión.',
+    },
+    he: {
+      statusLabel: 'כיסוי כללי',
+      strong: 'כיסוי חזק',
+      mixed: 'כיסוי מעורב',
+      limited: 'כיסוי מוגבל',
+      simpleTitle: 'על מה אפשר לסמוך במבט מהיר',
+      simpleBody: 'הספירות, התאריכים והשירותים שיובאו מוצגים ישירות. ז׳אנרים, רגשות ותכונות אישיות הם פרשנות, והמגבלות שלהם נשארות גלויות.',
+      importedTitle: 'מה Nova קראה?',
+      importedBody: (services: string, listens: string) => `מקורות: ${services} · ${listens} השמעות שנספרו.`,
+      missingTitle: 'מה עדיין חסר?',
+      missingBody: (missing: number) => missing
+        ? `${missing.toLocaleString(locale)} פרופילי אמנים עדיין זקוקים למידע ציבורי אמין יותר.`
+        : 'לכל האמנים המוצגים יש פרופיל מידע מקומי.',
+      interpretedTitle: 'מהי פרשנות?',
+      interpretedBody: 'ז׳אנרים, דפוסים רגשיים ושפת אישיות הם כלי גילוי — לא עובדות קליניות או אוניברסליות.',
+      timelineReady: 'ציר זמן זמין',
+      countsReady: 'ספירות זמינות',
+      noData: 'אין היסטוריה פעילה',
+      heuristicLabel: 'מדד היוריסטי לשלמות',
+      heuristicBody: 'נוסחה פנימית: בסיס 52 ותוספות עבור מקורות, שיאים, פלטפורמות, חודשים, רשימות מובילות וחפיפה; עד 96. זו אינה הסתברות לדיוק.',
+    },
+  });
+  const simpleStatus = data.core_metrics.total_plays <= 0
+    ? friendlyCopy.noData
+    : temporalTrust.dataMinDate && temporalTrust.dataMaxDate
+      ? friendlyCopy.timelineReady
+      : friendlyCopy.countsReady;
+  const simpleStatusColor = data.core_metrics.total_plays <= 0
+    ? '#f59e0b'
+    : temporalTrust.dataMinDate && temporalTrust.dataMaxDate
+      ? '#22c55e'
+      : tc.c1;
+  const importedServiceNames = [
+    source.lastfm_plays ? 'Last.fm' : null,
+    source.spotify_plays ? 'Spotify' : null,
+    source.youtube_plays ? 'YouTube' : null,
+    source.apple_music_plays ? 'Apple Music' : null,
+    source.listenbrainz_plays ? 'ListenBrainz' : null,
+  ].filter((service): service is string => Boolean(service));
+  const friendlyCards = [
+    {
+      title: friendlyCopy.importedTitle,
+      body: friendlyCopy.importedBody(
+        importedServiceNames.join(' + ') || sourceKindCopy(source.source_type, t.dataQuality.sourceTypes),
+        formatNumber(data.core_metrics.total_plays, locale),
+      ),
+      color: tc.c1,
+    },
+    {
+      title: friendlyCopy.missingTitle,
+      body: friendlyCopy.missingBody(knowledgeSummary.unmatched_artists),
+      color: tc.c2,
+    },
+    {
+      title: friendlyCopy.interpretedTitle,
+      body: friendlyCopy.interpretedBody,
+      color: tc.c3,
+    },
+  ];
 
   const sourceReading = source.source_type === 'merged'
     ? t.dataQuality.dynamic.sourceMerged
@@ -185,9 +290,9 @@ export default function DataQualityCenter({
     },
     {
       icon: Gauge,
-      label: t.dataQuality.confidenceScoreLabel,
+      label: friendlyCopy.heuristicLabel,
       value: `${confidence}%`,
-      sub: confidence >= 82 ? t.dataQuality.exact : confidence >= 70 ? t.dataQuality.mixed : t.dataQuality.estimated,
+      sub: friendlyCopy.heuristicBody,
       color: confidence >= 82 ? '#22c55e' : confidence >= 70 ? tc.c1 : '#f59e0b',
     },
     {
@@ -279,7 +384,7 @@ export default function DataQualityCenter({
     <div className="space-y-10 animate-fade-in">
       <SectionNarrative content={t.deepNarratives.dataQuality} accent="c1" />
 
-      {onGenreAssignmentsChange && (
+      {isDeepDive && onGenreAssignmentsChange && (
         <GenreTaggingStudio
           data={data}
           assignments={genreAssignments}
@@ -288,7 +393,45 @@ export default function DataQualityCenter({
         />
       )}
 
-      <section className="space-y-4">
+      {!isDeepDive ? (
+        <section
+          data-testid="data-quality-friendly-summary"
+          className="nova-surface nova-surface--analysis rounded-3xl p-5"
+        >
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h3 className="type-section type-strong">{friendlyCopy.simpleTitle}</h3>
+              <p className="type-caption type-muted mt-2 max-w-4xl">{friendlyCopy.simpleBody}</p>
+            </div>
+            <span
+              className="rounded-full border px-3 py-1.5 text-xs font-bold"
+              style={{
+                color: simpleStatusColor,
+                borderColor: `${simpleStatusColor}55`,
+              }}
+            >
+              {simpleStatus}
+            </span>
+          </div>
+          <div className="mt-5 grid gap-3 lg:grid-cols-3">
+            {friendlyCards.map((card, index) => (
+              <article key={card.title} className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
+                <span
+                  className="flex h-7 w-7 items-center justify-center rounded-full font-mono text-xs font-black"
+                  style={{ backgroundColor: `${card.color}20`, color: card.color }}
+                  aria-hidden="true"
+                >
+                  {index + 1}
+                </span>
+                <h4 className="mt-3 text-sm font-black text-white">{card.title}</h4>
+                <p className="mt-2 text-xs leading-relaxed text-gray-300">{card.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {isDeepDive ? <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Database className="w-5 h-5" style={{ color: tc.c1 }} />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
@@ -309,26 +452,28 @@ export default function DataQualityCenter({
 
         <div className="nova-surface nova-surface--analysis rounded-2xl p-5">
           <p className="text-xs text-gray-300 leading-relaxed">{sourceNote}</p>
-          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 mt-5">
-            {sourceCards.map(card => {
-              const color = confidenceColor(card.kind, tc);
-              return (
-                <div key={card.label} className="rounded-xl bg-white/3 border border-white/5 p-3">
-                  <p className="text-[10px] font-mono font-black uppercase tracking-wider text-gray-500">{card.label}</p>
-                  <p className="text-xl font-black font-mono mt-1" style={{ color }}>
-                    {formatNumber(card.value, locale)}
-                  </p>
-                  <p className="text-[9px] font-mono mt-1" style={{ color }}>
-                    {t.dataQuality[card.kind]}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          {isDeepDive ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 mt-5">
+              {sourceCards.map(card => {
+                const color = confidenceColor(card.kind, tc);
+                return (
+                  <div key={card.label} className="rounded-xl bg-white/3 border border-white/5 p-3">
+                    <p className="text-[10px] font-mono font-black uppercase tracking-wider text-gray-500">{card.label}</p>
+                    <p className="text-xl font-black font-mono mt-1" style={{ color }}>
+                      {formatNumber(card.value, locale)}
+                    </p>
+                    <p className="text-[9px] font-mono mt-1" style={{ color }}>
+                      {t.dataQuality[card.kind]}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
-      </section>
+      </section> : null}
 
-      <section className="space-y-4">
+      {isDeepDive ? <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Database className="w-5 h-5" style={{ color: tc.c2 }} />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
@@ -337,7 +482,7 @@ export default function DataQualityCenter({
         </div>
 
         <div className="nova-surface nova-surface--analysis rounded-3xl p-5">
-          <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div className={`grid grid-cols-1 gap-5 ${isDeepDive ? 'xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]' : ''}`}>
             <div>
               <p className="text-xs leading-relaxed text-gray-300">
                 {t.dataQuality.knowledge.subtitle}
@@ -357,7 +502,7 @@ export default function DataQualityCenter({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+            {isDeepDive ? <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
               <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-4">
                 <p className="text-[10px] font-mono font-black uppercase tracking-widest text-gray-500">
                   {t.dataQuality.knowledge.topMatches}
@@ -439,14 +584,16 @@ export default function DataQualityCenter({
                   )}
                 </div>
               </div>
-            </div>
+            </div> : null}
           </div>
         </div>
-      </section>
+      </section> : null}
 
-      <MediaCoverageAudit data={data} />
+      {isDeepDive ? (
+        <>
+          <MediaCoverageAudit data={data} />
 
-      <section className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+          <section className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
         <div className="xl:col-span-2 space-y-4">
           <div className="flex items-center gap-2">
             <Layers3 className="w-5 h-5" style={{ color: tc.c2 }} />
@@ -501,9 +648,9 @@ export default function DataQualityCenter({
             ))}
           </div>
         </div>
-      </section>
+          </section>
 
-      <section className="space-y-4">
+          <section className="space-y-4">
         <div className="flex items-center gap-2">
           <ListChecks className="w-5 h-5" style={{ color: tc.c4 }} />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
@@ -524,9 +671,9 @@ export default function DataQualityCenter({
             );
           })}
         </div>
-      </section>
+          </section>
 
-      <section className="space-y-4">
+          <section className="space-y-4">
         <div className="flex items-center gap-2">
           <BookOpenText className="w-5 h-5" style={{ color: tc.c1 }} />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
@@ -556,9 +703,9 @@ export default function DataQualityCenter({
             );
           })}
         </div>
-      </section>
+          </section>
 
-      <section className="nova-surface nova-surface--utility rounded-3xl p-6">
+          <section className="nova-surface nova-surface--utility rounded-3xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <CheckCircle2 className="w-5 h-5 text-green-400" />
           <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">
@@ -573,7 +720,9 @@ export default function DataQualityCenter({
             </div>
           ))}
         </div>
-      </section>
+          </section>
+        </>
+      ) : null}
     </div>
   );
 }

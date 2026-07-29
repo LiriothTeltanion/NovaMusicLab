@@ -15,6 +15,11 @@ const JOURNEYS = [
   { id: 'lab' as const, icon: FlaskConical },
 ];
 
+/**
+ * @deprecated Preserved as a reversible legacy surface while stored journey
+ * values migrate to experience depth. New shell work belongs in
+ * `ExperienceSwitcher` and the five-hub navigation.
+ */
 export default function JourneySwitcher({ activeJourney, lang, onChange }: JourneySwitcherProps) {
   const copy = pickLanguage(lang, {
     en: {

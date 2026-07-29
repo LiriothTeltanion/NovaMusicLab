@@ -241,10 +241,18 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
     case 'topArtist': return { label: label({ es: 'obra central', en: 'central artist', he: 'האמן המרכזי' }), value: topArtist?.name ?? '—' };
     case 'topArtistPlays': return { label: label({ es: 'plays del artista #1', en: '#1 artist plays', he: 'השמעות של האמן במקום הראשון' }), value: numeric(topArtist?.plays ?? 0) };
     case 'topGenre': {
-      const genre = data.top_genres?.[0]?.name ?? topArtist?.genre ?? '—';
+      const genre = data.top_genres
+        ?.map(entry => entry.name)
+        .find(name => !['unclassified', 'unknown', 'alternative'].includes(name.trim().toLowerCase()))
+        ?? (
+          topArtist?.genre
+          && !['unclassified', 'unknown', 'alternative'].includes(topArtist.genre.trim().toLowerCase())
+            ? topArtist.genre
+            : null
+        );
       return {
         label: label({ es: 'lenguaje dominante', en: 'dominant language', he: 'השפה הדומיננטית' }),
-        value: localizeGenreName(genre, lang),
+        value: genre ? localizeGenreName(genre, lang) : unavailable,
       };
     }
     case 'countries': {

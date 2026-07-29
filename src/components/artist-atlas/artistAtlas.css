@@ -452,6 +452,146 @@
 .artist-atlas__chapter-heading--inline { align-items: center; }
 .artist-atlas__chapter-icon { width: clamp(3rem, 8vw, 5rem); height: clamp(3rem, 8vw, 5rem); opacity: 0.24; }
 
+.artist-atlas__musicbee {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+  gap: 1rem;
+  border-color: color-mix(in srgb, #f2a900 28%, var(--atlas-border));
+  background:
+    radial-gradient(circle at 90% 0%, rgb(242 169 0 / 0.1), transparent 36%),
+    var(--atlas-panel);
+}
+
+.artist-atlas__musicbee-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8rem;
+}
+
+.artist-atlas__musicbee-heading h3 {
+  color: var(--fg);
+  font-size: clamp(1.15rem, 2.4vw, 1.75rem);
+  letter-spacing: -0.025em;
+}
+
+.artist-atlas__musicbee-heading p:last-child {
+  max-width: 48rem;
+  margin-top: 0.35rem;
+  color: var(--type-ink-muted);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.artist-atlas__musicbee-icon {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgb(242 169 0 / 0.35);
+  border-radius: 1rem;
+  background: rgb(242 169 0 / 0.08);
+}
+
+.artist-atlas__musicbee-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.artist-atlas__musicbee-metrics > div {
+  min-width: 0;
+  padding: 0.7rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+}
+
+.artist-atlas__musicbee-metrics dt {
+  color: var(--type-ink-muted);
+  font: 800 0.57rem ui-monospace, monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.artist-atlas__musicbee-metrics dd {
+  overflow: hidden;
+  margin-top: 0.28rem;
+  color: #f2a900;
+  font: 900 0.86rem ui-monospace, monospace;
+  text-overflow: ellipsis;
+}
+
+.artist-atlas__musicbee-boundary {
+  grid-column: 1 / -1;
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in srgb, #f2a900 18%, transparent);
+  color: var(--type-ink-muted);
+  font-size: 0.67rem;
+  line-height: 1.55;
+}
+
+.artist-atlas__connections-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.artist-atlas__connection-group {
+  min-width: 0;
+  padding: 0.95rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+}
+
+.artist-atlas__connection-group > h4 {
+  color: var(--fg);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.artist-atlas__connection-group > p {
+  margin-top: 0.4rem;
+  color: var(--type-ink-muted);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.artist-atlas__connection-list {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.artist-atlas__connection-list button {
+  display: grid;
+  min-height: 4.1rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bg) 35%, transparent);
+  color: var(--fg);
+  text-align: start;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.artist-atlas__connection-list button:hover,
+.artist-atlas__connection-list button:focus-visible {
+  border-color: color-mix(in srgb, var(--c1) 42%, transparent);
+  background: color-mix(in srgb, var(--c1) 7%, var(--bg));
+}
+
+.artist-atlas__connection-list button:active { transform: scale(0.99); }
+.artist-atlas__connection-list button > span { min-width: 0; }
+.artist-atlas__connection-list strong { display: block; overflow: hidden; font-size: 0.76rem; text-overflow: ellipsis; white-space: nowrap; }
+.artist-atlas__connection-list small { display: block; margin-top: 0.22rem; color: var(--type-ink-muted); font-size: 0.64rem; line-height: 1.4; }
+.artist-atlas__connection-list button > svg { color: var(--c1); }
+
 .artist-atlas__footprint-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(260px, 0.78fr); gap: 0.8rem; }
 .artist-atlas__collection,
 .artist-atlas__profile-signals { min-width: 0; padding: 0.9rem; border: 1px solid var(--atlas-border); border-radius: 1.25rem; background: color-mix(in srgb, var(--fg) 2.5%, transparent); }
@@ -477,6 +617,7 @@
 .artist-atlas__tag-cloud span { padding: 0.3rem 0.48rem; border: 1px solid color-mix(in srgb, var(--c3) 28%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--c3) 8%, transparent); color: var(--type-ink-muted); font-size: 0.59rem; font-weight: 750; }
 
 .artist-atlas__release-shelf { display: grid; grid-auto-columns: minmax(9.5rem, 11rem); grid-auto-flow: column; gap: 0.7rem; overflow-x: auto; padding: 0.15rem 0.15rem 0.55rem; scroll-snap-type: inline proximity; }
+.artist-atlas__release-shelf:focus-visible { outline: 2px solid var(--c1); outline-offset: 0.25rem; }
 .artist-atlas__release-card { min-width: 0; padding: 0.7rem; border: 1px solid var(--atlas-border); border-radius: 1.2rem; background: color-mix(in srgb, var(--fg) 2.5%, transparent); scroll-snap-align: start; }
 .artist-atlas__release-card > span,
 .artist-atlas__release-card > div:first-child { width: 100% !important; height: auto !important; aspect-ratio: 1; }
@@ -581,6 +722,8 @@
   .artist-atlas__stage { min-height: clamp(23rem, 72vw, 34rem); }
   .artist-atlas__signal-label { margin-top: 2rem; }
   .artist-atlas__footprint-grid,
+  .artist-atlas__musicbee,
+  .artist-atlas__connections-grid,
   .artist-atlas__evidence-grid { grid-template-columns: 1fr; }
   .artist-atlas__profile-signals { grid-column: auto; }
   .artist-atlas__profile-signals dl { grid-template-columns: 1fr; }

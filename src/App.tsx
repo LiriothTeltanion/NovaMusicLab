@@ -4,7 +4,7 @@ import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
   Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users,
-  ChevronDown, Bot, SlidersHorizontal, Link2, Check
+  ChevronDown, Bot, SlidersHorizontal, Link2, Check, Share2, AudioWaveform, Volume2, VolumeX
 } from 'lucide-react';
 
 import { loadDefaultDataset } from './data/defaultDataset';
@@ -28,6 +28,11 @@ import {
   type AppTab,
   type DeepLinkState,
 } from './utils/deepLinks';
+import {
+  getMuseumSoundEnabled,
+  playMuseumSound,
+  setMuseumSoundEnabled,
+} from './audio/sonicFeedback';
 import {
   LANGUAGE_OPTIONS,
   directionFor,
@@ -66,12 +71,13 @@ import {
 } from './components/MuseumRoomNavigator';
 import ExpeditionConsole from './components/shell/ExpeditionConsole';
 import {
-  EXPEDITION_JOURNEY_STORAGE_KEY,
-  isExpeditionJourneyId,
-  journeyContainsRoom,
-  roomIdsForJourney,
-  type ExpeditionJourneyId,
-} from './components/shell/expeditionJourney';
+  MUSEUM_HUB_ENTRY_ROOMS,
+  MUSEUM_HUB_ROOMS,
+  hubForRoom,
+  type MuseumHubId,
+} from './components/shell/museumNavigation';
+import HubNavigation from './components/shell/HubNavigation';
+import { ExperienceProvider, useExperience } from './context/ExperienceContext';
 
 // Lazy: not needed for the very first paint (skipped entirely for returning
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
@@ -111,6 +117,8 @@ const WrappedCard = lazy(() => import('./components/WrappedCard'));
 const RecentPulse = lazy(() => import('./components/RecentPulse'));
 const MuseumComparator = lazy(() => import('./components/MuseumComparator'));
 const AIAssistant = lazy(() => import('./components/AIAssistant'));
+const ShareFeedbackHub = lazy(() => import('./components/share/ShareFeedbackHub'));
+const AudioLabFoundation = lazy(() => import('./components/audio-lab/AudioLabFoundation'));
 
 type Tab = AppTab;
 
@@ -135,7 +143,7 @@ export function nextMotionMode(current: MotionMode): MotionMode {
   return MOTION_MODES[(MOTION_MODES.indexOf(current) + 1) % MOTION_MODES.length];
 }
 
-type NavGroupId = 'overview' | 'archive' | 'identity' | 'listening' | 'data' | 'export';
+type NavGroupId = MuseumHubId;
 
 interface MenuItem {
   id: Tab;
@@ -560,6 +568,7 @@ function AppDataGate() {
 
 // ─── Inner app uses context ────────────────────────────────────────────────────
 function AppInner({ boot }: { boot: AppBoot }) {
+  const { experienceDepth } = useExperience();
   const {
     t,
     theme,
@@ -588,6 +597,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
     }
   });
   const effectiveMotionMode: MotionMode = reduceMotion ? 'static' : motionMode;
+  const [soundEnabled, setSoundEnabled] = useState(getMuseumSoundEnabled);
   const [baseMusicData, setBaseMusicData] = useState<MusicDnaData>(() => boot.data);
   const [genreAssignments, setGenreAssignments] = useState<GenreAssignment[]>(() => boot.genreAssignments);
   const musicData = useMemo(
@@ -599,22 +609,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const [copyLinkStatus, setCopyLinkStatus] = useState<CopyLinkStatus>('idle');
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
   const [isPersonalArchive, setIsPersonalArchive] = useState(Boolean(boot.storedMeta));
-  const [activeJourney, setActiveJourney] = useState<ExpeditionJourneyId>(() => {
-    try {
-      const stored = window.localStorage.getItem(EXPEDITION_JOURNEY_STORAGE_KEY);
-      return isExpeditionJourneyId(stored) && (activeTab === 'hero' || journeyContainsRoom(stored, activeTab))
-        ? stored
-        : 'full';
-    } catch {
-      return 'full';
-    }
-  });
   const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
   const [persistenceNotice, setPersistenceNotice] = useState<PersistenceNotice | null>(() => (
     boot.restoreFailure ? { kind: 'restore-failure', failure: boot.restoreFailure } : null
   ));
   const [showTour, setShowTour] = useState(() => {
-    try { return window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true'; } catch { return true; }
+    try {
+      return activeTab === 'hero' && window.localStorage.getItem(TOUR_STORAGE_KEY) !== 'true';
+    } catch {
+      return activeTab === 'hero';
+    }
   });
   const mainContentRef = useRef<HTMLElement>(null);
   const mobileUtilitiesButtonRef = useRef<HTMLButtonElement>(null);
@@ -641,6 +645,30 @@ function AppInner({ boot }: { boot: AppBoot }) {
     selectedTrackKey,
   }), [activeTab, topSubTab, selectedArtistName, selectedAlbumKey, selectedTrackKey]);
   const currentDeepLink = React.useMemo(() => buildDeepLink(deepLinkState), [deepLinkState]);
+  const publicMuseumUrl = React.useMemo(
+    () => `${window.location.origin}${window.location.pathname}#/`,
+    [],
+  );
+  const shareRoomActions = pickLanguage(lang, {
+    en: {
+      title: 'A friend can also build a private museum',
+      body: 'Their archive stays in their browser. After importing it, Compare Museums can reveal shared artists and different listening worlds.',
+      import: 'Build my museum',
+      compare: 'Compare two museums',
+    },
+    es: {
+      title: 'Tu amigo también puede crear un museo privado',
+      body: 'Su archivo permanece en su navegador. Después de importarlo, Comparar Museos puede revelar artistas compartidos y mundos de escucha diferentes.',
+      import: 'Crear mi museo',
+      compare: 'Comparar dos museos',
+    },
+    he: {
+      title: 'גם חברים יכולים לבנות מוזיאון פרטי',
+      body: 'הארכיון נשאר בדפדפן שלהם. אחרי הייבוא אפשר להשוות בין מוזיאונים ולגלות אמנים משותפים ועולמות האזנה שונים.',
+      import: 'בניית המוזיאון שלי',
+      compare: 'השוואת שני מוזיאונים',
+    },
+  });
   const copyLinkLabels: CopyLinkLabels = pickLanguage(lang, {
     en: {
         copy: 'Copy link',
@@ -670,12 +698,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
   // Collapsible nav group state
   const [expandedGroups, setExpandedGroups] = useState<Record<NavGroupId, boolean>>({
-    overview: true,
-    archive: true,
-    identity: true,
-    listening: false,
-    data: false,
-    export: false
+    home: true,
+    pulse: true,
+    atlas: true,
+    stories: true,
+    lab: true,
   });
 
   // Spotlight Hover Coordinates Tracker
@@ -749,28 +776,30 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
   const menuItems: MenuItem[] = React.useMemo(() => {
     const items: Array<Omit<MenuItem, 'color' | 'secondary' | 'motif'>> = [
-      { id: 'dashboard',    group: 'overview',  label: t.nav.dashboard,    icon: LayoutDashboard },
-      { id: 'aiassistant',  group: 'overview',  label: t.nav.aiAssistant,  icon: Bot },
-      { id: 'eras',         group: 'overview',  label: t.nav.eras,         icon: CalendarDays },
-      { id: 'top',          group: 'archive',   label: t.nav.top,          icon: Trophy },
-      { id: 'timecapsule',  group: 'archive',   label: t.nav.timeCapsule,  icon: Hourglass },
-      { id: 'personality',  group: 'identity',  label: t.nav.personality,  icon: BrainCircuit },
-      { id: 'emotions',     group: 'identity',  label: t.nav.emotions,     icon: Heart },
-      { id: 'cultural',     group: 'identity',  label: t.nav.cultural,     icon: Globe },
-      { id: 'inner',        group: 'identity',  label: t.nav.inner,        icon: Palette },
-      { id: 'artist',       group: 'identity',  label: t.nav.artist,       icon: Sparkles },
-      { id: 'obsessions',   group: 'listening', label: t.nav.obsessions,   icon: RotateCcw },
-      { id: 'insights',     group: 'listening', label: t.nav.insights,     icon: AlertCircle },
-      { id: 'achievements', group: 'listening', label: t.nav.achievements, icon: Award },
-      { id: 'wrapped',      group: 'listening', label: t.nav.wrapped,      icon: Gift },
-      { id: 'pulse',        group: 'listening', label: t.nav.pulse,        icon: Radio },
-      { id: 'compare',      group: 'data',      label: t.nav.compare,      icon: GitCompare },
-      { id: 'museums',      group: 'data',      label: t.nav.museums,      icon: Users },
-      { id: 'platforms',    group: 'data',      label: t.nav.platforms,    icon: TabletSmartphone },
-      { id: 'quality',      group: 'data',      label: t.nav.dataQuality,  icon: ShieldCheck },
-      { id: 'statsdeep',    group: 'data',      label: t.nav.statsPro,     icon: Activity },
-      { id: 'report',       group: 'export',    label: t.nav.report,       icon: FileText },
-      { id: 'upload',       group: 'export',    label: t.nav.upload,       icon: Upload },
+      { id: 'dashboard',    group: 'home',    label: t.nav.dashboard,    icon: LayoutDashboard },
+      { id: 'share',        group: 'home',    label: t.nav.share,        icon: Share2 },
+      { id: 'pulse',        group: 'pulse',   label: t.nav.pulse,        icon: Radio },
+      { id: 'obsessions',   group: 'pulse',   label: t.nav.obsessions,   icon: RotateCcw },
+      { id: 'achievements', group: 'pulse',   label: t.nav.achievements, icon: Award },
+      { id: 'wrapped',      group: 'pulse',   label: t.nav.wrapped,      icon: Gift },
+      { id: 'artist',       group: 'atlas',   label: t.nav.artist,       icon: Sparkles },
+      { id: 'top',          group: 'atlas',   label: t.nav.top,          icon: Trophy },
+      { id: 'cultural',     group: 'atlas',   label: t.nav.cultural,     icon: Globe },
+      { id: 'eras',         group: 'stories', label: t.nav.eras,         icon: CalendarDays },
+      { id: 'timecapsule',  group: 'stories', label: t.nav.timeCapsule,  icon: Hourglass },
+      { id: 'personality',  group: 'stories', label: t.nav.personality,  icon: BrainCircuit },
+      { id: 'emotions',     group: 'stories', label: t.nav.emotions,     icon: Heart },
+      { id: 'inner',        group: 'stories', label: t.nav.inner,        icon: Palette },
+      { id: 'insights',     group: 'stories', label: t.nav.insights,     icon: AlertCircle },
+      { id: 'report',       group: 'stories', label: t.nav.report,       icon: FileText },
+      { id: 'upload',       group: 'lab',     label: t.nav.upload,       icon: Upload },
+      { id: 'audio',        group: 'lab',     label: t.nav.audioLab,     icon: AudioWaveform },
+      { id: 'aiassistant',  group: 'lab',     label: t.nav.aiAssistant,  icon: Bot },
+      { id: 'compare',      group: 'lab',     label: t.nav.compare,      icon: GitCompare },
+      { id: 'museums',      group: 'lab',     label: t.nav.museums,      icon: Users },
+      { id: 'platforms',    group: 'lab',     label: t.nav.platforms,    icon: TabletSmartphone },
+      { id: 'quality',      group: 'lab',     label: t.nav.dataQuality,  icon: ShieldCheck },
+      { id: 'statsdeep',    group: 'lab',     label: t.nav.statsPro,     icon: Activity },
     ];
 
     return items.map(item => {
@@ -785,28 +814,28 @@ function AppInner({ boot }: { boot: AppBoot }) {
   }, [t.nav]);
 
   const navGroups: NavGroup[] = React.useMemo(() => [
-    { id: 'overview', label: t.navGroups.overview, color: tc.c1 },
-    { id: 'archive', label: t.navGroups.archive, color: '#facc15' },
-    { id: 'identity', label: t.navGroups.identity, color: '#a78bfa' },
-    { id: 'listening', label: t.navGroups.listening, color: '#fb923c' },
-    { id: 'data', label: t.navGroups.data, color: '#2dd4bf' },
-    { id: 'export', label: t.navGroups.export, color: '#10b981' },
+    { id: 'home', label: t.navGroups.home, color: tc.c1 },
+    { id: 'pulse', label: t.navGroups.pulse, color: '#22d3ee' },
+    { id: 'atlas', label: t.navGroups.atlas, color: '#facc15' },
+    { id: 'stories', label: t.navGroups.stories, color: '#a78bfa' },
+    { id: 'lab', label: t.navGroups.lab, color: '#2dd4bf' },
   ], [t.navGroups, tc.c1]);
 
-  const journeyMenuItems = React.useMemo(() => {
-    const roomIds = new Set(roomIdsForJourney(activeJourney));
+  const activeHub = hubForRoom(activeTab) ?? 'home';
+  const hubMenuItems = React.useMemo(() => {
+    const roomIds = new Set<string>(MUSEUM_HUB_ROOMS[activeHub]);
     return menuItems.filter(item => roomIds.has(item.id));
-  }, [activeJourney, menuItems]);
+  }, [activeHub, menuItems]);
 
-  const roomNavigationItems: MuseumRoomItem[] = React.useMemo(() => journeyMenuItems.map(item => ({
+  const roomNavigationItems: MuseumRoomItem[] = React.useMemo(() => hubMenuItems.map(item => ({
     id: item.id,
     label: item.label,
     groupLabel: navGroups.find(group => group.id === item.group)?.label ?? item.group,
     color: item.color,
     secondary: item.secondary,
     icon: item.icon,
-    isChapter: item.id !== 'upload',
-  })), [journeyMenuItems, navGroups]);
+    isChapter: !['upload', 'share', 'audio'].includes(item.id),
+  })), [hubMenuItems, navGroups]);
 
   const activeRoomProgress = React.useMemo(
     () => getMuseumRoomProgress(roomNavigationItems, activeTab),
@@ -869,12 +898,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
     ));
   }, [activeTab, menuItems]);
 
-  useEffect(() => {
-    if (activeTab === 'hero' || journeyContainsRoom(activeJourney, activeTab)) return;
-    setActiveJourney('full');
-    try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, 'full'); } catch { /* private browsing */ }
-  }, [activeJourney, activeTab]);
-
   const toggleGroup = useCallback((groupId: NavGroupId) => {
     setExpandedGroups(prev => ({ ...prev, [groupId]: !prev[groupId] }));
   }, []);
@@ -882,6 +905,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const goToTab = useCallback((tab: Tab) => {
     setShowThemes(false);
     setShowMobileUtilities(false);
+    if (tab !== activeTab) playMuseumSound('navigate');
     setActiveTab(tab);
     const item = menuItems.find(i => i.id === tab);
     if (item) {
@@ -890,26 +914,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     });
-  }, [menuItems, setActiveTab]);
-
-  const selectJourney = useCallback((journey: ExpeditionJourneyId) => {
-    setActiveJourney(journey);
-    try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, journey); } catch { /* private browsing */ }
-
-    const journeyRooms = roomIdsForJourney(journey);
-    if (activeTab === 'hero' || !journeyContainsRoom(journey, activeTab)) {
-      const firstRoom = journeyRooms[0] as Tab | undefined;
-      if (firstRoom) goToTab(firstRoom);
-    }
-  }, [activeTab, goToTab]);
+  }, [activeTab, menuItems, setActiveTab]);
 
   const navigateFromCommand = useCallback((roomId: string) => {
-    if (!journeyContainsRoom(activeJourney, roomId)) {
-      setActiveJourney('full');
-      try { window.localStorage.setItem(EXPEDITION_JOURNEY_STORAGE_KEY, 'full'); } catch { /* private browsing */ }
-    }
     goToTab(roomId as Tab);
-  }, [activeJourney, goToTab]);
+  }, [goToTab]);
+
+  const selectHub = useCallback((hub: MuseumHubId) => {
+    goToTab(MUSEUM_HUB_ENTRY_ROOMS[hub] as Tab);
+  }, [goToTab]);
 
   const navigateRoom = useCallback((roomId: string) => {
     goToTab(roomId as Tab);
@@ -1167,6 +1180,19 @@ function AppInner({ boot }: { boot: AppBoot }) {
     ? `${motionUi.control}: ${motionModeLabel}. ${motionUi.system}`
     : `${motionUi.control}: ${motionModeLabel}`;
   const cycleMotionMode = () => setMotionMode(current => nextMotionMode(current));
+  const soundUi = pickLanguage(lang, {
+    en: { control: 'Interface sound', subtle: 'Subtle', off: 'Off' },
+    es: { control: 'Sonido de interfaz', subtle: 'Sutil', off: 'Apagado' },
+    he: { control: 'צלילי ממשק', subtle: 'עדינים', off: 'כבויים' },
+  });
+  const soundModeLabel = soundEnabled ? soundUi.subtle : soundUi.off;
+  const soundControlLabel = `${soundUi.control}: ${soundModeLabel}`;
+  const toggleMuseumSound = () => {
+    const next = !soundEnabled;
+    setSoundEnabled(next);
+    setMuseumSoundEnabled(next);
+    if (next) playMuseumSound('confirm');
+  };
   const persistenceUi = pickLanguage(lang, {
     en: {
       saveSuccess: 'Archive saved locally in this browser.',
@@ -1245,7 +1271,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
       data-room={activeTab}
       style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}
     >
-      {activeTab !== 'hero' ? (
+      {activeTab !== 'hero' && effectiveMotionMode === 'expressive' ? (
         <Suspense fallback={null}>
           <InteractiveBackdrop data={musicData} motionMode={effectiveMotionMode} />
         </Suspense>
@@ -1270,6 +1296,8 @@ function AppInner({ boot }: { boot: AppBoot }) {
             NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
           </span>
         </button>
+
+        <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
 
         {/* Right controls */}
         <div className="flex min-w-0 flex-nowrap items-center justify-end gap-1 md:gap-2">
@@ -1297,6 +1325,20 @@ function AppInner({ boot }: { boot: AppBoot }) {
             <Activity className="h-4 w-4" aria-hidden="true" />
             <span>{motionModeLabel}</span>
           </button>
+          <button
+            type="button"
+            onClick={toggleMuseumSound}
+            data-testid="museum-sound-control"
+            aria-label={soundControlLabel}
+            aria-pressed={soundEnabled}
+            title={soundControlLabel}
+            className="nova-header-primary-action hidden min-h-11 min-w-11 items-center justify-center rounded-full border transition-all sm:flex"
+            style={{ borderColor: `${tc.c2}38`, color: tc.c2, backgroundColor: `${tc.c2}0c` }}
+          >
+            {soundEnabled
+              ? <Volume2 className="h-4 w-4" aria-hidden="true" />
+              : <VolumeX className="h-4 w-4" aria-hidden="true" />}
+          </button>
           {/* Language toggle */}
           <div
             className="hidden items-center overflow-hidden rounded-full border xl:flex"
@@ -1310,7 +1352,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                 aria-pressed={lang === option.code}
                 className="min-h-11 min-w-11 px-2 font-mono text-xs font-bold uppercase transition-all sm:px-3"
                 style={lang === option.code
-                  ? { backgroundColor: tc.c1, color: '#000' }
+                  ? { backgroundColor: tc.c1, color: tc.mode === 'light' ? '#fff' : '#000' }
                   : { color: '#6b7280' }}>
                 {option.shortLabel}
               </button>
@@ -1458,6 +1500,21 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
                   <button
                     type="button"
+                    onClick={toggleMuseumSound}
+                    aria-label={soundControlLabel}
+                    aria-pressed={soundEnabled}
+                    className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-start font-mono text-xs font-bold transition-colors hover:bg-white/5"
+                    style={{ color: tc.c2 }}
+                  >
+                    {soundEnabled
+                      ? <Volume2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      : <VolumeX className="h-4 w-4 shrink-0" aria-hidden="true" />}
+                    <span className="flex-1">{soundUi.control}</span>
+                    <strong>{soundModeLabel}</strong>
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={() => { setShowMobileUtilities(false); setShowTour(true); }}
                     className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-start font-mono text-xs font-bold transition-colors hover:bg-white/5"
                     style={{ color: tc.c3 }}
@@ -1501,7 +1558,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
       {activeTab !== 'hero' && (
         <ExpeditionConsole
-          activeJourney={activeJourney}
           activeRoomId={activeTab}
           data={filteredData}
           isPersonalArchive={isPersonalArchive}
@@ -1512,7 +1568,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
           sourceLabel={storedMeta?.sourceLabel ?? null}
           onNavigate={navigateFromCommand}
           onOpenArchive={() => goToTab('upload')}
-          onSelectJourney={selectJourney}
         />
       )}
 
@@ -1536,7 +1591,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             style={{ backgroundColor: `${tc.bg}60`, borderInlineEndColor: `${tc.c1}10` }}>
             <nav className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-3 pb-2 md:pb-0">
               {navGroups.map(group => {
-                const groupItems = journeyMenuItems.filter(item => item.group === group.id);
+                const groupItems = hubMenuItems.filter(item => item.group === group.id);
                 if (groupItems.length === 0) return null;
                 const groupActive = groupItems.some(item => item.id === activeTab);
                 const isExpanded = expandedGroups[group.id];
@@ -1635,7 +1690,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     activeTab={activeTab}
                     data={filteredData}
                     lang={lang}
-                    density={activeJourney === 'quick' || activeTab === 'artist' ? 'cinematic' : 'compact'}
+                    density={experienceDepth === 'guided' || activeTab === 'artist' ? 'cinematic' : 'compact'}
                     routePosition={activeRoomProgress.chapterIndex >= 0 ? {
                       current: activeRoomProgress.chapterIndex + 1,
                       total: activeRoomProgress.chapterTotal,
@@ -1670,6 +1725,36 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     {activeTab === 'wrapped'     && <WrappedCard data={filteredData} />}
                     {activeTab === 'pulse'       && <RecentPulse data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'report'      && <FinalReport data={filteredData} isPersonalArchive={isPersonalArchive} />}
+                    {activeTab === 'share' && (
+                      <div className="space-y-6 animate-fade-in">
+                        <ShareFeedbackHub lang={lang} shareUrl={publicMuseumUrl} />
+                        <section className="nova-surface nova-surface--utility rounded-3xl p-5 sm:p-6">
+                          <h2 className="type-section type-strong">{shareRoomActions.title}</h2>
+                          <p className="type-body type-muted mt-2 max-w-3xl">{shareRoomActions.body}</p>
+                          <div className="mt-5 flex flex-wrap gap-3">
+                            <button
+                              type="button"
+                              onClick={() => goToTab('upload')}
+                              className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-black"
+                              style={{ borderColor: `${tc.c1}45`, color: tc.c1, backgroundColor: `${tc.c1}10` }}
+                            >
+                              <Upload className="h-4 w-4" aria-hidden="true" />
+                              {shareRoomActions.import}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => goToTab('museums')}
+                              className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-black"
+                              style={{ borderColor: `${tc.c3}45`, color: tc.c3, backgroundColor: `${tc.c3}10` }}
+                            >
+                              <Users className="h-4 w-4" aria-hidden="true" />
+                              {shareRoomActions.compare}
+                            </button>
+                          </div>
+                        </section>
+                      </div>
+                    )}
+                    {activeTab === 'audio' && <AudioLabFoundation lang={lang} />}
                     {activeTab === 'upload' && (
                       <div className="space-y-6 animate-fade-in">
                         <div className="flex items-center gap-3 mb-6">
@@ -1821,7 +1906,9 @@ function DatasetLoadErrorPanel({ onRetry }: { onRetry: () => void }) {
 export default function App() {
   return (
     <AppProvider>
-      <AppDataGate />
+      <ExperienceProvider>
+        <AppDataGate />
+      </ExperienceProvider>
     </AppProvider>
   );
 }

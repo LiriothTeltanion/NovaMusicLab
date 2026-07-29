@@ -42,12 +42,14 @@ describe('emotional engine', () => {
     expect(reading.longNarrative.he).toContain('Test Horizon');
     expect(reading.longNarrative.he).toContain(reading.primaryEmotion.he);
     expect(reading.longNarrative.he).not.toContain(reading.primaryEmotion.en);
+    expect(reading.longNarrative.es).toContain('no demuestra qué sentiste');
+    expect(reading.longNarrative.en).toContain('does not establish what you felt');
     expect(reading.evidence.es).toHaveLength(4);
     expect(reading.evidence.he).toHaveLength(4);
     expect(reading.axis.catharsis).toBeGreaterThan(50);
   });
 
-  it('creates album and track readings with recommended use in all three languages', () => {
+  it('creates album and track readings with optional prompts and explicit limits', () => {
     const albumReading = buildAlbumEmotionalReading({
       album,
       artist,
@@ -68,12 +70,14 @@ describe('emotional engine', () => {
     expect(albumReading.listeningUse.en).toMatch(/Play it/);
     expect(albumReading.listeningUse.he).toContain(albumReading.primaryEmotion.he);
     expect(albumReading.listeningUse.he).not.toContain(albumReading.primaryEmotion.en);
+    expect(albumReading.longNarrative.en).toContain('not a measurement of the audio content');
     expect(albumReading.moodKey).toBeTruthy();
     expect(albumReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.longNarrative.es).toContain('Neon Collapse');
     expect(trackReading.longNarrative.en).toContain('Neon Collapse');
     expect(trackReading.longNarrative.he).toContain('Neon Collapse');
     expect(trackReading.longNarrative.he).toContain(trackReading.primaryEmotion.he);
+    expect(trackReading.longNarrative.en).toContain('does not establish why it returned');
     expect(trackReading.moodKey).toBeTruthy();
     expect(trackReading.moodConfidence).toBeGreaterThan(0);
     expect(trackReading.evidence.en.join(' ')).toContain('Rank #3');
@@ -114,8 +118,8 @@ describe('emotional engine', () => {
       eras: [],
     });
 
-    expect(reading.longNarrative.en).toContain('In the emotional engine');
-    expect(reading.longNarrative.es).toContain('En el motor emocional');
+    expect(reading.longNarrative.en).toContain('Under the current genre/name rules');
+    expect(reading.longNarrative.es).toContain('Según las reglas actuales de género y nombre');
     expect(reading.evidence.en.some(item => item.includes('MusicBrainz'))).toBe(true);
     expect(reading.evidence.en.some(item => item.includes('Wikidata'))).toBe(true);
     expect(reading.evidence.he.some(item => item.includes('MusicBrainz'))).toBe(true);

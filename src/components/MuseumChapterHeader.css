@@ -620,9 +620,9 @@
   }
 }
 
-/* Expedition journeys deliberately change the editorial rhythm without
-   duplicating the chapter component. Full Museum and Lab Tools stay compact;
-   Quick Tour and Artist Atlas receive a larger, cinematic portal. */
+/* Experience depth changes editorial rhythm without duplicating the chapter
+   component. Guided and every Atlas room receive a cinematic portal; Explore
+   and Deep Dive keep non-Atlas rooms compact. */
 @media (min-width: 921px) {
   .museum-chapter--compact,
   .museum-chapter--compact .museum-chapter__content {

@@ -8,6 +8,10 @@ interface BootstrapModule {
 }
 
 type BootstrapLoader = () => Promise<BootstrapModule>;
+interface NetworkHints {
+  effectiveType?: string;
+  saveData?: boolean;
+}
 
 const BOOTSTRAP_WARNING =
   '[Nova Music Lab] Local database bootstrap did not complete. The museum remains available, but schema-v4 artist enrichment may be unavailable.';
@@ -18,6 +22,18 @@ function warnBootstrapOnce(reason: unknown) {
   if (bootstrapWarningSent) return;
   bootstrapWarningSent = true;
   console.warn(BOOTSTRAP_WARNING, reason);
+}
+
+export function bootstrapTimingForNetwork(connection?: NetworkHints) {
+  const constrainedNetwork = Boolean(
+    connection?.saveData || /(^|-)2g$|3g$/.test(connection?.effectiveType ?? ''),
+  );
+  return {
+    constrainedNetwork,
+    settleDelay: constrainedNetwork ? 20_000 : 10_000,
+    idleTimeout: constrainedNetwork ? 20_000 : 10_000,
+    fallbackDelay: constrainedNetwork ? 5_000 : 2_000,
+  };
 }
 
 export async function runLocalDataBootstrap(
@@ -33,15 +49,24 @@ export async function runLocalDataBootstrap(
 }
 
 function scheduleAfterLoadAndIdle() {
-  const run = () => {
-    void runLocalDataBootstrap();
-  };
+  const connection = (navigator as Navigator & {
+    connection?: NetworkHints;
+  }).connection;
+  const timing = bootstrapTimingForNetwork(connection);
+  // The knowledge manifest is useful, but it must not compete with the first
+  // room, fonts or remote artwork. Give the visitor a stable museum first.
 
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(run, { timeout: 2_500 });
-  } else {
-    globalThis.setTimeout(run, 700);
-  }
+  globalThis.setTimeout(() => {
+    const run = () => {
+      void runLocalDataBootstrap();
+    };
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(run, { timeout: timing.idleTimeout });
+    } else {
+      globalThis.setTimeout(run, timing.fallbackDelay);
+    }
+  }, timing.settleDelay);
 }
 
 /**

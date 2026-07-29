@@ -81,7 +81,7 @@ describe('deep links', () => {
     });
   });
 
-  it('retains a GitHub Pages base path when building the copied URL', () => {
+  it('retains a GitHub Pages base path but omits page-level query secrets', () => {
     expect(buildShareUrl({
       origin: 'https://liriothteltanion.github.io',
       pathname: '/NovaMusicLab/',
@@ -89,7 +89,7 @@ describe('deep links', () => {
     }, {
       ...DEFAULT_DEEP_LINK_STATE,
       tab: 'quality',
-    })).toBe('https://liriothteltanion.github.io/NovaMusicLab/?preview=1#/data-quality');
+    })).toBe('https://liriothteltanion.github.io/NovaMusicLab/#/data-quality');
   });
 
   it('pushes room changes, replaces selection changes and skips canonical state', () => {

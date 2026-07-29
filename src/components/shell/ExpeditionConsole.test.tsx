@@ -4,19 +4,18 @@ import { Activity, LayoutDashboard } from 'lucide-react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import musicData from '../../data/music_dna_mock.json';
+import { ExperienceProvider } from '../../context/ExperienceContext';
 import type { MusicDnaData } from '../../types';
 import ExpeditionConsole from './ExpeditionConsole';
-import { journeyContainsRoom, roomIdsForJourney } from './expeditionJourney';
 
 const data = musicData as unknown as MusicDnaData;
 const rooms = [
-  { id: 'dashboard', label: 'Dashboard', groupLabel: 'Overview', color: '#22d3ee', icon: LayoutDashboard },
-  { id: 'quality', label: 'Data Quality', groupLabel: 'Data', color: '#2dd4bf', icon: Activity },
+  { id: 'dashboard', label: 'Dashboard', groupLabel: 'Home', color: '#22d3ee', icon: LayoutDashboard },
+  { id: 'quality', label: 'Data Quality', groupLabel: 'Data Lab', color: '#2dd4bf', icon: Activity },
 ];
 
 function renderConsole(overrides: Partial<React.ComponentProps<typeof ExpeditionConsole>> = {}) {
   const props: React.ComponentProps<typeof ExpeditionConsole> = {
-    activeJourney: 'full',
     activeRoomId: 'dashboard',
     data,
     isPersonalArchive: false,
@@ -27,23 +26,22 @@ function renderConsole(overrides: Partial<React.ComponentProps<typeof Expedition
     sourceLabel: null,
     onNavigate: vi.fn(),
     onOpenArchive: vi.fn(),
-    onSelectJourney: vi.fn(),
     ...overrides,
   };
-  return { ...render(<ExpeditionConsole {...props} />), props };
+  return {
+    ...render(
+      <ExperienceProvider>
+        <ExpeditionConsole {...props} />
+      </ExperienceProvider>,
+    ),
+    props,
+  };
 }
 
 describe('ExpeditionConsole', () => {
   afterEach(() => {
     cleanup();
     document.body.style.overflow = '';
-  });
-
-  it('keeps each journey scoped to a real ordered route', () => {
-    expect(roomIdsForJourney('quick')).toEqual(expect.arrayContaining(['dashboard', 'artist', 'report']));
-    expect(journeyContainsRoom('quick', 'quality')).toBe(false);
-    expect(journeyContainsRoom('lab', 'quality')).toBe(true);
-    expect(journeyContainsRoom('full', 'upload')).toBe(true);
   });
 
   it('shows archive mode, source, date, privacy and local state from real archive metadata', async () => {
@@ -88,9 +86,9 @@ describe('ExpeditionConsole', () => {
   it('keeps compact journey labels available for narrow layouts', () => {
     renderConsole();
 
-    expect(screen.getByRole('button', { name: 'Quick Tour' })).toHaveTextContent('Quick');
-    expect(screen.getByRole('button', { name: 'Full Museum' })).toHaveTextContent('Museum');
-    expect(screen.getByRole('button', { name: 'Lab Tools' })).toHaveTextContent('Lab');
+    expect(screen.getByRole('button', { name: 'Guided' })).toHaveTextContent('Guided');
+    expect(screen.getByRole('button', { name: 'Explore' })).toHaveTextContent('Explore');
+    expect(screen.getByRole('button', { name: 'Deep Dive' })).toHaveTextContent('Details');
   });
 
   it('opens with Ctrl+K, filters rooms and completes navigation with Enter', async () => {
@@ -110,15 +108,15 @@ describe('ExpeditionConsole', () => {
     expect(screen.queryByRole('dialog', { name: 'Nova Command' })).not.toBeInTheDocument();
   });
 
-  it('closes on Escape, restores focus and exposes all journeys as functional actions', async () => {
+  it('closes on Escape, restores focus and exposes every depth as a functional action', async () => {
     const user = userEvent.setup();
-    const onSelectJourney = vi.fn();
-    renderConsole({ onSelectJourney });
+    window.localStorage.setItem('nml_experience_depth', 'explore');
+    renderConsole();
 
     const trigger = screen.getByRole('button', { name: /open command palette/i });
     await user.click(trigger);
-    await user.click(screen.getByRole('button', { name: 'Start Quick Tour' }));
-    expect(onSelectJourney).toHaveBeenCalledWith('quick');
+    await user.click(screen.getByRole('button', { name: 'Use Guided' }));
+    await waitFor(() => expect(window.localStorage.getItem('nml_experience_depth')).toBe('guided'));
 
     await user.click(trigger);
     await user.keyboard('{Escape}');
@@ -131,7 +129,7 @@ describe('ExpeditionConsole', () => {
 
     const trigger = screen.getByRole('button', { name: /open command palette/i });
     await user.click(trigger);
-    await user.click(screen.getByRole('button', { name: /DashboardOverviewCurrent room/i }));
+    await user.click(screen.getByRole('button', { name: /DashboardHomeCurrent room/i }));
 
     await waitFor(() => expect(trigger).toHaveFocus());
   });
@@ -139,7 +137,7 @@ describe('ExpeditionConsole', () => {
   it('keeps the console and archive evidence RTL in Hebrew', () => {
     renderConsole({ lang: 'he' });
 
-    expect(screen.getByTestId('journey-switcher')).toHaveAttribute('dir', 'rtl');
+    expect(screen.getByTestId('experience-switcher')).toHaveAttribute('dir', 'rtl');
     expect(screen.getByTestId('archive-capsule')).toHaveAttribute('dir', 'rtl');
   });
 });

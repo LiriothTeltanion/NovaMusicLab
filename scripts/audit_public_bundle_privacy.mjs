@@ -49,6 +49,7 @@ const PUBLIC_PLATFORM_FAMILIES = new Set([
   'Xbox',
   'YouTube import',
 ]);
+const LASTFM_PROFILE_URL_PATTERN = /https?:\/\/(?:www\.)?last\.fm\/user\/[a-z0-9._-]+/i;
 const FORBIDDEN_PUBLIC_VALUE_PATTERNS = [
   {
     label: 'MAC-address-like value',
@@ -57,6 +58,10 @@ const FORBIDDEN_PUBLIC_VALUE_PATTERNS = [
   {
     label: 'browser user-agent signature',
     pattern: /\b(?:Mozilla\/\d|AppleWebKit\/\d|Chrome\/\d|Firefox\/\d|Version\/\d+\.\d+ Safari\/)/i,
+  },
+  {
+    label: 'Last.fm account profile URL',
+    pattern: LASTFM_PROFILE_URL_PATTERN,
   },
 ];
 
@@ -171,6 +176,9 @@ function auditRepositoryText() {
     }
     if (accountAssignment.test(text)) {
       errors.push(`Raw account-identifier assignment found in repository text file: ${label}`);
+    }
+    if (LASTFM_PROFILE_URL_PATTERN.test(text)) {
+      errors.push(`Last.fm account profile URL found in repository text file: ${label}`);
     }
 
     for (const match of text.matchAll(csvLiteral)) {

@@ -168,44 +168,6 @@ export default function WrappedCard({ data }: WrappedCardProps) {
         })}
       </motion.div>
 
-      <MethodologyPanel
-        eyebrow={t.wrapped.methodEyebrow}
-        title={t.wrapped.methodTitle}
-        subtitle={t.wrapped.methodSubtitle}
-        accent="c1"
-        stats={[
-          {
-            label: t.wrapped.methodStats.selectedYear,
-            value: String(era.year),
-          },
-          {
-            label: t.wrapped.methodStats.selectionRule,
-            value: t.wrapped.methodStats.selectionRuleValue,
-          },
-          {
-            label: t.wrapped.methodStats.source,
-            value: t.wrapped.methodStats.sourceValue,
-          },
-          {
-            label: t.wrapped.methodStats.export,
-            value: t.wrapped.methodStats.exportValue,
-          },
-        ]}
-        points={t.wrapped.methodPoints}
-      />
-
-      <div className="glass-panel p-5 rounded-3xl border-l-4" style={{ borderLeftColor: tc.c2 }}>
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-4 h-4" style={{ color: tc.c2 }} />
-          <h3 className="text-sm font-mono font-black uppercase tracking-wider text-white">
-            {t.wrapped.selectedInsightTitle}
-          </h3>
-        </div>
-        <p className="text-sm text-gray-300 leading-relaxed">
-          {t.wrapped.selectedInsightBody(era.year, fmtNum(era.plays), era.top_artist, era.top_track)}
-        </p>
-      </div>
-
       {/* The shareable card */}
       <motion.div
         initial={{ opacity: 0, scale: 0.96, y: 24 }}
@@ -436,6 +398,44 @@ export default function WrappedCard({ data }: WrappedCardProps) {
           </p>
         )}
       </motion.div>
+
+      <div className="glass-panel p-5 rounded-3xl border-l-4" style={{ borderLeftColor: tc.c2 }}>
+        <div className="flex items-center gap-2 mb-2">
+          <Sparkles className="w-4 h-4" style={{ color: tc.c2 }} />
+          <h3 className="text-sm font-mono font-black uppercase tracking-wider text-white">
+            {t.wrapped.selectedInsightTitle}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-300 leading-relaxed">
+          {t.wrapped.selectedInsightBody(era.year, fmtNum(era.plays), era.top_artist, era.top_track)}
+        </p>
+      </div>
+
+      <MethodologyPanel
+        eyebrow={t.wrapped.methodEyebrow}
+        title={t.wrapped.methodTitle}
+        subtitle={t.wrapped.methodSubtitle}
+        accent="c1"
+        stats={[
+          {
+            label: t.wrapped.methodStats.selectedYear,
+            value: String(era.year),
+          },
+          {
+            label: t.wrapped.methodStats.selectionRule,
+            value: t.wrapped.methodStats.selectionRuleValue,
+          },
+          {
+            label: t.wrapped.methodStats.source,
+            value: t.wrapped.methodStats.sourceValue,
+          },
+          {
+            label: t.wrapped.methodStats.export,
+            value: t.wrapped.methodStats.exportValue,
+          },
+        ]}
+        points={t.wrapped.methodPoints}
+      />
     </div>
   );
 }

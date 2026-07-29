@@ -1,0 +1,121 @@
+.museum-hub-nav {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.museum-hub-nav__mobile {
+  display: grid;
+  min-height: 2.75rem;
+  min-width: 6.8rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--c1) 24%, transparent);
+  border-radius: 999px;
+  color: var(--c1);
+  background: color-mix(in srgb, var(--c1) 7%, var(--bg));
+}
+
+.museum-hub-nav__mobile select {
+  width: 100%;
+  min-height: 2.75rem;
+  appearance: none;
+  border: 0;
+  outline: 0;
+  padding: 0 0.75rem;
+  color: currentColor;
+  background: transparent;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.museum-hub-nav__desktop {
+  display: none;
+}
+
+[data-mode='light'] .museum-hub-nav__mobile {
+  color: var(--fg);
+}
+
+@media (min-width: 900px) {
+  .museum-hub-nav {
+    display: flex;
+    justify-content: center;
+  }
+
+  .museum-hub-nav__mobile {
+    display: none;
+  }
+
+  .museum-hub-nav__desktop {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.2rem;
+    width: min(100%, 34rem);
+    padding: 0.2rem;
+    border: 1px solid color-mix(in srgb, var(--c1) 16%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 64%, transparent);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent);
+  }
+
+  .museum-hub-nav__desktop > span {
+    min-width: 0;
+  }
+
+  .museum-hub-nav__desktop button {
+    display: flex;
+    min-width: 0;
+    min-height: 2.45rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.35rem 0.48rem;
+    color: color-mix(in srgb, var(--fg) 58%, transparent);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.65rem;
+    font-weight: 850;
+    line-height: 1;
+    width: 100%;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+  }
+
+  .museum-hub-nav__desktop button:hover,
+  .museum-hub-nav__desktop button:focus-visible {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--c1) 7%, transparent);
+  }
+
+  .museum-hub-nav__desktop button[aria-current='page'] {
+    border-color: color-mix(in srgb, var(--c1) 32%, transparent);
+    color: color-mix(in srgb, var(--c1) 82%, var(--fg));
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--c1) 14%, transparent),
+      color-mix(in srgb, var(--c3) 7%, transparent)
+    );
+  }
+
+  .museum-hub-nav__desktop span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1180px) {
+  .museum-hub-nav__desktop button {
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .museum-hub-nav__desktop button {
+    transition: none;
+  }
+}

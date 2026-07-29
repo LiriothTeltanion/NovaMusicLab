@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 coverage
+playwright-report/
+test-results/
 .cache
 scripts/.cache
 lint_output.txt

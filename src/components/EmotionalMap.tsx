@@ -12,6 +12,7 @@ import SectionNarrative from './SectionNarrative';
 import SectionQuickRead from './SectionQuickRead';
 import MoodBadge, { MOOD_ICONS } from './MoodBadge';
 import MoodArtCanvas from './MoodArtCanvas';
+import EmotionEvidenceNotice from './emotion/EmotionEvidenceNotice';
 import { axisProps, useChartAnimation } from './chartKit';
 import { getCuratedArtistMedia, getPrimarySpotifyUrl, getPrimaryYoutubeUrl, getWikipediaUrl, buildSpotifySearchUrl, buildYoutubeSearchUrl } from '../utils/mediaLinks';
 import {
@@ -190,8 +191,8 @@ const EMOTION_DETAILS = {
   },
   dopamina: {
     es: {
-      tab: "Dopamina",
-      title: "Dopamina / Diversión Emo-Groove",
+      tab: "Activación",
+      title: "Activación luminosa / Emo-Groove",
       desc: "Riffs alegres de guitarra, mezcla de pop de los 2000s, sintetizadores y percusiones rápidas. Sonidos optimistas ideales para motivarte.",
       time: "Mañana 06-11",
       bodyState: "Ligereza, movimiento rápido, humor raro y sensación de reinicio.",
@@ -201,8 +202,8 @@ const EMOTION_DETAILS = {
       evidence: "Bilmuri, Magnolia Park, The Story So Far y Neck Deep aparecen como resets de energía juguetona, pop-punk y groove emocional.",
     },
     en: {
-      tab: "Dopamine",
-      title: "Dopamine / Emo-Groove Fun",
+      tab: "Bright activation",
+      title: "Bright Activation / Emo-Groove",
       desc: "Cheerful guitar riffs, a blend of 2000s pop, synths and fast percussion. Upbeat sounds built to motivate you.",
       time: "Morning 06-11",
       bodyState: "Lightness, quick movement, strange humor and a feeling of reset.",
@@ -212,8 +213,8 @@ const EMOTION_DETAILS = {
       evidence: "Bilmuri, Magnolia Park, The Story So Far and Neck Deep appear as playful energy resets, pop-punk and emotional groove.",
     },
     he: {
-      tab: "דופמין",
-      title: "דופמין / כיף של אימו־גרוב",
+      tab: "הפעלה מוארת",
+      title: "הפעלה מוארת / אימו־גרוב",
       desc: "ריפים שמחים של גיטרה, שילוב של פופ משנות האלפיים, סינתיסייזרים וכלי הקשה מהירים. צלילים אופטימיים שנועדו להניע אותך.",
       time: "הבוקר 06–11",
       bodyState: "קלילות, תנועה מהירה, הומור מוזר ותחושת איפוס.",
@@ -454,24 +455,24 @@ const isolateBidi = (value: string) => `\u2068${value}\u2069`;
 const EMOTIONAL_MAP_COPY = {
   es: {
     quick: {
-      intensityLabel: 'Intensidad media',
-      intensityTitle: (pct: number) => `${pct}% de energía emocional inferida`,
-      intensityBody: 'Los artistas principales no se agrupan en calma absoluta: el archivo tiende a música con movimiento, tensión y función reguladora.',
+      intensityLabel: 'Energía sonora estimada',
+      intensityTitle: (pct: number) => `${pct}/100 según la heurística`,
+      intensityBody: 'Los artistas principales no se agrupan en calma absoluta: sus etiquetas se asocian con movimiento y tensión sonora.',
       contrastLabel: 'Contraste',
-      contrastTitle: (dark: number, total: number) => `${dark}/${total} artistas caen del lado oscuro`,
-      contrastBody: 'La oscuridad no domina sola; convive con dopamina, enfoque, nostalgia y futurismo.',
-      anchorLabel: 'Ancla emocional',
+      contrastTitle: (dark: number, total: number) => `${dark}/${total} bajo el punto medio de brillo inferido`,
+      contrastBody: 'La oscuridad no domina sola; convive con activación luminosa, enfoque, nostalgia y futurismo.',
+      anchorLabel: 'Ancla de reproducciones',
       anchorTitle: (artist: string) => artist,
-      anchorBody: 'El artista más fuerte del archivo funciona como una puerta rápida al estado emocional que más regresa.',
+      anchorBody: 'El artista con más reproducciones es el ancla estadística más visible; no necesariamente tu favorito emocional.',
     },
     engine: {
-      title: 'Mezcla del motor emocional',
-      subtitle: 'La misma capa que ahora alimenta los dossiers lee tus artistas principales y calcula qué modos emocionales dominan el archivo activo.',
-      dominant: 'Modo dominante',
-      analyzedArtists: 'artistas analizados',
-      moodMix: 'Distribución por mood',
-      averageAxis: 'Promedio de ejes',
-      confidence: 'confianza',
+      title: 'Mezcla emocional heurística',
+      subtitle: 'Reglas locales de género y nombre clasifican los artistas principales en modos estimados. Las reproducciones ponderan la mezcla; no describen lo que sentiste.',
+      dominant: 'Modo estimado principal',
+      analyzedArtists: 'artistas clasificados',
+      moodMix: 'Distribución heurística',
+      averageAxis: 'Promedio de ejes estimados',
+      evidenceMethod: 'heurística de género',
       artistMode: 'modo del motor',
     },
     scatter: {
@@ -486,26 +487,26 @@ const EMOTIONAL_MAP_COPY = {
       separatedCluster: (count: number) => `${count} artistas comparten esta coordenada original; se separaron visualmente para que todos sean descubribles.`,
     },
     quadrantTitle: 'Guía de cuadrantes emocionales',
-    quadrantIntro: 'El mapa se lee mejor como clima emocional: no mide sentimientos exactos, ubica texturas de energía y brillo.',
+    quadrantIntro: 'El mapa se lee mejor como clima sonoro interpretativo: no mide sentimientos; ubica texturas estimadas de energía y brillo.',
     quadrants: [
-      { title: 'Oscuro + bajo pulso', tag: 'Reflexión', body: 'Música para procesar, recordar, escribir o bajar el volumen del mundo.', color: '#00f2fe' },
-      { title: 'Oscuro + alto pulso', tag: 'Catarsis', body: 'Música para descargar tensión, recuperar fuerza y crear límites.', color: '#f72585' },
-      { title: 'Brillante + alto pulso', tag: 'Dopamina', body: 'Música de activación, movimiento, confianza y reinicio rápido.', color: '#ffb703' },
-      { title: 'Brillante + bajo pulso', tag: 'Foco', body: 'Música para ordenar la mente, trabajar y sostener calma creativa.', color: '#10b981' },
+      { title: 'Oscuro + bajo pulso', tag: 'Reflexión', body: 'Posible contexto: recordar, escribir o bajar el volumen del mundo.', color: '#00f2fe' },
+      { title: 'Oscuro + alto pulso', tag: 'Catarsis', body: 'Posible contexto: moverse, descargar tensión o recuperar impulso.', color: '#f72585' },
+      { title: 'Brillante + alto pulso', tag: 'Activación', body: 'Música asociada con impulso, movimiento y brillo sonoro.', color: '#ffb703' },
+      { title: 'Brillante + bajo pulso', tag: 'Foco', body: 'Posible contexto: trabajar y sostener una atmósfera creativa tranquila.', color: '#10b981' },
     ],
-    dossierTitle: 'Dossier emocional seleccionado',
-    emotionSelector: 'Selector de estado emocional',
-    artistRolesTitle: 'Roles emocionales de artistas',
-    ritualsTitle: 'Rituales recomendados',
+    dossierTitle: 'Dossier interpretativo seleccionado',
+    emotionSelector: 'Selector de modo heurístico',
+    artistRolesTitle: 'Grupos heurísticos de artistas',
+    ritualsTitle: 'Propuestas de escucha',
     methodologyTitle: 'Lectura y metodología',
-    methodologyBody: 'Las coordenadas emocionales son una lectura artística inferida desde género, artista, frecuencia y curaduría interna. No son diagnóstico clínico; sirven para entender cómo tu archivo organiza energía, memoria y regulación.',
+    methodologyBody: 'Las coordenadas se estiman mediante reglas locales de género, artista y frecuencia. No analizan el audio ni miden emociones sentidas, intención o salud mental; la narrativa es interpretativa.',
     labels: {
-      meaning: 'Qué significa',
-      evidence: 'Por qué aparece',
-      body: 'Estado corporal / mental',
-      strength: 'Fortaleza',
-      shadow: 'Sombra',
-      ritual: 'Ritual recomendado',
+      meaning: 'Lectura interpretativa',
+      evidence: 'Base en el archivo',
+      body: 'Contexto de escucha sugerido',
+      strength: 'Posible atractivo',
+      shadow: 'Posible límite',
+      ritual: 'Propuesta de escucha',
       artists: 'Artistas clave',
       tracks: 'Canciones refugio',
       time: 'Horario dominante',
@@ -513,9 +514,9 @@ const EMOTIONAL_MAP_COPY = {
       role: 'Rol emocional',
     },
     rituals: [
-      { title: 'Activación de mañana', body: 'Usa catarsis o dopamina para entrar en movimiento antes de revisar pantallas.', emotion: 'energia' as EmotionKey },
+      { title: 'Activación de mañana', body: 'Prueba catarsis o activación luminosa para entrar en movimiento antes de revisar pantallas.', emotion: 'energia' as EmotionKey },
       { title: 'Bloque de foco', body: 'Usa calma técnica para programar, diseñar o ordenar tareas sin apagar la imaginación.', emotion: 'calma' as EmotionKey },
-      { title: 'Procesamiento nocturno', body: 'Usa melancolía o romanticismo oscuro para cerrar emociones sin quedarte atrapado.', emotion: 'melancolia' as EmotionKey },
+      { title: 'Escucha nocturna', body: 'Prueba melancolía o romanticismo oscuro para escribir, caminar o cerrar el día.', emotion: 'melancolia' as EmotionKey },
       { title: 'Construcción de mundos', body: 'Usa futurismo y nostalgia para convertir memoria en estética, arte o narrativa.', emotion: 'futurismo' as EmotionKey },
     ],
     stations: {
@@ -535,24 +536,24 @@ const EMOTIONAL_MAP_COPY = {
   },
   en: {
     quick: {
-      intensityLabel: 'Average intensity',
-      intensityTitle: (pct: number) => `${pct}% inferred emotional energy`,
-      intensityBody: 'The main artists do not cluster in pure calm: the archive leans toward music with motion, tension and regulation.',
+      intensityLabel: 'Estimated sonic energy',
+      intensityTitle: (pct: number) => `${pct}/100 from the heuristic`,
+      intensityBody: 'The main artists do not cluster in pure calm: their labels are associated with motion and sonic tension.',
       contrastLabel: 'Contrast',
-      contrastTitle: (dark: number, total: number) => `${dark}/${total} artists fall on the darker side`,
-      contrastBody: 'Darkness does not dominate alone; it coexists with dopamine, focus, nostalgia and futurism.',
-      anchorLabel: 'Emotional anchor',
+      contrastTitle: (dark: number, total: number) => `${dark}/${total} below the inferred-brightness midpoint`,
+      contrastBody: 'Darkness does not dominate alone; it coexists with bright activation, focus, nostalgia and futurism.',
+      anchorLabel: 'Playback anchor',
       anchorTitle: (artist: string) => artist,
-      anchorBody: 'The strongest artist in the archive works as a fast doorway into the emotional state that returns most often.',
+      anchorBody: 'The most-played artist is the clearest statistical anchor, not necessarily your emotional favorite.',
     },
     engine: {
-      title: 'Emotional engine mix',
-      subtitle: 'The same layer now powering the dossiers reads your main artists and calculates which emotional modes dominate the active archive.',
-      dominant: 'Dominant mode',
-      analyzedArtists: 'artists analyzed',
-      moodMix: 'Mood distribution',
-      averageAxis: 'Average axes',
-      confidence: 'confidence',
+      title: 'Heuristic emotional mix',
+      subtitle: 'Local genre/name rules classify the main artists into estimated modes. Play counts weight the mix; they do not describe what you felt.',
+      dominant: 'Leading estimated mode',
+      analyzedArtists: 'artists classified',
+      moodMix: 'Heuristic distribution',
+      averageAxis: 'Average estimated axes',
+      evidenceMethod: 'genre heuristic',
       artistMode: 'engine mode',
     },
     scatter: {
@@ -567,26 +568,26 @@ const EMOTIONAL_MAP_COPY = {
       separatedCluster: (count: number) => `${count} artists share this original coordinate; they are separated visually so every artist remains discoverable.`,
     },
     quadrantTitle: 'Emotional Quadrant Guide',
-    quadrantIntro: 'The map works best as emotional weather: it does not measure exact feelings, it places textures of energy and brightness.',
+    quadrantIntro: 'The map works best as interpretive sonic weather: it does not measure feelings; it places estimated textures of energy and brightness.',
     quadrants: [
-      { title: 'Dark + low pulse', tag: 'Reflection', body: 'Music for processing, remembering, writing or lowering the volume of the world.', color: '#00f2fe' },
-      { title: 'Dark + high pulse', tag: 'Catharsis', body: 'Music for releasing tension, regaining force and creating boundaries.', color: '#f72585' },
-      { title: 'Bright + high pulse', tag: 'Dopamine', body: 'Music for activation, movement, confidence and quick reset.', color: '#ffb703' },
-      { title: 'Bright + low pulse', tag: 'Focus', body: 'Music for organizing the mind, working and sustaining creative calm.', color: '#10b981' },
+      { title: 'Dark + low pulse', tag: 'Reflection', body: 'Possible context: remembering, writing or lowering the volume of the world.', color: '#00f2fe' },
+      { title: 'Dark + high pulse', tag: 'Catharsis', body: 'Possible context: moving, releasing tension or recovering momentum.', color: '#f72585' },
+      { title: 'Bright + high pulse', tag: 'Activation', body: 'Music associated with drive, movement and sonic brightness.', color: '#ffb703' },
+      { title: 'Bright + low pulse', tag: 'Focus', body: 'Possible context: working and sustaining a calm creative atmosphere.', color: '#10b981' },
     ],
-    dossierTitle: 'Selected Emotional Dossier',
-    emotionSelector: 'Emotional state selector',
-    artistRolesTitle: 'Artist Emotional Roles',
-    ritualsTitle: 'Recommended Rituals',
+    dossierTitle: 'Selected Interpretive Dossier',
+    emotionSelector: 'Heuristic mode selector',
+    artistRolesTitle: 'Heuristic Artist Groups',
+    ritualsTitle: 'Listening Prompts',
     methodologyTitle: 'Reading and Methodology',
-    methodologyBody: 'Emotional coordinates are an artistic reading inferred from genre, artist, frequency and internal curation. They are not a clinical diagnosis; they help explain how your archive organizes energy, memory and regulation.',
+    methodologyBody: 'Coordinates are estimated from local genre, artist and frequency rules. They do not analyze audio or measure felt emotion, intent or mental health; the narrative layer is interpretive.',
     labels: {
-      meaning: 'What it means',
-      evidence: 'Why it appears',
-      body: 'Body / mental state',
-      strength: 'Strength',
-      shadow: 'Shadow',
-      ritual: 'Recommended ritual',
+      meaning: 'Interpretive reading',
+      evidence: 'Archive basis',
+      body: 'Suggested listening context',
+      strength: 'Possible appeal',
+      shadow: 'Possible limit',
+      ritual: 'Listening prompt',
       artists: 'Key artists',
       tracks: 'Refuge songs',
       time: 'Dominant time',
@@ -594,9 +595,9 @@ const EMOTIONAL_MAP_COPY = {
       role: 'Emotional role',
     },
     rituals: [
-      { title: 'Morning activation', body: 'Use catharsis or dopamine to get moving before checking screens.', emotion: 'energia' as EmotionKey },
+      { title: 'Morning activation', body: 'Try catharsis or bright activation to get moving before checking screens.', emotion: 'energia' as EmotionKey },
       { title: 'Focus block', body: 'Use technical calm to code, design or organize tasks without turning imagination off.', emotion: 'calma' as EmotionKey },
-      { title: 'Night processing', body: 'Use melancholy or dark romanticism to close emotions without getting trapped.', emotion: 'melancolia' as EmotionKey },
+      { title: 'Night listening', body: 'Try melancholy or dark romanticism for writing, walking or closing the day.', emotion: 'melancolia' as EmotionKey },
       { title: 'Worldbuilding', body: 'Use futurism and nostalgia to turn memory into aesthetics, art or narrative.', emotion: 'futurismo' as EmotionKey },
     ],
     stations: {
@@ -616,24 +617,24 @@ const EMOTIONAL_MAP_COPY = {
   },
   he: {
     quick: {
-      intensityLabel: 'עוצמה ממוצעת',
-      intensityTitle: (pct: number) => `${pct}% אנרגיה רגשית משוערת`,
-      intensityBody: 'האמנים המובילים אינם מתרכזים ברוגע מוחלט: הארכיון נוטה למוזיקה שיש בה תנועה, מתח ותפקיד מווסת.',
+      intensityLabel: 'אנרגיה צלילית משוערת',
+      intensityTitle: (pct: number) => `${pct}/100 לפי ההיוריסטיקה`,
+      intensityBody: 'האמנים המובילים אינם מתרכזים ברוגע מוחלט: התגיות שלהם מקושרות לתנועה ולמתח צלילי.',
       contrastLabel: 'ניגוד',
-      contrastTitle: (dark: number, total: number) => `${dark} מתוך ${total} אמנים נמצאים בצד האפל יותר`,
-      contrastBody: 'האפלוליות אינה שולטת לבדה; היא מתקיימת לצד דופמין, מיקוד, נוסטלגיה ועתידנות.',
-      anchorLabel: 'עוגן רגשי',
+      contrastTitle: (dark: number, total: number) => `${dark} מתוך ${total} מתחת לאמצע סולם הבהירות המשוערת`,
+      contrastBody: 'האפלוליות אינה שולטת לבדה; היא מתקיימת לצד הפעלה מוארת, מיקוד, נוסטלגיה ועתידנות.',
+      anchorLabel: 'עוגן השמעות',
       anchorTitle: (artist: string) => artist,
-      anchorBody: 'האמן בעל המשקל הרב ביותר בארכיון משמש שער מהיר אל המצב הרגשי שחוזר בתדירות הגבוהה ביותר.',
+      anchorBody: 'האמן המושמע ביותר הוא העוגן הסטטיסטי הבולט ביותר, ולא בהכרח המועדף מבחינה רגשית.',
     },
     engine: {
-      title: 'תמהיל המנוע הרגשי',
-      subtitle: 'אותה שכבה שמפעילה את התיקים קוראת את האמנים המובילים שלך ומחשבת אילו מצבים רגשיים שולטים בארכיון הפעיל.',
-      dominant: 'מצב מוביל',
-      analyzedArtists: 'אמנים שנותחו',
-      moodMix: 'התפלגות מצבי הרוח',
-      averageAxis: 'ממוצע הצירים',
-      confidence: 'רמת ביטחון',
+      title: 'תמהיל רגשי היוריסטי',
+      subtitle: 'כללים מקומיים של ז׳אנר ושם מסווגים את האמנים המובילים למצבים משוערים. מספר ההשמעות משקלל את התמהיל; הוא אינו מתאר מה הרגשתם.',
+      dominant: 'המצב המשוער המוביל',
+      analyzedArtists: 'אמנים שסווגו',
+      moodMix: 'התפלגות היוריסטית',
+      averageAxis: 'ממוצע צירים משוערים',
+      evidenceMethod: 'היוריסטיקת ז׳אנר',
       artistMode: 'מצב לפי המנוע',
     },
     scatter: {
@@ -648,26 +649,26 @@ const EMOTIONAL_MAP_COPY = {
       separatedCluster: (count: number) => `${count} אמנים חולקים את אותה קואורדינטה מקורית; הם הופרדו חזותית כדי שאפשר יהיה לגלות כל אחד מהם.`,
     },
     quadrantTitle: 'מדריך לרבעים הרגשיים',
-    quadrantIntro: 'כדאי לקרוא את המפה כמזג אוויר רגשי: היא אינה מודדת רגשות מדויקים, אלא ממקמת מרקמים של אנרגיה ובהירות.',
+    quadrantIntro: 'כדאי לקרוא את המפה כמזג אוויר צלילי פרשני: היא אינה מודדת רגשות, אלא ממקמת מרקמים משוערים של אנרגיה ובהירות.',
     quadrants: [
-      { title: 'אפל + דופק נמוך', tag: 'התבוננות', body: 'מוזיקה לעיבוד רגשות, להיזכרות, לכתיבה או להנמכת עוצמת הרעש של העולם.', color: '#00f2fe' },
-      { title: 'אפל + דופק גבוה', tag: 'קתרזיס', body: 'מוזיקה לפריקת מתח, להשבת הכוח ולהצבת גבולות.', color: '#f72585' },
-      { title: 'מואר + דופק גבוה', tag: 'דופמין', body: 'מוזיקה להפעלה, לתנועה, לביטחון ולאיפוס מהיר.', color: '#ffb703' },
-      { title: 'מואר + דופק נמוך', tag: 'מיקוד', body: 'מוזיקה שמסדרת את המחשבות, תומכת בעבודה ושומרת על רוגע יצירתי.', color: '#10b981' },
+      { title: 'אפל + דופק נמוך', tag: 'התבוננות', body: 'הקשר אפשרי: להיזכר, לכתוב או להנמיך את עוצמת הרעש של העולם.', color: '#00f2fe' },
+      { title: 'אפל + דופק גבוה', tag: 'קתרזיס', body: 'הקשר אפשרי: לנוע, לפרוק מתח או להשיב תנופה.', color: '#f72585' },
+      { title: 'מואר + דופק גבוה', tag: 'הפעלה', body: 'מוזיקה שמקושרת לדחף, לתנועה ולבהירות צלילית.', color: '#ffb703' },
+      { title: 'מואר + דופק נמוך', tag: 'מיקוד', body: 'הקשר אפשרי: עבודה ושמירה על אווירה יצירתית רגועה.', color: '#10b981' },
     ],
-    dossierTitle: 'התיק הרגשי שנבחר',
-    emotionSelector: 'בחירת מצב רגשי',
-    artistRolesTitle: 'התפקידים הרגשיים של האמנים',
-    ritualsTitle: 'טקסי האזנה מומלצים',
+    dossierTitle: 'התיק הפרשני שנבחר',
+    emotionSelector: 'בחירת מצב היוריסטי',
+    artistRolesTitle: 'קבוצות אמנים היוריסטיות',
+    ritualsTitle: 'הצעות להאזנה',
     methodologyTitle: 'קריאה ומתודולוגיה',
-    methodologyBody: 'הקואורדינטות הרגשיות הן קריאה אמנותית שמוסקת מן הז׳אנר, האמן, תדירות ההאזנה והאוצרות הפנימית. הן אינן אבחנה קלינית; מטרתן להסביר כיצד הארכיון שלך מארגן אנרגיה, זיכרון וויסות.',
+    methodologyBody: 'הקואורדינטות מוערכות באמצעות כללים מקומיים של ז׳אנר, אמן ותדירות. הן אינן מנתחות אודיו ואינן מודדות רגש שחוויתם, כוונה או בריאות נפש; השכבה הסיפורית היא פרשנית.',
     labels: {
-      meaning: 'מה זה אומר',
-      evidence: 'למה זה מופיע',
-      body: 'מצב גופני / מנטלי',
-      strength: 'חוזקה',
-      shadow: 'הצד המאתגר',
-      ritual: 'טקס מומלץ',
+      meaning: 'קריאה פרשנית',
+      evidence: 'הבסיס בארכיון',
+      body: 'הקשר האזנה מוצע',
+      strength: 'משיכה אפשרית',
+      shadow: 'מגבלה אפשרית',
+      ritual: 'הצעת האזנה',
       artists: 'אמנים מרכזיים',
       tracks: 'שירי מפלט',
       time: 'שעות דומיננטיות',
@@ -675,9 +676,9 @@ const EMOTIONAL_MAP_COPY = {
       role: 'תפקיד רגשי',
     },
     rituals: [
-      { title: 'התנעת הבוקר', body: 'השתמש בקתרזיס או בדופמין כדי להניע את הגוף לפני שאתה פונה למסכים.', emotion: 'energia' as EmotionKey },
+      { title: 'התנעת הבוקר', body: 'נסה קתרזיס או הפעלה מוארת כדי להתחיל לנוע לפני הפנייה למסכים.', emotion: 'energia' as EmotionKey },
       { title: 'מקטע מיקוד', body: 'השתמש ברוגע טכני כדי לתכנת, לעצב או לסדר משימות בלי לכבות את הדמיון.', emotion: 'calma' as EmotionKey },
-      { title: 'עיבוד לילי', body: 'השתמש במלנכוליה או ברומנטיקה אפלה כדי לסגור רגשות בלי להיתקע בתוכם.', emotion: 'melancolia' as EmotionKey },
+      { title: 'האזנת לילה', body: 'נסה מלנכוליה או רומנטיקה אפלה לכתיבה, להליכה או לסיום היום.', emotion: 'melancolia' as EmotionKey },
       { title: 'בניית עולמות', body: 'השתמש בעתידנות ובנוסטלגיה כדי להפוך זיכרון לאסתטיקה, לאמנות או לסיפור.', emotion: 'futurismo' as EmotionKey },
     ],
     stations: {
@@ -746,18 +747,18 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   const copy = EMOTIONAL_MAP_COPY[lang];
   const activeEvidenceCopy = {
     es: {
-      artists: (names: string) => `Señal observada en el archivo activo: ${names}. La agrupación procede del motor emocional y no de una historia demo fija.`,
-      empty: 'El archivo activo todavía no contiene artistas clasificados en este estado emocional.',
+      artists: (names: string) => `Artistas observados en el archivo activo: ${names}. Su agrupación es una inferencia heurística, no un hecho sobre lo que sentiste.`,
+      empty: 'El archivo activo todavía no contiene artistas asignados a este modo heurístico.',
       track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} escuchas observadas · ${genre}`,
     },
     en: {
-      artists: (names: string) => `Observed signal in the active archive: ${names}. The grouping comes from the emotional engine, never from a fixed demo story.`,
-      empty: 'The active archive does not yet contain artists classified in this emotional state.',
+      artists: (names: string) => `Artists observed in the active archive: ${names}. Their grouping is a heuristic inference, not a fact about what you felt.`,
+      empty: 'The active archive does not yet contain artists assigned to this heuristic mode.',
       track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} observed plays · ${genre}`,
     },
     he: {
-      artists: (names: string) => `אות שנצפה בארכיון הפעיל: ${names}. הקיבוץ מגיע מהמנוע הרגשי ולא מסיפור הדגמה קבוע.`,
-      empty: 'בארכיון הפעיל עדיין אין אמנים שסווגו למצב הרגשי הזה.',
+      artists: (names: string) => `אמנים שנצפו בארכיון הפעיל: ${names}. הקיבוץ שלהם הוא הסקה היוריסטית, לא עובדה על מה שהרגשתם.`,
+      empty: 'בארכיון הפעיל עדיין אין אמנים ששויכו למצב ההיוריסטי הזה.',
       track: (plays: number, genre: string) => `${plays.toLocaleString(localeFor(lang))} השמעות שנצפו · ${genre}`,
     },
   }[lang];
@@ -842,6 +843,8 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
   return (
     <div data-testid="emotional-map" className="min-w-0 space-y-6 animate-fade-in md:space-y-8" dir={directionFor(lang)}>
       <SectionNarrative content={t.deepNarratives.emotions} accent="c2" />
+
+      <EmotionEvidenceNotice artistCount={engineProfile.artists.length} lang={lang} />
 
       <SectionQuickRead items={quickReadItems} />
 
@@ -1211,7 +1214,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                     <span className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[9px] font-mono font-black"
                       style={{ color, border: `1px solid ${color}35`, backgroundColor: `${color}12` }}>
                       <Icon className="w-3 h-3" />
-                      {moodProfile?.confidence ?? 0}% {copy.engine.confidence}
+                      {copy.engine.evidenceMethod}
                     </span>
                   </div>
                   <p className="text-xs text-white font-bold leading-relaxed">{mood.title[lang]}</p>

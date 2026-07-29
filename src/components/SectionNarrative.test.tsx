@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AppProvider } from '../context/AppContext';
+import { ExperienceProvider } from '../context/ExperienceContext';
 import SectionNarrative from './SectionNarrative';
 import MethodologyPanel from './MethodologyPanel';
 
@@ -60,8 +61,7 @@ describe('SectionNarrative collapse behavior', () => {
     expect(screen.getByText('Insight A')).toBeInTheDocument();
     expect(screen.getByText('Insight B')).toBeInTheDocument();
     expect(screen.getByText('An honesty note about the data.')).toBeInTheDocument();
-    // deepDive stays behind its own <details> toggle but must be in the DOM
-    expect(screen.getByText('The deep reading paragraph.')).toBeInTheDocument();
+    expect(screen.queryByText('The deep reading paragraph.')).not.toBeInTheDocument();
   });
 
   it('collapses back on a second click', () => {
@@ -76,6 +76,36 @@ describe('SectionNarrative collapse behavior', () => {
 
     expect(screen.queryByText('The long interpretive body text.')).not.toBeInTheDocument();
   });
+
+  it('opens the approachable reading without mounting technical detail in Guided', () => {
+    localStorage.setItem('nml_experience_depth', 'guided');
+    const { container } = render(
+      <AppProvider>
+        <ExperienceProvider>
+          <SectionNarrative content={narrativeContent} />
+        </ExperienceProvider>
+      </AppProvider>,
+    );
+
+    expect(screen.getByRole('button', { expanded: true })).toBeInTheDocument();
+    expect(container.querySelector('details')).not.toBeInTheDocument();
+    expect(screen.queryByText('The deep reading paragraph.')).not.toBeInTheDocument();
+  });
+
+  it('opens both the reading and provenance layer in Deep Dive', () => {
+    localStorage.setItem('nml_experience_depth', 'deep-dive');
+    const { container } = render(
+      <AppProvider>
+        <ExperienceProvider>
+          <SectionNarrative content={narrativeContent} />
+        </ExperienceProvider>
+      </AppProvider>,
+    );
+
+    expect(screen.getByRole('button', { expanded: true })).toBeInTheDocument();
+    expect(container.querySelector('details')).toHaveAttribute('open');
+    expect(screen.getByText('The deep reading paragraph.')).toBeVisible();
+  });
 });
 
 describe('MethodologyPanel collapse behavior', () => {
@@ -89,7 +119,7 @@ describe('MethodologyPanel collapse behavior', () => {
     localStorage.clear();
   });
 
-  it('renders collapsed by default and expands stats and points on click', () => {
+  it('does not mount methodology outside Deep Dive', () => {
     render(
       <AppProvider>
         <MethodologyPanel
@@ -102,11 +132,24 @@ describe('MethodologyPanel collapse behavior', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByText('Method title')).toBeInTheDocument();
-    expect(screen.queryByText('Method subtitle prose.')).not.toBeInTheDocument();
-    expect(screen.queryByText('Point one body.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Method title')).not.toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByRole('button', { expanded: false }));
+  it('mounts methodology expanded in Deep Dive', () => {
+    localStorage.setItem('nml_experience_depth', 'deep-dive');
+    render(
+      <AppProvider>
+        <ExperienceProvider>
+          <MethodologyPanel
+            eyebrow="Method eyebrow"
+            title="Method title"
+            subtitle="Method subtitle prose."
+            points={[{ title: 'Point one', tag: 'tag-1', body: 'Point one body.' }]}
+            stats={[{ label: 'Stat label', value: '42' }]}
+          />
+        </ExperienceProvider>
+      </AppProvider>,
+    );
 
     expect(screen.getByText('Method subtitle prose.')).toBeInTheDocument();
     expect(screen.getByText('Stat label')).toBeInTheDocument();

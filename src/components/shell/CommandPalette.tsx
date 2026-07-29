@@ -2,8 +2,9 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import type { ElementType, KeyboardEvent as ReactKeyboardEvent, RefObject } from 'react';
 import { Command, CornerDownLeft, Search, X } from 'lucide-react';
 
+import { useExperience } from '../../context/ExperienceContext';
 import { directionFor, pickLanguage, type Lang } from '../../utils/i18n';
-import type { ExpeditionJourneyId } from './expeditionJourney';
+import type { ExperienceDepth } from './museumNavigation';
 
 export interface CommandRoomItem {
   id: string;
@@ -20,7 +21,6 @@ interface CommandPaletteProps {
   lang: Lang;
   onClose: () => void;
   onNavigate: (id: string) => void;
-  onSelectJourney: (journey: ExpeditionJourneyId) => void;
   returnFocusRef: RefObject<HTMLButtonElement | null>;
 }
 
@@ -35,9 +35,9 @@ export default function CommandPalette({
   lang,
   onClose,
   onNavigate,
-  onSelectJourney,
   returnFocusRef,
 }: CommandPaletteProps) {
+  const { setExperienceDepth } = useExperience();
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -45,46 +45,46 @@ export default function CommandPalette({
   const copy = pickLanguage(lang, {
     en: {
       title: 'Nova Command',
-      subtitle: 'Jump to a room or change the expedition route',
+      subtitle: 'Jump to a room or change how much detail you see',
       placeholder: 'Search rooms and tools…',
       close: 'Close command palette',
       results: 'Museum rooms',
-      journeys: 'Journeys',
+      journeys: 'Experience depth',
       empty: 'No room matches this signal.',
       open: 'Open command palette',
-      quick: 'Start Quick Tour',
-      full: 'Open Full Museum',
-      lab: 'Enter Lab Tools',
+      guided: 'Use Guided',
+      explore: 'Use Explore',
+      deep: 'Use Deep Dive',
       current: 'Current room',
       shortcut: 'to open',
     },
     es: {
       title: 'Comando Nova',
-      subtitle: 'Salta a una sala o cambia la ruta de expedición',
+      subtitle: 'Salta a una sala o cambia cuánto detalle quieres ver',
       placeholder: 'Buscar salas y herramientas…',
       close: 'Cerrar paleta de comandos',
       results: 'Salas del museo',
-      journeys: 'Recorridos',
+      journeys: 'Nivel de experiencia',
       empty: 'Ninguna sala coincide con esta señal.',
       open: 'Abrir paleta de comandos',
-      quick: 'Iniciar Tour rápido',
-      full: 'Abrir Museo completo',
-      lab: 'Entrar a Herramientas',
+      guided: 'Usar Guiado',
+      explore: 'Usar Explorar',
+      deep: 'Usar A fondo',
       current: 'Sala actual',
       shortcut: 'para abrir',
     },
     he: {
       title: 'פקודת Nova',
-      subtitle: 'מעבר לחדר או החלפת מסלול המשלחת',
+      subtitle: 'מעבר לחדר או שינוי רמת הפירוט',
       placeholder: 'חיפוש חדרים וכלים…',
       close: 'סגירת לוח הפקודות',
       results: 'חדרי המוזיאון',
-      journeys: 'מסלולים',
+      journeys: 'עומק החוויה',
       empty: 'אין חדר שתואם לאות הזה.',
       open: 'פתיחת לוח הפקודות',
-      quick: 'התחלת הסיור המהיר',
-      full: 'פתיחת המוזיאון המלא',
-      lab: 'כניסה לכלי המעבדה',
+      guided: 'מצב מודרך',
+      explore: 'מצב חקירה',
+      deep: 'צלילה לעומק',
       current: 'החדר הנוכחי',
       shortcut: 'לפתיחה',
     },
@@ -146,8 +146,8 @@ export default function CommandPalette({
       onClose();
     }
   };
-  const chooseJourney = (journey: ExpeditionJourneyId) => {
-    onSelectJourney(journey);
+  const chooseExperienceDepth = (depth: ExperienceDepth) => {
+    setExperienceDepth(depth);
     closeAndRestoreFocus();
   };
   const handleInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
@@ -203,9 +203,13 @@ export default function CommandPalette({
           <section className="nova-command__journeys" aria-labelledby={`${listId}-journeys`}>
             <h2 id={`${listId}-journeys`}>{copy.journeys}</h2>
             <div>
-              {(['quick', 'full', 'lab'] as const).map(journey => (
-                <button key={journey} type="button" onClick={() => chooseJourney(journey)}>
-                  <span>{copy[journey]}</span>
+              {([
+                ['guided', 'guided'],
+                ['explore', 'explore'],
+                ['deep-dive', 'deep'],
+              ] as const).map(([depth, copyKey]) => (
+                <button key={depth} type="button" onClick={() => chooseExperienceDepth(depth)}>
+                  <span>{copy[copyKey]}</span>
                   <CornerDownLeft className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
               ))}

@@ -1,0 +1,142 @@
+.nova-tool-room {
+  --tool-accent: var(--c1);
+  --tool-secondary: var(--c3);
+  color: var(--fg);
+}
+
+.nova-tool-room--share {
+  --tool-accent: var(--c1);
+  --tool-secondary: #10b981;
+}
+
+.nova-tool-room--audio {
+  --tool-accent: var(--c2);
+  --tool-secondary: var(--c1);
+}
+
+.nova-tool-room__eyebrow {
+  color: color-mix(in srgb, var(--tool-accent) 82%, var(--fg));
+}
+
+.nova-tool-room__title {
+  color: var(--type-ink-strong);
+}
+
+.nova-tool-room__copy,
+.nova-tool-room__muted {
+  color: var(--type-ink-muted);
+}
+
+.nova-tool-room__panel {
+  border-color: color-mix(in srgb, var(--tool-accent) 22%, transparent);
+}
+
+.nova-tool-room__action {
+  border-color: color-mix(in srgb, var(--fg) 15%, transparent);
+  color: var(--type-ink-strong);
+  background: var(--surface-wash-2);
+}
+
+.nova-tool-room__action:hover {
+  background: var(--surface-wash-3);
+}
+
+.nova-tool-room__action--accent {
+  border-color: color-mix(in srgb, var(--tool-accent) 38%, transparent);
+  color: color-mix(in srgb, var(--tool-accent) 78%, var(--fg));
+  background: color-mix(in srgb, var(--tool-accent) 11%, transparent);
+}
+
+.nova-tool-room__action--accent:hover {
+  background: color-mix(in srgb, var(--tool-accent) 16%, transparent);
+}
+
+.nova-tool-room__action--secondary {
+  border-color: color-mix(in srgb, var(--tool-secondary) 38%, transparent);
+  color: color-mix(in srgb, var(--tool-secondary) 70%, var(--fg));
+  background: color-mix(in srgb, var(--tool-secondary) 10%, transparent);
+}
+
+.nova-tool-room__action--secondary:hover {
+  background: color-mix(in srgb, var(--tool-secondary) 15%, transparent);
+}
+
+.nova-tool-room__control {
+  border-color: var(--surface-border);
+  color: var(--fg);
+  background: var(--surface-bg-solid);
+}
+
+.nova-tool-room__control::placeholder {
+  color: color-mix(in srgb, var(--fg) 42%, transparent);
+}
+
+.nova-tool-room__label {
+  color: color-mix(in srgb, var(--fg) 82%, transparent);
+}
+
+.nova-tool-room__counter {
+  color: color-mix(in srgb, var(--fg) 44%, transparent);
+}
+
+.nova-tool-room__privacy {
+  border-color: var(--surface-border-soft);
+  background: var(--surface-wash-1);
+}
+
+.nova-tool-room__privacy-icon {
+  color: color-mix(in srgb, #10b981 76%, var(--fg));
+}
+
+.nova-tool-room__status {
+  color: color-mix(in srgb, #10b981 72%, var(--fg));
+}
+
+.nova-tool-room__alert {
+  border-color: color-mix(in srgb, #ef4444 34%, transparent);
+  color: color-mix(in srgb, #ef4444 62%, var(--fg));
+  background: color-mix(in srgb, #ef4444 9%, transparent);
+}
+
+.nova-tool-room__warning {
+  border-color: color-mix(in srgb, #f59e0b 32%, transparent);
+  color: color-mix(in srgb, #f59e0b 58%, var(--fg));
+  background: color-mix(in srgb, #f59e0b 9%, transparent);
+}
+
+.nova-tool-room__metric {
+  border-color: var(--surface-border);
+  background: var(--surface-wash-2);
+}
+
+.nova-tool-room__metric dt {
+  color: var(--type-ink-muted);
+}
+
+.nova-tool-room__metric dd {
+  color: var(--type-ink-strong);
+}
+
+.nova-tool-room__future {
+  border-color: color-mix(in srgb, var(--tool-secondary) 22%, transparent);
+  background: color-mix(in srgb, var(--tool-secondary) 7%, transparent);
+}
+
+.nova-tool-room__future-item {
+  border-color: var(--surface-border-soft);
+  background: var(--surface-wash-1);
+}
+
+.nova-tool-room__future-status {
+  color: color-mix(in srgb, var(--fg) 46%, transparent);
+}
+
+.nova-tool-room__empty-icon {
+  color: color-mix(in srgb, var(--fg) 32%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-tool-room__action {
+    transition: none;
+  }
+}

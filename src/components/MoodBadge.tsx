@@ -22,19 +22,16 @@ export const MOOD_ICONS: Record<string, LucideIcon> = {
 
 interface MoodBadgeProps {
   moodKey: EmotionalMoodKey;
-  /** 0-100; renders a confidence percentage when provided. */
-  confidence?: number;
   size?: 'sm' | 'md';
   className?: string;
 }
 
 /**
  * Trilingual mood identity pill driven by the emotional engine taxonomy:
- * mood icon + short label (+ optional confidence %), tinted with the
- * mood's canonical color so the same emotion always looks the same
- * everywhere in the app.
+ * mood icon + short label, tinted with the mood's canonical color so the same
+ * heuristic category always looks the same everywhere in the app.
  */
-export default function MoodBadge({ moodKey, confidence, size = 'md', className = '' }: MoodBadgeProps) {
+export default function MoodBadge({ moodKey, size = 'md', className = '' }: MoodBadgeProps) {
   const { lang } = useApp();
   const mood = EMOTIONAL_MOOD_TAXONOMY[moodKey];
   if (!mood) return null;
@@ -56,9 +53,6 @@ export default function MoodBadge({ moodKey, confidence, size = 'md', className 
     >
       <Icon style={{ width: compact ? 11 : 13, height: compact ? 11 : 13 }} />
       {shortLabel}
-      {typeof confidence === 'number' && (
-        <span className="nova-number-ltr opacity-75 font-bold" dir="ltr">{Math.round(confidence)}%</span>
-      )}
     </span>
   );
 }

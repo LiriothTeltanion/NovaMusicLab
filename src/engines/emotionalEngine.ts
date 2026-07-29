@@ -138,8 +138,8 @@ export const EMOTIONAL_MOOD_TAXONOMY: Record<EmotionalMoodKey, EmotionalMoodTaxo
     key: 'dopamina',
     color: '#ffb703',
     icon: 'sun',
-    title: { es: 'Dopamina / Reinicio', en: 'Dopamine / Reset', he: 'דופמין / איפוס' },
-    shortLabel: { es: 'Dopamina', en: 'Dopamine', he: 'דופמין' },
+    title: { es: 'Activación luminosa', en: 'Bright activation', he: 'הפעלה מוארת' },
+    shortLabel: { es: 'Activación', en: 'Activation', he: 'הפעלה' },
     description: {
       es: 'Música para levantar energía, jugar, recuperar humor y empezar tareas con menos fricción.',
       en: 'Music for raising energy, playing, recovering humor and starting tasks with less friction.',
@@ -265,9 +265,9 @@ const EMOTION_LEXICON = {
     he: 'מיקוד',
   },
   euphoria: {
-    es: 'dopamina',
-    en: 'dopamine',
-    he: "דופמין",
+    es: 'activación luminosa',
+    en: 'bright activation',
+    he: "הפעלה מוארת",
   },
   intimacy: {
     es: 'intimidad',
@@ -283,24 +283,24 @@ const EMOTION_LEXICON = {
 
 const INTENSITY_LABELS = {
   veryHigh: {
-    es: 'alta intensidad emocional',
-    en: 'high emotional intensity',
-    he: "עוצמה רגשית גבוהה",
+    es: 'señal heurística muy marcada',
+    en: 'very strong heuristic signal',
+    he: "אות היוריסטי חזק מאוד",
   },
   high: {
-    es: 'intensidad sostenida',
-    en: 'sustained intensity',
-    he: "עוצמה מתמשכת",
+    es: 'señal heurística marcada',
+    en: 'strong heuristic signal',
+    he: "אות היוריסטי חזק",
   },
   medium: {
-    es: 'presencia emocional estable',
-    en: 'stable emotional presence',
-    he: "נוכחות רגשית יציבה",
+    es: 'señal heurística moderada',
+    en: 'moderate heuristic signal',
+    he: "אות היוריסטי בינוני",
   },
   low: {
-    es: 'señal emocional secundaria',
-    en: 'secondary emotional signal',
-    he: "אות רגשי משני",
+    es: 'señal heurística ligera',
+    en: 'light heuristic signal',
+    he: "אות היוריסטי קל",
   },
 } as const;
 
@@ -695,14 +695,14 @@ export function buildArtistEmotionalReading({
       ],
     },
     longNarrative: {
-      es: `En el motor emocional, ${artist.name} aparece principalmente como ${primary.es}: una presencia marcada por ${strongest.es}, ${formatCount(artist.plays, 'es')} plays y una relación con tu ranking que no se reduce a popularidad. ${topTrack ? `"${topTrack.title}" actúa como puerta de entrada a esa energía; ` : ''}${topAlbum ? `${topAlbum.title} añade una capa de escucha más lenta y de catálogo. ` : ''}La lectura más útil es verlo como un nodo de estado de ánimo: cuando este artista aparece, el museo activa una combinación de memoria, cuerpo, tensión y forma visual.`,
-      en: `In the emotional engine, ${artist.name} reads mainly as ${primary.en}: a presence shaped by ${strongest.en}, ${formatCount(artist.plays, 'en')} plays and a relationship with your ranking that is bigger than popularity. ${topTrack ? `"${topTrack.title}" works as the doorway into that energy; ` : ''}${topAlbum ? `${topAlbum.title} adds a slower catalog-level layer. ` : ''}The most useful reading is to treat this artist as a mood node: when they appear, the museum activates a blend of memory, body, tension and visual identity.`,
-      he: `במנוע הרגשי, ${bidiIsolate(artist.name)} מופיע בעיקר כ${primary.he}: נוכחות שמאופיינת ב${strongest.he}, ב-${bidiIsolate(formatCount(artist.plays, 'he'))} השמעות ובקשר לדירוג שלך שחורג מפופולריות בלבד. ${topTrack ? `השיר „${bidiIsolate(topTrack.title)}” משמש שער לאנרגיה הזאת; ` : ''}${topAlbum ? `האלבום ${bidiIsolate(topAlbum.title)} מוסיף שכבת האזנה איטית ועמוקה יותר. ` : ''}הקריאה המועילה ביותר היא לראות באמן הזה צומת רגשי: כשהוא מופיע, המוזיאון מפעיל שילוב של זיכרון, גוף, מתח וזהות חזותית.`,
+      es: `Según las reglas actuales de género y nombre, el motor clasifica a ${artist.name} principalmente como ${primary.es}, con ${strongest.es} como eje estimado. El archivo sí observa ${formatCount(artist.plays, 'es')} plays${topTrack ? ` y señala "${topTrack.title}" como su canción principal` : ''}${topAlbum ? `, junto con ${topAlbum.title} como álbum principal` : ''}. La clasificación sirve para explorar el museo; no demuestra qué sentiste, por qué escuchaste al artista ni qué función tuvo en tu vida.`,
+      en: `Under the current genre/name rules, the engine classifies ${artist.name} mainly as ${primary.en}, with ${strongest.en} as an estimated axis. The archive does observe ${formatCount(artist.plays, 'en')} plays${topTrack ? ` and identifies "${topTrack.title}" as the leading track` : ''}${topAlbum ? `, with ${topAlbum.title} as the leading album` : ''}. The classification helps navigate the museum; it does not establish what you felt, why you listened or what role the artist had in your life.`,
+      he: `לפי כללי הז׳אנר והשם הנוכחיים, המנוע מסווג את ${bidiIsolate(artist.name)} בעיקר כ${primary.he}, עם ${strongest.he} כציר משוער. בארכיון אכן נצפו ${bidiIsolate(formatCount(artist.plays, 'he'))} השמעות${topTrack ? `, ו-„${bidiIsolate(topTrack.title)}” מזוהה כשיר המוביל` : ''}${topAlbum ? `, לצד ${bidiIsolate(topAlbum.title)} כאלבום המוביל` : ''}. הסיווג עוזר לנווט במוזיאון; הוא אינו קובע מה הרגשתם, מדוע האזנתם או איזה תפקיד היה לאמן בחייכם.`,
     },
     listeningUse: {
-      es: `Úsalo cuando necesites entrar en ${primary.es} sin perder dirección: primero una canción ancla, luego un álbum fuerte y después una era donde el artista domine o dialogue con tu identidad musical.`,
-      en: `Use this when you need to enter ${primary.en} without losing direction: start with an anchor track, then a strong album, then an era where the artist dominates or speaks to your musical identity.`,
-      he: `השתמש בקריאה הזאת כשאתה רוצה להיכנס למצב של ${primary.he} בלי לאבד כיוון: התחל בשיר עוגן, המשך לאלבום חזק וסיים בתקופה שבה האמן מוביל או משוחח עם הזהות המוזיקלית שלך.`,
+      es: `Propuesta opcional: empieza por una canción principal, continúa con un álbum y compara si la etiqueta ${primary.es} encaja con tu propia experiencia. Puedes descartarla si no encaja.`,
+      en: `Optional prompt: start with a leading track, continue with an album, then decide whether the ${primary.en} label fits your own experience. Discard it if it does not.`,
+      he: `הצעה לבחירה: התחילו בשיר מוביל, המשיכו לאלבום ובדקו אם התגית ${primary.he} מתאימה לחוויה שלכם. אפשר לדחות אותה אם אינה מתאימה.`,
     },
   };
 }
@@ -769,14 +769,14 @@ export function buildAlbumEmotionalReading({
       ],
     },
     longNarrative: {
-      es: `${album.title} funciona como una lectura de álbum, no solo como una suma de canciones. ${albumMeta?.description.es ?? 'Todavía no tiene contexto editorial exacto, así que el motor lo interpreta por peso de archivo, artista y género.'} En la matriz emocional aparece como ${primary.es}, con ${strongest.es} como eje dominante. ${catalogIndex >= 0 ? `Dentro de la línea curada ocupa el capítulo ${catalogIndex + 1}, así que puede leerse como una estación concreta de evolución. ` : ''}Su valor para el museo está en dar continuidad: una canción puede ser impulso inmediato, pero un álbum suele revelar permanencia, atmósfera y una forma más larga de habitar al artista.`,
-      en: `${album.title} works as an album reading, not only as a sum of songs. ${albumMeta?.description.en ?? 'It does not have exact editorial context yet, so the engine interprets it through archive weight, artist and genre.'} In the emotional matrix it appears as ${primary.en}, with ${strongest.en} as the dominant axis. ${catalogIndex >= 0 ? `Inside the curated line it sits as chapter ${catalogIndex + 1}, so it can be read as a specific station of evolution. ` : ''}Its value for the museum is continuity: a track can be immediate impulse, but an album usually reveals permanence, atmosphere and a longer way of inhabiting the artist.`,
-      he: `האלבום ${bidiIsolate(album.title)} נקרא כיצירה שלמה, לא רק כסכום של שירים. ${albumMeta?.description.he ?? 'עדיין אין לו הקשר עריכתי מדויק, ולכן המנוע מפרש אותו לפי משקלו בארכיון, האמן והז׳אנר.'} במטריצה הרגשית הוא מופיע כ${primary.he}, כאשר ${strongest.he} הוא הציר הדומיננטי. ${catalogIndex >= 0 ? `ברצף האצור הוא נמצא בפרק ${bidiIsolate(catalogIndex + 1)}, ולכן אפשר לקרוא אותו כתחנה מוגדרת בהתפתחות המוזיקלית. ` : ''}הערך שלו במוזיאון הוא המשכיות: שיר יכול להיות דחף מיידי, אבל אלבום חושף לרוב קביעות, אווירה ודרך ממושכת יותר לחוות את האמן.`,
+      es: `${album.title} tiene ${formatCount(album.plays, 'es')} plays observados en el archivo${rank ? ` y ocupa el puesto #${rank}` : ''}. ${albumMeta?.description.es ?? 'No tiene contexto editorial exacto todavía.'} A partir de género, artista y posición, la heurística lo asigna a ${primary.es}, con ${strongest.es} como eje estimado.${catalogIndex >= 0 ? ` En la línea curada ocupa el capítulo ${catalogIndex + 1}.` : ''} Esa asignación es una ayuda de exploración, no una medición del contenido del audio ni de la experiencia del oyente.`,
+      en: `${album.title} has ${formatCount(album.plays, 'en')} observed plays in the archive${rank ? ` and ranks #${rank}` : ''}. ${albumMeta?.description.en ?? 'It does not have exact editorial context yet.'} From genre, artist and position, the heuristic assigns it to ${primary.en}, with ${strongest.en} as an estimated axis.${catalogIndex >= 0 ? ` It occupies chapter ${catalogIndex + 1} in the curated sequence.` : ''} That assignment is an exploration aid, not a measurement of the audio content or the listener's experience.`,
+      he: `לאלבום ${bidiIsolate(album.title)} יש ${bidiIsolate(formatCount(album.plays, 'he'))} השמעות שנצפו בארכיון${rank ? ` והוא מדורג במקום ${bidiIsolate(rank)}` : ''}. ${albumMeta?.description.he ?? 'עדיין אין לו הקשר עריכתי מדויק.'} לפי הז׳אנר, האמן והמיקום, ההיוריסטיקה משייכת אותו ל${primary.he}, עם ${strongest.he} כציר משוער.${catalogIndex >= 0 ? ` ברצף האצור הוא נמצא בפרק ${bidiIsolate(catalogIndex + 1)}.` : ''} השיוך נועד לעזור בחקירה; הוא אינו מדידה של תוכן האודיו או של חוויית המאזין.`,
     },
     listeningUse: {
-      es: `Escúchalo cuando quieras sostener ${primary.es} durante más tiempo: sirve para pasar de una emoción puntual a un clima completo.`,
-      en: `Play it when you want to hold ${primary.en} for longer: it helps turn one emotional spark into a full atmosphere.`,
-      he: `האזן לו כשאתה רוצה לשהות זמן רב יותר ב${primary.he}: הוא עוזר להפוך ניצוץ רגשי יחיד לאווירה שלמה.`,
+      es: `Escúchalo como prueba y decide si la etiqueta ${primary.es} describe la atmósfera para ti; la clasificación no sustituye tu lectura.`,
+      en: `Play it as a test and decide whether the ${primary.en} label describes its atmosphere for you; the classification does not replace your reading.`,
+      he: `האזינו לו כניסוי והחליטו אם התגית ${primary.he} מתארת עבורכם את האווירה; הסיווג אינו מחליף את הקריאה שלכם.`,
     },
   };
 }
@@ -843,14 +843,14 @@ export function buildTrackEmotionalReading({
       ],
     },
     longNarrative: {
-      es: `${track.title} se comporta como una unidad emocional de alta precisión. Por género, repetición y posición en el ranking, el motor la clasifica como ${primary.es}, con ${secondary.es} como segunda capa. Su eje más fuerte es ${strongest.es}, lo que sugiere que no vuelve solo por gusto sino por función: abrir una emoción, acelerar el cuerpo, ordenar una noche, acompañar foco o tocar una memoria específica. ${rank <= 10 ? 'Al estar tan arriba, funciona casi como botón directo del archivo: una entrada rápida a un estado interno reconocible.' : 'Aunque no sea el himno absoluto, su persistencia la convierte en una señal importante dentro del mapa.'}`,
-      en: `${track.title} behaves like a high-precision emotional unit. Through genre, repetition and ranking position, the engine classifies it as ${primary.en}, with ${secondary.en} as a second layer. Its strongest axis is ${strongest.en}, which suggests it returns not only because of taste but because of function: opening an emotion, accelerating the body, organizing a night, supporting focus or touching a specific memory. ${rank <= 10 ? 'Because it sits so high, it works almost like a direct button in the archive: a quick entrance into a recognizable inner state.' : 'Even if it is not the absolute anthem, its persistence makes it an important signal inside the map.'}`,
-      he: `השיר ${bidiIsolate(track.title)} מתפקד כיחידה רגשית מדויקת. לפי הז׳אנר, החזרתיות והמיקום בדירוג, המנוע מסווג אותו כ${primary.he}, עם ${secondary.he} כשכבה נוספת. הציר החזק ביותר שלו הוא ${strongest.he}; כלומר, הוא חוזר לא רק בגלל טעם אלא גם בגלל תפקיד: לפתוח רגש, להניע את הגוף, לארגן את הלילה, לתמוך במיקוד או לגעת בזיכרון מסוים. ${rank <= 10 ? 'המיקום הגבוה שלו הופך אותו כמעט לכפתור ישיר בארכיון: כניסה מהירה למצב פנימי מוכר.' : 'גם אם הוא אינו ההמנון המרכזי, ההתמדה שלו הופכת אותו לאות חשוב במפה.'}`,
+      es: `${track.title} registra ${formatCount(track.plays, 'es')} plays observados${rank ? ` y ocupa el puesto #${rank}` : ''}. A partir de etiquetas de género, repetición y ranking, la heurística la clasifica como ${primary.es}, con ${secondary.es} como segunda etiqueta y ${strongest.es} como eje estimado. La frecuencia muestra que volvió al archivo; no demuestra por qué volvió, qué sentiste ni qué función cumplió.`,
+      en: `${track.title} records ${formatCount(track.plays, 'en')} observed plays${rank ? ` and ranks #${rank}` : ''}. From genre labels, repetition and ranking, the heuristic classifies it as ${primary.en}, with ${secondary.en} as a second label and ${strongest.en} as an estimated axis. Frequency shows that it returned to the archive; it does not establish why it returned, what you felt or what function it served.`,
+      he: `לשיר ${bidiIsolate(track.title)} יש ${bidiIsolate(formatCount(track.plays, 'he'))} השמעות שנצפו${rank ? ` והוא מדורג במקום ${bidiIsolate(rank)}` : ''}. לפי תגיות הז׳אנר, החזרתיות והדירוג, ההיוריסטיקה מסווגת אותו כ${primary.he}, עם ${secondary.he} כתגית נוספת ו${strongest.he} כציר משוער. התדירות מראה שהשיר חזר לארכיון; היא אינה קובעת מדוע הוא חזר, מה הרגשתם או איזה תפקיד מילא.`,
     },
     listeningUse: {
-      es: `Úsala como herramienta de ${primary.es}: al inicio de una sesión para activar el estado, o al final para cerrar una emoción que necesita forma.`,
-      en: `Use it as a ${primary.en} tool: at the beginning of a session to activate the state, or at the end to close an emotion that needs shape.`,
-      he: `השתמש בו ככלי ל${primary.he}: בתחילת מקטע האזנה כדי להפעיל את המצב, או בסופו כדי לתת צורה לרגש שעדיין פתוח.`,
+      es: `Propuesta opcional: pruébala al inicio o al final de una sesión y decide si la etiqueta ${primary.es} resulta útil para ti.`,
+      en: `Optional prompt: try it at the start or end of a session and decide whether the ${primary.en} label is useful to you.`,
+      he: `הצעה לבחירה: נסו אותו בתחילת מקטע האזנה או בסופו, והחליטו אם התגית ${primary.he} מועילה לכם.`,
     },
   };
 }

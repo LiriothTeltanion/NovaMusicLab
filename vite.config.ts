@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { configDefaults, defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
@@ -7,6 +7,13 @@ export default defineConfig({
   // (GitHub Pages project sites live under /<repo>/).
   base: './',
   plugins: [react()],
+  test: {
+    exclude: [...configDefaults.exclude, 'e2e/**'],
+    // The full museum suite is memory-heavy (large multilingual/data fixtures).
+    // Bounding parallel forks prevents intermittent worker exits on Windows and
+    // CI while preserving file isolation and running the complete test set.
+    maxWorkers: 4,
+  },
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 5173,
   },

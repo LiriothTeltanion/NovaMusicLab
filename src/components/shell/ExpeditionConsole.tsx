@@ -4,12 +4,10 @@ import type { MusicDnaData } from '../../types';
 import { pickLanguage, type Lang } from '../../utils/i18n';
 import ArchiveCapsule from './ArchiveCapsule';
 import CommandPalette, { CommandPaletteButton, type CommandRoomItem } from './CommandPalette';
-import JourneySwitcher from './JourneySwitcher';
-import type { ExpeditionJourneyId } from './expeditionJourney';
+import ExperienceSwitcher from './ExperienceSwitcher';
 import './ExpeditionConsole.css';
 
 interface ExpeditionConsoleProps {
-  activeJourney: ExpeditionJourneyId;
   activeRoomId: string;
   data: MusicDnaData;
   isPersonalArchive: boolean;
@@ -20,11 +18,9 @@ interface ExpeditionConsoleProps {
   sourceLabel: string | null;
   onNavigate: (roomId: string) => void;
   onOpenArchive: () => void;
-  onSelectJourney: (journey: ExpeditionJourneyId) => void;
 }
 
 export default function ExpeditionConsole({
-  activeJourney,
   activeRoomId,
   data,
   isPersonalArchive,
@@ -35,7 +31,6 @@ export default function ExpeditionConsole({
   sourceLabel,
   onNavigate,
   onOpenArchive,
-  onSelectJourney,
 }: ExpeditionConsoleProps) {
   const [commandOpen, setCommandOpen] = useState(false);
   const commandButtonRef = useRef<HTMLButtonElement>(null);
@@ -62,7 +57,7 @@ export default function ExpeditionConsole({
   return (
     <>
       <section className="expedition-console" aria-label={consoleLabel} data-testid="expedition-console">
-        <JourneySwitcher activeJourney={activeJourney} lang={lang} onChange={onSelectJourney} />
+        <ExperienceSwitcher lang={lang} />
         <ArchiveCapsule
           data={data}
           isPersonalArchive={isPersonalArchive}
@@ -81,7 +76,6 @@ export default function ExpeditionConsole({
         lang={lang}
         onClose={closeCommand}
         onNavigate={onNavigate}
-        onSelectJourney={onSelectJourney}
         returnFocusRef={commandButtonRef}
       />
     </>

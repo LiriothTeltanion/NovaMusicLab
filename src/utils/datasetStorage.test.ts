@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import defaultMusicData from '../data/music_dna_compiled.json';
 import { createNovaMusicDatabase } from '../db/database';
 import { initializeDatabase } from '../db/repository';
-import type { GenreAssignment, MusicDnaData } from '../types';
+import type { GenreAssignment, MusicBeeLibrarySnapshot, MusicDnaData } from '../types';
 import {
   buildExport,
   claimDatasetMutationIntent,
@@ -29,6 +29,58 @@ const genreAssignments: GenreAssignment[] = [{
   tags: ['Progressive Metal', 'Djent'],
   updatedAt: '2026-07-14T10:00:00.000Z',
 }];
+const musicBeeSnapshot: MusicBeeLibrarySnapshot = {
+  schema_version: 1,
+  source: 'musicbee_itunes_xml',
+  library_item_count: 1,
+  track_count: 1,
+  duplicate_item_count: 0,
+  artist_count: 1,
+  album_count: 1,
+  played_track_count: 1,
+  rated_track_count: 1,
+  total_play_count: 7,
+  total_skip_count: 1,
+  latest_played_at: '2026-07-20T18:00:00.000Z',
+  tracks: [{
+    artist: 'Archive Artist',
+    title: 'Archive Track',
+    album: 'Archive Album',
+    genre: 'Progressive Metal',
+    play_count: 7,
+    skip_count: 1,
+    duration_ms: 240_000,
+    rating: 80,
+    last_played_at: '2026-07-20T18:00:00.000Z',
+    date_added: '2020-04-10T09:00:00.000Z',
+  }],
+  artists: [{
+    name: 'Archive Artist',
+    track_count: 1,
+    album_count: 1,
+    total_play_count: 7,
+    total_skip_count: 1,
+    last_played_at: '2026-07-20T18:00:00.000Z',
+    genres: ['Progressive Metal'],
+  }],
+  albums: [{
+    artist: 'Archive Artist',
+    title: 'Archive Album',
+    track_count: 1,
+    total_play_count: 7,
+  }],
+  capabilities: {
+    catalog: true,
+    aggregate_play_counts: true,
+    last_played: true,
+    exact_event_timeline: false,
+    sessions: false,
+  },
+  limitations: [
+    'aggregate_counts_not_timeline',
+    'paths_and_ids_discarded',
+  ],
+};
 
 interface FakeIndexedDb {
   factory: IDBFactory;
@@ -216,12 +268,14 @@ describe('datasetStorage runtime schema', () => {
   it('keeps archives compatible when every optional dataset field is absent', () => {
     const legacyCore = { ...data } as Record<string, unknown>;
     [
+      'narrative_scope',
       'artist_genre_catalog',
       'artist_origin_countries',
       'daily_plays',
       'monthly_activity',
       'platform_breakdown',
       'source_summary',
+      'musicbee_snapshot',
       'knowledge_summary',
       'records',
       'personality_matrix',
@@ -282,11 +336,13 @@ describe('datasetStorage runtime schema', () => {
   });
 
   it.each([
+    ['narrative_scope', { narrative_scope: 'visitor' }],
     ['artist_origin_countries', { artist_origin_countries: [{ country: 'Japan', plays: 'many' }] }],
     ['daily_plays', { daily_plays: { '2026-07-16': 'many' } }],
     ['monthly_activity', { monthly_activity: [{ year: 2026, month: 'July', plays: 4 }] }],
     ['platform_breakdown', { platform_breakdown: {} }],
     ['source_summary', { source_summary: { ...data.source_summary!, source_note: [] } }],
+    ['musicbee_snapshot', { musicbee_snapshot: { ...musicBeeSnapshot, track_count: 2 } }],
     ['knowledge_summary', { knowledge_summary: { ...data.knowledge_summary!, top_matches: [{}] } }],
     ['records', { records: { ...data.records!, best_session_tracks: 'many' } }],
     ['personality_matrix', { personality_matrix: { nostalgia: { score: 1 } } }],
@@ -316,6 +372,52 @@ describe('datasetStorage runtime schema', () => {
     expect(isMusicDnaData({ ...withCatalog, artist_genre_catalog: [{ ...catalogEntry, plays: 1 }] })).toBe(false);
     expect(isMusicDnaData({ ...withCatalog, artist_genre_catalog: [catalogEntry, catalogEntry] })).toBe(false);
   });
+
+  it('accepts a sanitized MusicBee snapshot and rejects private or inconsistent fields', () => {
+    expect(isMusicDnaData({ ...data, musicbee_snapshot: musicBeeSnapshot })).toBe(true);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: {
+        ...musicBeeSnapshot,
+        tracks: [{
+          ...musicBeeSnapshot.tracks[0],
+          Location: 'C:\\Users\\listener\\Music\\private-track.flac',
+        }],
+      },
+    })).toBe(false);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: { ...musicBeeSnapshot, total_play_count: 999 },
+    })).toBe(false);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: { ...musicBeeSnapshot, played_track_count: 0 },
+    })).toBe(false);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: {
+        ...musicBeeSnapshot,
+        albums: [{ ...musicBeeSnapshot.albums[0], total_play_count: 999 }],
+      },
+    })).toBe(false);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: {
+        ...musicBeeSnapshot,
+        latest_played_at: '2026-07-19T18:00:00.000Z',
+      },
+    })).toBe(false);
+    expect(isMusicDnaData({
+      ...data,
+      musicbee_snapshot: {
+        ...musicBeeSnapshot,
+        capabilities: {
+          ...musicBeeSnapshot.capabilities,
+          aggregate_play_counts: false,
+        },
+      },
+    })).toBe(false);
+  });
 });
 
 describe('datasetStorage export wrapper', () => {
@@ -330,6 +432,15 @@ describe('datasetStorage export wrapper', () => {
     expect(reparsed).not.toBeNull();
     expect(reparsed?.data.core_metrics.total_plays).toBe(data.core_metrics.total_plays);
     expect(reparsed?.genre_assignments).toEqual(genreAssignments);
+  });
+
+  it('round-trips a sanitized MusicBee snapshot without changing timeline metrics', () => {
+    const withMusicBee = { ...data, musicbee_snapshot: musicBeeSnapshot };
+    const reparsed = parseExport(JSON.parse(JSON.stringify(buildExport(withMusicBee, 'MusicBee snapshot'))));
+
+    expect(reparsed?.data.musicbee_snapshot).toEqual(musicBeeSnapshot);
+    expect(reparsed?.data.core_metrics).toEqual(data.core_metrics);
+    expect(reparsed?.data.source_summary).toEqual(data.source_summary);
   });
 
   it.each([1, 2])('migrates a valid v%s portable export with empty assignments', version => {

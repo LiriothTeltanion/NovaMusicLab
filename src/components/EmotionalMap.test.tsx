@@ -64,11 +64,13 @@ describe('EmotionalMap primary workspace', () => {
 
     const workspace = screen.getByTestId('emotional-scatter-workspace');
     const engine = screen.getByTestId('emotional-engine-summary');
-    const selector = screen.getByRole('group', { name: 'Emotional state selector' });
+    const selector = screen.getByRole('group', { name: 'Heuristic mode selector' });
 
     expect(workspace.compareDocumentPosition(engine) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
     expect(workspace).toHaveClass('min-w-0');
     expect(screen.getByTestId('emotional-scatter-series')).toHaveAttribute('data-count', '14');
+    expect(screen.getByTestId('emotion-evidence-model')).toHaveTextContent('not a reading of your mind');
+    expect(screen.getAllByText('genre heuristic').length).toBeGreaterThan(0);
     expect(screen.getByTestId('scatter-responsive-container')).toHaveAttribute('data-min-width', '0');
     expect(within(workspace).getAllByRole('listitem')).toHaveLength(14);
     expect(within(selector).getAllByRole('button')).toHaveLength(8);

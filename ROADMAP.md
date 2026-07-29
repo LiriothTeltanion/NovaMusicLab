@@ -30,16 +30,21 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Return explicit IndexedDB restore/save/delete outcomes.
 - [ ] Add schema migrations, quota handling, retry, confirmation and clear-data undo.
 
-## Phase 3 — Museum journey and visual system
+## Phase 3 — Museum navigation and visual system
 
-- [x] Ship Quick Tour, Full Museum and Lab Tools navigation.
+- [x] Supersede room-filtering journeys with Guided, Explore and Deep Dive presentation depths.
+- [x] Organize every room into Home, Pulse, Atlas, Stories or Data Lab without changing canonical room routes.
 - [x] Show active archive mode, source, dataset date, privacy boundary and save status in the shell.
 - [x] Add a keyboard-first command palette for rooms and journey switching.
 - [x] Promote Artist Identity into a Living Artist Atlas with progressive media, offline evidence and honest unavailable states.
 - [x] Keep Spotify and YouTube artist players behind explicit opt-in controls.
+- [x] Default new visitors to Explore while retaining Guided and Deep Dive as presentation choices.
+- [x] Add bounded remote-image recovery and deterministic local fallbacks to high-visibility rooms.
+- [x] Replace the two-provider comparison label with a five-provider Source Observatory.
 - [ ] Replace tiny one-off text styles with semantic typography tokens.
-- [ ] Complete automated contrast, axe and visual-regression testing.
-- [ ] Add real desktop, mobile and Hebrew/RTL product screenshots.
+- [x] Add Playwright desktop/mobile smoke tests and axe WCAG A/AA checks.
+- [ ] Add visual-regression baselines after privacy-safe screenshots are reviewed.
+- [x] Add reproducible desktop, mobile and Hebrew/RTL product screenshots for local review and the README.
 - [x] Convert README animation to reduced-motion-aware behavior (repository banners are now static).
 
 ## Phase 4 — Architecture and long-tail data
@@ -49,15 +54,22 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Move generated world data out of TypeScript into a compact data artifact.
 - [ ] Lazy-load feature-local language and dossier catalogs.
 - [ ] Prioritize long-tail genre classification by affected play count.
+- [ ] Replace the single-label genre field with evidence-linked multi-label genre, subgenre, scene and confidence records.
+- [ ] Calibrate the emotional engine against measurable audio/listening signals and label personal interpretation separately.
+- [ ] Add an offline deterministic assistant over aggregate museum facts; evaluate optional WebGPU models only after privacy, bundle and device budgets are approved.
 
 ## Phase 5 — Personal depth and portfolio release
 
 - [ ] Add global archive filters and comparable snapshots.
 - [ ] Add bookmarks, memory notes and evidence-backed recent windows.
 - [ ] Add a local playlist builder and richer export package.
+- [x] Add local Share & Feedback and WhatsApp invitation flows without automatic transmission.
+- [x] Found a local-only Audio Lab with preview, limits and explicit not-analyzed states.
+- [ ] Add an optional Supabase control plane for auth, safe snapshots and feedback; raw events remain local.
+- [ ] Implement ListenBrainz as the first live connector, then review Last.fm terms and Spotify beta limits.
 - [ ] Publish privacy-safe product screenshots, walkthrough media and an engineering case study.
-- [x] Publish `v1.0.0-rc.1`, complete acceptance testing, then tag `v1.0.0`.
-- [x] Publish `v1.1.0` with Expedition Console, Living Artist Atlas and governed artist identities.
+- [x] Publish `v1.0.0-rc.1` — published 2026-07-16 and now superseded — complete acceptance testing, then tag `v1.0.0` — published 2026-07-16 and now superseded.
+- [x] Publish `v1.1.0` — deployed 2026-07-26 — with Expedition Console, Living Artist Atlas and governed artist identities.
 
 ## Definition of v1.0 done
 

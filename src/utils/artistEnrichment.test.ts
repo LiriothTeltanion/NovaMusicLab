@@ -125,4 +125,16 @@ describe('getRelatedArchiveArtists', () => {
   it('returns empty for an artist not in the archive', () => {
     expect(getRelatedArchiveArtists(data, 'Ghost Artist')).toEqual([]);
   });
+
+  it('does not connect artists merely because both countries are unknown', () => {
+    const unknownCountries = {
+      ...data,
+      top_artists: [
+        { name: 'Unknown A', plays: 100, genre: 'Unclassified', country: 'Unknown' },
+        { name: 'Unknown B', plays: 90, genre: 'Unclassified', country: 'Unknown' },
+      ],
+    } as MusicDnaData;
+
+    expect(getRelatedArchiveArtists(unknownCountries, 'Unknown A')).toEqual([]);
+  });
 });

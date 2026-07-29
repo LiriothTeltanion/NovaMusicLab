@@ -9,11 +9,7 @@ import {
   Files,
   FileJson,
   FileText,
-  Headphones,
   ListChecks,
-  Music2,
-  PlaySquare,
-  Radio,
   ShieldCheck,
   Trash2,
   Upload,
@@ -29,6 +25,12 @@ import {
 } from '../utils/datasetStorage';
 import { localeFor, pickLanguage } from '../utils/i18n';
 import { motion } from 'framer-motion';
+import BrandIcon from './BrandIcon';
+import {
+  MAX_MUSICBEE_XML_BYTES,
+  MusicBeeSnapshotError,
+} from '../utils/musicBeeSnapshot';
+import { parseMusicBeeFileInWorker } from '../utils/musicBeeWorkerClient';
 
 const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 const NOVA_BACKUP_SNIFF_LENGTH = 300;
@@ -42,6 +44,10 @@ function isNovaBackupEnvelope(value: unknown): value is Record<string, unknown> 
     && value !== null
     && !Array.isArray(value)
     && Object.prototype.hasOwnProperty.call(value, 'nova_music_export');
+}
+
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === 'AbortError';
 }
 
 export type DatasetOperationKind = 'import' | 'clear';
@@ -85,7 +91,7 @@ export default function DataUploader({
   const logCopy = pickLanguage(lang, {
     en: {
       initialize: 'Initializing parsing pipeline...',
-      files: (csv: number, json: number, html: number) => `Files identified: ${csv} CSV, ${json} JSON, ${html} HTML.`,
+      files: (csv: number, json: number, html: number, xml: number) => `Files identified: ${csv} CSV, ${json} JSON, ${html} HTML, ${xml} XML.`,
       reading: 'Reading raw file buffers into memory...',
       backup: 'Verified Nova backup signature. Restoring database...',
       restored: 'Restore complete. Reloading dashboard metrics...',
@@ -97,7 +103,7 @@ export default function DataUploader({
     },
     es: {
       initialize: 'Inicializando el canal de análisis...',
-      files: (csv: number, json: number, html: number) => `Archivos identificados: ${csv} CSV, ${json} JSON, ${html} HTML.`,
+      files: (csv: number, json: number, html: number, xml: number) => `Archivos identificados: ${csv} CSV, ${json} JSON, ${html} HTML y ${xml} XML.`,
       reading: 'Leyendo búferes de archivos a memoria...',
       backup: 'Firma de copia de seguridad Nova verificada. Restaurando base de datos...',
       restored: 'Restauración completa. Recargando métricas del panel...',
@@ -109,7 +115,7 @@ export default function DataUploader({
     },
     he: {
       initialize: 'מאתחלים את תהליך הניתוח...',
-      files: (csv: number, json: number, html: number) => `זוהו קבצים: ${csv} CSV,‏ ${json} JSON ו-${html} HTML.`,
+      files: (csv: number, json: number, html: number, xml: number) => `זוהו קבצים: ${csv} CSV,‏ ${json} JSON,‏ ${html} HTML ו-${xml} XML.`,
       reading: 'קוראים את תוכן הקבצים לזיכרון המקומי...',
       backup: 'חתימת הגיבוי של Nova אומתה. משחזרים את מסד הנתונים...',
       restored: 'השחזור הושלם. מרעננים את מדדי לוח הבקרה...',
@@ -133,6 +139,7 @@ export default function DataUploader({
   const [parsingLogs, setParsingLogs] = useState<string[]>([]);
   const [progressPercent, setProgressPercent] = useState(0);
   const consoleRef = useRef<HTMLDivElement>(null);
+  const musicBeeAbortRef = useRef<AbortController | null>(null);
 
   // Auto-scroll the terminal console to the bottom on new log additions
   useEffect(() => {
@@ -141,12 +148,98 @@ export default function DataUploader({
     }
   }, [parsingLogs]);
 
-  const providerIcons = [Headphones, Music2, PlaySquare, FileJson, Radio, ListChecks];
-  const providerCards = t.uploader.providerGuide.map((provider, index) => ({
+  useEffect(() => () => {
+    musicBeeAbortRef.current?.abort();
+    musicBeeAbortRef.current = null;
+  }, []);
+
+  const providerBrands = ['lastfm', 'spotify', 'youtube', 'applemusic', 'listenbrainz', null] as const;
+  const standardProviderCards = t.uploader.providerGuide.map((provider, index) => ({
     ...provider,
-    icon: providerIcons[index] ?? Files,
+    brand: providerBrands[index] ?? null,
     color: [tc.c1, '#1DB954', '#ff0033', tc.c3, tc.c2, tc.c4][index] ?? tc.c1,
   }));
+  const musicBeeCopy = pickLanguage(lang, {
+    en: {
+      guide: {
+        title: '🐝 MusicBee',
+        badge: 'iTunes XML',
+        body: 'Adds your desktop library, ratings and aggregate play counts as a separate snapshot—not as a reconstructed timeline.',
+        steps: [
+          'In MusicBee, enable the iTunes-compatible XML library export.',
+          'Close MusicBee so it refreshes the XML, then upload that XML here.',
+          'Nova discards file paths and IDs; MusicBee counts stay separate from Spotify and Last.fm.',
+        ],
+      },
+      parsing: 'Sanitizing the MusicBee library snapshot...',
+      parsed: (tracks: string, artists: string) => `MusicBee snapshot: ${tracks} tracks across ${artists} artists.`,
+      multiple: 'Upload one MusicBee XML library at a time so its snapshot identity stays unambiguous.',
+      invalid: 'This XML is not a usable MusicBee/iTunes library export. Export the iTunes-compatible XML from MusicBee and try again.',
+      tooLarge: 'This MusicBee XML is larger than the 50 MB safe browser limit. Background parsing is active, but files above this boundary still require a future incremental importer.',
+      label: (tracks: string) => `MusicBee library · ${tracks} tracks`,
+      success: (tracks: string, artists: string) => `MusicBee library attached: ${tracks} tracks and ${artists} artists. Timeline totals were not changed.`,
+      note: 'MusicBee XML adds a private library snapshot. Its aggregate Play Count is shown separately and never added to Spotify, Last.fm or session totals.',
+      dropHint: 'Drop music-history CSV/JSON/HTML, or a MusicBee iTunes XML library, here.',
+      formatsValue: 'CSV · JSON · HTML · XML',
+      noFiles: 'Please upload a supported music-history CSV/JSON/HTML file or a MusicBee iTunes XML library.',
+    },
+    es: {
+      guide: {
+        title: '🐝 MusicBee',
+        badge: 'XML de iTunes',
+        body: 'Añade tu biblioteca de escritorio, ratings y contadores agregados como una foto separada, no como un timeline reconstruido.',
+        steps: [
+          'En MusicBee, activa la exportación de biblioteca XML compatible con iTunes.',
+          'Cierra MusicBee para que actualice el XML y luego súbelo aquí.',
+          'Nova descarta rutas e IDs; los contadores de MusicBee quedan separados de Spotify y Last.fm.',
+        ],
+      },
+      parsing: 'Limpiando la foto de biblioteca de MusicBee...',
+      parsed: (tracks: string, artists: string) => `Foto de MusicBee: ${tracks} canciones de ${artists} artistas.`,
+      multiple: 'Sube una sola biblioteca XML de MusicBee por vez para no mezclar identidades de snapshots.',
+      invalid: 'Este XML no es una biblioteca utilizable de MusicBee/iTunes. Exporta el XML compatible con iTunes desde MusicBee e inténtalo de nuevo.',
+      tooLarge: 'Este XML de MusicBee supera el límite seguro de 50 MB en el navegador. El procesamiento en segundo plano está activo, pero los archivos mayores aún necesitan un importador incremental futuro.',
+      label: (tracks: string) => `Biblioteca MusicBee · ${tracks} canciones`,
+      success: (tracks: string, artists: string) => `Biblioteca MusicBee conectada: ${tracks} canciones y ${artists} artistas. Los totales del timeline no cambiaron.`,
+      note: 'El XML de MusicBee añade una foto privada de tu biblioteca. Su Play Count agregado se muestra aparte y nunca se suma a Spotify, Last.fm o las sesiones.',
+      dropHint: 'Arrastra aquí CSV/JSON/HTML de historial o una biblioteca XML de iTunes generada por MusicBee.',
+      formatsValue: 'CSV · JSON · HTML · XML',
+      noFiles: 'Sube un CSV/JSON/HTML de historial compatible o una biblioteca XML de iTunes generada por MusicBee.',
+    },
+    he: {
+      guide: {
+        title: '🐝 MusicBee',
+        badge: 'XML של iTunes',
+        body: 'מוסיף את ספריית המחשב, הדירוגים ומוני ההשמעה המצטברים כתמונת מצב נפרדת — לא כציר זמן משוחזר.',
+        steps: [
+          'ב-MusicBee יש להפעיל ייצוא ספרייה ל-XML תואם iTunes.',
+          'יש לסגור את MusicBee כדי לרענן את ה-XML, ואז להעלות אותו כאן.',
+          'Nova מסירה נתיבי קבצים ומזהים; מוני MusicBee נשארים נפרדים מ-Spotify ומ-Last.fm.',
+        ],
+      },
+      parsing: 'מנקים את תמונת ספריית MusicBee...',
+      parsed: (tracks: string, artists: string) => `תמונת MusicBee:‏ ${tracks} שירים של ${artists} אמנים.`,
+      multiple: 'יש להעלות ספריית XML אחת של MusicBee בכל פעם כדי לשמור על זהות ברורה של תמונת המצב.',
+      invalid: 'קובץ ה-XML אינו ייצוא ספרייה תקין של MusicBee/iTunes. יש לייצא מ-MusicBee קובץ XML תואם iTunes ולנסות שוב.',
+      tooLarge: 'קובץ ה-XML של MusicBee גדול ממגבלת הדפדפן הבטוחה של 50 MB. העיבוד ברקע פעיל, אך קבצים גדולים יותר עדיין דורשים מייבא מצטבר עתידי.',
+      label: (tracks: string) => `ספריית MusicBee · ${tracks} שירים`,
+      success: (tracks: string, artists: string) => `ספריית MusicBee צורפה: ${tracks} שירים ו-${artists} אמנים. סיכומי ציר הזמן לא השתנו.`,
+      note: 'XML של MusicBee מוסיף תמונת מצב פרטית של הספרייה. מונה ההשמעה המצטבר מוצג בנפרד ולעולם אינו מתווסף ל-Spotify, ל-Last.fm או לסשנים.',
+      dropHint: 'אפשר לשחרר כאן CSV/JSON/HTML של היסטוריית מוזיקה או ספריית MusicBee בפורמט XML של iTunes.',
+      formatsValue: 'CSV · JSON · HTML · XML',
+      noFiles: 'נא להעלות קובץ CSV/JSON/HTML נתמך של היסטוריית מוזיקה או ספריית MusicBee בפורמט XML של iTunes.',
+    },
+  });
+  const musicBeeProviderCard = {
+    ...musicBeeCopy.guide,
+    brand: 'musicbee' as const,
+    color: '#f2a900',
+  };
+  const providerCards = [
+    ...standardProviderCards.slice(0, -1),
+    musicBeeProviderCard,
+    ...standardProviderCards.slice(-1),
+  ];
   const clearCopy = pickLanguage(lang, {
     en: {
       busy: 'Clearing…',
@@ -271,7 +364,7 @@ export default function DataUploader({
   };
 
   // Yields to the event loop so React can paint the latest console line and
-  // progress bar before the next (synchronous, potentially heavy) parse step.
+  // progress bar before the next remaining synchronous parse or metadata step.
   // Deliberately NOT a fixed-duration sleep: staging fake multi-second delays
   // to dramatize the terminal would make every real upload slower than it is.
   const paint = () => new Promise(resolve => setTimeout(resolve, 0));
@@ -286,6 +379,9 @@ export default function DataUploader({
     // parsing plus the caller's complete local-save promise.
     const operation = operationCoordinator.acquire('import');
     if (!operation) return;
+    musicBeeAbortRef.current?.abort();
+    const musicBeeAbortController = new AbortController();
+    musicBeeAbortRef.current = musicBeeAbortController;
     setLoading(true);
     setError(null);
     setWarning(null);
@@ -301,16 +397,27 @@ export default function DataUploader({
         const name = f.name.toLowerCase();
         return name.endsWith('.html') || name.endsWith('.htm');
       });
+      const xmlFiles = files.filter(f => f.name.toLowerCase().endsWith('.xml'));
 
-      if (csvFiles.length === 0 && jsonFiles.length === 0 && htmlFiles.length === 0) {
-        throw new Error(t.uploader.noFilesError);
+      if (csvFiles.length === 0 && jsonFiles.length === 0
+        && htmlFiles.length === 0 && xmlFiles.length === 0) {
+        throw new Error(musicBeeCopy.noFiles);
+      }
+      if (xmlFiles.length > 1) {
+        throw new Error(musicBeeCopy.multiple);
+      }
+      if (xmlFiles[0] && xmlFiles[0].size > MAX_MUSICBEE_XML_BYTES) {
+        throw new MusicBeeSnapshotError(
+          'FILE_TOO_LARGE',
+          'MusicBee XML exceeds the safe browser parsing limit.',
+        );
       }
 
       addLog(logCopy.initialize);
       setProgressPercent(5);
       await paint();
 
-      addLog(logCopy.files(csvFiles.length, jsonFiles.length, htmlFiles.length));
+      addLog(logCopy.files(csvFiles.length, jsonFiles.length, htmlFiles.length, xmlFiles.length));
       setProgressPercent(15);
       await paint();
 
@@ -320,13 +427,26 @@ export default function DataUploader({
       }
 
       addLog(logCopy.reading);
-      const [csvTexts, spotifyJsonTexts, youtubeHtmlTexts] = await Promise.all([
+      if (xmlFiles.length) addLog(musicBeeCopy.parsing);
+      const musicBeeSnapshotPromise = xmlFiles[0]
+        ? parseMusicBeeFileInWorker(xmlFiles[0], { signal: musicBeeAbortController.signal })
+        : Promise.resolve(undefined);
+      const [csvTexts, spotifyJsonTexts, youtubeHtmlTexts, importedMusicBeeSnapshot] = await Promise.all([
         Promise.all(csvFiles.map(readFileAsText)),
         Promise.all(jsonFiles.map(readFileAsText)),
         Promise.all(htmlFiles.map(readFileAsText)),
+        musicBeeSnapshotPromise,
       ]);
       setProgressPercent(45);
       await paint();
+
+      if (importedMusicBeeSnapshot) {
+        addLog(musicBeeCopy.parsed(
+          importedMusicBeeSnapshot.track_count.toLocaleString(locale),
+          importedMusicBeeSnapshot.artist_count.toLocaleString(locale),
+        ));
+        await paint();
+      }
 
       // A textual marker is only a cheap candidate signal. Backup mode starts
       // after the complete envelope passes parseExport's trust-boundary guard.
@@ -365,46 +485,82 @@ export default function DataUploader({
         await paint();
 
         if (!operationCoordinator.isCurrent(operation)) return;
-        await onDataLoaded(exported.data, exported.source_label || pickLanguage(lang, {
+        const restoredData = importedMusicBeeSnapshot
+          ? { ...exported.data, musicbee_snapshot: importedMusicBeeSnapshot }
+          : exported.data;
+        const restoredSourceLabel = exported.source_label || pickLanguage(lang, {
           en: 'Nova backup',
           es: 'Copia de seguridad Nova',
           he: 'גיבוי Nova',
-        }), exported.genre_assignments, operation);
+        });
+        await onDataLoaded(
+          restoredData,
+          importedMusicBeeSnapshot
+            ? `${restoredSourceLabel} + ${musicBeeCopy.label(
+              importedMusicBeeSnapshot.track_count.toLocaleString(locale),
+            )}`
+            : restoredSourceLabel,
+          exported.genre_assignments,
+          operation,
+        );
         if (!operationCoordinator.isCurrent(operation)) return;
         setProgressPercent(100);
         addLog(logCopy.restored);
-        setSuccessMsg(t.uploader.importedMessage(
-          exported.data.core_metrics.total_plays.toLocaleString(locale),
-          exported.data.core_metrics.unique_artists.toLocaleString(locale),
-        ));
+        const backupMessage = t.uploader.importedMessage(
+          restoredData.core_metrics.total_plays.toLocaleString(locale),
+          restoredData.core_metrics.unique_artists.toLocaleString(locale),
+        );
+        setSuccessMsg(importedMusicBeeSnapshot
+          ? `${backupMessage} ${musicBeeCopy.success(
+            importedMusicBeeSnapshot.track_count.toLocaleString(locale),
+            importedMusicBeeSnapshot.artist_count.toLocaleString(locale),
+          )}`
+          : backupMessage);
         return;
       }
 
       if (invalidBackupCount > 0
         && csvTexts.length === 0
         && sourceJsonTexts.length === 0
-        && youtubeHtmlTexts.length === 0) {
+        && youtubeHtmlTexts.length === 0
+        && !importedMusicBeeSnapshot) {
         throw new Error(backupCopy.invalid);
       }
       if (invalidBackupCount > 0) setWarning(backupCopy.ignored(invalidBackupCount));
 
-      addLog(logCopy.processing);
+      const hasTimelineFiles = csvTexts.length > 0
+        || sourceJsonTexts.length > 0
+        || youtubeHtmlTexts.length > 0;
+      if (hasTimelineFiles) addLog(logCopy.processing);
       let parsed: MusicDnaData;
-      try {
-        parsed = parseMusicSources({ csvTexts, spotifyJsonTexts: sourceJsonTexts, youtubeHtmlTexts });
-      } catch (err) {
-        if (invalidBackupCount > 0 && err instanceof ParseError && err.code === 'NO_VALID_ROWS') {
-          throw new Error(backupCopy.invalid);
+      if (hasTimelineFiles) {
+        try {
+          parsed = parseMusicSources({ csvTexts, spotifyJsonTexts: sourceJsonTexts, youtubeHtmlTexts });
+        } catch (err) {
+          if (invalidBackupCount > 0 && err instanceof ParseError && err.code === 'NO_VALID_ROWS') {
+            throw new Error(backupCopy.invalid);
+          }
+          throw err;
         }
-        throw err;
+      } else if (importedMusicBeeSnapshot) {
+        parsed = { ...currentData, musicbee_snapshot: importedMusicBeeSnapshot };
+      } else {
+        throw new Error(musicBeeCopy.noFiles);
+      }
+
+      const activeMusicBeeSnapshot = importedMusicBeeSnapshot;
+      if (activeMusicBeeSnapshot && parsed.musicbee_snapshot !== activeMusicBeeSnapshot) {
+        parsed = { ...parsed, musicbee_snapshot: activeMusicBeeSnapshot };
       }
       setProgressPercent(75);
       await paint();
 
-      addLog(logCopy.parsed(
-        parsed.core_metrics.total_plays.toLocaleString(locale),
-        parsed.core_metrics.unique_artists.toLocaleString(locale),
-      ));
+      if (hasTimelineFiles) {
+        addLog(logCopy.parsed(
+          parsed.core_metrics.total_plays.toLocaleString(locale),
+          parsed.core_metrics.unique_artists.toLocaleString(locale),
+        ));
+      }
       await paint();
 
       addLog(logCopy.metadata);
@@ -418,6 +574,9 @@ export default function DataUploader({
         source?.spotify_plays ? `${source.spotify_plays}× Spotify` : null,
         source?.youtube_plays ? `${source.youtube_plays}× YouTube` : null,
         source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
+        activeMusicBeeSnapshot
+          ? musicBeeCopy.label(activeMusicBeeSnapshot.track_count.toLocaleString(locale))
+          : null,
       ].filter(Boolean).join(' + ') || logCopy.importedFiles;
 
       if (!operationCoordinator.isCurrent(operation)) return;
@@ -428,21 +587,40 @@ export default function DataUploader({
       setProgressPercent(100);
       addLog(logCopy.success);
 
-      setSuccessMsg(t.uploader.successMessage(
-        Math.max(1, files.length - invalidBackupCount),
-        parsed.core_metrics.total_plays.toLocaleString(locale),
-        parsed.core_metrics.unique_artists.toLocaleString(locale),
-        source?.spotify_skip_rate_pct ?? 0
-      ));
-    } catch (err: any) {
+      if (!hasTimelineFiles && importedMusicBeeSnapshot) {
+        setSuccessMsg(musicBeeCopy.success(
+          importedMusicBeeSnapshot.track_count.toLocaleString(locale),
+          importedMusicBeeSnapshot.artist_count.toLocaleString(locale),
+        ));
+      } else {
+        const timelineMessage = t.uploader.successMessage(
+          Math.max(1, files.length - invalidBackupCount),
+          parsed.core_metrics.total_plays.toLocaleString(locale),
+          parsed.core_metrics.unique_artists.toLocaleString(locale),
+          source?.spotify_skip_rate_pct ?? 0,
+        );
+        setSuccessMsg(importedMusicBeeSnapshot
+          ? `${timelineMessage} ${musicBeeCopy.success(
+            importedMusicBeeSnapshot.track_count.toLocaleString(locale),
+            importedMusicBeeSnapshot.artist_count.toLocaleString(locale),
+          )}`
+          : timelineMessage);
+      }
+    } catch (err: unknown) {
+      if (isAbortError(err)) return;
       if (!operationCoordinator.isCurrent(operation)) return;
       console.error(err);
       if (err instanceof ParseError) {
         setError(err.code === 'INVALID_JSON' ? t.uploader.invalidJsonError : t.uploader.noValidRowsError);
+      } else if (err instanceof MusicBeeSnapshotError) {
+        setError(err.code === 'FILE_TOO_LARGE' ? musicBeeCopy.tooLarge : musicBeeCopy.invalid);
       } else {
-        setError(err.message || t.uploader.processingError);
+        setError(err instanceof Error && err.message ? err.message : t.uploader.processingError);
       }
     } finally {
+      if (musicBeeAbortRef.current === musicBeeAbortController) {
+        musicBeeAbortRef.current = null;
+      }
       operationCoordinator.release(operation);
       setLoading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -478,24 +656,24 @@ export default function DataUploader({
     en: {
       localEyebrow: 'Private local import',
       formatsLabel: 'Accepted formats',
-      formatsValue: 'CSV · JSON · HTML',
-      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz and Nova backups',
+      formatsValue: musicBeeCopy.formatsValue,
+      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz, MusicBee and Nova backups',
       feedbackLabel: 'Import status',
       readyStatus: 'Ready for your files',
     },
     es: {
       localEyebrow: 'Importación privada y local',
       formatsLabel: 'Formatos admitidos',
-      formatsValue: 'CSV · JSON · HTML',
-      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz y copias de Nova',
+      formatsValue: musicBeeCopy.formatsValue,
+      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz, MusicBee y copias de Nova',
       feedbackLabel: 'Estado de la importación',
       readyStatus: 'Listo para recibir tus archivos',
     },
     he: {
       localEyebrow: 'ייבוא פרטי ומקומי',
       formatsLabel: 'פורמטים נתמכים',
-      formatsValue: 'CSV · JSON · HTML',
-      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz וגיבויי Nova',
+      formatsValue: musicBeeCopy.formatsValue,
+      helpHint: 'Spotify, Last.fm, YouTube, Apple Music, ListenBrainz, MusicBee וגיבויי Nova',
       feedbackLabel: 'מצב הייבוא',
       readyStatus: 'מוכנים לקבל את הקבצים שלך',
     },
@@ -528,7 +706,7 @@ export default function DataUploader({
             ref={fileInputRef}
             type="file"
             multiple
-            accept=".csv,.json,.html,.htm"
+            accept=".csv,.json,.html,.htm,.xml"
             onChange={handleChange}
             disabled={operationBusy}
             aria-label={t.uploader.dropZoneAriaLabel}
@@ -548,7 +726,7 @@ export default function DataUploader({
                 {t.uploader.title}
               </h3>
               <p id="upload-drop-hint" className="text-sm text-gray-400 max-w-lg mx-auto">
-                {t.uploader.dropHint}
+                {musicBeeCopy.dropHint}
               </p>
             </div>
 
@@ -590,6 +768,12 @@ export default function DataUploader({
             <FileText aria-hidden="true" className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c3 }} />
             <p className="text-xs text-gray-400 leading-relaxed">
               {t.uploader.youtubeNote}
+            </p>
+          </div>
+          <div className="flex items-start gap-3 p-4 rounded-2xl border bg-white/3 sm:col-span-2" style={{ borderColor: '#f2a90033' }}>
+            <BrandIcon name="musicbee" size={20} className="mt-0.5 shrink-0" />
+            <p className="text-xs text-gray-400 leading-relaxed">
+              {musicBeeCopy.note}
             </p>
           </div>
         </div>
@@ -740,11 +924,13 @@ export default function DataUploader({
           </div>
 
           <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {providerCards.map(({ icon: Icon, title, badge, body, steps, color }) => (
+            {providerCards.map(({ brand, title, badge, body, steps, color }) => (
               <article key={title} className="rounded-3xl border bg-white/[0.035] p-4" style={{ borderColor: `${color}30` }}>
                 <div className="flex items-start gap-3">
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border" style={{ color, borderColor: `${color}42`, backgroundColor: `${color}12` }}>
-                    <Icon aria-hidden="true" className="h-5 w-5" />
+                    {brand
+                      ? <BrandIcon name={brand} size={21} />
+                      : <ListChecks aria-hidden="true" className="h-5 w-5" />}
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-black leading-tight text-white">{title}</p>

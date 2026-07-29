@@ -21,7 +21,8 @@ describe('i18n foundations', () => {
     expect(localeFor('he')).toBe('he-IL');
     expect(directionFor('he')).toBe('rtl');
     expect(directionFor('es')).toBe('ltr');
-    expect(DOCUMENT_METADATA.he.title).toContain('הדנ״א המוזיקלי שלך');
+    expect(DOCUMENT_METADATA.he.title).toBe('11 שנים של מוזיקה, שהפכו למוזיאון');
+    expect(DOCUMENT_METADATA.he.description).toContain('80,550 השמעות');
   });
 
   it('keeps language controls localized in Hebrew', () => {
