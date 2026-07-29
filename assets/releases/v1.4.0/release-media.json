@@ -3,11 +3,11 @@
   "release": {
     "status": "private-candidate",
     "version": "1.4.0",
-    "source_commit": "7cf218cf7137f60d8cc5fac0d77a755f5f0b79e6",
-    "source_head_commit": "7cf218cf7137f60d8cc5fac0d77a755f5f0b79e6",
+    "source_commit": "2b4763c180db4cdff6a7259c0deee95061bb5c34",
+    "source_head_commit": "2b4763c180db4cdff6a7259c0deee95061bb5c34",
     "source_state": "committed-product-source",
     "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
-    "source_fingerprint": "c255229e107c21848cdd2dd703fa3522595ed417e9ca6c3d097fecb2035d40d4",
+    "source_fingerprint": "cb5d4f6a4527fd17178d2fa504a68389fa01989b215c516019dc4aeffb80af28",
     "source_file_count": 428,
     "captured_on": "2026-07-29",
     "deployed_on": null
@@ -66,10 +66,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.4.0/home-desktop-en-cyber.jpg",
-      "sha256": "13226d9c3ac057ae391c087ca655ef520573f941f6de382b0469e2f958efd8df",
+      "sha256": "020fe3ccc3fe50521ee954773b57a61a967af0f2b44b71a76ed4ccdfb6450dcf",
       "width": 1440,
       "height": 900,
-      "bytes": 158472,
+      "bytes": 158036,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -150,10 +150,10 @@
     {
       "id": "profile-tour-static",
       "path": "assets/releases/v1.4.0/product-tour-static-en-cyber.jpg",
-      "sha256": "ef0b915c267eb62cc82bb16e12cd6e1c9d4a003dbe38630be1672a9b825850f4",
+      "sha256": "46a25fb77e04f69af028ccc1d18de75c6c071a8c0c6a78cc2b2184e49e115747",
       "width": 960,
       "height": 600,
-      "bytes": 40973,
+      "bytes": 41356,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -164,7 +164,7 @@
     {
       "id": "profile-tour",
       "path": "assets/releases/v1.4.0/product-tour-animated-en-cyber.gif",
-      "sha256": "5c967a6b23d4f1ddb8b472b5dcf94a7f9e8204831ff087e53f1b16db6447568d",
+      "sha256": "af030e37a4e2da9dc7b7b0b86806bab6cefa69b3857d3f4b73e5b9b4cdf14d48",
       "width": 560,
       "height": 350,
       "bytes": 1113271,
