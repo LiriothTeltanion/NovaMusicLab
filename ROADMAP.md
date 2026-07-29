@@ -70,6 +70,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [ ] Publish privacy-safe product screenshots, walkthrough media and an engineering case study.
 - [x] Publish `v1.0.0-rc.1` — published 2026-07-16 and now superseded — complete acceptance testing, then tag `v1.0.0` — published 2026-07-16 and now superseded.
 - [x] Publish `v1.1.0` — deployed 2026-07-26 — with Expedition Console, Living Artist Atlas and governed artist identities.
+- [x] Publish `v1.2.0` — deployed 2026-07-29 — with five hubs, three experience depths, local Share/Audio foundations and automated browser/accessibility gates.
 
 ## Definition of v1.0 done
 

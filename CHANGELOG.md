@@ -10,7 +10,7 @@ No changes recorded yet.
 
 ## [1.2.0] - 2026-07-29
 
-Status: **planned; not published or deployed**.
+Status: **deployed 2026-07-29**.
 
 ### Added
 
@@ -49,11 +49,12 @@ Status: **planned; not published or deployed**.
 - Restricted remote-image optimizations to parsed, explicitly trusted provider hostnames instead of matching domain-like substrings.
 - Validated and attribute-escaped temporary Audio Lab blob URLs, and completed attribute-context escaping in the local media-progress report.
 
-### Verification status
+### Verified
 
-- Final lint, TypeScript, data, identity, media-link, knowledge, public-privacy, PWA, test and bundle-budget results are pending on the release commit.
-- Final Playwright desktop/mobile and axe results are pending on the release commit.
-- Bundle measurements will be recorded from the final production build rather than copied from an earlier private checkpoint.
+- `npm run verify` passed locally and in CI on 2026-07-29: 103 test files, 599 tests, TypeScript production build and every data, identity, media-link, knowledge, public-privacy, PWA and bundle-budget gate.
+- Playwright passed 8/8 desktop/mobile scenarios with EN/ES/HE coverage, Hebrew RTL, light/dark surfaces, axe WCAG A/AA checks and horizontal-overflow guards.
+- Dependency review and CodeQL passed after hostname validation, local blob-URL validation and context-complete HTML attribute escaping.
+- GitHub Pages workflow run `30432979601` deployed and smoke-tested application commit `ba3ff6d7c1b2debb0af5985d34f5bb8fdda2a27e`; the public `build-meta.json` matched that commit and product `1.2.0`.
 
 ## [1.1.0] - 2026-07-26
 
