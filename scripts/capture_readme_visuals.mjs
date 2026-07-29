@@ -11,6 +11,7 @@ const host = '127.0.0.1';
 const port = 4174;
 const baseUrl = `http://${host}:${port}`;
 const viteBin = path.join(projectRoot, 'node_modules', 'vite', 'bin', 'vite.js');
+const remoteImageReadyTimeoutMs = 8_000;
 
 async function waitForPreview() {
   for (let attempt = 0; attempt < 80; attempt += 1) {
@@ -25,12 +26,34 @@ async function waitForPreview() {
   throw new Error(`Vite preview did not become ready at ${baseUrl}`);
 }
 
+async function waitForReadyImage(page, selector) {
+  try {
+    await page.waitForFunction(
+      imageSelector => {
+        const image = document.querySelector(imageSelector);
+        return image instanceof HTMLImageElement
+          && image.complete
+          && image.naturalWidth > 0
+          && Number.parseFloat(getComputedStyle(image).opacity) >= 0.99;
+      },
+      selector,
+      { timeout: remoteImageReadyTimeoutMs },
+    );
+  } catch (error) {
+    if (!(error instanceof Error) || error.name !== 'TimeoutError') throw error;
+    process.stderr.write(
+      `Timed out waiting for ${selector}; capturing its deterministic fallback instead.\n`,
+    );
+  }
+}
+
 async function capture(browser, {
   fileName,
   hash,
   viewport,
   storage,
   waitFor,
+  waitForImage,
   colorScheme = 'dark',
 }) {
   const context = await browser.newContext({
@@ -51,7 +74,14 @@ async function capture(browser, {
     await page.goto(`${baseUrl}/${hash}`, { waitUntil: 'domcontentloaded' });
     await page.locator(waitFor).waitFor({ state: 'visible' });
     await page.evaluate(() => document.fonts.ready);
-    await page.waitForTimeout(500);
+    if (waitForImage) {
+      await waitForReadyImage(page, waitForImage);
+      // Give Chromium one compositor frame after React removes the placeholder;
+      // otherwise reduced-motion captures can still record the previous paint.
+      await page.waitForTimeout(150);
+    } else {
+      await page.waitForTimeout(500);
+    }
     await page.screenshot({
       path: path.join(outputDir, fileName),
       type: 'jpeg',
@@ -93,6 +123,7 @@ try {
         nml_tour_seen: 'true',
       },
       waitFor: '[data-testid="hero-first-viewport"]',
+      waitForImage: '.nova-hero__portrait img',
     });
     await capture(browser, {
       fileName: 'living-artist-atlas-desktop.jpg',

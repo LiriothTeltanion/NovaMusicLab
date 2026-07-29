@@ -34,9 +34,11 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 
 - [x] Supersede room-filtering journeys with Guided, Explore and Deep Dive presentation depths.
 - [x] Organize every room into Home, Pulse, Atlas, Stories or Data Lab without changing canonical room routes.
+- [x] Keep those five hubs available in a dedicated sticky Museum Map while larger room utilities scroll away.
 - [x] Show active archive mode, source, dataset date, privacy boundary and save status in the shell.
 - [x] Add a keyboard-first command palette for rooms and journey switching.
 - [x] Promote Artist Identity into a Living Artist Atlas with progressive media, offline evidence and honest unavailable states.
+- [x] Turn the entry Hero into a rights-filtered Living Constellation with daily artist imagery and direct Atlas navigation.
 - [x] Keep Spotify and YouTube artist players behind explicit opt-in controls.
 - [x] Default new visitors to Explore while retaining Guided and Deep Dive as presentation choices.
 - [x] Add bounded remote-image recovery and deterministic local fallbacks to high-visibility rooms.
@@ -49,6 +51,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 
 ## Phase 4 — Architecture and long-tail data
 
+- [ ] Put the aggregate compatibility store and Dexie schema revision 4 behind one repository interface before adding cloud state.
 - [ ] Split application, context, historical-top and emotional-map monoliths by domain.
 - [ ] Separate source adapters, normalization, validation, deduplication and aggregation.
 - [ ] Move generated world data out of TypeScript into a compact data artifact.
@@ -71,6 +74,7 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Publish `v1.0.0-rc.1` — published 2026-07-16 and now superseded — complete acceptance testing, then tag `v1.0.0` — published 2026-07-16 and now superseded.
 - [x] Publish `v1.1.0` — deployed 2026-07-26 — with Expedition Console, Living Artist Atlas and governed artist identities.
 - [x] Publish `v1.2.0` — deployed 2026-07-29 — with five hubs, three experience depths, local Share/Audio foundations and automated browser/accessibility gates.
+- [ ] Publish `v1.3.0` — private candidate 2026-07-29, not published or deployed — after visual approval, clean commit, CI and Pages verification.
 
 ## Definition of v1.0 done
 

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Activity,
   BadgeCheck,
@@ -108,10 +108,19 @@ function AlbumCard({ album, rank, playsLabel, locale }: { album: TopAlbum; rank:
 }
 
 export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
-  const { lang, tc } = useApp();
+  const {
+    lang,
+    tc,
+    selectedArtistName,
+    setSelectedArtistName,
+  } = useApp();
   const experienceDepth = useExperienceDepth();
   const copy = getArtistAtlasCopy(lang, experienceDepth);
-  const [selectedName, setSelectedName] = useState(data.top_artists[0]?.name ?? '');
+  const [selectedName, setSelectedName] = useState(() => (
+    data.top_artists.find(artist => sameArtist(artist.name, selectedArtistName))?.name
+      ?? data.top_artists[0]?.name
+      ?? ''
+  ));
   const [mediaOpenForArtist, setMediaOpenForArtist] = useState<string | null>(null);
   const [artistQuery, setArtistQuery] = useState('');
   const [editorialResult, setEditorialResult] = useState<{
@@ -125,9 +134,22 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
 
   useEffect(() => {
     if (!data.top_artists.some(artist => sameArtist(artist.name, selectedName))) {
-      setSelectedName(data.top_artists[0]?.name ?? '');
+      const fallbackName = data.top_artists[0]?.name ?? '';
+      setSelectedName(fallbackName);
+      setSelectedArtistName(fallbackName);
     }
-  }, [data.top_artists, selectedName]);
+  }, [data.top_artists, selectedName, setSelectedArtistName]);
+
+  useEffect(() => {
+    if (!selectedArtistName || sameArtist(selectedArtistName, selectedName)) return;
+    const requestedArtist = data.top_artists.find(artist => sameArtist(artist.name, selectedArtistName));
+    if (requestedArtist) setSelectedName(requestedArtist.name);
+  }, [data.top_artists, selectedArtistName, selectedName]);
+
+  const selectArtist = useCallback((artistName: string) => {
+    setSelectedName(artistName);
+    setSelectedArtistName(artistName);
+  }, [setSelectedArtistName]);
 
   useEffect(() => {
     setArtistQuery('');
@@ -275,7 +297,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                 <button
                   key={artist.name}
                   type="button"
-                  onClick={() => setSelectedName(artist.name)}
+                  onClick={() => selectArtist(artist.name)}
                 >
                   <ArtistAvatar name={artist.name} size={28} tooltip={false} />
                   <span><bdi dir="auto">{artist.name}</bdi></span>
@@ -297,7 +319,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
               <li key={artist.name}>
                 <button
                   type="button"
-                  onClick={() => setSelectedName(artist.name)}
+                  onClick={() => selectArtist(artist.name)}
                   aria-pressed={active}
                   className="artist-atlas__rail-item"
                   style={active ? { borderColor: `${tc.c1}80`, backgroundColor: `${tc.c1}16` } : undefined}
@@ -485,7 +507,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                       <button
                         key={`${connection.kind}-${connection.artist.name}`}
                         type="button"
-                        onClick={() => setSelectedName(connection.artist.name)}
+                        onClick={() => selectArtist(connection.artist.name)}
                       >
                         <ArtistAvatar name={connection.artist.name} size={44} tooltip={false} />
                         <span>
@@ -513,7 +535,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                       <button
                         key={neighbor.artist.name}
                         type="button"
-                        onClick={() => setSelectedName(neighbor.artist.name)}
+                        onClick={() => selectArtist(neighbor.artist.name)}
                       >
                         <ArtistAvatar name={neighbor.artist.name} size={44} tooltip={false} />
                         <span>

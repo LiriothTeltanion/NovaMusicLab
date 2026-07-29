@@ -11,10 +11,31 @@ import {
   normalizeCommonsTitleKey,
   sanitizeCommonsMetadataCache,
 } from './lib/commonsExtMetadata.mjs';
+import {
+  buildOpenPrimaryImageIndex,
+  OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH,
+} from './lib/openPrimaryImageIndex.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DEFAULT_MANIFEST = 'src/data/artist_knowledge_manifest.json';
 const DEFAULT_CACHE = 'scripts/.cache/wikimedia-commons-extmetadata.v1.json';
+
+function companionMetadataPath(manifestPath) {
+  const extension = path.extname(manifestPath);
+  const basename = path.basename(manifestPath, extension);
+  return path.join(path.dirname(manifestPath), `${basename}_meta${extension}`);
+}
+
+function openPrimaryImageIndexPath(manifestPath) {
+  const defaultManifestPath = path.join(root, DEFAULT_MANIFEST);
+  if (manifestPath === defaultManifestPath) {
+    return path.join(root, OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH);
+  }
+
+  const extension = path.extname(manifestPath);
+  const basename = path.basename(manifestPath, extension);
+  return path.join(path.dirname(manifestPath), `${basename}_open_primary_images${extension}`);
+}
 
 function printHelp() {
   process.stdout.write(`Wikimedia Commons rights metadata enrichment
@@ -33,7 +54,7 @@ Usage:
 Options:
   --fetch             Query the Wikimedia Commons API for missing cache entries.
   --refresh           Re-query cached titles too. Requires --fetch.
-  --write             Atomically update the manifest from sanitized cached data.
+  --write             Safely update the manifest, metadata and open-image index.
   --limit <count>     Bound the number of titles queried in this run.
   --manifest <path>   Repo-relative manifest path (default: ${DEFAULT_MANIFEST}).
   --cache <path>      Repo-relative ignored cache path (default: ${DEFAULT_CACHE}).
@@ -125,6 +146,8 @@ async function main() {
   }
 
   const manifestPath = resolveInsideRepo(options.manifest, 'Manifest path');
+  const metadataPath = companionMetadataPath(manifestPath);
+  const runtimeImageIndexPath = openPrimaryImageIndexPath(manifestPath);
   const cachePath = resolveInsideRepo(options.cache, 'Cache path');
   const manifest = readJson(manifestPath);
   let cache = readCache(cachePath);
@@ -151,6 +174,8 @@ async function main() {
   if (options.write) {
     writeJsonAtomic(cachePath, cache);
     writeJsonAtomic(manifestPath, enriched);
+    writeJsonAtomic(metadataPath, enriched.meta);
+    writeJsonAtomic(runtimeImageIndexPath, buildOpenPrimaryImageIndex(enriched));
   }
 
   const cachedTitleCount = Object.keys(cache.entries ?? {}).length;
@@ -168,7 +193,9 @@ async function main() {
   }
   process.stdout.write(
     options.write
-      ? `Manifest updated atomically: ${path.relative(root, manifestPath)}.\n`
+      ? `Manifest, companion metadata and open-image index updated safely: `
+        + `${path.relative(root, manifestPath)}, ${path.relative(root, metadataPath)}, `
+        + `${path.relative(root, runtimeImageIndexPath)}.\n`
       : 'Dry run complete; the manifest was not modified. Add --write only after reviewing the cache.\n',
   );
 }

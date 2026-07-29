@@ -916,6 +916,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
     });
   }, [activeTab, menuItems, setActiveTab]);
 
+  const openArtistFromHero = useCallback((artistName: string) => {
+    setSelectedArtistName(artistName);
+    goToTab('artist');
+  }, [goToTab, setSelectedArtistName]);
+
   const navigateFromCommand = useCallback((roomId: string) => {
     goToTab(roomId as Tab);
   }, [goToTab]);
@@ -1297,8 +1302,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </span>
         </button>
 
-        <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
-
         {/* Right controls */}
         <div className="flex min-w-0 flex-nowrap items-center justify-end gap-1 md:gap-2">
           {/* Creator profile remains available throughout the museum, without
@@ -1556,6 +1559,8 @@ function AppInner({ boot }: { boot: AppBoot }) {
         </div>
       </header>
 
+      <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
+
       {activeTab !== 'hero' && (
         <ExpeditionConsole
           activeRoomId={activeTab}
@@ -1581,6 +1586,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             isPersonalArchive={isPersonalArchive}
             isArchivePersisted={Boolean(storedMeta)}
             onOpenAssistant={() => goToTab('aiassistant')}
+            onOpenArtist={openArtistFromHero}
             motionMode={effectiveMotionMode}
           />
         </Suspense>

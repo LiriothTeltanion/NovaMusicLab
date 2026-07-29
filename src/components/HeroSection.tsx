@@ -17,7 +17,7 @@ import { MusicDnaData } from '../types';
 import CountUpCmp from './CountUp';
 import { useApp } from '../context/AppContext';
 import AnimatedParticles from './AnimatedParticles';
-import ArtistAvatar from './ArtistAvatar';
+import ArtistAvatar, { getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
 import CoverArt from './CoverArt';
 import CreatorCvLink from './CreatorCvLink';
 import NovaMark from './NovaMark';
@@ -27,6 +27,11 @@ import { buildArchetypes } from '../utils/identityEngine';
 import { playMuseumSound, type MuseumSoundCue } from '../audio/sonicFeedback';
 import { deriveSourceSummary, getSourceTelemetry, type SourceTelemetryId } from '../utils/analytics';
 import { localeFor, pickLanguage, type Lang } from '../utils/i18n';
+import {
+  getLocalDayKey,
+  selectDailyArtistSatellites,
+  type HeroConstellationArtist,
+} from '../utils/heroArtistConstellation';
 import type { MotionMode } from './museumVisualIdentity';
 import './HeroSection.css';
 
@@ -40,6 +45,8 @@ interface HeroSectionProps {
   isArchivePersisted?: boolean;
   /** Opens the AI Assistant tab; the welcome card's "Launch Chat Console" CTA needs it. */
   onOpenAssistant?: () => void;
+  /** Opens the selected artist in the host app's artist-detail experience. */
+  onOpenArtist?: (artistName: string) => void;
   /** User-selected ambient quality. System reduced-motion still wins. */
   motionMode?: MotionMode;
 }
@@ -97,6 +104,10 @@ interface HeroLocalCopy {
   archiveIntelligence: string;
   offlineReading: string;
   launchConsole: string;
+  curiosityQuestion: string;
+  constellationLabel: string;
+  constellationSource: string;
+  openArtist: (artist: string) => string;
   initializing: string;
   decryptingAtlas: (years: number | null) => string;
   personalArchiveState: string;
@@ -131,6 +142,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     archiveIntelligence: 'Inteligencia del archivo',
     offlineReading: 'Lectura IA offline',
     launchConsole: 'Iniciar Consola de Chat',
+    curiosityQuestion: '¿Qué artista dio forma al mundo que escuchas hoy?',
+    constellationLabel: 'Constelación de artistas de hoy',
+    constellationSource: 'Retratos revisados de Wikimedia Commons · abre uno para ver su fuente y atribución en el Atlas',
+    openArtist: artist => `Abrir el perfil de ${artist}`,
     initializing: 'INICIALIZANDO INTERFAZ NEURAL',
     decryptingAtlas: years => years === null
       ? 'CRONOLOGÍA NO DISPONIBLE · ABRIENDO SEÑALES VERIFICADAS…'
@@ -163,6 +178,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     archiveIntelligence: 'Archive intelligence',
     offlineReading: 'Offline AI reading',
     launchConsole: 'Launch Chat Console',
+    curiosityQuestion: 'Which artist shaped the world you hear today?',
+    constellationLabel: 'Today’s artist constellation',
+    constellationSource: 'Reviewed Wikimedia Commons portraits · open one for its source and attribution in the Atlas',
+    openArtist: artist => `Open ${artist} artist profile`,
     initializing: 'INITIALIZING NEURAL INTERFACE',
     decryptingAtlas: years => years === null
       ? 'TIMELINE UNAVAILABLE · OPENING VERIFIED SIGNALS…'
@@ -195,6 +214,10 @@ const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
     archiveIntelligence: 'המודיעין של הארכיון',
     offlineReading: 'ניתוח בינה מלאכותית מקומי',
     launchConsole: 'פתח את מסוף הצ׳אט',
+    curiosityQuestion: 'איזה אמן עיצב את העולם שאתה שומע היום?',
+    constellationLabel: 'קבוצת האמנים של היום',
+    constellationSource: `דיוקנאות שנבדקו מתוך ${bidiIsolate('Wikimedia Commons')} · פתח דיוקן כדי לראות מקור וייחוס באטלס`,
+    openArtist: artist => `פתח את פרופיל האמן של ${bidiIsolate(artist)}`,
     initializing: 'אתחול הממשק העצבי',
     decryptingAtlas: years => years === null
       ? 'ציר הזמן אינו זמין · פותח אותות מאומתים…'
@@ -219,6 +242,7 @@ export default function HeroSection({
   isPersonalArchive = false,
   isArchivePersisted = false,
   onOpenAssistant,
+  onOpenArtist,
   motionMode = 'calm',
 }: HeroSectionProps) {
   const metrics = data?.core_metrics || EMPTY_METRICS;
@@ -267,6 +291,26 @@ export default function HeroSection({
         subtitle: t.heroSection.subtitle,
         support: t.heroSection.ctaSupport,
       };
+
+  const constellationDayKey = useMemo(() => getLocalDayKey(), []);
+  const topArtistPortraitUrl = useMemo(
+    () => topArtist ? getOpenKnowledgeArtistImageUrl(topArtist.name, 320) : null,
+    [topArtist],
+  );
+  const constellationArtists = useMemo(() => {
+    const reviewedArtists = (data?.top_artists ?? [])
+      .slice(0, 24)
+      .flatMap<HeroConstellationArtist>((artist) => {
+        const imageUrl = getOpenKnowledgeArtistImageUrl(artist.name, 96);
+        return imageUrl ? [{ ...artist, imageUrl }] : [];
+      });
+
+    return selectDailyArtistSatellites(
+      reviewedArtists,
+      topArtist?.name,
+      constellationDayKey,
+    );
+  }, [constellationDayKey, data?.top_artists, topArtist?.name]);
 
   const dossierOwner = isPersonalArchive
     ? copy.personalOwner
@@ -477,6 +521,11 @@ export default function HeroSection({
     setTimeout(onOpenAssistant, shouldReduceMotion ? 0 : 1200);
   };
 
+  const handleOpenArtist = (artistName: string) => {
+    triggerCorePulse('open');
+    onOpenArtist?.(artistName);
+  };
+
   return (
     <section
       className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]"
@@ -550,10 +599,17 @@ export default function HeroSection({
             </p>
 
             <h1 id="nova-hero-title" className="nova-hero__title">
-              <span>NOVA</span>
+              <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
               <span className="nova-hero__title-accent">MUSIC LAB</span>
             </h1>
 
+            <p
+              className="nova-hero__question"
+              dir={lang === 'he' ? 'rtl' : 'ltr'}
+              lang={lang}
+            >
+              {copy.curiosityQuestion}
+            </p>
             <p className="nova-hero__subtitle">{introCopy.subtitle}</p>
             <p className="nova-hero__lede">{introCopy.support}</p>
 
@@ -610,15 +666,56 @@ export default function HeroSection({
             <div className="nova-hero__orbit nova-hero__orbit--inner" aria-hidden="true" />
             <span className="nova-hero__visual-index" aria-hidden="true">NML / 01</span>
 
+            <div
+              className="nova-hero__constellation"
+              role="group"
+              aria-label={copy.constellationLabel}
+              data-testid="hero-artist-constellation"
+            >
+              {constellationArtists.map((artist, index) => (
+                <button
+                  key={artist.name}
+                  type="button"
+                  className={`nova-hero__satellite nova-hero__satellite--${index + 1}`}
+                  onClick={() => handleOpenArtist(artist.name)}
+                  aria-label={onOpenArtist
+                    ? copy.openArtist(artist.name)
+                    : copy.playSignature(artist.name)}
+                >
+                  <ArtistAvatar
+                    name={artist.name}
+                    size={96}
+                    tooltip={false}
+                    overrideSrc={artist.imageUrl}
+                    fallbackToGallery={false}
+                  />
+                  <span className="nova-hero__satellite-name">
+                    <bdi dir="auto">{artist.name}</bdi>
+                  </span>
+                </button>
+              ))}
+            </div>
+
             <button
               type="button"
-              onClick={() => triggerCorePulse('open')}
+              onClick={() => topArtist ? handleOpenArtist(topArtist.name) : triggerCorePulse('open')}
               className={'nova-hero__artist-focus' + (isCorePulsing ? ' is-pulsing' : '')}
-              aria-label={copy.playSignature(topArtist?.name ?? 'Nova Music Lab')}
+              aria-label={topArtist
+                ? onOpenArtist
+                  ? `${copy.openArtist(topArtist.name)} · ${copy.playSignature(topArtist.name)}`
+                  : copy.playSignature(topArtist.name)
+                : copy.playSignature('Nova Music Lab')}
             >
               <span className="nova-hero__portrait">
-                {topArtist ? (
-                  <ArtistAvatar name={topArtist.name} size={320} tooltip={false} priority />
+                {topArtist && topArtistPortraitUrl ? (
+                  <ArtistAvatar
+                    name={topArtist.name}
+                    size={320}
+                    tooltip={false}
+                    overrideSrc={topArtistPortraitUrl}
+                    priority
+                    fallbackToGallery={false}
+                  />
                 ) : (
                   <NovaMark size={160} />
                 )}
@@ -647,6 +744,12 @@ export default function HeroSection({
                   <strong><bdi dir="auto">{topTrack.title}</bdi></strong>
                 </span>
               </div>
+            )}
+
+            {constellationArtists.length > 0 && (
+              <p className="nova-hero__constellation-source" dir="auto">
+                {copy.constellationSource}
+              </p>
             )}
           </motion.div>
         </div>

@@ -6,6 +6,7 @@ Current version states:
 
 - `v1.1.0` — deployed 2026-07-26; superseded 2026-07-29.
 - `v1.2.0` — deployed 2026-07-29; current public GitHub Pages version.
+- `v1.3.0` — private candidate 2026-07-29; not published or deployed.
 
 ## Branch model
 
@@ -51,7 +52,7 @@ The Pages workflow cancels any older run for the same branch when a newer push a
 - [x] English, Spanish and Hebrew RTL pass at 390, 430, 768 and 1440 pixels in light and dark themes with zero browser console errors.
 - [x] Package, changelog, README and storage documentation agree on product `1.1.0` — deployed 2026-07-26 — and IndexedDB schema revision 4.
 
-Known release boundaries remain explicit: remote artwork creates disclosed provider requests, official players remain opt-in, and 171 visual assets stay marked for license review rather than being presented as redistributable.
+Known `v1.1.0` release boundaries remain explicit: remote artwork creates disclosed provider requests, official players remain opt-in, and 171 visual assets stayed marked for license review rather than being presented as redistributable.
 
 ## `v1.2.0` acceptance record — deployed 2026-07-29
 
@@ -65,9 +66,35 @@ Pull request [#20](https://github.com/LiriothTeltanion/NovaMusicLab/pull/20) mer
 - [x] Share & Feedback and Audio Lab retain their tested local-first boundaries.
 - [x] Privacy-safe English desktop/dark, Atlas desktop/dark and Hebrew RTL mobile/light screenshots were regenerated and visually reviewed.
 - [x] Dependency review and both CodeQL result surfaces pass after the three reported security findings were fixed.
+- [x] The reviewed Wikimedia Commons metadata pass leaves 6 of 295 visual assets explicitly awaiting license review; the companion bootstrap metadata matches the published manifest.
 - [x] Package, changelog, README and release guide agree on product `1.2.0` — deployed 2026-07-29 — and IndexedDB schema revision 4.
 
 Automated accessibility checks do not replace ongoing manual screen-reader, keyboard, contrast and device review. The TopHistorico room also reaches its current 360 kB gzip incremental budget exactly, so code splitting is the highest-priority performance follow-up.
+
+## `v1.3.0` candidate verification — private candidate 2026-07-29
+
+This record describes the local candidate only. It is not evidence of a GitHub
+release, tag, Pages deployment or public availability.
+
+- [x] `npm run verify` passes: 105 test files and 613 tests, plus lint, strict
+  data, identity, media-link, artist-knowledge, privacy, PWA, TypeScript,
+  production build and bundle-budget checks.
+- [x] `npm run test:e2e` passes all 12 desktop/mobile Chromium journeys,
+  including the sticky Museum Map and Hero-to-Atlas artist deep link.
+- [x] The explicit public-bundle privacy audit passes across 22 public JSON
+  payloads and 1766 repository text files.
+- [x] The Hero runtime imports only the 61 rights-eligible primary Wikimedia
+  images derived from the canonical manifest; all 6 unresolved assets remain
+  excluded from editorial selection.
+- [x] English desktop/dark, Atlas desktop/dark and Hebrew RTL mobile/light
+  screenshots were regenerated and visually reviewed.
+- [x] `git diff --check` passes.
+
+Known candidate boundaries remain explicit: the flagship archive currently ends
+on 2026-07-03; 5960 lower-ranked artists, representing 33.8% of archive plays,
+remain intentionally unclassified rather than receiving guessed genres; remote
+artwork still creates disclosed provider requests; and `TopHistorico` has no
+remaining headroom within its current 360 kB gzip incremental budget.
 
 ## Release metadata
 

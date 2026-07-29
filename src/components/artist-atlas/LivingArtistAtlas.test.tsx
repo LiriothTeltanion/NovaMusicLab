@@ -71,11 +71,13 @@ function renderAtlas(
 describe('LivingArtistAtlas', () => {
   beforeEach(() => {
     localStorage.clear();
+    window.history.replaceState(null, '', '#/');
   });
 
   afterEach(() => {
     cleanup();
     localStorage.clear();
+    window.history.replaceState(null, '', '#/');
     document.documentElement.lang = 'es';
     document.documentElement.dir = 'ltr';
     delete document.documentElement.dataset.language;
@@ -114,6 +116,24 @@ describe('LivingArtistAtlas', () => {
 
     await user.click(within(mediaGate).getByRole('button', { name: 'Close media portal' }));
     expect(within(mediaGate).getByRole('button', { name: 'Load official media' })).toHaveFocus();
+  });
+
+  it('opens the artist requested by a deep link and keeps later selections shareable', async () => {
+    window.history.replaceState(null, '', '#/artist-identity?artist=Deafheaven');
+    const user = userEvent.setup();
+    const { container } = renderAtlas('en');
+    const artistHero = container.querySelector<HTMLElement>('.artist-atlas__hero');
+    const artistRail = container.querySelector<HTMLElement>('.artist-atlas__rail');
+
+    expect(artistHero).not.toBeNull();
+    expect(artistRail).not.toBeNull();
+    if (!artistHero || !artistRail) return;
+
+    expect(within(artistHero).getByRole('heading', { name: 'Deafheaven', level: 3 })).toBeInTheDocument();
+
+    await user.click(within(artistRail).getByRole('button', { name: /Bring Me the Horizon/i }));
+
+    expect(within(artistHero).getByRole('heading', { name: 'Bring Me the Horizon', level: 3 })).toBeInTheDocument();
   });
 
   it('loads the evidence manifest only when the provenance panel is opened', async () => {

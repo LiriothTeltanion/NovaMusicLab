@@ -9,5 +9,12 @@
   ],
   "artistCount": 100,
   "visualAssetCount": 295,
-  "assetsAwaitingLicenseReview": 171
+  "assetsAwaitingLicenseReview": 6,
+  "rightsMetadata": {
+    "provider": "wikimedia-commons-api",
+    "cacheSchemaVersion": 1,
+    "cacheUpdatedAt": "2026-07-28T13:55:24.324Z",
+    "matchedAssetCount": 169,
+    "unresolvedCommonsAssetCount": 6
+  }
 }

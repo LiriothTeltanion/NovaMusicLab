@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { useApp } from '../context/AppContext';
 import { useImageLoadTimeout } from '../hooks/useImageLoadTimeout';
 import artistImages from '../data/artist_images.json';
+import openPrimaryImages from '../data/artist_open_primary_images.json';
 import artistMeta from '../data/artist_meta.json';
 import memberImages from '../data/member_images.json';
 import memberEnrichment from '../data/member_enrichment.json';
@@ -12,6 +13,7 @@ import { hashSeed } from '../utils/seededRandom';
 type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
 const IMAGES = artistImages as ArtistImages;
+const OPEN_PRIMARY_IMAGES = openPrimaryImages as Record<string, string>;
 const META = artistMeta as ArtistMeta;
 const MEMBER_IMAGES = memberImages as Record<string, string>;
 const MEMBER_ENRICHMENT = memberEnrichment as Record<string, { photo?: string }>;
@@ -25,6 +27,8 @@ interface ArtistAvatarProps {
   overrideSrc?: string;
   /** Marks an above-the-fold portrait as an eager, high-priority image. */
   priority?: boolean;
+  /** Keeps an explicitly selected primary image from falling through to gallery providers. */
+  fallbackToGallery?: boolean;
 }
 
 
@@ -39,6 +43,17 @@ function initialsFor(name: string): string {
 export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
   const key = name.normalize('NFC').trim().toLowerCase();
   const source = IMAGES[key]?.thumb;
+  return source ? optimizeRemoteImageUrl(source, size) : null;
+}
+
+/**
+ * Returns only rights-eligible open-knowledge primary portraits. The compact
+ * runtime index is generated from the canonical knowledge manifest and only
+ * includes declared or verified Wikimedia assets.
+ */
+export function getOpenKnowledgeArtistImageUrl(name: string, size: number): string | null {
+  const key = name.normalize('NFC').trim().toLowerCase();
+  const source = OPEN_PRIMARY_IMAGES[key];
   return source ? optimizeRemoteImageUrl(source, size) : null;
 }
 
@@ -58,6 +73,7 @@ export default function ArtistAvatar({
   tooltip = true,
   overrideSrc,
   priority = false,
+  fallbackToGallery = true,
 }: ArtistAvatarProps) {
   const { tc } = useApp();
   // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
@@ -87,6 +103,10 @@ export default function ArtistAvatar({
 
   useEffect(() => {
     if (stage !== 'gallery-loading') return;
+    if (!fallbackToGallery) {
+      setStage('failed');
+      return;
+    }
 
     let cancelled = false;
     void import('../utils/artistGallery')
@@ -119,20 +139,22 @@ export default function ArtistAvatar({
     return () => {
       cancelled = true;
     };
-  }, [name, originalSrc, optimizedSrc, size, stage]);
+  }, [fallbackToGallery, name, originalSrc, optimizedSrc, size, stage]);
 
   const advanceImageFallback = useCallback(() => {
     setLoaded(false);
     setStage(current => {
       if (current === 'optimized' && optimizedSrc !== originalSrc) return 'original';
-      if (current === 'optimized' || current === 'original') return 'gallery-loading';
+      if (current === 'optimized' || current === 'original') {
+        return fallbackToGallery ? 'gallery-loading' : 'failed';
+      }
       if (current === 'gallery' && galleryIndex + 1 < galleryUrls.length) {
         setGalleryIndex(index => index + 1);
         return 'gallery';
       }
       return 'failed';
     });
-  }, [galleryIndex, galleryUrls.length, optimizedSrc, originalSrc]);
+  }, [fallbackToGallery, galleryIndex, galleryUrls.length, optimizedSrc, originalSrc]);
 
   const src = stage === 'original'
     ? originalSrc

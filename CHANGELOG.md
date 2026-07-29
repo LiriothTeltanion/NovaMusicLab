@@ -6,7 +6,50 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No changes recorded yet.
+Target: `v1.3.0` — private candidate 2026-07-29; not published or deployed.
+
+### Added
+
+- Living Constellation hero with a deterministic daily set of four
+  Wikimedia-hosted artist portraits, direct Living Artist Atlas navigation and
+  EN/ES/HE curiosity copy.
+- Proposed optional-cloud-control-plane ADR and threat-model boundary; no
+  backend dependency, account or cloud synchronization is active.
+- Browser regression coverage for the sticky museum map and Hero-to-Atlas
+  artist deep links.
+
+### Changed
+
+- Rebuilt the NOVA MUSIC LAB wordmark as a more distinctive editorial
+  signature while preserving LTR brand isolation in Hebrew.
+- Moved the five museum hubs into a dedicated second sticky row below the
+  compact global header. The larger Expedition Console now scrolls away, so
+  navigation remains available without permanently consuming room space.
+- Made Living Artist Atlas honor and update the selected artist in shareable
+  deep-link state.
+
+### Fixed
+
+- Synchronized the artist-knowledge companion metadata with the canonical
+  manifest: 6 of 295 visual assets remain explicitly unverified after the
+  Wikimedia rights review, not 171.
+- Extended the artist-knowledge audit and enrichment writer so canonical and
+  companion metadata cannot silently diverge again.
+- Restricted the public Hero portrait pool to the 61 primary Wikimedia images
+  whose canonical license state is `declared` or `verified`; the compact runtime
+  index is regenerated and audited against the full lazy manifest.
+- Made candidate screenshot capture wait for a ready central portrait with a
+  bounded fallback instead of documenting an avoidable loading transition.
+
+### Verified
+
+- `npm run verify`: 105 test files and 613 tests passed, together with lint,
+  strict data, identity, media-link, artist-knowledge, privacy, PWA and
+  production bundle gates.
+- `npm run test:e2e`: 12 Playwright journeys passed across desktop and mobile
+  Chromium, including sticky navigation and Hero-to-Atlas artist selection.
+- Privacy-safe English desktop/dark, Atlas desktop/dark and Hebrew RTL
+  mobile/light candidate screenshots were regenerated and visually reviewed.
 
 ## [1.2.0] - 2026-07-29
 

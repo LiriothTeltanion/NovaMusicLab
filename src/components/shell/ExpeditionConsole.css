@@ -1,7 +1,6 @@
 .expedition-console {
-  position: sticky;
-  top: 4.25rem;
-  z-index: 35;
+  position: relative;
+  z-index: 25;
   display: grid;
   grid-template-columns: minmax(18rem, 0.9fr) minmax(24rem, 1.55fr) minmax(12rem, 0.65fr);
   align-items: stretch;
@@ -496,7 +495,6 @@
 
 @media (max-width: 760px) {
   .expedition-console {
-    top: 3.75rem;
     grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 0.4rem;
     padding: 0.42rem 0.55rem;

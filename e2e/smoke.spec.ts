@@ -73,6 +73,74 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
 
+test('the museum map stays below the header while room utilities scroll away', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+  });
+
+  await page.goto('/#/dashboard');
+
+  const mapDock = page.getByTestId('museum-map-dock');
+  const expeditionConsole = page.getByTestId('expedition-console');
+  await expect(mapDock).toBeVisible();
+  await expect(expeditionConsole).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'The Control Room' })).toBeFocused();
+
+  await page.evaluate(() => window.scrollTo(0, 1_200));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(200);
+
+  const positions = await page.evaluate(() => {
+    const headerRect = document.querySelector('[data-testid="museum-app-header"]')?.getBoundingClientRect();
+    const dockRect = document.querySelector('[data-testid="museum-map-dock"]')?.getBoundingClientRect();
+    const consoleRect = document.querySelector('[data-testid="expedition-console"]')?.getBoundingClientRect();
+    if (!headerRect || !dockRect || !consoleRect) throw new Error('Museum shell is incomplete.');
+    return {
+      headerTop: headerRect.top,
+      headerBottom: headerRect.bottom,
+      dockTop: dockRect.top,
+      dockBottom: dockRect.bottom,
+      consoleBottom: consoleRect.bottom,
+    };
+  });
+
+  expect(Math.abs(positions.headerTop)).toBeLessThanOrEqual(1);
+  expect(Math.abs(positions.dockTop - positions.headerBottom)).toBeLessThanOrEqual(4);
+  expect(positions.consoleBottom).toBeLessThan(positions.dockBottom);
+});
+
+test('a hero constellation portrait opens the matching Living Artist Atlas territory', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.localStorage.setItem('nml_motion_mode', 'static');
+  });
+
+  await page.goto('/#/');
+
+  const portrait = page
+    .getByTestId('hero-artist-constellation')
+    .getByRole('button')
+    .first();
+  const actionLabel = await portrait.getAttribute('aria-label');
+  const artistName = actionLabel?.match(/^Open (.+) artist profile$/)?.[1];
+  expect(artistName).toBeTruthy();
+
+  await portrait.click();
+
+  await expect(page).toHaveURL(/#\/artist-identity\?artist=/);
+  await expect(
+    page.locator('.artist-atlas__hero').getByRole('heading', {
+      name: artistName!,
+      exact: true,
+    }),
+  ).toBeVisible();
+});
+
 test('a direct Atlas link keeps its hash while experience depth changes', async ({
   page,
 }, testInfo) => {

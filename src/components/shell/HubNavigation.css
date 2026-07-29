@@ -1,12 +1,89 @@
 .museum-hub-nav {
+  position: sticky;
+  inset-block-start: var(--nova-app-header-height);
+  z-index: 39;
+  display: grid;
+  block-size: var(--nova-hub-dock-height);
   min-width: 0;
-  flex: 1 1 auto;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.55rem, 2vw, 1rem);
+  padding: 0.4rem clamp(0.7rem, 2vw, 1.25rem);
+  border-block-end: 1px solid color-mix(in srgb, var(--c1) 16%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--c1) 6%, transparent), transparent 34%, color-mix(in srgb, var(--c3) 5%, transparent)),
+    color-mix(in srgb, var(--bg) 90%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--bg) 52%, transparent);
+  backdrop-filter: blur(20px) saturate(130%);
+}
+
+.museum-hub-nav__identity,
+.museum-hub-nav__context {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.museum-hub-nav__identity {
+  gap: 0.55rem;
+}
+
+.museum-hub-nav__mark {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--c1) 30%, transparent);
+  border-radius: 0.7rem;
+  color: var(--c1);
+  background: color-mix(in srgb, var(--c1) 9%, transparent);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--c1) 14%, transparent);
+}
+
+.museum-hub-nav__identity small,
+.museum-hub-nav__identity strong,
+.museum-hub-nav__context small,
+.museum-hub-nav__context strong {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.museum-hub-nav__identity small,
+.museum-hub-nav__context small {
+  color: color-mix(in srgb, var(--fg) 46%, transparent);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.museum-hub-nav__identity strong,
+.museum-hub-nav__context strong {
+  margin-block-start: 0.16rem;
+  color: var(--fg);
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 0.76rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.museum-hub-nav__context {
+  display: none;
+  justify-self: end;
+  text-align: end;
 }
 
 .museum-hub-nav__mobile {
   display: grid;
+  width: min(100%, 13rem);
   min-height: 2.75rem;
-  min-width: 6.8rem;
+  min-width: 0;
+  justify-self: end;
   place-items: center;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--c1) 24%, transparent);
@@ -35,14 +112,20 @@
   display: none;
 }
 
+[data-mode='light'] .museum-hub-nav {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--c1) 5%, transparent), transparent 34%, color-mix(in srgb, var(--c3) 4%, transparent)),
+    rgba(248, 250, 252, 0.94);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
 [data-mode='light'] .museum-hub-nav__mobile {
   color: var(--fg);
 }
 
 @media (min-width: 900px) {
   .museum-hub-nav {
-    display: flex;
-    justify-content: center;
+    grid-template-columns: minmax(9rem, 1fr) minmax(30rem, 34rem) minmax(9rem, 1fr);
   }
 
   .museum-hub-nav__mobile {
@@ -53,7 +136,7 @@
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.2rem;
-    width: min(100%, 34rem);
+    width: 100%;
     padding: 0.2rem;
     border: 1px solid color-mix(in srgb, var(--c1) 16%, transparent);
     border-radius: 999px;
@@ -105,6 +188,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .museum-hub-nav__context {
+    display: block;
+    max-width: 9rem;
   }
 }
 

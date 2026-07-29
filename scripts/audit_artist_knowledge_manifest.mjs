@@ -1,12 +1,21 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { isDeepStrictEqual } from 'node:util';
 import { fileURLToPath } from 'node:url';
 
 import { fingerprintSourceFiles } from './lib/sourceFingerprint.mjs';
+import {
+  buildOpenPrimaryImageIndex,
+  OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH,
+} from './lib/openPrimaryImageIndex.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = path.join(root, 'src', 'data', 'artist_knowledge_manifest.json');
+const metadataPath = path.join(root, 'src', 'data', 'artist_knowledge_manifest_meta.json');
+const openPrimaryImageIndexPath = path.join(root, OPEN_PRIMARY_IMAGE_INDEX_RELATIVE_PATH);
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+const companionMetadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+const openPrimaryImageIndex = JSON.parse(fs.readFileSync(openPrimaryImageIndexPath, 'utf8'));
 const errors = [];
 const CACHE_STRATEGIES = new Set(['bundled', 'cache-first', 'remote-opt-in', 'remote-browser', 'no-store']);
 
@@ -95,6 +104,13 @@ const unresolved = (manifest.visualAssets ?? []).filter(asset => asset.license.s
 if (manifest.meta?.artistCount !== artistIds.size) errors.push('Stale artist count.');
 if (manifest.meta?.visualAssetCount !== assetIds.size) errors.push('Stale visual asset count.');
 if (manifest.meta?.assetsAwaitingLicenseReview !== unresolved) errors.push('Stale license review count.');
+if (!isDeepStrictEqual(companionMetadata, manifest.meta)) {
+  errors.push('Companion artist knowledge metadata diverges from the canonical manifest.');
+}
+const expectedOpenPrimaryImageIndex = buildOpenPrimaryImageIndex(manifest);
+if (!isDeepStrictEqual(openPrimaryImageIndex, expectedOpenPrimaryImageIndex)) {
+  errors.push('Open primary image index diverges from the canonical manifest.');
+}
 
 if (errors.length) {
   process.stderr.write(`Artist knowledge audit failed (${errors.length}):\n${errors.map(error => `- ${error}`).join('\n')}\n`);
@@ -103,6 +119,7 @@ if (errors.length) {
   const activeArtists = new Set(manifest.visualAssets.map(asset => asset.entityId)).size;
   process.stdout.write(
     `Artist knowledge audit passed: ${artistIds.size} artists, ${assetIds.size} visual assets, `
-    + `${activeArtists} artists with artwork, ${unresolved} explicit license-review items.\n`,
+    + `${activeArtists} artists with artwork, ${unresolved} explicit license-review items, `
+    + `${Object.keys(openPrimaryImageIndex).length} rights-eligible primary images.\n`,
   );
 }

@@ -1,4 +1,4 @@
-import { BookOpenText, FlaskConical, House, MapPinned, Radio } from 'lucide-react';
+import { BookOpenText, FlaskConical, House, Map, MapPinned, Radio } from 'lucide-react';
 
 import { directionFor, pickLanguage, type Lang } from '../../utils/i18n';
 import type { MuseumHubId } from './museumNavigation';
@@ -21,7 +21,9 @@ const HUBS = [
 export default function HubNavigation({ activeHub, lang, onSelect }: HubNavigationProps) {
   const copy = pickLanguage(lang, {
     en: {
-      label: 'Museum hubs',
+      label: 'Museum map',
+      eyebrow: 'Quick route',
+      current: 'Current hub',
       select: 'Choose a museum hub',
       home: 'Home',
       pulse: 'Pulse',
@@ -30,7 +32,9 @@ export default function HubNavigation({ activeHub, lang, onSelect }: HubNavigati
       lab: 'Data Lab',
     },
     es: {
-      label: 'Centros del museo',
+      label: 'Mapa del museo',
+      eyebrow: 'Ruta rápida',
+      current: 'Centro actual',
       select: 'Elegir un centro del museo',
       home: 'Inicio',
       pulse: 'Pulso',
@@ -39,7 +43,9 @@ export default function HubNavigation({ activeHub, lang, onSelect }: HubNavigati
       lab: 'Lab de Datos',
     },
     he: {
-      label: 'מרכזי המוזיאון',
+      label: 'מפת המוזיאון',
+      eyebrow: 'מסלול מהיר',
+      current: 'המרכז הנוכחי',
       select: 'בחירת מרכז במוזיאון',
       home: 'בית',
       pulse: 'דופק',
@@ -50,7 +56,22 @@ export default function HubNavigation({ activeHub, lang, onSelect }: HubNavigati
   });
 
   return (
-    <nav className="museum-hub-nav" aria-label={copy.label} dir={directionFor(lang)}>
+    <nav
+      className="museum-hub-nav"
+      aria-label={copy.label}
+      data-testid="museum-map-dock"
+      dir={directionFor(lang)}
+    >
+      <span className="museum-hub-nav__identity">
+        <span className="museum-hub-nav__mark" aria-hidden="true">
+          <Map className="h-4 w-4" />
+        </span>
+        <span>
+          <small>{copy.eyebrow}</small>
+          <strong>{copy.label}</strong>
+        </span>
+      </span>
+
       <label className="museum-hub-nav__mobile">
         <span className="sr-only">{copy.select}</span>
         <select
@@ -83,6 +104,11 @@ export default function HubNavigation({ activeHub, lang, onSelect }: HubNavigati
           );
         })}
       </div>
+
+      <span className="museum-hub-nav__context" aria-live="polite">
+        <small>{copy.current}</small>
+        <strong>{copy[activeHub]}</strong>
+      </span>
     </nav>
   );
 }

@@ -15,6 +15,8 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 
 **Current deployed version:** `1.2.0` — deployed **2026-07-29**. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
+**Next local version:** `1.3.0` — private candidate **2026-07-29**, not yet published or deployed. It introduces the Living Constellation Hero, direct artist-to-Atlas deep links, a persistent Museum Map and stronger artwork-rights metadata invariants. The public link above continues to serve `1.2.0` until review and release gates are complete.
+
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
 [Follow the product roadmap](./ROADMAP.md)
@@ -35,9 +37,9 @@ No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ Release gallery
+## 🖼️ Candidate gallery
 
-These captures document `1.2.0` — deployed **2026-07-29**. They are generated from the production build with `npm run screenshots:capture`.
+These captures document `1.3.0` — private candidate **2026-07-29**, not yet published or deployed. They are generated from the verified local production build with `npm run screenshots:capture`.
 
 <table>
   <tr>
@@ -194,7 +196,7 @@ The project deliberately rejects plausible-looking fabricated numbers. Data reco
 
 ## 🎨 Living Artist Atlas and Living Sonic Cartography
 
-The generated artist manifest currently contains **100 artist records** and **295 provenance-aware visual assets**. Artist aliases, MusicBrainz/Wikidata identifiers, countries, genres, releases, members and official links remain separate from private play counts. Each image record carries its source, license-review state, attribution, focal point and cache/privacy policy; **171 legacy assets remain visibly queued for license review** rather than being mislabeled as reusable.
+The generated artist manifest currently contains **100 artist records** and **295 provenance-aware visual assets**. Artist aliases, MusicBrainz/Wikidata identifiers, countries, genres, releases, members and official links remain separate from private play counts. Each image record carries its source, license-review state, attribution, focal point and cache/privacy policy; after the reviewed Wikimedia Commons metadata pass, **6 assets remain visibly queued for license review** rather than being mislabeled as reusable.
 
 The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
 

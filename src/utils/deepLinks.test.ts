@@ -42,7 +42,7 @@ describe('deep links', () => {
     expect(buildDeepLink(parsed)).toBe(hash);
   });
 
-  it('keeps dossier query state scoped to the Top room', () => {
+  it('keeps dossier query state scoped to Top and artist selection scoped to the Atlas', () => {
     expect(buildDeepLink({
       tab: 'dashboard',
       topSubTab: 'albums',
@@ -50,6 +50,23 @@ describe('deep links', () => {
       selectedAlbumKey: 'deafheaven|||Sunbather',
       selectedTrackKey: 'deafheaven|||Dream House',
     })).toBe('#/dashboard');
+
+    const atlasHash = buildDeepLink({
+      ...DEFAULT_DEEP_LINK_STATE,
+      tab: 'artist',
+      selectedArtistName: 'Sigur Rós',
+      selectedAlbumKey: 'stale album key',
+      selectedTrackKey: 'stale track key',
+    });
+
+    expect(atlasHash).toBe('#/artist-identity?artist=Sigur+R%C3%B3s');
+    expect(parseDeepLink(atlasHash)).toMatchObject({
+      tab: 'artist',
+      selectedArtistName: 'Sigur Rós',
+      selectedAlbumKey: '',
+      selectedTrackKey: '',
+      valid: true,
+    });
   });
 
   it('shares the archive-wide genre and year views without stale dossier keys', () => {

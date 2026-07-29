@@ -74,3 +74,4 @@ Components must not infer the profile from the presence of a particular artist o
 - [ADR 0001 — Local-first architecture](./decisions/0001-local-first-architecture.md)
 - [ADR 0002 — Public flagship and private visitor profiles](./decisions/0002-public-and-private-datasets.md)
 - [ADR 0003 — Evidence-linked insights](./decisions/0003-evidence-linked-insights.md)
+- [ADR 0004 — Optional cloud control plane (proposed)](./decisions/0004-optional-cloud-control-plane.md)

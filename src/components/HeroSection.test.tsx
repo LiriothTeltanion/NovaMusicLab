@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
@@ -81,6 +81,84 @@ describe('HeroSection intro rebalance', () => {
       image.getAttribute('loading') === 'eager'
       && image.getAttribute('fetchpriority') === 'high'
     ))).toBe(true);
+  });
+
+  it('renders a stable open-knowledge artist constellation with actionable portraits', () => {
+    localStorage.setItem('nml_lang', 'en');
+    const onOpenArtist = vi.fn();
+    const view = render(
+      <AppProvider>
+        <HeroSection
+          data={singleSourceData}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          onOpenArtist={onOpenArtist}
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    expect(screen.getByText('Which artist shaped the world you hear today?'))
+      .toHaveAttribute('dir', 'ltr');
+    expect(screen.getByText(/Reviewed Wikimedia Commons portraits/i)).toBeInTheDocument();
+
+    const constellation = screen.getByTestId('hero-artist-constellation');
+    const portraitButtons = within(constellation).getAllByRole('button');
+    const firstNames = portraitButtons.map((button) => (
+      within(button).getByRole('img').getAttribute('alt')
+    ));
+
+    expect(portraitButtons).toHaveLength(4);
+    portraitButtons.forEach((button) => {
+      const image = within(button).getByRole('img');
+      expect(image).toHaveAttribute('loading', 'lazy');
+      expect(image.getAttribute('src')).toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+    });
+
+    fireEvent.click(portraitButtons[0]);
+    expect(onOpenArtist).toHaveBeenCalledWith(firstNames[0]);
+
+    view.rerender(
+      <AppProvider>
+        <HeroSection
+          data={singleSourceData}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          onOpenArtist={onOpenArtist}
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    const secondNames = within(screen.getByTestId('hero-artist-constellation'))
+      .getAllByRole('button')
+      .map((button) => within(button).getByRole('img').getAttribute('alt'));
+    expect(secondNames).toEqual(firstNames);
+
+    const centralPortrait = document.querySelector<HTMLImageElement>('.nova-hero__artist-focus img');
+    expect(centralPortrait).toHaveAttribute('loading', 'eager');
+    expect(centralPortrait).toHaveAttribute('fetchpriority', 'high');
+    expect(centralPortrait?.src).toMatch(/^https:\/\/upload\.wikimedia\.org\//);
+  });
+
+  it.each([
+    ['es', '¿Qué artista dio forma al mundo que escuchas hoy?', 'ltr'],
+    ['he', 'איזה אמן עיצב את העולם שאתה שומע היום?', 'rtl'],
+  ] as const)('localizes the hero curiosity invitation in %s', async (lang, question, direction) => {
+    localStorage.setItem('nml_lang', lang);
+
+    render(
+      <AppProvider>
+        <HeroSection
+          data={singleSourceData}
+          onEnter={vi.fn()}
+          onUpload={vi.fn()}
+          motionMode="static"
+        />
+      </AppProvider>,
+    );
+
+    expect(await screen.findByText(question)).toHaveAttribute('dir', direction);
   });
 
   it('surfaces the archive snapshot and entry map in Spanish', () => {
@@ -352,7 +430,8 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByText('ניתוח בינה מלאכותית מקומי')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 3, name: /פרופיל מוזיקלי מבוסס בינה מלאכותית/i }))
       .toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /נגן את החתימה הצלילית של/i })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /נגן את החתימה הצלילית של/i }).length)
+      .toBeGreaterThan(0);
 
     fireEvent.click(screen.getByRole('button', { name: 'פתח את תיק המוזיקה שלך מבוסס הבינה המלאכותית' }));
     expect(screen.getByText('אתחול הממשק העצבי')).toBeInTheDocument();
