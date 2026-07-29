@@ -106,7 +106,7 @@ export default function ArtistLeaderboard({
 
                 <span className="min-w-0">
                   <span className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
-                    <span className="min-w-0 break-words text-sm font-black leading-tight text-white [overflow-wrap:anywhere] sm:text-[15px]">
+                    <span className="min-w-0 break-words text-sm font-black leading-tight text-white sm:text-[15px]">
                       <bdi dir="auto">{artist.name}</bdi>
                     </span>
                     <span className="hidden shrink-0 font-mono text-xs font-black tabular-nums sm:inline" style={{ color }}>
@@ -115,7 +115,7 @@ export default function ArtistLeaderboard({
                   </span>
 
                   <span className="mt-1 flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1">
-                    <span className="break-words text-xs leading-tight text-gray-500 [overflow-wrap:anywhere]">
+                    <span className="break-words text-xs leading-tight text-gray-500">
                       <bdi dir="auto">{artist.genre}</bdi>
                     </span>
                     <span className="shrink-0 font-mono text-xs font-bold tabular-nums text-gray-400">

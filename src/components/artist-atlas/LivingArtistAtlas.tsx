@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Activity,
   BadgeCheck,
@@ -20,10 +20,18 @@ import {
   Users,
 } from 'lucide-react';
 import { buildEmotionalMapEngineProfile } from '../../engines/emotionalEngine';
+import { useExperienceDepth } from '../../context/ExperienceContext';
 import type { MusicDnaData, TopAlbum, TopTrack } from '../../types';
+import { normalizeGenre } from '../../utils/analytics';
+import {
+  getArchiveNeighbors,
+  getDocumentedArtistConnections,
+} from '../../utils/artistConnections';
+import type { ArtistEnrichment } from '../../utils/artistEnrichment';
 import { getArtistGallery } from '../../utils/artistGallery';
 import { canonicalArtistName } from '../../utils/artistIdentity';
 import { normalizeCatalogName } from '../../utils/catalogName';
+import { genreFamilyLabel } from '../../utils/genreTaxonomy';
 import { localeFor } from '../../utils/i18n';
 import {
   buildArtistMediaProfile,
@@ -32,13 +40,27 @@ import {
 import { getOfflineArtistKnowledge } from '../../utils/offlineArtistKnowledge';
 import { useApp } from '../../context/AppContext';
 import ArtistAvatar from '../ArtistAvatar';
+import BrandIcon from '../BrandIcon';
 import CoverArt from '../CoverArt';
 import ArtistEvidencePanel from './ArtistEvidencePanel';
 import ArtistMediaStage from './ArtistMediaStage';
-import { ARTIST_ATLAS_COPY } from './atlasCopy';
+import BandLineup from './BandLineup';
+import { getArtistAtlasCopy } from './atlasCopy';
 import './artistAtlas.css';
 
 const MediaEmbedHub = lazy(() => import('../MediaEmbedHub'));
+
+let artistEnrichmentModulePromise: Promise<typeof import('../../utils/artistEnrichment')> | undefined;
+
+function loadFlagshipArtistEnrichment() {
+  if (!artistEnrichmentModulePromise) {
+    artistEnrichmentModulePromise = import('../../utils/artistEnrichment').catch(error => {
+      artistEnrichmentModulePromise = undefined;
+      throw error;
+    });
+  }
+  return artistEnrichmentModulePromise;
+}
 
 interface LivingArtistAtlasProps {
   data: MusicDnaData;
@@ -87,12 +109,18 @@ function AlbumCard({ album, rank, playsLabel, locale }: { album: TopAlbum; rank:
 
 export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
   const { lang, tc } = useApp();
-  const copy = ARTIST_ATLAS_COPY[lang];
+  const experienceDepth = useExperienceDepth();
+  const copy = getArtistAtlasCopy(lang, experienceDepth);
   const [selectedName, setSelectedName] = useState(data.top_artists[0]?.name ?? '');
   const [mediaOpenForArtist, setMediaOpenForArtist] = useState<string | null>(null);
   const [artistQuery, setArtistQuery] = useState('');
+  const [editorialResult, setEditorialResult] = useState<{
+    artistName: string;
+    profile: ArtistEnrichment | undefined;
+  } | null>(null);
   const loadMediaButtonRef = useRef<HTMLButtonElement>(null);
   const closeMediaButtonRef = useRef<HTMLButtonElement>(null);
+  const pendingMediaFocusRef = useRef<'load' | 'close' | null>(null);
   const locale = localeFor(lang);
 
   useEffect(() => {
@@ -119,6 +147,42 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
     () => buildEmotionalMapEngineProfile(data.top_artists, 24).dominantMood.key,
     [data.top_artists],
   );
+  const mediaOpen = Boolean(selectedArtist && mediaOpenForArtist === selectedArtist.name);
+
+  useEffect(() => {
+    let active = true;
+
+    if (data.narrative_scope !== 'flagship' || !selectedArtist) {
+      return undefined;
+    }
+
+    const artistName = selectedArtist.name;
+    void loadFlagshipArtistEnrichment()
+      .then(module => {
+        if (!active) return;
+        setEditorialResult({
+          artistName,
+          profile: module.getArtistEnrichment(artistName),
+        });
+      })
+      .catch(() => {
+        if (!active) return;
+        setEditorialResult({ artistName, profile: undefined });
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [data.narrative_scope, selectedArtist]);
+
+  useLayoutEffect(() => {
+    const pendingFocus = pendingMediaFocusRef.current;
+    if (!pendingFocus) return;
+
+    pendingMediaFocusRef.current = null;
+    const target = pendingFocus === 'close' ? closeMediaButtonRef.current : loadMediaButtonRef.current;
+    target?.focus({ preventScroll: true });
+  }, [mediaOpen]);
 
   if (!selectedArtist) {
     return (
@@ -133,7 +197,15 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
   const artistTracks = data.top_tracks.filter(track => sameArtist(track.artist, selectedArtist.name));
   const artistAlbums = data.top_albums.filter(album => sameArtist(album.artist, selectedArtist.name));
   const knowledge = getOfflineArtistKnowledge(selectedArtist.name);
+  const editorialProfile = data.narrative_scope === 'flagship'
+    && editorialResult
+    && sameArtist(editorialResult.artistName, selectedArtist.name)
+    ? editorialResult.profile
+    : undefined;
   const gallery = getArtistGallery(selectedArtist.name);
+  const musicBeeArtist = data.musicbee_snapshot?.artists.find(artist => (
+    sameArtist(artist.name, selectedArtist.name)
+  ));
   const mediaProfile = buildArtistMediaProfile(selectedArtist.name, artistTracks[0], artistAlbums[0]);
   const biography = knowledge?.curated?.description ?? knowledge?.wikidata?.description;
   const biographyProvider = knowledge?.curated?.description ? knowledge.curated.sourceName : 'Wikidata';
@@ -149,12 +221,25 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
     ?? [knowledge?.musicbrainz?.lifeSpanBegin, knowledge?.musicbrainz?.lifeSpanEnd]
       .filter(Boolean)
       .join(' — ');
+  // Full lineup (current + former) drives the BandLineup section; the flat name
+  // list is only the fallback for artists with no MusicBrainz member relations.
+  const lineup = knowledge?.bandMembers ?? [];
   const members = knowledge?.bandMembers?.filter(member => member.current).map(member => member.name)
     ?? knowledge?.wikidata?.members
     ?? [];
   const tags = knowledge?.emotionalSeeds.tags.slice(0, 8) ?? [selectedArtist.genre];
   const hasVerifiedMedia = mediaProfile.spotify.verified || mediaProfile.youtube.verified;
-  const mediaOpen = mediaOpenForArtist === selectedArtist.name;
+  const localizedGenre = genreFamilyLabel(normalizeGenre(selectedArtist.genre), lang);
+  const knownPlace = areas[0]
+    ?? (!['unknown', 'unavailable'].includes(selectedArtist.country.toLowerCase())
+      ? selectedArtist.country
+      : undefined);
+  const documentedConnections = getDocumentedArtistConnections(data, selectedArtist.name);
+  const archiveNeighbors = getArchiveNeighbors(
+    data,
+    selectedArtist.name,
+    documentedConnections.map(connection => connection.artist.name),
+  );
 
   const metrics = [
     { icon: Headphones, label: copy.archivePlays, value: selectedArtist.plays.toLocaleString(locale), color: tc.c1 },
@@ -261,11 +346,41 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
           <div className="artist-atlas__bio">
             <div>
               <BookOpen className="h-4 w-4" style={{ color: tc.c2 }} aria-hidden="true" />
-              <span>{copy.archiveBiography}</span>
+              <span>{copy.editorialStory}</span>
             </div>
-            <p>{biography ?? copy.noBiography}</p>
-            {biography ? <small>{copy.biographySource(biographyProvider)}</small> : null}
+            <p data-testid="artist-factual-intro">
+              {copy.artistIntro(
+                selectedArtist.name,
+                localizedGenre,
+                selectedIndex + 1,
+                selectedArtist.plays.toLocaleString(locale),
+                knownPlace,
+              )}
+            </p>
+            {editorialProfile ? (
+              <>
+                <p>{editorialProfile.bio[lang]}</p>
+                {experienceDepth === 'guided' ? (
+                  <p>
+                    <strong>{copy.whyItMatters}: </strong>
+                    {editorialProfile.why_it_matters[lang]}
+                  </p>
+                ) : null}
+                <small>{copy.editorialStoryNote}</small>
+              </>
+            ) : <small>{copy.noBiography}</small>}
           </div>
+
+          {experienceDepth === 'deep-dive' ? (
+            <div className="artist-atlas__bio artist-atlas__bio--source">
+              <div>
+                <Library className="h-4 w-4" style={{ color: tc.c3 }} aria-hidden="true" />
+                <span>{copy.archiveBiography}</span>
+              </div>
+              <p>{biography ?? copy.noBiography}</p>
+              {biography ? <small>{copy.biographySource(biographyProvider)}</small> : null}
+            </div>
+          ) : null}
 
           {officialSite || wikipediaUrl ? (
             <div className="artist-atlas__official-links">
@@ -291,6 +406,130 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
           accent={tc.c1}
         />
       </article>
+
+      {musicBeeArtist ? (
+        <section
+          data-testid="artist-musicbee-context"
+          className="artist-atlas__chapter artist-atlas__musicbee"
+          aria-labelledby="artist-atlas-musicbee"
+        >
+          <div className="artist-atlas__musicbee-heading">
+            <span className="artist-atlas__musicbee-icon" aria-hidden="true">
+              <BrandIcon name="musicbee" size={24} />
+            </span>
+            <div>
+              <p className="artist-atlas__eyebrow">{copy.musicBeeEyebrow}</p>
+              <h3 id="artist-atlas-musicbee">{copy.musicBeeTitle}</h3>
+              <p>{copy.musicBeeBody(
+                musicBeeArtist.track_count.toLocaleString(locale),
+                musicBeeArtist.album_count.toLocaleString(locale),
+              )}</p>
+            </div>
+          </div>
+          <dl className="artist-atlas__musicbee-metrics">
+            <div>
+              <dt>{copy.musicBeeTracks}</dt>
+              <dd className="nova-number-ltr" dir="ltr">{musicBeeArtist.track_count.toLocaleString(locale)}</dd>
+            </div>
+            <div>
+              <dt>{copy.musicBeeAlbums}</dt>
+              <dd className="nova-number-ltr" dir="ltr">{musicBeeArtist.album_count.toLocaleString(locale)}</dd>
+            </div>
+            {experienceDepth === 'deep-dive' ? (
+              <>
+                <div>
+                  <dt>{copy.musicBeePlayCount}</dt>
+                  <dd className="nova-number-ltr" dir="ltr">
+                    {data.musicbee_snapshot?.capabilities.aggregate_play_counts
+                      ? musicBeeArtist.total_play_count.toLocaleString(locale)
+                      : copy.unavailable}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{copy.musicBeeLastPlayed}</dt>
+                  <dd>
+                    {data.musicbee_snapshot?.capabilities.last_played
+                      ? musicBeeArtist.last_played_at
+                        ? new Date(musicBeeArtist.last_played_at).toLocaleDateString(locale)
+                        : copy.musicBeeNoLastPlayed
+                      : copy.unavailable}
+                  </dd>
+                </div>
+              </>
+            ) : null}
+          </dl>
+          <p className="artist-atlas__musicbee-boundary">{copy.musicBeeBoundary}</p>
+        </section>
+      ) : null}
+
+      {(documentedConnections.length > 0 || archiveNeighbors.length > 0) ? (
+        <section className="artist-atlas__chapter artist-atlas__connections" aria-labelledby="artist-atlas-connections">
+          <div className="artist-atlas__chapter-heading">
+            <div>
+              <p className="artist-atlas__eyebrow" style={{ color: tc.c4 }}>{copy.connectionsTitle}</p>
+              <h3 id="artist-atlas-connections"><bdi dir="auto">{selectedArtist.name}</bdi></h3>
+              <p>{copy.connectionsSubtitle}</p>
+            </div>
+          </div>
+
+          <div className="artist-atlas__connections-grid">
+            {documentedConnections.length ? (
+              <div className="artist-atlas__connection-group" data-testid="documented-artist-connections">
+                <h4>{copy.documentedConnections}</h4>
+                <div className="artist-atlas__connection-list">
+                  {documentedConnections.map(connection => {
+                    const reason = connection.kind === 'same-identity'
+                      ? copy.sameIdentityConnection
+                      : copy.sharedMemberConnection(connection.sharedMembers.join(' · '));
+                    return (
+                      <button
+                        key={`${connection.kind}-${connection.artist.name}`}
+                        type="button"
+                        onClick={() => setSelectedName(connection.artist.name)}
+                      >
+                        <ArtistAvatar name={connection.artist.name} size={44} tooltip={false} />
+                        <span>
+                          <strong><bdi dir="auto">{connection.artist.name}</bdi></strong>
+                          <small>{reason}</small>
+                        </span>
+                        <ChevronRight className="nova-mirror-rtl h-4 w-4" aria-hidden="true" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+
+            {archiveNeighbors.length ? (
+              <div className="artist-atlas__connection-group" data-testid="archive-artist-neighbors">
+                <h4>{copy.archiveNeighbors}</h4>
+                <p>{copy.archiveNeighborsNote}</p>
+                <div className="artist-atlas__connection-list">
+                  {archiveNeighbors.map(neighbor => {
+                    const reason = neighbor.sharedGenres.length
+                      ? copy.sharedStyleConnection(neighbor.sharedGenres.slice(0, 3).join(' · '))
+                      : copy.sharedPlaceConnection(selectedArtist.country);
+                    return (
+                      <button
+                        key={neighbor.artist.name}
+                        type="button"
+                        onClick={() => setSelectedName(neighbor.artist.name)}
+                      >
+                        <ArtistAvatar name={neighbor.artist.name} size={44} tooltip={false} />
+                        <span>
+                          <strong><bdi dir="auto">{neighbor.artist.name}</bdi></strong>
+                          <small>{reason}</small>
+                        </span>
+                        <ChevronRight className="nova-mirror-rtl h-4 w-4" aria-hidden="true" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       <section className="artist-atlas__chapter" aria-labelledby="artist-atlas-footprint">
         <div className="artist-atlas__chapter-heading">
@@ -344,14 +583,26 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                 <dt><CalendarDays className="h-4 w-4" />{copy.activeYears}</dt>
                 <dd><bdi dir={activeYears ? 'ltr' : 'auto'}>{activeYears || copy.unavailable}</bdi></dd>
               </div>
-              <div>
-                <dt><Users className="h-4 w-4" />{copy.members}</dt>
-                <dd>{members.length ? members.slice(0, 5).join(' · ') : copy.unavailable}</dd>
-              </div>
+              {/* The lineup gets its own section below with photos and roles.
+                * This row stays only for artists MusicBrainz has no member
+                * relations for, where a Wikidata name list is all we have. */}
+              {!lineup.length && (
+                <div>
+                  <dt><Users className="h-4 w-4" />{copy.members}</dt>
+                  <dd>{members.length ? members.slice(0, 5).join(' · ') : copy.unavailable}</dd>
+                </div>
+              )}
             </dl>
             <div className="artist-atlas__tag-cloud" aria-label={copy.genres}>
               {tags.map(tag => <span key={tag}><bdi dir="auto">{tag}</bdi></span>)}
             </div>
+
+            <BandLineup
+              band={selectedArtist.name}
+              members={lineup}
+              copy={copy}
+              accent={tc.c3}
+            />
           </aside>
         </div>
       </section>
@@ -366,7 +617,12 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
           <Disc3 className="artist-atlas__chapter-icon" style={{ color: tc.c3 }} aria-hidden="true" />
         </div>
         {releases.length ? (
-          <div className="artist-atlas__release-shelf">
+          <div
+            className="artist-atlas__release-shelf"
+            role="region"
+            aria-label={copy.discography}
+            tabIndex={0}
+          >
             {releases.slice(-8).reverse().map(release => {
               const archiveAlbum = findArchiveAlbum(release.title, artistAlbums);
               return (
@@ -416,8 +672,8 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
               ref={loadMediaButtonRef}
               type="button"
               onClick={() => {
+                pendingMediaFocusRef.current = 'close';
                 setMediaOpenForArtist(selectedArtist.name);
-                window.requestAnimationFrame(() => closeMediaButtonRef.current?.focus({ preventScroll: true }));
               }}
               style={{ color: tc.c1, borderColor: `${tc.c1}55`, backgroundColor: `${tc.c1}12` }}
             >
@@ -430,8 +686,8 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
               ref={closeMediaButtonRef}
               type="button"
               onClick={() => {
+                pendingMediaFocusRef.current = 'load';
                 setMediaOpenForArtist(null);
-                window.requestAnimationFrame(() => loadMediaButtonRef.current?.focus({ preventScroll: true }));
               }}
               className="artist-atlas__close-media"
             >

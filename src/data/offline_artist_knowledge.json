@@ -11795,8 +11795,10 @@
       "bandMembers": [
         {
           "name": "The Plot in You",
-          "roles": [],
-          "begin": null,
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": "2010",
           "end": null,
           "current": true
         },
@@ -14672,6 +14674,15 @@
       "fetchStatus": "matched",
       "bandMembers": [
         {
+          "name": "Kai Hansen",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "1984",
+          "end": null,
+          "current": true
+        },
+        {
           "name": "Markus Grosskopf",
           "roles": [
             "bass"
@@ -14715,15 +14726,6 @@
           "begin": "2005",
           "end": null,
           "current": true
-        },
-        {
-          "name": "Kai Hansen",
-          "roles": [
-            "guitar"
-          ],
-          "begin": "1984",
-          "end": "1989",
-          "current": false
         },
         {
           "name": "Ingo Schwichtenberg",
@@ -15642,6 +15644,24 @@
       "fetchStatus": "matched",
       "bandMembers": [
         {
+          "name": "Markus Vanhala",
+          "roles": [
+            "electric guitar"
+          ],
+          "begin": "2011",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Tomy Laisto",
+          "roles": [
+            "guitar"
+          ],
+          "begin": "2026",
+          "end": null,
+          "current": true
+        },
+        {
           "name": "Ville Friman",
           "roles": [
             "electric guitar"
@@ -15664,15 +15684,6 @@
           "roles": [
             "bass guitar",
             "lead vocals"
-          ],
-          "begin": null,
-          "end": null,
-          "current": true
-        },
-        {
-          "name": "Markus Vanhala",
-          "roles": [
-            "electric guitar"
           ],
           "begin": null,
           "end": null,
@@ -15703,6 +15714,16 @@
           ],
           "begin": "2001",
           "end": "2011",
+          "current": false
+        },
+        {
+          "name": "Jani Liimatainen",
+          "roles": [
+            "background vocals",
+            "guitar"
+          ],
+          "begin": "2019",
+          "end": "2024",
           "current": false
         }
       ]
@@ -19127,7 +19148,27 @@
           2021
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Mike Karle",
+          "roles": [
+            "drums (drum set)"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Rory Rodriguez",
+          "roles": [
+            "lead vocals"
+          ],
+          "begin": null,
+          "end": null,
+          "current": true
+        }
+      ]
     },
     {
       "name": "Sigur Rós",
@@ -19424,7 +19465,77 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "Georg Hólm",
+          "roles": [
+            "background vocals",
+            "bass guitar",
+            "glockenspiel",
+            "keyboard",
+            "toy piano"
+          ],
+          "begin": "1994-08",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Jónsi",
+          "roles": [
+            "banjo",
+            "bass guitar",
+            "bowed string instruments",
+            "guitar",
+            "harmonica",
+            "keyboard",
+            "lead vocals"
+          ],
+          "begin": "1994-08",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Kjartan Sveinsson",
+          "roles": [
+            "background vocals",
+            "banjo",
+            "flute",
+            "guitar",
+            "keyboard",
+            "oboe",
+            "organ",
+            "piano",
+            "synthesizer",
+            "tin whistle"
+          ],
+          "begin": "1998",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Ágúst Ævar Gunnarsson",
+          "roles": [
+            "membranophone",
+            "percussion"
+          ],
+          "begin": "1994-08",
+          "end": "1999",
+          "current": false
+        },
+        {
+          "name": "Orri Páll Dýrason",
+          "roles": [
+            "keyboard",
+            "membranophone",
+            "percussion",
+            "sampler"
+          ],
+          "begin": "1999",
+          "end": "2018-10-01",
+          "current": false
+        }
+      ]
     },
     {
       "name": "Indighxst",
@@ -19992,7 +20103,23 @@
           2025
         ]
       },
-      "fetchStatus": "matched"
+      "fetchStatus": "matched",
+      "bandMembers": [
+        {
+          "name": "התעויוט",
+          "roles": [],
+          "begin": "1992",
+          "end": null,
+          "current": true
+        },
+        {
+          "name": "Blackfield",
+          "roles": [],
+          "begin": "2001",
+          "end": null,
+          "current": true
+        }
+      ]
     }
   ]
 }

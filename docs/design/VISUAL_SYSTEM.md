@@ -13,17 +13,18 @@ Nova Music Lab's visual system treats every room as a coordinate in one living m
 
 The application shell is a navigation instrument rather than a generic dashboard frame:
 
-- **Quick Tour** uses cinematic chapter emphasis for a guided nine-room story.
-- **Full Museum** preserves access to every room and the complete curatorial sequence.
-- **Lab Tools** narrows navigation to import, comparison, quality and reporting work.
+- **Five hubs** organize the complete museum into Home, Pulse, Atlas, Stories and Data Lab without hiding rooms.
+- **Guided** opens plain-language introductions and gives first-time visitors a clear next step.
+- **Explore** keeps the full museum visual and self-directed without adding explanatory panels automatically.
+- **Deep Dive** opens methodology and foregrounds provenance, limitations and advanced controls.
 - **Archive Capsule** exposes active mode, source, date, privacy and persistence without inventing unavailable metadata.
-- **Nova Command** provides keyboard-first room search and journey switching with focus restoration.
+- **Nova Command** provides keyboard-first access to every room and experience depth with focus restoration.
 
-The chosen journey changes sequencing, sidebar groups, the horizontal rail and mobile controls together. A control must never look selected while another navigation surface follows a different route.
+The active hub scopes the sidebar, room sequence and mobile controls while Nova Command retains access to the complete museum. Experience depth changes presentation only: it persists between visits but never hides a room or changes a shared URL. A control must never look selected while another navigation surface follows a different state.
 
 ## Living Artist Atlas
 
-The Atlas is the flagship visual room for v1.1. It combines three explicit layers:
+The Atlas became the flagship visual room in `1.1.0` — deployed 2026-07-26. It combines three explicit layers:
 
 1. **Archive evidence:** rank, plays, share, tracks and albums from the active dataset.
 2. **Offline knowledge:** documented profiles, releases, external identities and provenance loaded outside the entry bundle.

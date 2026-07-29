@@ -1,4 +1,7 @@
 import type { Lang } from '../../utils/i18n';
+import type { ExperienceDepth } from '../shell/museumNavigation';
+
+const bidiIsolate = (value: string | number) => `\u2068${String(value)}\u2069`;
 
 export interface ArtistAtlasCopy {
   eyebrow: string;
@@ -25,6 +28,10 @@ export interface ArtistAtlasCopy {
   selectPhoto: (value: number) => string;
   photoCount: (current: number, total: number) => string;
   archiveBiography: string;
+  editorialStory: string;
+  editorialStoryNote: string;
+  artistIntro: (artist: string, genre: string, rank: number, plays: string, place?: string) => string;
+  whyItMatters: string;
   biographySource: (source: string) => string;
   noBiography: string;
   officialSite: string;
@@ -48,6 +55,39 @@ export interface ArtistAtlasCopy {
   members: string;
   genres: string;
   unavailable: string;
+  connectionsTitle: string;
+  connectionsSubtitle: string;
+  documentedConnections: string;
+  sameIdentityConnection: string;
+  sharedMemberConnection: (member: string) => string;
+  archiveNeighbors: string;
+  archiveNeighborsNote: string;
+  sharedStyleConnection: (styles: string) => string;
+  sharedPlaceConnection: (place: string) => string;
+  openArtist: (artist: string) => string;
+  musicBeeEyebrow: string;
+  musicBeeTitle: string;
+  musicBeeBody: (tracks: string, albums: string) => string;
+  musicBeeTracks: string;
+  musicBeeAlbums: string;
+  musicBeePlayCount: string;
+  musicBeeLastPlayed: string;
+  musicBeeNoLastPlayed: string;
+  musicBeeBoundary: string;
+  lineupTitle: string;
+  lineupSubtitle: string;
+  lineupCurrent: string;
+  lineupFormer: string;
+  lineupFormerCount: (value: number) => string;
+  lineupNoPhoto: string;
+  lineupSince: (year: string) => string;
+  lineupSpan: (from: string, to: string) => string;
+  lineupRolesUnknown: string;
+  memberAge: (value: number) => string;
+  memberAlsoIn: string;
+  memberAlsoInEmpty: string;
+  memberClose: string;
+  memberOpenHint: string;
   mediaTitle: string;
   mediaSubtitle: string;
   mediaPrivacyTitle: string;
@@ -102,6 +142,10 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     selectPhoto: value => `Mostrar fotografía ${value}`,
     photoCount: (current, total) => `${current} de ${total}`,
     archiveBiography: 'Perfil documentado',
+    editorialStory: 'Conoce al artista',
+    editorialStoryNote: 'Lectura editorial de Nova basada en el historial activo; no sustituye una biografía externa.',
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} aparece en tu historial dentro de ${genre}${place ? `, con conexión a ${place}` : ''}. Ocupa el puesto #${rank}, con ${plays} reproducciones.`,
+    whyItMatters: 'Por qué importa en este mapa',
     biographySource: source => `Descripción de ${source}`,
     noBiography: 'Todavía no existe una biografía editorial verificada para esta identidad. Conservamos únicamente los datos confirmados del archivo.',
     officialSite: 'Sitio oficial',
@@ -125,6 +169,39 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'Miembros/roles',
     genres: 'Etiquetas documentadas',
     unavailable: 'No disponible',
+    connectionsTitle: 'Artistas y conexiones',
+    connectionsSubtitle: 'Separamos identidades documentadas, coincidencias del catálogo y parecidos encontrados en tu historial.',
+    documentedConnections: 'Conexiones del catálogo',
+    sameIdentityConnection: 'Es la misma identidad artística o un nombre histórico documentado.',
+    sharedMemberConnection: member => `Ambas fichas del catálogo incluyen el nombre ${member}; la identidad de la persona aún requiere revisión estable.`,
+    archiveNeighbors: 'Artistas cercanos en tu historial',
+    archiveNeighborsNote: 'Esta cercanía usa estilos y lugares compartidos. No afirma influencia, colaboración ni parecido musical universal.',
+    sharedStyleConnection: styles => `Estilos compartidos: ${styles}.`,
+    sharedPlaceConnection: place => `Lugar compartido: ${place}.`,
+    openArtist: artist => `Abrir territorio de ${artist}`,
+    musicBeeEyebrow: 'Tu biblioteca local',
+    musicBeeTitle: 'También aparece en MusicBee',
+    musicBeeBody: (tracks, albums) => `${tracks} canciones y ${albums} álbumes de este artista están guardados en tu biblioteca de escritorio.`,
+    musicBeeTracks: 'Canciones guardadas',
+    musicBeeAlbums: 'Álbumes guardados',
+    musicBeePlayCount: 'Play Count de MusicBee',
+    musicBeeLastPlayed: 'Última reproducción en MusicBee',
+    musicBeeNoLastPlayed: 'Sin fecha registrada',
+    musicBeeBoundary: 'El Play Count de MusicBee es un contador de biblioteca. Se muestra aparte y no se suma al historial, las sesiones ni los totales de Spotify/Last.fm.',
+    lineupTitle: 'Formación',
+    lineupSubtitle: 'Miembros documentados en MusicBrainz y Wikidata.',
+    lineupCurrent: 'Actual',
+    lineupFormer: 'Anteriores',
+    lineupFormerCount: (value) => `${value} ${value === 1 ? 'miembro anterior' : 'miembros anteriores'}`,
+    lineupNoPhoto: 'Sin retrato libre documentado',
+    lineupSince: (year) => `Desde ${year}`,
+    lineupSpan: (from, to) => `${from}–${to || '?'}`,
+    lineupRolesUnknown: 'Rol no documentado',
+    memberAge: (value) => `${value} años`,
+    memberAlsoIn: 'También en tu archivo',
+    memberAlsoInEmpty: 'Sin otras bandas en tu archivo.',
+    memberClose: 'Cerrar ficha del miembro',
+    memberOpenHint: 'Abrir ficha del miembro',
     mediaTitle: 'Portal de media oficial',
     mediaSubtitle: 'Spotify, YouTube y enlaces externos permanecen separados de la experiencia local hasta que decidas abrirlos.',
     mediaPrivacyTitle: 'Control de privacidad',
@@ -177,6 +254,10 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     selectPhoto: value => `Show photograph ${value}`,
     photoCount: (current, total) => `${current} of ${total}`,
     archiveBiography: 'Documented profile',
+    editorialStory: 'Meet the artist',
+    editorialStoryNote: 'A Nova editorial reading based on the active listening history; it does not replace an external biography.',
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} appears in your listening history within ${genre}${place ? `, with a connection to ${place}` : ''}. They rank #${rank} with ${plays} plays.`,
+    whyItMatters: 'Why this artist matters here',
     biographySource: source => `Description from ${source}`,
     noBiography: 'No verified editorial biography exists for this identity yet. Only confirmed archive facts are retained.',
     officialSite: 'Official site',
@@ -200,6 +281,39 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'Members/roles',
     genres: 'Documented tags',
     unavailable: 'Unavailable',
+    connectionsTitle: 'Artists and connections',
+    connectionsSubtitle: 'Documented identities, catalog name matches and similarities in your history stay clearly separated.',
+    documentedConnections: 'Catalog connections',
+    sameIdentityConnection: 'This is the same artistic identity or a documented former name.',
+    sharedMemberConnection: member => `Both catalog profiles include the member name ${member}; stable person identity still needs review.`,
+    archiveNeighbors: 'Nearby artists in your history',
+    archiveNeighborsNote: 'This proximity uses shared styles and places. It does not claim influence, collaboration or universal musical similarity.',
+    sharedStyleConnection: styles => `Shared styles: ${styles}.`,
+    sharedPlaceConnection: place => `Shared place: ${place}.`,
+    openArtist: artist => `Open ${artist} territory`,
+    musicBeeEyebrow: 'Your local library',
+    musicBeeTitle: 'Also found in MusicBee',
+    musicBeeBody: (tracks, albums) => `${tracks} tracks and ${albums} albums by this artist are stored in your desktop library.`,
+    musicBeeTracks: 'Saved tracks',
+    musicBeeAlbums: 'Saved albums',
+    musicBeePlayCount: 'MusicBee Play Count',
+    musicBeeLastPlayed: 'Last played in MusicBee',
+    musicBeeNoLastPlayed: 'No date recorded',
+    musicBeeBoundary: 'MusicBee Play Count is a library counter. It stays separate and is not added to the timeline, sessions or Spotify/Last.fm totals.',
+    lineupTitle: 'Lineup',
+    lineupSubtitle: 'Members documented in MusicBrainz and Wikidata.',
+    lineupCurrent: 'Current',
+    lineupFormer: 'Former',
+    lineupFormerCount: (value) => `${value} former ${value === 1 ? 'member' : 'members'}`,
+    lineupNoPhoto: 'No free portrait on record',
+    lineupSince: (year) => `Since ${year}`,
+    lineupSpan: (from, to) => `${from}–${to || '?'}`,
+    lineupRolesUnknown: 'Role not documented',
+    memberAge: (value) => `${value} years old`,
+    memberAlsoIn: 'Also in your archive',
+    memberAlsoInEmpty: 'No other bands in your archive.',
+    memberClose: 'Close member card',
+    memberOpenHint: 'Open member card',
     mediaTitle: 'Official media portal',
     mediaSubtitle: 'Spotify, YouTube and external links stay separate from the local experience until you choose to open them.',
     mediaPrivacyTitle: 'Privacy control',
@@ -234,7 +348,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     featuredArtists: 'אותות נבחרים',
     browseAll: 'עיון בכל הארכיון',
     chooseArtist: 'בחירת אמן',
-    rank: value => `דירוג #${value}`,
+    rank: value => `דירוג #${bidiIsolate(value)}`,
     archiveSignal: 'אות הארכיון',
     archivePlays: 'השמעות בארכיון',
     archiveShare: 'משקל בארכיון',
@@ -252,7 +366,11 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     selectPhoto: value => `הצגת תצלום ${value}`,
     photoCount: (current, total) => `${current} מתוך ${total}`,
     archiveBiography: 'פרופיל מתועד',
-    biographySource: source => `תיאור מתוך ${source}`,
+    editorialStory: 'היכרות עם האמן',
+    editorialStoryNote: 'קריאה מערכתית של Nova המבוססת על היסטוריית ההאזנה הפעילה; היא אינה מחליפה ביוגרפיה חיצונית.',
+    artistIntro: (artist, genre, rank, plays, place) => `${bidiIsolate(artist)} מופיע בהיסטוריית ההאזנה שלך בתוך ${bidiIsolate(genre)}${place ? `, עם קשר אל ${bidiIsolate(place)}` : ''}, במקום #${bidiIsolate(rank)} עם ${bidiIsolate(plays)} השמעות.`,
+    whyItMatters: 'למה האמן חשוב במפה הזאת',
+    biographySource: source => `תיאור מתוך ${bidiIsolate(source)}`,
     noBiography: 'עדיין אין ביוגרפיה ערוכה ומאומתת לזהות הזאת. נשמרים רק פרטים מאושרים מן הארכיון.',
     officialSite: 'אתר רשמי',
     wikipedia: 'ויקיפדיה',
@@ -265,7 +383,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     plays: 'השמעות',
     discography: 'קונסטלציית דיסקוגרפיה',
     discographyBody: 'יצירות המתועדות בקטלוג הלא־מקוון. עטיפה מוכרת מוצגת כשישנה, ואחרת נוצרת עטיפה דטרמיניסטית.',
-    releasesKnown: value => `${value} יצירות מתועדות`,
+    releasesKnown: value => `${bidiIsolate(value)} יצירות מתועדות`,
     noReleases: 'בקטלוג הלא־מקוון אין יצירות מתועדות לאמן הזה.',
     releaseTypeFallback: 'יצירה',
     dateUnavailable: 'תאריך לא זמין',
@@ -275,6 +393,39 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     members: 'חברים/תפקידים',
     genres: 'תגיות מתועדות',
     unavailable: 'לא זמין',
+    connectionsTitle: 'אמנים וקשרים',
+    connectionsSubtitle: 'זהויות מתועדות, התאמות שמות בקטלוג ודמיון בהיסטוריה שלך מוצגים בנפרד.',
+    documentedConnections: 'קשרים מתוך הקטלוג',
+    sameIdentityConnection: 'זו אותה זהות אמנותית או שם קודם מתועד.',
+    sharedMemberConnection: member => `בשני פרופילי הקטלוג מופיע שם החבר ${bidiIsolate(member)}; זהות האדם עדיין דורשת אימות יציב.`,
+    archiveNeighbors: 'אמנים קרובים בהיסטוריה שלך',
+    archiveNeighborsNote: 'הקרבה מבוססת על סגנונות ומקומות משותפים. היא אינה טענה להשפעה, לשיתוף פעולה או לדמיון מוזיקלי אוניברסלי.',
+    sharedStyleConnection: styles => `סגנונות משותפים: ${bidiIsolate(styles)}.`,
+    sharedPlaceConnection: place => `מקום משותף: ${bidiIsolate(place)}.`,
+    openArtist: artist => `פתיחת המרחב של ${bidiIsolate(artist)}`,
+    musicBeeEyebrow: 'הספרייה המקומית שלך',
+    musicBeeTitle: 'מופיע גם ב-MusicBee',
+    musicBeeBody: (tracks, albums) => `${bidiIsolate(tracks)} שירים ו-${bidiIsolate(albums)} אלבומים של האמן שמורים בספריית המחשב שלך.`,
+    musicBeeTracks: 'שירים שמורים',
+    musicBeeAlbums: 'אלבומים שמורים',
+    musicBeePlayCount: 'מונה ההשמעות של MusicBee',
+    musicBeeLastPlayed: 'הושמע לאחרונה ב-MusicBee',
+    musicBeeNoLastPlayed: 'לא נשמר תאריך',
+    musicBeeBoundary: 'מונה ההשמעות של MusicBee הוא מונה ספרייה. הוא נשאר נפרד ואינו מתווסף לציר הזמן, לסשנים או לסיכומי Spotify/Last.fm.',
+    lineupTitle: 'הרכב הלהקה',
+    lineupSubtitle: 'חברים מתועדים ב-MusicBrainz וב-Wikidata.',
+    lineupCurrent: 'נוכחי',
+    lineupFormer: 'לשעבר',
+    lineupFormerCount: (value) => (value === 1 ? 'חבר אחד לשעבר' : `${bidiIsolate(value)} חברים לשעבר`),
+    lineupNoPhoto: 'אין תצלום חופשי מתועד',
+    lineupSince: (year) => `מאז ${bidiIsolate(year)}`,
+    lineupSpan: (from, to) => `${bidiIsolate(from)}–${bidiIsolate(to || '?')}`,
+    lineupRolesUnknown: 'התפקיד אינו מתועד',
+    memberAge: (value) => `בן ${bidiIsolate(value)}`,
+    memberAlsoIn: 'גם בארכיון שלך',
+    memberAlsoInEmpty: 'אין להקות נוספות בארכיון שלך.',
+    memberClose: 'סגירת כרטיס החבר',
+    memberOpenHint: 'פתיחת כרטיס החבר',
     mediaTitle: 'שער מדיה רשמית',
     mediaSubtitle: 'Spotify, YouTube וקישורים חיצוניים נשארים מופרדים מהחוויה המקומית עד לבחירתך לפתוח אותם.',
     mediaPrivacyTitle: 'בקרת פרטיות',
@@ -293,9 +444,9 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     noEvidence: 'אין רשומת ידע לזהות הזאת.',
     knowledgeSources: 'מקורות ידע',
     visualAssets: 'משאבים חזותיים',
-    visualAssetCount: value => `${value} משאבים מקושרים`,
+    visualAssetCount: value => `${bidiIsolate(value)} משאבים מקושרים`,
     openSource: 'פתיחת מקור',
-    verifiedAt: value => `נבדק ${value}`,
+    verifiedAt: value => `נבדק ${bidiIsolate(value)}`,
     verificationDateMissing: 'תאריך הבדיקה לא תועד',
     attribution: 'ייחוס',
     confidence: { verified: 'מאומת', curated: 'אוצר', matched: 'מותאם', unverified: 'לא מאומת' },
@@ -303,3 +454,88 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     assetStatus: { active: 'פעיל', review: 'בבדיקה', blocked: 'חסום' },
   },
 };
+
+const SIMPLE_COPY: Record<Lang, Partial<ArtistAtlasCopy>> = {
+  es: {
+    subtitle: 'Descubre quién es cada artista, qué escuchas más, sus imágenes, integrantes, álbumes y conexiones.',
+    featuredArtists: 'Tus artistas más presentes',
+    browseAll: 'Buscar en tus artistas',
+    archiveSignal: 'En tu historial musical',
+    archiveShare: 'Parte de tu escucha',
+    portraitStage: 'Galería del artista',
+    remoteArtwork: 'Imagen del artista',
+    generatedFallback: 'Visual original creado en la app',
+    documentedProfile: 'Información del artista disponible',
+    archiveOnly: 'Datos de tu historial',
+    archiveBiography: 'Sobre este artista',
+    archiveFootprint: 'Lo que más escuchas',
+    archiveFootprintBody: 'Tus canciones y álbumes más escuchados de este artista. No es un ranking de popularidad mundial.',
+    discography: 'Álbumes y lanzamientos',
+    discographyBody: 'Lanzamientos conocidos del catálogo local, con portada cuando existe una coincidencia revisada.',
+    profileSignals: 'Datos rápidos',
+    genres: 'Estilos y sonidos',
+    mediaTitle: 'Escuchar y ver',
+    mediaSubtitle: 'Abre Spotify, YouTube o enlaces oficiales solo cuando quieras salir de la experiencia local.',
+    evidenceTitle: 'Cómo sabemos esto',
+    evidenceSubtitle: 'Consulta las fuentes y límites detrás de la ficha del artista.',
+    openEvidence: 'Ver fuentes',
+    musicBeeBoundary: 'MusicBee se muestra aparte para no contar dos veces la misma actividad musical.',
+  },
+  en: {
+    subtitle: 'Discover who each artist is, what you play most, their imagery, members, albums and connections.',
+    featuredArtists: 'Your most present artists',
+    browseAll: 'Search your artists',
+    archiveSignal: 'In your listening history',
+    archiveShare: 'Share of your listening',
+    portraitStage: 'Artist gallery',
+    remoteArtwork: 'Artist image',
+    generatedFallback: 'Original visual created in the app',
+    documentedProfile: 'Artist information available',
+    archiveOnly: 'Listening-history facts',
+    archiveBiography: 'About this artist',
+    archiveFootprint: 'What you listen to most',
+    archiveFootprintBody: 'Your most-played tracks and albums by this artist. This is not a global popularity ranking.',
+    discography: 'Albums and releases',
+    discographyBody: 'Known releases from the local catalog, with artwork when a reviewed match exists.',
+    profileSignals: 'Quick facts',
+    genres: 'Styles and sounds',
+    mediaTitle: 'Listen and watch',
+    mediaSubtitle: 'Open Spotify, YouTube or official links only when you choose to leave the local experience.',
+    evidenceTitle: 'How we know this',
+    evidenceSubtitle: 'See the sources and limits behind this artist profile.',
+    openEvidence: 'View sources',
+    musicBeeBoundary: 'MusicBee stays separate so the same listening activity is not counted twice.',
+  },
+  he: {
+    subtitle: 'מגלים מי כל אמן, למה אתם מאזינים הכי הרבה, תמונות, חברים, אלבומים וקשרים.',
+    featuredArtists: 'האמנים הבולטים אצלך',
+    browseAll: 'חיפוש בין האמנים שלך',
+    archiveSignal: 'בהיסטוריית ההאזנה שלך',
+    archiveShare: 'חלק מתוך ההאזנה שלך',
+    portraitStage: 'גלריית האמן',
+    remoteArtwork: 'תמונת האמן',
+    generatedFallback: 'דימוי מקורי שנוצר באפליקציה',
+    documentedProfile: 'מידע על האמן זמין',
+    archiveOnly: 'נתונים מהיסטוריית ההאזנה',
+    archiveBiography: 'על האמן',
+    archiveFootprint: 'למה אתם מאזינים הכי הרבה',
+    archiveFootprintBody: 'השירים והאלבומים המושמעים ביותר אצלך מאת האמן הזה. זה אינו דירוג פופולריות עולמי.',
+    discography: 'אלבומים ויצירות',
+    discographyBody: 'יצירות מוכרות מן הקטלוג המקומי, עם עטיפה כאשר קיימת התאמה שנבדקה.',
+    profileSignals: 'עובדות מהירות',
+    genres: 'סגנונות וצלילים',
+    mediaTitle: 'האזנה וצפייה',
+    mediaSubtitle: 'Spotify, YouTube וקישורים רשמיים נפתחים רק כאשר בוחרים לצאת מן החוויה המקומית.',
+    evidenceTitle: 'איך אנחנו יודעים',
+    evidenceSubtitle: 'אפשר לראות את המקורות והמגבלות שמאחורי פרופיל האמן.',
+    openEvidence: 'הצגת מקורות',
+    musicBeeBoundary: 'MusicBee נשאר נפרד כדי שאותה פעילות מוזיקלית לא תיספר פעמיים.',
+  },
+};
+
+export function getArtistAtlasCopy(lang: Lang, experienceDepth: ExperienceDepth): ArtistAtlasCopy {
+  const copy = ARTIST_ATLAS_COPY[lang];
+  return experienceDepth === 'deep-dive'
+    ? copy
+    : { ...copy, ...SIMPLE_COPY[lang] };
+}

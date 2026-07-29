@@ -39,6 +39,13 @@ const HEBREW_LAZY_CHUNKS = [
   { name: 'Hebrew UI catalog', prefix: 'heStrings-', gzipBudgetKb: 35 },
   { name: 'Hebrew artist overlay', prefix: 'artist_enrichment_he-', gzipBudgetKb: 55 },
   { name: 'Hebrew artist loader', prefix: 'artistEnrichmentHebrew-', gzipBudgetKb: 2 },
+  // Artwork lookup tables. CoverArt import()s these, and buildStaticClosure
+  // deliberately ignores dynamic imports - so without their own budget these
+  // grow invisibly with every artwork harvest. They are allowed to be large
+  // because no visitor pays for them before a room that shows covers renders,
+  // but the growth must stay measured rather than silent.
+  { name: 'Album artwork map', prefix: 'album_images-', gzipBudgetKb: 60 },
+  { name: 'Track artwork map', prefix: 'track_images-', gzipBudgetKb: 40 },
 ];
 // Incremental cost after the landing closure is already cached. Baselines from
 // the 2026-07-13 production build were 304 / 305 / 337 / 321 / 176KB gzip.
@@ -189,7 +196,7 @@ for (const chunk of hebrewLazyChunks) {
   if (gzipKb > chunk.gzipBudgetKb) {
     failures.push(
       `${chunk.name} is ${gzipKb.toFixed(1)} KB gzip `
-      + `(budget: ${chunk.gzipBudgetKb} KB). Review or split the Hebrew catalog.`,
+      + `(budget: ${chunk.gzipBudgetKb} KB). Review or split this lazy catalog.`,
     );
   }
 }

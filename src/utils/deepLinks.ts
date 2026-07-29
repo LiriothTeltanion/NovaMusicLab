@@ -22,6 +22,8 @@ export const APP_TABS = [
   'report',
   'upload',
   'aiassistant',
+  'share',
+  'audio',
 ] as const;
 
 export type AppTab = (typeof APP_TABS)[number];
@@ -76,6 +78,8 @@ export const TAB_ROUTES: Readonly<Record<AppTab, string>> = {
   report: '/report',
   upload: '/upload',
   aiassistant: '/assistant',
+  share: '/share-feedback',
+  audio: '/audio-lab',
 };
 
 const ROUTE_TABS = new Map<string, AppTab>(
@@ -151,7 +155,10 @@ export function buildShareUrl(
   location: Pick<Location, 'origin' | 'pathname' | 'search'>,
   state: DeepLinkState,
 ) {
-  return `${location.origin}${location.pathname}${location.search}${buildDeepLink(state)}`;
+  // The page-level query string may eventually carry short-lived OAuth
+  // callback values. Public museum links intentionally keep only the stable
+  // GitHub Pages base path and Nova's allowlisted hash-route state.
+  return `${location.origin}${location.pathname}${buildDeepLink(state)}`;
 }
 
 export type DeepLinkHistoryAction = 'none' | 'push' | 'replace';

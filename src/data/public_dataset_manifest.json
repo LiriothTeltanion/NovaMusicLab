@@ -6,6 +6,7 @@
   "allowedSections": [
     "project",
     "generated_at",
+    "narrative_scope",
     "core_metrics",
     "top_artists",
     "top_tracks",

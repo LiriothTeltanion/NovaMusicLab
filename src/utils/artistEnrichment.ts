@@ -233,8 +233,10 @@ export function summarizeArtistEvidence(
 
 const lowSignalGenreTokens = new Set([
   'and', 'the', 'with', 'modern', 'alternative', 'rock', 'metal', 'pop',
-  'music', 'core',
+  'music', 'core', 'unknown', 'unclassified',
 ]);
+
+const missingCountryKeys = new Set(['', 'unknown', 'unavailable', 'not available', 'n a']);
 
 function genreTokens(genre: string) {
   return normalizeCatalogName(genre)
@@ -275,12 +277,16 @@ export function getRelatedArchiveArtists(
 
   const selectedTokens = new Set(genreTokens(selectedArtist.genre));
   const selectedCountry = normalizeCatalogName(selectedArtist.country);
+  const selectedCountryKnown = !missingCountryKeys.has(selectedCountry);
 
   return data.top_artists
     .filter(artist => !artistMatchesAnyName(artist.name, artistName, profile))
     .map(artist => {
       const sharedGenres = genreTokens(artist.genre).filter(token => selectedTokens.has(token));
-      const sameCountry = normalizeCatalogName(artist.country) === selectedCountry;
+      const candidateCountry = normalizeCatalogName(artist.country);
+      const sameCountry = selectedCountryKnown
+        && !missingCountryKeys.has(candidateCountry)
+        && candidateCountry === selectedCountry;
       const hasProfile = Boolean(getArtistEnrichment(artist.name));
       const score = (sharedGenres.length * 4)
         + (sameCountry ? 1.6 : 0)

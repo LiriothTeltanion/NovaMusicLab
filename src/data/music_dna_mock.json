@@ -1,6 +1,7 @@
 {
   "project": "Nova Music Lab - Test Fixture Archive",
   "generated_at": "2026-06-30T17:36:35.619501",
+  "narrative_scope": "flagship",
   "core_metrics": {
     "total_plays": 50476,
     "unique_artists": 4174,

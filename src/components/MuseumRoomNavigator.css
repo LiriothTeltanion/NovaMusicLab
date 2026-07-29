@@ -582,6 +582,15 @@
   }
 }
 
+/* At this width the persistent sidebar already exposes complete room names.
+   Hiding the duplicate progress rail returns vertical space to the room while
+   preserving the mobile dock and the compact rail on laptop-sized screens. */
+@media (min-width: 1360px) {
+  .museum-room-progress {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .museum-room-progress::after,
   .museum-room-progress__track span,

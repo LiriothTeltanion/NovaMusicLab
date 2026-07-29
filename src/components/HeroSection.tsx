@@ -24,6 +24,7 @@ import NovaMark from './NovaMark';
 import { paintMoodArt } from './MoodArtCanvas';
 import { buildCoreEmotionalMapProfile } from '../engines/moodCore';
 import { buildArchetypes } from '../utils/identityEngine';
+import { playMuseumSound, type MuseumSoundCue } from '../audio/sonicFeedback';
 import { deriveSourceSummary, getSourceTelemetry, type SourceTelemetryId } from '../utils/analytics';
 import { localeFor, pickLanguage, type Lang } from '../utils/i18n';
 import type { MotionMode } from './museumVisualIdentity';
@@ -454,61 +455,16 @@ export default function HeroSection({
   const [isWarping, setIsWarping] = useState(false);
   const [isCorePulsing, setIsCorePulsing] = useState(false);
 
-  const playCorePulseAudio = () => {
+  const triggerCorePulse = (cue: MuseumSoundCue) => {
     if (isCorePulsing) return;
     setIsCorePulsing(true);
-    setTimeout(() => setIsCorePulsing(false), 1600);
-
-    try {
-      const AudioContextCtor = window.AudioContext
-        ?? (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-      if (!AudioContextCtor) return;
-      const ctx = new AudioContextCtor();
-      
-      const masterGain = ctx.createGain();
-      masterGain.gain.setValueAtTime(0, ctx.currentTime);
-      // Ambient slow attack swell
-      masterGain.gain.linearRampToValueAtTime(0.16, ctx.currentTime + 0.28);
-      // Smooth organic exponential release decay
-      masterGain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.5);
-      masterGain.connect(ctx.destination);
-      
-      // Cosmic space chord: C3 (130.81), G3 (196.00), D4 (293.66), G4 (392.00)
-      const freqs = [130.81, 196.00, 293.66, 392.00];
-      
-      // Sweeping resonant lowpass filter for an analog synth pad feel
-      const lowpass = ctx.createBiquadFilter();
-      lowpass.type = 'lowpass';
-      lowpass.Q.setValueAtTime(1.8, ctx.currentTime);
-      lowpass.frequency.setValueAtTime(120, ctx.currentTime);
-      lowpass.frequency.exponentialRampToValueAtTime(950, ctx.currentTime + 0.45);
-      lowpass.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 1.4);
-      lowpass.connect(masterGain);
-
-      freqs.forEach((f, idx) => {
-        const osc = ctx.createOscillator();
-        osc.type = idx % 2 === 0 ? 'sine' : 'triangle';
-        osc.frequency.setValueAtTime(f, ctx.currentTime);
-
-        // Detuning for a rich unison/chorus depth effect
-        osc.detune.setValueAtTime(idx === 0 ? -6 : idx === 2 ? 7 : 0, ctx.currentTime);
-
-        osc.connect(lowpass);
-        osc.start();
-        osc.stop(ctx.currentTime + 1.5);
-      });
-
-      // Each click creates a fresh context; release it once the chord decays
-      // or repeated clicks pile up live AudioContexts for the whole session.
-      setTimeout(() => { ctx.close().catch(() => {}); }, 1700);
-    } catch (e) {
-      console.warn("Audio Context blocked or Web Audio not supported in environment:", e);
-    }
+    setTimeout(() => setIsCorePulsing(false), 760);
+    playMuseumSound(cue);
   };
 
   const handleEnter = () => {
     setIsWarping(true);
-    playCorePulseAudio();
+    triggerCorePulse('enter');
     setTimeout(onEnter, shouldReduceMotion ? 0 : 1200);
   };
 
@@ -517,7 +473,7 @@ export default function HeroSection({
   const handleLaunchAssistant = () => {
     if (!onOpenAssistant) return handleEnter();
     setIsWarping(true);
-    playCorePulseAudio();
+    triggerCorePulse('open');
     setTimeout(onOpenAssistant, shouldReduceMotion ? 0 : 1200);
   };
 
@@ -656,7 +612,7 @@ export default function HeroSection({
 
             <button
               type="button"
-              onClick={playCorePulseAudio}
+              onClick={() => triggerCorePulse('open')}
               className={'nova-hero__artist-focus' + (isCorePulsing ? ' is-pulsing' : '')}
               aria-label={copy.playSignature(topArtist?.name ?? 'Nova Music Lab')}
             >

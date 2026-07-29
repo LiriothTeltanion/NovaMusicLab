@@ -37,12 +37,11 @@ export const STRINGS = {
     themeAria: 'Abrir selector de tema',
     loadDataAria: 'Cargar archivos de datos musicales',
     navGroups: {
-      overview: 'Vista general',
-      archive: 'Archivo',
-      identity: 'Identidad',
-      listening: 'Escucha',
-      data: 'Datos',
-      export: 'Salida',
+      home: 'Inicio',
+      pulse: 'Pulso',
+      atlas: 'Atlas',
+      stories: 'Historias',
+      lab: 'Lab de Datos',
     },
     collapsible: {
       readIntro: 'Leer la introducción',
@@ -52,6 +51,7 @@ export const STRINGS = {
     },
     nav: {
       dashboard:   'Dashboard',
+      share:       'Compartir y Feedback',
       aiAssistant: 'Asistente IA',
       eras:        'Eras Musicales',
       top:         'Top Histórico',
@@ -62,7 +62,7 @@ export const STRINGS = {
       inner:       'Mundo Interior',
       artist:      'Atlas Vivo de Artistas',
       insights:    'Insights Ocultos',
-      compare:     'Spotify vs Last.fm',
+      compare:     'Observatorio de Fuentes',
       museums:     'Comparar Museos',
       platforms:   'Plataformas',
       dataQuality:  'Calidad de Datos',
@@ -73,6 +73,7 @@ export const STRINGS = {
       pulse:       'Pulso Actual',
       report:      'Ensayo Final',
       upload:      'Subir Archivos',
+      audioLab:    'Audio Lab',
     },
     kpi: {
       totalPlays:    'Plays Totales',
@@ -108,7 +109,7 @@ export const STRINGS = {
       innerTitle:       'Tu Universo Interior',
       artistTitle:      'Tu Perfil Artístico: Si Fueras Artista',
       insightsTitle:    'Lo que Revelan tus Datos',
-      compareTitle:     'Spotify vs Last.fm',
+      compareTitle:     'Observatorio de Fuentes',
       reportTitle:      'Tu Vida en Canciones',
       uploadTitle:      'Subir archivos reales',
     },
@@ -245,12 +246,12 @@ export const STRINGS = {
       },
       compare: {
         eyebrow: 'Confianza de fuentes',
-        title: 'Spotify y Last.fm cuentan historias parecidas, pero no idénticas.',
-        body: 'La comparación de fuentes separa scrobbles verificados, plays medidos, estimaciones, skips, plataformas y solapamiento. Es clave para saber qué parte del museo es conteo directo y qué parte es lectura interpretativa.',
+        title: 'Tus plataformas cuentan partes distintas de la misma historia.',
+        body: 'El observatorio reúne Last.fm, Spotify, YouTube, Apple Music y ListenBrainz. Separa eventos crudos, escuchas contadas, reproducciones cortas, duplicados y campos disponibles para mostrar qué evidencia aporta realmente cada archivo.',
         insights: [
           { title: 'Last.fm', body: 'Last.fm suele ser mejor como línea temporal de escucha consciente: timestamp, artista, álbum y canción con continuidad larga.' },
           { title: 'Spotify', body: 'Spotify aporta contexto extra: país, plataforma, milisegundos, skips y reproducciones cortas que Last.fm no ve.' },
-          { title: 'Overlap', body: 'El solapamiento no debe leerse como fallo cuando no es perfecto. También muestra diferencias reales entre plataformas y hábitos.' },
+          { title: 'Otras fuentes', body: 'YouTube, Apple Music y ListenBrainz amplían la cronología y los metadatos cuando están presentes; si faltan, la app lo muestra sin inventar conteos.' },
         ],
         dataNote: 'Cuando solo existe una fuente cargada, la comparación usa valores disponibles o estimados y debe mostrarse como tal.',
         deepDiveLabel: 'Lectura profunda',
@@ -849,7 +850,7 @@ export const STRINGS = {
         `Tu patrón de escucha nocturna representa ${nightRatio}% de plays entre 00:00 y 05:59. Tu racha más larga detectada es de ${longestStreakDays} días, lo que sugiere que la música funciona como hábito estabilizador, no solo entretenimiento.`,
     },
     spotifyVsLastfm: {
-      pageTitle:                    'Spotify vs Last.fm',
+      pageTitle:                    'Observatorio de Fuentes',
       verifiedScrobbles:            'Scrobbles verificados',
       matchWord:                    'coincidencia',
       artistsAndTracksOverlap:      'Overlap de artistas y tracks',
@@ -1316,7 +1317,7 @@ export const STRINGS = {
     },
     pulse: {
       title: 'Pulso Actual',
-      subtitle: 'Tu Spotify de hoy frente a tu archivo histórico: quién sigue reinando y quién acaba de entrar.',
+      subtitle: 'Una instantánea fechada de Spotify frente a tu archivo histórico: quién continúa y quién aparece por primera vez.',
       syncedAt: (date: string) => `Sincronizado el ${date}`,
       topArtistsNow: 'Tus artistas de ahora',
       tracksOnRepeat: 'Canciones en repetición',
@@ -1328,7 +1329,7 @@ export const STRINGS = {
       insightBody: (n: number) => n === 0
         ? 'Tu presente es pura fidelidad: todos tus artistas actuales ya eran parte de tu archivo histórico. Tu identidad musical está consolidada.'
         : `${n} de tus artistas actuales no aparecen en tu top histórico: tu gusto sigue en expansión, abriendo capítulos que este museo todavía no ha archivado.`,
-      disclaimer: 'Este pulso es una instantánea única sincronizada desde el conector de Spotify durante el desarrollo — no es una conexión en vivo. La app sigue siendo 100% offline.',
+      disclaimer: 'Este pulso es una instantánea única sincronizada durante el desarrollo, no una conexión en vivo. El análisis permanece local-first; las imágenes remotas siguen su política de red declarada.',
       methodEyebrow: 'Método de datos',
       methodTitle: 'Cómo se compara el presente con el archivo histórico',
       methodSubtitle: 'El pulso cruza una instantánea local de Spotify con el top histórico de artistas. La comparación sirve para leer continuidad o descubrimiento, no para reemplazar el historial completo.',
@@ -1416,12 +1417,11 @@ export const STRINGS = {
     themeAria: 'Open theme selector',
     loadDataAria: 'Load music data files',
     navGroups: {
-      overview: 'Overview',
-      archive: 'Archive',
-      identity: 'Identity',
-      listening: 'Listening',
-      data: 'Data',
-      export: 'Output',
+      home: 'Home',
+      pulse: 'Pulse',
+      atlas: 'Atlas',
+      stories: 'Stories',
+      lab: 'Data Lab',
     },
     collapsible: {
       readIntro: 'Read the intro',
@@ -1431,6 +1431,7 @@ export const STRINGS = {
     },
     nav: {
       dashboard:   'Dashboard',
+      share:       'Share & Feedback',
       aiAssistant: 'AI Assistant',
       eras:        'Musical Eras',
       top:         'All-Time Top',
@@ -1441,7 +1442,7 @@ export const STRINGS = {
       inner:       'Inner World',
       artist:      'Living Artist Atlas',
       insights:    'Hidden Insights',
-      compare:     'Spotify vs Last.fm',
+      compare:     'Source Observatory',
       museums:     'Compare Museums',
       platforms:   'Platforms',
       dataQuality:  'Data Quality',
@@ -1452,6 +1453,7 @@ export const STRINGS = {
       pulse:       'Current Pulse',
       report:      'Final Essay',
       upload:      'Upload Files',
+      audioLab:    'Audio Lab',
     },
     kpi: {
       totalPlays:    'Total Plays',
@@ -1487,7 +1489,7 @@ export const STRINGS = {
       innerTitle:       'Your Inner Universe',
       artistTitle:      'Your Artist Profile: If You Were an Artist',
       insightsTitle:    'What Your Data Reveals',
-      compareTitle:     'Spotify vs Last.fm',
+      compareTitle:     'Source Observatory',
       reportTitle:      'Your Life in Songs',
       uploadTitle:      'Upload real files',
     },
@@ -1624,12 +1626,12 @@ export const STRINGS = {
       },
       compare: {
         eyebrow: 'Source confidence',
-        title: 'Spotify and Last.fm tell similar stories, but not identical ones.',
-        body: 'Source comparison separates verified scrobbles, measured plays, estimates, skips, platforms and overlap. It is key to understanding which part of the museum is direct counting and which part is interpretive reading.',
+        title: 'Your platforms tell different parts of the same listening story.',
+        body: 'The observatory brings together Last.fm, Spotify, YouTube, Apple Music and ListenBrainz. It separates raw events, counted listens, short plays, duplicates and available fields so each archive contribution remains explicit.',
         insights: [
           { title: 'Last.fm', body: 'Last.fm is usually better as a timeline of conscious listening: timestamp, artist, album and track with long continuity.' },
           { title: 'Spotify', body: 'Spotify adds extra context: country, platform, milliseconds, skips and short plays that Last.fm does not see.' },
-          { title: 'Overlap', body: 'Overlap should not be read as failure when it is not perfect. It also shows real differences between platforms and habits.' },
+          { title: 'Other sources', body: 'YouTube, Apple Music and ListenBrainz extend the timeline and metadata when present; when absent, the app says so instead of inventing counts.' },
         ],
         dataNote: 'When only one source is loaded, comparison uses available or estimated values and should be shown as such.',
         deepDiveLabel: 'Deep reading',
@@ -2228,7 +2230,7 @@ export const STRINGS = {
         `Your late-night pattern represents ${nightRatio}% of total plays between 00:00 and 05:59. Your strongest detected streak is ${longestStreakDays} days, which suggests music is a stabilizing habit, not only entertainment.`,
     },
     spotifyVsLastfm: {
-      pageTitle:                    'Spotify vs Last.fm',
+      pageTitle:                    'Source Observatory',
       verifiedScrobbles:            'Verified scrobbles',
       matchWord:                    'match',
       artistsAndTracksOverlap:      'Artist and track overlap',
@@ -2695,7 +2697,7 @@ export const STRINGS = {
     },
     pulse: {
       title: 'Current Pulse',
-      subtitle: "Today's Spotify against your historic archive: who still reigns and who just arrived.",
+      subtitle: 'A dated Spotify snapshot against your historic archive: who continues and who appears for the first time.',
       syncedAt: (date: string) => `Synced on ${date}`,
       topArtistsNow: 'Your artists right now',
       tracksOnRepeat: 'Tracks on repeat',
@@ -2705,9 +2707,9 @@ export const STRINGS = {
       historicPlays: (plays: string) => `${plays} historic plays`,
       insightTitle: 'What your pulse says',
       insightBody: (n: number) => n === 0
-        ? 'Your present is pure loyalty: every artist you play today was already part of your historic archive. Your musical identity is consolidated.'
+        ? 'This snapshot is pure loyalty: every current artist was already part of your historic archive. Your musical identity is consolidated.'
         : `${n} of your current artists don't appear in your historic top: your taste is still expanding, opening chapters this museum hasn't archived yet.`,
-      disclaimer: 'This pulse is a one-time snapshot synced from the Spotify connector during development — not a live connection. The app remains 100% offline.',
+      disclaimer: 'This pulse is a one-time snapshot synced during development, not a live connection. Analysis remains local-first; remote images still follow the declared network policy.',
       methodEyebrow: 'Data method',
       methodTitle: 'How the present is compared with the historical archive',
       methodSubtitle: 'The pulse crosses a local Spotify snapshot with the all-time artist ranking. The comparison is useful for reading continuity or discovery, not for replacing the complete listening history.',

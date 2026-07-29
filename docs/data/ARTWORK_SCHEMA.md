@@ -24,7 +24,8 @@ File: `src/data/artist_images.json`
 - Keys use normalized lowercase artist names.
 - Prefer stable public URLs and sufficiently large images.
 - Verify ambiguous names through more than a title match.
-- `ArtistAvatar` falls back to a gallery image, standard image and deterministic initials.
+- `ArtistAvatar` tries a right-sized URL, the original URL and reviewed gallery candidates before deterministic initials.
+- Remote candidates have a seven-second limit so a stalled CDN cannot leave an invisible portrait forever.
 
 ## Artist galleries
 
@@ -69,6 +70,12 @@ artist lowercase|||track title lowercase
 ```
 
 Never substitute a different track's cover merely because it shares the artist. A deterministic fallback is more honest than incorrect art.
+
+An exact same-key album cover may serve as a track fallback when the track and
+album title are identical. Personal obsession and annual-summary lookups in
+`fetch_curated_track_art.mjs` require the explicit
+`--include-personal-rooms` flag because those developer-side requests disclose
+the selected artist/track pairs to Deezer or iTunes.
 
 ## Media profiles
 
@@ -130,5 +137,5 @@ Coverage numbers deliberately do not live in this document. `npm run audit:data`
 
 - `src/components/NovaMark.tsx` is the application mark.
 - `scripts/generate_nova_icons.mjs` generates favicon, Apple touch, PWA and maskable artifacts; `public/icon-monochrome.svg` supports monochrome surfaces.
-- `assets/social/nova-music-lab-social-preview.svg` is the editable 1280×640 static source and `public/social-preview.png` is its deployed Open Graph/Twitter artifact.
+- `assets/social/nova-music-lab-social-preview.svg` is the editable 1280×640 static source. `public/social-preview-v2.png` is the candidate Open Graph/Twitter artifact; `public/social-preview.png` remains the previously deployed image until release.
 - `assets/readme/nova-music-lab-banner.svg` is static by design so repository visitors never receive an unavoidable animation.

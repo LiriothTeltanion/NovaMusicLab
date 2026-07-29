@@ -90,10 +90,10 @@ describe('room navigation focus', () => {
 
     await user.click(await screen.findByRole('button', { name: /enter the sound museum/i }, { timeout: 8000 }));
     await waitFor(
-      () => expect(document.getElementById('sidebar-group-trigger-listening')).toBeInTheDocument(),
+      () => expect(document.getElementById('sidebar-group-trigger-home')).toBeInTheDocument(),
       { timeout: 5000 },
     );
-    const groupTrigger = document.getElementById('sidebar-group-trigger-listening') as HTMLButtonElement;
+    const groupTrigger = document.getElementById('sidebar-group-trigger-home') as HTMLButtonElement;
     const group = document.getElementById(groupTrigger.getAttribute('aria-controls')!);
     const shell = screen.getByTestId('museum-app-shell');
     const sidebar = screen.getByTestId('museum-sidebar');
@@ -106,14 +106,14 @@ describe('room navigation focus', () => {
     expect(main).not.toHaveClass('w-full');
     expect(main).toHaveAttribute('data-room-width', 'analytics');
 
-    expect(groupTrigger).toHaveAttribute('aria-expanded', 'false');
-    expect(group).toHaveAttribute('inert');
-    expect(group).toHaveAttribute('aria-hidden', 'true');
-
-    fireEvent.click(groupTrigger);
-    await waitFor(() => expect(groupTrigger).toHaveAttribute('aria-expanded', 'true'));
+    expect(groupTrigger).toHaveAttribute('aria-expanded', 'true');
     expect(group).not.toHaveAttribute('inert');
     expect(group).toHaveAttribute('aria-hidden', 'false');
+
+    fireEvent.click(groupTrigger);
+    await waitFor(() => expect(groupTrigger).toHaveAttribute('aria-expanded', 'false'));
+    expect(group).toHaveAttribute('inert');
+    expect(group).toHaveAttribute('aria-hidden', 'true');
   }, 15_000);
 
   it('hydrates, navigates and copies canonical hash deep links', async () => {
@@ -133,14 +133,14 @@ describe('room navigation focus', () => {
 
     const dashboardButtons = await screen.findAllByRole(
       'button',
-      { name: /dashboard - overview/i },
+      { name: /dashboard - home/i },
       { timeout: 8000 },
     );
     await waitFor(() => expect(
       dashboardButtons.some(button => button.getAttribute('aria-current') === 'page'),
     ).toBe(true));
 
-    await user.click(screen.getAllByRole('button', { name: /eras.*overview/i })[0]);
+    await user.click(screen.getByRole('button', { name: 'Stories' }));
     await waitFor(() => expect(window.location.hash).toBe('#/eras'));
 
     window.history.replaceState(
@@ -150,7 +150,7 @@ describe('room navigation focus', () => {
     );
     window.dispatchEvent(new HashChangeEvent('hashchange'));
 
-    const topRooms = await screen.findAllByRole('button', { name: /top.*archive/i });
+    const topRooms = await screen.findAllByRole('button', { name: /top.*atlas/i });
     await waitFor(() => expect(
       topRooms.some(button => button.getAttribute('aria-current') === 'page'),
     ).toBe(true));
@@ -166,12 +166,12 @@ describe('room navigation focus', () => {
     await user.click(screen.getByTestId('copy-deep-link-header'));
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     expect(writeText).toHaveBeenCalledWith(
-      `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash}`,
+      `${window.location.origin}${window.location.pathname}${window.location.hash}`,
     );
     expect(screen.getByRole('status')).toHaveTextContent('Link copied to the clipboard');
   }, 20_000);
 
-  it('turns the journey switcher into scoped navigation instead of a decorative control', async () => {
+  it('changes experience depth without changing the room, route or hub', async () => {
     const user = userEvent.setup();
     vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
     vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(() => null);
@@ -181,16 +181,16 @@ describe('room navigation focus', () => {
 
     render(<App />);
 
-    const switcher = await screen.findByTestId('journey-switcher', {}, { timeout: 8000 });
-    const labTools = screen.getByRole('button', { name: 'Lab Tools' });
-    expect(switcher).toContainElement(labTools);
+    const switcher = await screen.findByTestId('experience-switcher', {}, { timeout: 8000 });
+    const deepDive = screen.getByRole('button', { name: 'Deep Dive' });
+    expect(switcher).toContainElement(deepDive);
 
-    await user.click(labTools);
+    await user.click(deepDive);
 
-    await waitFor(() => expect(window.location.hash).toBe('#/assistant'));
-    expect(labTools).toHaveAttribute('aria-pressed', 'true');
-    expect(window.localStorage.getItem('nml_expedition_journey')).toBe('lab');
-    expect(screen.getAllByRole('button', { name: /ai assistant - overview/i }).length).toBeGreaterThan(0);
-    expect(screen.queryByRole('button', { name: /if i were an artist - identity/i })).not.toBeInTheDocument();
+    await waitFor(() => expect(window.location.hash).toBe('#/artist-identity'));
+    expect(deepDive).toHaveAttribute('aria-pressed', 'true');
+    expect(window.localStorage.getItem('nml_experience_depth')).toBe('deep-dive');
+    expect(screen.getAllByRole('button', { name: /living artist atlas - atlas/i }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole('button', { name: /ai assistant - data lab/i })).not.toBeInTheDocument();
   }, 15_000);
 });

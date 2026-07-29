@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { useImageLoadTimeout } from '../hooks/useImageLoadTimeout';
 import artistImages from '../data/artist_images.json';
 import artistMeta from '../data/artist_meta.json';
 import memberImages from '../data/member_images.json';
 import memberEnrichment from '../data/member_enrichment.json';
 import FlagArt from './FlagArt';
-import { getArtistGallery, getDailyPhotoIndex } from '../utils/artistGallery';
+import { optimizeRemoteImageUrl } from '../utils/remoteImage';
 import { hashSeed } from '../utils/seededRandom';
 
 type ArtistImages = Record<string, { thumb: string; source: string }>;
@@ -35,24 +36,20 @@ function initialsFor(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-/**
- * Best-effort higher-resolution variant of a stored thumb URL.
- * - Wikimedia thumbnails are size-parameterized in the path (guaranteed).
- * - Spotify profile images have a 640px sibling under a different ID prefix
- *   (works for the common ab67616100005174 -> ab6761610000e5eb pair; if the
- *   sibling doesn't exist the <img> onError falls back to the standard URL).
- */
-function hiResVariant(url: string): string | null {
-  if (url.includes('/330px-')) return url.replace('/330px-', '/640px-');
-  if (url.includes('ab67616100005174')) return url.replace('ab67616100005174', 'ab6761610000e5eb');
-  return null;
+export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
+  const key = name.normalize('NFC').trim().toLowerCase();
+  const source = IMAGES[key]?.thumb;
+  return source ? optimizeRemoteImageUrl(source, size) : null;
 }
 
 /**
  * Shows a real artist photo (Wikimedia Commons or Spotify CDN, sourced once
- * at dev time) or a deterministic colored-initials avatar as fallback. Images
- * fade in on load; larger renders try a hi-res variant first and degrade
- * gracefully (hi-res -> standard -> initials) via onError stages.
+ * at dev time) or a deterministic colored-initials avatar as fallback.
+ *
+ * Compact avatars intentionally use the stable primary portrait. Daily gallery
+ * rotation belongs to the explicit Atlas media stage; applying it to every
+ * 20–92px avatar caused a burst of 800–1000px third-party requests in the
+ * dashboard and made portraits appear unpredictably broken.
  */
 export default function ArtistAvatar({
   name,
@@ -67,36 +64,109 @@ export default function ArtistAvatar({
   // uploaded export can be NFD (macOS) - byte-different, visually identical.
   const key = name.normalize('NFC').trim().toLowerCase();
   const entry = IMAGES[key];
-  // Photo of the day: rotate deterministically through the artist's gallery
-  // (primary + Deezer + Wikimedia) so portraits change daily, never randomly.
-  const gallery = getArtistGallery(key);
-  const dailyUrl = gallery.length ? gallery[getDailyPhotoIndex(key, gallery.length)].url : undefined;
-  const isDailyPrimary = !dailyUrl || dailyUrl === entry?.thumb;
-  const hiRes = entry && isDailyPrimary && size >= 48 ? hiResVariant(entry.thumb) : null;
-  // Fallback chain: hi-res primary → daily pick → primary thumb → initials.
-  const [stage, setStage] = useState<'hi' | 'std' | 'alt' | 'failed'>(hiRes ? 'hi' : 'std');
-  const [loaded, setLoaded] = useState(false);
   const meta = META[key];
   const memberPhoto = MEMBER_ENRICHMENT[key]?.photo || MEMBER_IMAGES[key];
-  const hasPhoto = Boolean(overrideSrc || memberPhoto || entry || dailyUrl);
+  const originalSrc = overrideSrc || memberPhoto || entry?.thumb;
+  const optimizedSrc = originalSrc ? optimizeRemoteImageUrl(originalSrc, size) : undefined;
+  const [stage, setStage] = useState<'optimized' | 'original' | 'gallery-loading' | 'gallery' | 'failed'>(
+    originalSrc ? 'optimized' : 'gallery-loading',
+  );
+  const [galleryUrls, setGalleryUrls] = useState<string[]>([]);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+
+  // Reset before the browser can dispatch a cached-image load event. A passive
+  // effect can run after that event and incorrectly hide an already loaded
+  // portrait at opacity: 0.
+  useLayoutEffect(() => {
+    setStage(originalSrc ? 'optimized' : 'gallery-loading');
+    setGalleryUrls([]);
+    setGalleryIndex(0);
+    setLoaded(false);
+  }, [name, optimizedSrc, originalSrc]);
 
   useEffect(() => {
-    setStage(hiRes ? 'hi' : 'std');
+    if (stage !== 'gallery-loading') return;
+
+    let cancelled = false;
+    void import('../utils/artistGallery')
+      .then(({ getArtistGallery }) => {
+        if (cancelled) return;
+
+        const candidates = getArtistGallery(name)
+          .flatMap(photo => [optimizeRemoteImageUrl(photo.url, size), photo.url])
+          .filter((url, index, urls) => (
+            Boolean(url)
+            && url !== optimizedSrc
+            && url !== originalSrc
+            && urls.indexOf(url) === index
+          ));
+
+        if (!candidates.length) {
+          setStage('failed');
+          return;
+        }
+
+        setGalleryUrls(candidates);
+        setGalleryIndex(0);
+        setLoaded(false);
+        setStage('gallery');
+      })
+      .catch(() => {
+        if (!cancelled) setStage('failed');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [name, originalSrc, optimizedSrc, size, stage]);
+
+  const advanceImageFallback = useCallback(() => {
     setLoaded(false);
-  }, [dailyUrl, hiRes, memberPhoto, name, overrideSrc]);
+    setStage(current => {
+      if (current === 'optimized' && optimizedSrc !== originalSrc) return 'original';
+      if (current === 'optimized' || current === 'original') return 'gallery-loading';
+      if (current === 'gallery' && galleryIndex + 1 < galleryUrls.length) {
+        setGalleryIndex(index => index + 1);
+        return 'gallery';
+      }
+      return 'failed';
+    });
+  }, [galleryIndex, galleryUrls.length, optimizedSrc, originalSrc]);
+
+  const src = stage === 'original'
+    ? originalSrc
+    : stage === 'gallery'
+      ? galleryUrls[galleryIndex]
+      : stage === 'optimized'
+        ? optimizedSrc
+        : undefined;
+
+  useImageLoadTimeout(
+    Boolean(src && !loaded),
+    `${key}:${stage}:${src ?? ''}`,
+    advanceImageFallback,
+  );
 
   const avatar = (() => {
-    if (hasPhoto && stage !== 'failed') {
-      const src = overrideSrc || memberPhoto || (stage === 'hi' && hiRes
-        ? hiRes
-        : stage === 'alt' && entry
-          ? entry.thumb
-          : dailyUrl ?? entry!.thumb);
+    if (src && stage !== 'failed') {
+      const placeholderHue = hashSeed(name) % 360;
       return (
         <span
           className={`relative inline-flex rounded-full overflow-hidden shrink-0 ${loaded ? '' : 'art-loading'}`}
           style={{ width: size, height: size }}
         >
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 flex items-center justify-center font-mono font-black text-white"
+            style={{
+              fontSize: size * 0.32,
+              background: `radial-gradient(circle at 35% 35%, hsl(${placeholderHue}, 72%, 24%), #050b14 78%)`,
+              textShadow: `0 0 8px hsl(${placeholderHue}, 90%, 62%)`,
+            }}
+          >
+            {initialsFor(name)}
+          </span>
           <img
             src={src}
             alt={name}
@@ -107,15 +177,8 @@ export default function ArtistAvatar({
             width={size}
             height={size}
             onLoad={() => setLoaded(true)}
-            onError={() => {
-              setLoaded(false);
-              setStage(s => {
-                if (s === 'hi') return 'std';
-                if (s === 'std' && !isDailyPrimary && entry) return 'alt';
-                return 'failed';
-              });
-            }}
-            className={`rounded-full object-cover shrink-0 transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
+            onError={advanceImageFallback}
+            className={`relative rounded-full object-cover shrink-0 transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'} ${className}`}
             style={{ width: size, height: size, border: `1px solid ${tc.c1}30` }}
           />
         </span>

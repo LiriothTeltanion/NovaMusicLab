@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./public/social-preview.png" width="100%" alt="Nova Music Lab Living Sonic Cartography — your listening history as a living digital museum">
+<img src="./public/social-preview-v2.png" width="100%" alt="Nova Music Lab — a living atlas built from verified listening history">
 
 <br>
 
@@ -11,15 +11,53 @@
 
 ### Your listening history, transformed into a living personal museum 🎧
 
-Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive. Nova Music Lab processes raw files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
+Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Current stable version:** `1.1.0` — **Nova Music Lab v1.1: Expedition Console**. It adds the Living Artist Atlas, functional museum journeys and stricter artist-identity evidence while preserving the v1 evidence-first contract. IndexedDB **schema v4** is a storage contract, not the product version.
+**Current deployed version:** `1.1.0` — deployed **2026-07-26**.
+
+**Next version:** `1.2.0` — planned **2026-07-29**, not published or deployed. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
 [Follow the product roadmap](./ROADMAP.md)
 
 </div>
+
+---
+
+## ⚡ Try it in 30 seconds
+
+1. Open the [live flagship](https://liriothteltanion.github.io/NovaMusicLab/) and enter the museum.
+2. Start in **Explore**, the visual default; switch to **Guided** whenever you want plain-language context.
+3. Open **Atlas** to explore artists, media and archive evidence.
+4. Switch to **Deep Dive** when you want methodology and provenance.
+5. In `1.2.0` — planned **2026-07-29**, not published or deployed — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
+
+No account is required for the public exhibition or local archive import.
+
+---
+
+## 🖼️ Planned release preview
+
+These captures preview `1.2.0` — planned **2026-07-29**, not published or deployed. They are generated from the production build with `npm run screenshots:capture`.
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="./assets/screenshots/nova-home-desktop.jpg" alt="Nova Music Lab home on desktop with the futuristic museum entrance">
+      <br><strong>Fast first entry</strong> — the flagship opens as a visual invitation, not a dense dashboard.
+    </td>
+    <td width="50%">
+      <img src="./assets/screenshots/living-artist-atlas-desktop.jpg" alt="Living Artist Atlas on desktop with artist rail, evidence and media">
+      <br><strong>Living Artist Atlas</strong> — artist identity, listening evidence, releases and media share one navigable room.
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="./assets/screenshots/share-hebrew-light-mobile.jpg" width="390" alt="Share and Feedback room in Hebrew RTL and daylight theme on mobile">
+  <br><strong>One system across contexts</strong> — mobile, Hebrew RTL and a light theme use the same information architecture.
+</p>
 
 ---
 
@@ -43,38 +81,52 @@ The project is built around four commitments:
 | **Flagship Exhibition** | A curated demonstration of Kevin's personal music museum and Nova's full visual language. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
 | **My Museum** | A visitor imports supported exports and rebuilds the quantitative museum from the active archive. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. |
 
-The v1 milestone is formalizing this boundary everywhere: flagship-only stories must never masquerade as visitor-derived analysis, and every interpretive room must disclose its evidence level.
+The evidence-first milestone, completed in `1.0.0` — published **2026-07-16** and now superseded — formalized this boundary everywhere: flagship-only stories must never masquerade as visitor-derived analysis, and every interpretive room must disclose its evidence level.
 
 ---
 
-## 🛰️ Supported listening archives
+## 🛰️ Supported listening archives and library snapshots
 
 <img src="./assets/readme/source-constellation.svg" width="100%" alt="Five listening sources orbit a local browser analysis core">
 
-| Source | Supported export | Strongest evidence |
-|---|---|---|
-| **Last.fm** | CSV export | Long chronology, scrobbles, sessions and streaks |
-| **Spotify** | Extended Streaming History JSON | Duration, platforms, country, skips and short plays |
-| **Apple Music** | `Play Activity.csv` | Apple listening activity and playback history |
-| **ListenBrainz** | Listen JSON export | Open timestamped listening records |
-| **YouTube / YouTube Music** | Google Takeout JSON or HTML history | Music video and YouTube Music activity |
-| **Combined museum** | Any supported combination | Source labels, normalization and evidence-aware overlap handling |
+| Source | Supported export | Strongest evidence | Role |
+|---|---|---|---|
+| **Last.fm** | CSV export | Long chronology, scrobbles, sessions and streaks | Event timeline |
+| **Spotify** | Extended Streaming History JSON | Duration, platforms, country, skips and short plays | Event timeline |
+| **Apple Music** | `Play Activity.csv` | Apple listening activity and playback history | Event timeline |
+| **ListenBrainz** | Listen JSON export | Open timestamped listening records | Event timeline |
+| **YouTube / YouTube Music** | Google Takeout JSON or HTML history | Music video and YouTube Music activity | Event timeline |
+| **MusicBee** | iTunes-compatible library XML | Local artists, albums, tracks, genres and saved counters | Separate library snapshot |
+| **Combined museum** | Any supported combination | Source labels, normalization and evidence-aware overlap handling | Evidence-aware view |
 
 Imports can be mixed. Source-specific fields remain source-specific: for example, Last.fm alone cannot prove Spotify device or skip behavior.
 
+MusicBee is intentionally different: it shows what is in a local library, but
+its cumulative play counts are not added to Spotify, Last.fm or the historical
+timeline. Read the [MusicBee import guide](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md)
+for the simple export steps, retained fields and privacy boundary.
+
 ---
 
-## 🏛️ The museum journey
+## 🏛️ Museum hubs and experience depth
 
 <img src="./assets/readme/museum-journey.svg" width="100%" alt="Nova Music Lab journey from private archive to evidence-linked report">
 
-Nova Music Lab offers three persistent expedition paths:
+The museum is organized into five stable hubs:
 
-- **Quick Tour** — a nine-room guided route from archive overview to the Living Artist Atlas and final report.
-- **Full Museum** — all 22 narrative, cultural, identity, archive and laboratory rooms.
-- **Lab Tools** — an eight-room working route for AI assistance, comparison, museums, platforms, data quality, deep statistics, reports and import.
+- **Home** — orientation, archive overview, sharing and feedback.
+- **Pulse** — recent movement, loops, achievements and yearly summaries.
+- **Atlas** — Living Artist Atlas, rankings and cultural geography.
+- **Stories** — eras, identity, emotion and the final narrative.
+- **Data Lab** — import, local audio, comparisons, quality and advanced statistics.
 
-The **Expedition Console** keeps the chosen journey, room sequence and active-archive capsule visible across desktop, mobile and command-palette navigation. `Ctrl/Cmd+K` opens Nova Command for keyboard-first room and journey access.
+Three persistent depths change how information is presented without hiding rooms or changing the URL:
+
+- **Guided** — opens friendly introductions and gives a clear next step.
+- **Explore** — the balanced default: a calm, visual, self-directed museum visit.
+- **Deep Dive** — opens methodology and prioritizes evidence, limits and advanced controls.
+
+The **Expedition Console** keeps depth and the active-archive capsule visible across desktop and mobile. `Ctrl/Cmd+K` opens Nova Command for keyboard-first access to the complete museum. Read the [experience contract](./docs/product/EXPERIENCE_MODEL.md).
 
 Representative rooms include:
 
@@ -87,6 +139,9 @@ Representative rooms include:
 | **Emotional Map** | Interpretive mood stations grounded in available signals |
 | **Cultural Map** | Artist origins and listening geography |
 | **Living Artist Atlas** | Searchable artist territories with archive weight, galleries, tracks, albums, offline profiles, provenance and opt-in official media |
+| **Share & Feedback** | Browser sharing, WhatsApp invitation and structured local feedback without requiring an account |
+| **Audio Lab** | Private local preview and file evidence boundary; advanced acoustic analysis is explicitly not run yet |
+| **Source Observatory** | Last.fm, Spotify, YouTube, Apple Music and ListenBrainz coverage, field capabilities and honest missing-source states |
 | **Data Quality Center** | Coverage, limitations and enrichment priorities |
 | **Final Report** | A guided closing narrative and exportable summary |
 
@@ -101,6 +156,7 @@ Heavy rooms and data catalogs are lazy-loaded so the museum shell can appear bef
 ### What stays local
 
 - Visitor-selected raw exports are parsed in the browser.
+- A selected MusicBee XML is reduced to an allowlisted library snapshot; local file paths and persistent IDs are discarded.
 - Imported museum state is stored in browser IndexedDB, not in a Nova backend database.
 - Raw Spotify fields that are not required for analysis, such as IP addresses, are not retained.
 - Clearing browser storage removes the local visitor museum from that browser profile.
@@ -119,6 +175,7 @@ Heavy rooms and data catalogs are lazy-loaded so the museum shell can appear bef
 | Remote artwork | A room displays curated external media | Image request metadata |
 | YouTube/Spotify media | A visitor opens an embed or verified external link | The provider receives the request |
 | Gemini | Only after a visitor explicitly configures a personal key and sends a question | The question and a bounded aggregate summary; never the raw export file |
+| Share / WhatsApp | A visitor explicitly opens the share sheet or WhatsApp draft | The chosen app receives the prepared public link and text |
 
 Nova Music Lab is therefore **local-first**, not network-isolated. A stricter no-remote-media Privacy Mode is tracked in the [roadmap](./ROADMAP.md).
 
@@ -169,13 +226,16 @@ flowchart LR
 | Layer | Primary responsibility |
 |---|---|
 | `src/utils/parser.ts` | Source parsing, normalization and merged dataset construction |
+| `src/utils/musicBeeSnapshot.ts` | Privacy-safe MusicBee XML parsing into a separate local library snapshot |
 | `src/utils/analytics.ts` | Shared quantitative calculations |
 | `src/utils/datasetStorage.ts` | Local browser persistence and portable dataset validation |
-| `src/db/` | Dexie/IndexedDB schema v4, typed storage outcomes, atomic museum activation and compatibility stores |
+| `src/db/` | Dexie/IndexedDB schema revision 4, typed storage outcomes, atomic museum activation and compatibility stores |
 | `src/knowledge/` | Validated artist-knowledge manifest and provenance-rich visual records |
 | `src/components/museumVisualIdentity.ts` | Shared room families, palettes, motion atmospheres and icon identity |
 | `src/utils/identityEngine.ts` | Deterministic generative identity |
 | `src/context/AppContext.tsx` | Language, theme and navigation state |
+| `src/context/ExperienceContext.tsx` | Guided, Explore and Deep Dive preference with additive legacy migration |
+| `src/components/shell/museumNavigation.ts` | Five-hub room ownership and canonical hub entry points |
 | `src/App.tsx` | Museum shell, routing, transitions and data gate |
 | `src/data/` | Curated public enrichment and the reviewed flagship bundle |
 
@@ -195,7 +255,7 @@ Database design, migrations and failure states are documented in [Storage and mi
 - Reduced-motion behavior across application transitions, charts, canvas art and static repository artwork.
 - Exact-value chart tables and CSV exports for non-visual access.
 
-The v1 accessibility pass expands automated contrast, axe, browser-matrix and visual-regression coverage. See [Accessibility](./docs/design/ACCESSIBILITY.md).
+`1.2.0` — planned **2026-07-29**, not published or deployed — adds Playwright browser checks at 1440×900 and 390×844 plus automated axe WCAG A/AA checks. Automated scans catch only some issues, so keyboard, screen-reader semantics, contrast, RTL and visual review remain manual release gates. See [Accessibility](./docs/design/ACCESSIBILITY.md).
 
 ---
 
@@ -292,6 +352,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 | [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
 | [Privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) | Assets, imports, network and public-data risks |
 | [Data sources](./docs/product/DATA_SOURCES.md) | Source capabilities and honest limitations |
+| [MusicBee library snapshot](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md) | MusicBee XML export, retained fields, privacy and non-timeline limits |
 | [Public data policy](./docs/data/PUBLIC_DATA_POLICY.md) | Rules for the published flagship bundle |
 | [Artwork schema](./docs/data/ARTWORK_SCHEMA.md) | Artist, album, track and gallery asset contracts |
 | [Visual system](./docs/design/VISUAL_SYSTEM.md) | Living Sonic Cartography, icons and motion tiers |
@@ -299,7 +360,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 | [Release guide](./docs/operations/RELEASE.md) | Versioning, tags, Pages and rollback process |
 | [Contributing](./CONTRIBUTING.md) | Branch, commit, privacy and review expectations |
 | [Security](./SECURITY.md) | Private vulnerability reporting |
-| [Roadmap](./ROADMAP.md) | Ordered v1 and post-v1 priorities |
+| [Roadmap](./ROADMAP.md) | Ordered current and future product priorities |
 | [Changelog](./CHANGELOG.md) | Durable release history |
 
 ---
@@ -312,7 +373,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`v1.1.0` is the latest tagged stable release and the version served by the protected GitHub Pages deployment. Its release acceptance covers the full automated gate plus English, Spanish, Hebrew RTL, mobile, tablet, desktop, light/dark theme and live artifact verification. Product versions and IndexedDB schema versions remain deliberately independent.
+`v1.1.0` — deployed **2026-07-26** — is the latest tagged stable release and the version served by the protected GitHub Pages deployment. `1.2.0` — planned **2026-07-29**, not published or deployed — remains local until its automated and manual acceptance gates pass. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 

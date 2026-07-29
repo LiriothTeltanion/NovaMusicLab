@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown, Database, ListChecks, ShieldCheck } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useExperienceDepth } from '../context/ExperienceContext';
 
 interface MethodPoint {
   readonly title: string;
@@ -25,9 +26,8 @@ interface MethodologyPanelProps {
 }
 
 /**
- * Methodology/how-this-is-computed reference block. Collapsed by default -
- * same convention as SectionNarrative: the data leads, the reading is one
- * click away.
+ * Deep Dive opens methodology automatically; Guided and Explore keep the
+ * reference one click away so the primary experience stays calm.
  */
 export default function MethodologyPanel({
   eyebrow,
@@ -39,10 +39,17 @@ export default function MethodologyPanel({
   className = '',
 }: MethodologyPanelProps) {
   const { tc, t } = useApp();
-  const [expanded, setExpanded] = useState(false);
+  const experienceDepth = useExperienceDepth();
+  const [expanded, setExpanded] = useState(experienceDepth === 'deep-dive');
   const color = tc[accent];
   const secondary = accent === 'c1' ? tc.c2 : tc.c1;
   const toggleHint = expanded ? t.collapsible.hideMethodology : t.collapsible.viewMethodology;
+
+  useEffect(() => {
+    setExpanded(experienceDepth === 'deep-dive');
+  }, [experienceDepth]);
+
+  if (experienceDepth !== 'deep-dive') return null;
 
   return (
     <section className={`glass-panel rounded-3xl p-5 md:p-6 border ${className}`} style={{ borderColor: `${color}24` }}>
@@ -51,7 +58,7 @@ export default function MethodologyPanel({
           type="button"
           onClick={() => setExpanded(v => !v)}
           aria-expanded={expanded}
-          className="flex items-start justify-between gap-3 text-left w-full group"
+          className="flex w-full items-start justify-between gap-3 text-start group"
         >
           <div className="flex items-start gap-3 min-w-0">
             <div className="mt-0.5 rounded-2xl p-2 shrink-0" style={{ backgroundColor: `${color}16`, border: `1px solid ${color}30` }}>

@@ -1,6 +1,7 @@
 {
   "project": "Nova Music Lab - Datos Importados (Last.fm CSV + Spotify JSON + YouTube JSON/HTML)",
   "generated_at": "2026-07-14T01:13:06.127Z",
+  "narrative_scope": "flagship",
   "core_metrics": {
     "total_plays": 80550,
     "unique_artists": 6413,

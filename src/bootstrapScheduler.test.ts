@@ -7,6 +7,23 @@ afterEach(() => {
 });
 
 describe('local data bootstrap scheduling', () => {
+  it('keeps bootstrap outside the first-room network window', async () => {
+    const { bootstrapTimingForNetwork } = await import('./bootstrapScheduler');
+
+    expect(bootstrapTimingForNetwork({ effectiveType: '4g' })).toMatchObject({
+      constrainedNetwork: false,
+      settleDelay: 10_000,
+    });
+    expect(bootstrapTimingForNetwork({ effectiveType: '3g' })).toMatchObject({
+      constrainedNetwork: true,
+      settleDelay: 20_000,
+    });
+    expect(bootstrapTimingForNetwork({ saveData: true })).toMatchObject({
+      constrainedNetwork: true,
+      settleDelay: 20_000,
+    });
+  });
+
   it('reports repeated bootstrap failures only once', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const failure = new Error('IndexedDB blocked');

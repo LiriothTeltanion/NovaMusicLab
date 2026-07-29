@@ -6,6 +6,7 @@ import ArtistAvatar from './ArtistAvatar';
 import CoverArt from './CoverArt';
 import SectionNarrative from './SectionNarrative';
 import { localeFor } from '../utils/i18n';
+import { playMuseumSound } from '../audio/sonicFeedback';
 
 interface ObsessionDetectorProps {
   data: MusicDnaData;
@@ -48,34 +49,45 @@ export default function ObsessionDetector({ data }: ObsessionDetectorProps) {
               obsessions.map((obs, idx) => (
                  <div 
                   key={`${obs.artist}-${obs.track}-${obs.date}-${idx}`} 
-                  className="flex items-center justify-between p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
+                  className="group relative flex items-center justify-between overflow-hidden p-3 bg-cyan-950/10 border border-cyan-500/10 rounded-2xl hover:border-cyberCyan/40 transition-all cursor-pointer hover:scale-[1.01] active:scale-[0.99]"
                   role="button"
                   tabIndex={0}
                   aria-label={`${obs.artist} — ${obs.track}`}
                   onKeyDown={(e) => {
                     if (e.key !== 'Enter' && e.key !== ' ') return;
                     e.preventDefault();
+                    playMuseumSound('open');
                     setSelectedArtistName(obs.artist);
                     setSelectedTrackKey(trackKey(obs.artist, obs.track));
                     setTopSubTab('tracks');
                     setActiveTab('top');
                   }}
                   onClick={() => {
+                    playMuseumSound('open');
                     setSelectedArtistName(obs.artist);
                     setSelectedTrackKey(trackKey(obs.artist, obs.track));
                     setTopSubTab('tracks');
                     setActiveTab('top');
                   }}
                 >
-                  <div className="flex items-center space-x-3 truncate pr-4">
-                    <CoverArt artist={obs.artist} title={obs.track} kind="track" size={36} />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -end-3 -top-3 opacity-[0.24] transition duration-500 group-hover:scale-105 group-hover:opacity-[0.32] motion-reduce:transform-none"
+                  >
+                    <CoverArt artist={obs.artist} title={obs.track} kind="track" size={112} />
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#07111e]/95 via-[#07111e]/78 to-[#07111e]/36"
+                  />
+                  <div className="relative z-10 flex items-center space-x-3 truncate pr-4">
                     <div className="truncate">
                       <p className="text-xs font-bold text-white truncate">{obs.track}</p>
                       <p className="text-[10px] text-gray-400 truncate">{obs.artist}</p>
                       <p className="text-[9px] font-mono text-cyberCyan/70 mt-1">{formatDate(obs.date)}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 bg-cyberPink/10 px-2.5 py-1 rounded-full border border-cyberPink/20 font-mono text-xs font-black text-cyberPink shrink-0">
+                  <div className="relative z-10 flex items-center space-x-1 bg-cyberPink/10 px-2.5 py-1 rounded-full border border-cyberPink/20 font-mono text-xs font-black text-cyberPink shrink-0">
                     <Flame className="w-3.5 h-3.5" />
                     <span>{obs.count}x</span>
                   </div>

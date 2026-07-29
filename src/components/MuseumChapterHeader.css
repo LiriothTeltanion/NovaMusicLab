@@ -104,6 +104,17 @@
   max-width: 42rem;
 }
 
+/* The cinematic title is sized against this column rather than the viewport.
+ * The room is narrowed by the sidebar *and* by the art panel, so a
+ * viewport-based clamp asked for a font larger than its own column could hold
+ * and long words broke mid-word ("The Personalit/y Mirror" — 11 characters
+ * needing 411px in a 336px column). `cqi` keeps the display face proportional
+ * to the space it actually has. Containment is safe here: every grid track
+ * that holds this element is sized by fr/minmax, never by its content. */
+.museum-chapter--cinematic .museum-chapter__copy {
+  container-type: inline-size;
+}
+
 .museum-chapter__eyebrow {
   display: flex;
   flex-wrap: wrap;
@@ -348,8 +359,17 @@
   letter-spacing: 0.15em;
 }
 
+/* The two labels are short and must stay on one line; the rule between them
+ * absorbs whatever is left. Without this the line's flex basis claimed the
+ * whole row and both labels wrapped ("NOVA MUSIC / LAB", "01 / 9"). */
+.museum-chapter__footer > span:not(.museum-chapter__footer-line) {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .museum-chapter__footer-line {
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 1.5rem;
   height: 1px;
   background: linear-gradient(90deg, color-mix(in srgb, var(--chapter-primary) 42%, transparent), color-mix(in srgb, var(--chapter-secondary) 20%, transparent));
 }
@@ -600,9 +620,9 @@
   }
 }
 
-/* Expedition journeys deliberately change the editorial rhythm without
-   duplicating the chapter component. Full Museum and Lab Tools stay compact;
-   Quick Tour and Artist Atlas receive a larger, cinematic portal. */
+/* Experience depth changes editorial rhythm without duplicating the chapter
+   component. Guided and every Atlas room receive a cinematic portal; Explore
+   and Deep Dive keep non-Atlas rooms compact. */
 @media (min-width: 921px) {
   .museum-chapter--compact,
   .museum-chapter--compact .museum-chapter__content {
@@ -627,17 +647,30 @@
     min-height: clamp(17rem, 29vw, 21rem);
   }
 
+  /* Cinematic headers go two-column here: title + metrics. These breakpoints
+   * are viewport-based, but the grid lives inside the room, which the sidebar
+   * narrows by ~150px — at 940px viewport the section is only 788px wide,
+   * which cannot hold a readable title plus metrics plus the decorative art.
+   * Forcing all three starved the title to ~166px ("The Contro/l Room" over
+   * three lines) and pushed the art panel 58px past the clipping boundary,
+   * cutting off its caption. The art returns at 1100px, where it fits. */
   .museum-chapter--cinematic .museum-chapter__content {
-    grid-template-columns: minmax(0, 1.35fr) minmax(12rem, 14rem) minmax(18rem, 24rem);
+    grid-template-columns:
+      minmax(min(100%, 21rem), 1.35fr)
+      minmax(11rem, 13rem);
     gap: clamp(1.2rem, 2.6vw, 2.4rem);
     padding: clamp(1.5rem, 3vw, 2.6rem);
     padding-bottom: clamp(2.2rem, 3.6vw, 2.9rem);
   }
 
+  .museum-chapter--cinematic .museum-chapter__art {
+    display: none;
+  }
+
   .museum-chapter--cinematic h1 {
-    max-width: 14ch;
-    font-size: clamp(3.15rem, 5.2vw, 5.35rem);
-    line-height: 0.9;
+    max-width: 18ch;
+    font-size: clamp(2.6rem, 4.4vw, 4.2rem);
+    line-height: 0.94;
   }
 
   .museum-chapter--cinematic .museum-chapter__description {
@@ -663,6 +696,29 @@
 
   .museum-chapter--cinematic .museum-chapter__art svg {
     width: min(100%, 22rem);
+  }
+}
+
+/* Wide enough for the full cinematic portal: title, metrics and the
+ * decorative art panel, without the art overflowing the clipped section.
+ * The title leads: previously the art claimed 352px against the title's 336px,
+ * which is backwards for a header whose subject is the title. */
+@media (min-width: 1100px) {
+  .museum-chapter--cinematic .museum-chapter__content {
+    grid-template-columns:
+      minmax(min(100%, 22rem), 1.7fr)
+      minmax(10.5rem, 12rem)
+      minmax(14rem, 18rem);
+  }
+
+  .museum-chapter--cinematic .museum-chapter__art {
+    display: block;
+  }
+
+  .museum-chapter--cinematic h1 {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 13.5cqi, 4.6rem);
+    line-height: 0.9;
   }
 }
 

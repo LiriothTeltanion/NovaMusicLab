@@ -6,7 +6,7 @@ dependency. The application can therefore preserve a private museum without
 uploading raw listening history.
 
 This document names a storage schema, not a product generation. The application
-uses schema v4 on both the `1.0.0` and `1.1.0` stable releases.
+uses schema v4 on `1.0.0` — published 2026-07-16 and now superseded — and `1.1.0` — deployed 2026-07-26.
 
 ## Safety contract
 

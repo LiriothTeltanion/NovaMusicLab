@@ -94,15 +94,17 @@ describe('MuseumChapterHeader', () => {
     expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('he-IL'))).toHaveLength(1);
   });
 
-  it('localizes a synthetic dominant genre without changing the dataset key', () => {
+  it('does not present an unclassified bucket as a dominant musical language', () => {
     const fixture: MusicDnaData = {
       ...data,
       top_genres: [{ name: 'Unclassified', plays: data.core_metrics.total_plays }],
+      top_artists: data.top_artists.map(artist => ({ ...artist, genre: 'Unclassified' })),
     };
 
     render(<MuseumChapterHeader activeTab="personality" data={fixture} lang="he" />);
 
-    expect(screen.getByText('לא מסווג')).toBeInTheDocument();
+    expect(screen.getByText('לא זמין')).toBeInTheDocument();
+    expect(screen.queryByText('לא מסווג')).not.toBeInTheDocument();
     expect(screen.queryByText('Unclassified')).not.toBeInTheDocument();
     expect(fixture.top_genres[0].name).toBe('Unclassified');
   });

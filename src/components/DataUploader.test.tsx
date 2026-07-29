@@ -9,6 +9,54 @@ import { AppProvider } from '../context/AppContext';
 import defaultMusicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
 import { localeFor, type Lang } from '../utils/i18n';
+import {
+  MAX_MUSICBEE_XML_BYTES,
+  MusicBeeSnapshotError,
+  parseMusicBeeLibraryXml,
+} from '../utils/musicBeeSnapshot';
+
+class TestMusicBeeWorker {
+  static holdResponses = false;
+  static instances: TestMusicBeeWorker[] = [];
+
+  onmessage: ((event: MessageEvent) => void) | null = null;
+  onerror: ((event: ErrorEvent) => void) | null = null;
+  terminated = false;
+
+  constructor() {
+    TestMusicBeeWorker.instances.push(this);
+  }
+
+  postMessage({ file }: { file: File }) {
+    if (TestMusicBeeWorker.holdResponses) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (this.terminated) return;
+      try {
+        const snapshot = parseMusicBeeLibraryXml(String(reader.result ?? ''));
+        this.onmessage?.({ data: { ok: true, snapshot } } as MessageEvent);
+      } catch (error) {
+        const parserError = error instanceof MusicBeeSnapshotError
+          ? error
+          : new MusicBeeSnapshotError('INVALID_XML', 'Test worker parsing failed.');
+        this.onmessage?.({
+          data: {
+            ok: false,
+            error: { code: parserError.code, message: parserError.message },
+          },
+        } as MessageEvent);
+      }
+    };
+    reader.onerror = () => {
+      if (!this.terminated) this.onerror?.(new ErrorEvent('error'));
+    };
+    reader.readAsText(file);
+  }
+
+  terminate() {
+    this.terminated = true;
+  }
+}
 
 function createOperationCoordinator(): DatasetOperationCoordinator {
   let nextId = 0;
@@ -48,6 +96,31 @@ function listenBrainzFile(name: string, trackName = 'In Blur') {
   }])], name, { type: 'application/json' });
 }
 
+function musicBeeXmlFile(name = 'MusicBeeLibrary.xml') {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+    <plist version="1.0">
+      <dict>
+        <key>Tracks</key>
+        <dict>
+          <key>1</key>
+          <dict>
+            <key>Track ID</key><integer>1</integer>
+            <key>Name</key><string>Archive Track</string>
+            <key>Artist</key><string>Archive Artist</string>
+            <key>Album</key><string>Archive Album</string>
+            <key>Genre</key><string>Progressive Metal</string>
+            <key>Play Count</key><integer>7</integer>
+            <key>Rating</key><integer>80</integer>
+            <key>Play Date UTC</key><date>2026-07-20T18:00:00Z</date>
+            <key>Location</key><string>file://localhost/C:/Users/listener/Music/private.flac</string>
+            <key>Persistent ID</key><string>PRIVATE-LIBRARY-ID</string>
+          </dict>
+        </dict>
+      </dict>
+    </plist>`;
+  return new File([xml], name, { type: 'application/xml' });
+}
+
 // STRINGS itself isn't exported from AppContext.tsx, so the expected copy is
 // mirrored here from the es/en `uploader` blocks to keep assertions exact.
 const STRINGS = {
@@ -57,7 +130,7 @@ const STRINGS = {
       browseButton: 'Examinar archivos localmente',
       dropZoneAriaLabel: 'Subir archivos de historial musical',
       noFilesError:
-        'Por favor, sube un CSV de Last.fm/Apple Music, JSON de Spotify/ListenBrainz o JSON/HTML de YouTube Takeout.',
+        'Sube un CSV/JSON/HTML de historial compatible o una biblioteca XML de iTunes generada por MusicBee.',
       wizardTitle: 'Elige tu fuente, descarga tu historial y súbelo aquí',
       formatsLabel: 'Formatos admitidos',
     },
@@ -68,7 +141,7 @@ const STRINGS = {
       browseButton: 'Browse local files',
       dropZoneAriaLabel: 'Upload music history files',
       noFilesError:
-        'Please upload Last.fm/Apple Music CSV, Spotify/ListenBrainz JSON or YouTube Takeout JSON/HTML files.',
+        'Please upload a supported music-history CSV/JSON/HTML file or a MusicBee iTunes XML library.',
       wizardTitle: 'Choose your source, download your history and upload it here',
       formatsLabel: 'Accepted formats',
     },
@@ -88,6 +161,9 @@ describe('DataUploader', () => {
   beforeEach(() => {
     window.localStorage.clear();
     baseProps.operationCoordinator = createOperationCoordinator();
+    TestMusicBeeWorker.holdResponses = false;
+    TestMusicBeeWorker.instances = [];
+    vi.stubGlobal('Worker', TestMusicBeeWorker);
   });
 
   afterEach(() => {
@@ -142,7 +218,7 @@ describe('DataUploader', () => {
   });
 
   it('shows the "no files" error when an unsupported file extension is selected', async () => {
-    // The hidden input has accept=".csv,.json,.html,.htm", which user-event's default
+    // The hidden input has accept=".csv,.json,.html,.htm,.xml", which user-event's default
     // upload() enforces client-side (silently dropping non-matching files
     // before they ever reach the input, like a real browser file picker
     // would). Disable that filtering so a file with the wrong extension
@@ -458,6 +534,141 @@ describe('DataUploader', () => {
     expect(parsed.source_summary?.apple_music_plays).toBe(1);
     expect(parsed.top_artists[0].name).toBe('Bring Me the Horizon');
     expect(await screen.findByText('Cobertura del catálogo local de artistas')).toBeInTheDocument();
+  });
+
+  it('attaches a sanitized MusicBee library without changing timeline totals', async () => {
+    window.localStorage.setItem('nml_lang', 'es');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    expect(input).toHaveAttribute('accept', expect.stringContaining('.xml'));
+    await user.upload(input, musicBeeXmlFile());
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    const [parsed, sourceLabel] = onDataLoaded.mock.calls[0];
+    expect(parsed.core_metrics).toEqual(baseProps.currentData.core_metrics);
+    expect(parsed.source_summary).toEqual(baseProps.currentData.source_summary);
+    expect(parsed.musicbee_snapshot).toMatchObject({
+      source: 'musicbee_itunes_xml',
+      track_count: 1,
+      artist_count: 1,
+      total_play_count: 7,
+    });
+    expect(JSON.stringify(parsed.musicbee_snapshot)).not.toContain('private.flac');
+    expect(JSON.stringify(parsed.musicbee_snapshot)).not.toContain('PRIVATE-LIBRARY-ID');
+    expect(sourceLabel).toContain('Biblioteca MusicBee · 1 canciones');
+    expect(await screen.findByText(
+      'Biblioteca MusicBee conectada: 1 canciones y 1 artistas. Los totales del timeline no cambiaron.',
+    )).toBeInTheDocument();
+  });
+
+  it('terminates an in-flight MusicBee worker when the uploader unmounts', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    TestMusicBeeWorker.holdResponses = true;
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    const operationCoordinator = createOperationCoordinator();
+    const rendered = render(
+      <AppProvider>
+        <DataUploader
+          onDataLoaded={onDataLoaded}
+          {...baseProps}
+          operationCoordinator={operationCoordinator}
+        />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, musicBeeXmlFile());
+    await waitFor(() => expect(TestMusicBeeWorker.instances).toHaveLength(1));
+    expect(TestMusicBeeWorker.instances[0].terminated).toBe(false);
+
+    rendered.unmount();
+
+    await waitFor(() => expect(TestMusicBeeWorker.instances[0].terminated).toBe(true));
+    await waitFor(() => expect(operationCoordinator.active).toBeNull());
+    expect(onDataLoaded).not.toHaveBeenCalled();
+  });
+
+  it('does not silently carry a previous MusicBee library into a new timeline import', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    const currentWithMusicBee: MusicDnaData = {
+      ...baseProps.currentData,
+      musicbee_snapshot: {
+        schema_version: 1,
+        source: 'musicbee_itunes_xml',
+        library_item_count: 0,
+        track_count: 0,
+        duplicate_item_count: 0,
+        artist_count: 0,
+        album_count: 0,
+        played_track_count: 0,
+        rated_track_count: 0,
+        total_play_count: 0,
+        total_skip_count: 0,
+        latest_played_at: null,
+        tracks: [],
+        artists: [],
+        albums: [],
+        capabilities: {
+          catalog: true,
+          aggregate_play_counts: false,
+          last_played: false,
+          exact_event_timeline: false,
+          sessions: false,
+        },
+        limitations: [
+          'aggregate_counts_not_timeline',
+          'separate_source_totals',
+          'paths_and_ids_discarded',
+        ],
+      },
+    };
+    render(
+      <AppProvider>
+        <DataUploader
+          {...baseProps}
+          currentData={currentWithMusicBee}
+          onDataLoaded={onDataLoaded}
+        />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, listenBrainzFile('new-person.json'));
+
+    await waitFor(() => expect(onDataLoaded).toHaveBeenCalledTimes(1));
+    expect(onDataLoaded.mock.calls[0][0].musicbee_snapshot).toBeUndefined();
+  });
+
+  it('rejects oversized MusicBee XML before reading it into browser memory', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+
+    const oversized = musicBeeXmlFile('oversized.xml');
+    Object.defineProperty(oversized, 'size', {
+      configurable: true,
+      value: MAX_MUSICBEE_XML_BYTES + 1,
+    });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, oversized);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/larger than the 50 MB safe browser limit/i);
+    expect(onDataLoaded).not.toHaveBeenCalled();
   });
 
   it('accepts a ListenBrainz listens JSON export', async () => {

@@ -247,9 +247,81 @@ export interface ArtistProfile {
   live_show: string;
 }
 
+export interface MusicBeeTrackSnapshot {
+  artist: string;
+  title: string;
+  album: string;
+  genre: string;
+  play_count: number;
+  skip_count: number;
+  duration_ms: number | null;
+  rating: number | null;
+  last_played_at: string | null;
+  date_added: string | null;
+}
+
+export interface MusicBeeArtistSnapshot {
+  name: string;
+  track_count: number;
+  album_count: number;
+  total_play_count: number;
+  total_skip_count: number;
+  last_played_at: string | null;
+  genres: string[];
+}
+
+export interface MusicBeeAlbumSnapshot {
+  artist: string;
+  title: string;
+  track_count: number;
+  total_play_count: number;
+}
+
+export type MusicBeeSnapshotLimitation =
+  | 'aggregate_counts_not_timeline'
+  | 'separate_source_totals'
+  | 'paths_and_ids_discarded';
+
+/**
+ * A sanitized aggregate/library layer produced from MusicBee's iTunes-style
+ * XML export. It is deliberately separate from timestamped source events:
+ * Play Count cannot reconstruct every historical listen.
+ */
+export interface MusicBeeLibrarySnapshot {
+  schema_version: 1;
+  source: 'musicbee_itunes_xml';
+  library_item_count: number;
+  track_count: number;
+  duplicate_item_count: number;
+  artist_count: number;
+  album_count: number;
+  played_track_count: number;
+  rated_track_count: number;
+  total_play_count: number;
+  total_skip_count: number;
+  latest_played_at: string | null;
+  tracks: MusicBeeTrackSnapshot[];
+  artists: MusicBeeArtistSnapshot[];
+  albums: MusicBeeAlbumSnapshot[];
+  capabilities: {
+    catalog: true;
+    aggregate_play_counts: boolean;
+    last_played: boolean;
+    exact_event_timeline: false;
+    sessions: false;
+  };
+  limitations: MusicBeeSnapshotLimitation[];
+}
+
 export interface MusicDnaData {
   project: string;
   generated_at: string;
+  /**
+   * Explicit opt-in for narratives written specifically for Nova's public
+   * flagship archive. Visitor imports omit this marker so personal editorial
+   * claims are never carried onto someone else's listening history.
+   */
+  narrative_scope?: 'flagship';
   core_metrics: CoreMetrics;
   top_artists: TopArtist[];
   top_tracks: TopTrack[];
@@ -280,6 +352,7 @@ export interface MusicDnaData {
   monthly_activity?: MonthlyActivity[];
   platform_breakdown?: PlatformPlay[];
   source_summary?: SourceSummary;
+  musicbee_snapshot?: MusicBeeLibrarySnapshot;
   knowledge_summary?: ArtistKnowledgeSummary;
   records?: RecordsSummary;
   /**

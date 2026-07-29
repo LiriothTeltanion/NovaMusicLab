@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
-import ArtistAvatar from './ArtistAvatar';
+import ArtistAvatar, { getArtistPrimaryImageUrl } from './ArtistAvatar';
 import ArtistLeaderboard from './ArtistLeaderboard';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames } from '../utils/analytics';
@@ -17,7 +17,8 @@ import { localizeEraLabel } from '../utils/localeText';
 import { localizeGenreName } from '../utils/localizedDatasetText';
 import { axisProps, barCursor, ChartCanvas, ChartFrame, ChartGradients, GlassTooltip, gridStroke, CHART_ANIMATION } from './chartKit';
 import { localeFor, pickLanguage } from '../utils/i18n';
-import { buildArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/emotionalEngine';
+import { buildCoreArtistMoodProfile, EMOTIONAL_MOOD_TAXONOMY } from '../engines/moodCore';
+import { playMuseumSound } from '../audio/sonicFeedback';
 import Reveal from './Reveal';
 
 interface DashboardProps {
@@ -262,7 +263,7 @@ export default function Dashboard({ data }: DashboardProps) {
   const topArtistsData = useMemo(
     () => data.top_artists.slice(0, 10).map(artist => ({
       ...artist,
-      moodColor: EMOTIONAL_MOOD_TAXONOMY[buildArtistMoodProfile(artist).moodKey].color,
+      moodColor: EMOTIONAL_MOOD_TAXONOMY[buildCoreArtistMoodProfile(artist).moodKey].color,
     })),
     [data.top_artists],
   );
@@ -372,6 +373,9 @@ export default function Dashboard({ data }: DashboardProps) {
   });
 
   const topArtist = topArtistsData[0];
+  const topArtistBackdrop = topArtist
+    ? getArtistPrimaryImageUrl(topArtist.name, 92)
+    : null;
   const topArtistShare = topArtist && metrics.total_plays > 0
     ? (topArtist.plays / metrics.total_plays) * 100
     : 0;
@@ -569,6 +573,7 @@ export default function Dashboard({ data }: DashboardProps) {
   const maxHourlyPlays = Math.max(...hourlyData.map(h => h.plays), 0);
 
   const openArtist = (name: string) => {
+    playMuseumSound('open');
     setSelectedArtistName(name);
     setTopSubTab('artists');
     setActiveTab('top');
@@ -667,10 +672,24 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
 
           <div className="relative flex min-h-[190px] min-w-0 flex-col justify-between overflow-hidden rounded-[1.4rem] border border-white/10 bg-black/20 p-4 backdrop-blur-md sm:min-h-[250px] sm:rounded-[1.75rem] sm:p-5 md:p-7 xl:min-h-[330px]">
+            {topArtistBackdrop ? (
+              <img
+                src={topArtistBackdrop}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 h-full w-full scale-105 object-cover opacity-[0.11] blur-[1px] saturate-125"
+              />
+            ) : null}
             <div
               aria-hidden="true"
-              className="absolute inset-0 opacity-75"
-              style={{ background: `linear-gradient(145deg, ${topArtist?.moodColor ?? tc.c2}22, transparent 48%, ${tc.c1}12)` }}
+              className="absolute inset-0 opacity-90"
+              style={{
+                background: `linear-gradient(145deg, ${topArtist?.moodColor ?? tc.c2}2b, ${tc.bg}b8 52%, ${tc.c1}18)`,
+              }}
             />
             <div className="relative z-10 flex items-center justify-between gap-4">
               <div>
@@ -691,10 +710,10 @@ export default function Dashboard({ data }: DashboardProps) {
               >
                 <div className="relative shrink-0">
                   <div className="absolute -inset-2 rounded-full blur-xl opacity-45" style={{ backgroundColor: topArtist.moodColor }} />
-                  <ArtistAvatar name={topArtist.name} size={92} tooltip={false} className="relative ring-2 ring-white/20 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
+                  <ArtistAvatar name={topArtist.name} size={92} tooltip={false} priority className="relative ring-2 ring-white/20 transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none" />
                 </div>
                 <div className="min-w-0 max-w-full flex-1 pe-8 sm:pe-0">
-                  <p className="type-section type-strong break-words text-xl [overflow-wrap:anywhere] md:text-2xl"><bdi dir="auto">{topArtist.name}</bdi></p>
+                  <p className="type-section type-strong break-words text-xl md:text-2xl"><bdi dir="auto">{topArtist.name}</bdi></p>
                   <p className="type-caption type-muted mt-2 max-w-full truncate"><bdi dir="auto">{topArtist.genre}</bdi></p>
                 </div>
                 <ArrowUpRight className="nova-mirror-rtl absolute end-1 top-1 h-5 w-5 shrink-0 text-gray-500 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white motion-reduce:transform-none sm:static" aria-hidden="true" />
@@ -787,7 +806,7 @@ export default function Dashboard({ data }: DashboardProps) {
               <div key={genre.name} className="flex min-h-8 items-center justify-between gap-3 text-xs">
                 <div className="flex min-w-0 items-center gap-2">
                   <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                  <span className="min-w-0 break-words text-gray-300 [overflow-wrap:anywhere]"><bdi dir="auto">{genre.name}</bdi></span>
+                  <span className="min-w-0 break-words text-gray-300"><bdi dir="auto">{genre.name}</bdi></span>
                 </div>
                 <span className="ms-2 shrink-0 font-mono font-bold" style={{ color: COLORS[idx % COLORS.length] }}>
                   {genre.plays.toLocaleString(locale)} · {genre.share}%

@@ -499,7 +499,11 @@ p, span, button, a, svg {
     line-height: var(--type-leading-title);
     letter-spacing: var(--type-tracking-title);
     text-wrap: balance;
-    overflow-wrap: anywhere;
+    /* `break-word`, never `anywhere`. `anywhere` breaks inside words at any
+     * character ("The Contro/l Room") and, worse, makes min-content width one
+     * character wide, so headings get starved of space by flex/grid parents.
+     * `break-word` only breaks a word that cannot fit on a line by itself. */
+    overflow-wrap: break-word;
     transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -555,7 +559,7 @@ p, span, button, a, svg {
     line-height: 0.88;
     letter-spacing: var(--type-tracking-display);
     text-wrap: balance;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .type-title {
@@ -565,7 +569,7 @@ p, span, button, a, svg {
     line-height: var(--type-leading-title);
     letter-spacing: var(--type-tracking-title);
     text-wrap: balance;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .type-section {

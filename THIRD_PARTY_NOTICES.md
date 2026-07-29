@@ -16,6 +16,7 @@ The package lock is the authoritative dependency inventory. Principal packages i
 - [Recharts](https://recharts.org/);
 - [Lucide](https://lucide.dev/);
 - [Vitest](https://vitest.dev/) and Testing Library;
+- [Playwright](https://playwright.dev/) and [axe-core](https://github.com/dequelabs/axe-core) for browser and accessibility checks;
 - `canvas-confetti` and `html-to-image`.
 
 Consult `package-lock.json` and the installed package license files for exact versions and license texts.
@@ -42,4 +43,4 @@ The Gemini assistant is opt-in and uses a visitor-supplied API key. Google API t
 
 The repository contains original Nova Music Lab interface code, design, generated art, curated narratives and an intentionally published flagship aggregate dataset. No repository-wide open-source license has been selected yet. Until that decision is recorded in a `LICENSE` file, do not assume that project-specific code, datasets or creative assets grant reuse rights beyond those provided by applicable law.
 
-Before the stable v1 release, the maintainer should choose and document separate treatment where appropriate for software code, original creative content, public datasets and third-party media.
+Each stable release must continue to document separate treatment where appropriate for software code, original creative content, public datasets and third-party media.

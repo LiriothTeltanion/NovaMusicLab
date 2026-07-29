@@ -6,7 +6,58 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-## [1.1.0] - 2026-07-22
+No changes recorded yet.
+
+## [1.2.0] - 2026-07-29
+
+Status: **planned; not published or deployed**.
+
+### Added
+
+- Five durable museum hubs: Home, Pulse, Atlas, Stories and Data Lab.
+- Guided, Explore and Deep Dive presentation depths that never hide rooms or change a shared URL.
+- Local Share & Feedback room with Web Share, clipboard and WhatsApp drafts plus a musician-friendly feedback composer.
+- Local Audio Lab foundation with a 100 MB safety boundary, temporary preview URLs and explicit `Not run` analysis slots.
+- Playwright desktop/mobile smoke coverage and automated axe WCAG A/AA checks.
+- Versioned social preview with verified play, track and artist counts.
+- Quiet semantic Web Audio cues with a persistent Subtle/Off control and no external audio asset.
+- Shared accessible provider icons across Current Pulse, Spotify/Last.fm comparison and the legal media portal.
+- Source Observatory with explicit Last.fm, Spotify, YouTube, Apple Music and ListenBrainz presence, raw-event share and capability states.
+- A reusable seven-second remote-image timeout for portraits, covers, Current Pulse and the Living Artist Atlas.
+- Background MusicBee XML parsing with cancellation, a bounded non-DOM plist reader and the existing paths/IDs allowlist.
+- An optional account-free weekly pulse contract for saved official Last.fm API or user-provided export summaries; it accepts no profile handle, URL, artwork or raw events.
+
+### Changed
+
+- Simplified first entry by defaulting new visitors to Explore while keeping Guided explanations and direct room links free of onboarding overlays.
+- Reorganized the sidebar and previous/next route around the active hub while Nova Command retains access to every room.
+- Reframed the Emotional Map with observed, inferred, interpretive and not-measured evidence layers; removed synthetic confidence percentages from the UI.
+- Updated PostCSS to a non-vulnerable release and added browser QA as a Pages deployment gate.
+- Right-sized remote artist and cover images, stabilized compact portraits, delayed the offline knowledge bootstrap and reserved the heavier global backdrop for Expressive motion.
+- Added low-opacity artist and cover atmospheres to the Control Room and Obsessions without duplicating every obsession image surface.
+- Moved annual-summary and time-capsule visuals before methodology, compacted the historical artist dossier at large widths and reduced duplicated desktop room navigation.
+- Clarified the social preview as `FILES STAY LOCAL` while preserving the documented local-first network boundary for remote fonts and media.
+
+### Fixed
+
+- Prevented cached portraits and covers from returning to an invisible loading state after their load event.
+- Limited Wikimedia thumbnails to verified sizes, added compact Cover Art Archive variants and retained original-URL fallbacks.
+- Made track artwork coverage deterministic instead of depending on whether the album room had already been opened.
+- Advanced stalled remote images through optimized URL, original URL, reviewed gallery or deterministic local fallback instead of leaving permanent loading surfaces.
+- Prevented an `Unclassified` genre bucket from being presented as the museum's dominant musical language.
+- Extended the public privacy gate to reject embedded Last.fm account profile URLs in both public JSON and repository text.
+- Restricted remote-image optimizations to parsed, explicitly trusted provider hostnames instead of matching domain-like substrings.
+- Validated and attribute-escaped temporary Audio Lab blob URLs, and completed attribute-context escaping in the local media-progress report.
+
+### Verification status
+
+- Final lint, TypeScript, data, identity, media-link, knowledge, public-privacy, PWA, test and bundle-budget results are pending on the release commit.
+- Final Playwright desktop/mobile and axe results are pending on the release commit.
+- Bundle measurements will be recorded from the final production build rather than copied from an earlier private checkpoint.
+
+## [1.1.0] - 2026-07-26
+
+Status: **deployed**.
 
 ### Added
 
@@ -21,7 +72,7 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 - Promoted the artist room into a cinematic evidence-led Atlas while retaining the imagined generative identity as a clearly labelled second chapter.
 - Extended museum headers with compact and cinematic modes while preserving EN/ES/HE, RTL, theme and reduced-motion behavior.
-- Advanced the product from `1.0.0` to the stable `1.1.0` Expedition Console release while retaining IndexedDB schema v4.
+- Advanced the product from `1.0.0` — published 2026-07-16 and now superseded — to `1.1.0` — deployed 2026-07-26 — while retaining IndexedDB schema v4.
 
 ### Fixed
 
@@ -40,11 +91,13 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [1.0.0] - 2026-07-16
 
+Status: **published; superseded**.
+
 ### Released
 
 - Promoted the accepted Living Sonic Cartography candidate to the first stable Nova Music Lab release.
 - Published the protected `main` artifact only after EN/ES/HE, RTL, responsive, reduced-motion, persistence, privacy and live Pages acceptance.
-- Preserved `v1.0.0-rc.1` as the immutable release-candidate checkpoint.
+- Preserved `v1.0.0-rc.1` — published 2026-07-16 and now superseded — as the immutable release-candidate checkpoint.
 
 ### Verified
 
@@ -53,6 +106,8 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 - The deployed `build-meta.json` proves the exact release commit and package version served by GitHub Pages.
 
 ## [1.0.0-rc.1] - 2026-07-16
+
+Status: **published; superseded**.
 
 ### Added
 

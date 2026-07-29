@@ -1,3 +1,8 @@
+/**
+ * @deprecated Legacy journey contract retained for additive preference
+ * migration. Do not remove its storage key or reinterpret its room lists until
+ * replacement preferences have been verified across existing browsers.
+ */
 export type ExpeditionJourneyId = 'quick' | 'full' | 'lab';
 
 export const EXPEDITION_JOURNEY_STORAGE_KEY = 'nml_expedition_journey';
@@ -61,4 +66,3 @@ export function roomIdsForJourney(journey: ExpeditionJourneyId): readonly string
 export function journeyContainsRoom(journey: ExpeditionJourneyId, roomId: string): boolean {
   return EXPEDITION_JOURNEY_ROOMS[journey].includes(roomId);
 }
-

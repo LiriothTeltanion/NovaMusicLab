@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BookOpenText, ChevronDown, Info, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useExperienceDepth } from '../context/ExperienceContext';
 import Surface from './Surface';
 
 interface NarrativeInsight {
@@ -26,10 +27,9 @@ interface SectionNarrativeProps {
 }
 
 /**
- * The interpretive intro/tutorial block every section opens with. Collapsed
- * by default - returning visitors already know what a section is, so the
- * data should lead and the reading should be one click away, not a wall of
- * prose pushing the charts below the fold.
+ * Guided opens the approachable reading, Explore lets the data lead, and
+ * Deep Dive opens both the reading and its provenance/detail layer. Visitors
+ * can still override either disclosure during the current mode.
  */
 export default function SectionNarrative({
   content,
@@ -38,24 +38,31 @@ export default function SectionNarrative({
   className = '',
 }: SectionNarrativeProps) {
   const { tc, t } = useApp();
-  const [expanded, setExpanded] = useState(false);
+  const experienceDepth = useExperienceDepth();
+  const [expanded, setExpanded] = useState(experienceDepth !== 'explore');
+  const [deepExpanded, setDeepExpanded] = useState(experienceDepth === 'deep-dive');
   const color = tc[accent];
   const secondary = accent === 'c1' ? tc.c2 : tc.c1;
   const deepDiveLabel = content.deepDiveLabel ?? 'Deep reading';
   const toggleHint = expanded ? t.collapsible.hideReading : t.collapsible.readIntro;
 
+  useEffect(() => {
+    setExpanded(experienceDepth !== 'explore');
+    setDeepExpanded(experienceDepth === 'deep-dive');
+  }, [experienceDepth]);
+
   return (
     <Surface
       as="section"
       variant="utility"
-      className={`rounded-xl border-l-2 sm:rounded-2xl ${compact ? 'p-3 sm:p-4' : 'p-3 sm:p-4 md:p-4'} ${className}`}
-      style={{ borderLeftColor: color }}
+      className={`rounded-xl border-s-2 sm:rounded-2xl ${compact ? 'p-3 sm:p-4' : 'p-3 sm:p-4 md:p-4'} ${className}`}
+      style={{ borderInlineStartColor: color }}
     >
       <button
         type="button"
         onClick={() => setExpanded(v => !v)}
         aria-expanded={expanded}
-        className="group flex min-h-11 w-full items-center justify-between gap-2.5 text-left"
+        className="group flex min-h-11 w-full items-center justify-between gap-2.5 text-start"
       >
         <div className="min-w-0 space-y-1">
           <div className="flex items-center gap-2">
@@ -120,8 +127,13 @@ export default function SectionNarrative({
                 </div>
               )}
 
-              {content.deepDive && (
-                <details className="group/deep rounded-xl border bg-white/2 p-3.5 sm:rounded-2xl sm:p-4" style={{ borderColor: `${secondary}20` }}>
+              {content.deepDive && experienceDepth === 'deep-dive' && (
+                <details
+                  className="group/deep rounded-xl border bg-white/2 p-3.5 sm:rounded-2xl sm:p-4"
+                  style={{ borderColor: `${secondary}20` }}
+                  open={deepExpanded}
+                  onToggle={event => setDeepExpanded(event.currentTarget.open)}
+                >
                   <summary className="type-label cursor-pointer list-none" style={{ color: secondary }}>
                     <span className="group-open/deep:hidden">+ {deepDiveLabel}</span>
                     <span className="hidden group-open/deep:inline">- {deepDiveLabel}</span>

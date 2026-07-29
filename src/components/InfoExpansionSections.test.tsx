@@ -1,8 +1,13 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { AppProvider } from '../context/AppContext';
+import { ExperienceProvider } from '../context/ExperienceContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import {
+  EXPERIENCE_DEPTH_STORAGE_KEY,
+  type ExperienceDepth,
+} from './shell/museumNavigation';
 import TimeCapsule from './TimeCapsule';
 import WrappedCard from './WrappedCard';
 import RecentPulse from './RecentPulse';
@@ -13,6 +18,15 @@ vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 vi.mock('html-to-image', () => ({ toPng: vi.fn() }));
 
 const data = musicData as unknown as MusicDnaData;
+
+function renderAtDepth(ui: React.ReactElement, experienceDepth: ExperienceDepth) {
+  localStorage.setItem(EXPERIENCE_DEPTH_STORAGE_KEY, experienceDepth);
+  return render(
+    <AppProvider>
+      <ExperienceProvider>{ui}</ExperienceProvider>
+    </AppProvider>,
+  );
+}
 
 describe('expanded info sections', () => {
   beforeAll(() => {
@@ -39,11 +53,7 @@ describe('expanded info sections', () => {
   it('explains Time Capsule methodology and localizes era labels in English', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <TimeCapsule data={data} />
-      </AppProvider>
-    );
+    renderAtDepth(<TimeCapsule data={data} />, 'deep-dive');
 
     expect(screen.getByText('Comparative memory')).toBeInTheDocument();
     expect(screen.getByText('How the app decides what stayed alive and what belongs to the past')).toBeInTheDocument();
@@ -54,11 +64,7 @@ describe('expanded info sections', () => {
   it('adds a selected-year reading and export methodology to Wrapped', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <WrappedCard data={data} />
-      </AppProvider>
-    );
+    renderAtDepth(<WrappedCard data={data} />, 'deep-dive');
 
     expect(screen.getByText('Yearly snapshot')).toBeInTheDocument();
     expect(screen.getByText('Selected year reading')).toBeInTheDocument();
@@ -66,24 +72,13 @@ describe('expanded info sections', () => {
     expect(screen.getByText('Luminous Blackgaze Era')).toBeInTheDocument();
   });
 
-  it('documents Current Pulse as a local snapshot with match confidence', () => {
+  it('opens the Current Pulse source contract and match confidence in Deep Dive', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <RecentPulse data={data} />
-      </AppProvider>
-    );
+    renderAtDepth(<RecentPulse data={data} />, 'deep-dive');
 
-    // Header is always visible; the methodology body is collapsed by default
-    // and must appear after expanding (the collapse itself is asserted in
-    // SectionNarrative.test.tsx).
     expect(screen.getByText('Present vs archive')).toBeInTheDocument();
     expect(screen.getByText('How the present is compared with the historical archive')).toBeInTheDocument();
-    expect(screen.queryByText('Local Spotify snapshot')).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: /how the present is compared/i }));
-
     expect(screen.getByText('Local Spotify snapshot')).toBeInTheDocument();
     expect(screen.getByText('Historical match')).toBeInTheDocument();
   });
@@ -91,11 +86,7 @@ describe('expanded info sections', () => {
   it('does not relabel the flagship pulse snapshot as a visitor archive current state', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <RecentPulse data={data} isPersonalArchive />
-      </AppProvider>
-    );
+    renderAtDepth(<RecentPulse data={data} isPersonalArchive />, 'explore');
 
     expect(screen.getByTestId('visitor-pulse-unavailable')).toHaveTextContent('Current snapshot unavailable for this archive');
     expect(screen.queryByText('Present vs archive')).not.toBeInTheDocument();
@@ -105,11 +96,7 @@ describe('expanded info sections', () => {
   it('renders the Data Quality dictionary with grouped definitions', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <DataQualityCenter data={data} />
-      </AppProvider>
-    );
+    renderAtDepth(<DataQualityCenter data={data} />, 'deep-dive');
 
     expect(screen.getByText('Data Dictionary')).toBeInTheDocument();
     expect(screen.getByText('🧠 Offline Brain Coverage')).toBeInTheDocument();
@@ -123,11 +110,7 @@ describe('expanded info sections', () => {
   it('expands the Final Essay with the living museum chapter', () => {
     localStorage.setItem('nml_lang', 'en');
 
-    render(
-      <AppProvider>
-        <FinalReport data={data} />
-      </AppProvider>
-    );
+    renderAtDepth(<FinalReport data={data} />, 'guided');
 
     expect(screen.getByText('The Living Museum: Memory, Snapshot and Trust')).toBeInTheDocument();
     expect(screen.getByText(/newer museum layers reveal/i)).toBeInTheDocument();

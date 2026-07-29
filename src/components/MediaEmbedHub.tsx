@@ -6,6 +6,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { getWikipediaUrl } from '../utils/mediaLinks';
 import type { ArtistMediaProfile, MediaAction, MediaProvider } from '../utils/mediaLinks';
+import BrandIcon from './BrandIcon';
 
 interface MediaEmbedHubProps {
   profile: ArtistMediaProfile;
@@ -127,39 +128,6 @@ function providerName(provider: MediaProvider | 'web', copy: { spotify: string; 
   return 'Wikipedia';
 }
 
-function SpotifyGlyph({ size = 18 }: { size?: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="relative inline-flex items-center justify-center rounded-full font-black"
-      style={{ width: size, height: size, backgroundColor: '#1DB954', color: '#03130a', fontSize: size * 0.58 }}
-    >
-      S
-    </span>
-  );
-}
-
-function YouTubeGlyph({ size = 18 }: { size?: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="relative inline-flex items-center justify-center rounded-md"
-      style={{ width: size * 1.22, height: size * 0.82, backgroundColor: '#ff0033' }}
-    >
-      <span
-        style={{
-          width: 0,
-          height: 0,
-          borderTop: `${size * 0.18}px solid transparent`,
-          borderBottom: `${size * 0.18}px solid transparent`,
-          borderLeft: `${size * 0.28}px solid white`,
-          marginLeft: size * 0.04,
-        }}
-      />
-    </span>
-  );
-}
-
 function providerColor(provider: MediaProvider | 'web') {
   if (provider === 'spotify') return '#1DB954';
   if (provider === 'youtube') return '#ff0033';
@@ -167,8 +135,8 @@ function providerColor(provider: MediaProvider | 'web') {
 }
 
 function ActionIcon({ action }: { action: MediaAction }) {
-  if (action.provider === 'spotify') return <SpotifyGlyph size={16} />;
-  if (action.provider === 'youtube') return <YouTubeGlyph size={16} />;
+  if (action.provider === 'spotify') return <BrandIcon name="spotify" size={16} />;
+  if (action.provider === 'youtube') return <BrandIcon name="youtube" size={16} />;
   if (action.kind === 'album') return <Disc3 className="w-4 h-4" />;
   return <Link2 className="w-4 h-4" />;
 }
@@ -294,7 +262,7 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                       style={selected
                         ? { color, backgroundColor: `${color}18`, borderColor: `${color}55` }
                         : { color: '#9ca3af', backgroundColor: 'rgba(255,255,255,0.035)', borderColor: 'rgba(255,255,255,0.08)' }}>
-                      {tab.id === 'spotify' ? <SpotifyGlyph size={16} /> : <YouTubeGlyph size={16} />}
+                      <BrandIcon name={tab.id} size={16} />
                       {tab.label}
                     </button>
                   );

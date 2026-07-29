@@ -7,6 +7,7 @@ import {
   loadHebrewExperience,
   resetHebrewExperienceLoader,
 } from '../i18n/loadHebrewExperience';
+import { DOCUMENT_METADATA } from '../utils/i18n';
 
 function translationShape(value: unknown): unknown {
   if (typeof value === 'string') return 'string';
@@ -56,8 +57,8 @@ describe('AppProvider document language', () => {
     expect(document.documentElement).toHaveAttribute('lang', 'he');
     expect(document.documentElement).toHaveAttribute('dir', 'rtl');
     expect(document.documentElement).toHaveAttribute('data-language', 'he');
-    expect(document.title).toContain('הדנ״א המוזיקלי שלך');
-    expect(document.querySelector('meta[name="description"]')).toHaveAttribute('content', expect.stringContaining('היסטוריית ההאזנה'));
+    expect(document.title).toBe(DOCUMENT_METADATA.he.title);
+    expect(document.querySelector('meta[name="description"]')).toHaveAttribute('content', DOCUMENT_METADATA.he.description);
     expect(window.localStorage.getItem('nml_lang')).toBe('he');
     expect(screen.getByRole('status', { name: 'טעינת הממשק בעברית' })).toHaveTextContent('טוענים את הממשק המלא בעברית');
     expect(screen.queryByText(STRINGS.en.appSubtitle)).not.toBeInTheDocument();

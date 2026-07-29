@@ -100,8 +100,8 @@ export const EMOTIONAL_MOOD_TAXONOMY: Record<EmotionalMoodKey, EmotionalMoodTaxo
     key: 'dopamina',
     color: '#ffb703',
     icon: 'sun',
-    title: { es: 'Dopamina / Reinicio', en: 'Dopamine / Reset', he: 'דופמין / איפוס' },
-    shortLabel: { es: 'Dopamina', en: 'Dopamine', he: 'דופמין' },
+    title: { es: 'Activación luminosa', en: 'Bright activation', he: 'הפעלה מוארת' },
+    shortLabel: { es: 'Activación', en: 'Activation', he: 'הפעלה' },
     description: {
       es: 'Música para levantar energía, jugar, recuperar humor y empezar tareas con menos fricción.',
       en: 'Music for raising energy, playing, recovering humor and starting tasks with less friction.',

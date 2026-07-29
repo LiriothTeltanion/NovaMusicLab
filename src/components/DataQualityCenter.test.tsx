@@ -4,6 +4,7 @@ import compiledData from '../data/music_dna_compiled.json';
 import offlineKnowledgeData from '../data/offline_artist_knowledge.json';
 import type { MusicDnaData } from '../types';
 import { AppProvider } from '../context/AppContext';
+import { ExperienceProvider } from '../context/ExperienceContext';
 import DataQualityCenter from './DataQualityCenter';
 
 const baseData = compiledData as unknown as MusicDnaData;
@@ -34,6 +35,18 @@ const data: MusicDnaData = {
   },
 };
 
+function renderQuality(depth: 'guided' | 'explore' | 'deep-dive' = 'explore') {
+  window.localStorage.setItem('nml_lang', 'en');
+  window.localStorage.setItem('nml_experience_depth', depth);
+  return render(
+    <AppProvider>
+      <ExperienceProvider>
+        <DataQualityCenter data={data} />
+      </ExperienceProvider>
+    </AppProvider>,
+  );
+}
+
 describe('DataQualityCenter trust sources', () => {
   afterEach(() => {
     cleanup();
@@ -41,12 +54,7 @@ describe('DataQualityCenter trust sources', () => {
   });
 
   it('uses the current offline archive instead of the stale embedded summary', () => {
-    window.localStorage.setItem('nml_lang', 'en');
-    render(
-      <AppProvider>
-        <DataQualityCenter data={data} />
-      </AppProvider>,
-    );
+    renderQuality('deep-dive');
 
     const recognizedLabel = screen.getByText('Artists recognized');
     expect(within(recognizedLabel.parentElement as HTMLElement).getByText('100/100'))
@@ -56,14 +64,21 @@ describe('DataQualityCenter trust sources', () => {
   });
 
   it('surfaces the exact observed period and analysis timezone', () => {
-    window.localStorage.setItem('nml_lang', 'en');
-    render(
-      <AppProvider>
-        <DataQualityCenter data={data} />
-      </AppProvider>,
-    );
+    renderQuality('deep-dive');
 
     expect(screen.getByText(/Mar 1, 2015.*Jul 3, 2026.*Asia\/Jerusalem/i))
       .toBeInTheDocument();
+  });
+
+  it('answers three human questions in Explore and hides cache jargon', () => {
+    renderQuality('explore');
+
+    const summary = screen.getByTestId('data-quality-friendly-summary');
+    expect(within(summary).getByText('What did Nova read?')).toBeInTheDocument();
+    expect(within(summary).getByText('What is still incomplete?')).toBeInTheDocument();
+    expect(within(summary).getByText('What is interpreted?')).toBeInTheDocument();
+    expect(screen.queryByText(/Wikidata profiles/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Asia\/Jerusalem/i)).not.toBeInTheDocument();
+    expect(screen.queryByText('Artists recognized')).not.toBeInTheDocument();
   });
 });

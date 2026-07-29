@@ -124,8 +124,22 @@ function isBoolean(value: unknown): value is boolean {
   return typeof value === 'boolean';
 }
 
+function isNonNegativeInteger(value: unknown): value is number {
+  return Number.isInteger(value) && Number(value) >= 0;
+}
+
+function isNullableIsoDate(value: unknown): value is string | null {
+  return value === null
+    || (isString(value) && Boolean(value.trim()) && Number.isFinite(Date.parse(value)));
+}
+
 function isArrayOf(value: unknown, guard: (item: unknown) => boolean): value is unknown[] {
   return Array.isArray(value) && value.every(guard);
+}
+
+function hasOnlyKeys(value: UnknownRecord, allowedKeys: readonly string[]): boolean {
+  const allowed = new Set(allowedKeys);
+  return Object.keys(value).every(key => allowed.has(key));
 }
 
 function hasValidOptionalField(
@@ -384,8 +398,265 @@ function isArtistProfile(value: unknown): boolean {
     && isArrayOf(value.ep_concept.tracklist, isString);
 }
 
+const MUSICBEE_TRACK_KEYS = [
+  'artist',
+  'title',
+  'album',
+  'genre',
+  'play_count',
+  'skip_count',
+  'duration_ms',
+  'rating',
+  'last_played_at',
+  'date_added',
+] as const;
+
+const MUSICBEE_ARTIST_KEYS = [
+  'name',
+  'track_count',
+  'album_count',
+  'total_play_count',
+  'total_skip_count',
+  'last_played_at',
+  'genres',
+] as const;
+
+const MUSICBEE_ALBUM_KEYS = [
+  'artist',
+  'title',
+  'track_count',
+  'total_play_count',
+] as const;
+
+const MUSICBEE_CAPABILITY_KEYS = [
+  'catalog',
+  'aggregate_play_counts',
+  'last_played',
+  'exact_event_timeline',
+  'sessions',
+] as const;
+
+const MUSICBEE_LIMITATIONS = new Set([
+  'aggregate_counts_not_timeline',
+  'separate_source_totals',
+  'paths_and_ids_discarded',
+]);
+
+const MUSICBEE_SNAPSHOT_KEYS = [
+  'schema_version',
+  'source',
+  'library_item_count',
+  'track_count',
+  'duplicate_item_count',
+  'artist_count',
+  'album_count',
+  'played_track_count',
+  'rated_track_count',
+  'total_play_count',
+  'total_skip_count',
+  'latest_played_at',
+  'tracks',
+  'artists',
+  'albums',
+  'capabilities',
+  'limitations',
+] as const;
+
+function isMusicBeeTrackSnapshot(value: unknown): boolean {
+  if (!isRecord(value) || !hasOnlyKeys(value, MUSICBEE_TRACK_KEYS)) return false;
+  return isString(value.artist)
+    && Boolean(value.artist.trim())
+    && isString(value.title)
+    && Boolean(value.title.trim())
+    && isString(value.album)
+    && isString(value.genre)
+    && isNonNegativeInteger(value.play_count)
+    && isNonNegativeInteger(value.skip_count)
+    && (value.duration_ms === null || isNonNegativeInteger(value.duration_ms))
+    && (value.rating === null
+      || (isNonNegativeInteger(value.rating) && Number(value.rating) <= 100))
+    && isNullableIsoDate(value.last_played_at)
+    && isNullableIsoDate(value.date_added);
+}
+
+function isMusicBeeArtistSnapshot(value: unknown): boolean {
+  if (!isRecord(value) || !hasOnlyKeys(value, MUSICBEE_ARTIST_KEYS)) return false;
+  return isString(value.name)
+    && Boolean(value.name.trim())
+    && isNonNegativeInteger(value.track_count)
+    && isNonNegativeInteger(value.album_count)
+    && isNonNegativeInteger(value.total_play_count)
+    && isNonNegativeInteger(value.total_skip_count)
+    && isNullableIsoDate(value.last_played_at)
+    && isArrayOf(value.genres, genre => isString(genre) && Boolean(genre.trim()));
+}
+
+function isMusicBeeAlbumSnapshot(value: unknown): boolean {
+  if (!isRecord(value) || !hasOnlyKeys(value, MUSICBEE_ALBUM_KEYS)) return false;
+  return isString(value.artist)
+    && Boolean(value.artist.trim())
+    && isString(value.title)
+    && Boolean(value.title.trim())
+    && isNonNegativeInteger(value.track_count)
+    && isNonNegativeInteger(value.total_play_count);
+}
+
+function isMusicBeeCapabilities(value: unknown): boolean {
+  if (!isRecord(value) || !hasOnlyKeys(value, MUSICBEE_CAPABILITY_KEYS)) return false;
+  return value.catalog === true
+    && isBoolean(value.aggregate_play_counts)
+    && isBoolean(value.last_played)
+    && value.exact_event_timeline === false
+    && value.sessions === false;
+}
+
+function isMusicBeeLibrarySnapshot(value: unknown): boolean {
+  if (!isRecord(value)
+    || !hasOnlyKeys(value, MUSICBEE_SNAPSHOT_KEYS)
+    || value.schema_version !== 1
+    || value.source !== 'musicbee_itunes_xml'
+    || !isArrayOf(value.tracks, isMusicBeeTrackSnapshot)
+    || !isArrayOf(value.artists, isMusicBeeArtistSnapshot)
+    || !isArrayOf(value.albums, isMusicBeeAlbumSnapshot)
+    || !isMusicBeeCapabilities(value.capabilities)
+    || !isArrayOf(value.limitations, limitation => MUSICBEE_LIMITATIONS.has(String(limitation)))
+    || !isNullableIsoDate(value.latest_played_at)) {
+    return false;
+  }
+
+  const countFields = [
+    'library_item_count',
+    'track_count',
+    'duplicate_item_count',
+    'artist_count',
+    'album_count',
+    'played_track_count',
+    'rated_track_count',
+    'total_play_count',
+    'total_skip_count',
+  ];
+  if (!countFields.every(field => isNonNegativeInteger(value[field]))) return false;
+
+  const tracks = value.tracks as UnknownRecord[];
+  const artists = value.artists as UnknownRecord[];
+  const albums = value.albums as UnknownRecord[];
+  const normalizeKey = (text: unknown) => String(text ?? '')
+    .normalize('NFC')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toLocaleLowerCase('en-US');
+  const dateTime = (text: unknown) => text === null ? null : Date.parse(String(text));
+  const sameDate = (left: unknown, right: unknown) => dateTime(left) === dateTime(right);
+  const trackPlayCount = tracks.reduce((sum, track) => sum + Number(track.play_count), 0);
+  const trackSkipCount = tracks.reduce((sum, track) => sum + Number(track.skip_count), 0);
+  const artistPlayCount = artists.reduce((sum, artist) => sum + Number(artist.total_play_count), 0);
+  const artistSkipCount = artists.reduce((sum, artist) => sum + Number(artist.total_skip_count), 0);
+  const artistTrackCount = artists.reduce((sum, artist) => sum + Number(artist.track_count), 0);
+  const playedTrackCount = tracks.filter(track => Number(track.play_count) > 0).length;
+  const ratedTrackCount = tracks.filter(track => Number(track.rating) > 0).length;
+  const latestPlayedTime = tracks.reduce<number | null>((latest, track) => {
+    const current = dateTime(track.last_played_at);
+    return current === null ? latest : latest === null ? current : Math.max(latest, current);
+  }, null);
+  const trackKeys = tracks.map(track => [
+    normalizeKey(track.artist),
+    normalizeKey(track.title),
+    normalizeKey(track.album),
+  ].join('\u0000'));
+  if (new Set(trackKeys).size !== trackKeys.length) return false;
+
+  const expectedArtists = new Map<string, {
+    trackCount: number;
+    albums: Set<string>;
+    playCount: number;
+    skipCount: number;
+    latestPlayedTime: number | null;
+  }>();
+  const expectedAlbums = new Map<string, {
+    trackCount: number;
+    playCount: number;
+  }>();
+  for (const track of tracks) {
+    const artistKey = normalizeKey(track.artist);
+    const albumKey = normalizeKey(track.album);
+    const artist = expectedArtists.get(artistKey) ?? {
+      trackCount: 0,
+      albums: new Set<string>(),
+      playCount: 0,
+      skipCount: 0,
+      latestPlayedTime: null,
+    };
+    artist.trackCount += 1;
+    artist.playCount += Number(track.play_count);
+    artist.skipCount += Number(track.skip_count);
+    if (albumKey) artist.albums.add(albumKey);
+    const playedAt = dateTime(track.last_played_at);
+    if (playedAt !== null) {
+      artist.latestPlayedTime = artist.latestPlayedTime === null
+        ? playedAt
+        : Math.max(artist.latestPlayedTime, playedAt);
+    }
+    expectedArtists.set(artistKey, artist);
+
+    if (albumKey) {
+      const compoundKey = `${artistKey}\u0000${albumKey}`;
+      const album = expectedAlbums.get(compoundKey) ?? { trackCount: 0, playCount: 0 };
+      album.trackCount += 1;
+      album.playCount += Number(track.play_count);
+      expectedAlbums.set(compoundKey, album);
+    }
+  }
+
+  const artistKeys = artists.map(artist => normalizeKey(artist.name));
+  const artistsMatchTracks = new Set(artistKeys).size === artistKeys.length
+    && artistKeys.length === expectedArtists.size
+    && artists.every(artist => {
+      const expected = expectedArtists.get(normalizeKey(artist.name));
+      return Boolean(expected)
+        && artist.track_count === expected?.trackCount
+        && artist.album_count === expected?.albums.size
+        && artist.total_play_count === expected?.playCount
+        && artist.total_skip_count === expected?.skipCount
+        && (expected?.latestPlayedTime === null
+          ? artist.last_played_at === null
+          : sameDate(artist.last_played_at, new Date(expected!.latestPlayedTime).toISOString()));
+    });
+  const albumKeys = albums.map(album => `${normalizeKey(album.artist)}\u0000${normalizeKey(album.title)}`);
+  const albumsMatchTracks = new Set(albumKeys).size === albumKeys.length
+    && albumKeys.length === expectedAlbums.size
+    && albums.every(album => {
+      const expected = expectedAlbums.get(`${normalizeKey(album.artist)}\u0000${normalizeKey(album.title)}`);
+      return Boolean(expected)
+        && album.track_count === expected?.trackCount
+        && album.total_play_count === expected?.playCount;
+    });
+  const capabilities = value.capabilities as UnknownRecord;
+
+  return value.track_count === tracks.length
+    && value.artist_count === artists.length
+    && value.album_count === albums.length
+    && value.library_item_count === Number(value.track_count) + Number(value.duplicate_item_count)
+    && Number(value.played_track_count) <= Number(value.track_count)
+    && Number(value.rated_track_count) <= Number(value.track_count)
+    && value.played_track_count === playedTrackCount
+    && value.rated_track_count === ratedTrackCount
+    && value.total_play_count === trackPlayCount
+    && value.total_skip_count === trackSkipCount
+    && artistPlayCount === trackPlayCount
+    && artistSkipCount === trackSkipCount
+    && artistTrackCount === tracks.length
+    && artistsMatchTracks
+    && albumsMatchTracks
+    && (latestPlayedTime === null
+      ? value.latest_played_at === null
+      : sameDate(value.latest_played_at, new Date(latestPlayedTime).toISOString()))
+    && (capabilities.last_played === (latestPlayedTime !== null))
+    && (capabilities.aggregate_play_counts === true || trackPlayCount === 0);
+}
+
 function hasValidOptionalDataFields(value: UnknownRecord): boolean {
-  return hasValidOptionalField(
+  return hasValidOptionalField(value, 'narrative_scope', candidate => candidate === 'flagship')
+    && hasValidOptionalField(
     value,
     'artist_origin_countries',
     candidate => isArrayOf(candidate, isCountryPlay),
@@ -402,6 +673,7 @@ function hasValidOptionalDataFields(value: UnknownRecord): boolean {
       candidate => isArrayOf(candidate, isPlatformPlay),
     )
     && hasValidOptionalField(value, 'source_summary', isSourceSummary)
+    && hasValidOptionalField(value, 'musicbee_snapshot', isMusicBeeLibrarySnapshot)
     && hasValidOptionalField(value, 'knowledge_summary', isArtistKnowledgeSummary)
     && hasValidOptionalField(value, 'records', isRecordsSummary)
     && hasValidOptionalField(value, 'personality_matrix', isPersonalityMatrix)
