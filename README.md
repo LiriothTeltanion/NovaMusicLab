@@ -13,9 +13,7 @@
 
 Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Current deployed version:** `1.1.0` — deployed **2026-07-26**.
-
-**Next version:** `1.2.0` — planned **2026-07-29**, not published or deployed. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
+**Current deployed version:** `1.2.0` — deployed **2026-07-29**. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -31,15 +29,15 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 2. Start in **Explore**, the visual default; switch to **Guided** whenever you want plain-language context.
 3. Open **Atlas** to explore artists, media and archive evidence.
 4. Switch to **Deep Dive** when you want methodology and provenance.
-5. In `1.2.0` — planned **2026-07-29**, not published or deployed — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
+5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
 
 No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ Planned release preview
+## 🖼️ Release gallery
 
-These captures preview `1.2.0` — planned **2026-07-29**, not published or deployed. They are generated from the production build with `npm run screenshots:capture`.
+These captures document `1.2.0` — deployed **2026-07-29**. They are generated from the production build with `npm run screenshots:capture`.
 
 <table>
   <tr>
@@ -255,7 +253,7 @@ Database design, migrations and failure states are documented in [Storage and mi
 - Reduced-motion behavior across application transitions, charts, canvas art and static repository artwork.
 - Exact-value chart tables and CSV exports for non-visual access.
 
-`1.2.0` — planned **2026-07-29**, not published or deployed — adds Playwright browser checks at 1440×900 and 390×844 plus automated axe WCAG A/AA checks. Automated scans catch only some issues, so keyboard, screen-reader semantics, contrast, RTL and visual review remain manual release gates. See [Accessibility](./docs/design/ACCESSIBILITY.md).
+`1.2.0` — deployed **2026-07-29** — adds Playwright browser checks at 1440×900 and 390×844 plus automated axe WCAG A/AA checks. Automated scans catch only some issues, so keyboard, screen-reader semantics, contrast, RTL and visual review remain ongoing manual quality gates. See [Accessibility](./docs/design/ACCESSIBILITY.md).
 
 ---
 
@@ -373,7 +371,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`v1.1.0` — deployed **2026-07-26** — is the latest tagged stable release and the version served by the protected GitHub Pages deployment. `1.2.0` — planned **2026-07-29**, not published or deployed — remains local until its automated and manual acceptance gates pass. Product versions and IndexedDB schema versions remain deliberately independent.
+`1.2.0` — deployed **2026-07-29** — is the version served by the protected GitHub Pages deployment. `v1.1.0` — deployed **2026-07-26** and superseded **2026-07-29** — remains available in release history. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 

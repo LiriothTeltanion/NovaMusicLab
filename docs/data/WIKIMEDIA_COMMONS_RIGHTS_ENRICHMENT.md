@@ -91,7 +91,7 @@ leave it `unverified`.
 
 ## 2026-07-28 acquisition evidence — private checkpoint
 
-During preparation for `1.2.0` — planned 2026-07-29, not published or deployed — the
+During preparation for `1.2.0` — deployed 2026-07-29 — the
 local rights-enrichment checkpoint on 2026-07-28 queried all 170 unique Commons file
 titles already referenced by the public manifest. The reviewed cache produced:
 

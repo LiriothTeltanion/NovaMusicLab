@@ -4,8 +4,8 @@ Nova Music Lab uses Semantic Versioning beginning with `v1.0.0` — published 20
 
 Current version states:
 
-- `v1.1.0` — deployed 2026-07-26; current public GitHub Pages version.
-- `1.2.0` — planned 2026-07-29; not published or deployed.
+- `v1.1.0` — deployed 2026-07-26; superseded 2026-07-29.
+- `v1.2.0` — deployed 2026-07-29; current public GitHub Pages version.
 
 ## Branch model
 
@@ -53,21 +53,21 @@ The Pages workflow cancels any older run for the same branch when a newer push a
 
 Known release boundaries remain explicit: remote artwork creates disclosed provider requests, official players remain opt-in, and 171 visual assets stay marked for license review rather than being presented as redistributable.
 
-## `1.2.0` acceptance checklist — planned 2026-07-29; not published or deployed
+## `v1.2.0` acceptance record — deployed 2026-07-29
 
-Implementation does not complete release acceptance by itself. Keep each item pending until its named check has run against the release commit.
+Pull request [#20](https://github.com/LiriothTeltanion/NovaMusicLab/pull/20) merged the accepted application release into `main`. GitHub Pages workflow run [`30432979601`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30432979601) deployed and smoke-tested application commit `ba3ff6d7c1b2debb0af5985d34f5bb8fdda2a27e`. The public `build-meta.json` matched that exact commit and product `1.2.0`.
 
-Release status on 2026-07-29: **PENDING**. A private checkpoint was exercised locally on 2026-07-28, but those historical results do not establish the final `1.2.0` release. Exact test counts, bundle measurements and acceptance results will be recorded only after the complete gate runs against the release commit. No CI run, merge or deployment is claimed here.
+- [x] `npm run verify` passes locally and in CI: 103 test files, 599 tests, TypeScript production build and all configured audits/bundle budgets.
+- [x] Public bundle privacy audit passes across 21 JSON payloads and 1,760 repository text files; `git diff --check` passes.
+- [x] Playwright passes 8/8 desktop/mobile smoke scenarios with axe WCAG A/AA and overflow checks.
+- [x] Guided, Explore and Deep Dive preserve the active room and shared URL.
+- [x] Home, Pulse, Atlas, Stories and Data Lab expose every routed room across desktop and mobile.
+- [x] Share & Feedback and Audio Lab retain their tested local-first boundaries.
+- [x] Privacy-safe English desktop/dark, Atlas desktop/dark and Hebrew RTL mobile/light screenshots were regenerated and visually reviewed.
+- [x] Dependency review and both CodeQL result surfaces pass after the three reported security findings were fixed.
+- [x] Package, changelog, README and release guide agree on product `1.2.0` — deployed 2026-07-29 — and IndexedDB schema revision 4.
 
-- [ ] `npm run verify` passes on the release commit and in CI.
-- [ ] Public bundle privacy audit and `git diff --check` pass on the release commit.
-- [ ] Playwright desktop/mobile smoke tests and automated axe checks pass again in CI.
-- [ ] Guided, Explore and Deep Dive preserve the active room and shared URL.
-- [ ] Home, Pulse, Atlas, Stories and Data Lab expose every routed room across desktop and mobile.
-- [ ] Share & Feedback and Audio Lab retain their documented local-first boundaries.
-- [ ] English, Spanish and Hebrew RTL receive manual keyboard, contrast, responsive, light/dark and reduced-motion review.
-- [ ] Package, changelog, README and release guide agree on the planned release date and status.
-- [ ] A privacy-safe release screenshot set is reviewed before any public release or deployment.
+Automated accessibility checks do not replace ongoing manual screen-reader, keyboard, contrast and device review. The TopHistorico room also reaches its current 360 kB gzip incremental budget exactly, so code splitting is the highest-priority performance follow-up.
 
 ## Release metadata
 
@@ -93,13 +93,13 @@ Historical summary:
 
 > A more navigable and cinematic music museum: three persistent expedition paths, keyboard-first Nova Command, an evidence-led Living Artist Atlas, opt-in official media and auditable artist identities across English, Spanish and Hebrew RTL.
 
-### `1.2.0` working metadata — planned 2026-07-29; not published or deployed
+### `v1.2.0` metadata — deployed 2026-07-29
 
-Working title:
+Release title:
 
 > Nova Music Lab — Five Hubs, Three Depths, One Living Atlas
 
-Working summary:
+Release summary:
 
 > A clearer first visit and a deeper music museum: five stable hubs, Guided/Explore/Deep Dive presentation, a share-and-feedback path, an honest local Audio Lab foundation and browser accessibility gates without weakening the local-first archive boundary.
 

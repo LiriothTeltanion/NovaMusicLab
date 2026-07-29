@@ -1,6 +1,6 @@
 # Experience model
 
-Status: Nova Music Lab `1.2.0` — **planned 2026-07-29**, not published or deployed. The public site still reports Nova Music Lab `1.1.0`, deployed on 2026-07-26.
+Status: Nova Music Lab `1.2.0` — **deployed 2026-07-29**. The public site reports product `1.2.0` from the verified GitHub Pages artifact.
 
 Nova Music Lab separates **where a visitor goes** from **how much explanation they want**. This prevents a beginner setting from hiding rooms and prevents an expert setting from unexpectedly changing the URL.
 
