@@ -73,7 +73,7 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
 
-test('the museum map stays below the header while room utilities scroll away', async ({
+test('the hub map stays inside the title bar and the expedition console remains below it', async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -102,13 +102,128 @@ test('the museum map stays below the header while room utilities scroll away', a
       headerBottom: headerRect.bottom,
       dockTop: dockRect.top,
       dockBottom: dockRect.bottom,
+      consoleTop: consoleRect.top,
       consoleBottom: consoleRect.bottom,
     };
   });
 
   expect(Math.abs(positions.headerTop)).toBeLessThanOrEqual(1);
-  expect(Math.abs(positions.dockTop - positions.headerBottom)).toBeLessThanOrEqual(4);
-  expect(positions.consoleBottom).toBeLessThan(positions.dockBottom);
+  expect(positions.dockTop).toBeGreaterThanOrEqual(positions.headerTop - 1);
+  expect(positions.dockBottom).toBeLessThanOrEqual(positions.headerBottom + 1);
+  expect(Math.abs(positions.consoleTop - positions.headerBottom)).toBeLessThanOrEqual(4);
+  expect(positions.consoleBottom).toBeGreaterThan(positions.consoleTop);
+});
+
+test('the compact shell stays usable without horizontal overflow at 360px', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.localStorage.setItem('nml_motion_mode', 'static');
+  });
+
+  await page.goto('/#/dashboard');
+
+  const header = page.getByTestId('museum-app-header');
+  const console = page.getByTestId('expedition-console');
+  await expect(header.getByTestId('museum-map-dock')).toBeVisible();
+  await expect(console.getByTestId('experience-switcher')).toBeVisible();
+  await expect(console.getByTestId('room-progress')).toBeVisible();
+
+  const roomMapTrigger = console.getByRole('button', {
+    name: /open room map: dashboard/i,
+  });
+  await roomMapTrigger.click();
+  await expect(page.getByRole('dialog', { name: 'Room map' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(roomMapTrigger).toBeFocused();
+
+  const searchTrigger = console.getByTestId('command-palette-trigger');
+  await searchTrigger.click();
+  await expect(
+    page.getByRole('textbox', { name: /search rooms and tools/i }),
+  ).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(searchTrigger).toBeFocused();
+
+  await expectNoHorizontalPageOverflow(page);
+});
+
+test('a guest can name, import, restore and compare a local museum without an account', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.localStorage.setItem('nml_motion_mode', 'static');
+  });
+
+  await page.goto('/#/upload');
+
+  await page.getByRole('textbox', { name: 'Museum name' }).fill('Danny Muse');
+  await page.locator('input[type="file"][accept*=".csv"]').first().setInputFiles({
+    name: 'danny-lastfm.csv',
+    mimeType: 'text/csv',
+    buffer: Buffer.from([
+      'Bring Me The Horizon,Sempiternal,Shadow Moses,01 Jan 2026 10:00',
+      'Sleep Token,Take Me Back to Eden,The Summoning,02 Jan 2026 11:00',
+      'The Midnight,Endless Summer,Sunset,03 Jan 2026 12:00',
+    ].join('\n')),
+  });
+
+  await expect(page).toHaveURL(/#\/dashboard$/);
+  await expect(page.getByTestId('persistence-notice')).toHaveAttribute(
+    'data-notice-tone',
+    'success',
+  );
+  await expect(page.getByTestId('persistence-notice')).toContainText(
+    'Archive saved locally in this browser.',
+  );
+
+  await page.reload();
+  await expect(page.getByText(/last analysis was restored automatically/i)).toBeVisible();
+
+  await page.goto('/#/compare-museums');
+  await expect(
+    page.getByRole('heading', { name: 'Parallel Museums' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: "Danny Muse's museum", exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('heading', {
+      name: "Kevin's public flagship",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.locator('[data-comparison-scope="complete"]'),
+  ).toContainText('Complete catalog coverage');
+});
+
+test('the Guest Museum entry remains clear and accessible in Spanish', async ({
+  page,
+}, testInfo) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'es');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.localStorage.setItem('nml_motion_mode', 'static');
+  });
+
+  await page.goto('/#/upload');
+
+  await expect(page.locator('html')).toHaveAttribute('lang', 'es');
+  await expect(page.getByText(/Entrada de visitante · sin cuenta/i)).toBeVisible();
+  await page.getByRole('textbox', { name: 'Nombre del museo' }).fill('Amigo');
+  await expect(page.getByText('Guardado solo en este dispositivo')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /Examinar archivos localmente/i }),
+  ).toBeVisible();
+
+  await expectNoHorizontalPageOverflow(page);
+  await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
 
 test('a hero constellation portrait opens the matching Living Artist Atlas territory', async ({
@@ -156,6 +271,9 @@ test('a direct Atlas link keeps its hash while experience depth changes', async 
 
   const switcher = page.getByTestId('experience-switcher');
   await expect(switcher).toBeVisible();
+  await expect(
+    switcher.getByRole('button', { name: 'Deep Dive' }),
+  ).toBeVisible();
   await expect(
     switcher.getByRole('button', { name: 'Guided' }),
   ).toHaveAttribute('aria-pressed', 'true');

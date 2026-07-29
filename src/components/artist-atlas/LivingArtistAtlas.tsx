@@ -19,7 +19,11 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
-import { buildEmotionalMapEngineProfile } from '../../engines/emotionalEngine';
+import {
+  buildArtistMoodProfile,
+  buildEmotionalMapEngineProfile,
+  EMOTIONAL_MOOD_TAXONOMY,
+} from '../../engines/emotionalEngine';
 import { useExperienceDepth } from '../../context/ExperienceContext';
 import type { MusicDnaData, TopAlbum, TopTrack } from '../../types';
 import { normalizeGenre } from '../../utils/analytics';
@@ -43,6 +47,7 @@ import ArtistAvatar from '../ArtistAvatar';
 import BrandIcon from '../BrandIcon';
 import CoverArt from '../CoverArt';
 import ArtistEvidencePanel from './ArtistEvidencePanel';
+import ArtistGenreProfile from './ArtistGenreProfile';
 import ArtistMediaStage from './ArtistMediaStage';
 import BandLineup from './BandLineup';
 import { getArtistAtlasCopy } from './atlasCopy';
@@ -249,7 +254,8 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
   const members = knowledge?.bandMembers?.filter(member => member.current).map(member => member.name)
     ?? knowledge?.wikidata?.members
     ?? [];
-  const tags = knowledge?.emotionalSeeds.tags.slice(0, 8) ?? [selectedArtist.genre];
+  const artistMood = buildArtistMoodProfile(selectedArtist);
+  const emotionalLabel = EMOTIONAL_MOOD_TAXONOMY[artistMood.moodKey].shortLabel[lang];
   const hasVerifiedMedia = mediaProfile.spotify.verified || mediaProfile.youtube.verified;
   const localizedGenre = genreFamilyLabel(normalizeGenre(selectedArtist.genre), lang);
   const knownPlace = areas[0]
@@ -351,7 +357,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
           <p className="artist-atlas__signal-label">{copy.archiveSignal}</p>
           <h3><bdi dir="auto">{selectedArtist.name}</bdi></h3>
           <div className="artist-atlas__identity-line">
-            <span><bdi dir="auto">{selectedArtist.genre}</bdi></span>
+            <span>{copy.genreFamily}: <bdi dir="auto">{localizedGenre}</bdi></span>
             <span><MapPin className="h-3.5 w-3.5" aria-hidden="true" /><bdi dir="auto">{selectedArtist.country}</bdi></span>
           </div>
 
@@ -615,9 +621,13 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                 </div>
               )}
             </dl>
-            <div className="artist-atlas__tag-cloud" aria-label={copy.genres}>
-              {tags.map(tag => <span key={tag}><bdi dir="auto">{tag}</bdi></span>)}
-            </div>
+            <ArtistGenreProfile
+              artistName={selectedArtist.name}
+              fallbackFamily={selectedArtist.genre}
+              emotionalLabel={emotionalLabel}
+              copy={copy}
+              lang={lang}
+            />
 
             <BandLineup
               band={selectedArtist.name}

@@ -270,6 +270,25 @@ describe('HeroSection intro rebalance', () => {
     expect(mobileRules).not.toMatch(/\.nova-hero__archive-state small\s*\{[^}]*display:\s*none/s);
   });
 
+  it('keeps the current version visible in the compact hero header', () => {
+    const css = readFileSync('src/components/HeroSection.css', 'utf8');
+    const mobileStart = css.indexOf('@media (max-width: 520px)');
+    const mobileEnd = css.indexOf('@media (min-width: 761px)', mobileStart);
+    const mobileRules = css.slice(mobileStart, mobileEnd);
+
+    render(
+      <AppProvider>
+        <HeroSection data={data} onEnter={vi.fn()} onUpload={vi.fn()} />
+      </AppProvider>,
+    );
+
+    expect(screen.getByText('v1.4.0', { selector: '.nova-hero__release-jump-label--compact' }))
+      .toBeInTheDocument();
+    expect(mobileRules).toMatch(
+      /\.nova-hero__release-jump-label--compact\s*\{[^}]*display:\s*inline/s,
+    );
+  });
+
   it.each([
     ['en', '✨ Archive timeline unavailable'],
     ['es', '✨ Cronología del archivo no disponible'],
@@ -305,9 +324,15 @@ describe('HeroSection intro rebalance', () => {
     );
 
     expect(await screen.findByText(unavailableCopy)).toBeInTheDocument();
-    expect(document.body).not.toHaveTextContent(/1 year|1 año|שנה אחת/i);
-    expect(document.body).not.toHaveTextContent(/alternative/i);
-    expect(document.body).not.toHaveTextContent('2026');
+    const archiveSurfaces = [
+      screen.getByTestId('hero-first-viewport'),
+      screen.getByTestId('hero-deep-archive'),
+    ];
+    for (const surface of archiveSurfaces) {
+      expect(surface).not.toHaveTextContent(/1 year|1 año|שנה אחת/i);
+      expect(surface).not.toHaveTextContent(/alternative/i);
+      expect(surface).not.toHaveTextContent('2026');
+    }
   });
 
   it('keeps a partial artist dossier honest when genre and annual evidence are absent', () => {
@@ -336,10 +361,12 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByRole('heading', { level: 3 })).toHaveTextContent(/genre unavailable/i);
-    expect(document.body).toHaveTextContent(/annual evidence is unavailable, so no peak era is claimed/i);
-    expect(document.body).not.toHaveTextContent(/alternative/i);
-    expect(document.body).not.toHaveTextContent('2026');
+    const archiveDetails = screen.getByTestId('hero-deep-archive');
+    expect(within(archiveDetails).getByRole('heading', { level: 3, name: /genre unavailable/i }))
+      .toBeInTheDocument();
+    expect(archiveDetails).toHaveTextContent(/annual evidence is unavailable, so no peak era is claimed/i);
+    expect(archiveDetails).not.toHaveTextContent(/alternative/i);
+    expect(archiveDetails).not.toHaveTextContent('2026');
   });
 
   it('keeps the visual fallback and skips decorative canvas work in Static mode', () => {

@@ -7,6 +7,7 @@ import {
   Disc,
   FileUp,
   Headphones,
+  History,
   LibraryBig,
   Play,
   ShieldCheck,
@@ -33,6 +34,11 @@ import {
   type HeroConstellationArtist,
 } from '../utils/heroArtistConstellation';
 import type { MotionMode } from './museumVisualIdentity';
+import NovaReleaseStory, { NOVA_RELEASE_STORY_ID } from './hero/NovaReleaseStory';
+import {
+  CURRENT_NOVA_RELEASE,
+  type NovaReleaseStatus,
+} from '../releases/releaseHistory';
 import './HeroSection.css';
 
 interface HeroSectionProps {
@@ -254,6 +260,43 @@ export default function HeroSection({
   const copy = pickLanguage(lang, HERO_LOCAL_COPY);
   const fmtNum = useCallback((num: number) => num.toLocaleString(locale), [locale]);
   const visualEntranceX = pickLanguage(lang, { es: 24, en: 24, he: -24 });
+  const releaseStatusLabel = pickLanguage(lang, {
+    en: {
+      'private-candidate': 'private candidate',
+      'private-checkpoint': 'private checkpoint',
+      deployed: 'deployed',
+      published: 'published',
+      superseded: 'superseded',
+    } satisfies Record<NovaReleaseStatus, string>,
+    es: {
+      'private-candidate': 'candidata privada',
+      'private-checkpoint': 'checkpoint privado',
+      deployed: 'desplegada',
+      published: 'publicada',
+      superseded: 'reemplazada',
+    } satisfies Record<NovaReleaseStatus, string>,
+    he: {
+      'private-candidate': 'גרסה מועמדת פרטית',
+      'private-checkpoint': 'נקודת ביקורת פרטית',
+      deployed: 'נפרסה',
+      published: 'פורסמה',
+      superseded: 'הוחלפה',
+    } satisfies Record<NovaReleaseStatus, string>,
+  })[CURRENT_NOVA_RELEASE.status];
+  const releaseJumpCopy = pickLanguage(lang, {
+    en: {
+      label: `v${CURRENT_NOVA_RELEASE.version} · ${releaseStatusLabel}`,
+      action: 'Read what changed in this Nova version',
+    },
+    es: {
+      label: `v${CURRENT_NOVA_RELEASE.version} · ${releaseStatusLabel}`,
+      action: 'Leer qué cambió en esta versión de Nova',
+    },
+    he: {
+      label: `v${CURRENT_NOVA_RELEASE.version} · ${releaseStatusLabel}`,
+      action: 'מה השתנה בגרסה הזאת של Nova',
+    },
+  });
 
   // Peak year calculation helper
   const peakYear = useMemo(() => {
@@ -526,6 +569,13 @@ export default function HeroSection({
     onOpenArtist?.(artistName);
   };
 
+  const handleOpenReleaseStory = () => {
+    document.getElementById(NOVA_RELEASE_STORY_ID)?.scrollIntoView({
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+      block: 'start',
+    });
+  };
+
   return (
     <section
       className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]"
@@ -563,6 +613,24 @@ export default function HeroSection({
           </div>
 
           <div className="nova-hero__masthead-meta">
+            <button
+              type="button"
+              className="nova-hero__release-jump"
+              aria-controls={NOVA_RELEASE_STORY_ID}
+              aria-label={releaseJumpCopy.action}
+              onClick={handleOpenReleaseStory}
+            >
+              <History className="h-4 w-4" aria-hidden="true" />
+              <span className="nova-hero__release-jump-label--full">
+                {releaseJumpCopy.label}
+              </span>
+              <span
+                className="nova-hero__release-jump-label--compact"
+                aria-hidden="true"
+              >
+                v{CURRENT_NOVA_RELEASE.version}
+              </span>
+            </button>
             <div
               className="nova-hero__archive-state"
               aria-label={`${archiveState.label}: ${archiveState.detail}`}
@@ -759,6 +827,8 @@ export default function HeroSection({
           <i />
         </div>
       </div>
+
+      <NovaReleaseStory lang={lang} />
 
       <div className="nova-hero__deep relative z-10" data-testid="hero-deep-archive">
         <div className="nova-hero__section-heading">

@@ -615,6 +615,30 @@
 .artist-atlas__profile-signals dd { margin-top: 0.28rem; color: var(--fg); font-size: 0.72rem; font-weight: 750; line-height: 1.45; }
 .artist-atlas__tag-cloud { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
 .artist-atlas__tag-cloud span { padding: 0.3rem 0.48rem; border: 1px solid color-mix(in srgb, var(--c3) 28%, transparent); border-radius: 999px; background: color-mix(in srgb, var(--c3) 8%, transparent); color: var(--type-ink-muted); font-size: 0.59rem; font-weight: 750; }
+.artist-atlas__genre-profile { display: grid; gap: 0.75rem; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--atlas-border); }
+.artist-atlas__genre-heading { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.artist-atlas__genre-heading > div { display: flex; min-width: 0; align-items: center; gap: 0.45rem; color: var(--c3); }
+.artist-atlas__genre-heading h5 { margin: 0; color: var(--fg); font-size: 0.73rem; font-weight: 900; }
+.artist-atlas__genre-status { display: inline-flex; min-height: 1.65rem; flex: 0 0 auto; align-items: center; gap: 0.3rem; padding-inline: 0.5rem; border: 1px solid var(--atlas-border-strong); border-radius: 999px; color: var(--type-ink-muted); font: 800 0.54rem ui-monospace, monospace; letter-spacing: 0.04em; }
+.artist-atlas__genre-profile[data-genre-status='documented'] .artist-atlas__genre-status { border-color: color-mix(in srgb, #4ade80 38%, transparent); background: color-mix(in srgb, #4ade80 8%, transparent); color: color-mix(in srgb, #4ade80 84%, var(--fg)); }
+.artist-atlas__genre-profile[data-genre-status='suggested'] .artist-atlas__genre-status { border-color: color-mix(in srgb, var(--c2) 34%, transparent); background: color-mix(in srgb, var(--c2) 7%, transparent); color: color-mix(in srgb, var(--c2) 80%, var(--fg)); }
+.artist-atlas__genre-family { margin: 0; }
+.artist-atlas__genre-family > div { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; padding: 0.55rem 0.65rem; border: 1px solid var(--atlas-border); border-radius: 0.8rem; background: color-mix(in srgb, var(--fg) 2%, transparent); }
+.artist-atlas__genre-family dt { color: var(--type-ink-muted); font: 800 0.55rem ui-monospace, monospace; letter-spacing: 0.07em; text-transform: uppercase; }
+.artist-atlas__genre-family dd { margin: 0; color: var(--fg); font-size: 0.68rem; font-weight: 850; text-align: end; }
+.artist-atlas__genre-group > p,
+.artist-atlas__emotional-layer p { margin: 0; color: var(--type-ink-muted); font: 800 0.56rem ui-monospace, monospace; letter-spacing: 0.07em; text-transform: uppercase; }
+.artist-atlas__genre-group small,
+.artist-atlas__emotional-layer small,
+.artist-atlas__genre-state { display: block; margin: 0.45rem 0 0; color: var(--type-ink-muted); font-size: 0.61rem; line-height: 1.5; }
+.artist-atlas__genre-group .artist-atlas__tag-cloud { margin-top: 0.45rem; }
+.artist-atlas__tag-cloud--accepted span { border-color: color-mix(in srgb, #4ade80 34%, transparent); background: color-mix(in srgb, #4ade80 8%, transparent); color: color-mix(in srgb, #4ade80 82%, var(--fg)); }
+.artist-atlas__tag-cloud--candidate span { border-style: dashed; border-color: color-mix(in srgb, var(--c2) 35%, transparent); background: color-mix(in srgb, var(--c2) 6%, transparent); color: var(--type-ink-muted); }
+.artist-atlas__genre-more { color: color-mix(in srgb, var(--c2) 72%, var(--fg)) !important; font-weight: 800; }
+.artist-atlas__emotional-layer { display: grid; gap: 0.45rem; padding: 0.7rem; border: 1px solid color-mix(in srgb, var(--c3) 24%, transparent); border-radius: 0.9rem; background: color-mix(in srgb, var(--c3) 5%, transparent); }
+.artist-atlas__emotional-layer > div { display: flex; align-items: center; gap: 0.4rem; color: var(--c3); }
+.artist-atlas__emotional-layer > span { width: fit-content; padding: 0.3rem 0.5rem; border-radius: 999px; background: color-mix(in srgb, var(--c3) 10%, transparent); color: color-mix(in srgb, var(--c3) 78%, var(--fg)); font-size: 0.61rem; font-weight: 850; }
+.artist-atlas__emotional-layer small { margin-top: 0; }
 
 .artist-atlas__release-shelf { display: grid; grid-auto-columns: minmax(9.5rem, 11rem); grid-auto-flow: column; gap: 0.7rem; overflow-x: auto; padding: 0.15rem 0.15rem 0.55rem; scroll-snap-type: inline proximity; }
 .artist-atlas__release-shelf:focus-visible { outline: 2px solid var(--c1); outline-offset: 0.25rem; }

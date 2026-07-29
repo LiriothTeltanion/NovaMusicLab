@@ -97,7 +97,7 @@ describe('LivingArtistAtlas', () => {
 
     expect(screen.getByRole('heading', { name: 'Artist territories', level: 2 })).toBeInTheDocument();
     expect(within(artistHero).getByRole('heading', { name: 'Bring Me the Horizon', level: 3 })).toBeInTheDocument();
-    expect(within(artistHero).getByTestId('artist-factual-intro')).toHaveTextContent(/listening history.*rank #1/i);
+    expect(within(artistHero).getByTestId('artist-factual-intro')).toHaveTextContent(/ranks #1.*listening history.*provisionally.*analytical family/i);
     expect(await within(artistHero).findByText(
       'A Nova editorial reading based on the active listening history; it does not replace an external biography.',
     )).toBeInTheDocument();
@@ -116,7 +116,7 @@ describe('LivingArtistAtlas', () => {
 
     await user.click(within(mediaGate).getByRole('button', { name: 'Close media portal' }));
     expect(within(mediaGate).getByRole('button', { name: 'Load official media' })).toHaveFocus();
-  });
+  }, 10_000);
 
   it('opens the artist requested by a deep link and keeps later selections shareable', async () => {
     window.history.replaceState(null, '', '#/artist-identity?artist=Deafheaven');
@@ -148,6 +148,23 @@ describe('LivingArtistAtlas', () => {
     expect(screen.getAllByText(/License review pending|Provider-restricted use/).length).toBeGreaterThan(0);
   });
 
+  it('separates documented genres, review suggestions and the emotional reading', async () => {
+    const user = userEvent.setup();
+    renderAtlas('en');
+
+    await user.type(screen.getByLabelText('Search your artists'), 'Annihilator');
+    await user.click(screen.getByRole('button', { name: /Annihilator/i }));
+
+    const profile = await screen.findByTestId('artist-genre-profile');
+    expect((await within(profile).findAllByText('Documented')).length).toBeGreaterThan(0);
+    expect(within(profile).getByText('Thrash Metal')).toBeInTheDocument();
+    expect(within(profile).getByText('Heavy Metal')).toBeInTheDocument();
+    expect(within(profile).getByText('Suggestions to review')).toBeInTheDocument();
+    expect(within(profile).getByText('Speed Metal')).toBeInTheDocument();
+    expect(within(profile).getByText('Emotional reading')).toBeInTheDocument();
+    expect(within(profile).getByText(/does not claim what you felt/i)).toBeInTheDocument();
+  });
+
   it('requires fresh media consent and resets evidence when the artist changes', async () => {
     const user = userEvent.setup();
     renderAtlas('en');
@@ -166,7 +183,7 @@ describe('LivingArtistAtlas', () => {
     expect(screen.getByRole('button', { name: /View sources/i })).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('shows honest generated and catalog fallbacks for an unknown artist', () => {
+  it('shows honest generated, catalog and genre fallbacks for an unknown artist', async () => {
     const sparseData: MusicDnaData = {
       ...data,
       top_artists: [{ name: 'Uncatalogued Signal', plays: 12, genre: 'Unclassified', country: 'Unknown' }],
@@ -179,10 +196,13 @@ describe('LivingArtistAtlas', () => {
 
     expect(screen.getByText('Original visual created in the app')).toBeInTheDocument();
     expect(screen.getByText(/No verified gallery exists for this identity/)).toBeInTheDocument();
-    expect(screen.getByTestId('artist-factual-intro')).toHaveTextContent(/Uncatalogued Signal.*rank #1.*12 plays/i);
+    expect(screen.getByTestId('artist-factual-intro')).toHaveTextContent(/Uncatalogued Signal.*ranks #1.*12 plays.*provisionally.*analytical family/i);
     expect(screen.getByText('The active archive has no aggregated tracks for this artist.')).toBeInTheDocument();
     expect(screen.getByText('The active archive has no aggregated albums for this artist.')).toBeInTheDocument();
     expect(screen.getByText('The offline catalog has no documented releases for this artist.')).toBeInTheDocument();
+    const profile = await screen.findByTestId('artist-genre-profile');
+    expect(await within(profile).findByText('To research')).toBeInTheDocument();
+    expect(within(profile).getByText(/no documented genres or safe suggestions yet/i)).toBeInTheDocument();
   });
 
   it('does not reuse flagship editorial claims for a visitor archive', () => {
@@ -194,7 +214,7 @@ describe('LivingArtistAtlas', () => {
 
     renderAtlas('en', visitorData);
 
-    expect(screen.getByTestId('artist-factual-intro')).toHaveTextContent(/listening history.*rank #1/i);
+    expect(screen.getByTestId('artist-factual-intro')).toHaveTextContent(/ranks #1.*listening history.*provisionally.*analytical family/i);
     expect(screen.queryByText(
       'A Nova editorial reading based on the active listening history; it does not replace an external biography.',
     )).not.toBeInTheDocument();

@@ -11,11 +11,13 @@ The repository root README is the product entrance. Detailed decisions live here
 Current high-value references:
 
 - [Experience model](./product/EXPERIENCE_MODEL.md)
+- [Guest Museum](./product/GUEST_MUSEUM.md)
 - [Supported data sources](./product/DATA_SOURCES.md)
 - [MusicBee library snapshot](./product/MUSICBEE_LIBRARY_SNAPSHOT.md)
 - [Architecture overview](./architecture/OVERVIEW.md)
 - [Social, connectors and Audio Lab](./architecture/SOCIAL_CONNECTORS_AND_AUDIO.md)
 - [Privacy threat model](./architecture/PRIVACY_THREAT_MODEL.md)
 - [Public data policy](./data/PUBLIC_DATA_POLICY.md)
+- [Genre ontology and artist assertions](./data/GENRE_ONTOLOGY.md)
 - [Accessibility](./design/ACCESSIBILITY.md)
 - [Release process](./operations/RELEASE.md)

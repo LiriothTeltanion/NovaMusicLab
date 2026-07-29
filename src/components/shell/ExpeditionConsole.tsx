@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import {
+  MuseumRoomProgressRail,
+  type MuseumRoomItem,
+} from '../MuseumRoomNavigator';
 import type { MusicDnaData } from '../../types';
 import { pickLanguage, type Lang } from '../../utils/i18n';
 import ArchiveCapsule from './ArchiveCapsule';
@@ -13,6 +17,7 @@ interface ExpeditionConsoleProps {
   isPersonalArchive: boolean;
   isPersisted: boolean;
   lang: Lang;
+  roomItems: MuseumRoomItem[];
   rooms: CommandRoomItem[];
   savedAt: string | null;
   sourceLabel: string | null;
@@ -26,6 +31,7 @@ export default function ExpeditionConsole({
   isPersonalArchive,
   isPersisted,
   lang,
+  roomItems,
   rooms,
   savedAt,
   sourceLabel,
@@ -58,6 +64,12 @@ export default function ExpeditionConsole({
     <>
       <section className="expedition-console" aria-label={consoleLabel} data-testid="expedition-console">
         <ExperienceSwitcher lang={lang} />
+        <MuseumRoomProgressRail
+          activeId={activeRoomId}
+          items={roomItems}
+          lang={lang}
+          onNavigate={onNavigate}
+        />
         <ArchiveCapsule
           data={data}
           isPersonalArchive={isPersonalArchive}
@@ -67,7 +79,12 @@ export default function ExpeditionConsole({
           sourceLabel={sourceLabel}
           onOpenArchive={onOpenArchive}
         />
-        <CommandPaletteButton buttonRef={commandButtonRef} lang={lang} onOpen={() => setCommandOpen(true)} />
+        <CommandPaletteButton
+          buttonRef={commandButtonRef}
+          isOpen={commandOpen}
+          lang={lang}
+          onOpen={() => setCommandOpen(true)}
+        />
       </section>
       <CommandPalette
         activeRoomId={activeRoomId}

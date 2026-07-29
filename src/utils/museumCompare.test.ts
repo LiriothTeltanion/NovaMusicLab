@@ -32,6 +32,7 @@ describe('compareArtistOverlap', () => {
     expect(result.onlyB.map(x => x.name)).toEqual(['Only In B']);
     // union = 3 unique artists, 1 shared -> 33.3%
     expect(result.overlapPct).toBeCloseTo(33.3, 1);
+    expect(result.scopeA).toMatchObject({ comparedArtists: 2, complete: false });
   });
 
   it('returns zero overlap for two disjoint artist lists', () => {
@@ -53,6 +54,106 @@ describe('compareArtistOverlap', () => {
 
     expect(result.sharedCount).toBe(20);
     expect(result.shared.length).toBeLessThan(20);
+  });
+
+  it('uses the complete artist catalog and merges normalized duplicate identities', () => {
+    const a = makeDataset([], { unique_artists: 2 });
+    a.artist_genre_catalog = [
+      {
+        artistKey: 'Beyoncé',
+        name: 'Beyoncé',
+        plays: 20,
+        automaticGenre: 'Pop',
+        automaticFamily: 'Pop',
+        country: 'US',
+        source: 'catalog',
+      },
+      {
+        artistKey: 'Archive A',
+        name: 'Archive A',
+        plays: 10,
+        automaticGenre: 'Rock',
+        automaticFamily: 'Rock',
+        country: 'US',
+        source: 'catalog',
+      },
+    ];
+    const b = makeDataset([], { unique_artists: 2 });
+    b.artist_genre_catalog = [
+      {
+        artistKey: 'BEYONCE',
+        name: 'BEYONCE',
+        plays: 5,
+        automaticGenre: 'Pop',
+        automaticFamily: 'Pop',
+        country: 'US',
+        source: 'catalog',
+      },
+      {
+        artistKey: 'Archive B',
+        name: 'Archive B',
+        plays: 8,
+        automaticGenre: 'Electronic',
+        automaticFamily: 'Electronic',
+        country: 'GB',
+        source: 'catalog',
+      },
+    ];
+
+    const result = compareArtistOverlap(a, b);
+
+    expect(result.shared).toEqual([
+      { name: 'Beyoncé', playsA: 20, playsB: 5 },
+    ]);
+    expect(result.scopeA).toEqual({ comparedArtists: 2, archiveArtists: 2, complete: true });
+    expect(result.scopeB).toEqual({ comparedArtists: 2, archiveArtists: 2, complete: true });
+  });
+
+  it('keeps a fully loaded catalog complete when normalization merges aliases', () => {
+    const a = makeDataset([], { unique_artists: 2 });
+    a.artist_genre_catalog = [
+      {
+        artistKey: 'Beyoncé',
+        name: 'Beyoncé',
+        plays: 20,
+        automaticGenre: 'Pop',
+        automaticFamily: 'Pop',
+        country: 'US',
+        source: 'catalog',
+      },
+      {
+        artistKey: 'BEYONCE',
+        name: 'BEYONCE',
+        plays: 5,
+        automaticGenre: 'Pop',
+        automaticFamily: 'Pop',
+        country: 'US',
+        source: 'catalog',
+      },
+    ];
+    const b = makeDataset([], { unique_artists: 1 });
+    b.artist_genre_catalog = [{
+      artistKey: 'Beyonce',
+      name: 'Beyonce',
+      plays: 8,
+      automaticGenre: 'Pop',
+      automaticFamily: 'Pop',
+      country: 'US',
+      source: 'catalog',
+    }];
+
+    const result = compareArtistOverlap(a, b);
+
+    expect(result.shared[0]).toEqual({
+      name: 'Beyoncé',
+      playsA: 25,
+      playsB: 8,
+    });
+    expect(result.scopeA).toEqual({
+      comparedArtists: 1,
+      archiveArtists: 2,
+      complete: true,
+    });
   });
 });
 

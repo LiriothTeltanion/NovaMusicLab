@@ -54,6 +54,19 @@ export interface ArtistAtlasCopy {
   activeYears: string;
   members: string;
   genres: string;
+  genreFamily: string;
+  documentedGenres: string;
+  suggestedGenres: string;
+  suggestedGenresNote: string;
+  moreGenreSuggestions: (value: number) => string;
+  genreKnowledgeLoading: string;
+  genreKnowledgeUnavailable: string;
+  genreUnclassified: string;
+  genreStatusDocumented: string;
+  genreStatusSuggested: string;
+  genreStatusUnclassified: string;
+  emotionalReading: string;
+  emotionalReadingNote: string;
   unavailable: string;
   connectionsTitle: string;
   connectionsSubtitle: string;
@@ -144,7 +157,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'Perfil documentado',
     editorialStory: 'Conoce al artista',
     editorialStoryNote: 'Lectura editorial de Nova basada en el historial activo; no sustituye una biografía externa.',
-    artistIntro: (artist, genre, rank, plays, place) => `${artist} aparece en tu historial dentro de ${genre}${place ? `, con conexión a ${place}` : ''}. Ocupa el puesto #${rank}, con ${plays} reproducciones.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} ocupa el puesto #${rank} de tu historial, con ${plays} reproducciones. Para organizar el archivo, Nova lo agrupa provisionalmente en la familia analítica ${genre}${place ? ` y registra una conexión de catálogo con ${place}` : ''}; los géneros documentados y sugeridos aparecen más abajo.`,
     whyItMatters: 'Por qué importa en este mapa',
     biographySource: source => `Descripción de ${source}`,
     noBiography: 'Todavía no existe una biografía editorial verificada para esta identidad. Conservamos únicamente los datos confirmados del archivo.',
@@ -167,7 +180,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     areas: 'Lugares',
     activeYears: 'Actividad',
     members: 'Miembros/roles',
-    genres: 'Etiquetas documentadas',
+    genres: 'Géneros y subgéneros',
+    genreFamily: 'Familia del archivo',
+    documentedGenres: 'Documentados',
+    suggestedGenres: 'Sugerencias por revisar',
+    suggestedGenresNote: 'Estas coincidencias tienen una fuente, pero todavía no se presentan como hechos confirmados.',
+    moreGenreSuggestions: value => `+${value} sugerencias adicionales en la base de datos`,
+    genreKnowledgeLoading: 'Cargando la ficha de géneros…',
+    genreKnowledgeUnavailable: 'La ficha de géneros no pudo cargarse. El resto del Atlas sigue disponible.',
+    genreUnclassified: 'Este artista todavía no tiene géneros documentados ni sugerencias seguras.',
+    genreStatusDocumented: 'Documentado',
+    genreStatusSuggested: 'Con sugerencias',
+    genreStatusUnclassified: 'Por investigar',
+    emotionalReading: 'Lectura emocional',
+    emotionalReadingNote: 'Capa exploratoria calculada por Nova; no afirma lo que sentiste al escuchar.',
     unavailable: 'No disponible',
     connectionsTitle: 'Artistas y conexiones',
     connectionsSubtitle: 'Separamos identidades documentadas, coincidencias del catálogo y parecidos encontrados en tu historial.',
@@ -256,7 +282,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'Documented profile',
     editorialStory: 'Meet the artist',
     editorialStoryNote: 'A Nova editorial reading based on the active listening history; it does not replace an external biography.',
-    artistIntro: (artist, genre, rank, plays, place) => `${artist} appears in your listening history within ${genre}${place ? `, with a connection to ${place}` : ''}. They rank #${rank} with ${plays} plays.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} ranks #${rank} in your listening history with ${plays} plays. To organize the archive, Nova provisionally groups this artist in the ${genre} analytical family${place ? ` and records a catalog connection to ${place}` : ''}; documented genres and suggestions appear below.`,
     whyItMatters: 'Why this artist matters here',
     biographySource: source => `Description from ${source}`,
     noBiography: 'No verified editorial biography exists for this identity yet. Only confirmed archive facts are retained.',
@@ -279,7 +305,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     areas: 'Places',
     activeYears: 'Activity',
     members: 'Members/roles',
-    genres: 'Documented tags',
+    genres: 'Genres and subgenres',
+    genreFamily: 'Archive family',
+    documentedGenres: 'Documented',
+    suggestedGenres: 'Suggestions to review',
+    suggestedGenresNote: 'These matches have a source, but are not presented as confirmed facts yet.',
+    moreGenreSuggestions: value => `+${value} more suggestions in the database`,
+    genreKnowledgeLoading: 'Loading the genre profile…',
+    genreKnowledgeUnavailable: 'The genre profile could not load. The rest of the Atlas remains available.',
+    genreUnclassified: 'This artist has no documented genres or safe suggestions yet.',
+    genreStatusDocumented: 'Documented',
+    genreStatusSuggested: 'Has suggestions',
+    genreStatusUnclassified: 'To research',
+    emotionalReading: 'Emotional reading',
+    emotionalReadingNote: 'An exploratory layer calculated by Nova; it does not claim what you felt while listening.',
     unavailable: 'Unavailable',
     connectionsTitle: 'Artists and connections',
     connectionsSubtitle: 'Documented identities, catalog name matches and similarities in your history stay clearly separated.',
@@ -368,7 +407,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'פרופיל מתועד',
     editorialStory: 'היכרות עם האמן',
     editorialStoryNote: 'קריאה מערכתית של Nova המבוססת על היסטוריית ההאזנה הפעילה; היא אינה מחליפה ביוגרפיה חיצונית.',
-    artistIntro: (artist, genre, rank, plays, place) => `${bidiIsolate(artist)} מופיע בהיסטוריית ההאזנה שלך בתוך ${bidiIsolate(genre)}${place ? `, עם קשר אל ${bidiIsolate(place)}` : ''}, במקום #${bidiIsolate(rank)} עם ${bidiIsolate(plays)} השמעות.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${bidiIsolate(artist)} מדורג במקום #${bidiIsolate(rank)} בהיסטוריית ההאזנה שלך, עם ${bidiIsolate(plays)} השמעות. לצורך ארגון הארכיון, Nova משייכת את האמן באופן זמני למשפחה האנליטית ${bidiIsolate(genre)}${place ? ` ומתעדת קשר קטלוגי אל ${bidiIsolate(place)}` : ''}; ז׳אנרים מתועדים והצעות מופיעים בהמשך.`,
     whyItMatters: 'למה האמן חשוב במפה הזאת',
     biographySource: source => `תיאור מתוך ${bidiIsolate(source)}`,
     noBiography: 'עדיין אין ביוגרפיה ערוכה ומאומתת לזהות הזאת. נשמרים רק פרטים מאושרים מן הארכיון.',
@@ -391,7 +430,20 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     areas: 'מקומות',
     activeYears: 'פעילות',
     members: 'חברים/תפקידים',
-    genres: 'תגיות מתועדות',
+    genres: 'ז׳אנרים ותתי־ז׳אנרים',
+    genreFamily: 'משפחת הארכיון',
+    documentedGenres: 'מתועד',
+    suggestedGenres: 'הצעות לבדיקה',
+    suggestedGenresNote: 'להתאמות האלה יש מקור, אבל הן עדיין אינן מוצגות כעובדות מאושרות.',
+    moreGenreSuggestions: value => `עוד ${bidiIsolate(value)} הצעות במסד הנתונים`,
+    genreKnowledgeLoading: 'טוענים את פרופיל הז׳אנרים…',
+    genreKnowledgeUnavailable: 'לא ניתן לטעון את פרופיל הז׳אנרים. שאר האטלס עדיין זמין.',
+    genreUnclassified: 'עדיין אין לאמן הזה ז׳אנרים מתועדים או הצעות בטוחות.',
+    genreStatusDocumented: 'מתועד',
+    genreStatusSuggested: 'יש הצעות',
+    genreStatusUnclassified: 'למחקר',
+    emotionalReading: 'קריאה רגשית',
+    emotionalReadingNote: 'שכבת חקר שחושבה על ידי Nova; היא אינה קובעת מה הרגשתם בזמן ההאזנה.',
     unavailable: 'לא זמין',
     connectionsTitle: 'אמנים וקשרים',
     connectionsSubtitle: 'זהויות מתועדות, התאמות שמות בקטלוג ודמיון בהיסטוריה שלך מוצגים בנפרד.',

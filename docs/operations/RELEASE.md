@@ -6,7 +6,9 @@ Current version states:
 
 - `v1.1.0` — deployed 2026-07-26; superseded 2026-07-29.
 - `v1.2.0` — deployed 2026-07-29; current public GitHub Pages version.
-- `v1.3.0` — private candidate 2026-07-29; not published or deployed.
+- `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
+  superseded by the `v1.4.0` candidate.
+- `v1.4.0` — private candidate 2026-07-29; not published or deployed.
 
 ## Branch model
 
@@ -39,7 +41,7 @@ This record captures the accepted release candidate. The exact commit/version an
 - [x] No raw archive, API key or private CV exists in the diff or build artifact.
 - [x] Pages deploy and post-deploy smoke test pass.
 
-The Pages workflow cancels any older run for the same branch when a newer push arrives. Before upload, it writes `dist/build-meta.json` with the verified Git commit and package version. The smoke job accepts the deployment only when both the museum HTML and that exact commit/version marker are live, preventing a healthy but stale Pages artifact from passing release acceptance.
+The Pages workflow cancels any older run for the same branch when a newer push arrives. The tracked handoff remains a private candidate; during CI only, the verified artifact receives matching `dist/build-meta.json` and `dist/release-profile-manifest.json` deployment attestations with the exact Git commit, package version and deployment date. The smoke job accepts the deployment only when the museum HTML and both live identity files agree, preventing a healthy but stale Pages artifact from passing release acceptance.
 
 ## `v1.1.0` acceptance record — deployed 2026-07-26
 
@@ -71,10 +73,11 @@ Pull request [#20](https://github.com/LiriothTeltanion/NovaMusicLab/pull/20) mer
 
 Automated accessibility checks do not replace ongoing manual screen-reader, keyboard, contrast and device review. The TopHistorico room also reaches its current 360 kB gzip incremental budget exactly, so code splitting is the highest-priority performance follow-up.
 
-## `v1.3.0` candidate verification — private candidate 2026-07-29
+## `v1.3.0` checkpoint record — private checkpoint 2026-07-29
 
-This record describes the local candidate only. It is not evidence of a GitHub
-release, tag, Pages deployment or public availability.
+This record describes a preserved local checkpoint only. It was never tagged,
+released or deployed and was superseded by the `v1.4.0` private candidate on
+2026-07-29.
 
 - [x] `npm run verify` passes: 105 test files and 613 tests, plus lint, strict
   data, identity, media-link, artist-knowledge, privacy, PWA, TypeScript,
@@ -95,6 +98,39 @@ on 2026-07-03; 5960 lower-ranked artists, representing 33.8% of archive plays,
 remain intentionally unclassified rather than receiving guessed genres; remote
 artwork still creates disclosed provider requests; and `TopHistorico` has no
 remaining headroom within its current 360 kB gzip incremental budget.
+
+## `v1.4.0` candidate verification — private candidate 2026-07-29
+
+This record is a live checklist, not evidence of a release, tag, deployment or
+public availability.
+
+- [x] Living Artist Atlas consumes the versioned genre ontology and evidence
+  artifact while separating accepted facts, candidate suggestions, rejected
+  assertions and emotional heuristics.
+- [x] Guest Museum accepts an optional browser-local display label and compares
+  a private visitor archive with the lazy public flagship catalog.
+- [x] The comparator discloses complete versus partial artist scope.
+- [x] The Hero displays the exact candidate version and human-readable release
+  history.
+- [x] `npm run verify` passes locally: 111 test files, 642 tests and every
+  configured audit/build-budget gate on 2026-07-29.
+- [x] `npm run test:e2e` passes 18/18 updated desktop/mobile scenarios,
+  including EN/ES, Hebrew RTL, daylight theme and Guest Museum persistence.
+- [x] Nine final candidate screenshots/GIF/reduced-motion/social-preview assets
+  are regenerated and visually reviewed from the working-tree candidate.
+- [x] Public-bundle privacy passes across 24 JSON payloads and 1,795 repository
+  text files; `git diff --check` passes.
+- [ ] Commit the reviewed candidate cleanly; CI will generate the deployed
+  manifest and build marker from that exact commit without changing the
+  tracked private-candidate manifest.
+- [ ] CI, GitHub Pages exact commit/version smoke and live browser review pass.
+- [ ] The GitHub profile repository is synchronized only after the deployed
+  Nova commit and version are verified.
+
+Known candidate boundaries: no Google, Supabase, Spotify OAuth or live Last.fm
+connector is deployed; the optional name is not authentication; raw visitor
+files remain local; and 5,960 long-tail artist rows remain honestly
+unclassified pending evidence.
 
 ## Release metadata
 

@@ -37,14 +37,14 @@ describe('HubNavigation', () => {
     expect(screen.getByRole('button', { name: 'סיפורים' })).toHaveAttribute('aria-current', 'page');
   });
 
-  it('keeps the map dock sticky below the header while the expedition console scrolls normally', () => {
+  it('embeds the hub map in the title bar while the expedition console owns the second sticky row', () => {
     const dockCss = readFileSync('src/components/shell/HubNavigation.css', 'utf8');
     const consoleCss = readFileSync('src/components/shell/ExpeditionConsole.css', 'utf8');
     const shellCss = readFileSync('src/index.css', 'utf8');
 
-    expect(dockCss).toMatch(/position:\s*sticky/);
-    expect(dockCss).toMatch(/inset-block-start:\s*var\(--nova-app-header-height\)/);
-    expect(consoleCss).not.toMatch(/position:\s*sticky/);
+    expect(dockCss).not.toMatch(/position:\s*sticky/);
+    expect(consoleCss).toMatch(/position:\s*sticky/);
+    expect(consoleCss).toMatch(/inset-block-start:\s*var\(--nova-app-header-height\)/);
     expect(shellCss).toMatch(/inset-block-start:\s*var\(--nova-sticky-shell-height\)/);
     expect(shellCss).toMatch(/max-block-size:\s*calc\(100dvh - var\(--nova-sticky-shell-height\)\)/);
   });

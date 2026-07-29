@@ -59,6 +59,11 @@ The application recognizes two product profiles:
 
 Components must not infer the profile from the presence of a particular artist or date. Profile identity, privacy tier and capabilities belong in explicit data metadata.
 
+`1.4.0` — **private candidate 2026-07-29** — adds the Guest Museum entrance:
+an optional browser-local display label, local import and a lazy comparison
+with the reviewed public flagship. The display label is not authentication.
+See [Guest Museum](../product/GUEST_MUSEUM.md).
+
 ## Architectural invariants
 
 - No raw visitor export is uploaded to a Nova Music Lab backend.

@@ -47,6 +47,14 @@ const HEBREW_LAZY_CHUNKS = [
   { name: 'Album artwork map', prefix: 'album_images-', gzipBudgetKb: 60 },
   { name: 'Track artwork map', prefix: 'track_images-', gzipBudgetKb: 40 },
 ];
+// The genre foundation is intentionally loaded only by Genre Lab and the
+// Living Artist Atlas. These independent limits prevent a future metadata
+// harvest from silently turning either room into a multi-megabyte transfer.
+const GENRE_LAZY_CHUNKS = [
+  { name: 'Genre ontology', prefix: 'genre_ontology.v1-', gzipBudgetKb: 114 },
+  { name: 'Artist genre assertions', prefix: 'artist_genre_assertions.v1-', gzipBudgetKb: 92 },
+  { name: 'Full artist genre catalog', prefix: 'music_dna_genre_catalog-', gzipBudgetKb: 102 },
+];
 // Incremental cost after the landing closure is already cached. Baselines from
 // the 2026-07-13 production build were 304 / 305 / 337 / 321 / 176KB gzip.
 // The 6-8% headroom catches a heavy shared import or data leak without making
@@ -57,6 +65,7 @@ const ROOM_GZIP_BUDGETS = [
   { name: 'TopHistorico', rootPrefix: 'TopHistorico-', budgetKb: 360 },
   { name: 'EmotionalMap', rootPrefix: 'EmotionalMap-', budgetKb: 345 },
   { name: 'DataUploader', rootPrefix: 'DataUploader-', budgetKb: 190 },
+  { name: 'ArtistIdentity', rootPrefix: 'ArtistIdentity-', budgetKb: 165 },
 ];
 
 if (!fs.existsSync(ASSETS)) {
@@ -184,8 +193,12 @@ const hebrewLazyChunks = HEBREW_LAZY_CHUNKS.map(config => ({
   ...config,
   file: findChunk(config.prefix),
 }));
+const genreLazyChunks = GENRE_LAZY_CHUNKS.map(config => ({
+  ...config,
+  file: findChunk(config.prefix),
+}));
 
-for (const chunk of hebrewLazyChunks) {
+for (const chunk of [...hebrewLazyChunks, ...genreLazyChunks]) {
   if (!chunk.file) continue;
   const measurement = measureFiles([chunk.file]);
   const gzipKb = measurement.gzipBytes / 1024;
@@ -215,6 +228,12 @@ for (const chunk of hebrewLazyChunks) {
   if (!chunk.file) continue;
   if (shellLandingClosure.has(chunk.file) || demoLandingClosure.has(chunk.file)) {
     failures.push(`${chunk.name} leaked into the ES/EN landing closure through ${chunk.file}.`);
+  }
+}
+for (const chunk of genreLazyChunks) {
+  if (!chunk.file) continue;
+  if (shellLandingClosure.has(chunk.file) || demoLandingClosure.has(chunk.file)) {
+    failures.push(`${chunk.name} leaked into the landing closure through ${chunk.file}.`);
   }
 }
 
@@ -310,4 +329,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('[bundle-budget] OK - entry, shell/demo landings, guarded rooms, Hebrew/data lazy chunks and vendor boundaries are healthy.');
+console.log('[bundle-budget] OK - entry, shell/demo landings, guarded rooms, Hebrew/genre lazy chunks and vendor boundaries are healthy.');

@@ -2,6 +2,9 @@
 
 Status: **foundation implemented locally — 2026-07-28; cloud control plane planned, not deployed**.
 
+Guest Museum expansion: **implemented in `1.4.0` — private candidate
+2026-07-29; full local verification complete, publication pending**.
+
 ## Decision
 
 Keep the public museum on GitHub Pages and keep raw listening history in browser IndexedDB. A future Supabase project may act as an **optional control plane** for authentication, safe share snapshots and feedback. The museum must continue to work when that backend is absent, paused or offline.
@@ -31,6 +34,19 @@ flowchart TD
 - Points friends toward local import and two-museum comparison.
 
 GitHub Pages serves one static Open Graph preview for all hash routes. Per-invitation or per-artist cards require pre-generated share pages or a dynamic service and are out of scope for this foundation.
+
+### Guest Museum
+
+- Requires no account.
+- Accepts an optional sanitized display label stored in the browser.
+- Reuses the local import, IndexedDB and portable Nova-backup boundaries.
+- Compares a visitor archive with Kevin's public artist catalog only when the
+  visitor opens the comparison room.
+- Labels incomplete legacy comparison scope instead of presenting top-list
+  overlap as a complete archive result.
+
+The display label is not a login or globally reserved username. See
+[Guest Museum](../product/GUEST_MUSEUM.md).
 
 ### Audio Lab room
 

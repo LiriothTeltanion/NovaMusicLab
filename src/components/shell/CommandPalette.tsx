@@ -251,10 +251,12 @@ export default function CommandPalette({
 
 export function CommandPaletteButton({
   buttonRef,
+  isOpen,
   lang,
   onOpen,
 }: {
   buttonRef: RefObject<HTMLButtonElement | null>;
+  isOpen: boolean;
   lang: Lang;
   onOpen: () => void;
 }) {
@@ -271,7 +273,10 @@ export function CommandPaletteButton({
       className="nova-command-trigger"
       onClick={onOpen}
       aria-label={`${copy.open}, Ctrl+K`}
+      aria-expanded={isOpen}
+      aria-haspopup="dialog"
       title={`${copy.open} · Ctrl+K ${copy.shortcut}`}
+      data-testid="command-palette-trigger"
     >
       <Search className="h-4 w-4" aria-hidden="true" />
       <span>{copy.search}</span>

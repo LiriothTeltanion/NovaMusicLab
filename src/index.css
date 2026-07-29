@@ -49,7 +49,7 @@
   --fg: #f3f4f6;
   --glass-bg: rgba(10, 25, 47, 0.45);
   --nova-app-header-height: 60px;
-  --nova-hub-dock-height: 58px;
+  --nova-hub-dock-height: 116px;
   --nova-sticky-shell-height: calc(var(--nova-app-header-height) + var(--nova-hub-dock-height));
 
   /* Three deliberate voices: editorial display, highly legible reading text,
@@ -141,7 +141,15 @@
 }
 
 .nova-app-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(0.35rem, 1.2vw, 1rem);
   min-block-size: var(--nova-app-header-height);
+}
+
+.nova-app-brand__wordmark {
+  display: none;
 }
 
 .museum-room-progress {
@@ -175,7 +183,25 @@
 @media (min-width: 640px) {
   :root {
     --nova-app-header-height: 69px;
-    --nova-hub-dock-height: 60px;
+    --nova-hub-dock-height: 116px;
+  }
+}
+
+@media (min-width: 901px) {
+  :root {
+    --nova-hub-dock-height: 71px;
+  }
+}
+
+@media (min-width: 1180px) {
+  .nova-app-brand__wordmark {
+    display: block;
+  }
+}
+
+@media (min-width: 1241px) {
+  :root {
+    --nova-hub-dock-height: 94px;
   }
 }
 

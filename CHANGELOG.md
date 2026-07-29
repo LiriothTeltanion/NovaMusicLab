@@ -6,15 +6,83 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-Target: `v1.3.0` — private candidate 2026-07-29; not published or deployed.
+Target: `v1.4.0` — private candidate 2026-07-29; not published or deployed.
+
+### Added
+
+- Guest Museum entry with an optional sanitized browser-local display name;
+  the label is explicitly not an account, password or globally reserved
+  username.
+- Automatic private comparison between a visitor archive and Kevin's public
+  flagship, with archive-wide artist catalogs when available and an honest
+  partial-scope notice for older datasets.
+- A versioned genre ontology with 2,257 terms and an evidence artifact covering
+  453 of 6,413 archive artists through accepted, candidate and rejected
+  assertions.
+- Source-aware genre and subgenre profiles in Living Artist Atlas, with
+  documented facts, suggestions and honest research gaps kept separate from
+  heuristic emotional readings.
+- A human-readable “The story of Nova” Hero section with exact version dates
+  and publication states.
+- A Guest Museum product contract and a more specific optional Supabase
+  control-plane plan for anonymous identity, later Google linking and bounded
+  safe snapshots; no backend dependency or cloud sync is active.
+- Versioned release-media generation and audit contracts for screenshots, GIF,
+  static reduced-motion alternatives, social preview and profile-repository
+  synchronization.
+
+### Changed
+
+- Moved the five hubs into the main NOVA MUSIC LAB title bar and consolidated
+  depth, room map, archive/version disclosure and expandable search into one
+  sticky expedition console.
+- Replaced the duplicate content rail and mobile dock with the same accessible
+  room navigator at every breakpoint.
+- Made the visitor-to-flagship comparison load the public 6,413-artist catalog
+  only when needed instead of pulling it into the entry bundle.
+- Preserved the Living Constellation from the private `1.3.0` checkpoint while
+  integrating that work into the larger `1.4.0` candidate.
+
+### Fixed
+
+- Normalized artist identities case-, accent- and punctuation-insensitively
+  before merging genre evidence or museum comparisons.
+- Prevented rejected genre assertions from returning through merged artist
+  identities.
+- Stopped the museum comparator from describing a top-list-only percentage as
+  a complete archive comparison.
+
+### Verified
+
+- `npm run verify` passes locally on 2026-07-29: 111 test files, 642 tests,
+  TypeScript production build and every configured data, genre, identity,
+  media-link, knowledge, privacy, PWA, release-media and bundle-budget gate.
+- Playwright passes 18/18 desktop/mobile scenarios, including first entry,
+  compact navigation, Guest Museum import/save/restore/compare, Atlas deep
+  links, Spanish Guest entry, Hebrew RTL, daylight theme, axe WCAG A/AA and
+  overflow checks.
+- Genre audit passes with 2,257 terms, 1,257 assertions, 80,550 reconciled
+  plays and explicit unresolved coverage.
+- Nine versioned release visuals were regenerated and reviewed locally,
+  including desktop/mobile Hero, Genres, Living Artist Atlas, Guest Museum,
+  Hebrew RTL, the five-frame tour, reduced-motion fallback and social preview.
+- Public-bundle privacy passes across 24 public JSON payloads and 1,795
+  repository text files; `git diff --check` passes.
+- A clean commit, CI, Pages deployment, exact live commit/version smoke and
+  profile-repository synchronization remain release gates; this section does
+  not claim them complete.
+
+## [1.3.0] - 2026-07-29
+
+Status: **private checkpoint; never published or deployed; superseded by the
+`1.4.0` private candidate on 2026-07-29**.
 
 ### Added
 
 - Living Constellation hero with a deterministic daily set of four
   Wikimedia-hosted artist portraits, direct Living Artist Atlas navigation and
   EN/ES/HE curiosity copy.
-- Proposed optional-cloud-control-plane ADR and threat-model boundary; no
-  backend dependency, account or cloud synchronization is active.
+- Proposed optional-cloud-control-plane ADR and threat-model boundary.
 - Browser regression coverage for the sticky museum map and Hero-to-Atlas
   artist deep links.
 
@@ -22,34 +90,22 @@ Target: `v1.3.0` — private candidate 2026-07-29; not published or deployed.
 
 - Rebuilt the NOVA MUSIC LAB wordmark as a more distinctive editorial
   signature while preserving LTR brand isolation in Hebrew.
-- Moved the five museum hubs into a dedicated second sticky row below the
-  compact global header. The larger Expedition Console now scrolls away, so
-  navigation remains available without permanently consuming room space.
 - Made Living Artist Atlas honor and update the selected artist in shareable
   deep-link state.
 
 ### Fixed
 
-- Synchronized the artist-knowledge companion metadata with the canonical
-  manifest: 6 of 295 visual assets remain explicitly unverified after the
-  Wikimedia rights review, not 171.
-- Extended the artist-knowledge audit and enrichment writer so canonical and
-  companion metadata cannot silently diverge again.
-- Restricted the public Hero portrait pool to the 61 primary Wikimedia images
-  whose canonical license state is `declared` or `verified`; the compact runtime
-  index is regenerated and audited against the full lazy manifest.
+- Synchronized artist-knowledge companion metadata with the canonical manifest.
+- Restricted the public Hero portrait pool to the rights-eligible primary
+  Wikimedia images derived from the canonical manifest.
 - Made candidate screenshot capture wait for a ready central portrait with a
-  bounded fallback instead of documenting an avoidable loading transition.
+  bounded fallback.
 
 ### Verified
 
-- `npm run verify`: 105 test files and 613 tests passed, together with lint,
-  strict data, identity, media-link, artist-knowledge, privacy, PWA and
-  production bundle gates.
-- `npm run test:e2e`: 12 Playwright journeys passed across desktop and mobile
-  Chromium, including sticky navigation and Hero-to-Atlas artist selection.
-- Privacy-safe English desktop/dark, Atlas desktop/dark and Hebrew RTL
-  mobile/light candidate screenshots were regenerated and visually reviewed.
+- The private checkpoint passed its recorded local verification and browser
+  matrix before being retained as a Git checkpoint.
+- It was not tagged, released or served from GitHub Pages.
 
 ## [1.2.0] - 2026-07-29
 

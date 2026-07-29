@@ -5,6 +5,8 @@ import {
   GENRE_FAMILY_IDS,
   genreFamilyLabel,
   isGenreFamily,
+  MAX_ARTIST_GENRE_TAGS,
+  sanitizeGenreTags,
   sanitizeSecondaryTags,
   secondaryTagsForFamily,
 } from './genreTaxonomy';
@@ -42,5 +44,19 @@ describe('genreTaxonomy', () => {
       'Metalcore',
     ])).toEqual(['Darksynth', 'Dreamwave']);
     expect(sanitizeSecondaryTags('Unclassified', ['Other'])).toEqual([]);
+  });
+
+  it('keeps an extensible, bounded list of safe detailed genre terms', () => {
+    expect(sanitizeGenreTags([
+      '  Atmospheric   Black Metal ',
+      'atmospheric black metal',
+      'Corridos Tumbados',
+      `unsafe\u0000tag`,
+      'x'.repeat(81),
+    ])).toEqual(['Atmospheric Black Metal', 'Corridos Tumbados']);
+
+    expect(sanitizeGenreTags(
+      Array.from({ length: MAX_ARTIST_GENRE_TAGS + 3 }, (_, index) => `Genre ${index}`),
+    )).toHaveLength(MAX_ARTIST_GENRE_TAGS);
   });
 });

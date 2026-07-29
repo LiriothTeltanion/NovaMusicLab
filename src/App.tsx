@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 
 import { loadDefaultDataset } from './data/defaultDataset';
+import { loadDefaultGenreCatalog } from './data/defaultGenreCatalog';
 import type { ArtistGenreCatalogEntry, GenreAssignment, MusicDnaData } from './types';
 import {
   claimDatasetMutationIntent,
@@ -48,6 +49,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import CreatorCvLink from './components/CreatorCvLink';
 import NovaMark from './components/NovaMark';
 import SectionNarrative from './components/SectionNarrative';
+import LocalVisitorProfileCard from './components/visitor/LocalVisitorProfileCard';
 import type {
   DatasetOperationCoordinator,
   DatasetOperationKind,
@@ -63,9 +65,7 @@ import {
   type NavIconMotif,
 } from './components/museumVisualIdentity';
 import {
-  MobileMuseumRoomDock,
   getMuseumRoomProgress,
-  MuseumRoomProgressRail,
   MuseumRoomTransition,
   type MuseumRoomItem,
 } from './components/MuseumRoomNavigator';
@@ -78,6 +78,11 @@ import {
 } from './components/shell/museumNavigation';
 import HubNavigation from './components/shell/HubNavigation';
 import { ExperienceProvider, useExperience } from './context/ExperienceContext';
+import {
+  loadLocalVisitorProfileResult,
+  normalizeLocalVisitorName,
+  saveLocalVisitorProfileResult,
+} from './utils/localVisitorProfile';
 
 // Lazy: not needed for the very first paint (skipped entirely for returning
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
@@ -609,6 +614,13 @@ function AppInner({ boot }: { boot: AppBoot }) {
   const [copyLinkStatus, setCopyLinkStatus] = useState<CopyLinkStatus>('idle');
   const [storedMeta, setStoredMeta] = useState<{ savedAt: string; sourceLabel: string } | null>(boot.storedMeta);
   const [isPersonalArchive, setIsPersonalArchive] = useState(Boolean(boot.storedMeta));
+  const [initialLocalVisitorProfile] = useState(loadLocalVisitorProfileResult);
+  const [localVisitorName, setLocalVisitorName] = useState(
+    () => initialLocalVisitorProfile.profile?.displayName ?? '',
+  );
+  const [isLocalVisitorProfileStorageAvailable, setIsLocalVisitorProfileStorageAvailable] = useState(
+    initialLocalVisitorProfile.ok,
+  );
   const [restoredAt, setRestoredAt] = useState<string | null>(boot.restoredAt);
   const [persistenceNotice, setPersistenceNotice] = useState<PersistenceNotice | null>(() => (
     boot.restoreFailure ? { kind: 'restore-failure', failure: boot.restoreFailure } : null
@@ -837,6 +849,16 @@ function AppInner({ boot }: { boot: AppBoot }) {
     isChapter: !['upload', 'share', 'audio'].includes(item.id),
   })), [hubMenuItems, navGroups]);
 
+  const allRoomNavigationItems: MuseumRoomItem[] = React.useMemo(() => menuItems.map(item => ({
+    id: item.id,
+    label: item.label,
+    groupLabel: navGroups.find(group => group.id === item.group)?.label ?? item.group,
+    color: item.color,
+    secondary: item.secondary,
+    icon: item.icon,
+    isChapter: !['upload', 'share', 'audio'].includes(item.id),
+  })), [menuItems, navGroups]);
+
   const activeRoomProgress = React.useMemo(
     () => getMuseumRoomProgress(roomNavigationItems, activeTab),
     [activeTab, roomNavigationItems],
@@ -927,10 +949,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
   const selectHub = useCallback((hub: MuseumHubId) => {
     goToTab(MUSEUM_HUB_ENTRY_ROOMS[hub] as Tab);
-  }, [goToTab]);
-
-  const navigateRoom = useCallback((roomId: string) => {
-    goToTab(roomId as Tab);
   }, [goToTab]);
 
   const closeTour = useCallback(() => {
@@ -1074,6 +1092,13 @@ function AppInner({ boot }: { boot: AppBoot }) {
     });
   }, [baseMusicData, lang, storedMeta?.sourceLabel]);
 
+  const handleLocalVisitorNameChange = useCallback((displayName: string) => {
+    const normalizedName = normalizeLocalVisitorName(displayName);
+    const result = saveLocalVisitorProfileResult(normalizedName);
+    setLocalVisitorName(displayName);
+    setIsLocalVisitorProfileStorageAvailable(result.ok);
+  }, []);
+
   const handleClearStored = useCallback(async (
     operation?: DatasetOperationToken,
   ): Promise<DatasetClearResult | void> => {
@@ -1156,6 +1181,14 @@ function AppInner({ boot }: { boot: AppBoot }) {
   };
 
   const filteredData = musicData;
+  const normalizedLocalVisitorName = normalizeLocalVisitorName(localVisitorName);
+  const primaryMuseumLabel = isPersonalArchive && normalizedLocalVisitorName
+    ? pickLanguage(lang, {
+        en: `${normalizedLocalVisitorName}'s museum`,
+        es: `Museo de ${normalizedLocalVisitorName}`,
+        he: `המוזיאון של ${normalizedLocalVisitorName}`,
+      })
+    : storedMeta?.sourceLabel ?? filteredData.project;
   const languageUi = languageUiFor(lang);
   const motionUi = pickLanguage(lang, {
     en: {
@@ -1284,12 +1317,12 @@ function AppInner({ boot }: { boot: AppBoot }) {
       <DynamicMuseumBackground activeTab={activeTab} data={musicData} motionMode={effectiveMotionMode} />
 
       {/* ── Navbar ── */}
-      <header data-testid="museum-app-header" className="nova-app-header sticky top-0 z-40 flex w-full flex-nowrap items-center justify-between gap-2 border-b px-3 py-2 backdrop-blur-md sm:gap-3 sm:px-4 sm:py-3"
+      <header data-testid="museum-app-header" className="nova-app-header sticky top-0 z-40 w-full border-b px-2 py-2 backdrop-blur-md sm:px-4"
         style={{ backgroundColor: `${tc.bg}99`, borderBottomColor: `${tc.c1}18` }}>
         
         {/* Logo */}
         <button
-          className="flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center gap-3 text-start"
+          className="nova-app-brand flex min-h-11 min-w-11 shrink-0 cursor-pointer items-center gap-3 text-start"
           onClick={() => goToTab('hero')}
           aria-label={t.homeAria}
         >
@@ -1297,13 +1330,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
             style={{ borderColor: `${tc.c1}45`, boxShadow: `0 0 20px ${tc.c1}24` }}>
             <NovaMark className="h-full w-full" size="100%" />
           </div>
-          <span className="font-display text-base font-bold uppercase tracking-[0.14em] text-white hidden sm:block">
+          <span className="nova-app-brand__wordmark font-display text-base font-bold uppercase tracking-[0.14em] text-white">
             NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
           </span>
         </button>
 
+        <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
+
         {/* Right controls */}
-        <div className="flex min-w-0 flex-nowrap items-center justify-end gap-1 md:gap-2">
+        <div className="nova-app-header__controls flex min-w-0 flex-nowrap items-center justify-end gap-1 md:gap-2">
           {/* Creator profile remains available throughout the museum, without
               implying that an uploaded archive belongs to Kevin. */}
           <CreatorCvLink lang={lang} variant="header" accent={tc.c1} className="nova-header-primary-action" />
@@ -1559,8 +1594,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
         </div>
       </header>
 
-      <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
-
       {activeTab !== 'hero' && (
         <ExpeditionConsole
           activeRoomId={activeTab}
@@ -1568,6 +1601,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           isPersonalArchive={isPersonalArchive}
           isPersisted={Boolean(storedMeta)}
           lang={lang}
+          roomItems={allRoomNavigationItems}
           rooms={commandRoomItems}
           savedAt={storedMeta?.savedAt ?? null}
           sourceLabel={storedMeta?.sourceLabel ?? null}
@@ -1684,7 +1718,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
             className="nova-room-main relative mx-auto min-w-0 flex-1 p-4 pb-28 focus:outline-none md:p-8"
           >
             <MuseumRoomTransition items={roomNavigationItems} activeId={activeTab} />
-            <MuseumRoomProgressRail items={roomNavigationItems} activeId={activeTab} lang={lang} onNavigate={navigateRoom} />
             <AnimatePresence mode="wait">
               <motion.div key={activeTab}
                 initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
@@ -1708,7 +1741,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     {activeTab === 'eras'        && <EraExplorer data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'top'         && <TopHistorico data={filteredData} />}
                     {activeTab === 'compare'     && <SpotifyVsLastfm data={filteredData} />}
-                    {activeTab === 'museums'     && <MuseumComparator data={filteredData} primaryLabel={storedMeta?.sourceLabel ?? filteredData.project} />}
+                    {activeTab === 'museums'     && (
+                      <MuseumComparator
+                        data={filteredData}
+                        isPersonalArchive={isPersonalArchive}
+                        loadFlagshipCatalog={loadDefaultGenreCatalog}
+                        loadFlagshipDataset={loadDefaultDataset}
+                        primaryLabel={primaryMuseumLabel}
+                      />
+                    )}
                     {activeTab === 'platforms'   && <PlatformsDevices data={filteredData} />}
                     {activeTab === 'quality'     && (
                       <DataQualityCenter
@@ -1768,6 +1809,13 @@ function AppInner({ boot }: { boot: AppBoot }) {
                           <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
                         </div>
                         <SectionNarrative content={t.deepNarratives.upload} accent="c2" />
+                        <LocalVisitorProfileCard
+                          displayName={localVisitorName}
+                          isPersonalArchive={isPersonalArchive}
+                          lang={lang}
+                          onDisplayNameChange={handleLocalVisitorNameChange}
+                          storageAvailable={isLocalVisitorProfileStorageAvailable}
+                        />
                         <DataUploader
                           onDataLoaded={handleDataLoaded}
                           currentData={baseMusicData}
@@ -1785,12 +1833,6 @@ function AppInner({ boot }: { boot: AppBoot }) {
             </AnimatePresence>
           </main>
 
-          <MobileMuseumRoomDock
-            items={roomNavigationItems}
-            activeId={activeTab}
-            lang={lang}
-            onNavigate={navigateRoom}
-          />
         </div>
       )}
 
@@ -1803,7 +1845,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
             exit={{ opacity: 0, y: 24 }}
             transition={{ duration: 0.3, ease: 'easeOut' as const }}
             onClick={() => setRestoredAt(null)}
-            className={`nova-restore-toast fixed z-[60] glass-panel flex min-h-11 items-center gap-3 rounded-2xl border px-4 py-3 text-start shadow-cyber ${activeTab === 'hero' ? '' : 'nova-restore-toast--above-dock'}`}
+            className="nova-restore-toast fixed z-[60] glass-panel flex min-h-11 items-center gap-3 rounded-2xl border px-4 py-3 text-start shadow-cyber"
             style={{ borderColor: `${tc.c1}40` }}
             aria-live="polite"
           >

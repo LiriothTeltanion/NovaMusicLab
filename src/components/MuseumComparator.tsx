@@ -1,18 +1,21 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  AlertCircle, Loader2, Trash2, Upload, Users, Heart, Activity,
+  AlertCircle, Loader2, Trash2, Upload, Users, Heart, Activity, Sparkles,
 } from 'lucide-react';
-import { MusicDnaData } from '../types';
+import type { ArtistGenreCatalogEntry, MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { parseMusicSources, ParseError } from '../utils/parser';
 import { parseExport } from '../utils/datasetStorage';
 import { compareArtistOverlap, compareCoreMetrics, compareMoodProfiles, type CoreMetricKey } from '../utils/museumCompare';
 import ArtistAvatar from './ArtistAvatar';
 import MoodBadge from './MoodBadge';
-import { directionFor, localeFor } from '../utils/i18n';
+import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
 
 interface MuseumComparatorProps {
   data: MusicDnaData;
+  isPersonalArchive?: boolean;
+  loadFlagshipCatalog?: () => Promise<ArtistGenreCatalogEntry[]>;
+  loadFlagshipDataset?: () => Promise<MusicDnaData>;
   primaryLabel: string;
 }
 
@@ -34,24 +37,144 @@ function readFileAsText(file: File): Promise<string> {
   });
 }
 
-export default function MuseumComparator({ data, primaryLabel }: MuseumComparatorProps) {
+export default function MuseumComparator({
+  data,
+  isPersonalArchive = false,
+  loadFlagshipCatalog,
+  loadFlagshipDataset,
+  primaryLabel,
+}: MuseumComparatorProps) {
   const { t, tc, lang } = useApp();
   const copy = t.museumCompare;
   const locale = localeFor(lang);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
+  const visitorCopy = useMemo(() => pickLanguage(lang, {
+    en: {
+      flagshipLabel: "Kevin's public flagship",
+      loadingFlagship: "Opening Kevin's public museum for comparison…",
+      loadFlagship: "Compare with Kevin's public museum",
+      flagshipReady: 'Public reference',
+      flagshipError: "Kevin's public museum could not be loaded. Your private archive is unchanged.",
+      fullScope: (artistsA: string, artistsB: string) =>
+        `Complete catalog coverage · ${artistsA} vs ${artistsB} artist identities after name cleanup`,
+      partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
+        `Visible scope only · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} artists. The percentage does not describe the complete archives.`,
+    },
+    es: {
+      flagshipLabel: 'Museo público de Kevin',
+      loadingFlagship: 'Abriendo el museo público de Kevin para comparar…',
+      loadFlagship: 'Comparar con el museo público de Kevin',
+      flagshipReady: 'Referencia pública',
+      flagshipError: 'No se pudo cargar el museo público de Kevin. Tu archivo privado no cambió.',
+      fullScope: (artistsA: string, artistsB: string) =>
+        `Cobertura completa · ${artistsA} vs ${artistsB} identidades de artista tras limpiar variantes del nombre`,
+      partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
+        `Alcance visible solamente · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} artistas. El porcentaje no describe los archivos completos.`,
+    },
+    he: {
+      flagshipLabel: 'המוזיאון הציבורי של Kevin',
+      loadingFlagship: 'פותחים את המוזיאון הציבורי של Kevin לצורך השוואה…',
+      loadFlagship: 'השוואה למוזיאון הציבורי של Kevin',
+      flagshipReady: 'נקודת ייחוס ציבורית',
+      flagshipError: 'לא ניתן היה לטעון את המוזיאון הציבורי של Kevin. הארכיון הפרטי שלך לא השתנה.',
+      fullScope: (artistsA: string, artistsB: string) =>
+        `כיסוי קטלוג מלא · ${artistsA} מול ${artistsB} זהויות אמן לאחר ניקוי וריאציות בשם`,
+      partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
+        `טווח גלוי בלבד · ${comparedA}/${archiveA} מול ${comparedB}/${archiveB} אמנים. האחוז אינו מתאר את הארכיונים המלאים.`,
+    },
+  }), [lang]);
 
   const [secondary, setSecondary] = useState<MusicDnaData | null>(null);
   const [secondaryLabel, setSecondaryLabel] = useState('');
+  const [secondaryOrigin, setSecondaryOrigin] = useState<'flagship' | 'upload' | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [primaryFlagshipCatalog, setPrimaryFlagshipCatalog] = useState<ArtistGenreCatalogEntry[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const operationIdRef = useRef(0);
+  const autoLoadedArchiveRef = useRef<MusicDnaData | null>(null);
 
-  const overlap = useMemo(() => (secondary ? compareArtistOverlap(data, secondary) : null), [data, secondary]);
+  const primaryComparisonData = useMemo(
+    () => primaryFlagshipCatalog
+      ? { ...data, artist_genre_catalog: primaryFlagshipCatalog }
+      : data,
+    [data, primaryFlagshipCatalog],
+  );
+  const overlap = useMemo(
+    () => (secondary ? compareArtistOverlap(primaryComparisonData, secondary) : null),
+    [primaryComparisonData, secondary],
+  );
   const metrics = useMemo(() => (secondary ? compareCoreMetrics(data, secondary) : null), [data, secondary]);
   const moods = useMemo(() => (secondary ? compareMoodProfiles(data, secondary) : null), [data, secondary]);
 
+  const loadFlagshipComparison = useCallback(async () => {
+    if (!loadFlagshipDataset) return;
+    const operationId = ++operationIdRef.current;
+    setLoading(true);
+    setError(null);
+    try {
+      const flagship = await loadFlagshipDataset();
+      let catalog: ArtistGenreCatalogEntry[] | null = null;
+      if (loadFlagshipCatalog) {
+        try {
+          catalog = await loadFlagshipCatalog();
+        } catch {
+          // The public top-list remains a valid partial comparison if the
+          // optional full catalog chunk cannot be loaded.
+        }
+      }
+      if (operationId !== operationIdRef.current) return;
+      setSecondary(catalog?.length ? { ...flagship, artist_genre_catalog: catalog } : flagship);
+      setSecondaryLabel(visitorCopy.flagshipLabel);
+      setSecondaryOrigin('flagship');
+    } catch {
+      if (operationId !== operationIdRef.current) return;
+      setError(visitorCopy.flagshipError);
+    } finally {
+      if (operationId === operationIdRef.current) setLoading(false);
+    }
+  }, [
+    loadFlagshipCatalog,
+    loadFlagshipDataset,
+    visitorCopy.flagshipError,
+    visitorCopy.flagshipLabel,
+  ]);
+
+  useEffect(() => {
+    if (
+      !isPersonalArchive
+      || !loadFlagshipDataset
+      || autoLoadedArchiveRef.current === data
+    ) return;
+    autoLoadedArchiveRef.current = data;
+    void loadFlagshipComparison();
+  }, [data, isPersonalArchive, loadFlagshipDataset, loadFlagshipComparison]);
+
+  useEffect(() => () => {
+      operationIdRef.current += 1;
+  }, []);
+
+  useEffect(() => {
+    if (isPersonalArchive || !loadFlagshipCatalog) {
+      setPrimaryFlagshipCatalog(null);
+      return;
+    }
+    let active = true;
+    void loadFlagshipCatalog()
+      .then(catalog => {
+        if (active) setPrimaryFlagshipCatalog(catalog);
+      })
+      .catch(() => {
+        if (active) setPrimaryFlagshipCatalog(null);
+      });
+    return () => {
+      active = false;
+    };
+  }, [isPersonalArchive, loadFlagshipCatalog]);
+
   const processFiles = async (files: File[]) => {
+    const operationId = ++operationIdRef.current;
     setLoading(true);
     setError(null);
     try {
@@ -73,8 +196,10 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
         if (!text.slice(0, 300).includes('"nova_music_export"')) continue;
         const exported = parseExport(JSON.parse(text));
         if (exported) {
+          if (operationId !== operationIdRef.current) return;
           setSecondary(exported.data);
           setSecondaryLabel(exported.source_label || copy.secondaryMuseumLabel);
+          setSecondaryOrigin('upload');
           setLoading(false);
           return;
         }
@@ -90,16 +215,19 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
         source?.listenbrainz_plays ? `${source.listenbrainz_plays}× ListenBrainz` : null,
       ].filter(Boolean).join(' + ') || copy.secondaryMuseumLabel;
 
+      if (operationId !== operationIdRef.current) return;
       setSecondary(parsed);
       setSecondaryLabel(label);
-    } catch (err: any) {
+      setSecondaryOrigin('upload');
+    } catch (err: unknown) {
+      if (operationId !== operationIdRef.current) return;
       if (err instanceof ParseError) {
         setError(err.code === 'INVALID_JSON' ? t.uploader.invalidJsonError : t.uploader.noValidRowsError);
       } else {
-        setError(err.message || t.uploader.processingError);
+        setError(err instanceof Error && err.message ? err.message : t.uploader.processingError);
       }
     } finally {
-      setLoading(false);
+      if (operationId === operationIdRef.current) setLoading(false);
     }
   };
 
@@ -123,9 +251,12 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
   };
 
   const clearSecondary = () => {
+    operationIdRef.current += 1;
     setSecondary(null);
     setSecondaryLabel('');
+    setSecondaryOrigin(null);
     setError(null);
+    setLoading(false);
   };
 
   const sourceTypeLabel = (museum: MusicDnaData) =>
@@ -134,6 +265,18 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
   return (
     <div className="space-y-8 animate-fade-in" dir={directionFor(lang)}>
       <p className="max-w-3xl text-sm leading-relaxed text-gray-400">{copy.intro}</p>
+
+      {isPersonalArchive && !secondary && !loading && loadFlagshipDataset && (
+        <button
+          type="button"
+          onClick={() => void loadFlagshipComparison()}
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-black transition hover:-translate-y-0.5"
+          style={{ borderColor: `${tc.c3}45`, color: tc.c3, backgroundColor: `${tc.c3}10` }}
+        >
+          <Sparkles className="h-4 w-4" aria-hidden="true" />
+          {visitorCopy.loadFlagship}
+        </button>
+      )}
 
       {/* Museum header cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -165,6 +308,11 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
                 </p>
                 <h3 className="mt-1 truncate text-lg font-black text-white"><bdi dir="auto">{secondaryLabel}</bdi></h3>
                 <p className="mt-1 text-xs font-mono text-gray-500">{sourceTypeLabel(secondary)}</p>
+                {secondaryOrigin === 'flagship' && (
+                  <span className="mt-2 inline-flex rounded-full border border-violet-400/25 bg-violet-400/10 px-2.5 py-1 font-mono text-[9px] font-black uppercase tracking-wider text-violet-200">
+                    {visitorCopy.flagshipReady}
+                  </span>
+                )}
               </div>
               <button
                 onClick={clearSecondary}
@@ -225,7 +373,9 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
       {loading && (
         <div className="flex items-center justify-center gap-3 rounded-2xl border border-cyan-500/20 p-4 glass-panel">
           <Loader2 className="h-5 w-5 animate-spin text-cyberCyan" />
-          <span className="font-mono text-sm text-gray-300">{copy.processing}</span>
+          <span className="font-mono text-sm text-gray-300">
+            {isPersonalArchive && !secondary ? visitorCopy.loadingFlagship : copy.processing}
+          </span>
         </div>
       )}
 
@@ -244,6 +394,22 @@ export default function MuseumComparator({ data, primaryLabel }: MuseumComparato
               <Users className="h-5 w-5" style={{ color: tc.c3 }} />
               <h3 className="text-sm font-mono font-black uppercase tracking-widest text-white">{copy.overlapTitle}</h3>
             </div>
+            <p
+              className="rounded-2xl border border-white/10 bg-white/[0.035] px-3 py-2 font-mono text-[10px] font-bold leading-relaxed text-gray-400"
+              data-comparison-scope={overlap.scopeA.complete && overlap.scopeB.complete ? 'complete' : 'partial'}
+            >
+              {overlap.scopeA.complete && overlap.scopeB.complete
+                ? visitorCopy.fullScope(
+                    fmtNum(overlap.scopeA.comparedArtists),
+                    fmtNum(overlap.scopeB.comparedArtists),
+                  )
+                : visitorCopy.partialScope(
+                    fmtNum(overlap.scopeA.comparedArtists),
+                    fmtNum(overlap.scopeA.archiveArtists),
+                    fmtNum(overlap.scopeB.comparedArtists),
+                    fmtNum(overlap.scopeB.archiveArtists),
+                  )}
+            </p>
             <p className="text-sm text-gray-300">{copy.overlapBody(overlap.overlapPct, overlap.sharedCount)}</p>
             <div className="flex flex-wrap gap-3 text-xs font-mono text-gray-400">
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">

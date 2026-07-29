@@ -153,6 +153,39 @@
   gap: 0.8rem;
 }
 
+.nova-hero__release-jump {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--c3) 34%, transparent);
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  color: color-mix(in srgb, var(--c3) 82%, var(--fg));
+  background: color-mix(in srgb, var(--c3) 8%, var(--bg));
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.nova-hero__release-jump:hover {
+  border-color: color-mix(in srgb, var(--c3) 62%, transparent);
+  background: color-mix(in srgb, var(--c3) 14%, var(--bg));
+  transform: translateY(-1px);
+}
+
+.nova-hero__release-jump:focus-visible {
+  outline: 2px solid var(--c3);
+  outline-offset: 3px;
+}
+
+.nova-hero__release-jump-label--compact {
+  display: none;
+}
+
 .nova-hero__archive-state {
   display: inline-flex;
   min-width: 0;
@@ -1427,6 +1460,20 @@
     gap: 0.45rem;
   }
 
+  .nova-hero__release-jump {
+    min-width: 2.5rem;
+    justify-content: center;
+    padding-inline: 0.65rem;
+  }
+
+  .nova-hero__release-jump-label--full {
+    display: none;
+  }
+
+  .nova-hero__release-jump-label--compact {
+    display: inline;
+  }
+
   .nova-hero__archive-state {
     max-width: min(58vw, 13rem);
     padding: 0.4rem 0.6rem;
@@ -1621,6 +1668,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nova-hero__release-jump {
+    transition: none;
+  }
+
   .nova-hero *,
   .nova-hero *::before,
   .nova-hero *::after {

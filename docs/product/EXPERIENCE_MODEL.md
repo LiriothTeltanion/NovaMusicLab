@@ -1,6 +1,8 @@
 # Experience model
 
-Status: Nova Music Lab `1.2.0` — **deployed 2026-07-29**. The public site reports product `1.2.0` from the verified GitHub Pages artifact.
+Status: Nova Music Lab `1.2.0` — **deployed 2026-07-29** — remains
+public. The shell changes below are implemented in `1.4.0` — **private
+candidate 2026-07-29**, not published or deployed.
 
 Nova Music Lab separates **where a visitor goes** from **how much explanation they want**. This prevents a beginner setting from hiding rooms and prevents an expert setting from unexpectedly changing the URL.
 
@@ -59,8 +61,13 @@ Depth is separate from the Expressive, Calm and Static motion setting. System re
 - A new visitor starts in Explore. Guided remains one tap away for more explanation.
 - The welcome tour may open only at the root landing route.
 - A direct room link opens that room immediately without placing onboarding over shared content.
-- The header exposes all five hubs; the room rail and previous/next controls stay scoped to the active hub.
+- The title bar exposes all five hubs. The second sticky row keeps experience
+  depth, active-room progress, the all-room map, archive/version disclosure and
+  collapsed search available without duplicating another content rail.
 - Nova Command (`Ctrl/Cmd+K`) continues to expose the complete museum.
+- Guest Museum requires no account. A visitor may choose an optional local
+  display name, import files and compare with the public flagship; the name is
+  not authentication.
 
 ## Verification contract
 

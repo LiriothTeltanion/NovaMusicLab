@@ -13,6 +13,11 @@ const rooms = [
   { id: 'dashboard', label: 'Dashboard', groupLabel: 'Home', color: '#22d3ee', icon: LayoutDashboard },
   { id: 'quality', label: 'Data Quality', groupLabel: 'Data Lab', color: '#2dd4bf', icon: Activity },
 ];
+const roomItems = rooms.map(room => ({
+  ...room,
+  secondary: room.color,
+  isChapter: true,
+}));
 
 function renderConsole(overrides: Partial<React.ComponentProps<typeof ExpeditionConsole>> = {}) {
   const props: React.ComponentProps<typeof ExpeditionConsole> = {
@@ -21,6 +26,7 @@ function renderConsole(overrides: Partial<React.ComponentProps<typeof Expedition
     isPersonalArchive: false,
     isPersisted: false,
     lang: 'en',
+    roomItems,
     rooms,
     savedAt: null,
     sourceLabel: null,
@@ -44,7 +50,7 @@ describe('ExpeditionConsole', () => {
     document.body.style.overflow = '';
   });
 
-  it('shows archive mode, source, date, privacy and local state from real archive metadata', async () => {
+  it('reveals version and archive evidence from a compact disclosure', async () => {
     const user = userEvent.setup();
     const onOpenArchive = vi.fn();
     renderConsole({
@@ -58,29 +64,44 @@ describe('ExpeditionConsole', () => {
     const capsule = screen.getByTestId('archive-capsule');
     expect(capsule).toHaveAttribute('data-archive-mode', 'personal');
     expect(capsule).toHaveAttribute('data-persisted', 'true');
-    expect(capsule).toHaveTextContent('My museum');
-    expect(capsule).toHaveTextContent('Spotify export');
-    expect(capsule).toHaveTextContent('Local only');
-    expect(capsule).toHaveTextContent('Saved');
-    expect(capsule).toHaveAccessibleName(/Privacy: Local only\. Local state: Saved\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('LocalSaved');
+    const trigger = screen.getByTestId('archive-capsule-trigger');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveAccessibleName(/Current version: 1\.4\.0.*Privacy: Local only\. Local state: Saved\./);
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.4.0Local archive');
+    expect(screen.queryByTestId('archive-capsule-panel')).not.toBeInTheDocument();
 
-    await user.click(capsule);
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    const panel = screen.getByTestId('archive-capsule-panel');
+    expect(panel).toHaveTextContent('My museum');
+    expect(panel).toHaveTextContent('Spotify export');
+    expect(panel).toHaveTextContent('Local only');
+    expect(panel).toHaveTextContent('Saved');
+
+    await user.click(screen.getByRole('button', { name: 'Manage archive' }));
     expect(onOpenArchive).toHaveBeenCalledTimes(1);
   });
 
-  it('describes the bundled flagship as a reviewed public bundle', () => {
+  it('describes the bundled flagship and closes the disclosure with Escape', async () => {
+    const user = userEvent.setup();
     renderConsole();
 
     const capsule = screen.getByTestId('archive-capsule');
     expect(capsule).toHaveAttribute('data-archive-mode', 'flagship');
-    expect(capsule).toHaveTextContent('Flagship exhibition');
-    expect(capsule).toHaveTextContent('Reviewed public bundle');
-    expect(capsule).toHaveTextContent('Bundled');
-    expect(capsule).toHaveAccessibleName(/Privacy: Reviewed public bundle\. Local state: Bundled\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('PublicBundled');
-    expect(capsule.querySelector('dl')).not.toBeInTheDocument();
-    expect(capsule.querySelectorAll('.archive-capsule__detail')).toHaveLength(5);
+    const trigger = screen.getByTestId('archive-capsule-trigger');
+    expect(trigger).toHaveAccessibleName(/Privacy: Reviewed public bundle\. Local state: Bundled\./);
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.4.0Public archive');
+
+    await user.click(trigger);
+    const panel = screen.getByTestId('archive-capsule-panel');
+    expect(panel).toHaveTextContent('Flagship exhibition');
+    expect(panel).toHaveTextContent('Reviewed public bundle');
+    expect(panel).toHaveTextContent('Bundled');
+    expect(panel.querySelectorAll('.archive-capsule__detail')).toHaveLength(6);
+
+    await user.keyboard('{Escape}');
+    await waitFor(() => expect(screen.queryByTestId('archive-capsule-panel')).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 
   it('keeps compact journey labels available for narrow layouts', () => {
@@ -106,6 +127,33 @@ describe('ExpeditionConsole', () => {
 
     expect(onNavigate).toHaveBeenCalledWith('quality');
     expect(screen.queryByRole('dialog', { name: 'Nova Command' })).not.toBeInTheDocument();
+  });
+
+  it('keeps search collapsed to a labelled magnifier until its searchable dialog opens', async () => {
+    const user = userEvent.setup();
+    renderConsole();
+
+    const trigger = screen.getByTestId('command-palette-trigger');
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+    expect(screen.queryByRole('textbox', { name: /search rooms and tools/i })).not.toBeInTheDocument();
+
+    await user.click(trigger);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(await screen.findByRole('textbox', { name: /search rooms and tools/i })).toBeInTheDocument();
+  });
+
+  it('places the all-room navigator in the console and exposes its grouped map', async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    renderConsole({ onNavigate });
+
+    const navigator = screen.getByTestId('room-progress');
+    expect(screen.getByTestId('expedition-console')).toContainElement(navigator);
+    await user.click(screen.getByRole('button', { name: 'Open room map: Dashboard' }));
+    expect(screen.getByRole('dialog', { name: 'Room map' })).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Data Quality' }));
+    expect(onNavigate).toHaveBeenCalledWith('quality');
   });
 
   it('closes on Escape, restores focus and exposes every depth as a functional action', async () => {

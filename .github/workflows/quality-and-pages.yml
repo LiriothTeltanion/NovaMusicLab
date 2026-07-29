@@ -43,7 +43,13 @@ jobs:
       - name: Audit the public flagship privacy boundary
         run: node scripts/audit_public_bundle_privacy.mjs
 
-      - name: Stamp verified artifact identity
+      - name: Build deployable Pages artifact
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          VITE_NOVA_RELEASE_STATUS: deployed
+        run: npm run build
+
+      - name: Stamp verified deployment identity
         id: artifact_identity
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
@@ -52,7 +58,7 @@ jobs:
         run: |
           version="$(node -p "require('./package.json').version")"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          node -e "const fs = require('node:fs'); const pkg = require('./package.json'); fs.writeFileSync('dist/build-meta.json', JSON.stringify({ commit: process.env.BUILD_COMMIT, version: pkg.version }) + '\n')"
+          DEPLOYED_ON="$(TZ=Asia/Jerusalem date +%F)" npm run release:stamp-deployment
 
       - name: Upload verified Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
@@ -128,14 +134,16 @@ jobs:
             cache_bust="commit=$EXPECTED_COMMIT&attempt=$attempt"
             page_status="$(curl --silent --show-error --location --header 'Cache-Control: no-cache' --output /tmp/nova-music-lab.html --write-out '%{http_code}' "${PAGE_URL%/}/?$cache_bust" || true)"
             meta_status="$(curl --silent --show-error --location --header 'Cache-Control: no-cache' --output /tmp/nova-build-meta.json --write-out '%{http_code}' "${PAGE_URL%/}/build-meta.json?$cache_bust" || true)"
+            manifest_status="$(curl --silent --show-error --location --header 'Cache-Control: no-cache' --output /tmp/nova-release-profile.json --write-out '%{http_code}' "${PAGE_URL%/}/release-profile-manifest.json?$cache_bust" || true)"
             if [[ "$page_status" == "200" ]] \
               && [[ "$meta_status" == "200" ]] \
+              && [[ "$manifest_status" == "200" ]] \
               && grep --quiet "Nova Music Lab" /tmp/nova-music-lab.html \
-              && node -e "const fs = require('node:fs'); const meta = JSON.parse(fs.readFileSync('/tmp/nova-build-meta.json', 'utf8')); process.exit(meta.commit === process.env.EXPECTED_COMMIT && meta.version === process.env.EXPECTED_VERSION ? 0 : 1)"; then
+              && node -e "const fs = require('node:fs'); const meta = JSON.parse(fs.readFileSync('/tmp/nova-build-meta.json', 'utf8')); const manifest = JSON.parse(fs.readFileSync('/tmp/nova-release-profile.json', 'utf8')); const release = manifest.release ?? {}; process.exit(meta.schema === 'nova-music-build-meta-v1' && meta.release_status === 'deployed' && release.status === 'deployed' && meta.commit === process.env.EXPECTED_COMMIT && release.commit === meta.commit && meta.version === process.env.EXPECTED_VERSION && release.version === meta.version && release.deployed_on === meta.deployed_on ? 0 : 1)"; then
               echo "Pages smoke test passed for $EXPECTED_COMMIT (v$EXPECTED_VERSION) at $PAGE_URL"
               exit 0
             fi
-            echo "Attempt $attempt/12 returned page=$page_status meta=$meta_status without the expected artifact identity; retrying in 5 seconds"
+            echo "Attempt $attempt/12 returned page=$page_status meta=$meta_status manifest=$manifest_status without the expected artifact identity; retrying in 5 seconds"
             sleep 5
           done
 

@@ -15,7 +15,7 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 
 **Current deployed version:** `1.2.0` — deployed **2026-07-29**. It replaces room-filtering journeys with three true experience depths; adds five navigation hubs, Share & Feedback and an honest local Audio Lab foundation; and introduces right-sized visual media, quiet semantic interface sound and browser/axe release gates. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
-**Next local version:** `1.3.0` — private candidate **2026-07-29**, not yet published or deployed. It introduces the Living Constellation Hero, direct artist-to-Atlas deep links, a persistent Museum Map and stronger artwork-rights metadata invariants. The public link above continues to serve `1.2.0` until review and release gates are complete.
+**Next local version:** `1.4.0` — private candidate **2026-07-29**, not yet published or deployed. It integrates the preserved `1.3.0` Living Constellation checkpoint into a larger release: a clearer two-row expedition shell, evidence-linked genres and subgenres, Guest Museum, complete-catalog comparisons when available, visible version history and versioned release media. The public link above continues to serve `1.2.0` until review and every release gate are complete.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -32,6 +32,7 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 3. Open **Atlas** to explore artists, media and archive evidence.
 4. Switch to **Deep Dive** when you want methodology and provenance.
 5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
+6. In `1.4.0` — private candidate **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
 
 No account is required for the public exhibition or local archive import.
 
@@ -39,7 +40,7 @@ No account is required for the public exhibition or local archive import.
 
 ## 🖼️ Candidate gallery
 
-These captures document `1.3.0` — private candidate **2026-07-29**, not yet published or deployed. They are generated from the verified local production build with `npm run screenshots:capture`.
+These captures document `1.4.0` — private candidate **2026-07-29**, not yet published or deployed. They are regenerated from the local production build with `npm run screenshots:capture` and remain candidate evidence until the full release gate and visual review pass.
 
 <table>
   <tr>
@@ -53,6 +54,11 @@ These captures document `1.3.0` — private candidate **2026-07-29**, not yet pu
     </td>
   </tr>
 </table>
+
+<p align="center">
+  <img src="./assets/screenshots/guest-museum-desktop.jpg" width="100%" alt="Guest Museum entry with an optional local name and private listening-history importer">
+  <br><strong>A museum your friends can make their own</strong> — no account is required to name a local museum, import compatible files and begin a private comparison.
+</p>
 
 <p align="center">
   <img src="./assets/screenshots/share-hebrew-light-mobile.jpg" width="390" alt="Share and Feedback room in Hebrew RTL and daylight theme on mobile">
@@ -80,6 +86,12 @@ The project is built around four commitments:
 |---|---|---|
 | **Flagship Exhibition** | A curated demonstration of Kevin's personal music museum and Nova's full visual language. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
 | **My Museum** | A visitor imports supported exports and rebuilds the quantitative museum from the active archive. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. |
+
+`1.4.0` — private candidate **2026-07-29** — makes **My Museum** a clear
+Guest Museum journey. A visitor may add an optional browser-local display name,
+but that label is not a login, password or public account. Compare Museums loads
+the reviewed public artist catalog only when needed and labels older
+top-list-only datasets as partial instead of overstating their overlap.
 
 The evidence-first milestone, completed in `1.0.0` — published **2026-07-16** and now superseded — formalized this boundary everywhere: flagship-only stories must never masquerade as visitor-derived analysis, and every interpretive room must disclose its evidence level.
 
@@ -200,6 +212,13 @@ The generated artist manifest currently contains **100 artist records** and **29
 
 The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
 
+The `1.4.0` private candidate adds a separate genre-knowledge layer: **2,257
+ontology terms** and **1,257 evidence assertions** across **453 of 6,413
+artists**. Accepted assertions appear as documented facts, candidates remain
+visible suggestions, rejected relationships stay hidden and unresolved artists
+say “To research.” Emotional readings remain a separate heuristic layer rather
+than masquerading as genres.
+
 External identity relationships and rejected matches are governed by [`artist_external_identity_policy.json`](./src/data/artist_external_identity_policy.json). The identity audit detects duplicate external IDs unless an exact transliteration or historical-rename relationship is declared; it also prevents known bad matches, including the rejected `nightlife` MusicBrainz identity, from returning silently.
 
 The manifest installs into the local Dexie database only when its source fingerprint changes. Returning visitors download the small metadata fingerprint during idle bootstrap, not the complete artist catalog on every visit.
@@ -221,6 +240,8 @@ flowchart LR
     R --> V["Charts, stories and exports"]
     S --> I["Browser IndexedDB"]
     A -. "bounded aggregate, opt-in" .-> G["Gemini"]
+    A --> C["Local museum comparison"]
+    K["Lazy public artist catalog"] --> C
 ```
 
 | Layer | Primary responsibility |
@@ -349,6 +370,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 | Guide | Purpose |
 |---|---|
 | [Architecture overview](./docs/architecture/OVERVIEW.md) | System boundaries and data flow |
+| [Guest Museum](./docs/product/GUEST_MUSEUM.md) | Account-free visitor import, comparison and optional future identity |
 | [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
 | [Privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) | Assets, imports, network and public-data risks |
 | [Data sources](./docs/product/DATA_SOURCES.md) | Source capabilities and honest limitations |

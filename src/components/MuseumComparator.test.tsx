@@ -32,6 +32,80 @@ describe('MuseumComparator', () => {
     expect(screen.queryByText('Overlap de Artistas')).toBeNull();
   });
 
+  it("automatically compares a visitor archive with Kevin's public flagship", async () => {
+    const artistCatalog = primary.top_artists.slice(0, 2).map(artist => ({
+      artistKey: artist.name,
+      name: artist.name,
+      plays: artist.plays,
+      automaticGenre: artist.genre || 'Unclassified',
+      automaticFamily: artist.genre || 'Unclassified',
+      country: artist.country || 'Unknown',
+      source: artist.genre ? 'catalog' as const : 'unclassified' as const,
+    }));
+    const visitor = {
+      ...primary,
+      project: 'Visitor archive',
+      core_metrics: { ...primary.core_metrics, unique_artists: 2 },
+      top_artists: primary.top_artists.slice(0, 2),
+      artist_genre_catalog: artistCatalog,
+    };
+    const flagship = {
+      ...primary,
+      core_metrics: { ...primary.core_metrics, unique_artists: 2 },
+      top_artists: primary.top_artists.slice(0, 2),
+    };
+
+    render(
+      <AppProvider>
+        <MuseumComparator
+          data={visitor}
+          isPersonalArchive
+          loadFlagshipCatalog={async () => artistCatalog}
+          loadFlagshipDataset={async () => flagship}
+          primaryLabel="Museo de Danny"
+        />
+      </AppProvider>
+    );
+
+    expect((await screen.findAllByText('Museo público de Kevin')).length).toBeGreaterThan(0);
+    expect(screen.getByText('Referencia pública')).toBeInTheDocument();
+    expect(screen.getByText('Overlap de Artistas')).toBeInTheDocument();
+    expect(screen.getByText(/Cobertura completa · 2 vs 2 identidades de artista/)).toBeInTheDocument();
+  });
+
+  it('keeps the valid flagship comparison when the optional full catalog fails', async () => {
+    const visitor = {
+      ...primary,
+      project: 'Visitor archive',
+      core_metrics: { ...primary.core_metrics, unique_artists: 2 },
+      top_artists: primary.top_artists.slice(0, 2),
+    };
+    const flagship = {
+      ...primary,
+      core_metrics: { ...primary.core_metrics, unique_artists: 6_413 },
+      top_artists: primary.top_artists.slice(0, 2),
+    };
+
+    render(
+      <AppProvider>
+        <MuseumComparator
+          data={visitor}
+          isPersonalArchive
+          loadFlagshipCatalog={async () => {
+            throw new Error('catalog chunk unavailable');
+          }}
+          loadFlagshipDataset={async () => flagship}
+          primaryLabel="Museo de Danny"
+        />
+      </AppProvider>
+    );
+
+    expect((await screen.findAllByText('Museo público de Kevin')).length).toBeGreaterThan(0);
+    expect(screen.getByText('Referencia pública')).toBeInTheDocument();
+    expect(screen.getByText(/Alcance visible solamente · 2\/2 vs 2\/6\.?413 artistas/)).toBeInTheDocument();
+    expect(screen.queryByText(/no se pudo cargar/i)).not.toBeInTheDocument();
+  });
+
   it('computes and renders the comparison once a second CSV is uploaded', async () => {
     const user = userEvent.setup();
     render(

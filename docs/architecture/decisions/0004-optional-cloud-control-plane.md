@@ -21,6 +21,7 @@ Keep GitHub Pages as the public museum host and retain IndexedDB as the
 authoritative store for raw visitor history. After the local persistence cutover
 is complete, add Supabase as an optional control plane for:
 
+- anonymous identities that can later be linked to Google;
 - Google authentication;
 - bounded, consented aggregate snapshots;
 - expiring and revocable share capsules;
@@ -31,6 +32,11 @@ is complete, add Supabase as an optional control plane for:
 The museum must remain usable when the control plane is absent, paused or
 offline. No raw listening event, uploaded audio file or provider secret belongs
 in a public bundle or client-readable cloud row.
+
+An optional visitor display name is not a cloud identity. Anonymous cloud
+accounts require an internal provider UUID and authenticated session; Google
+may later make that identity recoverable without replacing the local-first guest
+flow.
 
 ## Required gates before implementation
 
@@ -44,6 +50,8 @@ in a public bundle or client-readable cloud row.
 5. Test exact production and localhost redirect/CORS allowlists, rate limits,
    idempotency, expiry, revocation and degraded states.
 6. Complete provider terms review before enabling each connector.
+7. Add abuse controls for anonymous identities, including rate limits, expiry
+   and a bot challenge on public write endpoints.
 
 ## Consequences
 

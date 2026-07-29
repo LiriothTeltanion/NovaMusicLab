@@ -73,7 +73,7 @@ const assignment: GenreAssignment = {
   artistKey: 'Unknown Artist',
   artistName: 'Unknown Artist',
   family: 'Metalcore',
-  tags: ['Electronicore', 'not controlled'],
+  tags: ['Electronicore', 'Atmospheric Metalcore'],
   updatedAt: '2026-07-14T00:00:00.000Z',
 };
 
@@ -88,9 +88,9 @@ describe('applyGenreAssignments', () => {
     ]);
     expect(result.top_genres.reduce((sum, row) => sum + row.plays, 0)).toBe(18);
     expect(result.top_artists.find(row => row.name === 'Unknown Artist')?.genre)
-      .toBe('Metalcore / Electronicore');
+      .toBe('Metalcore / Electronicore / Atmospheric Metalcore');
     expect(result.top_tracks.find(row => row.artist === 'Unknown Artist')?.genre)
-      .toBe('Metalcore / Electronicore');
+      .toBe('Metalcore / Electronicore / Atmospheric Metalcore');
   });
 
   it('does not mutate the source dataset or its automatic catalog', () => {
@@ -124,8 +124,13 @@ describe('applyGenreAssignments', () => {
   });
 
   it('sanitizes secondary tags into an honest display genre', () => {
-    expect(effectiveGenreLabel(assignment)).toBe('Metalcore / Electronicore');
-    expect(effectiveGenreLabel({ ...assignment, family: 'made up', tags: ['Other'] }))
+    expect(effectiveGenreLabel(assignment))
+      .toBe('Metalcore / Electronicore / Atmospheric Metalcore');
+    expect(effectiveGenreLabel({
+      ...assignment,
+      family: 'made up' as GenreAssignment['family'],
+      tags: ['Other'],
+    }))
       .toBe('Unclassified');
   });
 });

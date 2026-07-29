@@ -5,7 +5,7 @@ import type {
 } from '../types';
 import {
   canonicalGenreFamily,
-  sanitizeSecondaryTags,
+  sanitizeGenreTags,
 } from './genreTaxonomy';
 
 export function artistGenreKey(name: string): string {
@@ -23,7 +23,8 @@ export function effectiveGenreFamily(
 
 export function effectiveGenreLabel(assignment: GenreAssignment): string {
   const family = canonicalGenreFamily(assignment.family);
-  const tags = sanitizeSecondaryTags(family, assignment.tags);
+  if (family === 'Unclassified') return family;
+  const tags = sanitizeGenreTags(assignment.tags);
   return [family, ...tags.filter(tag => tag.toLocaleLowerCase('en-US') !== family.toLocaleLowerCase('en-US'))]
     .join(' / ');
 }
@@ -41,7 +42,7 @@ function assignmentMap(
       ...assignment,
       artistName: artistGenreKey(assignment.artistName),
       family: canonicalGenreFamily(assignment.family),
-      tags: sanitizeSecondaryTags(assignment.family, assignment.tags),
+      tags: sanitizeGenreTags(assignment.tags),
     });
   });
 
