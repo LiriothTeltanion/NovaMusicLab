@@ -100,6 +100,7 @@ fs.writeFileSync(path.join(ROOT, 'scripts', 'media_progress.json'), JSON.stringi
 /* ---------------------------------------------------------------- HTML ---- */
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escAttr = s => esc(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
 const m = data.members;
 
@@ -133,7 +134,7 @@ const row = b => `
       <span class="chip chip--${stateOf(b)}">${stateLabel[stateOf(b)]}</span>
     </td>
     <td class="who">${b.members.map(x =>
-      `<span class="p ${x.photo ? 'p--yes' : 'p--no'}" title="${esc(x.roles.join(' · ') || 'role unknown')}">${esc(x.name)}</span>`
+      `<span class="p ${x.photo ? 'p--yes' : 'p--no'}" title="${escAttr(x.roles.join(' · ') || 'role unknown')}">${esc(x.name)}</span>`
     ).join('')}</td>
   </tr>`;
 

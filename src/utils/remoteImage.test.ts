@@ -23,6 +23,11 @@ describe('optimizeRemoteImageUrl', () => {
     )).toBe('https://coverartarchive.org/release/example/front-250');
   });
 
+  it('does not trust provider names embedded in another host', () => {
+    const spoofed = 'https://coverartarchive.org.evil.example/release/example/front-500';
+    expect(optimizeRemoteImageUrl(spoofed, 96)).toBe(spoofed);
+  });
+
   it('keeps compact Spotify profile art compact', () => {
     const url = 'https://i.scdn.co/image/ab67616100005174example';
     expect(optimizeRemoteImageUrl(url, 72)).toBe(url);

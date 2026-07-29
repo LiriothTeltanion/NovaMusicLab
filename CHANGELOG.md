@@ -46,6 +46,8 @@ Status: **planned; not published or deployed**.
 - Advanced stalled remote images through optimized URL, original URL, reviewed gallery or deterministic local fallback instead of leaving permanent loading surfaces.
 - Prevented an `Unclassified` genre bucket from being presented as the museum's dominant musical language.
 - Extended the public privacy gate to reject embedded Last.fm account profile URLs in both public JSON and repository text.
+- Restricted remote-image optimizations to parsed, explicitly trusted provider hostnames instead of matching domain-like substrings.
+- Validated and attribute-escaped temporary Audio Lab blob URLs, and completed attribute-context escaping in the local media-progress report.
 
 ### Verification status
 

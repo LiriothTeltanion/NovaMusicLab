@@ -21,43 +21,59 @@ function imageWidthFor(
 export function optimizeRemoteImageUrl(url: string, renderedSize: number): string {
   if (!url) return url;
 
-  const targetWidth = imageWidthFor(renderedSize);
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
 
-  if (url.includes('cdn-images.dzcdn.net/images/')) {
+  const targetWidth = imageWidthFor(renderedSize);
+  const host = parsed.hostname.toLowerCase();
+
+  if (host === 'cdn-images.dzcdn.net' && parsed.pathname.startsWith('/images/')) {
     const deezerWidth = targetWidth <= 240 ? 250 : targetWidth <= 500 ? 500 : 1000;
     return url.replace(/\/\d+x\d+-/, `/${deezerWidth}x${deezerWidth}-`);
   }
 
-  if (url.includes('upload.wikimedia.org/wikipedia/commons/thumb/')) {
+  if (
+    host === 'upload.wikimedia.org'
+    && parsed.pathname.startsWith('/wikipedia/commons/thumb/')
+  ) {
     const wikimediaWidth = imageWidthFor(renderedSize, WIKIMEDIA_WIDTH_BUCKETS);
     return url.replace(/\/\d+px-([^/?]+)(\?.*)?$/, `/${wikimediaWidth}px-$1$2`);
   }
 
-  if (url.includes('commons.wikimedia.org/wiki/Special:FilePath/')) {
-    try {
-      const parsed = new URL(url);
-      parsed.searchParams.set(
-        'width',
-        String(imageWidthFor(renderedSize, WIKIMEDIA_WIDTH_BUCKETS)),
-      );
-      return parsed.toString();
-    } catch {
-      return url;
-    }
+  if (
+    host === 'commons.wikimedia.org'
+    && parsed.pathname.startsWith('/wiki/Special:FilePath/')
+  ) {
+    parsed.searchParams.set(
+      'width',
+      String(imageWidthFor(renderedSize, WIKIMEDIA_WIDTH_BUCKETS)),
+    );
+    return parsed.toString();
   }
 
-  if (url.includes('coverartarchive.org/') && renderedSize <= 160) {
+  if (host === 'coverartarchive.org' && renderedSize <= 160) {
     return url.replace(/\/front-500(?=([?#]|$))/, '/front-250');
   }
 
-  if (url.includes('mzstatic.com/image/thumb/')) {
+  if (
+    (host === 'mzstatic.com' || host.endsWith('.mzstatic.com'))
+    && parsed.pathname.startsWith('/image/thumb/')
+  ) {
     const appleWidth = targetWidth <= 240 ? 240 : targetWidth <= 500 ? 500 : 600;
     return url.replace(/\/\d+x\d+bb\.(jpg|png)$/i, `/${appleWidth}x${appleWidth}bb.$1`);
   }
 
   // The 00005174 Spotify profile-image family is the compact 160px asset.
   // Only request its larger sibling when the rendered portrait truly needs it.
-  if (targetWidth > 240 && url.includes('ab67616100005174')) {
+  if (
+    host === 'i.scdn.co'
+    && targetWidth > 240
+    && parsed.pathname.includes('ab67616100005174')
+  ) {
     return url.replace('ab67616100005174', 'ab6761610000e5eb');
   }
 

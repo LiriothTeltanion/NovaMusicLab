@@ -153,6 +153,33 @@ function formatDuration(seconds: number): string {
 interface AudioSelection {
   file: File;
   objectUrl: string;
+  safeMediaSrc: string;
+}
+
+function escapeHtmlAttribute(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function createSafeLocalAudioUrl(file: File): Pick<AudioSelection, 'objectUrl' | 'safeMediaSrc'> {
+  const objectUrl = URL.createObjectURL(file);
+
+  try {
+    if (new URL(objectUrl).protocol !== 'blob:') {
+      throw new Error('Unexpected local media URL protocol');
+    }
+    return {
+      objectUrl,
+      safeMediaSrc: escapeHtmlAttribute(objectUrl),
+    };
+  } catch (error) {
+    URL.revokeObjectURL(objectUrl);
+    throw error;
+  }
 }
 
 export default function AudioLabFoundation({ lang }: AudioLabFoundationProps) {
@@ -192,7 +219,12 @@ export default function AudioLabFoundation({ lang }: AudioLabFoundationProps) {
       return;
     }
 
-    setSelection({ file, objectUrl: URL.createObjectURL(file) });
+    try {
+      setSelection({ file, ...createSafeLocalAudioUrl(file) });
+    } catch {
+      setSelection(null);
+      setError('metadata');
+    }
   };
 
   const handleMetadata = (event: React.SyntheticEvent<HTMLAudioElement>) => {
@@ -284,7 +316,7 @@ export default function AudioLabFoundation({ lang }: AudioLabFoundationProps) {
               <audio
                 controls
                 preload="metadata"
-                src={selection.objectUrl}
+                src={selection.safeMediaSrc}
                 aria-label={copy.preview}
                 onLoadedMetadata={handleMetadata}
                 onError={() => setError('metadata')}

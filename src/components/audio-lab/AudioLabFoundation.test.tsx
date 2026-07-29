@@ -63,6 +63,19 @@ describe('AudioLabFoundation', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('larger than the 100 MB safety limit');
   });
 
+  it('rejects a preview URL that is not a browser blob URL', async () => {
+    createObjectURL.mockReturnValueOnce('https://example.test/untrusted-audio');
+    const user = userEvent.setup();
+    render(<AudioLabFoundation lang="en" />);
+    const file = new File([new Uint8Array([1])], 'local.wav', { type: 'audio/wav' });
+
+    await user.upload(screen.getByLabelText('Choose audio'), file);
+
+    expect(revokeObjectURL).toHaveBeenCalledWith('https://example.test/untrusted-audio');
+    expect(screen.queryByLabelText('Local audio preview')).not.toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('could not read this file');
+  });
+
   it('uses RTL Hebrew and releases the preview URL on unmount', async () => {
     const user = userEvent.setup();
     const view = render(<AudioLabFoundation lang="he" />);
