@@ -11,8 +11,10 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import {
+  fingerprintCommittedProductSource,
   inspectReleaseSourceEvidence,
   isGeneratedReleaseOutput,
+  RELEASE_SOURCE_FINGERPRINT_ALGORITHM,
 } from './lib/releaseSourceEvidence.mjs';
 
 const VERSION = '1.4.0';
@@ -38,6 +40,7 @@ async function createRepositoryFixture() {
     mkdir(path.join(root, 'src'), { recursive: true }),
   ]);
   await Promise.all([
+    writeFile(path.join(root, '.gitattributes'), '* text=auto eol=lf\n'),
     writeFile(path.join(root, '.gitignore'), 'ignored/\n'),
     writeFile(path.join(root, 'assets', 'releases', 'v1.4.0', 'home.jpg'), Buffer.from([1, 2, 3])),
     writeFile(path.join(root, 'assets', 'screenshots', 'nova-home-desktop.jpg'), Buffer.from([4, 5, 6])),
@@ -74,9 +77,41 @@ describe('release source evidence', () => {
       sourceHeadCommit: git(root, ['rev-parse', 'HEAD']),
       sourceCommit: git(root, ['rev-parse', 'HEAD']),
       sourceState: 'committed-product-source',
-      sourceFileCount: 4,
+      sourceFingerprintAlgorithm: RELEASE_SOURCE_FINGERPRINT_ALGORITHM,
+      sourceFileCount: 5,
     });
+    expect(first).toMatchObject(
+      fingerprintCommittedProductSource(root, VERSION),
+    );
     expect(first.sourceFingerprint).toMatch(/^[0-9a-f]{64}$/);
+  }, GIT_TEST_TIMEOUT_MS);
+
+  it('uses canonical Git blob bytes instead of checkout line endings for committed evidence', async () => {
+    const root = await createRepositoryFixture();
+    const baseline = inspectReleaseSourceEvidence(root, VERSION);
+
+    await writeFile(
+      path.join(root, 'src', 'main.js'),
+      'export const museum = true;\r\n',
+    );
+
+    git(root, ['diff', '--quiet', 'HEAD']);
+    expect(inspectReleaseSourceEvidence(root, VERSION)).toEqual(baseline);
+    expect(fingerprintCommittedProductSource(root, VERSION)).toMatchObject({
+      sourceFingerprint: baseline.sourceFingerprint,
+      sourceFileCount: baseline.sourceFileCount,
+    });
+  }, GIT_TEST_TIMEOUT_MS);
+
+  it('includes the exact Git file mode in committed fingerprints', async () => {
+    const root = await createRepositoryFixture();
+    const baseline = fingerprintCommittedProductSource(root, VERSION);
+
+    git(root, ['update-index', '--chmod=+x', 'src/main.js']);
+    git(root, ['commit', '-m', 'make fixture executable']);
+
+    expect(fingerprintCommittedProductSource(root, VERSION).sourceFingerprint)
+      .not.toBe(baseline.sourceFingerprint);
   }, GIT_TEST_TIMEOUT_MS);
 
   it('ignores only generated outputs for the indicated release across path styles', async () => {

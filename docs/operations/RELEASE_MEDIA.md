@@ -54,10 +54,17 @@ The current uncommitted private candidate deliberately publishes:
 
 The tracked candidate always keeps `commit` and `deployed_on` null. The
 versioned `release-media.json` records the product-source state, file count and
-a deterministic SHA-256 fingerprint. Generated screenshots and manifests are
-excluded from that fingerprint, so a later media-only commit does not make the
-evidence stale. The public `commit` field is reserved for the exact Pages
-artifact identity.
+a deterministic SHA-256 fingerprint. Committed candidates use canonical Git
+blob bytes, so Windows and Linux line endings produce the same evidence.
+Generated screenshots and manifests are excluded from that fingerprint, so a
+later media-only commit does not make the evidence stale. The public `commit`
+field is reserved for the exact Pages artifact identity.
+
+The detailed manifest names the `nova-release-source-sha256-v2` algorithm. The
+audit always recomputes that fingerprint from the current product tree and,
+when the captured source commit is available locally, verifies that commit too.
+The fingerprint remains stable when GitHub performs the repository's required
+squash merge and creates a new deployment commit with the same product tree.
 
 ## Candidate workflow
 

@@ -711,6 +711,7 @@ async function writeReleaseManifests() {
       source_commit: sourceEvidence.sourceCommit,
       source_head_commit: sourceEvidence.sourceHeadCommit,
       source_state: sourceEvidence.sourceState,
+      source_fingerprint_algorithm: sourceEvidence.sourceFingerprintAlgorithm,
       source_fingerprint: sourceEvidence.sourceFingerprint,
       source_file_count: sourceEvidence.sourceFileCount,
       captured_on: config.captured_on,

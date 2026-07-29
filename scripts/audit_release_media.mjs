@@ -13,7 +13,11 @@ import {
   countGifFrames,
   imageDimensions,
 } from './lib/releaseMedia.mjs';
-import { inspectReleaseSourceEvidence } from './lib/releaseSourceEvidence.mjs';
+import {
+  fingerprintCommittedProductSource,
+  inspectReleaseSourceEvidence,
+  RELEASE_SOURCE_FINGERPRINT_ALGORITHM,
+} from './lib/releaseSourceEvidence.mjs';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const packageJson = JSON.parse(await readFile(path.join(projectRoot, 'package.json'), 'utf8'));
@@ -92,6 +96,10 @@ if (detailed) {
     'Detailed source state must describe committed or working-tree product source',
   );
   check(
+    detailed.release?.source_fingerprint_algorithm === RELEASE_SOURCE_FINGERPRINT_ALGORITHM,
+    `Detailed manifest must use ${RELEASE_SOURCE_FINGERPRINT_ALGORITHM}`,
+  );
+  check(
     /^[0-9a-f]{64}$/.test(detailed.release?.source_fingerprint ?? ''),
     'Detailed manifest needs a lowercase SHA-256 source fingerprint',
   );
@@ -121,6 +129,41 @@ if (detailed) {
       detailed.release?.source_commit === detailed.release?.source_head_commit,
       'Committed product source must identify the exact captured HEAD',
     );
+
+    if (/^[0-9a-f]{40}$/.test(detailed.release?.source_commit ?? '')) {
+      let sourceCommitAvailable = false;
+      try {
+        execFileSync('git', ['cat-file', '-e', `${detailed.release.source_commit}^{commit}`], {
+          cwd: projectRoot,
+          stdio: 'ignore',
+        });
+        sourceCommitAvailable = true;
+      } catch {
+        console.warn(
+          `Release-media audit note: captured source commit is not available locally (${detailed.release.source_commit}); current product-tree evidence remains authoritative.`,
+        );
+      }
+
+      if (sourceCommitAvailable) {
+        try {
+          const capturedEvidence = fingerprintCommittedProductSource(
+            projectRoot,
+            packageJson.version,
+            detailed.release.source_commit,
+          );
+          check(
+            capturedEvidence.sourceFingerprint === detailed.release.source_fingerprint,
+            'Detailed fingerprint does not match the declared source commit',
+          );
+          check(
+            capturedEvidence.sourceFileCount === detailed.release.source_file_count,
+            'Detailed file count does not match the declared source commit',
+          );
+        } catch (error) {
+          errors.push(`Could not fingerprint captured source commit: ${error.message}`);
+        }
+      }
+    }
   } else if (detailed.release?.source_state === 'working-tree-candidate') {
     check(
       detailed.release?.source_commit === null,
@@ -130,16 +173,6 @@ if (detailed) {
       detailed.release?.source_head_commit === sourceEvidence.sourceHeadCommit,
       'Working-tree candidate HEAD changed after capture',
     );
-  }
-  if (/^[0-9a-f]{40}$/.test(detailed.release?.source_head_commit ?? '')) {
-    try {
-      execFileSync('git', ['cat-file', '-e', `${detailed.release.source_head_commit}^{commit}`], {
-        cwd: projectRoot,
-        stdio: 'ignore',
-      });
-    } catch {
-      errors.push(`Source HEAD commit does not exist locally: ${detailed.release.source_head_commit}`);
-    }
   }
 }
 
