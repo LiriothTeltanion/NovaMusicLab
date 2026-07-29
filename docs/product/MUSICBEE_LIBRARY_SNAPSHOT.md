@@ -1,6 +1,6 @@
 # MusicBee library snapshot
 
-Status: part of Nova Music Lab `1.2.0` — deployed **2026-07-29**.
+Status: part of Nova Music Lab `1.4.0` — deployed **2026-07-29**.
 
 MusicBee gives Nova Music Lab a view of a local music **library**: the artists,
 albums and tracks it contains, plus any cumulative counters that MusicBee includes

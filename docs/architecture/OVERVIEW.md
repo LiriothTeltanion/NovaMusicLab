@@ -40,7 +40,7 @@ Each stage should remain independently testable. Missing source capabilities mus
 
 ### Persistence
 
-`src/utils/datasetStorage.ts` remains the compatibility path for the active aggregate and now exposes explicit save/load/clear outcomes. `src/db/` defines the wider Dexie **schema v4** model for evidence, imports, profiles, capabilities, insights and artist knowledge while retaining the legacy `datasets` store. Portable exports remain the recovery path. Schema v4 is a database contract retained by `1.2.0` — deployed 2026-07-29 — and does not mean “Nova Music Lab v4.” See [Storage and migrations](./STORAGE_AND_MIGRATIONS.md).
+`src/utils/datasetStorage.ts` remains the compatibility path for the active aggregate and now exposes explicit save/load/clear outcomes. `src/db/` defines the wider Dexie **schema v4** model for evidence, imports, profiles, capabilities, insights and artist knowledge while retaining the legacy `datasets` store. Portable exports remain the recovery path. Schema v4 is the database contract used by `1.4.0` — deployed 2026-07-29 — and does not mean “Nova Music Lab v4.” See [Storage and migrations](./STORAGE_AND_MIGRATIONS.md).
 
 ### Curated public data
 
@@ -59,7 +59,7 @@ The application recognizes two product profiles:
 
 Components must not infer the profile from the presence of a particular artist or date. Profile identity, privacy tier and capabilities belong in explicit data metadata.
 
-`1.4.0` — **private candidate 2026-07-29** — adds the Guest Museum entrance:
+`1.4.0` — **deployed 2026-07-29** — adds the Guest Museum entrance:
 an optional browser-local display label, local import and a lazy comparison
 with the reviewed public flagship. The display label is not authentication.
 See [Guest Museum](../product/GUEST_MUSEUM.md).

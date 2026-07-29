@@ -2,8 +2,8 @@
 
 Status: **foundation implemented locally — 2026-07-28; cloud control plane planned, not deployed**.
 
-Guest Museum expansion: **implemented in `1.4.0` — private candidate
-2026-07-29; full local verification complete, publication pending**.
+Guest Museum expansion: **implemented, verified and deployed in `1.4.0` —
+2026-07-29**.
 
 ## Decision
 

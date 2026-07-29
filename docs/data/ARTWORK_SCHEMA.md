@@ -137,5 +137,5 @@ Coverage numbers deliberately do not live in this document. `npm run audit:data`
 
 - `src/components/NovaMark.tsx` is the application mark.
 - `scripts/generate_nova_icons.mjs` generates favicon, Apple touch, PWA and maskable artifacts; `public/icon-monochrome.svg` supports monochrome surfaces.
-- `assets/social/nova-music-lab-social-preview.svg` is the editable 1280×640 static source. `public/social-preview-v2.png` is the Open Graph/Twitter artifact deployed with `1.2.0` on 2026-07-29; `public/social-preview.png` is preserved as the legacy fallback.
+- `assets/social/nova-music-lab-social-preview.svg` is the editable 1280×640 static source. `public/social-preview-v2.png` is the Open Graph/Twitter artifact refreshed and deployed with `1.4.0` on 2026-07-29; `public/social-preview.png` is preserved as the legacy fallback.
 - `assets/readme/nova-music-lab-banner.svg` is static by design so repository visitors never receive an unavoidable animation.

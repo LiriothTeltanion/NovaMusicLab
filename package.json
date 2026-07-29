@@ -2,6 +2,31 @@
   "name": "nova-music-lab",
   "private": true,
   "version": "1.4.0",
+  "description": "Local-first React and TypeScript music museum for exploring listening histories, artist and genre discovery, private Guest Museums, and evidence-aware analytics.",
+  "homepage": "https://liriothteltanion.github.io/NovaMusicLab/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiriothTeltanion/NovaMusicLab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LiriothTeltanion/NovaMusicLab/issues"
+  },
+  "author": {
+    "name": "Kevin Cusnir",
+    "url": "https://github.com/LiriothTeltanion"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "music-analytics",
+    "music-discovery",
+    "local-first",
+    "data-visualization",
+    "react",
+    "typescript",
+    "indexeddb",
+    "accessibility",
+    "internationalization"
+  ],
   "type": "module",
   "engines": {
     "node": ">=22.13.0"
