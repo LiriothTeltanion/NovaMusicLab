@@ -6,6 +6,7 @@ import type { ArtistGenreCatalogEntry, MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { parseMusicSources, ParseError } from '../utils/parser';
 import { parseExport } from '../utils/datasetStorage';
+import { expandZipArchives } from '../utils/zipArchive';
 import { compareArtistOverlap, compareCoreMetrics, compareMoodProfiles, type CoreMetricKey } from '../utils/museumCompare';
 import ArtistAvatar from './ArtistAvatar';
 import MoodBadge from './MoodBadge';
@@ -173,11 +174,15 @@ export default function MuseumComparator({
     };
   }, [isPersonalArchive, loadFlagshipCatalog]);
 
-  const processFiles = async (files: File[]) => {
+  const processFiles = async (incoming: File[]) => {
     const operationId = ++operationIdRef.current;
     setLoading(true);
     setError(null);
     try {
+      // Comparing against a friend's museum has to accept the same Spotify .zip
+      // the importer does, otherwise the feature is only usable by whoever
+      // already unzipped their export by hand.
+      const { files } = await expandZipArchives(incoming);
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
       const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
       const htmlFiles = files.filter(f => /\.html?$/i.test(f.name));
@@ -353,7 +358,7 @@ export default function MuseumComparator({
             <input
               ref={fileInputRef}
               type="file"
-              accept=".csv,.json,.html,.htm"
+              accept=".csv,.json,.html,.htm,.zip"
               onChange={handleChange}
               className="hidden"
             />
