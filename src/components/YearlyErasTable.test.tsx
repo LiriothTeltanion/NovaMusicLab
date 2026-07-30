@@ -41,11 +41,11 @@ describe('YearlyErasTable', () => {
       </AppProvider>
     );
 
-    await user.click(screen.getByRole('button', { name: /Ordenar por Plays/i }));
+    await user.click(screen.getByRole('button', { name: /Ordenar por Reproducciones/i }));
     expect(yearColumn()).toEqual([2021, 2022, 2020]);
 
     // Second click flips direction.
-    await user.click(screen.getByRole('button', { name: /Ordenar por Plays/i }));
+    await user.click(screen.getByRole('button', { name: /Ordenar por Reproducciones/i }));
     expect(yearColumn()).toEqual([2020, 2022, 2021]);
   });
 
