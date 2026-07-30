@@ -409,7 +409,13 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 Nova Music Lab combines frontend engineering, data visualization, music technology, privacy-conscious personal analytics, multilingual interaction, accessibility and generative art.
 
-Third-party software, services, fonts and media remain subject to their own terms; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md). A repository-wide open-source license has not yet been selected.
+## 📄 License
+
+The **software** is [MIT licensed](./LICENSE) — fork it, learn from it, build your own museum with it.
+
+The **flagship dataset, generated visuals, narrative copy and brand** are reserved: that dataset is one person's listening history, published so the analysis is verifiable rather than as a dataset to redistribute. See [`DATA_LICENSE.md`](./DATA_LICENSE.md).
+
+Album art, artist photographs and structured metadata are **linked, never redistributed**, and remain with their rightsholders; see [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).
 
 <div align="center">
 
