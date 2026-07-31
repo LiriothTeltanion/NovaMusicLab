@@ -109,9 +109,18 @@ describe('HeroSection intro rebalance', () => {
     ));
 
     expect(portraitButtons).toHaveLength(4);
+    // Eager, not lazy. This assertion used to require 'lazy' to save bandwidth
+    // on portraits that are not the centrepiece. Measured in the browser, that
+    // cost the first screen its faces: the satellites drift on an 11s float
+    // animation, the browser defers the lazy fetch and never re-evaluates it,
+    // no load event fires, and useImageLoadTimeout retires each portrait to a
+    // generated avatar after 7s. Warming the four URLs beforehand made all four
+    // survive; leaving them cold lost all four - so the fix is to stop
+    // deferring images that are above the fold on the landing screen.
     portraitButtons.forEach((button) => {
       const image = within(button).getByRole('img');
-      expect(image).toHaveAttribute('loading', 'lazy');
+      expect(image).toHaveAttribute('loading', 'eager');
+      expect(image).toHaveAttribute('fetchpriority', 'high');
       expect(image.getAttribute('src')).toMatch(/^https:\/\/upload\.wikimedia\.org\//);
     });
 

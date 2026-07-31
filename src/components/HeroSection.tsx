@@ -750,11 +750,18 @@ export default function HeroSection({
                     ? copy.openArtist(artist.name)
                     : copy.playSignature(artist.name)}
                 >
+                  {/* Eager on purpose. The satellites sit above the fold but
+                      drift on an 11s float animation, and a lazy image the
+                      browser defers never fires load - useImageLoadTimeout then
+                      retires it to a generated avatar after 7s. On a cold cache
+                      that silently stripped faces off the first screen a
+                      visitor ever sees. */}
                   <ArtistAvatar
                     name={artist.name}
                     size={96}
                     tooltip={false}
                     overrideSrc={artist.imageUrl}
+                    priority
                     fallbackToGallery={false}
                   />
                   <span className="nova-hero__satellite-name">
