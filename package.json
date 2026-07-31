@@ -49,7 +49,7 @@
     "audit:privacy": "node scripts/audit_public_bundle_privacy.mjs",
     "audit:pwa": "node scripts/audit_pwa_contract.mjs",
     "knowledge:artists": "node scripts/build_offline_artist_knowledge.mjs",
-    "knowledge:manifest": "node scripts/build_artist_knowledge_manifest.mjs",
+    "knowledge:manifest": "node scripts/build_artist_knowledge_manifest.mjs && node scripts/enrich_wikimedia_commons_rights.mjs --write",
     "audit:knowledge": "node scripts/audit_artist_knowledge_manifest.mjs",
     "audit:release-media": "node scripts/audit_release_media.mjs",
     "release:stamp-deployment": "node scripts/stamp_deployment_attestation.mjs",
