@@ -1,18 +1,22 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useImageLoadTimeout } from '../hooks/useImageLoadTimeout';
-import artistImages from '../data/artist_images.json';
 import openPrimaryImages from '../data/artist_open_primary_images.json';
 import artistMeta from '../data/artist_meta.json';
 import memberImages from '../data/member_images.json';
 import memberEnrichment from '../data/member_enrichment.json';
 import FlagArt from './FlagArt';
+import {
+  artistPhotoMapVersion,
+  ensureArtistPhotoMap,
+  lookupArtistPhoto,
+  peekArtistPhoto,
+  subscribeArtistPhotoMap,
+} from './artistPhotoMap';
 import { optimizeRemoteImageUrl } from '../utils/remoteImage';
 import { hashSeed } from '../utils/seededRandom';
 
-type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
-const IMAGES = artistImages as ArtistImages;
 const OPEN_PRIMARY_IMAGES = openPrimaryImages as Record<string, string>;
 const META = artistMeta as ArtistMeta;
 const MEMBER_IMAGES = memberImages as Record<string, string>;
@@ -42,7 +46,15 @@ function initialsFor(name: string): string {
 
 export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
   const key = name.normalize('NFC').trim().toLowerCase();
-  const source = IMAGES[key]?.thumb;
+  // Curated first, matching what ArtistAvatar puts on screen, so an exported
+  // poster shows the same face the visitor was looking at.
+  const curated = OPEN_PRIMARY_IMAGES[key];
+  if (curated) return optimizeRemoteImageUrl(curated, size);
+  // Nothing bundled answers, so the long tail is worth fetching. This read is
+  // synchronous and may miss on the first call; callers inside React pair it
+  // with useArtistPhotoMap() to re-render once the index lands.
+  ensureArtistPhotoMap();
+  const source = peekArtistPhoto(key)?.thumb;
   return source ? optimizeRemoteImageUrl(source, size) : null;
 }
 
@@ -79,10 +91,18 @@ export default function ArtistAvatar({
   // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
   // uploaded export can be NFD (macOS) - byte-different, visually identical.
   const key = name.normalize('NFC').trim().toLowerCase();
-  const entry = IMAGES[key];
+  // Re-renders every avatar together the moment the wide map lands.
+  React.useSyncExternalStore(subscribeArtistPhotoMap, artistPhotoMapVersion, artistPhotoMapVersion);
   const meta = META[key];
   const memberPhoto = MEMBER_ENRICHMENT[key]?.photo || MEMBER_IMAGES[key];
-  const originalSrc = overrideSrc || memberPhoto || entry?.thumb;
+  // Bundled sources first: they paint a real face on the first frame instead of
+  // fading one in. Reaching the wide index costs a ~150 KB gzip fetch, so it is
+  // only worth starting once nothing bundled answers for this artist. The hero
+  // hands both of its portraits an overrideSrc and the curated set covers most
+  // of the top 100, so the landing screen never pays for the long tail.
+  const bundledSrc = overrideSrc || memberPhoto || OPEN_PRIMARY_IMAGES[key];
+  if (!bundledSrc) ensureArtistPhotoMap();
+  const originalSrc = bundledSrc || lookupArtistPhoto(key)?.thumb;
   const optimizedSrc = originalSrc ? optimizeRemoteImageUrl(originalSrc, size) : undefined;
   const [stage, setStage] = useState<'optimized' | 'original' | 'gallery-loading' | 'gallery' | 'failed'>(
     originalSrc ? 'optimized' : 'gallery-loading',

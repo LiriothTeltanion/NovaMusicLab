@@ -8,6 +8,7 @@ import {
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import ArtistAvatar, { getArtistPrimaryImageUrl } from './ArtistAvatar';
+import { useArtistPhotoMap } from './artistPhotoMap';
 import ArtistLeaderboard from './ArtistLeaderboard';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames } from '../utils/analytics';
@@ -373,6 +374,9 @@ export default function Dashboard({ data }: DashboardProps) {
   });
 
   const topArtist = topArtistsData[0];
+  // Read outside an avatar, so this room subscribes to the portrait index
+  // itself; the avatars below re-render themselves, not their parent.
+  useArtistPhotoMap();
   const topArtistBackdrop = topArtist
     ? getArtistPrimaryImageUrl(topArtist.name, 92)
     : null;
