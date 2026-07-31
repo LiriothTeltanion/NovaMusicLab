@@ -71,8 +71,8 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
     expect(screen.getByText(/AI MUSIC PROFILE/i)).toBeInTheDocument();
     expect(screen.getByText('Archive source')).toBeInTheDocument();
-    expect(document.body).toHaveTextContent(/Archive source: Last\.fm/i);
-    expect(document.body).toHaveTextContent(/no cross-source overlap is claimed/i);
+    expect(document.body).toHaveTextContent(/Built from one source: Last\.fm/i);
+    expect(document.body).toHaveTextContent(/nothing to cross-check against, no overlap is claimed/i);
     expect(document.body).not.toHaveTextContent(/data sync integrity/i);
     expect(screen.getByText('24h Music Days')).toBeInTheDocument();
 
@@ -181,8 +181,8 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
     expect(screen.getByText(/EXPEDIENTE DE MÚSICA IA/i)).toBeInTheDocument();
     expect(screen.getByText('Fuente del archivo')).toBeInTheDocument();
-    expect(document.body).toHaveTextContent(/Fuente del archivo: Last\.fm/i);
-    expect(document.body).toHaveTextContent(/no afirma un solapamiento entre fuentes/i);
+    expect(document.body).toHaveTextContent(/Hecho con una sola fuente: Last\.fm/i);
+    expect(document.body).toHaveTextContent(/no se afirma ningún cruce/i);
     expect(document.body).not.toHaveTextContent(/integridad de datos/i);
     expect(screen.getByText('Días de Música (24 h)')).toBeInTheDocument();
   });
@@ -207,8 +207,8 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>
     );
 
-    expect(document.body).toHaveTextContent(/cross-source track overlap/i);
-    expect(document.body).toHaveTextContent(/48\.92% of normalized tracks overlap/i);
+    expect(document.body).toHaveTextContent(/of songs show up in more than one source/i);
+    expect(document.body).toHaveTextContent(/48\.92% of songs show up in more than one of them/i);
     expect(document.body).not.toHaveTextContent(/data sync integrity/i);
   });
 
@@ -460,7 +460,7 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getAllByRole('button', { name: /נגן את החתימה הצלילית של/i }).length)
       .toBeGreaterThan(0);
 
-    fireEvent.click(screen.getByRole('button', { name: 'פתח את תיק המוזיקה שלך מבוסס הבינה המלאכותית' }));
+    fireEvent.click(screen.getByRole('button', { name: 'שאלו את הבינה המלאכותית על המוזיקה שלכם' }));
     expect(screen.getByText('אתחול הממשק העצבי')).toBeInTheDocument();
     expect(screen.getByText('מפענח אטלס של שנה אחת…')).toBeInTheDocument();
     expect(screen.queryByText('Offline AI reading')).not.toBeInTheDocument();

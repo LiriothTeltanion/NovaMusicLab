@@ -31,6 +31,7 @@ import {
   MusicBeeSnapshotError,
 } from '../utils/musicBeeSnapshot';
 import { parseMusicBeeFileInWorker } from '../utils/musicBeeWorkerClient';
+import { expandZipArchives } from '../utils/zipArchive';
 
 const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 const NOVA_BACKUP_SNIFF_LENGTH = 300;
@@ -179,8 +180,8 @@ export default function DataUploader({
       label: (tracks: string) => `MusicBee library · ${tracks} tracks`,
       success: (tracks: string, artists: string) => `MusicBee library attached: ${tracks} tracks and ${artists} artists. Timeline totals were not changed.`,
       note: 'MusicBee XML adds a private library snapshot. Its aggregate Play Count is shown separately and never added to Spotify, Last.fm or session totals.',
-      dropHint: 'Drop music-history CSV/JSON/HTML, or a MusicBee iTunes XML library, here.',
-      formatsValue: 'CSV · JSON · HTML · XML',
+      dropHint: 'Drop your Spotify ZIP straight from the download, music-history CSV/JSON/HTML, or a MusicBee iTunes XML library, here.',
+      formatsValue: 'ZIP · CSV · JSON · HTML · XML',
       noFiles: 'Please upload a supported music-history CSV/JSON/HTML file or a MusicBee iTunes XML library.',
     },
     es: {
@@ -202,8 +203,8 @@ export default function DataUploader({
       label: (tracks: string) => `Biblioteca MusicBee · ${tracks} canciones`,
       success: (tracks: string, artists: string) => `Biblioteca MusicBee conectada: ${tracks} canciones y ${artists} artistas. Los totales del timeline no cambiaron.`,
       note: 'El XML de MusicBee añade una foto privada de tu biblioteca. Su Play Count agregado se muestra aparte y nunca se suma a Spotify, Last.fm o las sesiones.',
-      dropHint: 'Arrastra aquí CSV/JSON/HTML de historial o una biblioteca XML de iTunes generada por MusicBee.',
-      formatsValue: 'CSV · JSON · HTML · XML',
+      dropHint: 'Arrastra aquí el ZIP de Spotify tal como lo descargaste, CSV/JSON/HTML de historial, o una biblioteca XML de iTunes generada por MusicBee.',
+      formatsValue: 'ZIP · CSV · JSON · HTML · XML',
       noFiles: 'Sube un CSV/JSON/HTML de historial compatible o una biblioteca XML de iTunes generada por MusicBee.',
     },
     he: {
@@ -225,9 +226,32 @@ export default function DataUploader({
       label: (tracks: string) => `ספריית MusicBee · ${tracks} שירים`,
       success: (tracks: string, artists: string) => `ספריית MusicBee צורפה: ${tracks} שירים ו-${artists} אמנים. סיכומי ציר הזמן לא השתנו.`,
       note: 'XML של MusicBee מוסיף תמונת מצב פרטית של הספרייה. מונה ההשמעה המצטבר מוצג בנפרד ולעולם אינו מתווסף ל-Spotify, ל-Last.fm או לסשנים.',
-      dropHint: 'אפשר לשחרר כאן CSV/JSON/HTML של היסטוריית מוזיקה או ספריית MusicBee בפורמט XML של iTunes.',
-      formatsValue: 'CSV · JSON · HTML · XML',
+      dropHint: 'אפשר לשחרר כאן את קובץ ה-ZIP של Spotify כפי שהורדתם, קובצי CSV/JSON/HTML של היסטוריית מוזיקה, או ספריית MusicBee בפורמט XML של iTunes.',
+      formatsValue: 'ZIP · CSV · JSON · HTML · XML',
       noFiles: 'נא להעלות קובץ CSV/JSON/HTML נתמך של היסטוריית מוזיקה או ספריית MusicBee בפורמט XML של iTunes.',
+    },
+  });
+  // Spotify is the one export most visitors actually have, and it arrives as a
+  // .zip. Unzipping it by hand on a phone needs a separate app, so the archive
+  // is opened here instead. These strings report what came out of it.
+  const zipCopy = pickLanguage(lang, {
+    en: {
+      opening: (count: number) => `Opening ${count} compressed archive${count === 1 ? '' : 's'}...`,
+      recovered: (count: number) => `Recovered ${count} readable file${count === 1 ? '' : 's'} from the archive.`,
+      empty: (names: string) => `No music history found inside ${names}. Spotify archives keep it in files named Streaming_History_Audio_*.json or endsong_*.json.`,
+      unreadable: (names: string) => `Could not open ${names}. The file may be damaged or not a real ZIP archive.`,
+    },
+    es: {
+      opening: (count: number) => `Abriendo ${count} archivo${count === 1 ? '' : 's'} comprimido${count === 1 ? '' : 's'}...`,
+      recovered: (count: number) => `Se recuperaron ${count} archivo${count === 1 ? '' : 's'} legible${count === 1 ? '' : 's'} del comprimido.`,
+      empty: (names: string) => `No se encontró historial musical dentro de ${names}. Spotify lo guarda en archivos llamados Streaming_History_Audio_*.json o endsong_*.json.`,
+      unreadable: (names: string) => `No se pudo abrir ${names}. Puede estar dañado o no ser un ZIP real.`,
+    },
+    he: {
+      opening: (count: number) => `פותחים ${count} קבצים דחוסים...`,
+      recovered: (count: number) => `שוחזרו ${count} קבצים קריאים מתוך הארכיון.`,
+      empty: (names: string) => `לא נמצאה היסטוריית מוזיקה בתוך ${names}. Spotify שומר אותה בקבצים בשם Streaming_History_Audio_*.json או endsong_*.json.`,
+      unreadable: (names: string) => `לא ניתן היה לפתוח את ${names}. ייתכן שהקובץ פגום או שאינו ארכיון ZIP אמיתי.`,
     },
   });
   const musicBeeProviderCard = {
@@ -373,7 +397,8 @@ export default function DataUploader({
     setParsingLogs(prev => [...prev, `[${new Date().toLocaleTimeString(locale)}] ${msg}`]);
   };
 
-  const processFiles = async (files: File[]) => {
+  const processFiles = async (incoming: File[]) => {
+    let files = incoming;
     // The coordinator acquires synchronously in App, above this lazy route. Its
     // token therefore survives uploader unmount/remount and remains held through
     // parsing plus the caller's complete local-save promise.
@@ -391,6 +416,25 @@ export default function DataUploader({
     setProgressPercent(0);
 
     try {
+      // Replace every .zip with the importable entries inside it, so everything
+      // below works exactly as if the visitor had dropped those files directly.
+      const archiveCount = files.filter(f => f.name.toLowerCase().endsWith('.zip')).length;
+      if (archiveCount > 0) {
+        addLog(zipCopy.opening(archiveCount));
+        await paint();
+        const expansion = await expandZipArchives(files);
+        if (expansion.unreadableArchives.length > 0) {
+          addLog(zipCopy.unreadable(expansion.unreadableArchives.join(', ')));
+        }
+        if (expansion.emptyArchives.length > 0) {
+          addLog(zipCopy.empty(expansion.emptyArchives.join(', ')));
+        }
+        const recovered = expansion.files.length - (files.length - archiveCount);
+        if (recovered > 0) addLog(zipCopy.recovered(recovered));
+        files = expansion.files;
+        await paint();
+      }
+
       const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
       const jsonFiles = files.filter(f => f.name.toLowerCase().endsWith('.json'));
       const htmlFiles = files.filter(f => {
@@ -706,7 +750,7 @@ export default function DataUploader({
             ref={fileInputRef}
             type="file"
             multiple
-            accept=".csv,.json,.html,.htm,.xml"
+            accept=".csv,.json,.html,.htm,.xml,.zip"
             onChange={handleChange}
             disabled={operationBusy}
             aria-label={t.uploader.dropZoneAriaLabel}

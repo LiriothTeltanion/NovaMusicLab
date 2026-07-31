@@ -41,6 +41,10 @@ The Gemini assistant is opt-in and uses a visitor-supplied API key. Google API t
 
 ## Project content and licensing status
 
-The repository contains original Nova Music Lab interface code, design, generated art, curated narratives and an intentionally published flagship aggregate dataset. No repository-wide open-source license has been selected yet. Until that decision is recorded in a `LICENSE` file, do not assume that project-specific code, datasets or creative assets grant reuse rights beyond those provided by applicable law.
+The repository contains original Nova Music Lab interface code, design, generated art, curated narratives and an intentionally published flagship aggregate dataset. These are deliberately **not** all covered by the same terms:
+
+- **Software** — MIT, see [`LICENSE`](./LICENSE).
+- **Flagship dataset, generated visuals, narrative copy and brand** — reserved, see [`DATA_LICENSE.md`](./DATA_LICENSE.md). The dataset is one person's listening history published for demonstration and verification, not for redistribution.
+- **Third-party artwork and metadata** — linked, never redistributed; rights stay with the original holders, as described above.
 
 Each stable release must continue to document separate treatment where appropriate for software code, original creative content, public datasets and third-party media.

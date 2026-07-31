@@ -1,3 +1,13 @@
+// Release-time gate: proves the published screenshots, GIF and social preview
+// were captured from exactly the source that shipped.
+//
+// Run it through `npm run verify:release` when cutting a release - NOT from
+// `npm run verify`. The fingerprint covers every tracked and untracked product
+// file (see productPaths in lib/releaseSourceEvidence.mjs), so it is false by
+// construction on any branch that has moved past the last capture. While it sat
+// inside `verify` it failed CI for every pull request, including all five
+// Dependabot updates, which is why dependencies had gone stale: a single
+// package-lock.json line was enough to break the build.
 import { createHash } from 'node:crypto';
 import {
   access,
