@@ -46,6 +46,7 @@ import { AppProvider, useApp, THEMES, type Theme } from './context/AppContext';
 
 import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
+import BackToTop from './components/BackToTop';
 import CreatorCvLink from './components/CreatorCvLink';
 import NovaMark from './components/NovaMark';
 import SectionNarrative from './components/SectionNarrative';
@@ -1833,6 +1834,8 @@ function AppInner({ boot }: { boot: AppBoot }) {
             </AnimatePresence>
           </main>
 
+          {/* Every room is long enough to lose the header; one control, one place. */}
+          <BackToTop />
         </div>
       )}
 

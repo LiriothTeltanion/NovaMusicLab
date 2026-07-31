@@ -1647,3 +1647,59 @@ a:focus-visible,
 [data-motion='static'] .card-lift:hover {
   transform: none;
 }
+
+/* ── Back to top ──────────────────────────────────────────────────────────
+ * Mounted once in the shell, so every room gets it in the same corner.
+ * `inset-inline-end` rather than `right`: it mirrors itself in Hebrew. */
+.nova-back-to-top {
+  position: fixed;
+  inset-inline-end: clamp(0.9rem, 2.5vw, 1.75rem);
+  bottom: clamp(0.9rem, 2.5vw, 1.75rem);
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  /* 44px is the minimum comfortable touch target. */
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: var(--surface-bg-raised);
+  backdrop-filter: blur(var(--surface-blur));
+  -webkit-backdrop-filter: blur(var(--surface-blur));
+  box-shadow: var(--surface-elev-1), var(--surface-highlight);
+  color: var(--fg);
+  cursor: pointer;
+  /* Hidden state: stays in the DOM so the fade can run, but takes no clicks. */
+  opacity: 0;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  transition:
+    opacity 0.25s var(--motion-ease),
+    transform 0.25s var(--motion-ease),
+    border-color 0.25s var(--motion-ease);
+}
+
+.nova-back-to-top.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nova-back-to-top:hover {
+  border-color: var(--surface-border-hover);
+}
+
+.nova-back-to-top:focus-visible {
+  outline: 2px solid var(--c1);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-back-to-top {
+    transition: opacity 0.001ms;
+    transform: none;
+  }
+  .nova-back-to-top.is-visible {
+    transform: none;
+  }
+}
