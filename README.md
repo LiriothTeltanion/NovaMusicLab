@@ -140,6 +140,12 @@ The evidence-first milestone, completed in `1.0.0` — published **2026-07-16** 
 
 Imports can be mixed. Source-specific fields remain source-specific: for example, Last.fm alone cannot prove Spotify device or skip behavior.
 
+Repository operators can create a complete private Last.fm CSV with the
+[local Last.fm export guide](./docs/product/LASTFM_LOCAL_EXPORT.md). The tool
+prompts for the key locally and stores the raw result outside Git and OneDrive;
+it is a manual snapshot, not a live connection and does not alter the public
+flagship exhibition.
+
 MusicBee is intentionally different: it shows what is in a local library, but
 its cumulative play counts are not added to Spotify, Last.fm or the historical
 timeline. Read the [MusicBee import guide](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md)
@@ -427,6 +433,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 | [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
 | [Privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) | Assets, imports, network and public-data risks |
 | [Data sources](./docs/product/DATA_SOURCES.md) | Source capabilities and honest limitations |
+| [Private Last.fm export](./docs/product/LASTFM_LOCAL_EXPORT.md) | Hidden-key local download, validation and private import workflow |
 | [MusicBee library snapshot](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md) | MusicBee XML export, retained fields, privacy and non-timeline limits |
 | [Public data policy](./docs/data/PUBLIC_DATA_POLICY.md) | Rules for the published flagship bundle |
 | [Artwork schema](./docs/data/ARTWORK_SCHEMA.md) | Artist, album, track and gallery asset contracts |

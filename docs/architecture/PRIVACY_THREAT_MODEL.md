@@ -34,6 +34,21 @@ Language and theme use a safe preference adapter with a volatile in-memory
 fallback when `localStorage` access throws; this fallback does not turn browser
 preferences into durable account data.
 
+### Local Last.fm export boundary
+
+The optional repository CLI makes an explicit local request to Last.fm only
+when its operator launches it. The provider receives the ordinary request
+metadata, account name, API key and frozen time range required by
+`user.getRecentTracks`. Nova's deployed browser app does not make this request.
+
+Controls include hidden PowerShell entry, process-only secret handling, no key
+command-line option, redacted errors, sequential bounded requests, per-request
+timeouts, stable pagination checks and atomic final-file promotion. Raw CSV
+output uses a generic filename beneath the operating system's local app-data
+directory, outside the repository and its OneDrive workspace. Cancellation or
+validation failure produces no final CSV. The account name, API key, response
+JSON and full request URL are never persisted by the exporter.
+
 ### Public repository and Pages boundary
 
 Everything committed to the repository or deployed to Pages is public and remains discoverable through Git history unless history is rewritten.
@@ -72,6 +87,7 @@ audit receipts and a complete local degraded state. See
 ## Explicit non-goals
 
 - Nova Music Lab does not provide cloud accounts, cross-device sync or encrypted vault storage.
+- The local Last.fm exporter is not automatic synchronization and does not update the public flagship dataset.
 - A public flagship aggregate cannot be made private through UI wording.
 - Browser-local storage does not protect against a compromised browser profile or successful same-origin script injection.
 

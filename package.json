@@ -39,6 +39,7 @@
     "verify:release": "npm run verify && npm run audit:release-media",
     "lint": "oxlint",
     "compile:data": "node scripts/compile_kevin_music_dna.mjs",
+    "lastfm:export": "node scripts/export_lastfm_history.mjs",
     "audit:data": "node scripts/audit_data_quality.mjs",
     "audit:data:strict": "node scripts/audit_data_quality.mjs --strict",
     "genres:sync": "node scripts/sync_genre_ontology.mjs",
