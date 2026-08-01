@@ -8,8 +8,8 @@ Current version states:
 - `v1.2.0` — deployed and superseded 2026-07-29.
 - `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
   superseded by `v1.4.0`.
-- `v1.4.0` — deployed 2026-07-29; current public GitHub Pages version.
-- `v1.5.0` — private candidate 2026-08-01; not deployed or tagged.
+- `v1.4.0` — deployed 2026-07-29; superseded 2026-08-01.
+- `v1.5.0` — deployed 2026-08-01; current public GitHub Pages version.
 
 ## Branch model
 
@@ -131,9 +131,9 @@ connector is deployed; the optional name is not authentication; raw visitor
 files remain local; and 5,960 long-tail artist rows remain honestly
 unclassified pending evidence.
 
-## `v1.5.0` acceptance record — private candidate 2026-08-01
+## `v1.5.0` acceptance record — deployed 2026-08-01
 
-Candidate title:
+Release title:
 
 > Nova Music Lab v1.5.0 — The Living Archive Gets a Face
 
@@ -159,12 +159,15 @@ live Spotify or Last.fm connection.
   intentional private-fixture skip and zero known dependency vulnerabilities.
 - [x] Final source-fingerprinted visuals pass `npm run audit:release-media` and
   the complete post-capture `npm run verify:release` gate.
-- [ ] CI, CodeQL and Dependency Review pass on the pull request.
-- [ ] Kevin explicitly approves the merge to `main`.
-- [ ] GitHub Pages serves matching version and commit evidence before the tag,
-  GitHub Release, social preview or profile repository is synchronized.
+- [x] Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27)
+  passes CI, CodeQL and Dependency Review.
+- [x] Kevin explicitly approves the merge to `main` on 2026-08-01.
+- [x] GitHub Pages workflow
+  [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107)
+  serves matching version, deployed status, date and initial release commit
+  `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d` in both live identity files.
 
-Known candidate boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
+Known release boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
 backend, accounts, OAuth or automatic connector is added. No catalog aliases
 are destructively merged. The release costs 0 ILS in new services.
 
@@ -215,13 +218,13 @@ Release summary:
 > a 2,257-term genre ontology with source-aware artist assertions, multilingual
 > release history and reproducible visual/deployment evidence.
 
-### `v1.5.0` metadata — private candidate 2026-08-01
+### `v1.5.0` metadata — deployed 2026-08-01
 
-Candidate title:
+Release title:
 
 > Nova Music Lab v1.5.0 — The Living Archive Gets a Face
 
-Candidate summary:
+Release summary:
 
 > A more trustworthy and expressive living music archive: dependable artist
 > portraits and fallbacks, clearer genre provenance, explicit snapshot dates,

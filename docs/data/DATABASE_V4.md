@@ -9,7 +9,7 @@ This document names a storage schema, not a product generation. The application
 uses schema v4 across `1.0.0` — published 2026-07-16 and now superseded —;
 `1.1.0` — deployed 2026-07-26 and superseded 2026-07-29 —; and
 `1.2.0` — deployed and superseded 2026-07-29. It remains the current
-database contract in `1.4.0` — deployed 2026-07-29.
+database contract in `1.5.0` — deployed 2026-08-01.
 
 ## Safety contract
 

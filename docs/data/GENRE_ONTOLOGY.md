@@ -1,7 +1,8 @@
 # Genre ontology and artist assertions
 
-This document describes the genre foundation deployed with Nova Music Lab
-`v1.4.0` — deployed 2026-07-29.
+This document describes the genre foundation introduced in Nova Music Lab
+`v1.4.0` — deployed 2026-07-29 — and its clearer provenance and coverage
+language in `v1.5.0` — deployed 2026-08-01.
 
 ## Product rule
 

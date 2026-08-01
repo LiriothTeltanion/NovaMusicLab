@@ -6,11 +6,11 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No work beyond the frozen `v1.5.0` candidate scope is recorded here.
+No product work beyond the deployed `v1.5.0` scope is recorded here.
 
 ## [1.5.0] - 2026-08-01
 
-Status: **private candidate 2026-08-01; not deployed or tagged**.
+Status: **deployed 2026-08-01**.
 
 Title: **The Living Archive Gets a Face · El archivo vivo cobra rostro**.
 
@@ -75,11 +75,16 @@ Title: **The Living Archive Gets a Face · El archivo vivo cobra rostro**.
 - The post-capture `npm run verify:release` gate passes in one complete run,
   including 9/9 source-fingerprinted release assets. A second post-capture
   Playwright pass is green at 18/18.
-- The local candidate is ready for pull-request review. CI, CodeQL, Dependency
-  Review, Kevin's explicit merge approval and exact live Pages verification
-  remain deliberately pending.
-- `v1.4.0` — deployed 2026-07-29 — remains the public Pages version until CI,
-  explicit approval, merge and live commit/version verification succeed.
+- Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27)
+  passed Verify, browser/accessibility, Dependency Review and CodeQL before
+  Kevin's explicit approval and squash merge.
+- Workflow run
+  [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107)
+  verified, deployed and smoke-tested initial release commit
+  `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The live `build-meta.json` and
+  release-profile manifest agreed on version `1.5.0`, deployed status and date
+  2026-08-01.
+- `v1.4.0` — deployed 2026-07-29 — was superseded by `v1.5.0` on 2026-08-01.
 
 ### Known limitations
 

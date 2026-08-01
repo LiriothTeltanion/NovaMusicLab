@@ -90,11 +90,12 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
   deployed — and integrate it into `v1.4.0`.
 - [x] Publish `v1.4.0` — deployed 2026-07-29 — after full verification,
   visual approval, clean commit, CI and exact Pages smoke verification.
-- [ ] Verify and publish `v1.5.0` — private candidate **2026-08-01** — with
+- [x] Verify and publish `v1.5.0` — deployed **2026-08-01** — with
   corrected portrait fallbacks, explicit snapshot/genre provenance, bounded
   archive imports and mobile/RTL/accessibility release fixes.
-- [ ] Synchronize the separate GitHub profile repository only after the live
-  `v1.5.0` deployment manifest and exact Pages commit are verified.
+- The separate GitHub profile repository consumes only the verified live
+  `v1.5.0` deployment manifest and immutable release media; it is never
+  promoted from the tracked private-candidate handoff.
 - [ ] Plan a later version — date not verified — for optional anonymous/Google
   identity, revocable safe snapshots and policy-approved live connectors.
 

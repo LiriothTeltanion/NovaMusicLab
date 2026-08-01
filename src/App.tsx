@@ -462,6 +462,10 @@ function CopyDeepLinkButton({
 }
 
 export function resetRoomViewport(container: HTMLElement | null) {
+  // Lazy room content can finish mounting after the visitor has opened a modal.
+  // Never move the page or steal focus from that active interaction.
+  if (document.querySelector('[role="dialog"][aria-modal="true"]')) return;
+
   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   if (!container) return;
 

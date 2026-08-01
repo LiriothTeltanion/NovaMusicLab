@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ElementType, KeyboardEvent as ReactKeyboardEvent, RefObject } from 'react';
 import { Command, CornerDownLeft, Search, X } from 'lucide-react';
 
@@ -99,12 +99,16 @@ export default function CommandPalette({
     window.requestAnimationFrame(() => returnFocusRef.current?.focus({ preventScroll: true }));
   }, [onClose, returnFocusRef]);
 
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+    inputRef.current?.focus({ preventScroll: true });
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
     setQuery('');
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    const frame = window.requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -130,7 +134,6 @@ export default function CommandPalette({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => {
-      window.cancelAnimationFrame(frame);
       document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', handleKeyDown);
     };

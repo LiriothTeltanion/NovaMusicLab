@@ -41,6 +41,24 @@ describe('room navigation focus', () => {
     expect(heading).toHaveFocus();
   });
 
+  it('does not steal focus or scroll when lazy room content resolves behind a modal', () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+    const main = document.createElement('main');
+    main.append(document.createElement('h1'));
+    const dialog = document.createElement('div');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    const input = document.createElement('input');
+    dialog.append(input);
+    document.body.append(main, dialog);
+    input.focus();
+
+    resetRoomViewport(main);
+
+    expect(scrollTo).not.toHaveBeenCalled();
+    expect(input).toHaveFocus();
+  });
+
   it('falls back when an embedded browser rejects the modern clipboard API', async () => {
     const writeText = vi.fn().mockRejectedValue(new Error('permission denied'));
     const execCommand = vi.fn(() => true);
