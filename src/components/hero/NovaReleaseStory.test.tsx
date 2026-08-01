@@ -11,9 +11,9 @@ describe('NovaReleaseStory', () => {
     render(<NovaReleaseStory lang="es" />);
 
     expect(screen.getByRole('heading', { name: 'La historia de Nova' })).toBeInTheDocument();
-    expect(screen.getByText('v1.4.0')).toBeInTheDocument();
-    expect(screen.getByText('Atlas Vivo de Géneros')).toBeInTheDocument();
-    expect(screen.getByText(/Un visitante puede nombrar un museo local privado/)).toBeInTheDocument();
+    expect(screen.getByText('v1.5.0')).toBeInTheDocument();
+    expect(screen.getByText('El archivo vivo cobra rostro')).toBeInTheDocument();
+    expect(screen.getByText(/placeholders rotos/)).toBeInTheDocument();
   });
 
   it('reveals earlier releases without creating another route', async () => {

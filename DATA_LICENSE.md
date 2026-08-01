@@ -9,13 +9,20 @@ other people. Those need different treatment, and this file records it.
 
 ## 1. Software — MIT
 
-Everything under `src/`, `scripts/`, `tests/`, and the build and CI configuration
-is MIT licensed. Fork it, learn from it, reuse it, ship it commercially. Keep the
-copyright notice.
+Application code under `src/`, together with `scripts/`, tests, build and CI
+configuration, is MIT licensed **except for the data and original-content
+artifacts listed below**. Fork the software, learn from it, reuse it and ship
+your own version commercially while keeping the copyright notice.
+
+The directory name alone does not decide the license: files under `src/data/`
+can contain the reserved flagship aggregate, curated assertions, original
+narrative content or third-party metadata references. Those files remain
+subject to sections 2, 3 and 5 of this document.
 
 ## 2. The flagship dataset — demonstration use only
 
-`src/data/music_dna_compiled.json` and the derived public aggregates are a
+`src/data/music_dna_compiled.json`, `src/data/recent_pulse.json`, the public
+dataset manifest and derived public aggregates are a
 curated summary of **Kevin Cusnir's personal listening history**: eras, sessions,
 obsessions, daily activity and platform patterns spanning 2015-2026.
 
@@ -46,11 +53,14 @@ Lab or imply endorsement. Rename your fork.
 
 ## 5. Third-party media and metadata
 
-Album covers, artist photographs and band-member portraits are **linked, never
-redistributed**. They remain the property of their rightsholders — Cover Art
-Archive, Wikimedia Commons, Apple/iTunes, Spotify, Deezer and others. Structured
-facts from MusicBrainz and Wikidata carry their own licenses and attribution
-requirements.
+Album covers, artist photographs and band-member portraits are normally
+**referenced by remote URL, not copied into the release bundle**. They remain
+the property of their rightsholders — Cover Art Archive, Wikimedia Commons,
+Apple/iTunes, Spotify, Deezer and others. Any locally generated release image
+that depicts the Nova interface is governed by section 3; it does not grant
+reuse rights over third-party media visible inside that interface. Structured
+facts from MusicBrainz, Wikidata and Deezer remain subject to their respective
+licenses, attribution requirements and service terms.
 
 Including a URL in this repository transfers no rights. See
 [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md).

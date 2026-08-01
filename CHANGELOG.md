@@ -6,8 +6,84 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No unreleased product changes are recorded after `v1.4.0` — deployed
-2026-07-29.
+No work beyond the frozen `v1.5.0` candidate scope is recorded here.
+
+## [1.5.0] - 2026-08-01
+
+Status: **private candidate 2026-08-01; not deployed or tagged**.
+
+Title: **The Living Archive Gets a Face · El archivo vivo cobra rostro**.
+
+### Added
+
+- A shared snapshot-freshness contract separating the observed-through date,
+  dataset generation, enrichment generation and Recent Pulse synchronization;
+  the public flagship explicitly declares that it has no live connection.
+- Archive-expansion budgets for compressed size, entry count, individual
+  entries, total expanded bytes and compression ratio, with recoverable
+  English, Spanish and Hebrew guidance.
+- Browser-storage safety wrappers that keep language and theme usable when
+  `localStorage` is blocked.
+- A trilingual skip link, clearer route headings and deterministic browser-test
+  worker limits.
+
+### Changed
+
+- Reframed 6,413 as **catalog rows**, not unique people or canonical artists;
+  181 known normalized-name variant groups remain documented without a
+  destructive merge.
+- Separated play-weighted analytical-family coverage (**94.1%**) from detailed
+  genre evidence (**453 / 6,413 rows**) and open classification work (**1,662
+  rows**). The evidence layer records 85 accepted, 1,170 candidate and 2
+  rejected assertions.
+- Described `observed` as an automatic observed classification and `Other` as
+  grouped smaller known families instead of treating either as missing data.
+- Made Recent Pulse disclose its 2026-07-02 synchronization date and route its
+  refresh action to the local Upload journey.
+- Gave the Hero wordmark one exact accessible name, `NOVA MUSIC LAB`, while
+  retaining its decorative visual echoes.
+- Updated release imagery to include Spanish mobile Home, mobile Genres,
+  Hebrew RTL daylight evidence and a short Home → Atlas → Genres tour.
+
+### Fixed
+
+- Rejected invalid Deezer artist-image placeholders with empty artist paths or
+  the empty-content hash: **53** invalid patterns were removed and **5,321**
+  usable image keys remain, with deterministic fallbacks for affected artists.
+- Prevented unsupported ZIP entries from being expanded, rejected flattened
+  duplicate names and bounded concurrent text reads and cancellation cleanup.
+- Repaired the 360/390-pixel Genres deep link, chart sizing and horizontal
+  overflow behavior.
+- Corrected Hebrew counter direction, decorative avatar semantics, translated
+  expedition copy and visible clipping in key mobile paths.
+- Prevented Share & Feedback from generating a localhost invitation URL.
+- Removed the conflicting iframe fullscreen permission declaration.
+
+### Verification status
+
+- The frozen product source passes `npm run verify` on Node `22.13.0`: 118 test
+  files pass and 1 private-fixture file is intentionally skipped; 710 tests
+  pass and 1 private-fixture test is intentionally skipped. Lint, strict data,
+  genre, identity, media-link, artist-knowledge, privacy, PWA, TypeScript,
+  production build and every configured bundle budget are green.
+- Playwright passes 18/18 Chromium journeys with one worker. The explicit
+  public-bundle privacy audit passes across 27 public JSON payloads and 445
+  repository text files; `npm audit` reports zero known vulnerabilities and
+  `git diff --check` passes.
+- Final source-fingerprinted release media remains the last local gate before
+  the private candidate can be handed to CI and Kevin for review.
+- `v1.4.0` — deployed 2026-07-29 — remains the public Pages version until CI,
+  explicit approval, merge and live commit/version verification succeed.
+
+### Known limitations
+
+- The flagship remains a historical snapshot observed through 2026-07-03,
+  generated 2026-07-14, with Recent Pulse synchronized 2026-07-02. It is not a
+  live Spotify, Last.fm or MusicBee connection.
+- No DAW, FL Studio, MIDI, Tauri, desktop package, backend, account, OAuth or
+  automatic synchronization is included.
+- The complete alias migration and long-tail reviewed genre expansion remain
+  reversible future work.
 
 ## [1.4.0] - 2026-07-29
 
@@ -22,7 +98,7 @@ Status: **deployed 2026-07-29**.
   flagship, with archive-wide artist catalogs when available and an honest
   partial-scope notice for older datasets.
 - A versioned genre ontology with 2,257 terms and an evidence artifact covering
-  453 of 6,413 archive artists through accepted, candidate and rejected
+  453 of 6,413 artist-name catalog entries through accepted, candidate and rejected
   assertions.
 - Source-aware genre and subgenre profiles in Living Artist Atlas, with
   documented facts, suggestions and honest research gaps kept separate from
@@ -43,7 +119,7 @@ Status: **deployed 2026-07-29**.
   sticky expedition console.
 - Replaced the duplicate content rail and mobile dock with the same accessible
   room navigator at every breakpoint.
-- Made the visitor-to-flagship comparison load the public 6,413-artist catalog
+- Made the visitor-to-flagship comparison load the public 6,413-row artist-name catalog
   only when needed instead of pulling it into the entry bundle.
 - Preserved the Living Constellation from the private `1.3.0` checkpoint while
   integrating that work into the deployed `1.4.0` release.

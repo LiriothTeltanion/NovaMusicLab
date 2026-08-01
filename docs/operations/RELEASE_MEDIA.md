@@ -8,16 +8,20 @@ assets/releases/v<version>/
 ```
 
 `v1.4.0` — deployed 2026-07-29 — is the first release using this contract.
-The unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded
-before it adopted this package.
+`v1.5.0` — private candidate 2026-08-01 — extends it with an evidence image
+for the repaired mobile Genres journey and a shorter room-to-room tour. The
+unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
+it adopted this package.
 
 ## What each candidate must contain
 
-- English cyber-theme Hero at 1440×900 and 390×844.
-- English cyber-theme Genres and Living Artist Atlas at 1440×900.
+- English cyber-theme Hero at 1440×900.
+- Spanish cyber-theme Hero at 390×844.
+- English cyber-theme Genres at 390×844 and Living Artist Atlas at 1440×900.
 - English cyber-theme Guest Museum entry at 1440×900.
 - Hebrew RTL Share & Feedback at 390×844 in the daylight theme.
-- A five-step English product tour as a static JPEG and an animated GIF.
+- A three-room English Home → Atlas → Genres tour as a static three-panel JPEG
+  contact sheet and a short animated GIF.
 - The 1280×640 social preview.
 - `release-media.json` with SHA-256, byte size, actual dimensions, language,
   theme, viewport, capture date, product-source fingerprint, source commit and
@@ -27,9 +31,13 @@ The canonical profile IDs are:
 
 - `profile-hero-desktop`
 - `profile-hero-mobile`
+- `genres-mobile`
+- `artist-atlas-desktop`
 - `guest-museum-desktop`
+- `hebrew-mobile`
 - `profile-tour`
 - `profile-tour-static`
+- `social-preview`
 
 The animated tour always declares the static frame as its fallback. Legacy
 README paths remain synchronized so a new version does not silently leave the
@@ -52,12 +60,13 @@ The tracked source handoff deliberately retains:
 }
 ```
 
-This does not mean the product is undeployed. `v1.4.0` is deployed as of
-2026-07-29, while the tracked manifest remains neutral so it never predicts
-the SHA of a commit that does not exist yet. CI copies that manifest into
-`dist`, stamps the exact deployment identity there and publishes only the
-stamped artifact. The live `build-meta.json` and live release-profile manifest
-are therefore the authoritative deployment evidence.
+This does not mean the public product is undeployed. `v1.4.0` remains deployed
+as of 2026-07-29 while `v1.5.0` is a private candidate dated 2026-08-01. The
+tracked manifest remains neutral so it never predicts the SHA of a commit that
+does not exist yet. CI copies that manifest into `dist`, stamps the exact
+deployment identity there and publishes only the stamped artifact. The live
+`build-meta.json` and live release-profile manifest are therefore the
+authoritative deployment evidence.
 
 The tracked candidate always keeps `commit` and `deployed_on` null. The
 versioned `release-media.json` records the product-source state, file count and

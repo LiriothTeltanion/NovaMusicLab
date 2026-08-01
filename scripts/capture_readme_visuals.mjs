@@ -43,17 +43,17 @@ const mediaDefinitions = [
   },
   {
     id: 'profile-hero-mobile',
-    fileName: 'home-mobile-en-cyber.jpg',
-    lang: 'en',
+    fileName: 'home-mobile-es-cyber.jpg',
+    lang: 'es',
     theme: 'cyber',
     viewport: { width: 390, height: 844 },
   },
   {
-    id: 'genres-desktop',
-    fileName: 'genres-desktop-en-cyber.jpg',
+    id: 'genres-mobile',
+    fileName: 'genres-mobile-en-cyber.jpg',
     lang: 'en',
     theme: 'cyber',
-    viewport: { width: 1440, height: 900 },
+    viewport: { width: 390, height: 844 },
   },
   {
     id: 'artist-atlas-desktop',
@@ -402,12 +402,12 @@ async function captureSocialPreview(browser) {
             <span class="version">${versionLabel}</span>
           </header>
           <main>
-            <p class="eyebrow">Guest Museum · Living Genre Atlas</p>
-            <h1>Your music becomes a <span>living museum.</span></h1>
-            <p class="subtitle">Import your listening history, explore artist stories and compare two musical worlds — directly in your browser.</p>
+            <p class="eyebrow">The Living Archive Gets a Face</p>
+            <h1>Your music becomes a <span>living atlas.</span></h1>
+            <p class="subtitle">Explore an honest historical snapshot through artist portraits, genre evidence and stories. Private imports stay in your browser.</p>
             <div class="chips">
-              <span class="chip">6,413 ARTISTS</span>
-              <span class="chip">2,257 GENRE TERMS</span>
+              <span class="chip">6,413 CATALOG ENTRIES</span>
+              <span class="chip">94.1% OF PLAYS MAPPED</span>
               <span class="chip">EN · ES · HE</span>
             </div>
           </main>
@@ -448,16 +448,21 @@ async function captureProductTour(browser) {
     await page.addInitScript(() => {
       window.localStorage.setItem('nml_lang', 'en');
       window.localStorage.setItem('nml_theme', 'cyber');
-      window.localStorage.removeItem('nml_tour_seen');
+      window.localStorage.setItem('nml_tour_seen', 'true');
+      window.localStorage.setItem('nml_experience_depth', 'explore');
     });
-    await page.goto(`${baseUrl}/#/`, { waitUntil: 'domcontentloaded' });
-    const dialog = page.locator('[role="dialog"]');
-    await dialog.waitFor({ state: 'visible' });
-    await page.evaluate(() => document.fonts.ready);
-
+    const stops = [
+      { hash: '#/', waitFor: '[data-testid="hero-first-viewport"]' },
+      { hash: '#/artist-identity', waitFor: '#artist-atlas-title' },
+      { hash: '#/top?view=genres', waitFor: '[data-top-tab="generos"][aria-pressed="true"]' },
+    ];
     const frames = [];
-    for (let step = 0; step < 5; step += 1) {
-      await page.waitForTimeout(80);
+    for (let step = 0; step < stops.length; step += 1) {
+      const stop = stops[step];
+      await page.goto(`${baseUrl}/${stop.hash}`, { waitUntil: 'domcontentloaded' });
+      await page.locator(stop.waitFor).waitFor({ state: 'visible' });
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(500);
       const frame = await page.screenshot({
         type: 'jpeg',
         quality: 82,
@@ -468,17 +473,13 @@ async function captureProductTour(browser) {
         path.join(tourFrameDir, `tour-step-${String(step + 1).padStart(2, '0')}.jpg`),
         frame,
       );
-      if (step === 0) {
-        await writeFile(
-          path.join(outputDir, mediaDefinition('profile-tour-static').fileName),
-          frame,
-        );
-      }
-      if (step < 4) {
-        await dialog.locator('button').last().click();
-        await dialog.waitFor({ state: 'visible' });
-      }
     }
+
+    const contactSheet = await composeTourContactSheet(page, frames);
+    await writeFile(
+      path.join(outputDir, mediaDefinition('profile-tour-static').fileName),
+      contactSheet,
+    );
 
     const gif = await encodeTourGif(browser, frames);
     await writeFile(
@@ -488,6 +489,97 @@ async function captureProductTour(browser) {
   } finally {
     await context.close();
   }
+}
+
+async function composeTourContactSheet(page, jpegFrames) {
+  const frameDataUrls = jpegFrames.map(
+    frame => `data:image/jpeg;base64,${frame.toString('base64')}`,
+  );
+  const encoded = await page.evaluate(async ({
+    frameDataUrls: urls,
+    releaseLabel,
+    releaseStatus,
+    capturedOn,
+  }) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 960;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas 2D is unavailable for the tour contact sheet');
+
+    const images = await Promise.all(urls.map(source => new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Could not decode a tour contact-sheet frame'));
+      image.src = source;
+    })));
+
+    const background = ctx.createLinearGradient(0, 0, 960, 600);
+    background.addColorStop(0, '#04131d');
+    background.addColorStop(0.55, '#081426');
+    background.addColorStop(1, '#120a24');
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, 960, 600);
+
+    ctx.fillStyle = '#dffcff';
+    ctx.font = '700 22px system-ui, sans-serif';
+    ctx.fillText('NOVA MUSIC LAB · THREE-ROOM EXPEDITION', 22, 36);
+    ctx.fillStyle = '#79d9e7';
+    ctx.font = '500 12px ui-monospace, monospace';
+    ctx.fillText('HOME → LIVING ARTIST ATLAS → GENRES', 22, 56);
+
+    const panels = [
+      { x: 20, y: 76, width: 570, height: 356, label: '01  HOME', color: '#22d3ee' },
+      { x: 610, y: 76, width: 330, height: 206, label: '02  LIVING ARTIST ATLAS', color: '#a78bfa' },
+      { x: 610, y: 302, width: 330, height: 206, label: '03  GENRES', color: '#34d399' },
+    ];
+
+    panels.forEach((panel, index) => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(panel.x, panel.y, panel.width, panel.height, 12);
+      ctx.clip();
+      ctx.drawImage(images[index], panel.x, panel.y, panel.width, panel.height);
+      const shade = ctx.createLinearGradient(0, panel.y + panel.height - 56, 0, panel.y + panel.height);
+      shade.addColorStop(0, 'rgba(2, 8, 18, 0)');
+      shade.addColorStop(1, 'rgba(2, 8, 18, 0.94)');
+      ctx.fillStyle = shade;
+      ctx.fillRect(panel.x, panel.y + panel.height - 60, panel.width, 60);
+      ctx.restore();
+
+      ctx.strokeStyle = panel.color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(panel.x, panel.y, panel.width, panel.height, 12);
+      ctx.stroke();
+      ctx.fillStyle = panel.color;
+      ctx.font = '700 12px ui-monospace, monospace';
+      ctx.fillText(panel.label, panel.x + 14, panel.y + panel.height - 16);
+    });
+
+    ctx.fillStyle = '#d5e9ef';
+    ctx.font = '600 18px system-ui, sans-serif';
+    ctx.fillText('An invitation becomes a face, then evidence.', 22, 478);
+    ctx.fillStyle = '#8ea9b4';
+    ctx.font = '400 14px system-ui, sans-serif';
+    ctx.fillText('Static reduced-motion overview · the animated artifact visits the same three rooms.', 22, 505);
+    ctx.fillStyle = '#5ee7f2';
+    ctx.font = '600 12px ui-monospace, monospace';
+    ctx.fillText(
+      `${releaseLabel} · ${releaseStatus.replaceAll('-', ' ').toUpperCase()} · ${capturedOn}`,
+      22,
+      560,
+    );
+
+    return canvas.toDataURL('image/jpeg', 0.88);
+  }, {
+    frameDataUrls,
+    releaseLabel: versionLabel,
+    releaseStatus: config.status,
+    capturedOn: config.captured_on,
+  });
+
+  return Buffer.from(encoded.split(',')[1], 'base64');
 }
 
 async function encodeTourGif(browser, jpegFrames) {
@@ -504,7 +596,7 @@ async function encodeTourGif(browser, jpegFrames) {
     const encoded = await page.evaluate(async ({ frameDataUrls: urls }) => {
       const width = 560;
       const height = 350;
-      const delayCentiseconds = 220;
+      const delayCentiseconds = 180;
       const palette = [];
       const eightLevelChannel = [0, 12, 28, 52, 88, 136, 196, 255];
       const fourLevelChannel = [0, 32, 112, 255];
@@ -731,8 +823,8 @@ async function writeReleaseManifests() {
     ],
     animation: {
       media_id: 'profile-tour',
-      frames: 5,
-      frame_delay_ms: 2200,
+      frames: 3,
+      frame_delay_ms: 1800,
       reduced_motion_fallback_media_id: 'profile-tour-static',
     },
     legacy_aliases: [
@@ -810,7 +902,7 @@ try {
       hash: '#/',
       viewport: { width: 390, height: 844 },
       storage: {
-        nml_lang: 'en',
+        nml_lang: 'es',
         nml_theme: 'cyber',
         nml_tour_seen: 'true',
       },
@@ -818,9 +910,9 @@ try {
       waitForImage: '.nova-hero__portrait img',
     });
     await capture(browser, {
-      id: 'genres-desktop',
+      id: 'genres-mobile',
       hash: '#/top?view=genres',
-      viewport: { width: 1440, height: 900 },
+      viewport: { width: 390, height: 844 },
       storage: {
         nml_lang: 'en',
         nml_theme: 'cyber',
@@ -840,6 +932,7 @@ try {
         nml_experience_depth: 'guided',
       },
       waitFor: '#artist-atlas-title',
+      waitForImage: '.artist-atlas__stage-image',
       legacyFileName: 'living-artist-atlas-desktop.jpg',
     });
     await capture(browser, {
