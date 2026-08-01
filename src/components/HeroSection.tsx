@@ -577,7 +577,9 @@ export default function HeroSection({
   };
 
   return (
-    <section
+    <main
+      id="main-content"
+      tabIndex={-1}
       className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]"
       data-motion={motionMode}
       aria-labelledby="nova-hero-title"
@@ -602,16 +604,9 @@ export default function HeroSection({
           transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
           className="nova-hero__masthead"
         >
-          <div className="nova-hero__brand-lockup" aria-label="Nova Music Lab">
-            <span className="nova-hero__brand-mark" aria-hidden="true">
-              <NovaMark size={32} />
-            </span>
-            <span>
-              <strong>NOVA</strong>
-              <small>MUSIC LAB</small>
-            </span>
-          </div>
-
+          {/* No wordmark here. The h1 below carries the full lockup - mark and
+              both words - so a second, smaller copy a few hundred pixels above
+              it was the same mark twice on one screen. */}
           <div className="nova-hero__masthead-meta">
             <button
               type="button"
@@ -666,9 +661,20 @@ export default function HeroSection({
               {introCopy.badge}
             </p>
 
-            <h1 id="nova-hero-title" className="nova-hero__title">
-              <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
-              <span className="nova-hero__title-accent">MUSIC LAB</span>
+            <h1
+              id="nova-hero-title"
+              className="nova-hero__title"
+              aria-label="NOVA MUSIC LAB"
+            >
+              {/* The visible lockup and its CSS-generated echoes are decorative
+                  descendants. The h1 owns one stable, exact accessible name. */}
+              <span className="nova-hero__title-mark">
+                <NovaMark size="100%" />
+              </span>
+              <span className="nova-hero__title-words" aria-hidden="true">
+                <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
+                <span className="nova-hero__title-accent" data-word="MUSIC LAB">MUSIC LAB</span>
+              </span>
             </h1>
 
             <p
@@ -750,11 +756,18 @@ export default function HeroSection({
                     ? copy.openArtist(artist.name)
                     : copy.playSignature(artist.name)}
                 >
+                  {/* Eager on purpose. The satellites sit above the fold but
+                      drift on an 11s float animation, and a lazy image the
+                      browser defers never fires load - useImageLoadTimeout then
+                      retires it to a generated avatar after 7s. On a cold cache
+                      that silently stripped faces off the first screen a
+                      visitor ever sees. */}
                   <ArtistAvatar
                     name={artist.name}
                     size={96}
                     tooltip={false}
                     overrideSrc={artist.imageUrl}
+                    priority
                     fallbackToGallery={false}
                   />
                   <span className="nova-hero__satellite-name">
@@ -982,6 +995,6 @@ export default function HeroSection({
           </div>
         </motion.div>
       )}
-    </section>
+    </main>
   );
 }

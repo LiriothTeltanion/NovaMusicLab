@@ -27,15 +27,15 @@ export const LANGUAGE_OPTIONS: readonly LanguageOption[] = [
 export const DOCUMENT_METADATA: Record<Lang, { title: string; description: string }> = {
   es: {
     title: '11 años de música, convertidos en museo',
-    description: '80.550 reproducciones. 20.551 canciones. 6.413 artistas. Explora 11 años de escucha como un museo vivo y crea el tuyo en privado.',
+    description: '80.550 reproducciones. 20.551 canciones. 6.413 entradas de nombres de artistas. Explora 11 años de escucha como un museo vivo y crea el tuyo en privado.',
   },
   en: {
     title: '11 years of music, turned into a living museum',
-    description: '80,550 plays. 20,551 tracks. 6,413 artists. Explore 11 years of listening as a living museum, then build yours from files processed on your device.',
+    description: '80,550 plays. 20,551 tracks. 6,413 artist-name catalog entries. Explore 11 years of listening as a living museum, then build yours from files processed on your device.',
   },
   he: {
     title: '11 שנים של מוזיקה, שהפכו למוזיאון',
-    description: '80,550 השמעות. 20,551 שירים. 6,413 אמנים. חקרו 11 שנות האזנה כמוזיאון חי, ואז בנו אחד משלכם באופן פרטי.',
+    description: '80,550 השמעות. 20,551 שירים. 6,413 רשומות שמות אמנים בקטלוג. חקרו 11 שנות האזנה כמוזיאון חי, ואז בנו אחד משלכם באופן פרטי.',
   },
 };
 

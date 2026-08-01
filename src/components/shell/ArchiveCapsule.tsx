@@ -10,6 +10,7 @@ import {
 
 import { CURRENT_NOVA_VERSION } from '../../releases/currentRelease';
 import type { MusicDnaData } from '../../types';
+import { resolveSnapshotFreshness } from '../../utils/dataTrust';
 import { directionFor, localeFor, pickLanguage, type Lang } from '../../utils/i18n';
 
 interface ArchiveCapsuleProps {
@@ -66,7 +67,13 @@ export default function ArchiveCapsule({
       label: 'Active archive snapshot',
       mode: 'Mode',
       source: 'Source',
-      date: 'Date',
+      observed: 'Listening observed',
+      generated: 'Archive generated',
+      enrichment: 'Artist enrichment',
+      pulse: 'Recent Pulse synced',
+      connection: 'Connection',
+      dated: 'Dated snapshots · no live connection',
+      savedOn: 'Saved locally',
       privacy: 'Privacy',
       state: 'Local state',
       version: 'Current version',
@@ -90,7 +97,13 @@ export default function ArchiveCapsule({
       label: 'Snapshot del archivo activo',
       mode: 'Modo',
       source: 'Fuente',
-      date: 'Fecha',
+      observed: 'Escuchas observadas',
+      generated: 'Archivo generado',
+      enrichment: 'Enriquecimiento de artistas',
+      pulse: 'Recent Pulse sincronizado',
+      connection: 'Conexión',
+      dated: 'Snapshots con fecha · sin conexión en vivo',
+      savedOn: 'Guardado localmente',
       privacy: 'Privacidad',
       state: 'Estado local',
       version: 'Versión actual',
@@ -114,7 +127,13 @@ export default function ArchiveCapsule({
       label: 'תמונת מצב של הארכיון הפעיל',
       mode: 'מצב',
       source: 'מקור',
-      date: 'תאריך',
+      observed: 'האזנות שנצפו',
+      generated: 'הארכיון נוצר',
+      enrichment: 'העשרת אמנים',
+      pulse: 'Recent Pulse סונכרן',
+      connection: 'חיבור',
+      dated: 'תמונות מצב מתוארכות · ללא חיבור חי',
+      savedOn: 'נשמר מקומית',
       privacy: 'פרטיות',
       state: 'מצב מקומי',
       version: 'גרסה נוכחית',
@@ -135,12 +154,37 @@ export default function ArchiveCapsule({
       manage: 'ניהול הארכיון',
     },
   });
-  const archiveDate = formatArchiveDate(savedAt ?? data.generated_at, lang, copy.unavailable);
+  const freshness = resolveSnapshotFreshness(data);
+  const observedPeriod = freshness.observedFrom && freshness.observedThrough
+    ? `${formatArchiveDate(freshness.observedFrom, lang, copy.unavailable)} → ${formatArchiveDate(freshness.observedThrough, lang, copy.unavailable)}`
+    : copy.unavailable;
+  const archiveDate = formatArchiveDate(freshness.datasetGeneratedAt, lang, copy.unavailable);
+  const enrichmentDate = freshness.enrichmentGeneratedAt
+    ? formatArchiveDate(freshness.enrichmentGeneratedAt, lang, copy.unavailable)
+    : null;
+  const pulseDate = freshness.recentPulseSyncedAt
+    ? formatArchiveDate(freshness.recentPulseSyncedAt, lang, copy.unavailable)
+    : null;
+  const localSavedDate = isPersonalArchive && savedAt
+    ? formatArchiveDate(savedAt, lang, copy.unavailable)
+    : null;
   const localState = isPersonalArchive ? (isPersisted ? copy.saved : copy.tabOnly) : copy.bundled;
   const privacyState = isPersonalArchive ? copy.local : copy.publicBundle;
   const archiveSource = sourceName(data, sourceLabel, copy.curated, copy.merged);
   const modeState = isPersonalArchive ? copy.personal : copy.flagship;
-  const accessibleSummary = `${copy.version}: ${version}. ${copy.mode}: ${modeState}. ${copy.source}: ${archiveSource}. ${copy.date}: ${archiveDate}. ${copy.privacy}: ${privacyState}. ${copy.state}: ${localState}.`;
+  const accessibleSummary = [
+    `${copy.version}: ${version}`,
+    `${copy.mode}: ${modeState}`,
+    `${copy.source}: ${archiveSource}`,
+    `${copy.observed}: ${observedPeriod}`,
+    `${copy.generated}: ${archiveDate}`,
+    ...(enrichmentDate ? [`${copy.enrichment}: ${enrichmentDate}`] : []),
+    ...(pulseDate ? [`${copy.pulse}: ${pulseDate}`] : []),
+    ...(localSavedDate ? [`${copy.savedOn}: ${localSavedDate}`] : []),
+    `${copy.connection}: ${copy.dated}`,
+    `${copy.privacy}: ${privacyState}`,
+    `${copy.state}: ${localState}`,
+  ].join('. ') + '.';
 
   useEffect(() => {
     if (!open) return;
@@ -219,8 +263,34 @@ export default function ArchiveCapsule({
               <dd className="archive-capsule__value">{archiveSource}</dd>
             </div>
             <div className="archive-capsule__detail">
-              <dt className="archive-capsule__term">{copy.date}</dt>
+              <dt className="archive-capsule__term">{copy.observed}</dt>
+              <dd className="archive-capsule__value"><bdi dir="ltr">{observedPeriod}</bdi></dd>
+            </div>
+            <div className="archive-capsule__detail">
+              <dt className="archive-capsule__term">{copy.generated}</dt>
               <dd className="archive-capsule__value"><bdi dir="ltr">{archiveDate}</bdi></dd>
+            </div>
+            {enrichmentDate && (
+              <div className="archive-capsule__detail">
+                <dt className="archive-capsule__term">{copy.enrichment}</dt>
+                <dd className="archive-capsule__value"><bdi dir="ltr">{enrichmentDate}</bdi></dd>
+              </div>
+            )}
+            {pulseDate && (
+              <div className="archive-capsule__detail">
+                <dt className="archive-capsule__term">{copy.pulse}</dt>
+                <dd className="archive-capsule__value"><bdi dir="ltr">{pulseDate}</bdi></dd>
+              </div>
+            )}
+            {localSavedDate && (
+              <div className="archive-capsule__detail">
+                <dt className="archive-capsule__term">{copy.savedOn}</dt>
+                <dd className="archive-capsule__value"><bdi dir="ltr">{localSavedDate}</bdi></dd>
+              </div>
+            )}
+            <div className="archive-capsule__detail">
+              <dt className="archive-capsule__term">{copy.connection}</dt>
+              <dd className="archive-capsule__value">{copy.dated}</dd>
             </div>
             <div className="archive-capsule__detail">
               <dt className="archive-capsule__term"><LockKeyhole className="h-3 w-3" />{copy.privacy}</dt>

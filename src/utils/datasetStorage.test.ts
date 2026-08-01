@@ -269,6 +269,7 @@ describe('datasetStorage runtime schema', () => {
     const legacyCore = { ...data } as Record<string, unknown>;
     [
       'narrative_scope',
+      'snapshot_freshness',
       'artist_genre_catalog',
       'artist_origin_countries',
       'daily_plays',
@@ -284,6 +285,20 @@ describe('datasetStorage runtime schema', () => {
     ].forEach(field => delete legacyCore[field]);
 
     expect(isMusicDnaData(legacyCore)).toBe(true);
+  });
+
+  it('reads the short-lived legacy freshness names without emitting them in new data', () => {
+    expect(isMusicDnaData({
+      ...data,
+      snapshot_freshness: {
+        observedFrom: '2015-03-01',
+        observedThrough: '2026-07-03',
+        generatedAt: data.generated_at,
+        enrichmentGeneratedAt: null,
+        pulseSyncedAt: '2026-07-02',
+        liveConnection: false,
+      },
+    })).toBe(true);
   });
 
   it('accepts complete legacy identity blocks that older backups may contain', () => {
@@ -337,6 +352,16 @@ describe('datasetStorage runtime schema', () => {
 
   it.each([
     ['narrative_scope', { narrative_scope: 'visitor' }],
+    ['snapshot_freshness', {
+      snapshot_freshness: {
+        observedFrom: '2026-07-03',
+        observedThrough: '2015-03-01',
+        datasetGeneratedAt: 'not-a-timestamp',
+        enrichmentGeneratedAt: null,
+        recentPulseSyncedAt: null,
+        liveConnection: true,
+      },
+    }],
     ['artist_origin_countries', { artist_origin_countries: [{ country: 'Japan', plays: 'many' }] }],
     ['daily_plays', { daily_plays: { '2026-07-16': 'many' } }],
     ['monthly_activity', { monthly_activity: [{ year: 2026, month: 'July', plays: 4 }] }],

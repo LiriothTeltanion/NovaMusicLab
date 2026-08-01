@@ -17,7 +17,7 @@ import {
   RELEASE_SOURCE_FINGERPRINT_ALGORITHM,
 } from './lib/releaseSourceEvidence.mjs';
 
-const VERSION = '1.4.0';
+const VERSION = '1.5.0';
 const GIT_TEST_TIMEOUT_MS = 15_000;
 const temporaryRoots = [];
 
@@ -34,7 +34,7 @@ async function createRepositoryFixture() {
   temporaryRoots.push(root);
 
   await Promise.all([
-    mkdir(path.join(root, 'assets', 'releases', 'v1.4.0'), { recursive: true }),
+    mkdir(path.join(root, 'assets', 'releases', 'v1.5.0'), { recursive: true }),
     mkdir(path.join(root, 'assets', 'screenshots'), { recursive: true }),
     mkdir(path.join(root, 'public'), { recursive: true }),
     mkdir(path.join(root, 'src'), { recursive: true }),
@@ -42,7 +42,7 @@ async function createRepositoryFixture() {
   await Promise.all([
     writeFile(path.join(root, '.gitattributes'), '* text=auto eol=lf\n'),
     writeFile(path.join(root, '.gitignore'), 'ignored/\n'),
-    writeFile(path.join(root, 'assets', 'releases', 'v1.4.0', 'home.jpg'), Buffer.from([1, 2, 3])),
+    writeFile(path.join(root, 'assets', 'releases', 'v1.5.0', 'home.jpg'), Buffer.from([1, 2, 3])),
     writeFile(path.join(root, 'assets', 'screenshots', 'nova-home-desktop.jpg'), Buffer.from([4, 5, 6])),
     writeFile(path.join(root, 'public', 'release-profile-manifest.json'), '{}\n'),
     writeFile(path.join(root, 'src', 'binary source.dat'), Buffer.from([0, 255, 13, 10, 128])),
@@ -120,7 +120,7 @@ describe('release source evidence', () => {
 
     await Promise.all([
       writeFile(
-        path.join(root, 'assets', 'releases', 'v1.4.0', 'home.jpg'),
+        path.join(root, 'assets', 'releases', 'v1.5.0', 'home.jpg'),
         Buffer.from([9, 8, 7, 6]),
       ),
       writeFile(
@@ -132,7 +132,7 @@ describe('release source evidence', () => {
 
     expect(inspectReleaseSourceEvidence(root, VERSION)).toEqual(baseline);
     expect(isGeneratedReleaseOutput(
-      'assets\\releases\\v1.4.0\\nested image.jpg',
+      'assets\\releases\\v1.5.0\\nested image.jpg',
       VERSION,
     )).toBe(true);
     expect(isGeneratedReleaseOutput(

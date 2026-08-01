@@ -68,7 +68,10 @@ if (!knowledge.assertions
 
 const catalogPlays = catalog.reduce((sum, entry) => sum + entry.plays, 0);
 const classified = catalog.filter(entry => entry.source === 'catalog');
+const observed = catalog.filter(entry => entry.source === 'observed');
 const unclassified = catalog.filter(entry => entry.source === 'unclassified');
+const allClassifiedPlays = [...classified, ...observed]
+  .reduce((sum, entry) => sum + entry.plays, 0);
 const stats = {
   catalogArtistCount: catalog.length,
   catalogPlayCount: catalogPlays,
@@ -85,7 +88,7 @@ for (const [key, value] of Object.entries(stats)) {
   if (knowledge.stats?.[key] !== value) errors.push(`Knowledge statistic is stale: ${key}.`);
 }
 if (catalog.length !== dataset.core_metrics.unique_artists) {
-  errors.push('Genre catalog artist count no longer reconciles to the dataset.');
+  errors.push('Genre catalog entry count no longer reconciles to the dataset.');
 }
 if (catalogPlays !== dataset.core_metrics.total_plays) {
   errors.push('Genre catalog play count no longer reconciles to the dataset.');
@@ -130,8 +133,11 @@ if (errors.length > 0) {
 } else {
   process.stdout.write(
     `Genre knowledge audit passed: ${ontology.terms.length} vocabulary terms; `
-    + `${knowledge.artists.length}/${catalog.length} artists with assertions; `
+    + `${knowledge.artists.length}/${catalog.length} catalog entries with assertions; `
     + `${stats.acceptedAssertionCount} accepted, ${stats.candidateAssertionCount} candidate, `
-    + `${stats.rejectedAssertionCount} rejected; ${catalogPlays} plays reconciled.\n`,
+    + `${stats.rejectedAssertionCount} rejected and hidden; `
+    + `${classified.length} catalog + ${observed.length} observed + ${unclassified.length} unclassified entries; `
+    + `${Math.round((allClassifiedPlays / catalogPlays) * 1000) / 10}% of plays classified; `
+    + `${catalogPlays} plays reconciled.\n`,
   );
 }

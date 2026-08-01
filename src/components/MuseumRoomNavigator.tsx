@@ -344,7 +344,11 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
         </button>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence
+        onExitComplete={() => {
+          if (!mapOpen) mapTriggerRef.current?.focus({ preventScroll: true });
+        }}
+      >
         {mapOpen && (
           <motion.section
             ref={mapRef}
@@ -414,7 +418,11 @@ export function MobileMuseumRoomDock({ items, activeId, lang, onNavigate }: Room
       } as React.CSSProperties}
       dir={directionFor(lang)}
     >
-      <AnimatePresence>
+      <AnimatePresence
+        onExitComplete={() => {
+          if (!mapOpen) mapTriggerRef.current?.focus({ preventScroll: true });
+        }}
+      >
         {mapOpen && (
           <motion.section
             ref={mapRef}

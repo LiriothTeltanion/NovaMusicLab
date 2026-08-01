@@ -8,6 +8,7 @@ import {
 import { MusicDnaData } from '../types';
 import CountUp from './CountUp';
 import ArtistAvatar, { getArtistPrimaryImageUrl } from './ArtistAvatar';
+import { useArtistPhotoMap } from './artistPhotoMap';
 import ArtistLeaderboard from './ArtistLeaderboard';
 import { useApp } from '../context/AppContext';
 import { formatNumber, getNightRatio, getPeakHour, getPeakYear, getRecords, getWeekdayNames } from '../utils/analytics';
@@ -373,6 +374,9 @@ export default function Dashboard({ data }: DashboardProps) {
   });
 
   const topArtist = topArtistsData[0];
+  // Read outside an avatar, so this room subscribes to the portrait index
+  // itself; the avatars below re-render themselves, not their parent.
+  useArtistPhotoMap();
   const topArtistBackdrop = topArtist
     ? getArtistPrimaryImageUrl(topArtist.name, 92)
     : null;
@@ -553,7 +557,7 @@ export default function Dashboard({ data }: DashboardProps) {
   }));
   const yearMetricConfig = {
     plays: { label: t.dashboard.playsLegend, color: tc.c1, unit: pickLanguage(lang, { en: 'counted listens', es: 'escuchas contadas', he: 'השמעות שנספרו' }) },
-    artistas: { label: t.dashboard.uniqueArtistsLegend, color: tc.c3, unit: pickLanguage(lang, { en: 'unique artists', es: 'artistas únicos', he: 'אמנים ייחודיים' }) },
+    artistas: { label: t.dashboard.uniqueArtistsLegend, color: tc.c3, unit: pickLanguage(lang, { en: 'distinct artist names', es: 'nombres de artista distintos', he: 'שמות אמנים מובחנים' }) },
     diversidad: { label: pickLanguage(lang, { en: 'Diversity', es: 'Diversidad', he: 'גיוון' }), color: tc.c4, unit: '%' },
   } as const;
   const activeYearMetric = yearMetricConfig[yearMetric];

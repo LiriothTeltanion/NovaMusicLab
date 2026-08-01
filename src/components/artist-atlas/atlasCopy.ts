@@ -509,6 +509,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
 
 const SIMPLE_COPY: Record<Lang, Partial<ArtistAtlasCopy>> = {
   es: {
+    eyebrow: 'Explorador de artistas · Sala viva',
     subtitle: 'Descubre quién es cada artista, qué escuchas más, sus imágenes, integrantes, álbumes y conexiones.',
     featuredArtists: 'Tus artistas más presentes',
     browseAll: 'Buscar en tus artistas',
@@ -534,6 +535,7 @@ const SIMPLE_COPY: Record<Lang, Partial<ArtistAtlasCopy>> = {
     musicBeeBoundary: 'MusicBee se muestra aparte para no contar dos veces la misma actividad musical.',
   },
   en: {
+    eyebrow: 'Artist explorer · Living room',
     subtitle: 'Discover who each artist is, what you play most, their imagery, members, albums and connections.',
     featuredArtists: 'Your most present artists',
     browseAll: 'Search your artists',
@@ -559,6 +561,7 @@ const SIMPLE_COPY: Record<Lang, Partial<ArtistAtlasCopy>> = {
     musicBeeBoundary: 'MusicBee stays separate so the same listening activity is not counted twice.',
   },
   he: {
+    eyebrow: 'מסע בין אמנים · חדר חי',
     subtitle: 'מגלים מי כל אמן, למה אתם מאזינים הכי הרבה, תמונות, חברים, אלבומים וקשרים.',
     featuredArtists: 'האמנים הבולטים אצלך',
     browseAll: 'חיפוש בין האמנים שלך',

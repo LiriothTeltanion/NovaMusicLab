@@ -12,7 +12,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { stampDeploymentAttestation } from './stamp_deployment_attestation.mjs';
 
 const COMMIT = '0123456789abcdef0123456789abcdef01234567';
-const VERSION = '1.4.0';
+const VERSION = '1.5.0';
 const DATE = '2026-07-29';
 const temporaryRoots = [];
 

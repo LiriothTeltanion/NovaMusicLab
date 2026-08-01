@@ -13,8 +13,8 @@
     "catalogPlayCount": 80550,
     "classifiedArtistCount": 453,
     "classifiedPlayCount": 53329,
-    "unclassifiedArtistCount": 5960,
-    "unclassifiedPlayCount": 27221,
+    "unclassifiedArtistCount": 1662,
+    "unclassifiedPlayCount": 4777,
     "knowledgeArtistCount": 453,
     "acceptedAssertionCount": 85,
     "candidateAssertionCount": 1170,
@@ -104,7 +104,7 @@
     {
       "artistKey": "Abigail's Ghost",
       "artistName": "Abigail's Ghost",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:3995dc3cb748ecb1d9073a3d"
       ]
@@ -129,7 +129,7 @@
     {
       "artistKey": "Adele",
       "artistName": "Adele",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:6e8377e7a3b4f0c0e20f94f4",
         "assertion:7f575371c9ba34cab85e6888"
@@ -156,7 +156,7 @@
     {
       "artistKey": "Agalloch",
       "artistName": "Agalloch",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Black Metal",
       "assertionIds": [
         "assertion:cb2dcd6e910fe2dc54a15d06",
         "assertion:ac5ef4d60dcc5c3a96cb9b3d"
@@ -189,7 +189,7 @@
     {
       "artistKey": "Alice in Chains",
       "artistName": "Alice in Chains",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:093778db31f4b14c79b2ff53",
         "assertion:e7122eb46c8c7c0274b504e2"
@@ -198,7 +198,7 @@
     {
       "artistKey": "Alice In Chains",
       "artistName": "Alice In Chains",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:fb6083dc5a889ed2275f6ca3",
         "assertion:b12c52b2050c3a4cec290ee6"
@@ -234,7 +234,7 @@
     {
       "artistKey": "Amr Diab",
       "artistName": "Amr Diab",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:d332f284f85e707a6e636a2b",
         "assertion:702b13ffc99017450794471a",
@@ -254,7 +254,7 @@
     {
       "artistKey": "Anathema",
       "artistName": "Anathema",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:abf11061f330b0c3a82ed003",
         "assertion:be4ea8af146d34e6f0a99653",
@@ -343,7 +343,7 @@
     {
       "artistKey": "Ariana Grande",
       "artistName": "Ariana Grande",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:f7aeef05847f8defdc41c55b",
         "assertion:dc7c7708b848b44c8b6a0796"
@@ -464,7 +464,7 @@
     {
       "artistKey": "Babymetal",
       "artistName": "Babymetal",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "K-Pop / J-Pop",
       "assertionIds": [
         "assertion:39088c77737d8057648c996d",
         "assertion:b5ee6668d8ebf27624e2d37f"
@@ -473,7 +473,7 @@
     {
       "artistKey": "BABYMETAL",
       "artistName": "BABYMETAL",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "K-Pop / J-Pop",
       "assertionIds": [
         "assertion:6878c0abc6a28404ba626a69",
         "assertion:b73e6a8d0dc9c1e8bec13fde"
@@ -564,7 +564,7 @@
     {
       "artistKey": "Beyoncé",
       "artistName": "Beyoncé",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:5634a05cb29fc8ef6a694d33",
         "assertion:3f0a0f538c6495896e5dee1c"
@@ -573,7 +573,7 @@
     {
       "artistKey": "Billie Eilish",
       "artistName": "Billie Eilish",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:2011d5dd0642b77335ab4f41",
         "assertion:7569a2b968c19a501c8bc9fe"
@@ -625,7 +625,7 @@
     {
       "artistKey": "Blackfield",
       "artistName": "Blackfield",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:382973baf2b8383ab284c8fd",
         "assertion:d70e1f08f4b99678bfe3cf4e",
@@ -678,7 +678,7 @@
     {
       "artistKey": "Blut aus Nord",
       "artistName": "Blut aus Nord",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Black Metal",
       "assertionIds": [
         "assertion:75fc8572aad0358fa4516560",
         "assertion:0fd2f86eea10e797e17bfde1",
@@ -692,7 +692,7 @@
     {
       "artistKey": "Blut Aus Nord",
       "artistName": "Blut Aus Nord",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Black Metal",
       "assertionIds": [
         "assertion:55dcd956deeda55ce56195d0",
         "assertion:32195e02eaacc178efd0cc98",
@@ -706,7 +706,7 @@
     {
       "artistKey": "Bon Iver",
       "artistName": "Bon Iver",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:14269eb4f8b1c70a4a72f15f",
         "assertion:a6c0f30bd9eaa7eb83d752bd"
@@ -742,7 +742,7 @@
     {
       "artistKey": "Bonobo",
       "artistName": "Bonobo",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:32114a1d8ff25fa2680d0af6",
         "assertion:404c5baa3888519ed14984f3"
@@ -771,7 +771,7 @@
     {
       "artistKey": "Breaking Benjamin",
       "artistName": "Breaking Benjamin",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:6bd0c4c5d98dce02bc72da7e",
         "assertion:3243328562f0fc5f7dd3893e"
@@ -807,7 +807,7 @@
     {
       "artistKey": "Bruno Mars",
       "artistName": "Bruno Mars",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:362399a7bdfacf4cd5923ca9",
         "assertion:4ba5f0eed96e6645b1f6355d"
@@ -825,7 +825,7 @@
     {
       "artistKey": "Café Tacvba",
       "artistName": "Café Tacvba",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:82511eb79a8d8e2d632ceef6",
         "assertion:61686d93a37d88b45108e61e"
@@ -834,7 +834,7 @@
     {
       "artistKey": "Calvin Harris",
       "artistName": "Calvin Harris",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:a210f080ba298b973783c577",
         "assertion:2104a6c80cfc372dbe61a311"
@@ -843,7 +843,7 @@
     {
       "artistKey": "Caramelos de Cianuro",
       "artistName": "Caramelos de Cianuro",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:de6a22facb67967db60adc23",
         "assertion:9f038de10562a4d2a9c664f3"
@@ -852,7 +852,7 @@
     {
       "artistKey": "Caramelos De Cianuro",
       "artistName": "Caramelos De Cianuro",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:f7c2b2965aa3a83f89793bc7",
         "assertion:5c191ec84108fa0d954002ba"
@@ -891,7 +891,7 @@
     {
       "artistKey": "Charlie Puth",
       "artistName": "Charlie Puth",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:22cadedd86c76a32552df0d4",
         "assertion:c19acf765de5e2c6be320aaf"
@@ -900,7 +900,7 @@
     {
       "artistKey": "Childish Gambino",
       "artistName": "Childish Gambino",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Hip-Hop / Rap",
       "assertionIds": [
         "assertion:53582e020d3c4d69dcca6130",
         "assertion:60ec4f1d20ab7fb3d06e745f"
@@ -1007,7 +1007,7 @@
     {
       "artistKey": "Daddy Yankee",
       "artistName": "Daddy Yankee",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:57b142525d4a23fa90b98de4",
         "assertion:fac55222a576bf8ba091c523"
@@ -1016,7 +1016,7 @@
     {
       "artistKey": "Daft Punk",
       "artistName": "Daft Punk",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:bc34454a9a4aa808053153d3",
         "assertion:e326f639aab42325e9873af6"
@@ -1060,7 +1060,7 @@
     {
       "artistKey": "Danny Ocean",
       "artistName": "Danny Ocean",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:1765571ed25ff408f220e55e",
         "assertion:72773cb413a68119ff25ad6b"
@@ -1077,7 +1077,7 @@
     {
       "artistKey": "David Guetta",
       "artistName": "David Guetta",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:3e9c24ac8e5aba4f17f5f45c",
         "assertion:50aa572317ecf44ded60c84f"
@@ -1241,7 +1241,7 @@
     {
       "artistKey": "Dr. Dre",
       "artistName": "Dr. Dre",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Hip-Hop / Rap",
       "assertionIds": [
         "assertion:b932078d0c53ecaac07525e6",
         "assertion:36bd335c6c20445fd6852ede"
@@ -1250,7 +1250,7 @@
     {
       "artistKey": "Drake",
       "artistName": "Drake",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Hip-Hop / Rap",
       "assertionIds": [
         "assertion:d28aa9fc215ce744063c0ea3",
         "assertion:ff3c8e553fac6844538c4f82",
@@ -1266,7 +1266,7 @@
     {
       "artistKey": "Dream Theater",
       "artistName": "Dream Theater",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:cc664afdd6c3e562724c6f33",
         "assertion:ffd4211b178dd0e00c67d7d4"
@@ -1283,7 +1283,7 @@
     {
       "artistKey": "Dua Lipa",
       "artistName": "Dua Lipa",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:e2a14e7951cf90eb0733fd8a",
         "assertion:c2da432d69f0ebe7a15eca1a"
@@ -1301,7 +1301,7 @@
     {
       "artistKey": "Ed Sheeran",
       "artistName": "Ed Sheeran",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:d28104b686a26a0abe7e3a50",
         "assertion:b121c6a9b208dc4507310c38"
@@ -1342,7 +1342,7 @@
     {
       "artistKey": "Entwine",
       "artistName": "Entwine",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Symphonic / Gothic Metal",
       "assertionIds": [
         "assertion:e808aac4ea6ac8ce9008644c"
       ]
@@ -1389,7 +1389,7 @@
     {
       "artistKey": "Evanescence",
       "artistName": "Evanescence",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:8ffd7937b0fded02eab389fc",
         "assertion:9caaf15f781bf615d94f371d"
@@ -1423,7 +1423,7 @@
     {
       "artistKey": "Feid",
       "artistName": "Feid",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:fc2cb62c079fad5497290545",
         "assertion:f521df55068e00d2a33eb179"
@@ -1472,7 +1472,7 @@
     {
       "artistKey": "Frank Ocean",
       "artistName": "Frank Ocean",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:97c6ed644e8e4a5ba1c51571",
         "assertion:a68569ed4e29223544ba21ad"
@@ -1535,7 +1535,7 @@
     {
       "artistKey": "God Is an Astronaut",
       "artistName": "God Is an Astronaut",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:fd1956fd144dc796add8abfb",
         "assertion:2fb372f8874215f75dba9688"
@@ -1544,7 +1544,7 @@
     {
       "artistKey": "God Is An Astronaut",
       "artistName": "God Is An Astronaut",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:cd049e50a4ba0a0ec6456df5",
         "assertion:2888c1ea0d8c8c414abe5099"
@@ -1553,7 +1553,7 @@
     {
       "artistKey": "Godsmack",
       "artistName": "Godsmack",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:90c3cb8d12e2edcbb952d545",
         "assertion:3fe420e5d9717aaf63cc0c34"
@@ -1625,7 +1625,7 @@
     {
       "artistKey": "Gustavo Cerati",
       "artistName": "Gustavo Cerati",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:f00d3420881fbc7235336be9",
         "assertion:2a5851916c1f90ad27126df0"
@@ -1676,7 +1676,7 @@
     {
       "artistKey": "HEALTH",
       "artistName": "HEALTH",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:30f013e940a16dc04fe19d9a",
         "assertion:475cb3b29718544e5ddaf43c"
@@ -1709,7 +1709,7 @@
     {
       "artistKey": "HIM",
       "artistName": "HIM",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:36b5cc3dbf0bc6f5eb2844cf",
         "assertion:27f1ef7045d6753c39aa908d"
@@ -1819,7 +1819,7 @@
     {
       "artistKey": "Infected Mushroom",
       "artistName": "Infected Mushroom",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:6ecfaf84d4c61e74f6a16a3f",
         "assertion:2162dbf0ff8efc73dfc2c9a1"
@@ -1840,7 +1840,7 @@
     {
       "artistKey": "Interpol",
       "artistName": "Interpol",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Punk / New Wave",
       "assertionIds": [
         "assertion:bb6429757a48bd5955fe5504",
         "assertion:6e3b4df03437931222667594"
@@ -1872,7 +1872,7 @@
     {
       "artistKey": "J Balvin",
       "artistName": "J Balvin",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:6890e56ad07b29083c37c43d",
         "assertion:0bf9e922f5db8e749d7997fb"
@@ -1930,7 +1930,7 @@
     {
       "artistKey": "Joy Division",
       "artistName": "Joy Division",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:e22560f5eba1e4d2887b8180",
         "assertion:e230eb3db0eff207f85566c9"
@@ -1957,7 +1957,7 @@
     {
       "artistKey": "Justice",
       "artistName": "Justice",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:673a26f624fa8cc3d2034b8f",
         "assertion:f92f2c382060995934f3aa0d"
@@ -1966,7 +1966,7 @@
     {
       "artistKey": "Justin Bieber",
       "artistName": "Justin Bieber",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:866458c121cbd324650841c2",
         "assertion:39e681cd126e0a8930c37832"
@@ -1993,7 +1993,7 @@
     {
       "artistKey": "KAROL G",
       "artistName": "KAROL G",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:1a349795ae18f34cb7495b2b",
         "assertion:7e06acfe6501d13c23a7ffc7"
@@ -2002,7 +2002,7 @@
     {
       "artistKey": "Katatonia",
       "artistName": "Katatonia",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Symphonic / Gothic Metal",
       "assertionIds": [
         "assertion:0ebeafe9bb3fb3226348fa5a",
         "assertion:db691faadc3fb52b44ed4350",
@@ -2021,7 +2021,7 @@
     {
       "artistKey": "Katy Perry",
       "artistName": "Katy Perry",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:3dd66c0e2c0f88dcfd2faf25",
         "assertion:d420cc70e336d6dc84c89f79"
@@ -2137,7 +2137,7 @@
     {
       "artistKey": "Lady Gaga",
       "artistName": "Lady Gaga",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:505542d39695851cea2f8c20",
         "assertion:4b2a043b2fb013e08d0713ef"
@@ -2256,7 +2256,7 @@
     {
       "artistKey": "Los Amigos Invisibles",
       "artistName": "Los Amigos Invisibles",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:a3f57a10137b7e09fe058e39",
         "assertion:f4f0ba1abd0ad930530b0584"
@@ -2309,7 +2309,7 @@
     {
       "artistKey": "Mac Miller",
       "artistName": "Mac Miller",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Hip-Hop / Rap",
       "assertionIds": [
         "assertion:692c9c10bf117bb880e64dfb",
         "assertion:5e0a640f41751121df3d90ec"
@@ -2318,7 +2318,7 @@
     {
       "artistKey": "Madeon",
       "artistName": "Madeon",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:121fc4dccaf899e99617c994",
         "assertion:3eab7bec07bdb436f841e72f"
@@ -2364,7 +2364,7 @@
     {
       "artistKey": "Marshmello",
       "artistName": "Marshmello",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:916884298e8796de94eecca1",
         "assertion:225ac0126008d0f764b68646"
@@ -2450,7 +2450,7 @@
     {
       "artistKey": "Melechesh",
       "artistName": "Melechesh",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Black Metal",
       "assertionIds": [
         "assertion:bc7b83b2d084be636edf9ae1",
         "assertion:07624c62ed09f29d373894a0"
@@ -2508,7 +2508,7 @@
     {
       "artistKey": "Ministry",
       "artistName": "Ministry",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:f09a678bfde0590fc750ca2d"
       ]
@@ -2533,7 +2533,7 @@
     {
       "artistKey": "MONO",
       "artistName": "MONO",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:9f1c01073d5e07a1c574e8dc",
         "assertion:9cc0e2dcd49ba9da19b8a2ed"
@@ -2727,7 +2727,7 @@
     {
       "artistKey": "Nine Inch Nails",
       "artistName": "Nine Inch Nails",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:7feae3aafdefafe124f57d07",
         "assertion:dfc67ca45a8928c9f2f6d699",
@@ -2809,7 +2809,7 @@
     {
       "artistKey": "Novembre",
       "artistName": "Novembre",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Symphonic / Gothic Metal",
       "assertionIds": [
         "assertion:094659da7be66d18facb47ce",
         "assertion:fa9e47777a41a4f64f801611"
@@ -2818,7 +2818,7 @@
     {
       "artistKey": "Oasis",
       "artistName": "Oasis",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:ed5c613d7440e87f9f1e04f8",
         "assertion:1edbd57a971ac1833eb1087c"
@@ -2836,7 +2836,7 @@
     {
       "artistKey": "ODESZA",
       "artistName": "ODESZA",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:69dccbba860131d8ee5d7bcb",
         "assertion:12b51e02c66f92f862ffebbf"
@@ -2993,7 +2993,7 @@
     {
       "artistKey": "Phoebe Bridgers",
       "artistName": "Phoebe Bridgers",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:67c6f4facc7b75b5b88f1b26",
         "assertion:64806463e83f7abefc99143f"
@@ -3020,7 +3020,7 @@
     {
       "artistKey": "Pink Floyd",
       "artistName": "Pink Floyd",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:5eb6e14debbfa0616cf3eeae",
         "assertion:7d3b0114c4b19a7efd71cae3"
@@ -3063,7 +3063,7 @@
     {
       "artistKey": "Porter Robinson",
       "artistName": "Porter Robinson",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:9e193846c97dc2d0fde67efe",
         "assertion:0a6be30232954d76c9dcbb1f"
@@ -3156,7 +3156,7 @@
     {
       "artistKey": "Rammstein",
       "artistName": "Rammstein",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:dce1c0fb18efb00510e49850",
         "assertion:b1974dbfb4f15cc9efe7856e"
@@ -3165,7 +3165,7 @@
     {
       "artistKey": "Rauw Alejandro",
       "artistName": "Rauw Alejandro",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:3c9f0033ef3ebf6c36a36981",
         "assertion:23d0d2ac42c53af38cd6bc2b"
@@ -3219,7 +3219,7 @@
     {
       "artistKey": "Rihanna",
       "artistName": "Rihanna",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:4aadc5a9c1d737c1e3ff6289",
         "assertion:e613f10f096fbf229871e115"
@@ -3236,7 +3236,7 @@
     {
       "artistKey": "ROSALÍA",
       "artistName": "ROSALÍA",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:48a6c39e2d8cb5c8f3ed9b83",
         "assertion:199980ef4d7eaccb86c007b4"
@@ -3245,7 +3245,7 @@
     {
       "artistKey": "Royal Blood",
       "artistName": "Royal Blood",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Rock",
       "assertionIds": [
         "assertion:3e8ebdfffdcf06d680c104b1",
         "assertion:731af1ebf388c61cf3c0b2b2"
@@ -3280,7 +3280,7 @@
     {
       "artistKey": "Sammy Boller",
       "artistName": "Sammy Boller",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:3485c9f5a8aec9a44070008b"
       ]
@@ -3336,7 +3336,7 @@
     {
       "artistKey": "Seether",
       "artistName": "Seether",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:a889c4504927f5ddbc2d2e3a",
         "assertion:b8c54511eaa41503d0783807"
@@ -3345,7 +3345,7 @@
     {
       "artistKey": "Selena Gomez",
       "artistName": "Selena Gomez",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:01117c52bcb5aabb0e6ce773",
         "assertion:2d9d7a6bbfbd775719a6bc44"
@@ -3390,7 +3390,7 @@
     {
       "artistKey": "Sia",
       "artistName": "Sia",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:ff9df9a5e1ef1c630dcd4cfb",
         "assertion:9a5d73e377cbe8a1a2399820"
@@ -3399,7 +3399,7 @@
     {
       "artistKey": "SIA",
       "artistName": "SIA",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:53bcf29f5665e0ae0427c6c2",
         "assertion:cd9ef4dc57fd7b906f234481"
@@ -3492,7 +3492,7 @@
     {
       "artistKey": "Skrillex",
       "artistName": "Skrillex",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:3d559dfef8bf33c1b5e977e7",
         "assertion:d2a2c0943b18a1d1b8342187"
@@ -3523,7 +3523,7 @@
     {
       "artistKey": "Sleep Token",
       "artistName": "Sleep Token",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:e11786accfb401cff6d849f4",
         "assertion:1146c97a9968daefcb1e44a2"
@@ -3567,7 +3567,7 @@
     {
       "artistKey": "Snoop Dogg",
       "artistName": "Snoop Dogg",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Hip-Hop / Rap",
       "assertionIds": [
         "assertion:d79426146c47bef86cef7831",
         "assertion:95ab648890b4724042eb6b20"
@@ -3576,7 +3576,7 @@
     {
       "artistKey": "Soda Stereo",
       "artistName": "Soda Stereo",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Latin",
       "assertionIds": [
         "assertion:bdee4ac7d83aefac88dfc70d",
         "assertion:d84de76c08bf9d08d3c605be"
@@ -3622,7 +3622,7 @@
     {
       "artistKey": "Soundgarden",
       "artistName": "Soundgarden",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:b3c2f06a0aa64c3c8137fd64",
         "assertion:53bf9701fe93db5104d3130a"
@@ -3649,7 +3649,7 @@
     {
       "artistKey": "Starset",
       "artistName": "Starset",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:6232e6c45572cd1675aa4640",
         "assertion:74054f0fcf98d055b085fc1e"
@@ -3658,7 +3658,7 @@
     {
       "artistKey": "STARSET",
       "artistName": "STARSET",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Post-Rock",
       "assertionIds": [
         "assertion:4ea81c54f7dce42cd10434f2",
         "assertion:7b1ad1af8fff1e9d77b7b16c"
@@ -3694,7 +3694,7 @@
     {
       "artistKey": "Steve Aoki",
       "artistName": "Steve Aoki",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:001eedb14fa0818a60848285",
         "assertion:91e2b37c34eb58a4d923d48d"
@@ -3703,7 +3703,7 @@
     {
       "artistKey": "Steven Wilson",
       "artistName": "Steven Wilson",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:170b562895020a6012d0b9b1"
       ]
@@ -3711,7 +3711,7 @@
     {
       "artistKey": "Sufjan Stevens",
       "artistName": "Sufjan Stevens",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:abd90fc3c2823f43ee1980d6",
         "assertion:78757a8567dba401b81219f2"
@@ -3782,7 +3782,7 @@
     {
       "artistKey": "SZA",
       "artistName": "SZA",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "R&B / Soul",
       "assertionIds": [
         "assertion:14a6344aedbd0303ba5cd78a",
         "assertion:98b2687fa91576cac7a6b134"
@@ -3791,7 +3791,7 @@
     {
       "artistKey": "Tame Impala",
       "artistName": "Tame Impala",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:ee46fc49435dc9ae426bfdb4",
         "assertion:bad621884e2a8b7619e74125"
@@ -3800,7 +3800,7 @@
     {
       "artistKey": "Taylor Swift",
       "artistName": "Taylor Swift",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:545b60134de1116608079276",
         "assertion:c141f7cd7b0fb3fdde613815"
@@ -3872,7 +3872,7 @@
     {
       "artistKey": "The Black Keys",
       "artistName": "The Black Keys",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Rock",
       "assertionIds": [
         "assertion:b1a184f884611f416e21b8b0",
         "assertion:6b56b2e10c7c7c9e67080042"
@@ -3881,7 +3881,7 @@
     {
       "artistKey": "The Chainsmokers",
       "artistName": "The Chainsmokers",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:db44e1b5544f7080d315a8b1",
         "assertion:2e0027846f3a68b9fc10529f"
@@ -3898,7 +3898,7 @@
     {
       "artistKey": "The Cure",
       "artistName": "The Cure",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Gothic / Industrial",
       "assertionIds": [
         "assertion:3d45614b308ee71bf64ea821",
         "assertion:970be98bedb21372b5d28bb6"
@@ -3981,7 +3981,7 @@
     {
       "artistKey": "The Rolling Stones",
       "artistName": "The Rolling Stones",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Rock",
       "assertionIds": [
         "assertion:d2a3602034a9cd57dfd08cc6",
         "assertion:4fbb830433636f1af2fd4a12"
@@ -4009,7 +4009,7 @@
     {
       "artistKey": "The Strokes",
       "artistName": "The Strokes",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:01798cee1021c02ee02a4868",
         "assertion:a9d072ed51ba88b475e158bf"
@@ -4070,7 +4070,7 @@
     {
       "artistKey": "Thirty Seconds to Mars",
       "artistName": "Thirty Seconds to Mars",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:52931db31506bbdd9f280f96",
         "assertion:efd85c63f338fcd8d96d912a",
@@ -4090,7 +4090,7 @@
     {
       "artistKey": "Thirty Seconds To Mars",
       "artistName": "Thirty Seconds To Mars",
-      "chartFamilyId": "Progressive Metal",
+      "chartFamilyId": "Progressive Rock",
       "assertionIds": [
         "assertion:f187c38bb1e139dfdb9625b1",
         "assertion:0294c6646186e2ce1db10bb7",
@@ -4118,7 +4118,7 @@
     {
       "artistKey": "Three Days Grace",
       "artistName": "Three Days Grace",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Alt-Metal",
       "assertionIds": [
         "assertion:b5f9848c812ad627c9b5b005",
         "assertion:7a56db2cfdd17e3bed674be1"
@@ -4277,7 +4277,7 @@
     {
       "artistKey": "Type O Negative",
       "artistName": "Type O Negative",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Symphonic / Gothic Metal",
       "assertionIds": [
         "assertion:9d2ba0749562a21c23e8e8fb",
         "assertion:ebf882198e75fc76d8532179",
@@ -4288,7 +4288,7 @@
     {
       "artistKey": "U2",
       "artistName": "U2",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Punk / New Wave",
       "assertionIds": [
         "assertion:7bba6a7c11dc80e3573e6ded",
         "assertion:7625626d2065ced0949c5cf0"
@@ -4335,7 +4335,7 @@
     {
       "artistKey": "Wallows",
       "artistName": "Wallows",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:b1fd192ccaba92b8081a2202",
         "assertion:5499f2a03ae86d0cf21d5759"
@@ -4398,7 +4398,7 @@
     {
       "artistKey": "Within Temptation",
       "artistName": "Within Temptation",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Symphonic / Gothic Metal",
       "assertionIds": [
         "assertion:bc1d76cab2389174e925b2ff",
         "assertion:6cc44dc22147bb5b5d69b954"
@@ -4434,7 +4434,7 @@
     {
       "artistKey": "Zedd",
       "artistName": "Zedd",
-      "chartFamilyId": "Alternative",
+      "chartFamilyId": "Electronic / EDM",
       "assertionIds": [
         "assertion:27f39b12a0d0699464c6882d",
         "assertion:38d7c37577643a0368a054fc"

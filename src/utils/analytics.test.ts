@@ -45,6 +45,57 @@ describe('normalizeGenre', () => {
     // A real-but-unmapped genre still groups as Alternative (a judgment, not a fabrication).
     expect(normalizeGenre('Something Totally New')).toBe('Alternative');
   });
+
+  // A quarter of artist_meta.json - 122 artists, 3,199 plays - carried a precise
+  // hand-written genre and was displayed as "Alternative" anyway, because the
+  // cascade only knew this archive's metal/hardcore/synthwave core. These lock
+  // the families that were added to hold the rest of the record collection.
+  it('keeps genres outside the metal core out of the Alternative bucket', () => {
+    expect(normalizeGenre('Reggaeton / Latin Pop')).toBe('Latin');
+    expect(normalizeGenre('Corridos Tumbados / Regional Mexican')).toBe('Latin');
+    expect(normalizeGenre('K-Pop / Dance Pop')).toBe('K-Pop / J-Pop');
+    expect(normalizeGenre('EDM / Electro House')).toBe('Electronic / EDM');
+    expect(normalizeGenre('Trip Hop / Experimental')).toBe('Electronic / EDM');
+    expect(normalizeGenre('R&B / Neo Soul')).toBe('R&B / Soul');
+    expect(normalizeGenre('Gothic Metal / Doom Metal')).toBe('Symphonic / Gothic Metal');
+    expect(normalizeGenre('Industrial Metal / Neue Deutsche Härte')).toBe('Gothic / Industrial');
+    expect(normalizeGenre('Post-Rock / Instrumental')).toBe('Post-Rock');
+    expect(normalizeGenre('Atmospheric Black Metal / Folk')).toBe('Black Metal');
+    expect(normalizeGenre('Modern Classical')).toBe('Classical / Orchestral');
+    expect(normalizeGenre('Indie Rock / Garage Rock')).toBe('Pop / Indie');
+    expect(normalizeGenre('Hardcore Punk')).toBe('Punk / New Wave');
+    expect(normalizeGenre('Country')).toBe('Folk / Country');
+  });
+
+  it('resolves the ordering traps the wider taxonomy introduced', () => {
+    // Regional identity outranks the generic genre beside it.
+    expect(normalizeGenre('Reggaeton / Latin Hip-Hop')).toBe('Latin');
+    expect(normalizeGenre('K-Pop / Hip-Hop')).toBe('K-Pop / J-Pop');
+    expect(normalizeGenre('Ska / Rock Venezolano')).toBe('Latin');
+    // ...but a genuine hip-hop record still reaches the hip-hop branch.
+    expect(normalizeGenre('Hip-Hop / G-Funk')).toBe('Hip-Hop / Rap');
+
+    // These six regressed when 'alternative metal' and 'grunge' were placed
+    // beside the other alt-metal spellings: each label's primary genre lost to
+    // a rule that ran earlier. The alt-metal rescue now runs late instead.
+    expect(normalizeGenre('Alternative Rock / Post-Grunge')).toBe('Alternative Rock');
+    expect(normalizeGenre('Alternative Rock / Grunge')).toBe('Alternative Rock');
+    expect(normalizeGenre('Grunge / Alternative Rock')).toBe('Alternative Rock');
+    expect(normalizeGenre('Melodic Death Metal / Alternative Metal')).toBe('Death Metal');
+    expect(normalizeGenre('Hard Rock / Alternative Metal')).toBe('Hard Rock');
+    expect(normalizeGenre('Progressive Metal / Alternative Metal')).toBe('Progressive Metal');
+    // ...while a record that really is alt-metal still lands there.
+    expect(normalizeGenre('Alternative Metal / Post-Grunge')).toBe('Alt-Metal');
+
+    // Substrings that must not fire: 'garage' inside garage rock, 'chamber'
+    // inside chamber pop, and 'emo' inside a longer word.
+    expect(normalizeGenre('Garage Rock / Blues Rock')).toBe('Rock');
+    expect(normalizeGenre('Indie Folk / Chamber Pop')).toBe('Pop / Indie');
+    expect(normalizeGenre('Emo Rap / Trap')).toBe('Emo Rap / Trap');
+    expect(normalizeGenre('Emo / Indie Rock')).toBe('Pop / Indie');
+    // Progressive rock is not progressive metal.
+    expect(normalizeGenre('Progressive Rock')).toBe('Progressive Rock');
+  });
 });
 
 describe('getTwoYearPeak', () => {

@@ -31,10 +31,13 @@ import {
   MusicBeeSnapshotError,
 } from '../utils/musicBeeSnapshot';
 import { parseMusicBeeFileInWorker } from '../utils/musicBeeWorkerClient';
-import { expandZipArchives } from '../utils/zipArchive';
+import {
+  expandZipArchives,
+  ZipArchiveError,
+} from '../utils/zipArchive';
 
-const LARGE_FILE_WARNING_BYTES = 200 * 1024 * 1024; // 200MB
 const NOVA_BACKUP_SNIFF_LENGTH = 300;
+export const IMPORT_TEXT_READ_CONCURRENCY = 2;
 
 function hasNovaBackupMarker(text: string): boolean {
   return text.slice(0, NOVA_BACKUP_SNIFF_LENGTH).includes('"nova_music_export"');
@@ -49,6 +52,80 @@ function isNovaBackupEnvelope(value: unknown): value is Record<string, unknown> 
 
 function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === 'AbortError';
+}
+
+function importAbortError(): Error {
+  const error = new Error('Import cancelled.');
+  error.name = 'AbortError';
+  return error;
+}
+
+interface TextReadOptions {
+  signal: AbortSignal;
+  errorMessage: string;
+}
+
+function readFileAsText(file: File, options: TextReadOptions): Promise<string> {
+  const { signal, errorMessage } = options;
+  if (signal.aborted) return Promise.reject(importAbortError());
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    let settled = false;
+    const finish = (callback: () => void) => {
+      if (settled) return;
+      settled = true;
+      signal.removeEventListener('abort', onAbort);
+      reader.onload = null;
+      reader.onerror = null;
+      reader.onabort = null;
+      callback();
+    };
+    const onAbort = () => {
+      try {
+        if (reader.readyState === FileReader.LOADING) reader.abort();
+      } finally {
+        finish(() => reject(importAbortError()));
+      }
+    };
+
+    signal.addEventListener('abort', onAbort, { once: true });
+    reader.onload = () => finish(() => {
+      if (typeof reader.result === 'string') resolve(reader.result);
+      else reject(new Error(errorMessage));
+    });
+    reader.onerror = () => finish(() => reject(new Error(errorMessage)));
+    reader.onabort = () => finish(() => reject(importAbortError()));
+
+    try {
+      reader.readAsText(file);
+    } catch {
+      finish(() => reject(new Error(errorMessage)));
+    }
+    if (signal.aborted) onAbort();
+  });
+}
+
+/** Reads at most two text files at once and preserves input order. */
+export async function readFilesAsTextBounded(
+  files: readonly File[],
+  options: TextReadOptions,
+): Promise<string[]> {
+  const results = new Array<string>(files.length);
+  let nextIndex = 0;
+
+  const worker = async () => {
+    while (nextIndex < files.length) {
+      if (options.signal.aborted) throw importAbortError();
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await readFileAsText(files[index], options);
+    }
+  };
+
+  const workerCount = Math.min(IMPORT_TEXT_READ_CONCURRENCY, files.length);
+  await Promise.all(Array.from({ length: workerCount }, worker));
+  return results;
 }
 
 export type DatasetOperationKind = 'import' | 'clear';
@@ -97,7 +174,7 @@ export default function DataUploader({
       backup: 'Verified Nova backup signature. Restoring database...',
       restored: 'Restore complete. Reloading dashboard metrics...',
       processing: 'Processing scrobbles and streaming records...',
-      parsed: (plays: string, artists: string) => `Parsed ${plays} plays across ${artists} unique artists.`,
+      parsed: (plays: string, artists: string) => `Parsed ${plays} plays across ${artists} distinct artist names.`,
       metadata: 'Synthesizing metadata and cross-navigation mappings...',
       success: 'Ingestion successful. Dashboard refreshed!',
       importedFiles: 'Imported Files',
@@ -109,7 +186,7 @@ export default function DataUploader({
       backup: 'Firma de copia de seguridad Nova verificada. Restaurando base de datos...',
       restored: 'Restauración completa. Recargando métricas del panel...',
       processing: 'Procesando registros de scrobbles y reproducción...',
-      parsed: (plays: string, artists: string) => `Parseadas ${plays} reproducciones de ${artists} artistas.`,
+      parsed: (plays: string, artists: string) => `Parseadas ${plays} reproducciones de ${artists} nombres de artista distintos.`,
       metadata: 'Sintetizando metadatos y mapeos de navegación cruzada...',
       success: 'Ingesta exitosa. ¡Panel de control actualizado!',
       importedFiles: 'Archivos importados',
@@ -121,7 +198,7 @@ export default function DataUploader({
       backup: 'חתימת הגיבוי של Nova אומתה. משחזרים את מסד הנתונים...',
       restored: 'השחזור הושלם. מרעננים את מדדי לוח הבקרה...',
       processing: 'מעבדים סקראבלים ורשומות סטרימינג...',
-      parsed: (plays: string, artists: string) => `נותחו ${plays} השמעות של ${artists} אמנים ייחודיים.`,
+      parsed: (plays: string, artists: string) => `נותחו ${plays} השמעות של ${artists} שמות אמנים מובחנים.`,
       metadata: 'בונים מטא-נתונים ומיפויי ניווט בין התצוגות...',
       success: 'הקליטה הושלמה בהצלחה. לוח הבקרה עודכן!',
       importedFiles: 'קבצים מיובאים',
@@ -140,7 +217,7 @@ export default function DataUploader({
   const [parsingLogs, setParsingLogs] = useState<string[]>([]);
   const [progressPercent, setProgressPercent] = useState(0);
   const consoleRef = useRef<HTMLDivElement>(null);
-  const musicBeeAbortRef = useRef<AbortController | null>(null);
+  const importAbortRef = useRef<AbortController | null>(null);
 
   // Auto-scroll the terminal console to the bottom on new log additions
   useEffect(() => {
@@ -150,8 +227,8 @@ export default function DataUploader({
   }, [parsingLogs]);
 
   useEffect(() => () => {
-    musicBeeAbortRef.current?.abort();
-    musicBeeAbortRef.current = null;
+    importAbortRef.current?.abort();
+    importAbortRef.current = null;
   }, []);
 
   const providerBrands = ['lastfm', 'spotify', 'youtube', 'applemusic', 'listenbrainz', null] as const;
@@ -240,20 +317,53 @@ export default function DataUploader({
       recovered: (count: number) => `Recovered ${count} readable file${count === 1 ? '' : 's'} from the archive.`,
       empty: (names: string) => `No music history found inside ${names}. Spotify archives keep it in files named Streaming_History_Audio_*.json or endsong_*.json.`,
       unreadable: (names: string) => `Could not open ${names}. The file may be damaged or not a real ZIP archive.`,
+      archiveTooLarge: (name: string) => `${name} is larger than Nova's 100 MB compressed-archive limit. Use a desktop browser and split the export into smaller batches, then try again.`,
+      tooManyEntries: (name: string) => `${name} contains more than Nova's safe 128-file boundary. Use a desktop browser and split the export into smaller batches, then try again.`,
+      entryTooLarge: (name: string) => `${name} is larger than Nova's safe 64 MB per-file boundary. Use a desktop browser and split the export into smaller batches, then try again.`,
+      expandedTooLarge: 'The selected music history expands beyond Nova\'s safe 128 MB browser boundary. Use a desktop browser and divide it into smaller batches, then try again.',
+      unsafeRatio: (name: string) => `${name} has an unsafe compression ratio, so Nova stopped before expanding it. Download a fresh export; if it is still large, use a desktop browser and divide it into smaller batches.`,
+      duplicateName: (name: string) => `${name} would overwrite another file after ZIP folders are flattened. Extract the archive on a desktop, rename or separate the duplicate files, and try again.`,
     },
     es: {
       opening: (count: number) => `Abriendo ${count} archivo${count === 1 ? '' : 's'} comprimido${count === 1 ? '' : 's'}...`,
       recovered: (count: number) => `Se recuperaron ${count} archivo${count === 1 ? '' : 's'} legible${count === 1 ? '' : 's'} del comprimido.`,
       empty: (names: string) => `No se encontró historial musical dentro de ${names}. Spotify lo guarda en archivos llamados Streaming_History_Audio_*.json o endsong_*.json.`,
       unreadable: (names: string) => `No se pudo abrir ${names}. Puede estar dañado o no ser un ZIP real.`,
+      archiveTooLarge: (name: string) => `${name} supera el límite de 100 MB para archivos comprimidos. Usa un navegador de escritorio y divide la exportación en lotes más pequeños antes de intentarlo otra vez.`,
+      tooManyEntries: (name: string) => `${name} supera el límite seguro de 128 archivos. Usa un navegador de escritorio y divide la exportación en lotes más pequeños antes de intentarlo otra vez.`,
+      entryTooLarge: (name: string) => `${name} supera el límite seguro de 64 MB por archivo. Usa un navegador de escritorio y divide la exportación en lotes más pequeños antes de intentarlo otra vez.`,
+      expandedTooLarge: 'El historial seleccionado supera el límite seguro de 128 MB al expandirse. Usa un navegador de escritorio y divídelo en lotes más pequeños antes de intentarlo otra vez.',
+      unsafeRatio: (name: string) => `${name} tiene una compresión insegura, así que Nova se detuvo antes de expandirlo. Descarga una exportación nueva; si sigue siendo grande, usa un navegador de escritorio y divídela en lotes más pequeños.`,
+      duplicateName: (name: string) => `${name} sobrescribiría otro archivo al aplanar las carpetas del ZIP. Extrae el archivo en un computador, renombra o separa los duplicados e inténtalo otra vez.`,
     },
     he: {
       opening: (count: number) => `פותחים ${count} קבצים דחוסים...`,
       recovered: (count: number) => `שוחזרו ${count} קבצים קריאים מתוך הארכיון.`,
       empty: (names: string) => `לא נמצאה היסטוריית מוזיקה בתוך ${names}. Spotify שומר אותה בקבצים בשם Streaming_History_Audio_*.json או endsong_*.json.`,
       unreadable: (names: string) => `לא ניתן היה לפתוח את ${names}. ייתכן שהקובץ פגום או שאינו ארכיון ZIP אמיתי.`,
+      archiveTooLarge: (name: string) => `${name} גדול ממגבלת 100MB לארכיון דחוס. יש להשתמש בדפדפן במחשב ולחלק את הייצוא לקבוצות קטנות יותר לפני ניסיון נוסף.`,
+      tooManyEntries: (name: string) => `${name} מכיל יותר מהמגבלה הבטוחה של 128 קבצים. יש להשתמש בדפדפן במחשב ולחלק את הייצוא לקבוצות קטנות יותר לפני ניסיון נוסף.`,
+      entryTooLarge: (name: string) => `${name} גדול מהמגבלה הבטוחה של 64MB לקובץ. יש להשתמש בדפדפן במחשב ולחלק את הייצוא לקבוצות קטנות יותר לפני ניסיון נוסף.`,
+      expandedTooLarge: 'היסטוריית המוזיקה שנבחרה גדולה מהמגבלה הבטוחה של 128MB לאחר פתיחה. יש להשתמש בדפדפן במחשב ולחלק אותה לקבוצות קטנות יותר לפני ניסיון נוסף.',
+      unsafeRatio: (name: string) => `יחס הדחיסה של ${name} אינו בטוח, ולכן Nova עצרה לפני הפתיחה. יש להוריד ייצוא חדש; אם הוא עדיין גדול, יש להשתמש בדפדפן במחשב ולחלק אותו לקבוצות קטנות יותר.`,
+      duplicateName: (name: string) => `${name} ידרוס קובץ אחר לאחר השטחת תיקיות ה-ZIP. יש לפתוח את הארכיון במחשב, לשנות שם או להפריד את הקבצים הכפולים ולנסות שוב.`,
     },
   });
+  const zipSafetyMessage = (zipError: ZipArchiveError): string => {
+    const name = zipError.entryName ?? zipError.archiveName ?? pickLanguage(lang, {
+      en: 'This import',
+      es: 'Esta importación',
+      he: 'הייבוא הזה',
+    });
+    switch (zipError.code) {
+      case 'ARCHIVE_TOO_LARGE': return zipCopy.archiveTooLarge(name);
+      case 'TOO_MANY_ENTRIES': return zipCopy.tooManyEntries(name);
+      case 'ENTRY_TOO_LARGE': return zipCopy.entryTooLarge(name);
+      case 'EXPANDED_TOO_LARGE': return zipCopy.expandedTooLarge;
+      case 'COMPRESSION_RATIO_TOO_HIGH': return zipCopy.unsafeRatio(name);
+      case 'DUPLICATE_FLATTENED_NAME': return zipCopy.duplicateName(name);
+    }
+  };
   const musicBeeProviderCard = {
     ...musicBeeCopy.guide,
     brand: 'musicbee' as const,
@@ -404,9 +514,9 @@ export default function DataUploader({
     // parsing plus the caller's complete local-save promise.
     const operation = operationCoordinator.acquire('import');
     if (!operation) return;
-    musicBeeAbortRef.current?.abort();
-    const musicBeeAbortController = new AbortController();
-    musicBeeAbortRef.current = musicBeeAbortController;
+    importAbortRef.current?.abort();
+    const importAbortController = new AbortController();
+    importAbortRef.current = importAbortController;
     setLoading(true);
     setError(null);
     setWarning(null);
@@ -422,7 +532,7 @@ export default function DataUploader({
       if (archiveCount > 0) {
         addLog(zipCopy.opening(archiveCount));
         await paint();
-        const expansion = await expandZipArchives(files);
+        const expansion = await expandZipArchives(files, { signal: importAbortController.signal });
         if (expansion.unreadableArchives.length > 0) {
           addLog(zipCopy.unreadable(expansion.unreadableArchives.join(', ')));
         }
@@ -465,22 +575,22 @@ export default function DataUploader({
       setProgressPercent(15);
       await paint();
 
-      const largestFile = files.reduce((max, f) => Math.max(max, f.size), 0);
-      if (largestFile > LARGE_FILE_WARNING_BYTES) {
-        setWarning(t.uploader.largeFileWarning((largestFile / (1024 * 1024)).toFixed(0)));
-      }
-
       addLog(logCopy.reading);
       if (xmlFiles.length) addLog(musicBeeCopy.parsing);
       const musicBeeSnapshotPromise = xmlFiles[0]
-        ? parseMusicBeeFileInWorker(xmlFiles[0], { signal: musicBeeAbortController.signal })
+        ? parseMusicBeeFileInWorker(xmlFiles[0], { signal: importAbortController.signal })
         : Promise.resolve(undefined);
-      const [csvTexts, spotifyJsonTexts, youtubeHtmlTexts, importedMusicBeeSnapshot] = await Promise.all([
-        Promise.all(csvFiles.map(readFileAsText)),
-        Promise.all(jsonFiles.map(readFileAsText)),
-        Promise.all(htmlFiles.map(readFileAsText)),
+      const textFiles = [...csvFiles, ...jsonFiles, ...htmlFiles];
+      const [allTexts, importedMusicBeeSnapshot] = await Promise.all([
+        readFilesAsTextBounded(textFiles, {
+          signal: importAbortController.signal,
+          errorMessage: t.uploader.processingError,
+        }),
         musicBeeSnapshotPromise,
       ]);
+      const csvTexts = allTexts.slice(0, csvFiles.length);
+      const spotifyJsonTexts = allTexts.slice(csvFiles.length, csvFiles.length + jsonFiles.length);
+      const youtubeHtmlTexts = allTexts.slice(csvFiles.length + jsonFiles.length);
       setProgressPercent(45);
       await paint();
 
@@ -651,6 +761,7 @@ export default function DataUploader({
           : timelineMessage);
       }
     } catch (err: unknown) {
+      importAbortController.abort();
       if (isAbortError(err)) return;
       if (!operationCoordinator.isCurrent(operation)) return;
       console.error(err);
@@ -658,26 +769,19 @@ export default function DataUploader({
         setError(err.code === 'INVALID_JSON' ? t.uploader.invalidJsonError : t.uploader.noValidRowsError);
       } else if (err instanceof MusicBeeSnapshotError) {
         setError(err.code === 'FILE_TOO_LARGE' ? musicBeeCopy.tooLarge : musicBeeCopy.invalid);
+      } else if (err instanceof ZipArchiveError) {
+        setError(zipSafetyMessage(err));
       } else {
         setError(err instanceof Error && err.message ? err.message : t.uploader.processingError);
       }
     } finally {
-      if (musicBeeAbortRef.current === musicBeeAbortController) {
-        musicBeeAbortRef.current = null;
+      if (importAbortRef.current === importAbortController) {
+        importAbortRef.current = null;
       }
       operationCoordinator.release(operation);
       setLoading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
-  };
-
-  const readFileAsText = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve(e.target?.result as string);
-      reader.onerror = () => reject(new Error(t.uploader.processingError));
-      reader.readAsText(file);
-    });
   };
 
   const formatPct = (value: number) => `${value.toLocaleString(locale, { maximumFractionDigits: 1 })}%`;

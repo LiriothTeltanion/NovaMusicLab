@@ -46,6 +46,14 @@ const HEBREW_LAZY_CHUNKS = [
   // but the growth must stay measured rather than silent.
   { name: 'Album artwork map', prefix: 'album_images-', gzipBudgetKb: 60 },
   { name: 'Track artwork map', prefix: 'track_images-', gzipBudgetKb: 40 },
+  // The wide artist portrait index: one entry per artist Deezer could resolve,
+  // 5,374 of them. It is the largest lazy chunk in the app and it is mostly
+  // incompressible - CDN image hashes are random - so gzip only recovers 5%.
+  // The ceiling is what keeps it off the landing path: ArtistAvatar starts this
+  // fetch only when no bundled source answers for an artist, so the hero and
+  // the curated top 100 never pay for it. If a future harvest pushes past this,
+  // shard the map by play rank instead of raising the number.
+  { name: 'Artist portrait index', prefix: 'artist_images-', gzipBudgetKb: 165 },
 ];
 // The genre foundation is intentionally loaded only by Genre Lab and the
 // Living Artist Atlas. These independent limits prevent a future metadata

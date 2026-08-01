@@ -8,6 +8,7 @@ import {
   HIGH_CONFIDENCE_GENRE_CORRECTIONS,
   REJECTED_GENRE_EVIDENCE,
 } from './artist_truth_policy.mjs';
+import { isUsableDeezerPortraitUrl } from './lib/deezerPortrait.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -239,11 +240,27 @@ const invalidGenreCatalogRows = genreCatalogRows.filter(row => (
   || !row.automaticFamily.trim()
   || typeof row.country !== 'string'
   || !row.country.trim()
-  || !['catalog', 'unclassified'].includes(row.source)
+  || !['catalog', 'observed', 'unclassified'].includes(row.source)
   || (row.source === 'unclassified'
     && (row.automaticGenre !== 'Unclassified' || row.automaticFamily !== 'Unclassified'))
+  // The mirror invariant. An observed row exists precisely because a genre was
+  // found, so one still labelled Unclassified means the fallback map and the
+  // source tag disagree - the exact way a machine reading could quietly pass
+  // itself off as an honest gap, or the reverse.
+  || (row.source === 'observed'
+    && (row.automaticGenre === 'Unclassified' || row.automaticFamily === 'Unclassified'))
 ));
 const genreCatalogKeys = new Set(genreCatalogRows.map(row => row.artistKey));
+const genreCatalogNormalizedIdentityGroups = new Map();
+for (const row of genreCatalogRows) {
+  const identity = String(row.name ?? '').normalize('NFC').trim().toLowerCase();
+  const group = genreCatalogNormalizedIdentityGroups.get(identity) ?? [];
+  group.push(row);
+  genreCatalogNormalizedIdentityGroups.set(identity, group);
+}
+const genreCatalogNormalizedIdentities = new Set(genreCatalogNormalizedIdentityGroups.keys());
+const genreCatalogKnownVariantGroups = [...genreCatalogNormalizedIdentityGroups.values()]
+  .filter(group => group.length > 1).length;
 const genreCatalogPlays = sumRows(genreCatalogRows, row => Number(row.plays) || 0);
 const genreCatalogByKey = new Map(genreCatalogRows.map(row => [row.artistKey, row]));
 const genreCatalogUnclassified = genreCatalogRows.filter(row => row.source === 'unclassified');
@@ -305,6 +322,18 @@ for (const artist of knowledgeArtists) {
 const flagCountries = buildFlagSet(flagSource);
 const errors = [];
 const warnings = [];
+const invalidArtistImageRows = Object.entries(artistImages)
+  .filter(([, image]) => (
+    !image
+    || typeof image !== 'object'
+    || typeof image.thumb !== 'string'
+    || !image.thumb.trim()
+    || (image.source === 'deezer' && !isUsableDeezerPortraitUrl(image.thumb))
+  ));
+
+if (invalidArtistImageRows.length) {
+  errors.push(`Invalid or placeholder artist portrait rows: ${invalidArtistImageRows.length}.`);
+}
 
 if (!Array.isArray(artistGenreCatalog)) {
   errors.push('Artist genre catalog is not an array.');
@@ -316,7 +345,7 @@ if (invalidGenreCatalogRows.length) {
   errors.push(`Invalid artist genre catalog rows: ${invalidGenreCatalogRows.length}.`);
 }
 if (genreCatalogRows.length !== musicData.core_metrics.unique_artists) {
-  errors.push(`Artist genre catalog count diverges: ${genreCatalogRows.length} rows, ${musicData.core_metrics.unique_artists} unique artists.`);
+  errors.push(`Artist-name genre catalog count diverges: ${genreCatalogRows.length} rows, ${musicData.core_metrics.unique_artists} core catalog entries.`);
 }
 if (genreCatalogKeys.size !== genreCatalogRows.length) {
   errors.push(`Duplicate artist genre catalog keys: ${genreCatalogRows.length - genreCatalogKeys.size}.`);
@@ -533,7 +562,15 @@ if (embeddedKnowledgeDrift.length && uiUsesLiveKnowledge) {
 
 const artistImageRows = normalizedTopArtists.map(artist => ({
   artist,
-  ok: Boolean(artistImages[artist.key] ?? artistImages[artist.normalized]),
+  ok: (() => {
+    const image = artistImages[artist.key] ?? artistImages[artist.normalized];
+    return Boolean(
+      image
+      && typeof image.thumb === 'string'
+      && image.thumb.trim()
+      && (image.source !== 'deezer' || isUsableDeezerPortraitUrl(image.thumb)),
+    );
+  })(),
 }));
 const galleryRows = normalizedTopArtists.map(artist => ({
   artist,
@@ -930,6 +967,7 @@ const report = {
     topTracks: topTracks.length,
     topAlbums: topAlbums.length,
     artistImages: Object.keys(artistImages).length,
+    invalidArtistImages: invalidArtistImageRows.length,
     artistGalleries: Object.keys(artistGallery).length,
     galleryPhotos: Object.values(artistGallery).reduce((sum, photos) => sum + photos.length, 0),
     artistMeta: Object.keys(artistMeta).length,
@@ -939,8 +977,9 @@ const report = {
     trackImages: Object.keys(trackImages).length,
     albumImages: Object.keys(albumImages).length,
     canonicalArtistIdentities: artistIdentityRows.length,
-    genreCatalogArtists: genreCatalogRows.length,
-    genreCatalogUnclassifiedArtists: genreCatalogUnclassified.length,
+    genreCatalogEntries: genreCatalogRows.length,
+    genreCatalogUnclassifiedEntries: genreCatalogUnclassified.length,
+    genreCatalogKnownVariantGroups,
   },
   coverage: {
     primaryArtistImages: ratio(artistImageCoverage.passed, topArtists.length),
@@ -955,6 +994,7 @@ const report = {
     albumArt: ratio(albumCoverage.passed, topAlbums.length),
     top100ArchivePlays: ratio(globalTop100Plays, fullArchivePlays),
     genreCatalog: ratio(genreCatalogPlays, fullArchivePlays),
+    classifiedGenrePlays: ratio(fullArchivePlays - genreCatalogUnclassifiedPlays, fullArchivePlays),
     unclassifiedGenrePlays: ratio(genreCatalogUnclassifiedPlays, fullArchivePlays),
   },
   dataTrust: {
@@ -978,10 +1018,17 @@ const report = {
     yearlyAggregateMismatches,
     globalCoverage,
     genreCatalog: {
-      artists: genreCatalogRows.length,
+      entries: genreCatalogRows.length,
       uniqueKeys: genreCatalogKeys.size,
+      normalizedIdentities: genreCatalogNormalizedIdentities.size,
+      knownNormalizedVariantGroups: genreCatalogKnownVariantGroups,
       plays: genreCatalogPlays,
-      unclassifiedArtists: genreCatalogUnclassified.length,
+      sourceEntries: {
+        catalog: genreCatalogRows.filter(row => row.source === 'catalog').length,
+        observed: genreCatalogRows.filter(row => row.source === 'observed').length,
+        unclassified: genreCatalogUnclassified.length,
+      },
+      unclassifiedEntries: genreCatalogUnclassified.length,
       unclassifiedPlays: genreCatalogUnclassifiedPlays,
       unclassifiedPlayPct: percent(genreCatalogUnclassifiedPlays, fullArchivePlays),
       invalidRows: invalidGenreCatalogRows.length,
@@ -1069,8 +1116,11 @@ if (jsonOutput) {
   write(`- Aggregate invariant: daily ${dailyTotal} = monthly ${monthlyTotal} = yearly ${yearlyTotal} = core ${fullArchivePlays}`);
   write(`- Active-day invariant: ${activeDays} daily = ${musicData.core_metrics.active_days} core`);
   write(`- Top-100 global coverage: ${globalTop100Plays}/${fullArchivePlays} plays (${globalCoverage.top100PlayCoveragePct}%); ${globalCoverage.outsideTop100Plays} outside top 100`);
-  write(`- Genre catalog invariant: ${genreCatalogRows.length}/${musicData.core_metrics.unique_artists} artists, ${genreCatalogPlays}/${fullArchivePlays} plays, ${genreCatalogKeys.size} unique keys`);
-  write(`- Unclassified genre queue: ${genreCatalogUnclassified.length} artists, ${genreCatalogUnclassifiedPlays} plays (${percent(genreCatalogUnclassifiedPlays, fullArchivePlays)}%)`);
+  write(`- Genre catalog invariant: ${genreCatalogRows.length}/${musicData.core_metrics.unique_artists} exact name entries, ${genreCatalogPlays}/${fullArchivePlays} plays, ${genreCatalogKeys.size} unique keys`);
+  write(`- Preserved identity variants: ${genreCatalogKnownVariantGroups} known normalized name-variant groups; no automatic merges`);
+  write(`- Genre provenance: ${genreCatalogRows.filter(row => row.source === 'catalog').length} catalog, ${genreCatalogRows.filter(row => row.source === 'observed').length} observed automatically, ${genreCatalogUnclassified.length} unclassified entries`);
+  write(`- Classified genre plays: ${fullArchivePlays - genreCatalogUnclassifiedPlays}/${fullArchivePlays} (${percent(fullArchivePlays - genreCatalogUnclassifiedPlays, fullArchivePlays)}%)`);
+  write(`- Unclassified genre queue: ${genreCatalogUnclassified.length} catalog entries, ${genreCatalogUnclassifiedPlays} plays (${percent(genreCatalogUnclassifiedPlays, fullArchivePlays)}%)`);
   write(`- Knowledge summary source: ${uiUsesLiveKnowledge ? 'live offline archive (synchronized)' : 'unsafe embedded snapshot'}`);
   write('');
   write('Data inventory');
@@ -1092,6 +1142,7 @@ if (jsonOutput) {
   write(`- Ambiguous-name gallery identity violations: ${galleryIdentityViolations.length ? galleryIdentityViolations.length : 'none'}`);
   write(`- Duplicate gallery photos: ${duplicateGalleryRows.length ? duplicateGalleryRows.length : 'none'}`);
   write(`- Invalid gallery rows: ${invalidGalleryRows.length ? invalidGalleryRows.length : 'none'}`);
+  write(`- Invalid artist portrait placeholders: ${invalidArtistImageRows.length ? invalidArtistImageRows.length : 'none'}`);
   write('');
   write('Next priority targets');
   write(`- Curated enrichment gaps: ${report.priorities.enrichment.join(', ') || 'none'}`);

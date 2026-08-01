@@ -10,6 +10,7 @@ The repository root README is the product entrance. Detailed decisions live here
 
 Current high-value references:
 
+- [Current public and candidate status](../CURRENT_STATUS.md)
 - [Experience model](./product/EXPERIENCE_MODEL.md)
 - [Guest Museum](./product/GUEST_MUSEUM.md)
 - [Supported data sources](./product/DATA_SOURCES.md)

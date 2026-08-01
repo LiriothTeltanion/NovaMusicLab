@@ -66,8 +66,8 @@ describe('ExpeditionConsole', () => {
     expect(capsule).toHaveAttribute('data-persisted', 'true');
     const trigger = screen.getByTestId('archive-capsule-trigger');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(trigger).toHaveAccessibleName(/Current version: 1\.4\.0.*Privacy: Local only\. Local state: Saved\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.4.0Local archive');
+    expect(trigger).toHaveAccessibleName(/Current version: 1\.5\.0.*Privacy: Local only\. Local state: Saved\./);
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.5.0Local archive');
     expect(screen.queryByTestId('archive-capsule-panel')).not.toBeInTheDocument();
 
     await user.click(trigger);
@@ -90,18 +90,44 @@ describe('ExpeditionConsole', () => {
     expect(capsule).toHaveAttribute('data-archive-mode', 'flagship');
     const trigger = screen.getByTestId('archive-capsule-trigger');
     expect(trigger).toHaveAccessibleName(/Privacy: Reviewed public bundle\. Local state: Bundled\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.4.0Public archive');
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.5.0Public archive');
 
     await user.click(trigger);
     const panel = screen.getByTestId('archive-capsule-panel');
     expect(panel).toHaveTextContent('Flagship exhibition');
     expect(panel).toHaveTextContent('Reviewed public bundle');
     expect(panel).toHaveTextContent('Bundled');
-    expect(panel.querySelectorAll('.archive-capsule__detail')).toHaveLength(6);
+    expect(panel).toHaveTextContent('Archive generated');
+    expect(panel).toHaveTextContent('Dated snapshots · no live connection');
+    expect(panel.querySelectorAll('.archive-capsule__detail')).toHaveLength(8);
 
     await user.keyboard('{Escape}');
     await waitFor(() => expect(screen.queryByTestId('archive-capsule-panel')).not.toBeInTheDocument());
     await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('shows separate listening, enrichment and pulse dates for a reviewed snapshot', async () => {
+    const user = userEvent.setup();
+    renderConsole({
+      data: {
+        ...data,
+        snapshot_freshness: {
+          observedFrom: '2015-03-01',
+          observedThrough: '2026-07-03',
+          datasetGeneratedAt: data.generated_at,
+          enrichmentGeneratedAt: '2026-07-29T00:00:00.000Z',
+          recentPulseSyncedAt: '2026-07-02',
+          liveConnection: false,
+        },
+      },
+    });
+
+    await user.click(screen.getByTestId('archive-capsule-trigger'));
+    const panel = screen.getByTestId('archive-capsule-panel');
+    expect(panel).toHaveTextContent(/Listening observed.*Mar 1, 2015.*Jul 3, 2026/);
+    expect(panel).toHaveTextContent(/Artist enrichment.*Jul 29, 2026/);
+    expect(panel).toHaveTextContent(/Recent Pulse synced.*Jul 2, 2026/);
+    expect(panel).toHaveTextContent('Dated snapshots · no live connection');
   });
 
   it('keeps compact journey labels available for narrow layouts', () => {

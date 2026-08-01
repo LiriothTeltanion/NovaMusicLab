@@ -1,8 +1,8 @@
 {
   "schema": "nova-music-release-media-config-v1",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "status": "private-candidate",
-  "captured_on": "2026-07-29",
+  "captured_on": "2026-08-01",
   "deployed_on": null,
   "commit": null,
   "repository": "LiriothTeltanion/NovaMusicLab",

@@ -74,7 +74,12 @@ describe('bundled compiled music dataset', () => {
         (familyPlays.get(artist.automaticFamily) ?? 0) + artist.plays,
       );
       expect(artist.artistKey, artist.name).toBe(artist.name.normalize('NFC').trim());
-      expect(artist.source === 'catalog' || artist.source === 'unclassified').toBe(true);
+      // 'observed' joined 'catalog' and 'unclassified' when the MusicBrainz
+      // layer landed: a genre nobody curated, but sourced and attributable.
+      expect(
+        ['catalog', 'observed', 'unclassified'].includes(artist.source),
+        `${artist.name} source "${artist.source}"`,
+      ).toBe(true);
     }
 
     expect(compiledDataset).not.toHaveProperty('artist_genre_catalog');

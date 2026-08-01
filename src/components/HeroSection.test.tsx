@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import { CURRENT_NOVA_VERSION } from '../releases/currentRelease';
 import HeroSection from './HeroSection';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
@@ -61,7 +62,8 @@ describe('HeroSection intro rebalance', () => {
     );
 
     expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
+    expect(screen.getByRole('heading', { level: 1, name: 'NOVA MUSIC LAB' }))
+      .toBeInTheDocument();
     expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
     expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
@@ -75,6 +77,8 @@ describe('HeroSection intro rebalance', () => {
     expect(document.body).toHaveTextContent(/nothing to cross-check against, no overlap is claimed/i);
     expect(document.body).not.toHaveTextContent(/data sync integrity/i);
     expect(screen.getByText('24h Music Days')).toBeInTheDocument();
+    expect(screen.getByText('Catalog entries')).toBeInTheDocument();
+    expect(screen.queryByText('Unique Artists')).not.toBeInTheDocument();
 
     const anchorPortraits = screen.getAllByAltText(/Bring Me the Horizon/i);
     expect(anchorPortraits.some(image => (
@@ -109,9 +113,18 @@ describe('HeroSection intro rebalance', () => {
     ));
 
     expect(portraitButtons).toHaveLength(4);
+    // Eager, not lazy. This assertion used to require 'lazy' to save bandwidth
+    // on portraits that are not the centrepiece. Measured in the browser, that
+    // cost the first screen its faces: the satellites drift on an 11s float
+    // animation, the browser defers the lazy fetch and never re-evaluates it,
+    // no load event fires, and useImageLoadTimeout retires each portrait to a
+    // generated avatar after 7s. Warming the four URLs beforehand made all four
+    // survive; leaving them cold lost all four - so the fix is to stop
+    // deferring images that are above the fold on the landing screen.
     portraitButtons.forEach((button) => {
       const image = within(button).getByRole('img');
-      expect(image).toHaveAttribute('loading', 'lazy');
+      expect(image).toHaveAttribute('loading', 'eager');
+      expect(image).toHaveAttribute('fetchpriority', 'high');
       expect(image.getAttribute('src')).toMatch(/^https:\/\/upload\.wikimedia\.org\//);
     });
 
@@ -282,7 +295,7 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByText('v1.4.0', { selector: '.nova-hero__release-jump-label--compact' }))
+    expect(screen.getByText(`v${CURRENT_NOVA_VERSION}`, { selector: '.nova-hero__release-jump-label--compact' }))
       .toBeInTheDocument();
     expect(mobileRules).toMatch(
       /\.nova-hero__release-jump-label--compact\s*\{[^}]*display:\s*inline/s,

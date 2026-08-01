@@ -29,7 +29,7 @@ describe('MuseumComparator', () => {
 
     expect(screen.getByText('Museo de prueba')).toBeInTheDocument();
     expect(screen.getByText('Sube un segundo museo')).toBeInTheDocument();
-    expect(screen.queryByText('Overlap de Artistas')).toBeNull();
+    expect(screen.queryByText('Coincidencia de nombres de artista')).toBeNull();
   });
 
   it("automatically compares a visitor archive with Kevin's public flagship", async () => {
@@ -69,8 +69,8 @@ describe('MuseumComparator', () => {
 
     expect((await screen.findAllByText('Museo público de Kevin')).length).toBeGreaterThan(0);
     expect(screen.getByText('Referencia pública')).toBeInTheDocument();
-    expect(screen.getByText('Overlap de Artistas')).toBeInTheDocument();
-    expect(screen.getByText(/Cobertura completa · 2 vs 2 identidades de artista/)).toBeInTheDocument();
+    expect(screen.getByText('Coincidencia de nombres de artista')).toBeInTheDocument();
+    expect(screen.getByText(/Cobertura completa · 2 vs 2 claves normalizadas de nombres de artista/)).toBeInTheDocument();
   });
 
   it('keeps the valid flagship comparison when the optional full catalog fails', async () => {
@@ -102,7 +102,7 @@ describe('MuseumComparator', () => {
 
     expect((await screen.findAllByText('Museo público de Kevin')).length).toBeGreaterThan(0);
     expect(screen.getByText('Referencia pública')).toBeInTheDocument();
-    expect(screen.getByText(/Alcance visible solamente · 2\/2 vs 2\/6\.?413 artistas/)).toBeInTheDocument();
+    expect(screen.getByText(/Alcance visible solamente · 2\/2 vs 2\/6\.?413 entradas de nombres de artista/)).toBeInTheDocument();
     expect(screen.queryByText(/no se pudo cargar/i)).not.toBeInTheDocument();
   });
 
@@ -125,10 +125,10 @@ describe('MuseumComparator', () => {
 
     await user.upload(input, file);
 
-    await waitFor(() => expect(screen.getByText('Overlap de Artistas')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Coincidencia de nombres de artista')).toBeInTheDocument());
     expect(screen.getByText('Moods Enfrentados')).toBeInTheDocument();
     expect(screen.getByText('Métricas Lado a Lado')).toBeInTheDocument();
-    expect(screen.getByText(/1 artistas aparecen en ambos museos/)).toBeInTheDocument();
+    expect(screen.getByText(/1 claves normalizadas aparecen en ambos museos/)).toBeInTheDocument();
   });
 
   it('clears the second museum and returns to the placeholder', async () => {
@@ -143,12 +143,12 @@ describe('MuseumComparator', () => {
     const file = new File([csv], 'lastfm-export.csv', { type: 'text/csv' });
     const input = document.querySelector('input[type="file"]') as HTMLInputElement;
     await user.upload(input, file);
-    await waitFor(() => expect(screen.getByText('Overlap de Artistas')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Coincidencia de nombres de artista')).toBeInTheDocument());
 
     await user.click(screen.getByRole('button', { name: 'Quitar museo B' }));
 
     expect(screen.getByText('Sube un segundo museo')).toBeInTheDocument();
-    expect(screen.queryByText('Overlap de Artistas')).toBeNull();
+    expect(screen.queryByText('Coincidencia de nombres de artista')).toBeNull();
   });
 
   it('uses RTL composition without altering archive names in Hebrew', async () => {

@@ -288,7 +288,6 @@ export default function MediaEmbedHub({ profile }: MediaEmbedHubProps) {
                   className="relative z-10 w-full h-[352px] border-0 rounded-2xl"
                   loading="lazy"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  allowFullScreen
                   referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>

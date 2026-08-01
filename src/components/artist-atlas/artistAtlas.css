@@ -157,12 +157,14 @@
   min-width: 0;
   gap: 0.55rem;
   overflow-x: auto;
-  padding: 0.05rem 0.05rem 0.25rem;
+  padding: 0.05rem 0.25rem 0.25rem;
   margin: 0;
   list-style: none;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--c1) 45%, transparent) transparent;
   scroll-snap-type: inline proximity;
+  scroll-padding-inline: 0.25rem;
+  overscroll-behavior-inline: contain;
 }
 
 .artist-atlas__rail > li { flex: 0 0 auto; }

@@ -35,29 +35,61 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     current: true,
     story: {
       en: {
+        name: 'The Living Archive Gets a Face',
+        summary: 'Nova makes its historical snapshot easier to trust and explore, with dependable artist portraits, clearer genre evidence and safer local imports.',
+        highlights: [
+          'Broken artist placeholders are removed and replaced by deterministic visual fallbacks.',
+          'Genre families, reviewed evidence and open research gaps are explained as different layers.',
+          'Archive limits, mobile layouts, Hebrew RTL and keyboard access are strengthened for a safer first visit.',
+        ],
+      },
+      es: {
+        name: 'El archivo vivo cobra rostro',
+        summary: 'Nova hace que su snapshot histórico sea más confiable y fácil de explorar, con retratos consistentes, evidencia de géneros más clara e importaciones locales más seguras.',
+        highlights: [
+          'Los placeholders rotos se retiran y se sustituyen por fallbacks visuales deterministas.',
+          'Las familias de género, la evidencia revisada y los vacíos por investigar se explican como capas diferentes.',
+          'Los límites de archivos, móvil, hebreo RTL y acceso por teclado mejoran para una primera visita más segura.',
+        ],
+      },
+      he: {
+        name: 'הארכיון החי מקבל פנים',
+        summary: 'Nova הופכת את תמונת המצב ההיסטורית לאמינה וקלה יותר לחקירה, עם דיוקנאות עקביים, עדויות ז׳אנר ברורות יותר וייבוא מקומי בטוח יותר.',
+        highlights: [
+          'מצייני מקום שבורים של אמנים הוסרו והוחלפו בגיבויים חזותיים עקביים.',
+          'משפחות ז׳אנר, עדויות שנבדקו ופערי מחקר מוצגים כשכבות נפרדות.',
+          'מגבלות ארכיון, תצוגת מובייל, RTL עברי וגישה במקלדת חוזקו לביקור ראשון בטוח יותר.',
+        ],
+      },
+    },
+  },
+  {
+    version: '1.4.0',
+    date: '2026-07-29',
+    status: 'deployed',
+    current: false,
+    story: {
+      en: {
         name: 'Living Genre Atlas',
-        summary: 'Nova becomes a museum that visitors can also make their own, while the artist atlas gains source-aware genres and subgenres.',
+        summary: 'Nova became a museum that visitors can make their own, while the artist atlas gained source-aware genres and subgenres.',
         highlights: [
           'A clearer sticky expedition console keeps hubs, rooms and search within reach.',
-          'Artist genres are separated into documented facts, suggestions and honest research gaps.',
           'Guests can name a private local museum, import compatible files and compare it with Kevin’s public exhibition.',
         ],
       },
       es: {
         name: 'Atlas Vivo de Géneros',
-        summary: 'Nova se convierte en un museo que los visitantes también pueden hacer suyo, mientras el atlas gana géneros y subgéneros con fuentes.',
+        summary: 'Nova se convirtió en un museo que los visitantes también pueden hacer suyo, mientras el atlas ganó géneros y subgéneros con fuentes.',
         highlights: [
           'Una consola de expedición más clara mantiene hubs, salas y búsqueda siempre al alcance.',
-          'Los géneros se separan en hechos documentados, sugerencias y vacíos honestos por investigar.',
           'Un visitante puede nombrar un museo local privado, importar archivos compatibles y compararlo con la exposición pública de Kevin.',
         ],
       },
       he: {
         name: 'אטלס ז׳אנרים חי',
-        summary: 'Nova הופכת למוזיאון שגם מבקרים יכולים להפוך לשלהם, ואטלס האמנים מקבל ז׳אנרים ותתי־ז׳אנרים עם מקורות.',
+        summary: 'Nova הפכה למוזיאון שגם מבקרים יכולים להפוך לשלהם, ואטלס האמנים קיבל ז׳אנרים ותתי־ז׳אנרים עם מקורות.',
         highlights: [
           'מסוף מסע ברור יותר משאיר את המוקדים, החדרים והחיפוש בהישג יד.',
-          'ז׳אנרים מופרדים לעובדות מתועדות, הצעות ופערים כנים למחקר.',
           'אורחים יכולים לתת שם למוזיאון מקומי פרטי, לייבא קבצים נתמכים ולהשוות לתערוכה הציבורית של Kevin.',
         ],
       },
@@ -91,6 +123,7 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     version: '1.2.0',
     date: '2026-07-29',
     status: 'deployed',
+    secondaryStatus: 'superseded',
     current: false,
     story: {
       en: {

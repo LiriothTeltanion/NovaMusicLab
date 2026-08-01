@@ -1,5 +1,18 @@
-export const CURRENT_NOVA_VERSION = '1.4.0' as const;
-export const CURRENT_NOVA_RELEASE_DATE = '2026-07-29' as const;
+export const CURRENT_NOVA_VERSION = '1.5.0' as const;
+
+const PRIVATE_CANDIDATE_DATE = '2026-08-01';
+const injectedReleaseDate = import.meta.env.VITE_NOVA_RELEASE_DATE;
+
+/**
+ * Local and pull-request builds retain the candidate date. The Pages workflow
+ * injects the actual Jerusalem deployment date into the production artifact,
+ * so a delayed release is never presented as if it shipped on 2026-08-01.
+ */
+export const CURRENT_NOVA_RELEASE_DATE =
+  typeof injectedReleaseDate === 'string'
+    && /^\d{4}-\d{2}-\d{2}$/.test(injectedReleaseDate)
+    ? injectedReleaseDate
+    : PRIVATE_CANDIDATE_DATE;
 
 export type CurrentNovaReleaseStatus = 'private-candidate' | 'deployed';
 

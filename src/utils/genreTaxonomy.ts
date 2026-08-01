@@ -19,6 +19,29 @@ export const GENRE_FAMILY_IDS = [
   'Hip-Hop / Rap',
   'Heavy Metal',
   'Alternative Rock',
+  // Added so the archive stops pretending everything outside its metal core is
+  // "Alternative". A quarter of the curated artists carried a precise genre -
+  // Reggaeton, K-Pop, Gothic Metal, EDM, Corridos - and had it thrown away for
+  // want of a family to land in.
+  'Progressive Rock',
+  'Rock',
+  'Punk / New Wave',
+  'Black Metal',
+  'Symphonic / Gothic Metal',
+  'Gothic / Industrial',
+  'Post-Rock',
+  'Electronic / EDM',
+  'R&B / Soul',
+  'Jazz',
+  'Classical / Orchestral',
+  'Folk / Country',
+  'Latin',
+  'K-Pop / J-Pop',
+  // Added with the Deezer second source, whose coarse vocabulary had no home
+  // here: film and game music, and the regional catalogues the archive only
+  // brushes against.
+  'Soundtrack / Score',
+  'World / Regional',
   'Alternative',
   'Unclassified',
 ] as const;
@@ -121,6 +144,86 @@ export const GENRE_FAMILIES: readonly GenreFamilyDefinition[] = [
     id: 'Alternative Rock',
     labels: { es: 'Rock alternativo', en: 'Alternative Rock', he: 'רוק אלטרנטיבי' },
     secondaryTags: ['Alternative Rock', 'Indie Rock', 'Grunge', 'Art Rock'],
+  },
+  {
+    id: 'Progressive Rock',
+    labels: { es: 'Rock progresivo', en: 'Progressive Rock', he: 'רוק מתקדם' },
+    secondaryTags: ['Progressive Rock', 'Art Rock', 'Symphonic Rock', 'Krautrock'],
+  },
+  {
+    id: 'Rock',
+    labels: { es: 'Rock', en: 'Rock', he: 'רוק' },
+    secondaryTags: ['Rock', 'Classic Rock', 'Blues Rock', 'Garage Rock'],
+  },
+  {
+    id: 'Punk / New Wave',
+    labels: { es: 'Punk / New wave', en: 'Punk / New Wave', he: 'פאנק / ניו וייב' },
+    secondaryTags: ['Punk Rock', 'Post-Punk', 'New Wave', 'Ska'],
+  },
+  {
+    id: 'Black Metal',
+    labels: { es: 'Black metal', en: 'Black Metal', he: 'בלאק מטאל' },
+    secondaryTags: ['Black Metal', 'Atmospheric Black Metal', 'Melodic Black Metal', 'Depressive Black Metal'],
+  },
+  {
+    id: 'Symphonic / Gothic Metal',
+    labels: { es: 'Metal sinfónico / gótico', en: 'Symphonic / Gothic Metal', he: 'מטאל סימפוני / גותי' },
+    secondaryTags: ['Symphonic Metal', 'Gothic Metal', 'Doom Metal', 'Sludge Metal'],
+  },
+  {
+    id: 'Gothic / Industrial',
+    labels: { es: 'Gótico / industrial', en: 'Gothic / Industrial', he: 'גותי / תעשייתי' },
+    secondaryTags: ['Gothic Rock', 'Industrial', 'Darkwave', 'EBM'],
+  },
+  {
+    id: 'Post-Rock',
+    labels: { es: 'Post-rock', en: 'Post-Rock', he: 'פוסט־רוק' },
+    secondaryTags: ['Post-Rock', 'Instrumental Rock', 'Cinematic Rock', 'Math Rock'],
+  },
+  {
+    id: 'Electronic / EDM',
+    labels: { es: 'Electrónica / EDM', en: 'Electronic / EDM', he: 'אלקטרונית / EDM' },
+    secondaryTags: ['House', 'Techno', 'Trance', 'Drum and Bass'],
+  },
+  {
+    id: 'R&B / Soul',
+    labels: { es: 'R&B / Soul', en: 'R&B / Soul', he: 'אר־אנד־בי / סול' },
+    secondaryTags: ['Contemporary R&B', 'Neo Soul', 'Funk', 'Motown'],
+  },
+  {
+    id: 'Jazz',
+    labels: { es: 'Jazz', en: 'Jazz', he: 'ג׳אז' },
+    secondaryTags: ['Jazz', 'Spiritual Jazz', 'Dark Jazz', 'Bebop'],
+  },
+  {
+    id: 'Classical / Orchestral',
+    labels: { es: 'Clásica / orquestal', en: 'Classical / Orchestral', he: 'קלאסית / תזמורתית' },
+    secondaryTags: ['Classical', 'Modern Classical', 'Orchestral', 'Baroque'],
+  },
+  {
+    id: 'Folk / Country',
+    labels: { es: 'Folk / Country', en: 'Folk / Country', he: 'פולק / קאנטרי' },
+    secondaryTags: ['Folk', 'Contemporary Folk', 'Country', 'Singer-Songwriter'],
+  },
+  {
+    id: 'Latin',
+    labels: { es: 'Latino', en: 'Latin', he: 'לטינית' },
+    secondaryTags: ['Reggaeton', 'Latin Pop', 'Flamenco', 'Regional Mexican'],
+  },
+  {
+    id: 'K-Pop / J-Pop',
+    labels: { es: 'K-pop / J-pop', en: 'K-Pop / J-Pop', he: 'קיי־פופ / ג׳יי־פופ' },
+    secondaryTags: ['K-Pop', 'J-Pop', 'J-Rock', 'Visual Kei'],
+  },
+  {
+    id: 'Soundtrack / Score',
+    labels: { es: 'Banda sonora', en: 'Soundtrack / Score', he: 'פסקול' },
+    secondaryTags: ['Film Score', 'Video Game Music', 'Orchestral Score', 'Cinematic'],
+  },
+  {
+    id: 'World / Regional',
+    labels: { es: 'Mundo / Regional', en: 'World / Regional', he: 'עולם / אזורי' },
+    secondaryTags: ['African Music', 'Asian Music', 'Indian Music', 'Reggae'],
   },
   {
     id: 'Alternative',

@@ -133,6 +133,49 @@ function isNullableIsoDate(value: unknown): value is string | null {
     || (isString(value) && Boolean(value.trim()) && Number.isFinite(Date.parse(value)));
 }
 
+function isNullableDateKey(value: unknown): value is string | null {
+  if (value === null) return true;
+  if (!isString(value) || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year
+    && date.getUTCMonth() === month - 1
+    && date.getUTCDate() === day;
+}
+
+function isSnapshotFreshness(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  const currentContract = hasOnlyKeys(value, [
+    'observedFrom',
+    'observedThrough',
+    'datasetGeneratedAt',
+    'enrichmentGeneratedAt',
+    'recentPulseSyncedAt',
+    'liveConnection',
+  ]);
+  // A short-lived local candidate used shorter field names. Keep those
+  // archives readable, while all new v1.5 artifacts emit the public contract.
+  const legacyContract = hasOnlyKeys(value, [
+    'observedFrom',
+    'observedThrough',
+    'generatedAt',
+    'enrichmentGeneratedAt',
+    'pulseSyncedAt',
+    'liveConnection',
+  ]);
+  if (!currentContract && !legacyContract) return false;
+  const datasetGeneratedAt = currentContract ? value.datasetGeneratedAt : value.generatedAt;
+  const recentPulseSyncedAt = currentContract ? value.recentPulseSyncedAt : value.pulseSyncedAt;
+  if (!isNullableDateKey(value.observedFrom)
+    || !isNullableDateKey(value.observedThrough)
+    || !isNullableIsoDate(datasetGeneratedAt)
+    || datasetGeneratedAt === null
+    || !isNullableIsoDate(value.enrichmentGeneratedAt)
+    || !isNullableDateKey(recentPulseSyncedAt)
+    || value.liveConnection !== false) return false;
+  return !(value.observedFrom && value.observedThrough && value.observedFrom > value.observedThrough);
+}
+
 function isArrayOf(value: unknown, guard: (item: unknown) => boolean): value is unknown[] {
   return Array.isArray(value) && value.every(guard);
 }
@@ -656,6 +699,7 @@ function isMusicBeeLibrarySnapshot(value: unknown): boolean {
 
 function hasValidOptionalDataFields(value: UnknownRecord): boolean {
   return hasValidOptionalField(value, 'narrative_scope', candidate => candidate === 'flagship')
+    && hasValidOptionalField(value, 'snapshot_freshness', isSnapshotFreshness)
     && hasValidOptionalField(
     value,
     'artist_origin_countries',
@@ -694,7 +738,7 @@ function isArtistGenreCatalogEntry(value: unknown): value is ArtistGenreCatalogE
     && Boolean(value.automaticFamily.trim())
     && isString(value.country)
     && Boolean(value.country.trim())
-    && (value.source === 'catalog' || value.source === 'unclassified');
+    && (value.source === 'catalog' || value.source === 'observed' || value.source === 'unclassified');
 }
 
 function hasValidOptionalArtistGenreCatalog(value: UnknownRecord): boolean {

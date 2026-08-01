@@ -34,7 +34,10 @@ export function normalizeGenre(raw = ''): string {
   if (!raw || g.includes('unclassified') || g === 'unknown') return 'Unclassified';
 
   if (g.includes('metalcore') || g.includes('deathcore')) return 'Metalcore';
-  if (g.includes('post-hardcore') || g.includes('post hardcore')) return 'Post-Hardcore';
+  if (
+    g.includes('post-hardcore') || g.includes('post hardcore')
+    || g.includes('screamo') || g.includes('emocore')
+  ) return 'Post-Hardcore';
   if (g.includes('blackgaze') || g.includes('post-metal') || g.includes('shoegaze')) return 'Post-Metal / Blackgaze';
   if (g.includes('darksynth') || g.includes('synthwave') || g.includes('cyberpunk')) return 'Synthwave / Darksynth';
   if (g.includes('pop punk') || g.includes('emo pop')) return 'Pop Punk / Emo';
@@ -45,14 +48,128 @@ export function normalizeGenre(raw = ''): string {
   if (g.includes('power metal') || g.includes('speed metal') || g.includes('thrash')) return 'Power / Speed Metal';
   if (g.includes('alt-metal') || g.includes('alt metal') || g.includes('nu metal') || g.includes('emo groove')) return 'Alt-Metal';
   if (g.includes('hard rock') || g.includes('glam') || g.includes('aor') || g.includes('sleaze')) return 'Hard Rock';
+  // Ahead of the progressive-metal branch, which matches bare 'progressive' and
+  // was therefore filing Pink Floyd-shaped records under Progressive Metal.
+  if (g.includes('progressive rock') || g.includes('prog rock')) return 'Progressive Rock';
   if (g.includes('progressive') || g.includes('djent') || g.includes('math rock')) return 'Progressive Metal';
-  if (g.includes('ambient') || g.includes('lo-fi') || g.includes('dream pop') || g.includes('dreampop')) return 'Ambient / Lo-Fi';
+  if (
+    g.includes('ambient') || g.includes('lo-fi') || g.includes('dream pop')
+    || g.includes('dreampop') || g.includes('new age')
+  ) return 'Ambient / Lo-Fi';
   if (g.includes('death metal') || g.includes('melodic death')) return 'Death Metal';
   if (g.includes('pop rock') || g.includes('indie pop') || g.includes('synth-pop') || g.includes('synthpop')) return 'Pop / Indie';
   if (g.includes('israeli') || g.includes('hebrew')) return 'Israeli Rock';
-  if (g.includes('hip hop') || g.includes('rap')) return 'Hip-Hop / Rap';
+  // Regional and scene identity outrank the generic word that follows it:
+  // "Reggaeton / Latin Hip-Hop" and "K-Pop / Hip-Hop" are not Hip-Hop records,
+  // so both are decided before the hip-hop rule gets to claim them.
+  if (
+    g.includes('reggaeton') || g.includes('latin') || g.includes('corridos')
+    || g.includes('regional mexican') || g.includes('flamenco') || g.includes('en español')
+    || g.includes('venezolano') || g.includes('cumbia') || g.includes('salsa')
+    || g.includes('bachata') || g.includes('rumba')
+  ) return 'Latin';
+  if (
+    g.includes('k-pop') || g.includes('kpop') || g.includes('j-pop') || g.includes('jpop')
+    || g.includes('visual kei') || g.includes('kawaii metal')
+  ) return 'K-Pop / J-Pop';
+  // 'hip-hop' as well as 'hip hop'. The hyphenated spelling is the one
+  // artist_meta.json actually uses, so every curated "Hip-Hop / ..." label was
+  // missing this branch and falling through to the Alternative bucket.
+  if (
+    g.includes('hip hop') || g.includes('hip-hop') || g.includes('rap')
+    || g.includes('grime') || g.includes('drill') || g.includes('horrorcore')
+  ) return 'Hip-Hop / Rap';
   if (g.includes('heavy metal') || g.includes('occult rock') || g.includes('nwobhm')) return 'Heavy Metal';
   if (g.includes('alternative rock') || g.includes('alt-rock')) return 'Alternative Rock';
+
+  // Everything below rescues labels that used to fall off the end of this
+  // chain. 122 hand-curated artists - a quarter of artist_meta.json, 3,199
+  // plays - were being shown as "Alternative" despite carrying a precise
+  // genre: Reggaeton, K-Pop, Gothic Metal, Corridos Tumbados, EDM, Post-Rock.
+  // Ordering is the whole design here, so each rule sits after anything more
+  // specific that could legitimately claim the same string.
+  // Deezer's coarse vocabulary arrives here as whole labels. Without homes of
+  // their own these landed on Alternative: "Films/Games" alone was 292 plays
+  // across 54 artists, and bare "Dance" another 94 artists.
+  if (
+    g.includes('films/games') || g.includes('soundtrack') || g.includes('video game')
+    || g.includes('film score') || g.includes('original score')
+  ) return 'Soundtrack / Score';
+  // Regional catalogues the archive only brushes against. Grouped honestly as
+  // regional rather than dissolved into Alternative, which would claim a genre
+  // nobody established.
+  if (
+    g.includes('african') || g.includes('asian music') || g.includes('indian music')
+    || g.includes('afrobeat') || g.includes('reggae') || g.includes('world music')
+  ) return 'World / Regional';
+  if (g.includes('brazilian') || g.includes('mariachi')) return 'Latin';
+  // Whole-label equality, not includes: 'dance' as a substring would swallow
+  // "Pop / Dance Pop", which is a pop record.
+  if (g === 'dance' || g === 'club / dance') return 'Electronic / EDM';
+  if (g.includes('grindcore') || g.includes('powerviolence')) return 'Death Metal';
+  if (g.includes('aggrotech')) return 'Gothic / Industrial';
+  if (g.includes('black metal')) return 'Black Metal';
+  // Late on purpose. Putting these next to the other alt-metal spellings looked
+  // tidier and silently stole six records whose primary genre was something
+  // else - "Melodic Death Metal / Alternative Metal" became Alt-Metal, and
+  // "Alternative Rock / Post-Grunge" stopped being Alternative Rock. Down here,
+  // the more specific families have already had their turn.
+  if (g.includes('alternative metal') || g.includes('grunge')) return 'Alt-Metal';
+  if (
+    g.includes('symphonic metal') || g.includes('gothic metal')
+    || g.includes('doom metal') || g.includes('sludge')
+  ) return 'Symphonic / Gothic Metal';
+  if (
+    g.includes('gothic') || g.includes('industrial') || g.includes('darkwave')
+    || g.includes('dark wave') || g.includes('neue deutsche') || g.includes('noise rock')
+  ) return 'Gothic / Industrial';
+  if (
+    g.includes('post-rock') || g.includes('post rock')
+    || g.includes('instrumental rock') || g.includes('cinematic rock')
+  ) return 'Post-Rock';
+  if (g.includes('punk') || g.includes('new wave') || g.includes('ska')) return 'Punk / New Wave';
+  if (
+    g.includes('r&b') || g.includes('neo soul') || g.includes('soul')
+    || g.includes('motown') || g.includes('funk')
+  ) return 'R&B / Soul';
+  // 'uk garage', never bare 'garage': "Garage Rock / Blues Rock" is a rock
+  // record and would otherwise be filed under electronic music.
+  if (
+    g.includes('edm') || g.includes('electro') || g.includes('house')
+    || g.includes('techno') || g.includes('trance') || g.includes('dubstep')
+    || g.includes('drum and bass') || g.includes('drum & bass') || g.includes('future bass')
+    || g.includes('idm') || g.includes('downtempo') || g.includes('trip hop')
+    || g.includes('chillwave') || g.includes('hyperpop') || g.includes('phonk')
+    || g.includes('digicore') || g.includes('breakbeat') || g.includes('uk garage')
+    || g.includes('alternative dance') || g.includes('balearic') || g.includes('dreamwave')
+    || g.includes('vaporwave') || g.includes('chiptune') || g.includes('jungle')
+    || g.includes('complextro') || g.includes('hardbass') || g.includes('melodic bass')
+  ) return 'Electronic / EDM';
+  if (g.includes('jazz') || g.includes('bebop') || g.includes('swing')) return 'Jazz';
+  // 'chamber music', never bare 'chamber': chamber pop is an indie label.
+  if (
+    g.includes('classical') || g.includes('orchestral') || g.includes('opera')
+    || g.includes('chamber music') || g.includes('concerto') || g.includes('sonata')
+    || g.includes('symphony') || g.includes('minimalism') || g.includes('neoclassic')
+  ) return 'Classical / Orchestral';
+  if (
+    g.includes('indie') || g.includes('britpop') || g.includes('art pop')
+    || g.includes('art rock') || g.includes('psychedelic') || g.includes('slacker')
+    || g.includes('pop')
+  ) return 'Pop / Indie';
+  if (
+    g.includes('folk') || g.includes('country') || g.includes('singer-songwriter')
+    || g.includes('bluegrass') || g.includes('americana')
+  ) return 'Folk / Country';
+  // Bare "emo", matched on a word boundary so it cannot fire inside "demo" or
+  // "emotional". It sits here rather than beside 'emo pop' because the earlier
+  // rules for "emo rap" and "emo groove" must keep first claim on those.
+  if (/\bemo\b/.test(g) || g.includes('easycore')) return 'Pop Punk / Emo';
+  if (g.includes('metal')) return 'Heavy Metal';
+  if (g.includes('rock')) return 'Rock';
+  // After the rock branch, deliberately: "Blues Rock" is a rock record, while
+  // bare "Blues" and "Electric Blues" belong with the roots families.
+  if (g.includes('blues')) return 'Folk / Country';
   return 'Alternative';
 }
 

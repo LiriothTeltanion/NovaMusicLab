@@ -1,3 +1,12 @@
+// Step 1 of 2. Run it through `npm run knowledge:manifest`, never on its own.
+//
+// This builder can only see provider and host, so licenseFor() marks every
+// Wikimedia asset `unverified`. The open-primary index accepts only `declared`
+// or `verified`, so this script alone always lands the repo in a broken state:
+// 171 assets awaiting license review and an empty index. Step 2,
+// enrich_wikimedia_commons_rights.mjs, resolves the real licences from the
+// Commons extmetadata cache and restores the 61 eligible portraits. It needs no
+// network - the cache is committed under scripts/.cache/.
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';

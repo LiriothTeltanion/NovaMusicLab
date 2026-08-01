@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,6 +13,7 @@ const ONTOLOGY_PATH = path.join(ROOT, 'src', 'data', 'genre_ontology.v1.json');
 const OUTPUT_PATH = path.join(ROOT, 'src', 'data', 'artist_genre_assertions.v1.json');
 const CATALOG_PATH = path.join(ROOT, 'src', 'data', 'music_dna_genre_catalog.json');
 const OFFLINE_KNOWLEDGE_PATH = path.join(ROOT, 'src', 'data', 'offline_artist_knowledge.json');
+const OBSERVATIONS_PATH = path.join(ROOT, 'src', 'data', 'artist_genre_observations.json');
 const CATALOG_SOURCE_URL = 'https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json';
 const CURATION_SOURCE_URL = 'https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/scripts/artist_truth_policy.mjs';
 
@@ -72,6 +73,15 @@ ontology.terms.forEach(term => {
   });
 });
 
+const termsById = new Map(ontology.terms.map(term => [term.id, term]));
+
+// The observation layer only exists after the MusicBrainz harvest has run, so
+// the builder has to stay usable on a clean checkout that has never run it.
+const observedByArtist = new Map(
+  Object.values((existsSync(OBSERVATIONS_PATH) ? readJson(OBSERVATIONS_PATH) : {}).artists ?? {})
+    .map(entry => [artistKey(entry.name), entry]),
+);
+
 const catalogByArtist = new Map();
 catalog.forEach(entry => {
   const key = artistKey(entry.name);
@@ -110,8 +120,11 @@ function addAssertion({
   status,
   confidence,
   evidence,
+  // MusicBrainz observations arrive already carrying the genre's MBID, so they
+  // hand the term over directly instead of round-tripping through a name.
+  term: resolvedTerm,
 }) {
-  const term = findTerm(label);
+  const term = resolvedTerm ?? findTerm(label);
   if (!term) return false;
   const record = ensureArtist(catalogEntry);
   const key = `${catalogEntry.artistKey}|${term.id}`;
@@ -162,6 +175,51 @@ catalog
           sourceId: null,
           sourceUrl: CATALOG_SOURCE_URL,
           observedLabel: label,
+        }],
+      });
+    });
+  });
+
+// MusicBrainz observations for artists the curated catalogue never reached.
+// They enter as candidates with confidence 'matched', never 'curated': the join
+// onto the ontology is exact, but nobody has reviewed the claim itself.
+//
+// Off by default, and the reason is a measurement rather than a preference.
+// Including them takes this artifact from 1,257 to 3,096 assertions and from
+// 85 KB to 212 KB gzip, against a 92 KB lazy budget. Trimming helped far less
+// than expected - dropping sourceUrl, rawLabel and the assertion ids together
+// still left 143 KB, because a 24-hex id per assertion is incompressible. So
+// the payload cannot hold them, and raising the ceiling would quietly hand
+// every Genre Lab visitor an extra 120 KB.
+//
+// None of the observation data is lost by this: it is committed in
+// artist_genre_observations.json, and the genres themselves already reach the
+// museum through artist_genre_fallback.json and the catalogue. What is missing
+// is the evidence trail inside Genre Lab, and the fix for that is a second lazy
+// artifact loaded only when a reviewer opens the queue - not a bigger download
+// for everyone. Pass --include-observed to build the combined file and measure.
+const INCLUDE_OBSERVED = process.argv.includes('--include-observed');
+
+catalog
+  .filter(entry => INCLUDE_OBSERVED && entry.source === 'observed')
+  .forEach(entry => {
+    const observation = observedByArtist.get(artistKey(entry.name));
+    if (!observation) return;
+    observation.genres.forEach((genre, index) => {
+      const term = termsById.get(`musicbrainz:${genre.id}`);
+      if (!term) return;
+      addAssertion({
+        catalogEntry: entry,
+        label: term.canonicalName,
+        term,
+        role: index === 0 ? 'primary' : 'secondary',
+        status: 'candidate',
+        confidence: 'matched',
+        evidence: [{
+          provider: 'musicbrainz',
+          sourceId: observation.musicbrainzArtistId,
+          sourceUrl: `https://musicbrainz.org/artist/${observation.musicbrainzArtistId}`,
+          observedLabel: genre.name,
         }],
       });
     });

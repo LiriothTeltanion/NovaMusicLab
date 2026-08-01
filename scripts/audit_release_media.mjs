@@ -201,7 +201,7 @@ if (profile) {
 const expectedIds = new Set([
   'profile-hero-desktop',
   'profile-hero-mobile',
-  'genres-desktop',
+  'genres-mobile',
   'artist-atlas-desktop',
   'guest-museum-desktop',
   'hebrew-mobile',
@@ -209,6 +209,17 @@ const expectedIds = new Set([
   'profile-tour',
   'social-preview',
 ]);
+const expectedMediaContract = {
+  'profile-hero-desktop': { lang: 'en', theme: 'cyber', viewport: [1440, 900], dimensions: [1440, 900] },
+  'profile-hero-mobile': { lang: 'es', theme: 'cyber', viewport: [390, 844], dimensions: [390, 844] },
+  'genres-mobile': { lang: 'en', theme: 'cyber', viewport: [390, 844], dimensions: [390, 844] },
+  'artist-atlas-desktop': { lang: 'en', theme: 'cyber', viewport: [1440, 900], dimensions: [1440, 900] },
+  'guest-museum-desktop': { lang: 'en', theme: 'cyber', viewport: [1440, 900], dimensions: [1440, 900] },
+  'hebrew-mobile': { lang: 'he', theme: 'daylight', viewport: [390, 844], dimensions: [390, 844] },
+  'profile-tour-static': { lang: 'en', theme: 'cyber', viewport: [960, 600], dimensions: [960, 600] },
+  'profile-tour': { lang: 'en', theme: 'cyber', viewport: [960, 600], dimensions: [560, 350] },
+  'social-preview': { lang: 'en', theme: 'cyber', viewport: [1280, 640], dimensions: [1280, 640] },
+};
 const detailedMedia = Array.isArray(detailed?.media) ? detailed.media : [];
 const profileMedia = Array.isArray(profile?.media) ? profile.media : [];
 const ids = new Set();
@@ -222,6 +233,7 @@ for (const item of detailedMedia) {
   check(!ids.has(item.id), `Duplicate media id: ${item.id}`);
   ids.add(item.id);
   check(expectedIds.has(item.id), `Unexpected media id: ${item.id}`);
+  const expected = expectedMediaContract[item.id];
   check(typeof item.path === 'string' && item.path.startsWith(versionRoot), `${item.id} must live under ${versionRoot}`);
   check(!paths.has(item.path), `Duplicate media path: ${item.path}`);
   paths.add(item.path);
@@ -234,6 +246,20 @@ for (const item of detailedMedia) {
       && item.viewport.height > 0,
     `${item.id} needs a positive viewport`,
   );
+  if (expected) {
+    check(item.lang === expected.lang, `${item.id} must use ${expected.lang}`);
+    check(item.theme === expected.theme, `${item.id} must use the ${expected.theme} theme`);
+    check(
+      item.viewport?.width === expected.viewport[0]
+        && item.viewport?.height === expected.viewport[1],
+      `${item.id} must declare a ${expected.viewport[0]}x${expected.viewport[1]} viewport`,
+    );
+    check(
+      item.width === expected.dimensions[0]
+        && item.height === expected.dimensions[1],
+      `${item.id} must be ${expected.dimensions[0]}x${expected.dimensions[1]}`,
+    );
+  }
 
   try {
     const disk = await fileHash(item.path);
@@ -265,14 +291,14 @@ const profileTour = detailedMedia.find(item => item.id === 'profile-tour');
 if (profileTour?.path?.endsWith('.gif')) {
   try {
     const { bytes } = await fileHash(profileTour.path);
-    check(countGifFrames(bytes) === 5, 'profile-tour GIF must contain its five documented frames');
+    check(countGifFrames(bytes) === 3, 'profile-tour GIF must contain its three documented room frames');
   } catch (error) {
     errors.push(`profile-tour animation could not be audited: ${error.message}`);
   }
 }
 check(detailed?.animation?.media_id === 'profile-tour', 'Detailed animation metadata is missing');
-check(detailed?.animation?.frames === 5, 'Detailed animation metadata must declare five frames');
-check(detailed?.animation?.frame_delay_ms === 2200, 'Detailed animation delay must be 2200 ms');
+check(detailed?.animation?.frames === 3, 'Detailed animation metadata must declare three frames');
+check(detailed?.animation?.frame_delay_ms === 1800, 'Detailed animation delay must be 1800 ms');
 check(
   detailed?.animation?.reduced_motion_fallback_media_id === 'profile-tour-static',
   'Detailed animation metadata must declare the reduced-motion fallback',

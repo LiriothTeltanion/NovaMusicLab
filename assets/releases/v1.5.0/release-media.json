@@ -1,0 +1,193 @@
+{
+  "schema": "nova-music-release-media-v1",
+  "release": {
+    "status": "private-candidate",
+    "version": "1.5.0",
+    "source_commit": "d61cce207998547f1768635a7d8117cbff46cf52",
+    "source_head_commit": "d61cce207998547f1768635a7d8117cbff46cf52",
+    "source_state": "committed-product-source",
+    "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
+    "source_fingerprint": "2a405d4849b145412ac1108d66e3419862f35faf65af795e962152a268f55acb",
+    "source_file_count": 467,
+    "captured_on": "2026-08-01",
+    "deployed_on": null
+  },
+  "repository": {
+    "slug": "LiriothTeltanion/NovaMusicLab",
+    "default_branch": "main",
+    "live_url": "https://liriothteltanion.github.io/NovaMusicLab/"
+  },
+  "required_media_ids": [
+    "profile-hero-desktop",
+    "profile-hero-mobile",
+    "genres-mobile",
+    "artist-atlas-desktop",
+    "guest-museum-desktop",
+    "hebrew-mobile",
+    "profile-tour-static",
+    "profile-tour",
+    "social-preview"
+  ],
+  "fallbacks": [
+    {
+      "media_id": "profile-tour",
+      "fallback_media_id": "profile-tour-static"
+    }
+  ],
+  "animation": {
+    "media_id": "profile-tour",
+    "frames": 3,
+    "frame_delay_ms": 1800,
+    "reduced_motion_fallback_media_id": "profile-tour-static"
+  },
+  "legacy_aliases": [
+    {
+      "media_id": "profile-hero-desktop",
+      "path": "assets/screenshots/nova-home-desktop.jpg"
+    },
+    {
+      "media_id": "artist-atlas-desktop",
+      "path": "assets/screenshots/living-artist-atlas-desktop.jpg"
+    },
+    {
+      "media_id": "guest-museum-desktop",
+      "path": "assets/screenshots/guest-museum-desktop.jpg"
+    },
+    {
+      "media_id": "hebrew-mobile",
+      "path": "assets/screenshots/share-hebrew-light-mobile.jpg"
+    },
+    {
+      "media_id": "social-preview",
+      "path": "public/social-preview-v2.png"
+    }
+  ],
+  "media": [
+    {
+      "id": "profile-hero-desktop",
+      "path": "assets/releases/v1.5.0/home-desktop-en-cyber.jpg",
+      "sha256": "bfe7c7de2a387dbaf7974a4e252eaeb39b63b793464b54f5c72fd5eab7aa77e7",
+      "width": 1440,
+      "height": 900,
+      "bytes": 162214,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "profile-hero-mobile",
+      "path": "assets/releases/v1.5.0/home-mobile-es-cyber.jpg",
+      "sha256": "b4e953afa906f26d54022e3a171f0356bdc90e8e65c9bd83f34c0abcff513421",
+      "width": 390,
+      "height": 844,
+      "bytes": 53487,
+      "lang": "es",
+      "theme": "cyber",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "genres-mobile",
+      "path": "assets/releases/v1.5.0/genres-mobile-en-cyber.jpg",
+      "sha256": "b475fecdfd607a5ca6afc766e8e54fed22a48e10a5965dfc1e5aa58377f2af51",
+      "width": 390,
+      "height": 844,
+      "bytes": 63086,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "artist-atlas-desktop",
+      "path": "assets/releases/v1.5.0/artist-atlas-desktop-en-cyber.jpg",
+      "sha256": "a8b1a2c353616ec57470fa865dec4afb98b5880e2eae41d74f1121af5b209efa",
+      "width": 1440,
+      "height": 900,
+      "bytes": 168979,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "guest-museum-desktop",
+      "path": "assets/releases/v1.5.0/guest-museum-desktop-en-cyber.jpg",
+      "sha256": "30198082147f1c5ff7ad6264f42d163eecda92080f7b3f118fd1fc272ad6588a",
+      "width": 1440,
+      "height": 900,
+      "bytes": 149494,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "hebrew-mobile",
+      "path": "assets/releases/v1.5.0/share-he-mobile-daylight.jpg",
+      "sha256": "0c0a64792b5539ea40f4222377adf0929e5caeea11d9c58c4ac5a415ee0fa465",
+      "width": 390,
+      "height": 844,
+      "bytes": 48660,
+      "lang": "he",
+      "theme": "daylight",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "profile-tour-static",
+      "path": "assets/releases/v1.5.0/product-tour-static-en-cyber.jpg",
+      "sha256": "ef5f2be064cee7ea7969effe5f6ca2eadb537365a8d1be1c2450d5cfda613403",
+      "width": 960,
+      "height": 600,
+      "bytes": 102783,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 960,
+        "height": 600
+      }
+    },
+    {
+      "id": "profile-tour",
+      "path": "assets/releases/v1.5.0/product-tour-animated-en-cyber.gif",
+      "sha256": "488278bcbf5f3aa5ace2d5bbbf589d0395e9261e953838b5a3993288c18f490a",
+      "width": 560,
+      "height": 350,
+      "bytes": 668283,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 960,
+        "height": 600
+      }
+    },
+    {
+      "id": "social-preview",
+      "path": "assets/releases/v1.5.0/social-preview.png",
+      "sha256": "aa86adc15d1166db3d86f3dc96b925bc85867eb9581872551010867fc25656b7",
+      "width": 1280,
+      "height": 640,
+      "bytes": 546767,
+      "lang": "en",
+      "theme": "cyber",
+      "viewport": {
+        "width": 1280,
+        "height": 640
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DailyHeatmap from './DailyHeatmap';
 import { AppProvider } from '../context/AppContext';
@@ -17,6 +17,14 @@ function renderHeatmap() {
   );
 }
 
+function getGridCells(grid: HTMLElement) {
+  // Computing the full accessibility tree for 365+ cells repeatedly can make
+  // this otherwise synchronous keyboard test exceed Vitest's timeout under a
+  // busy Windows CI runner. The selector still verifies the exact gridcell
+  // semantics while keeping the regression test deterministic.
+  return Array.from(grid.querySelectorAll<HTMLElement>('[role="gridcell"]'));
+}
+
 describe('DailyHeatmap accessible exploration', () => {
   afterEach(() => {
     cleanup();
@@ -27,7 +35,7 @@ describe('DailyHeatmap accessible exploration', () => {
     renderHeatmap();
 
     const grid = screen.getByRole('grid', { name: /Daily listening activity/i });
-    const cells = within(grid).getAllByRole('gridcell');
+    const cells = getGridCells(grid);
     expect(grid).toHaveAttribute('tabindex', '0');
     expect(cells.length).toBeGreaterThanOrEqual(365);
     expect(cells.filter(cell => cell.tabIndex === 0)).toHaveLength(0);
@@ -46,7 +54,7 @@ describe('DailyHeatmap accessible exploration', () => {
     renderHeatmap();
 
     const grid = screen.getByRole('grid', { name: /Daily listening activity/i });
-    const dayCells = within(grid).getAllByRole('gridcell').filter(
+    const dayCells = getGridCells(grid).filter(
       cell => cell.tagName === 'BUTTON',
     );
     const targetCell = dayCells[10];
@@ -94,7 +102,7 @@ describe('DailyHeatmap accessible exploration', () => {
     );
 
     const grid = screen.getByRole('grid', { name: /Daily listening activity/i });
-    const unobservedCells = within(grid).getAllByRole('gridcell')
+    const unobservedCells = getGridCells(grid)
       .filter(cell => cell.getAttribute('data-observed') === 'false');
     const firstUnobserved = unobservedCells[0];
 
@@ -111,7 +119,7 @@ describe('DailyHeatmap accessible exploration', () => {
 
     const grid = screen.getByRole('grid', { name: /Daily listening activity/i });
     const boundary = grid.closest('.relative') as HTMLDivElement;
-    const targetCell = within(grid).getAllByRole('gridcell').find(
+    const targetCell = getGridCells(grid).find(
       cell => cell.tagName === 'BUTTON',
     ) as HTMLButtonElement;
 
@@ -156,7 +164,7 @@ describe('DailyHeatmap accessible exploration', () => {
     expect(screen.getByLabelText('בחר תאריך')).toHaveAttribute('dir', 'ltr');
     expect(grid).toHaveClass('nova-data-ltr');
     expect(grid).toHaveAttribute('dir', 'ltr');
-    const observedCell = within(grid).getAllByRole('gridcell')
+    const observedCell = getGridCells(grid)
       .find(cell => cell.tagName === 'BUTTON');
     expect(observedCell).toHaveAccessibleName(/השמע(?:ה|ות)$/);
     expect(observedCell).not.toHaveAccessibleName(/plays?$/i);

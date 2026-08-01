@@ -44,10 +44,21 @@ jobs:
       - name: Audit the public flagship privacy boundary
         run: node scripts/audit_public_bundle_privacy.mjs
 
+      - name: Audit release media selected for deployment
+        if: (github.event_name != 'pull_request' && github.ref == 'refs/heads/main') || startsWith(github.head_ref, 'codex/release-')
+        run: npm run audit:release-media
+
+      - name: Resolve the real Jerusalem deployment date
+        id: deployment_date
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: echo "value=$(TZ=Asia/Jerusalem date +%F)" >> "$GITHUB_OUTPUT"
+
       - name: Build deployable Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
           VITE_NOVA_RELEASE_STATUS: deployed
+          VITE_NOVA_RELEASE_DATE: ${{ steps.deployment_date.outputs.value }}
         run: npm run build
 
       - name: Stamp verified deployment identity
@@ -55,11 +66,12 @@ jobs:
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
           BUILD_COMMIT: ${{ github.sha }}
+          DEPLOYED_ON: ${{ steps.deployment_date.outputs.value }}
         shell: bash
         run: |
           version="$(node -p "require('./package.json').version")"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          DEPLOYED_ON="$(TZ=Asia/Jerusalem date +%F)" npm run release:stamp-deployment
+          npm run release:stamp-deployment
 
       - name: Upload verified Pages artifact
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

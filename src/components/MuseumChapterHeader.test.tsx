@@ -20,6 +20,8 @@ describe('MuseumChapterHeader', () => {
     expect(screen.getByRole('heading', { name: 'Sala de Control', level: 1 })).toBeInTheDocument();
     expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('es-ES'))).toHaveLength(1);
     expect(screen.getByText(data.core_metrics.unique_artists.toLocaleString('es-ES'))).toBeInTheDocument();
+    expect(screen.getByText('entradas del catálogo')).toBeInTheDocument();
+    expect(screen.queryByText('artistas únicos')).not.toBeInTheDocument();
     expect(screen.getAllByRole('definition')).toHaveLength(2);
   });
 
@@ -92,6 +94,24 @@ describe('MuseumChapterHeader', () => {
     expect(screen.getByLabelText('אותות מהארכיון')).toBeInTheDocument();
     expect(screen.getByText('סך ההשמעות')).toBeInTheDocument();
     expect(screen.getAllByText(data.core_metrics.total_plays.toLocaleString('he-IL'))).toHaveLength(1);
+  });
+
+  it('labels Pulse metrics as historical evidence instead of live activity', () => {
+    render(<MuseumChapterHeader activeTab="pulse" data={data} lang="en" />);
+
+    expect(screen.getByText('Dated listening signal')).toBeInTheDocument();
+    expect(screen.getByText('all-time daily record')).toBeInTheDocument();
+    expect(screen.getByText('lifetime active days')).toBeInTheDocument();
+    expect(screen.queryByText('Present-tense signal')).not.toBeInTheDocument();
+  });
+
+  it('isolates the chapter counter from Hebrew bidirectional reordering', () => {
+    const { container } = render(
+      <MuseumChapterHeader activeTab="dashboard" data={data} lang="he" routePosition={{ current: 3, total: 10 }} />,
+    );
+
+    expect(container.querySelector('.museum-chapter__footer bdi[dir="ltr"]'))
+      .toHaveTextContent('03 / 10');
   });
 
   it('does not present an unclassified bucket as a dominant musical language', () => {

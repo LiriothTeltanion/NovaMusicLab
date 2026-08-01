@@ -78,7 +78,7 @@ export default function GenreTaggingStudio({
       eyebrow: 'Archive repair · local and private',
       title: '🧬 Genre Lab',
       description: 'Turn uncertainty into useful metadata. A primary family updates every chart; secondary tags add detail without double-counting listens.',
-      loading: 'Loading the complete 6,413-artist catalog…',
+      loading: 'Loading all 6,413 artist-name catalog entries…',
       loadError: 'The full artist catalog is unavailable. Re-import the original exports to create a reviewable catalog for this archive.',
       search: 'Search artists',
       searchPlaceholder: 'Name, genre or tag…',
@@ -87,9 +87,9 @@ export default function GenreTaggingStudio({
         unclassified: 'Unclassified',
         alternative: 'Broad Alternative',
         curated: 'My corrections',
-        all: 'All artists',
+        all: 'All catalog entries',
       },
-      artists: 'artists',
+      artists: 'catalog entries',
       listens: 'listens',
       automatic: 'Automatic',
       manual: 'Curated by you',
@@ -107,8 +107,8 @@ export default function GenreTaggingStudio({
       tagSearchPlaceholder: 'Try blackgaze, corrido, ambient techno…',
       evidence: 'Evidence attached to this artist',
       evidenceEmpty: 'No provider-backed genre evidence is stored for this artist yet.',
-      accepted: 'Accepted',
-      candidate: 'Candidate',
+      accepted: 'Reviewed fact',
+      candidate: 'Candidate evidence',
       rejectedGuard: (count: number) => `${count} unsafe match${count === 1 ? '' : 'es'} remains blocked and hidden.`,
       tagLimit: `Up to ${MAX_ARTIST_GENRE_TAGS} detailed terms per artist.`,
       maxTags: `You can keep up to ${MAX_ARTIST_GENRE_TAGS} detailed genre terms per artist.`,
@@ -123,14 +123,20 @@ export default function GenreTaggingStudio({
       reviewKpi: 'Review queue',
       correctionsKpi: 'Local corrections',
       exactNote: '🔒 Mathematical guard: catalog plays always reconcile to the archive total.',
-      sourceCatalog: 'metadata catalog',
-      sourceUnknown: 'no automatic metadata',
+      provenanceTitle: 'How Nova classifies this catalog',
+      provenanceBody: 'Source labels explain where a classification came from, not how certain it is. Observed classifications are automatic provider-derived matches; only accepted assertions are reviewed facts.',
+      sourceSummary: (catalog: number, observed: number, unclassified: number) => `Catalog: ${catalog.toLocaleString('en-US')} · Observed automatically: ${observed.toLocaleString('en-US')} · Unclassified: ${unclassified.toLocaleString('en-US')}`,
+      evidenceSummary: (knowledge: number, total: number, accepted: number, candidate: number, rejected: number) => `Knowledge records: ${knowledge.toLocaleString('en-US')}/${total.toLocaleString('en-US')} entries · Reviewed facts: ${accepted.toLocaleString('en-US')} · Candidate evidence: ${candidate.toLocaleString('en-US')} · Rejected and hidden: ${rejected.toLocaleString('en-US')}`,
+      otherNote: '“Other” in charts groups smaller classified genre families. It does not mean Unclassified.',
+      sourceCatalog: 'catalog classification',
+      sourceObserved: 'automatic observed classification',
+      sourceUnclassified: 'no automatic classification',
     },
     es: {
       eyebrow: 'Reparación del archivo · local y privada',
       title: '🧬 Laboratorio de géneros',
       description: 'Convierte la incertidumbre en metadatos útiles. Una familia principal actualiza todos los gráficos; las etiquetas secundarias añaden detalle sin duplicar escuchas.',
-      loading: 'Cargando el catálogo completo de 6.413 artistas…',
+      loading: 'Cargando las 6.413 entradas de nombres del catálogo…',
       loadError: 'El catálogo completo no está disponible. Vuelve a importar los archivos originales para crear una cola revisable para este archivo.',
       search: 'Buscar artistas',
       searchPlaceholder: 'Nombre, género o etiqueta…',
@@ -139,9 +145,9 @@ export default function GenreTaggingStudio({
         unclassified: 'Sin clasificar',
         alternative: 'Alternativo amplio',
         curated: 'Mis correcciones',
-        all: 'Todos los artistas',
+        all: 'Todas las entradas',
       },
-      artists: 'artistas',
+      artists: 'entradas del catálogo',
       listens: 'escuchas',
       automatic: 'Automático',
       manual: 'Curado por ti',
@@ -159,8 +165,8 @@ export default function GenreTaggingStudio({
       tagSearchPlaceholder: 'Prueba blackgaze, corrido, ambient techno…',
       evidence: 'Evidencia vinculada a este artista',
       evidenceEmpty: 'Todavía no hay evidencia de género respaldada por proveedores para este artista.',
-      accepted: 'Aceptado',
-      candidate: 'Candidato',
+      accepted: 'Hecho revisado',
+      candidate: 'Evidencia candidata',
       rejectedGuard: (count: number) => `${count} coincidencia${count === 1 ? '' : 's'} insegura${count === 1 ? '' : 's'} permanece${count === 1 ? '' : 'n'} bloqueada${count === 1 ? '' : 's'} y oculta${count === 1 ? '' : 's'}.`,
       tagLimit: `Hasta ${MAX_ARTIST_GENRE_TAGS} términos detallados por artista.`,
       maxTags: `Puedes conservar hasta ${MAX_ARTIST_GENRE_TAGS} términos detallados por artista.`,
@@ -175,14 +181,20 @@ export default function GenreTaggingStudio({
       reviewKpi: 'Cola de revisión',
       correctionsKpi: 'Correcciones locales',
       exactNote: '🔒 Protección matemática: las escuchas del catálogo siempre reconcilian con el total del archivo.',
-      sourceCatalog: 'catálogo de metadatos',
-      sourceUnknown: 'sin metadatos automáticos',
+      provenanceTitle: 'Cómo clasifica Nova este catálogo',
+      provenanceBody: 'Las etiquetas de origen explican de dónde sale una clasificación, no su grado de certeza. Las clasificaciones observadas son coincidencias automáticas derivadas de proveedores; solo las afirmaciones aceptadas son hechos revisados.',
+      sourceSummary: (catalog: number, observed: number, unclassified: number) => `Catálogo: ${catalog.toLocaleString('es-ES')} · Observadas automáticamente: ${observed.toLocaleString('es-ES')} · Sin clasificar: ${unclassified.toLocaleString('es-ES')}`,
+      evidenceSummary: (knowledge: number, total: number, accepted: number, candidate: number, rejected: number) => `Fichas de conocimiento: ${knowledge.toLocaleString('es-ES')}/${total.toLocaleString('es-ES')} entradas · Hechos revisados: ${accepted.toLocaleString('es-ES')} · Evidencia candidata: ${candidate.toLocaleString('es-ES')} · Rechazada y oculta: ${rejected.toLocaleString('es-ES')}`,
+      otherNote: '“Otros” en los gráficos agrupa familias de género clasificadas más pequeñas. No significa “Sin clasificar”.',
+      sourceCatalog: 'clasificación del catálogo',
+      sourceObserved: 'clasificación observada automática',
+      sourceUnclassified: 'sin clasificación automática',
     },
     he: {
       eyebrow: 'תיקון הארכיון · מקומי ופרטי',
       title: '🧬 מעבדת ז׳אנרים',
       description: 'הופכים אי־ודאות למטא־נתונים שימושיים. משפחה ראשית אחת מעדכנת את כל התרשימים; תגים משניים מוסיפים פירוט בלי לספור השמעות פעמיים.',
-      loading: 'הקטלוג המלא של 6,413 אמנים נטען…',
+      loading: '6,413 רשומות שמות האמנים בקטלוג נטענות…',
       loadError: 'קטלוג האמנים המלא אינו זמין. יש לייבא מחדש את קובצי המקור כדי ליצור תור שניתן לסקור.',
       search: 'חיפוש אמנים',
       searchPlaceholder: 'שם, ז׳אנר או תג…',
@@ -191,9 +203,9 @@ export default function GenreTaggingStudio({
         unclassified: 'לא מסווג',
         alternative: 'אלטרנטיבי רחב',
         curated: 'התיקונים שלי',
-        all: 'כל האמנים',
+        all: 'כל רשומות הקטלוג',
       },
-      artists: 'אמנים',
+      artists: 'רשומות קטלוג',
       listens: 'השמעות',
       automatic: 'אוטומטי',
       manual: 'באוצרות שלך',
@@ -211,8 +223,8 @@ export default function GenreTaggingStudio({
       tagSearchPlaceholder: 'למשל blackgaze, corrido, ambient techno…',
       evidence: 'ראיות ז׳אנר המקושרות לאמן',
       evidenceEmpty: 'עדיין אין לאמן הזה ראיות ז׳אנר מגובות ספק.',
-      accepted: 'התקבל',
-      candidate: 'מועמד',
+      accepted: 'עובדה שנבדקה',
+      candidate: 'ראיה מועמדת',
       rejectedGuard: (count: number) => `${count} התאמות לא בטוחות נשארות חסומות ומוסתרות.`,
       tagLimit: `עד ${MAX_ARTIST_GENRE_TAGS} מונחים מפורטים לכל אמן.`,
       maxTags: `אפשר לשמור עד ${MAX_ARTIST_GENRE_TAGS} מונחי ז׳אנר מפורטים לכל אמן.`,
@@ -227,8 +239,14 @@ export default function GenreTaggingStudio({
       reviewKpi: 'תור סקירה',
       correctionsKpi: 'תיקונים מקומיים',
       exactNote: '🔒 הגנה מתמטית: השמעות הקטלוג תמיד מתיישבות עם סך הארכיון.',
-      sourceCatalog: 'קטלוג מטא־נתונים',
-      sourceUnknown: 'ללא מטא־נתונים אוטומטיים',
+      provenanceTitle: 'איך Nova מסווגת את הקטלוג',
+      provenanceBody: 'תוויות המקור מסבירות מאין הגיע הסיווג, ולא את מידת הוודאות שלו. סיווג נצפה הוא התאמה אוטומטית שמקורה בספק; רק קביעות שהתקבלו הן עובדות שנבדקו.',
+      sourceSummary: (catalog: number, observed: number, unclassified: number) => `קטלוג: ${catalog.toLocaleString('he-IL')} · נצפו אוטומטית: ${observed.toLocaleString('he-IL')} · לא מסווגים: ${unclassified.toLocaleString('he-IL')}`,
+      evidenceSummary: (knowledge: number, total: number, accepted: number, candidate: number, rejected: number) => `רשומות ידע: ${knowledge.toLocaleString('he-IL')}/${total.toLocaleString('he-IL')} רשומות · עובדות שנבדקו: ${accepted.toLocaleString('he-IL')} · ראיות מועמדות: ${candidate.toLocaleString('he-IL')} · נדחו והוסתרו: ${rejected.toLocaleString('he-IL')}`,
+      otherNote: '״אחר״ בתרשימים מאגד משפחות ז׳אנר מסווגות קטנות יותר. אין פירושו ״לא מסווג״.',
+      sourceCatalog: 'סיווג קטלוג',
+      sourceObserved: 'סיווג נצפה אוטומטי',
+      sourceUnclassified: 'ללא סיווג אוטומטי',
     },
   });
 
@@ -367,7 +385,9 @@ export default function GenreTaggingStudio({
       })
       .slice(0, 24);
   }, [genreKnowledge, tagQuery, tags]);
-  const rejectedEvidenceCount = genreKnowledge?.knowledge.stats.rejectedAssertionCount ?? 0;
+  const rejectedEvidenceCount = useBundledCatalog
+    ? genreKnowledge?.knowledge.stats.rejectedAssertionCount ?? 0
+    : 0;
   const visibleRows = filteredRows.slice(0, visibleLimit);
   const unclassifiedPlays = rows
     .filter(row => row.effectiveFamily === 'Unclassified')
@@ -377,6 +397,15 @@ export default function GenreTaggingStudio({
   const totalPlays = rows.reduce((sum, row) => sum + row.plays, 0) || data.core_metrics.total_plays;
   const classifiedPlays = Math.max(0, totalPlays - unclassifiedPlays);
   const classifiedPct = totalPlays ? Math.round((classifiedPlays / totalPlays) * 1000) / 10 : 0;
+  const sourceCounts = rows.reduce<Record<ArtistGenreCatalogEntry['source'], number>>((counts, row) => {
+    counts[row.source] += 1;
+    return counts;
+  }, { catalog: 0, observed: 0, unclassified: 0 });
+  const sourceLabelFor = (sourceKind: ArtistGenreCatalogEntry['source']) => {
+    if (sourceKind === 'catalog') return copy.sourceCatalog;
+    if (sourceKind === 'observed') return copy.sourceObserved;
+    return copy.sourceUnclassified;
+  };
 
   useEffect(() => {
     setVisibleLimit(PAGE_SIZE);
@@ -504,6 +533,34 @@ export default function GenreTaggingStudio({
             {copy.exactNote}
           </p>
 
+          <section
+            data-testid="genre-provenance-summary"
+            className="rounded-2xl border border-violet-300/15 bg-violet-300/[0.045] p-4"
+          >
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-violet-200" aria-hidden="true" />
+              <div className="min-w-0">
+                <h3 className="text-xs font-black text-violet-100">{copy.provenanceTitle}</h3>
+                <p className="mt-1 text-[10px] leading-relaxed text-gray-400">{copy.provenanceBody}</p>
+                <p className="mt-2 text-[10px] font-mono leading-relaxed text-gray-300">
+                  {copy.sourceSummary(sourceCounts.catalog, sourceCounts.observed, sourceCounts.unclassified)}
+                </p>
+                {useBundledCatalog && genreKnowledge && (
+                  <p className="mt-1 text-[10px] font-mono leading-relaxed text-gray-300">
+                    {copy.evidenceSummary(
+                      genreKnowledge.knowledge.stats.knowledgeArtistCount,
+                      genreKnowledge.knowledge.stats.catalogArtistCount,
+                      genreKnowledge.knowledge.stats.acceptedAssertionCount,
+                      genreKnowledge.knowledge.stats.candidateAssertionCount,
+                      genreKnowledge.knowledge.stats.rejectedAssertionCount,
+                    )}
+                  </p>
+                )}
+                <p className="mt-2 text-[10px] leading-relaxed text-violet-100/80">{copy.otherNote}</p>
+              </div>
+            </div>
+          </section>
+
           <div className="grid gap-3 rounded-2xl border border-cyan-300/15 bg-cyan-300/[0.04] p-4 sm:grid-cols-[auto_1fr] sm:items-center">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
               <LibraryBig className="h-5 w-5" aria-hidden="true" />
@@ -620,7 +677,7 @@ export default function GenreTaggingStudio({
                     <div className="min-w-0">
                       <p className="text-xl font-black text-white"><bdi dir="auto">{selected.name}</bdi></p>
                       <p className="mt-1 text-[10px] text-gray-500">
-                        {selected.plays.toLocaleString(locale)} {copy.listens} · {selected.source === 'catalog' ? copy.sourceCatalog : copy.sourceUnknown}
+                        {selected.plays.toLocaleString(locale)} {copy.listens} · {sourceLabelFor(selected.source)}
                       </p>
                     </div>
                     <span className="rounded-full border px-2.5 py-1 text-[9px] font-mono font-black"

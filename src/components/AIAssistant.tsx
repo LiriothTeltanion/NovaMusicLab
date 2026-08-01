@@ -5,6 +5,7 @@ import { MusicDnaData } from '../types';
 import { useApp, type Lang } from '../context/AppContext';
 import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
 import { localizeGenreName } from '../utils/localizedDatasetText';
+import { useExperienceDepth } from '../context/ExperienceContext';
 
 interface AIAssistantProps {
   data: MusicDnaData;
@@ -55,7 +56,7 @@ interface AssistantCopy {
   obsessionResponse: (topTracks: string, leader: string, share: string) => string;
   daypartResponse: (daypart: string, evidence: string) => string;
   morningFallback: string;
-  defaultResponse: (query: string, totalPlays: string, uniqueArtists: string, topArtists: string) => string;
+  defaultResponse: (query: string, totalPlays: string, artistNameEntries: string, topArtists: string) => string;
   apiRequestFailed: string;
   emptyResponse: string;
   connectionFailed: string;
@@ -78,11 +79,12 @@ interface AssistantCopy {
   keySession: string;
   clearKey: string;
   sandboxActive: string;
+  geminiConnected: string;
   freeGeminiKey: string;
   opensNewTab: string;
   contextualDna: string;
   scrobbles: string;
-  uniqueArtists: string;
+  artistNameEntries: string;
   livePromptInstruction: string;
 }
 
@@ -93,7 +95,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     none: 'ninguno',
     genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
       `### 📊 Lectura de géneros basada en evidencia\n\nTu archivo activo muestra:\n- Principales categorías del archivo: ${bucketList}\n- Señal específica más fuerte: ${primaryLine} del total de escuchas contadas.\n- Segunda señal específica: ${secondaryLine} del total de escuchas contadas.\n- Contexto de datos: **${genericShare}%** permanece en categorías amplias (${genericNames}). Lo trato como incertidumbre de clasificación, no como un rasgo de tu personalidad musical.\n\nLos géneros nombrados son la evidencia más sólida para interpretar; las categorías amplias deben orientar la limpieza futura de metadatos, no definir tu identidad.`,
-    welcome: project => `¡Hola! Soy **Nova**, tu asistente musical de IA. 🌌\n\nPuedo analizar tu historial compilado (*${project}*) y darte análisis profundos. Pregúntame lo que quieras o configura abajo tu clave personal de API de Gemini para activar razonamiento avanzado.`,
+    welcome: project => `¡Hola! Soy **Nova**, tu guía musical local. 🌌\n\nPuedo leer tu historial compilado (*${project}*) con reglas transparentes y datos de tu archivo. En el modo **A fondo** puedes conectar Gemini de forma opcional.`,
     conversationCleared: 'Conversación reiniciada. ¡Todo listo para tu siguiente pregunta!',
     promptChips: [
       { label: '🎵 Sugiere una playlist matutina', text: 'Sugiere una lista de reproducción de 5 canciones para la mañana basada en mis datos. Dale un nombre creativo y explica por qué las elegiste.' },
@@ -107,7 +109,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     obsessionResponse: (topTracks, leader, share) => `### 🔥 Resumen de escucha repetida\n\nLas canciones principales del archivo activo son:\n- ${topTracks}\n\nLa señal de repetición más fuerte es ${leader}, con **${share}%** de las escuchas contadas. Esto describe frecuencia observada; no presupone una rutina, hora del día ni significado emocional.`,
     daypartResponse: (daypart, evidence) => `### ⚡ Análisis de la franja horaria dominante\n\nLa franja registrada con mayor peso es **${daypart}**.\n\nLas señales musicales principales del archivo son ${evidence}. Esta lectura describe coincidencias del archivo activo y evita atribuir hábitos personales que los datos no demuestran.`,
     morningFallback: 'Mañana',
-    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Modo Sandbox de Nova\n\nHe procesado tu consulta: *"${query}"*\n\nEstas son algunas métricas clave:\n- **Reproducciones totales**: ${totalPlays} escuchas\n- **Artistas únicos**: ${uniqueArtists}\n- **Artistas principales**: ${topArtists}\n\n*🔧 **¿Cómo activar el razonamiento de IA en vivo?***\n1. Consigue una clave de API gratuita en [Google AI Studio](https://aistudio.google.com/).\n2. Abre el panel de **Configuración de API** de abajo.\n3. Pega tu clave.\n4. Pregúntame lo que quieras; analizaré tus datos en tiempo real con **Gemini 2.5 Flash**.`,
+    defaultResponse: (query, totalPlays, artistNameEntries, topArtists) => `### 🌌 Análisis local de Nova\n\nHe procesado tu consulta: *"${query}"*\n\nEstas son algunas métricas clave:\n- **Reproducciones totales**: ${totalPlays} escuchas\n- **Entradas de nombres de artista**: ${artistNameEntries}\n- **Artistas principales**: ${topArtists}\n\n*Las entradas son filas normalizadas del catálogo, no una afirmación sobre personas únicas. Esta lectura se genera localmente con reglas transparentes. Cambia a **A fondo** si deseas conectar Gemini de forma opcional.*`,
     apiRequestFailed: 'La solicitud a la API falló. Verifica tu clave.',
     emptyResponse: 'Se recibió una respuesta vacía.',
     connectionFailed: 'No fue posible conectar. Verifica tu red y tu clave de API.',
@@ -129,12 +131,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     showApiKey: 'Mostrar clave de API',
     keySession: 'Clave sólo en memoria; no se guarda en el almacenamiento del navegador.',
     clearKey: 'Olvidar y borrar la clave',
-    sandboxActive: 'Modo Sandbox simulado activo.',
+    sandboxActive: 'Análisis local · sin IA externa',
+    geminiConnected: 'Gemini conectado',
     freeGeminiKey: 'Obtener una clave de Gemini gratis',
     opensNewTab: 'se abre en una pestaña nueva',
     contextualDna: 'ADN musical contextual',
     scrobbles: 'Reproducciones',
-    uniqueArtists: 'Artistas únicos',
+    artistNameEntries: 'Entradas de nombres de artista',
     livePromptInstruction: 'The active interface language is Spanish. Answer in Spanish unless the user clearly asks in another language.',
   },
   en: {
@@ -143,7 +146,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     none: 'none',
     genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
       `### 📊 Nova's Evidence-Based Genre Reading\n\nYour active archive shows:\n- Top archive categories: ${bucketList}\n- Strongest specific signal: ${primaryLine} of all counted plays.\n- Secondary specific signal: ${secondaryLine} of all counted plays.\n- Data context: **${genericShare}%** currently sits in broad metadata categories (${genericNames}). I treat that as classification uncertainty, not as a musical personality trait.\n\nThe named genres are the stronger evidence for interpretation; broad categories should guide future metadata cleanup, not define your identity.`,
-    welcome: project => `Hello! I am **Nova**, your AI Music Assistant. 🌌\n\nI can analyze your compiled history (*${project}*) and provide deep musical insights. Ask me anything, or configure your personal Gemini API key below to unlock advanced reasoning.`,
+    welcome: project => `Hello! I am **Nova**, your local music guide. 🌌\n\nI can read your compiled history (*${project}*) through transparent rules and archive evidence. In **Deep Dive**, you can optionally connect Gemini.`,
     conversationCleared: 'Conversation cleared. Ready for your next question!',
     promptChips: [
       { label: '🎵 Suggest a morning playlist', text: 'Suggest a 5-track morning playlist based on my listening data. Give it a creative name and explain why you chose these tracks.' },
@@ -157,7 +160,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     obsessionResponse: (topTracks, leader, share) => `### 🔥 Repeated Listening Summary\n\nThe active archive's leading tracks are:\n- ${topTracks}\n\nThe strongest repetition signal is ${leader}, representing **${share}%** of counted plays. This describes observed frequency; it does not assume a routine, time of day or emotional meaning.`,
     daypartResponse: (daypart, evidence) => `### ⚡ Dominant Daypart Analysis\n\nThe highest-weight recorded window is **${daypart}**.\n\nThe archive's leading musical signals are ${evidence}. This reading describes the active archive and avoids assigning personal habits that the evidence cannot prove.`,
     morningFallback: 'Morning',
-    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 Nova Sandbox Mode\n\nI processed your query: *"${query}"*\n\nHere are some key metrics:\n- **Total plays**: ${totalPlays}\n- **Unique artists**: ${uniqueArtists}\n- **Top artists**: ${topArtists}\n\n*🔧 **How do I enable live AI reasoning?***\n1. Get a free API key from [Google AI Studio](https://aistudio.google.com/).\n2. Open the **API Settings** panel below.\n3. Paste your key.\n4. Ask me anything; I will analyze your data in real time with **Gemini 2.5 Flash**.`,
+    defaultResponse: (query, totalPlays, artistNameEntries, topArtists) => `### 🌌 Nova local analysis\n\nI processed your query: *"${query}"*\n\nHere are some key metrics:\n- **Total plays**: ${totalPlays}\n- **Artist-name entries**: ${artistNameEntries}\n- **Top artists**: ${topArtists}\n\n*Entries are normalized catalog rows, not a claim about unique people. This reading is generated locally through transparent rules. Switch to **Deep Dive** if you want to connect Gemini optionally.*`,
     apiRequestFailed: 'The API request failed. Verify your key.',
     emptyResponse: 'An empty response was received.',
     connectionFailed: 'Could not connect. Check your network and API key.',
@@ -179,12 +182,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     showApiKey: 'Show API key',
     keySession: 'Key held only in memory; it is never saved to browser storage.',
     clearKey: 'Forget and clear key',
-    sandboxActive: 'Simulated Sandbox Mode is active.',
+    sandboxActive: 'Local analysis · no external AI',
+    geminiConnected: 'Gemini connected',
     freeGeminiKey: 'Get a free Gemini key',
     opensNewTab: 'opens in a new tab',
     contextualDna: 'Contextual music DNA',
     scrobbles: 'Scrobbles',
-    uniqueArtists: 'Unique artists',
+    artistNameEntries: 'Artist-name entries',
     livePromptInstruction: 'The active interface language is English. Answer in English unless the user clearly asks in another language.',
   },
   he: {
@@ -193,7 +197,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     none: 'אין',
     genreResponse: (bucketList, primaryLine, secondaryLine, genericShare, genericNames) =>
       `### 📊 קריאת ז׳אנרים מבוססת נתונים\n\nבארכיון הפעיל שלך נמצאו:\n- הקטגוריות המובילות בארכיון: ${bucketList}\n- האות הסגנוני הספציפי החזק ביותר: ${primaryLine} מכלל ההשמעות שנספרו.\n- האות הסגנוני הספציפי השני בעוצמתו: ${secondaryLine} מכלל ההשמעות שנספרו.\n- הקשר הנתונים: **${genericShare}%** נמצאים כרגע בקטגוריות מטא־נתונים רחבות (${genericNames}). זהו חוסר ודאות בסיווג, ולא מאפיין של האישיות המוזיקלית שלך.\n\nהז׳אנרים המפורשים הם הבסיס החזק יותר לפרשנות; הקטגוריות הרחבות אמורות לכוון את שיפור המטא־נתונים בעתיד, ולא להגדיר את הזהות שלך.`,
-    welcome: project => `שלום! אני **Nova**, עוזרת ה-AI המוזיקלית שלך. 🌌\n\nאני יכולה לנתח את היסטוריית ההאזנה שנאספה (*${project}*) ולהפיק ממנה תובנות מוזיקליות עמוקות. אפשר לשאול אותי כל דבר, או להגדיר למטה מפתח API אישי של Gemini כדי להפעיל ניתוח מתקדם.`,
+    welcome: project => `שלום! אני **Nova**, מדריכת המוזיקה המקומית שלך. 🌌\n\nאני יכולה לקרוא את היסטוריית ההאזנה שנאספה (*${project}*) באמצעות כללים שקופים ונתוני הארכיון. במצב **ניתוח מעמיק** אפשר לחבר את Gemini באופן אופציונלי.`,
     conversationCleared: 'השיחה נוקתה. אפשר להמשיך לשאלה הבאה!',
     promptChips: [
       { label: '🎵 בניית פלייליסט לבוקר', text: 'נא ליצור פלייליסט של 5 שירים לבוקר על סמך נתוני ההאזנה שלי, לתת לו שם יצירתי ולהסביר למה כל שיר נבחר.' },
@@ -207,7 +211,7 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     obsessionResponse: (topTracks, leader, share) => `### 🔥 סיכום דפוסי ההאזנה החוזרת\n\nהשירים המובילים בארכיון הפעיל הם:\n- ${topTracks}\n\nאות החזרתיות החזק ביותר הוא ${leader}, עם **${share}%** מההשמעות שנספרו. זהו תיאור של תדירות נצפית בלבד, ללא הנחה על שגרה, שעה ביום או משמעות רגשית.`,
     daypartResponse: (daypart, evidence) => `### ⚡ ניתוח חלון ההאזנה הדומיננטי\n\nחלון הזמן בעל המשקל הגבוה ביותר ברשומות הוא **${daypart}**.\n\nהאותות המוזיקליים המובילים בארכיון הם ${evidence}. הקריאה מתארת את הארכיון הפעיל ונמנעת מייחוס הרגלים אישיים שהנתונים אינם מוכיחים.`,
     morningFallback: 'בוקר',
-    defaultResponse: (query, totalPlays, uniqueArtists, topArtists) => `### 🌌 מצב ה-Sandbox של Nova\n\nעיבדתי את הבקשה: *"${query}"*\n\nהנה כמה מדדים מרכזיים:\n- **סך כל ההשמעות**: ${totalPlays}\n- **אמנים ייחודיים**: ${uniqueArtists}\n- **האמנים המובילים**: ${topArtists}\n\n*🔧 **איך מפעילים ניתוח AI בזמן אמת?***\n1. לקבל מפתח API בחינם דרך [Google AI Studio](https://aistudio.google.com/).\n2. לפתוח את חלונית **הגדרות ה-API** שלמטה.\n3. להדביק את המפתח.\n4. לשאול אותי כל דבר; אנתח את הנתונים בזמן אמת באמצעות **Gemini 2.5 Flash**.`,
+    defaultResponse: (query, totalPlays, artistNameEntries, topArtists) => `### 🌌 הניתוח המקומי של Nova\n\nעיבדתי את הבקשה: *"${query}"*\n\nהנה כמה מדדים מרכזיים:\n- **רשומות שמות אמנים**: ${artistNameEntries}\n- **סך כל ההשמעות**: ${totalPlays}\n- **האמנים המובילים**: ${topArtists}\n\n*הרשומות הן שורות קטלוג מנורמלות, ולא טענה על מספר אנשים ייחודיים. הקריאה נוצרת מקומית באמצעות כללים שקופים. אפשר לעבור למצב **ניתוח מעמיק** כדי לחבר את Gemini באופן אופציונלי.*`,
     apiRequestFailed: 'הבקשה ל-API נכשלה. כדאי לבדוק את המפתח.',
     emptyResponse: 'התקבלה תשובה ריקה.',
     connectionFailed: 'לא ניתן להתחבר. כדאי לבדוק את החיבור לרשת ואת מפתח ה-API.',
@@ -229,12 +233,13 @@ const ASSISTANT_COPY: Record<Lang, AssistantCopy> = {
     showApiKey: 'הצגת מפתח ה-API',
     keySession: 'המפתח נשמר בזיכרון בלבד ולעולם לא באחסון הדפדפן.',
     clearKey: 'לשכוח ולמחוק את המפתח',
-    sandboxActive: 'מצב Sandbox מדומה פעיל.',
+    sandboxActive: 'ניתוח מקומי · ללא בינה מלאכותית חיצונית',
+    geminiConnected: 'Gemini מחובר',
     freeGeminiKey: 'קבלת מפתח Gemini בחינם',
     opensNewTab: 'נפתח בכרטיסייה חדשה',
     contextualDna: 'DNA מוזיקלי לפי הקשר',
     scrobbles: 'השמעות מתועדות',
-    uniqueArtists: 'אמנים ייחודיים',
+    artistNameEntries: 'רשומות שמות אמנים',
     livePromptInstruction: 'The active interface language is Hebrew. Answer in fluent Modern Hebrew unless the user clearly asks in another language. Preserve artist, track, genre and product names in their original form.',
   },
 };
@@ -372,6 +377,7 @@ export function buildSandboxResponse(data: MusicDnaData, lang: Lang, query: stri
 
 export default function AIAssistant({ data }: AIAssistantProps) {
   const { lang } = useApp();
+  const experienceDepth = useExperienceDepth();
   const copy = pickLanguage(lang, ASSISTANT_COPY);
   const locale = localeFor(lang);
   const isRtl = directionFor(lang) === 'rtl';
@@ -389,6 +395,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [geminiConnected, setGeminiConnected] = useState(false);
 
   const chatLogRef = useRef<HTMLDivElement>(null);
 
@@ -413,12 +420,21 @@ export default function AIAssistant({ data }: AIAssistantProps) {
 
   const saveKey = (key: string) => {
     setApiKey(key.trim());
+    setGeminiConnected(false);
   };
 
   const clearApiKey = () => {
     setApiKey('');
     setShowKey(false);
+    setGeminiConnected(false);
   };
+
+  useEffect(() => {
+    if (experienceDepth === 'deep-dive') return;
+    setApiKey('');
+    setShowKey(false);
+    setGeminiConnected(false);
+  }, [experienceDepth]);
 
   const clearChat = () => {
     setMessages([
@@ -451,7 +467,7 @@ export default function AIAssistant({ data }: AIAssistantProps) {
     setLoading(true);
 
     try {
-      if (!apiKey) {
+      if (!apiKey || experienceDepth !== 'deep-dive') {
         // Run in local sandbox mode
         await new Promise(resolve => setTimeout(resolve, 800)); // simulate network delay
         const reply = buildSandboxResponse(data, lang, prompt);
@@ -469,7 +485,7 @@ You are Nova, this listener's personal AI Music Assistant. Do not assume the use
 Here is a summary of this listener's music listening history:
 - Project: ${data.project}
 - Total plays: ${data.core_metrics.total_plays}
-- Unique artists: ${data.core_metrics.unique_artists}
+- Artist-name entries (normalized catalog rows, not verified unique people): ${data.core_metrics.unique_artists}
 - Unique tracks: ${data.core_metrics.unique_tracks}
 - Unique albums: ${data.core_metrics.unique_albums}
 - Total hours: ${data.core_metrics.listening_hours}
@@ -525,6 +541,8 @@ The user asks: "${prompt}"
           throw new Error(copy.emptyResponse);
         }
 
+        setGeminiConnected(true);
+
         setMessages(prev => [...prev, {
           id: Math.random().toString(36).substring(7),
           sender: 'assistant',
@@ -533,6 +551,7 @@ The user asks: "${prompt}"
         }]);
       }
     } catch (err: unknown) {
+      setGeminiConnected(false);
       console.error(err);
       const knownMessage = err instanceof Error
         && [copy.apiRequestFailed, copy.emptyResponse].includes(err.message)
@@ -551,7 +570,17 @@ The user asks: "${prompt}"
 
   return (
     <div className="space-y-6 animate-fade-in flex flex-col min-h-[calc(100vh-140px)]">
-      <div className="flex shrink-0 justify-end">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3">
+        <span
+          data-testid="assistant-connection-status"
+          className="nova-on-dark inline-flex min-h-9 items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-wider"
+          style={geminiConnected
+            ? { color: '#6ee7b7', borderColor: 'rgba(52, 211, 153, 0.3)', backgroundColor: 'rgba(6, 78, 59, 0.24)' }
+            : { color: '#fbbf24', borderColor: 'rgba(251, 191, 36, 0.25)', backgroundColor: 'rgba(120, 53, 15, 0.18)' }}
+        >
+          <Lock className="h-3.5 w-3.5" aria-hidden="true" />
+          {geminiConnected ? copy.geminiConnected : copy.sandboxActive}
+        </span>
         <button
           type="button"
           onClick={clearChat}
@@ -701,8 +730,8 @@ The user asks: "${prompt}"
 
         {/* Side Panel: Settings & Summary */}
         <div className="flex flex-col space-y-4">
-          {/* Key configuration panel */}
-          <div className="nova-surface nova-surface--analysis p-5 rounded-3xl border border-white/10 space-y-4 relative overflow-hidden flex-1">
+          {/* External-provider configuration belongs to Deep Dive only. */}
+          {experienceDepth === 'deep-dive' ? <div className="nova-surface nova-surface--analysis p-5 rounded-3xl border border-white/10 space-y-4 relative overflow-hidden flex-1">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 blur-[50px] rounded-full pointer-events-none" />
             
             <div className="flex items-center space-x-2.5">
@@ -777,7 +806,7 @@ The user asks: "${prompt}"
                 <ArrowRight className={`h-3 w-3 ${isRtl ? 'rotate-180' : ''}`} />
               </a>
             </div>
-          </div>
+          </div> : null}
 
           {/* Quick Stats Summary Card */}
           <div className="nova-surface nova-surface--utility p-5 rounded-3xl border border-white/10 shrink-0 space-y-3 relative overflow-hidden">
@@ -795,7 +824,7 @@ The user asks: "${prompt}"
                 <p className="font-extrabold text-white mt-0.5">{data.core_metrics.total_plays.toLocaleString(locale)}</p>
               </div>
               <div className="bg-white/3 border border-white/5 rounded-xl p-2">
-                <span className="text-[10px] text-gray-500">{copy.uniqueArtists}</span>
+                <span className="text-[10px] text-gray-500">{copy.artistNameEntries}</span>
                 <p className="font-extrabold text-white mt-0.5">{data.core_metrics.unique_artists.toLocaleString(locale)}</p>
               </div>
             </div>

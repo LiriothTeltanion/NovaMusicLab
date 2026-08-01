@@ -53,4 +53,19 @@ describe('ArtistAvatar', () => {
       'no-referrer',
     );
   });
+
+  it('removes a redundant portrait name when adjacent copy already labels the artist', () => {
+    const view = render(
+      <AppProvider>
+        <button type="button">
+          <ArtistAvatar name="Bring Me the Horizon" size={40} tooltip={false} decorative />
+          <span>Bring Me the Horizon</span>
+        </button>
+      </AppProvider>,
+    );
+
+    const button = view.getByRole('button', { name: 'Bring Me the Horizon' });
+    expect(button).toBeInTheDocument();
+    expect(button.querySelector('img')).toHaveAttribute('alt', '');
+  });
 });

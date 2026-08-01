@@ -1,18 +1,22 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useImageLoadTimeout } from '../hooks/useImageLoadTimeout';
-import artistImages from '../data/artist_images.json';
 import openPrimaryImages from '../data/artist_open_primary_images.json';
 import artistMeta from '../data/artist_meta.json';
 import memberImages from '../data/member_images.json';
 import memberEnrichment from '../data/member_enrichment.json';
 import FlagArt from './FlagArt';
+import {
+  artistPhotoMapVersion,
+  ensureArtistPhotoMap,
+  lookupArtistPhoto,
+  peekArtistPhoto,
+  subscribeArtistPhotoMap,
+} from './artistPhotoMap';
 import { optimizeRemoteImageUrl } from '../utils/remoteImage';
 import { hashSeed } from '../utils/seededRandom';
 
-type ArtistImages = Record<string, { thumb: string; source: string }>;
 type ArtistMeta = Record<string, { genre: string; country: string }>;
-const IMAGES = artistImages as ArtistImages;
 const OPEN_PRIMARY_IMAGES = openPrimaryImages as Record<string, string>;
 const META = artistMeta as ArtistMeta;
 const MEMBER_IMAGES = memberImages as Record<string, string>;
@@ -29,6 +33,8 @@ interface ArtistAvatarProps {
   priority?: boolean;
   /** Keeps an explicitly selected primary image from falling through to gallery providers. */
   fallbackToGallery?: boolean;
+  /** Hides the portrait from assistive tech when adjacent text already names the artist. */
+  decorative?: boolean;
 }
 
 
@@ -42,7 +48,15 @@ function initialsFor(name: string): string {
 
 export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
   const key = name.normalize('NFC').trim().toLowerCase();
-  const source = IMAGES[key]?.thumb;
+  // Curated first, matching what ArtistAvatar puts on screen, so an exported
+  // poster shows the same face the visitor was looking at.
+  const curated = OPEN_PRIMARY_IMAGES[key];
+  if (curated) return optimizeRemoteImageUrl(curated, size);
+  // Nothing bundled answers, so the long tail is worth fetching. This read is
+  // synchronous and may miss on the first call; callers inside React pair it
+  // with useArtistPhotoMap() to re-render once the index lands.
+  ensureArtistPhotoMap();
+  const source = peekArtistPhoto(key)?.thumb;
   return source ? optimizeRemoteImageUrl(source, size) : null;
 }
 
@@ -74,15 +88,24 @@ export default function ArtistAvatar({
   overrideSrc,
   priority = false,
   fallbackToGallery = true,
+  decorative = false,
 }: ArtistAvatarProps) {
   const { tc } = useApp();
   // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
   // uploaded export can be NFD (macOS) - byte-different, visually identical.
   const key = name.normalize('NFC').trim().toLowerCase();
-  const entry = IMAGES[key];
+  // Re-renders every avatar together the moment the wide map lands.
+  React.useSyncExternalStore(subscribeArtistPhotoMap, artistPhotoMapVersion, artistPhotoMapVersion);
   const meta = META[key];
   const memberPhoto = MEMBER_ENRICHMENT[key]?.photo || MEMBER_IMAGES[key];
-  const originalSrc = overrideSrc || memberPhoto || entry?.thumb;
+  // Bundled sources first: they paint a real face on the first frame instead of
+  // fading one in. Reaching the wide index costs a ~150 KB gzip fetch, so it is
+  // only worth starting once nothing bundled answers for this artist. The hero
+  // hands both of its portraits an overrideSrc and the curated set covers most
+  // of the top 100, so the landing screen never pays for the long tail.
+  const bundledSrc = overrideSrc || memberPhoto || OPEN_PRIMARY_IMAGES[key];
+  if (!bundledSrc) ensureArtistPhotoMap();
+  const originalSrc = bundledSrc || lookupArtistPhoto(key)?.thumb;
   const optimizedSrc = originalSrc ? optimizeRemoteImageUrl(originalSrc, size) : undefined;
   const [stage, setStage] = useState<'optimized' | 'original' | 'gallery-loading' | 'gallery' | 'failed'>(
     originalSrc ? 'optimized' : 'gallery-loading',
@@ -191,7 +214,7 @@ export default function ArtistAvatar({
           </span>
           <img
             src={src}
-            alt={name}
+            alt={decorative ? '' : name}
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
@@ -222,8 +245,9 @@ export default function ArtistAvatar({
 
     return (
       <div
-        role="img"
-        aria-label={name}
+        role={decorative ? undefined : 'img'}
+        aria-label={decorative ? undefined : name}
+        aria-hidden={decorative || undefined}
         className={`rounded-full overflow-hidden relative flex items-center justify-center font-mono font-black shrink-0 ${className}`}
         style={{
           width: size,
@@ -279,6 +303,7 @@ export default function ArtistAvatar({
     <span className="relative inline-flex shrink-0 group/avatar" style={{ width: size, height: size }}>
       {avatar}
       <span
+        aria-hidden={decorative || undefined}
         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/avatar:flex flex-col items-center gap-1 px-3 py-2 rounded-xl pointer-events-none z-50 whitespace-nowrap shadow-xl"
         style={{
           backgroundColor: 'rgba(7, 14, 28, 0.96)',

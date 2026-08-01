@@ -27,11 +27,11 @@ The application currently requests Inter, Space Grotesk and Noto Sans Hebrew thr
 
 ## Structured music metadata
 
-Development-time enrichment may use public structured information from services such as MusicBrainz and Wikidata. Their respective data licenses and attribution requirements apply. Nova Music Lab stores compact facts and writes original project prose rather than bundling copied biographies.
+Development-time enrichment may use public structured information from services such as MusicBrainz, Wikidata and Deezer. Their respective data licenses, attribution requirements and platform terms apply. Nova Music Lab stores compact source-aware facts and writes original project prose rather than bundling copied biographies.
 
 ## Artwork and media
 
-Curated artwork URLs may point to Wikimedia Commons, Apple/iTunes artwork, Spotify CDN or other documented public sources. Copyright and reuse rights belong to the original rightsholders; inclusion or linking does not transfer those rights.
+Curated artwork URLs may point to Wikimedia Commons, Cover Art Archive, Apple/iTunes artwork, Spotify CDN, Deezer CDN or other documented public sources. Copyright and reuse rights belong to the original rightsholders; inclusion or linking does not transfer those rights. Deezer artist-image URLs are treated as remote presentation references, validated to reject known empty-placeholder patterns and never described as locally owned artwork.
 
 YouTube, Spotify, Wikipedia and official artist links are external destinations. Their platform terms and privacy policies apply when a visitor opens an embed or link.
 
@@ -45,6 +45,6 @@ The repository contains original Nova Music Lab interface code, design, generate
 
 - **Software** — MIT, see [`LICENSE`](./LICENSE).
 - **Flagship dataset, generated visuals, narrative copy and brand** — reserved, see [`DATA_LICENSE.md`](./DATA_LICENSE.md). The dataset is one person's listening history published for demonstration and verification, not for redistribution.
-- **Third-party artwork and metadata** — linked, never redistributed; rights stay with the original holders, as described above.
+- **Third-party artwork** — linked as remote presentation references and never claimed as locally owned; compact, source-aware metadata may be bundled under its applicable terms. Rights stay with the original holders, as described above.
 
 Each stable release must continue to document separate treatment where appropriate for software code, original creative content, public datasets and third-party media.

@@ -9,6 +9,7 @@ Current version states:
 - `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
   superseded by `v1.4.0`.
 - `v1.4.0` — deployed 2026-07-29; current public GitHub Pages version.
+- `v1.5.0` — private candidate 2026-08-01; not deployed or tagged.
 
 ## Branch model
 
@@ -130,6 +131,43 @@ connector is deployed; the optional name is not authentication; raw visitor
 files remain local; and 5,960 long-tail artist rows remain honestly
 unclassified pending evidence.
 
+## `v1.5.0` acceptance record — private candidate 2026-08-01
+
+Candidate title:
+
+> Nova Music Lab v1.5.0 — The Living Archive Gets a Face
+
+This release freezes feature expansion around data truth, artist media,
+bounded imports, mobile accessibility and reproducible release evidence. Its
+flagship remains a historical local snapshot observed through 2026-07-03,
+generated 2026-07-14, with Recent Pulse synchronized 2026-07-02. It is not a
+live Spotify or Last.fm connection.
+
+- [x] Invalid empty Deezer portrait placeholders are rejected by the generator
+  and audit; deterministic fallbacks cover affected catalog rows.
+- [x] Genre-family coverage, reviewed assertions and unclassified catalog rows
+  are shown as separate metrics, and rejected assertions never become facts.
+- [x] ZIP expansion limits, cancellation, duplicate-name rejection and
+  browser-storage failure recovery pass adversarial tests.
+- [x] English, Spanish and Hebrew RTL journeys pass at desktop and mobile
+  sizes, including the 360/390-pixel Genres deep link.
+- [x] The exact wordmark accessible name is `NOVA MUSIC LAB`; skip navigation,
+  route headings, focus return and reduced motion pass review.
+- [x] `npm run verify`, `npm run test:e2e`, `npm audit`, privacy audit, bundle
+  budgets and `git diff --check` pass locally from the frozen product source on
+  Node `22.13.0`: 710 tests plus Playwright 18/18 are green, with one
+  intentional private-fixture skip and zero known dependency vulnerabilities.
+- [x] Final source-fingerprinted visuals pass `npm run audit:release-media` and
+  the complete post-capture `npm run verify:release` gate.
+- [ ] CI, CodeQL and Dependency Review pass on the pull request.
+- [ ] Kevin explicitly approves the merge to `main`.
+- [ ] GitHub Pages serves matching version and commit evidence before the tag,
+  GitHub Release, social preview or profile repository is synchronized.
+
+Known candidate boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
+backend, accounts, OAuth or automatic connector is added. No catalog aliases
+are destructively merged. The release costs 0 ILS in new services.
+
 ## Release metadata
 
 ### `v1.0.0` metadata — published 2026-07-16; superseded
@@ -176,6 +214,20 @@ Release summary:
 > expedition shell, account-free Guest Museum imports and private comparison,
 > a 2,257-term genre ontology with source-aware artist assertions, multilingual
 > release history and reproducible visual/deployment evidence.
+
+### `v1.5.0` metadata — private candidate 2026-08-01
+
+Candidate title:
+
+> Nova Music Lab v1.5.0 — The Living Archive Gets a Face
+
+Candidate summary:
+
+> A more trustworthy and expressive living music archive: dependable artist
+> portraits and fallbacks, clearer genre provenance, explicit snapshot dates,
+> bounded local imports, and polished mobile, keyboard and Hebrew RTL journeys.
+> The flagship remains an honest historical snapshot; no account or live sync
+> is implied.
 
 ## Rollback
 

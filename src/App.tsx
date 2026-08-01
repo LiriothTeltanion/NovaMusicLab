@@ -48,6 +48,7 @@ import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
 import CreatorCvLink from './components/CreatorCvLink';
 import NovaMark from './components/NovaMark';
+import NovaWordmark from './components/NovaWordmark';
 import SectionNarrative from './components/SectionNarrative';
 import LocalVisitorProfileCard from './components/visitor/LocalVisitorProfileCard';
 import type {
@@ -83,6 +84,7 @@ import {
   normalizeLocalVisitorName,
   saveLocalVisitorProfileResult,
 } from './utils/localVisitorProfile';
+import { resolvePublicMuseumUrl } from './utils/publicMuseumUrl';
 
 // Lazy: not needed for the very first paint (skipped entirely for returning
 // visitors who already dismissed it), and its MoodArtCanvas dependency would
@@ -657,10 +659,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
     selectedTrackKey,
   }), [activeTab, topSubTab, selectedArtistName, selectedAlbumKey, selectedTrackKey]);
   const currentDeepLink = React.useMemo(() => buildDeepLink(deepLinkState), [deepLinkState]);
-  const publicMuseumUrl = React.useMemo(
-    () => `${window.location.origin}${window.location.pathname}#/`,
-    [],
-  );
+  const publicMuseumUrl = React.useMemo(() => resolvePublicMuseumUrl(window.location), []);
   const shareRoomActions = pickLanguage(lang, {
     en: {
       title: 'A friend can also build a private museum',
@@ -1190,6 +1189,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
       })
     : storedMeta?.sourceLabel ?? filteredData.project;
   const languageUi = languageUiFor(lang);
+  const skipToContentLabel = pickLanguage(lang, {
+    en: 'Skip to museum content',
+    es: 'Saltar al contenido del museo',
+    he: 'דילוג לתוכן המוזיאון',
+  });
   const motionUi = pickLanguage(lang, {
     en: {
       control: 'Motion atmosphere',
@@ -1309,6 +1313,20 @@ function AppInner({ boot }: { boot: AppBoot }) {
       data-room={activeTab}
       style={{ backgroundColor: tc.bg, color: 'var(--fg)' }}
     >
+      <a
+        href="#main-content"
+        className="nova-skip-link"
+        onClick={(event) => {
+          // The museum uses its hash as the route. Keep the conventional href
+          // for semantics, but do not replace the active room with #main-content.
+          event.preventDefault();
+          window.requestAnimationFrame(() => {
+            document.getElementById('main-content')?.focus();
+          });
+        }}
+      >
+        {skipToContentLabel}
+      </a>
       {activeTab !== 'hero' && effectiveMotionMode === 'expressive' ? (
         <Suspense fallback={null}>
           <InteractiveBackdrop data={musicData} motionMode={effectiveMotionMode} />
@@ -1326,13 +1344,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
           onClick={() => goToTab('hero')}
           aria-label={t.homeAria}
         >
-          <div className="relative h-10 w-10 overflow-hidden rounded-2xl border bg-black/35 shadow-cyber"
-            style={{ borderColor: `${tc.c1}45`, boxShadow: `0 0 20px ${tc.c1}24` }}>
-            <NovaMark className="h-full w-full" size="100%" />
-          </div>
-          <span className="nova-app-brand__wordmark font-display text-base font-bold uppercase tracking-[0.14em] text-white">
-            NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
-          </span>
+          <NovaWordmark
+            accentColor={tc.c1}
+            className="nova-app-brand__lockup"
+            wordsClassName="uppercase"
+          />
         </button>
 
         <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
@@ -1711,6 +1727,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
 
           {/* Content */}
           <main
+            id="main-content"
             ref={mainContentRef}
             tabIndex={-1}
             data-testid="museum-room-main"
@@ -1806,7 +1823,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                       <div className="space-y-6 animate-fade-in">
                         <div className="flex items-center gap-3 mb-6">
                           <Upload className="w-6 h-6" style={{ color: tc.c1 }} />
-                          <h2 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h2>
+                          <h1 className="text-2xl font-bold font-mono uppercase tracking-wider text-white">{t.sections.uploadTitle}</h1>
                         </div>
                         <SectionNarrative content={t.deepNarratives.upload} accent="c2" />
                         <LocalVisitorProfileCard

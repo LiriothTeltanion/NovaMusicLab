@@ -17,6 +17,14 @@ const offlineKnowledge = offlineKnowledgeData as unknown as {
 const data: MusicDnaData = {
   ...baseData,
   generated_at: '2026-07-13T17:55:27.497Z',
+  snapshot_freshness: {
+    observedFrom: '2015-03-01',
+    observedThrough: '2026-07-03',
+    datasetGeneratedAt: '2026-07-13T17:55:27.497Z',
+    enrichmentGeneratedAt: '2026-07-29T00:00:00.000Z',
+    recentPulseSyncedAt: '2026-07-02',
+    liveConnection: false,
+  },
   top_artists: offlineKnowledge.artists.map(artist => ({
     name: artist.name,
     plays: artist.archive.plays,
@@ -35,13 +43,16 @@ const data: MusicDnaData = {
   },
 };
 
-function renderQuality(depth: 'guided' | 'explore' | 'deep-dive' = 'explore') {
+function renderQuality(
+  depth: 'guided' | 'explore' | 'deep-dive' = 'explore',
+  useBundledGenreCatalog = false,
+) {
   window.localStorage.setItem('nml_lang', 'en');
   window.localStorage.setItem('nml_experience_depth', depth);
   return render(
     <AppProvider>
       <ExperienceProvider>
-        <DataQualityCenter data={data} />
+        <DataQualityCenter data={data} useBundledGenreCatalog={useBundledGenreCatalog} />
       </ExperienceProvider>
     </AppProvider>,
   );
@@ -68,6 +79,20 @@ describe('DataQualityCenter trust sources', () => {
 
     expect(screen.getByText(/Mar 1, 2015.*Jul 3, 2026.*Asia\/Jerusalem/i))
       .toBeInTheDocument();
+  });
+
+  it('separates archive, enrichment and pulse freshness without implying a live connection', () => {
+    renderQuality('explore', true);
+
+    const freshness = screen.getByTestId('snapshot-freshness');
+    expect(within(freshness).getByText('Snapshot freshness')).toBeInTheDocument();
+    expect(freshness).toHaveTextContent(/Mar 1, 2015.*Jul 3, 2026/);
+    expect(freshness).toHaveTextContent(/Archive generated.*Jul 13, 2026/);
+    expect(freshness).toHaveTextContent(/Artist enrichment.*Jul 29, 2026/);
+    expect(freshness).toHaveTextContent(/Recent Pulse synced.*Jul 2, 2026/);
+    expect(freshness).toHaveTextContent('Dated snapshots · no live connection');
+    expect(freshness).toHaveTextContent('6,413 exact artist-name catalog entries');
+    expect(freshness).toHaveTextContent('181 known normalized name-variant groups');
   });
 
   it('answers three human questions in Explore and hides cache jargon', () => {

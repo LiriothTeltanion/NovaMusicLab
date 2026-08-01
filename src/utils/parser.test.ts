@@ -51,6 +51,14 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_short_plays).toBe(1);
     expect(data.countries[0]).toEqual({ country: 'Israel', plays: 1 });
     expect(data.platform_breakdown?.map(item => item.platform)).toEqual(['Windows desktop']);
+    expect(data.snapshot_freshness).toEqual({
+      observedFrom: '2026-01-01',
+      observedThrough: '2026-01-01',
+      datasetGeneratedAt: data.generated_at,
+      enrichmentGeneratedAt: null,
+      recentPulseSyncedAt: null,
+      liveConnection: false,
+    });
   });
 
   it('parses YouTube Takeout watch history JSON as listening events', () => {

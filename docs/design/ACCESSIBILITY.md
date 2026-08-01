@@ -16,12 +16,20 @@ Nova Music Lab treats accessibility as part of analytical trust. A chart or muse
 - No essential state communicated by color or emoji alone.
 - Correct `lang`, `dir`, locale formatting and bidirectional isolation.
 
+For `v1.5.0` — private candidate 2026-08-01 — the release boundary additionally
+requires one exact `NOVA MUSIC LAB` accessible Hero heading, a trilingual skip
+link, one `h1` per routed room, focus return when Escape closes overlays, LTR
+isolation for counters inside Hebrew RTL, decorative artist avatars with empty
+alternative text when adjacent text already names the artist, and a Genres
+deep link that stays visible and chart-safe at 360/390 pixels.
+
 ## Responsive and language matrix
 
 Review the core journey at:
 
 ```text
 320 × 568
+360 × 800
 390 × 844
 768 × 1024
 1024 × 768
@@ -33,7 +41,7 @@ For each release candidate, cover English, Spanish and Hebrew/RTL; one dark and 
 
 ## Automated gates
 
-The v1 target adds:
+The v1 gate includes:
 
 - axe checks for core rooms and dialogs;
 - Playwright journeys for flagship, import, restore, language, route and export flows;

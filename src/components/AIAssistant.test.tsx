@@ -3,11 +3,24 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AppProvider } from '../context/AppContext';
+import { ExperienceProvider } from '../context/ExperienceContext';
 import defaultMusicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
 import AIAssistant, { buildSandboxGenreResponse, buildSandboxResponse } from './AIAssistant';
 
 const data = defaultMusicData as unknown as MusicDnaData;
+
+function renderAssistant(depth: 'guided' | 'explore' | 'deep-dive' = 'explore') {
+  window.localStorage.setItem('nml_experience_depth', depth);
+
+  return render(
+    <AppProvider>
+      <ExperienceProvider>
+        <AIAssistant data={data} />
+      </ExperienceProvider>
+    </AppProvider>,
+  );
+}
 
 describe('AIAssistant accessibility', () => {
   beforeEach(() => {
@@ -24,24 +37,18 @@ describe('AIAssistant accessibility', () => {
   });
 
   it('labels both inputs and exposes new messages through a polite log', () => {
-    render(
-      <AppProvider>
-        <AIAssistant data={data} />
-      </AppProvider>
-    );
+    renderAssistant('deep-dive');
 
     expect(screen.getByRole('log', { name: 'Conversation with Nova' }))
       .toHaveAttribute('aria-live', 'polite');
     expect(screen.getByLabelText('Ask Nova about your music history')).toBeInTheDocument();
     expect(screen.getByLabelText('Gemini API key')).toHaveAttribute('aria-describedby', 'nova-api-key-description');
+    expect(screen.getByText('Artist-name entries')).toBeInTheDocument();
+    expect(screen.queryByText('Unique artists')).not.toBeInTheDocument();
   });
 
   it('marks the Gemini destination as a safe new-tab link', () => {
-    render(
-      <AppProvider>
-        <AIAssistant data={data} />
-      </AppProvider>
-    );
+    renderAssistant('deep-dive');
 
     const link = screen.getByRole('link', { name: /Get a free Gemini key.*opens in a new tab/i });
     expect(link).toHaveAttribute('target', '_blank');
@@ -50,11 +57,7 @@ describe('AIAssistant accessibility', () => {
 
   it('keeps the Gemini key only in page memory and supports clear', async () => {
     const user = userEvent.setup();
-    render(
-      <AppProvider>
-        <AIAssistant data={data} />
-      </AppProvider>
-    );
+    renderAssistant('deep-dive');
 
     const input = screen.getByLabelText('Gemini API key');
     await user.type(input, 'test-session-key');
@@ -73,12 +76,7 @@ describe('AIAssistant accessibility', () => {
 
   it('renders complete Hebrew controls, status copy and RTL semantics', async () => {
     window.localStorage.setItem('nml_lang', 'he');
-
-    render(
-      <AppProvider>
-        <AIAssistant data={data} />
-      </AppProvider>
-    );
+    renderAssistant('deep-dive');
 
     const conversation = await screen.findByRole('log', { name: 'שיחה עם Nova' });
 
@@ -94,7 +92,17 @@ describe('AIAssistant accessibility', () => {
     expect(screen.getByRole('link', { name: /קבלת מפתח Gemini בחינם.*נפתח בכרטיסייה חדשה/ }))
       .toHaveAttribute('target', '_blank');
     expect(screen.getByText('השמעות מתועדות')).toBeInTheDocument();
-    expect(screen.getByText('אמנים ייחודיים')).toBeInTheDocument();
+    expect(screen.getByText('רשומות שמות אמנים')).toBeInTheDocument();
+  });
+
+  it('is honestly local by default and keeps external AI settings in Deep Dive', () => {
+    renderAssistant('explore');
+
+    expect(screen.getByTestId('assistant-connection-status'))
+      .toHaveTextContent('Local analysis · no external AI');
+    expect(screen.queryByLabelText('Gemini API key')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Get a free Gemini key/i }))
+      .not.toBeInTheDocument();
   });
 
   it('builds the sandbox genre reading from real shares instead of fixed claims', () => {
@@ -141,9 +149,23 @@ describe('AIAssistant accessibility', () => {
     expect(obsessions).toContain('In Blur');
     expect(daypart).toContain('ניתוח חלון ההאזנה הדומיננטי');
     expect(daypart).toMatch(/בוקר|אחר הצהריים|ערב|לילה מאוחר/);
-    expect(fallback).toContain('מצב ה-Sandbox של Nova');
+    expect(fallback).toContain('הניתוח המקומי של Nova');
+    expect(fallback).toContain('רשומות שמות אמנים');
+    expect(fallback).not.toContain('אמנים ייחודיים');
     expect(fallback).toContain(new Intl.NumberFormat('he-IL').format(data.core_metrics.total_plays));
     expect([playlist, obsessions, daypart, fallback].join('\n')).not.toContain('escuchas');
+  });
+
+  it('describes the full catalog as name entries rather than unique people', () => {
+    const english = buildSandboxResponse(data, 'en', 'tell me about this archive');
+    const spanish = buildSandboxResponse(data, 'es', 'cuéntame sobre este archivo');
+
+    expect(english).toContain('Artist-name entries');
+    expect(english).toContain('not a claim about unique people');
+    expect(english).not.toContain('Unique artists');
+    expect(spanish).toContain('Entradas de nombres de artista');
+    expect(spanish).toContain('no una afirmación sobre personas únicas');
+    expect(spanish).not.toContain('Artistas únicos');
   });
 
   it('builds playlist, repetition and daypart answers only from the active archive', () => {

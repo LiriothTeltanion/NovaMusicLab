@@ -2,9 +2,9 @@
   "schema": "nova-music-profile-release-v1",
   "release": {
     "status": "private-candidate",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "commit": null,
-    "captured_on": "2026-07-29",
+    "captured_on": "2026-08-01",
     "deployed_on": null
   },
   "repository": "LiriothTeltanion/NovaMusicLab",
@@ -13,11 +13,11 @@
   "media": [
     {
       "id": "profile-hero-desktop",
-      "path": "assets/releases/v1.4.0/home-desktop-en-cyber.jpg",
-      "sha256": "020fe3ccc3fe50521ee954773b57a61a967af0f2b44b71a76ed4ccdfb6450dcf",
+      "path": "assets/releases/v1.5.0/home-desktop-en-cyber.jpg",
+      "sha256": "bfe7c7de2a387dbaf7974a4e252eaeb39b63b793464b54f5c72fd5eab7aa77e7",
       "width": 1440,
       "height": 900,
-      "bytes": 158036,
+      "bytes": 162214,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -27,11 +27,25 @@
     },
     {
       "id": "profile-hero-mobile",
-      "path": "assets/releases/v1.4.0/home-mobile-en-cyber.jpg",
-      "sha256": "e4b398edcdd985f92bcfe6740577b1ae1b9f85f0eadb6f4d605e20caec1c74f3",
+      "path": "assets/releases/v1.5.0/home-mobile-es-cyber.jpg",
+      "sha256": "b4e953afa906f26d54022e3a171f0356bdc90e8e65c9bd83f34c0abcff513421",
       "width": 390,
       "height": 844,
-      "bytes": 51281,
+      "bytes": 53487,
+      "lang": "es",
+      "theme": "cyber",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "genres-mobile",
+      "path": "assets/releases/v1.5.0/genres-mobile-en-cyber.jpg",
+      "sha256": "b475fecdfd607a5ca6afc766e8e54fed22a48e10a5965dfc1e5aa58377f2af51",
+      "width": 390,
+      "height": 844,
+      "bytes": 63086,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -40,26 +54,12 @@
       }
     },
     {
-      "id": "genres-desktop",
-      "path": "assets/releases/v1.4.0/genres-desktop-en-cyber.jpg",
-      "sha256": "26dfce84c941d5eb6aea06b78cca56b95385fa8ac2abfc77c9327553fcbc5cd2",
-      "width": 1440,
-      "height": 900,
-      "bytes": 162056,
-      "lang": "en",
-      "theme": "cyber",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      }
-    },
-    {
       "id": "artist-atlas-desktop",
-      "path": "assets/releases/v1.4.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "d7ee709690549d3b2c6438750345af89c40216ffefc84a994664cd23cd17c89b",
+      "path": "assets/releases/v1.5.0/artist-atlas-desktop-en-cyber.jpg",
+      "sha256": "a8b1a2c353616ec57470fa865dec4afb98b5880e2eae41d74f1121af5b209efa",
       "width": 1440,
       "height": 900,
-      "bytes": 179840,
+      "bytes": 168979,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -69,11 +69,11 @@
     },
     {
       "id": "guest-museum-desktop",
-      "path": "assets/releases/v1.4.0/guest-museum-desktop-en-cyber.jpg",
-      "sha256": "04983475af9eae2d6d5cb9dd86a66fb74243a2a034e208f8033fe0f701249ff4",
+      "path": "assets/releases/v1.5.0/guest-museum-desktop-en-cyber.jpg",
+      "sha256": "30198082147f1c5ff7ad6264f42d163eecda92080f7b3f118fd1fc272ad6588a",
       "width": 1440,
       "height": 900,
-      "bytes": 147609,
+      "bytes": 149494,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -83,11 +83,11 @@
     },
     {
       "id": "hebrew-mobile",
-      "path": "assets/releases/v1.4.0/share-he-mobile-daylight.jpg",
-      "sha256": "e5ac94873d995bdb4ab89bf2d38ab8a1eb9d6ff239d02128505e9d7564e3026d",
+      "path": "assets/releases/v1.5.0/share-he-mobile-daylight.jpg",
+      "sha256": "0c0a64792b5539ea40f4222377adf0929e5caeea11d9c58c4ac5a415ee0fa465",
       "width": 390,
       "height": 844,
-      "bytes": 48605,
+      "bytes": 48660,
       "lang": "he",
       "theme": "daylight",
       "viewport": {
@@ -97,11 +97,11 @@
     },
     {
       "id": "profile-tour-static",
-      "path": "assets/releases/v1.4.0/product-tour-static-en-cyber.jpg",
-      "sha256": "46a25fb77e04f69af028ccc1d18de75c6c071a8c0c6a78cc2b2184e49e115747",
+      "path": "assets/releases/v1.5.0/product-tour-static-en-cyber.jpg",
+      "sha256": "ef5f2be064cee7ea7969effe5f6ca2eadb537365a8d1be1c2450d5cfda613403",
       "width": 960,
       "height": 600,
-      "bytes": 41356,
+      "bytes": 102783,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -111,11 +111,11 @@
     },
     {
       "id": "profile-tour",
-      "path": "assets/releases/v1.4.0/product-tour-animated-en-cyber.gif",
-      "sha256": "af030e37a4e2da9dc7b7b0b86806bab6cefa69b3857d3f4b73e5b9b4cdf14d48",
+      "path": "assets/releases/v1.5.0/product-tour-animated-en-cyber.gif",
+      "sha256": "488278bcbf5f3aa5ace2d5bbbf589d0395e9261e953838b5a3993288c18f490a",
       "width": 560,
       "height": 350,
-      "bytes": 1113271,
+      "bytes": 668283,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -125,11 +125,11 @@
     },
     {
       "id": "social-preview",
-      "path": "assets/releases/v1.4.0/social-preview.png",
-      "sha256": "27a2597f648d53a0c14b0fdfe7662fca0bef9ab8d66c08e32e9c94e59c660cc0",
+      "path": "assets/releases/v1.5.0/social-preview.png",
+      "sha256": "aa86adc15d1166db3d86f3dc96b925bc85867eb9581872551010867fc25656b7",
       "width": 1280,
       "height": 640,
-      "bytes": 546051,
+      "bytes": 546767,
       "lang": "en",
       "theme": "cyber",
       "viewport": {

@@ -3,12 +3,31 @@
 ## Canonical local gate
 
 ```bash
+npm ci
 npm run verify
 node scripts/audit_public_bundle_privacy.mjs
+npm run test:e2e
+npm audit
 git diff --check
+git status --short
 ```
 
 `npm run verify` runs lint; strict data, external-identity and media-link audits; artist-knowledge, public-bundle privacy and PWA contract audits; the Vitest suite; TypeScript compilation; the production build; and bundle-budget checks.
+
+The canonical release runtime is **Node 22.13.0**. Playwright uses one worker
+in CI and on Windows, at most two on other local hosts, and accepts a bounded
+`PLAYWRIGHT_WORKERS` override.
+
+After the frozen product source is committed and release media is regenerated:
+
+```bash
+npm run screenshots:capture
+npm run audit:release-media
+npm run verify:release
+npm run test:e2e
+git diff --check
+git status --short
+```
 
 ## Targeted iteration
 

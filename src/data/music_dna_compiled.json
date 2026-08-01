@@ -1,6 +1,14 @@
 {
   "project": "Nova Music Lab - Datos Importados (Last.fm CSV + Spotify JSON + YouTube JSON/HTML)",
   "generated_at": "2026-07-14T01:13:06.127Z",
+  "snapshot_freshness": {
+    "observedFrom": "2015-03-01",
+    "observedThrough": "2026-07-03",
+    "datasetGeneratedAt": "2026-07-14T01:13:06.127Z",
+    "enrichmentGeneratedAt": "2026-07-29T00:00:00.000Z",
+    "recentPulseSyncedAt": "2026-07-02",
+    "liveConnection": false
+  },
   "narrative_scope": "flagship",
   "core_metrics": {
     "total_plays": 80550,
@@ -1722,84 +1730,148 @@
   ],
   "top_genres": [
     {
-      "name": "Unclassified",
-      "plays": 27221
-    },
-    {
       "name": "Post-Hardcore",
-      "plays": 8086
-    },
-    {
-      "name": "Alternative",
-      "plays": 7642
+      "plays": 8323
     },
     {
       "name": "Metalcore",
-      "plays": 5495
+      "plays": 6256
     },
     {
-      "name": "Progressive Metal",
-      "plays": 3647
+      "name": "Pop / Indie",
+      "plays": 5568
     },
     {
-      "name": "Synthwave / Darksynth",
-      "plays": 3579
+      "name": "Hip-Hop / Rap",
+      "plays": 4858
+    },
+    {
+      "name": "Unclassified",
+      "plays": 4777
     },
     {
       "name": "Hard Rock",
-      "plays": 3568
+      "plays": 4471
+    },
+    {
+      "name": "Alternative",
+      "plays": 4186
+    },
+    {
+      "name": "Synthwave / Darksynth",
+      "plays": 4025
     },
     {
       "name": "Post-Metal / Blackgaze",
-      "plays": 3410
+      "plays": 3781
+    },
+    {
+      "name": "Power / Speed Metal",
+      "plays": 2943
+    },
+    {
+      "name": "Progressive Metal",
+      "plays": 2937
     },
     {
       "name": "Pop Punk / Emo",
-      "plays": 2304
+      "plays": 2811
+    },
+    {
+      "name": "Electronic / EDM",
+      "plays": 2456
+    },
+    {
+      "name": "Rock",
+      "plays": 2359
+    },
+    {
+      "name": "Alternative Rock",
+      "plays": 2346
+    },
+    {
+      "name": "Ambient / Lo-Fi",
+      "plays": 2029
     },
     {
       "name": "Israeli Rock",
       "plays": 1982
     },
     {
-      "name": "Power / Speed Metal",
-      "plays": 1953
+      "name": "Death Metal",
+      "plays": 1877
     },
     {
-      "name": "Pop / Indie",
-      "plays": 1819
-    },
-    {
-      "name": "Alternative Rock",
-      "plays": 1512
-    },
-    {
-      "name": "Ambient / Lo-Fi",
-      "plays": 1493
+      "name": "Progressive Rock",
+      "plays": 1711
     },
     {
       "name": "Alt-Metal",
-      "plays": 1449
-    },
-    {
-      "name": "Emo Rap / Trap",
-      "plays": 1425
-    },
-    {
-      "name": "Death Metal",
-      "plays": 1373
-    },
-    {
-      "name": "Hip-Hop / Rap",
-      "plays": 1345
+      "plays": 1666
     },
     {
       "name": "Heavy Metal",
-      "plays": 760
+      "plays": 1588
+    },
+    {
+      "name": "Emo Rap / Trap",
+      "plays": 1561
+    },
+    {
+      "name": "Symphonic / Gothic Metal",
+      "plays": 1178
     },
     {
       "name": "Folk Metal",
-      "plays": 487
+      "plays": 809
+    },
+    {
+      "name": "Black Metal",
+      "plays": 730
+    },
+    {
+      "name": "Gothic / Industrial",
+      "plays": 566
+    },
+    {
+      "name": "Latin",
+      "plays": 459
+    },
+    {
+      "name": "Classical / Orchestral",
+      "plays": 454
+    },
+    {
+      "name": "R&B / Soul",
+      "plays": 327
+    },
+    {
+      "name": "Punk / New Wave",
+      "plays": 326
+    },
+    {
+      "name": "Soundtrack / Score",
+      "plays": 292
+    },
+    {
+      "name": "Folk / Country",
+      "plays": 273
+    },
+    {
+      "name": "K-Pop / J-Pop",
+      "plays": 201
+    },
+    {
+      "name": "Post-Rock",
+      "plays": 193
+    },
+    {
+      "name": "World / Regional",
+      "plays": 148
+    },
+    {
+      "name": "Jazz",
+      "plays": 83
     }
   ],
   "yearly_eras": [
