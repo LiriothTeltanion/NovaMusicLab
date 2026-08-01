@@ -6,7 +6,17 @@ const DATASET_PATH = resolve(ROOT, 'src', 'data', 'music_dna_compiled.json');
 const MANIFEST_PATH = resolve(ROOT, 'src', 'data', 'public_dataset_manifest.json');
 const RECENT_PULSE_PATH = resolve(ROOT, 'src', 'data', 'recent_pulse.json');
 const PUBLIC_DATA_DIR = resolve(ROOT, 'src', 'data');
-const REPOSITORY_SCAN_EXCLUDES = new Set(['.git', 'coverage', 'dist', 'node_modules']);
+// Every entry here is gitignored and machine-local, so nothing inside can
+// reach a commit or the published bundle. `.cache` joined the list when the
+// Deezer harvest began storing raw API responses: one album on Deezer carries
+// a contact address inside its own title, and the scan flagged that stranger's
+// address in a file that is never published. The harvest keeps only artist
+// name, id and genre, and the address was confirmed absent from every tracked
+// file and from src/data before this line was widened.
+//
+// Writing the address here to document the case would have tripped this very
+// audit - correctly - so it is described rather than quoted.
+const REPOSITORY_SCAN_EXCLUDES = new Set(['.cache', '.git', 'coverage', 'dist', 'node_modules']);
 const REPOSITORY_TEXT_EXTENSIONS = new Set([
   '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.svg', '.ts', '.tsx', '.txt', '.yaml', '.yml',
 ]);

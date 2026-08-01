@@ -88,6 +88,26 @@ export function normalizeGenre(raw = ''): string {
   // genre: Reggaeton, K-Pop, Gothic Metal, Corridos Tumbados, EDM, Post-Rock.
   // Ordering is the whole design here, so each rule sits after anything more
   // specific that could legitimately claim the same string.
+  // Deezer's coarse vocabulary arrives here as whole labels. Without homes of
+  // their own these landed on Alternative: "Films/Games" alone was 292 plays
+  // across 54 artists, and bare "Dance" another 94 artists.
+  if (
+    g.includes('films/games') || g.includes('soundtrack') || g.includes('video game')
+    || g.includes('film score') || g.includes('original score')
+  ) return 'Soundtrack / Score';
+  // Regional catalogues the archive only brushes against. Grouped honestly as
+  // regional rather than dissolved into Alternative, which would claim a genre
+  // nobody established.
+  if (
+    g.includes('african') || g.includes('asian music') || g.includes('indian music')
+    || g.includes('afrobeat') || g.includes('reggae') || g.includes('world music')
+  ) return 'World / Regional';
+  if (g.includes('brazilian') || g.includes('mariachi')) return 'Latin';
+  // Whole-label equality, not includes: 'dance' as a substring would swallow
+  // "Pop / Dance Pop", which is a pop record.
+  if (g === 'dance' || g === 'club / dance') return 'Electronic / EDM';
+  if (g.includes('grindcore') || g.includes('powerviolence')) return 'Death Metal';
+  if (g.includes('aggrotech')) return 'Gothic / Industrial';
   if (g.includes('black metal')) return 'Black Metal';
   // Late on purpose. Putting these next to the other alt-metal spellings looked
   // tidier and silently stole six records whose primary genre was something
@@ -147,6 +167,9 @@ export function normalizeGenre(raw = ''): string {
   if (/\bemo\b/.test(g) || g.includes('easycore')) return 'Pop Punk / Emo';
   if (g.includes('metal')) return 'Heavy Metal';
   if (g.includes('rock')) return 'Rock';
+  // After the rock branch, deliberately: "Blues Rock" is a rock record, while
+  // bare "Blues" and "Electric Blues" belong with the roots families.
+  if (g.includes('blues')) return 'Folk / Country';
   return 'Alternative';
 }
 

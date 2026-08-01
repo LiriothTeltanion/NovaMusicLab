@@ -37,6 +37,11 @@ export const GENRE_FAMILY_IDS = [
   'Folk / Country',
   'Latin',
   'K-Pop / J-Pop',
+  // Added with the Deezer second source, whose coarse vocabulary had no home
+  // here: film and game music, and the regional catalogues the archive only
+  // brushes against.
+  'Soundtrack / Score',
+  'World / Regional',
   'Alternative',
   'Unclassified',
 ] as const;
@@ -209,6 +214,16 @@ export const GENRE_FAMILIES: readonly GenreFamilyDefinition[] = [
     id: 'K-Pop / J-Pop',
     labels: { es: 'K-pop / J-pop', en: 'K-Pop / J-Pop', he: 'קיי־פופ / ג׳יי־פופ' },
     secondaryTags: ['K-Pop', 'J-Pop', 'J-Rock', 'Visual Kei'],
+  },
+  {
+    id: 'Soundtrack / Score',
+    labels: { es: 'Banda sonora', en: 'Soundtrack / Score', he: 'פסקול' },
+    secondaryTags: ['Film Score', 'Video Game Music', 'Orchestral Score', 'Cinematic'],
+  },
+  {
+    id: 'World / Regional',
+    labels: { es: 'Mundo / Regional', en: 'World / Regional', he: 'עולם / אזורי' },
+    secondaryTags: ['African Music', 'Asian Music', 'Indian Music', 'Reggae'],
   },
   {
     id: 'Alternative',

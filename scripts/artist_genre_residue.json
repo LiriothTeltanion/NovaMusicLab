@@ -115,11 +115,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Heroes Del Silencio",
-    "plays": 59,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Hilay",
     "plays": 58,
     "reason": "no exact name match"
@@ -240,11 +235,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Heavy Eyes",
-    "plays": 41,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Tropic Gold",
     "plays": 40,
     "reason": "MusicBrainz artist carries no known genre"
@@ -342,7 +332,7 @@
   {
     "name": "chaz.",
     "plays": 32,
-    "reason": "no exact name match"
+    "reason": "MusicBrainz artist carries no known genre"
   },
   {
     "name": "Dutch Melrose",
@@ -410,11 +400,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Cain's Offering",
-    "plays": 27,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Great Good Fine Ok",
     "plays": 27,
     "reason": "MusicBrainz artist carries no known genre"
@@ -451,11 +436,6 @@
   },
   {
     "name": "雅-MIYAVI-",
-    "plays": 26,
-    "reason": "no exact name match"
-  },
-  {
-    "name": "G-Eazy",
     "plays": 26,
     "reason": "no exact name match"
   },
@@ -626,11 +606,6 @@
   },
   {
     "name": "jordn day",
-    "plays": 20,
-    "reason": "no exact name match"
-  },
-  {
-    "name": "Los Angeles Negros",
     "plays": 20,
     "reason": "no exact name match"
   },
@@ -868,11 +843,6 @@
     "name": "Palm Monkey",
     "plays": 15,
     "reason": "MusicBrainz artist carries no known genre"
-  },
-  {
-    "name": "Be'lakor",
-    "plays": 14,
-    "reason": "no exact name match"
   },
   {
     "name": "Chapterhouse",
@@ -1210,11 +1180,6 @@
     "reason": "no exact name match"
   },
   {
-    "name": "Time The Valuator",
-    "plays": 10,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Outline in Color",
     "plays": 10,
     "reason": "MusicBrainz artist carries no known genre"
@@ -1350,11 +1315,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Allen Lande",
-    "plays": 9,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Henry Raymond Jr.",
     "plays": 9,
     "reason": "no exact name match"
@@ -1366,11 +1326,6 @@
   },
   {
     "name": "Harel Skaat",
-    "plays": 9,
-    "reason": "no exact name match"
-  },
-  {
-    "name": "Heavy eyes",
     "plays": 9,
     "reason": "no exact name match"
   },
@@ -1465,11 +1420,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Melt-Banana",
-    "plays": 8,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Kinder Malo",
     "plays": 8,
     "reason": "MusicBrainz artist carries no known genre"
@@ -1535,17 +1485,7 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Jakub Zytecki",
-    "plays": 8,
-    "reason": "no exact name match"
-  },
-  {
     "name": "jon pm",
-    "plays": 8,
-    "reason": "no exact name match"
-  },
-  {
-    "name": "The Kid LAROI.",
     "plays": 8,
     "reason": "no exact name match"
   },
@@ -1717,7 +1657,7 @@
   {
     "name": "D-Block Europe",
     "plays": 7,
-    "reason": "no exact name match"
+    "reason": "MusicBrainz artist carries no known genre"
   },
   {
     "name": "Nafe Smallz Krept & Konan",
@@ -1820,11 +1760,6 @@
     "reason": "MusicBrainz artist carries no known genre"
   },
   {
-    "name": "Run–D.M.C.",
-    "plays": 6,
-    "reason": "no exact name match"
-  },
-  {
     "name": "Botnit",
     "plays": 6,
     "reason": "MusicBrainz artist carries no known genre"
@@ -1841,11 +1776,6 @@
   },
   {
     "name": "Paradise Walk & Morgan Willis",
-    "plays": 6,
-    "reason": "no exact name match"
-  },
-  {
-    "name": "Earth Wind & Fire",
     "plays": 6,
     "reason": "no exact name match"
   },
@@ -1927,7 +1857,7 @@
   {
     "name": "D'Angelo",
     "plays": 6,
-    "reason": "no exact name match"
+    "reason": "2 equally plausible artists"
   },
   {
     "name": "Livealie",
@@ -1952,7 +1882,7 @@
   {
     "name": "Olivia O'Brien",
     "plays": 6,
-    "reason": "no exact name match"
+    "reason": "MusicBrainz artist carries no known genre"
   },
   {
     "name": "Pay money To my Pain",
@@ -1998,5 +1928,75 @@
     "name": "Sueco Travis Barker",
     "plays": 6,
     "reason": "no exact name match"
+  },
+  {
+    "name": "Merci",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "palettes",
+    "plays": 6,
+    "reason": "2 equally plausible artists"
+  },
+  {
+    "name": "Post Malone, Swae Lee",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "Matty Shreds",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "SmittyZTop",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "WesGhost",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "Sig Roy",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "植松 伸夫",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "NR",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "sam02",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "Bhaly",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "JACSIN",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
+  },
+  {
+    "name": "Hanumankind, Kalmi",
+    "plays": 6,
+    "reason": "no exact name match"
+  },
+  {
+    "name": "iLL Nicky",
+    "plays": 6,
+    "reason": "MusicBrainz artist carries no known genre"
   }
 ]

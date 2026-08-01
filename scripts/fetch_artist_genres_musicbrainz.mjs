@@ -20,6 +20,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { chooseArtistByName } from './lib/artistNameMatch.mjs';
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'src', 'data');
 const CACHE_DIR = path.join(ROOT, 'scripts', '.cache', 'musicbrainz_genres');
@@ -31,6 +33,10 @@ const DELAY_MS = 1100;
 const BACKOFF_MS = 5000;
 
 const DRY_RUN = process.argv.includes('--dry-run');
+// Re-evaluate only artists whose search is already on disk. Used after the
+// matching rules change: every previously refused name is re-judged against the
+// new rules without spending a single request.
+const CACHED_ONLY = process.argv.includes('--cached-only');
 const LIMIT = (() => {
   const arg = process.argv.find(a => a.startsWith('--limit='));
   return arg ? Number(arg.split('=')[1]) : 1000;
@@ -50,9 +56,17 @@ const existing = fs.existsSync(OUTPUT_PATH)
   : { schemaVersion: 1, provider: 'musicbrainz', artists: {} };
 const observations = existing.artists ?? {};
 
+fs.mkdirSync(CACHE_DIR, { recursive: true });
+// Full-Unicode cache key: ASCII-only normalisation collapses non-Latin names.
+const cachePath = (kind, key) => path.join(
+  CACHE_DIR,
+  `${kind}-${Buffer.from(key, 'utf8').toString('base64url').slice(0, 110)}.json`,
+);
+
 const targets = rows
   .filter(r => r.automaticFamily === 'Unclassified' && r.name)
   .filter(r => !observations[norm(r.name)])
+  .filter(r => !CACHED_ONLY || fs.existsSync(cachePath('search', r.name)))
   .sort((a, b) => (b.plays || 0) - (a.plays || 0))
   .slice(0, LIMIT);
 
@@ -65,12 +79,6 @@ if (DRY_RUN) {
   console.log('  --dry-run: no requests, no writes.');
   process.exit(0);
 }
-
-fs.mkdirSync(CACHE_DIR, { recursive: true });
-const cachePath = (kind, key) => path.join(
-  CACHE_DIR,
-  `${kind}-${Buffer.from(key, 'utf8').toString('base64url').slice(0, 110)}.json`,
-);
 
 async function musicbrainz(url, kind, cacheKey) {
   const cached = cachePath(kind, cacheKey);
@@ -102,20 +110,18 @@ function luceneEscape(value) {
 }
 
 /**
- * Returns the MusicBrainz artist we are confident is the right one, or null.
- * Two artists sharing a name at the same relevance is a refusal, not a coin
- * flip: a wrong genre silently rewrites what the museum says about a record.
+ * Duplicates of the same name are resolved by MusicBrainz's own relevance
+ * score, and only when one clearly leads - a tie stays a refusal.
  */
-function chooseArtist(name, candidates) {
-  const exact = (candidates ?? []).filter(a => norm(a.name) === norm(name));
-  if (exact.length === 0) return { artist: null, reason: 'no exact name match' };
-  if (exact.length === 1) return { artist: exact[0], reason: 'exact' };
-
-  const sorted = [...exact].sort((a, b) => (b.score || 0) - (a.score || 0));
+function mostRelevant(matches) {
+  const sorted = [...matches].sort((left, right) => (right.score || 0) - (left.score || 0));
   const [top, second] = sorted;
-  if ((top.score || 0) > (second.score || 0)) return { artist: top, reason: 'higher relevance' };
-  return { artist: null, reason: `${exact.length} equally plausible artists` };
+  return (top.score || 0) > (second.score || 0) ? top : null;
 }
+
+const chooseArtist = (name, candidates) => chooseArtistByName(name, candidates, {
+  tieBreak: mostRelevant,
+});
 
 let classified = 0;
 let live = 0;

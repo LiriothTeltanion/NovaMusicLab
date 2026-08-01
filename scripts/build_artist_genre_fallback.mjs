@@ -17,6 +17,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'src', 'data');
 const OBSERVATIONS_PATH = path.join(DATA, 'artist_genre_observations.json');
+const DEEZER_PATH = path.join(DATA, 'artist_genre_observations_deezer.json');
 const CURATED_PATH = path.join(DATA, 'artist_meta.json');
 const OUTPUT_PATH = path.join(DATA, 'artist_genre_fallback.json');
 
@@ -46,38 +47,57 @@ function titleCase(value) {
     .join('');
 }
 
-if (!fs.existsSync(OBSERVATIONS_PATH)) {
-  console.log('No observations file yet - run fetch_artist_genres_musicbrainz.mjs first.');
+const readArtists = filePath => (fs.existsSync(filePath)
+  ? JSON.parse(fs.readFileSync(filePath, 'utf8')).artists ?? {}
+  : {});
+
+const musicbrainz = readArtists(OBSERVATIONS_PATH);
+const deezer = readArtists(DEEZER_PATH);
+
+if (!Object.keys(musicbrainz).length && !Object.keys(deezer).length) {
+  console.log('No observations yet - run a fetch_artist_genres_* script first.');
   process.exit(0);
 }
 
-const observations = JSON.parse(fs.readFileSync(OBSERVATIONS_PATH, 'utf8'));
 const curated = JSON.parse(fs.readFileSync(CURATED_PATH, 'utf8'));
 const curatedKeys = new Set(Object.keys(curated).map(k => k.normalize('NFC').trim().toLowerCase()));
 
 const fallback = {};
+const fromProvider = { musicbrainz: 0, deezer: 0 };
 let skippedCurated = 0;
 let skippedThin = 0;
 
-for (const [key, entry] of Object.entries(observations.artists ?? {})) {
-  // A curated genre always wins. Emitting a fallback for the same artist would
-  // put a machine reading one lookup away from the hand-written one.
-  if (curatedKeys.has(key)) { skippedCurated += 1; continue; }
-
-  const labels = (entry.genres ?? [])
-    .filter(genre => (genre.votes ?? 0) >= MIN_VOTES)
+function labelsFor(entry) {
+  return (entry.genres ?? [])
+    .filter(genre => (genre.votes ?? genre.albums ?? 1) >= MIN_VOTES)
     .slice(0, LABELS_PER_ARTIST)
     .map(genre => titleCase(genre.name));
+}
 
-  if (!labels.length) { skippedThin += 1; continue; }
-  fallback[key] = labels.join(' / ');
+// Precedence, most specific first. MusicBrainz names thousands of genres and
+// joins the ontology by id; Deezer names 22 and is a fallback for the artists
+// MusicBrainz has no tag for at all. Whichever wins, artist_meta.json wins over
+// both - a hand-written genre is never one lookup away from a machine reading.
+for (const [provider, source] of [['musicbrainz', musicbrainz], ['deezer', deezer]]) {
+  for (const [key, entry] of Object.entries(source)) {
+    if (curatedKeys.has(key)) { skippedCurated += 1; continue; }
+    if (fallback[key]) continue;
+
+    const labels = labelsFor(entry);
+    if (!labels.length) { skippedThin += 1; continue; }
+    fallback[key] = labels.join(' / ');
+    fromProvider[provider] += 1;
+  }
 }
 
 const sorted = Object.fromEntries(Object.keys(fallback).sort().map(k => [k, fallback[k]]));
 fs.writeFileSync(OUTPUT_PATH, `${JSON.stringify(sorted, null, 2)}\n`);
 
 console.log('Artist genre fallback');
-console.log(`  observations read     : ${Object.keys(observations.artists ?? {}).length}`);
-console.log(`  skipped (curated wins): ${skippedCurated}`);
-console.log(`  skipped (no consensus): ${skippedThin}`);
-console.log(`  fallback entries      : ${Object.keys(sorted).length}`);
+console.log(`  MusicBrainz observations: ${Object.keys(musicbrainz).length}`);
+console.log(`  Deezer observations     : ${Object.keys(deezer).length}`);
+console.log(`  skipped (curated wins)  : ${skippedCurated}`);
+console.log(`  skipped (no consensus)  : ${skippedThin}`);
+console.log(`  from MusicBrainz        : ${fromProvider.musicbrainz}`);
+console.log(`  from Deezer             : ${fromProvider.deezer}`);
+console.log(`  fallback entries        : ${Object.keys(sorted).length}`);
