@@ -22,7 +22,6 @@ import ArtistAvatar, { getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
 import CoverArt from './CoverArt';
 import CreatorCvLink from './CreatorCvLink';
 import NovaMark from './NovaMark';
-import NovaWordmark from './NovaWordmark';
 import { paintMoodArt } from './MoodArtCanvas';
 import { buildCoreEmotionalMapProfile } from '../engines/moodCore';
 import { buildArchetypes } from '../utils/identityEngine';
@@ -603,8 +602,9 @@ export default function HeroSection({
           transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
           className="nova-hero__masthead"
         >
-          <NovaWordmark className="nova-hero__brand-lockup" />
-
+          {/* No wordmark here. The h1 below carries the full lockup - mark and
+              both words - so a second, smaller copy a few hundred pixels above
+              it was the same mark twice on one screen. */}
           <div className="nova-hero__masthead-meta">
             <button
               type="button"

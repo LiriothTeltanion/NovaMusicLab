@@ -75,28 +75,18 @@
   padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
 }
 
+/* flex-end, not space-between: the masthead used to hold the wordmark on the
+   left and this meta row on the right. The wordmark moved into the h1 lockup,
+   and with one child left space-between would have parked the meta against the
+   left edge. */
 .nova-hero__masthead {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1rem;
   min-height: 3.25rem;
   border-bottom: 1px solid color-mix(in srgb, var(--hero-cyan) 16%, transparent);
   padding-bottom: 0.8rem;
-}
-
-/* The masthead uses the shared NovaWordmark; only the hero's own glow and
-   slightly smaller mark are set here. Everything else - the stack, the display
-   face, the tracking - now lives in one place instead of being re-typed. */
-.nova-hero__brand-lockup .nova-wordmark__mark {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 0.72rem;
-  box-shadow: 0 0 24px color-mix(in srgb, var(--hero-cyan) 18%, transparent);
-}
-
-.nova-hero__brand-lockup .nova-wordmark__lab {
-  color: color-mix(in srgb, var(--hero-cyan) 78%, var(--fg));
 }
 
 .nova-hero__source,
