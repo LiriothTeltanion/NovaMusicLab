@@ -5,7 +5,7 @@ type ArtistImages = Record<string, { thumb: string; source: string }>;
 /**
  * The wide artist-portrait index, loaded off the critical path.
  *
- * The archive holds 6,413 artists. Once every one of them that Deezer could
+ * The archive holds 6,413 artist-name catalog entries. Once every entry that Deezer could
  * resolve has a portrait, this map is roughly a megabyte of raw JSON - and
  * ArtistAvatar is reachable from HeroSection, so importing it directly would
  * pin all of it into the landing-shell closure, which runs within ~13 KB of its

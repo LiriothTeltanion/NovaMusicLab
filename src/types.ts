@@ -42,6 +42,19 @@ export interface SourceSummary {
   source_note: string;
 }
 
+/**
+ * Explicitly separates listening-event freshness from later metadata work.
+ * A static/local archive is never described as a live provider connection.
+ */
+export interface SnapshotFreshness {
+  observedFrom: string | null;
+  observedThrough: string | null;
+  datasetGeneratedAt: string;
+  enrichmentGeneratedAt: string | null;
+  recentPulseSyncedAt: string | null;
+  liveConnection: false;
+}
+
 export interface ArtistKnowledgeMatch {
   name: string;
   plays: number;
@@ -156,7 +169,8 @@ export interface ArtistGenreCatalogEntry {
    * Where the genre came from, kept distinct so the museum never presents a
    * machine reading as curated fact:
    * - `catalog`      hand-curated in artist_meta.json
-   * - `observed`     read from MusicBrainz and joined onto the ontology by MBID
+   * - `observed`     automatic provider-derived classification from the
+   *                  MusicBrainz/Deezer observation pipeline; not a reviewed fact
    * - `unclassified` nothing known; genre and family are both 'Unclassified'
    */
   source: 'catalog' | 'observed' | 'unclassified';
@@ -323,6 +337,7 @@ export interface MusicBeeLibrarySnapshot {
 export interface MusicDnaData {
   project: string;
   generated_at: string;
+  snapshot_freshness?: SnapshotFreshness;
   /**
    * Explicit opt-in for narratives written specifically for Nova's public
    * flagship archive. Visitor imports omit this marker so personal editorial

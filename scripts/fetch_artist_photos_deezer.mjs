@@ -1,7 +1,7 @@
 // Dev-side artist portrait harvest from the public Deezer API (no key, no auth).
 //
-// Why this pass exists: the archive holds 6,413 artists and only ~113 had a
-// portrait, so 98% of the museum rendered a generated avatar. Wikimedia and
+// Why this pass exists: the archive holds 6,413 artist-name catalog entries,
+// and only ~113 had a portrait, so 98% of the museum rendered a generated avatar. Wikimedia and
 // Wikidata cover the curated top only - they simply have no entry for most of
 // the long tail - while Deezer returned a result for every artist sampled,
 // down to one-play entries.
@@ -20,6 +20,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import {
+  chooseDeezerArtistPortrait,
+  isUsableDeezerPortraitUrl,
+} from './lib/deezerPortrait.mjs';
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'src', 'data');
 const CACHE_DIR = path.join(ROOT, 'scripts', '.cache', 'deezer_artists');
@@ -27,6 +32,7 @@ const IMAGES_PATH = path.join(DATA, 'artist_images.json');
 const RESIDUE_PATH = path.join(ROOT, 'scripts', 'artist_photo_residue.json');
 
 const DRY_RUN = process.argv.includes('--dry-run');
+const PRUNE_INVALID_ONLY = process.argv.includes('--prune-invalid');
 const LIMIT = (() => {
   const arg = process.argv.find(a => a.startsWith('--limit='));
   return arg ? Number(arg.split('=')[1]) : Infinity;
@@ -47,18 +53,35 @@ const images = read('artist_images.json');
 const gallery = read('artist_gallery.json');
 const before = Object.keys(images).length;
 
-const hasPhoto = key => Boolean(images[key] || (gallery[key] && gallery[key].length));
+const invalidExistingKeys = Object.entries(images)
+  .filter(([, image]) => image?.source === 'deezer' && !isUsableDeezerPortraitUrl(image.thumb))
+  .map(([key]) => key);
+for (const key of invalidExistingKeys) delete images[key];
+
+const hasPhoto = key => Boolean(
+  (images[key]
+    && (images[key].source !== 'deezer' || isUsableDeezerPortraitUrl(images[key].thumb)))
+  || (gallery[key] && gallery[key].length),
+);
 
 const targets = rows
   .filter(r => r.name && !hasPhoto(norm(r.name)))
   .sort((a, b) => (b.plays || 0) - (a.plays || 0));
 
 console.log('Deezer artist portrait harvest');
-console.log(`  artists in archive        : ${rows.length}`);
+console.log(`  catalog entries           : ${rows.length}`);
+console.log(`  invalid placeholders pruned: ${invalidExistingKeys.length}`);
 console.log(`  already have a portrait   : ${rows.length - targets.length}`);
 console.log(`  to look up                : ${targets.length}`);
 if (DRY_RUN) {
   console.log('  --dry-run: no requests, no writes.');
+  process.exit(0);
+}
+
+if (PRUNE_INVALID_ONLY) {
+  const sorted = Object.fromEntries(Object.keys(images).sort().map(key => [key, images[key]]));
+  fs.writeFileSync(IMAGES_PATH, `${JSON.stringify(sorted, null, 2)}\n`);
+  console.log(`  --prune-invalid: artist_images.json ${before} -> ${Object.keys(sorted).length} keys; no requests made.`);
   process.exit(0);
 }
 
@@ -100,21 +123,6 @@ async function searchArtist(name) {
  * Returns the Deezer artist we are confident is the right one, or null.
  * Never guesses: a wrong portrait is worse than a generated avatar.
  */
-function chooseMatch(name, data) {
-  const exact = data.filter(x => norm(x.name) === norm(name) && x.picture_xl);
-  if (exact.length === 1) return { artist: exact[0], reason: 'exact' };
-  if (exact.length === 0) return { artist: null, reason: 'no exact name match' };
-
-  // Deezer carries duplicate entries for well-known acts. The canonical one
-  // dominates on followers; if it does not, the two are genuinely ambiguous.
-  const sorted = [...exact].sort((a, b) => (b.nb_fan || 0) - (a.nb_fan || 0));
-  const [top, second] = sorted;
-  if ((top.nb_fan || 0) >= Math.max(1000, (second.nb_fan || 0) * 5)) {
-    return { artist: top, reason: 'dominant follower count' };
-  }
-  return { artist: null, reason: `${exact.length} equally plausible matches` };
-}
-
 let added = 0;
 let live = 0;
 let cacheHits = 0;
@@ -128,7 +136,7 @@ for (const [index, target] of slice.entries()) {
   if (data === null) {
     residue.push({ name: target.name, plays: target.plays ?? 0, reason: 'lookup failed' });
   } else {
-    const { artist, reason } = chooseMatch(target.name, data);
+    const { artist, reason } = chooseDeezerArtistPortrait(target.name, data);
     if (artist) {
       images[norm(target.name)] = { thumb: artist.picture_xl, source: 'deezer' };
       added += 1;

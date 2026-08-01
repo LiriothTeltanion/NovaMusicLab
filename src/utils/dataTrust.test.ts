@@ -6,6 +6,7 @@ import {
   dateKeyInTimeZone,
   deriveDatasetTemporalTrust,
   isDateObserved,
+  resolveSnapshotFreshness,
 } from './dataTrust';
 
 const baseData = compiledData as unknown as MusicDnaData;
@@ -89,5 +90,29 @@ describe('dataset temporal trust', () => {
   it('uses the requested timezone at UTC date boundaries', () => {
     expect(dateKeyInTimeZone(new Date('2026-07-12T22:30:00Z'), 'Asia/Jerusalem'))
       .toBe('2026-07-13');
+  });
+
+  it('keeps exact archive bounds authoritative while retaining dated enrichment layers', () => {
+    const freshness = resolveSnapshotFreshness({
+      ...data,
+      generated_at: '2026-07-14T01:13:06.127Z',
+      snapshot_freshness: {
+        observedFrom: '2020-01-01',
+        observedThrough: '2020-01-02',
+        datasetGeneratedAt: '2020-01-03T00:00:00.000Z',
+        enrichmentGeneratedAt: '2026-07-29T00:00:00.000Z',
+        recentPulseSyncedAt: '2026-07-02',
+        liveConnection: false,
+      },
+    });
+
+    expect(freshness).toEqual({
+      observedFrom: '2015-03-01',
+      observedThrough: '2026-07-03',
+      datasetGeneratedAt: '2026-07-14T01:13:06.127Z',
+      enrichmentGeneratedAt: '2026-07-29T00:00:00.000Z',
+      recentPulseSyncedAt: '2026-07-02',
+      liveConnection: false,
+    });
   });
 });

@@ -23,7 +23,7 @@ const catalog: ArtistGenreCatalogEntry[] = [
     automaticGenre: 'Alternative',
     automaticFamily: 'Alternative',
     country: 'Unknown',
-    source: 'catalog',
+    source: 'observed',
   },
   {
     artistKey: 'Known Artist',
@@ -68,6 +68,19 @@ function renderStudio(
         assignments={assignments}
         useBundledCatalog={false}
         onAssignmentsChange={onAssignmentsChange}
+      />
+    </AppProvider>,
+  );
+}
+
+function renderBundledStudio() {
+  return render(
+    <AppProvider>
+      <GenreTaggingStudio
+        data={compiledData as unknown as MusicDnaData}
+        assignments={[]}
+        useBundledCatalog
+        onAssignmentsChange={vi.fn()}
       />
     </AppProvider>,
   );
@@ -145,6 +158,36 @@ describe('GenreTaggingStudio', () => {
       family: 'Synthwave / Darksynth',
       tags: ['acid techno'],
     }));
+  });
+
+  it('explains catalog, observed and unclassified provenance without turning candidates into facts', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    renderStudio();
+
+    const summary = screen.getByTestId('genre-provenance-summary');
+    expect(summary).toHaveTextContent('Catalog: 1 · Observed automatically: 1 · Unclassified: 1');
+    expect(summary).toHaveTextContent('only accepted assertions are reviewed facts');
+    expect(summary).toHaveTextContent('“Other” in charts groups smaller classified genre families');
+
+    await user.click(screen.getByRole('button', { name: 'All catalog entries' }));
+    await user.type(screen.getByLabelText('Search artists'), 'Broad Artist');
+    await user.click(screen.getByRole('button', { name: /Broad Artist/i }));
+    expect(screen.getByRole('group', { name: 'Broad Artist' }))
+      .toHaveTextContent('automatic observed classification');
+  });
+
+  it('shows the public knowledge totals while keeping rejected evidence hidden', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    renderBundledStudio();
+
+    const summary = await screen.findByTestId('genre-provenance-summary', {}, { timeout: 10_000 });
+    expect(summary).toHaveTextContent('Catalog: 453 · Observed automatically: 4,298 · Unclassified: 1,662');
+    expect(summary).toHaveTextContent('Knowledge records: 453/6,413 entries');
+    expect(summary).toHaveTextContent('Reviewed facts: 85');
+    expect(summary).toHaveTextContent('Candidate evidence: 1,170');
+    expect(summary).toHaveTextContent('Rejected and hidden: 2');
+    expect(screen.getByText('Classified listens').parentElement).toHaveTextContent('94.1%');
   });
 
   it('renders complete Hebrew controls without leaking the English unclassified label', async () => {

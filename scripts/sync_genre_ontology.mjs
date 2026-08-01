@@ -12,7 +12,7 @@ const MUSICBRAINZ_ENDPOINT = 'https://musicbrainz.org/ws/2/genre/all';
 const MUSICBRAINZ_DOCS = 'https://musicbrainz.org/doc/MusicBrainz_API';
 const NOVA_TAXONOMY_SOURCE = 'https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/utils/genreTaxonomy.ts';
 const NOVA_CATALOG_SOURCE = 'https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json';
-const USER_AGENT = 'NovaMusicLab/1.4.0 (https://github.com/LiriothTeltanion/NovaMusicLab)';
+const USER_AGENT = 'NovaMusicLab/1.5.0 (https://github.com/LiriothTeltanion/NovaMusicLab)';
 const PAGE_SIZE = 100;
 const REQUEST_INTERVAL_MS = 1_100;
 

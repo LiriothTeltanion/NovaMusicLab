@@ -820,10 +820,20 @@ export function aggregateData(
     .sort((a, b) => a.year - b.year || a.month - b.month);
 
   const yearlyEras = buildYearlyEras(yearBuckets);
+  const generatedAt = new Date().toISOString();
+  const observedDateKeys = [...dateCounts.keys()].sort((left, right) => left.localeCompare(right));
 
   return {
     project: `Nova Music Lab - Datos Importados (${sourceType})`,
-    generated_at: new Date().toISOString(),
+    generated_at: generatedAt,
+    snapshot_freshness: {
+      observedFrom: observedDateKeys[0] ?? null,
+      observedThrough: observedDateKeys.at(-1) ?? null,
+      datasetGeneratedAt: generatedAt,
+      enrichmentGeneratedAt: null,
+      recentPulseSyncedAt: null,
+      liveConnection: false,
+    },
     core_metrics: {
       total_plays: totalPlays,
       unique_artists: Object.keys(artistCounts).length,

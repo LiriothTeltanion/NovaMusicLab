@@ -68,9 +68,14 @@ Atlas. They do not enter the initial museum bundle. They contain public artist
 metadata and stable provider identifiers, not listening-export rows, account
 identifiers or credentials.
 
-The existing 6,413-artist catalog remains the complete denominator. The new
+The existing 6,413-entry artist-name catalog remains the complete denominator. The new
 knowledge artifact adds evidence to classified artists without rewriting the
 original catalog or guessing labels for unresolved long-tail artists.
+
+Those 6,413 rows are exact archive-name entries, not a verified people count.
+The current snapshot contains 181 known normalized name-variant groups. They
+remain intentionally unmerged until an evidence-reviewed identity migration can
+preserve aliases and historical names without deleting listening evidence.
 
 Local visitor corrections continue to live in the versioned local dataset
 envelope. This first slice deliberately avoids a Dexie schema migration. A

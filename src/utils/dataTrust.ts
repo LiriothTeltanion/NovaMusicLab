@@ -1,4 +1,4 @@
-import type { MusicDnaData } from '../types';
+import type { MusicDnaData, SnapshotFreshness } from '../types';
 
 export const ANALYSIS_TIME_ZONE = 'Asia/Jerusalem';
 
@@ -31,6 +31,10 @@ function isCalendarDateKey(value: string): boolean {
   return date.getUTCFullYear() === year
     && date.getUTCMonth() === month - 1
     && date.getUTCDate() === day;
+}
+
+function validDateTimeOrNull(value: unknown): string | null {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value)) ? value : null;
 }
 
 /** A stable YYYY-MM-DD key in the timezone used by the archive analysis. */
@@ -108,6 +112,43 @@ export function deriveDatasetTemporalTrust(
     top100CoveragePct: totalPlays
       ? Math.round((top100Plays / totalPlays) * 1000) / 10
       : 0,
+  };
+}
+
+/**
+ * Resolves the public freshness contract without trusting stale duplicated
+ * bounds: exact daily evidence and `generated_at` stay authoritative, while
+ * enrichment and Pulse dates come from the reviewed snapshot metadata.
+ */
+export function resolveSnapshotFreshness(data: MusicDnaData): SnapshotFreshness {
+  const trust = deriveDatasetTemporalTrust(data);
+  const declared = data.snapshot_freshness;
+  const legacyDeclared = declared as SnapshotFreshness & {
+    generatedAt?: unknown;
+    pulseSyncedAt?: unknown;
+  } | undefined;
+  const declaredObservedFrom = declared?.observedFrom && isCalendarDateKey(declared.observedFrom)
+    ? declared.observedFrom
+    : null;
+  const declaredObservedThrough = declared?.observedThrough && isCalendarDateKey(declared.observedThrough)
+    ? declared.observedThrough
+    : null;
+  const recentPulseCandidate = declared?.recentPulseSyncedAt ?? legacyDeclared?.pulseSyncedAt;
+  const recentPulseSyncedAt = typeof recentPulseCandidate === 'string'
+    && isCalendarDateKey(recentPulseCandidate)
+    ? recentPulseCandidate
+    : null;
+
+  return {
+    observedFrom: trust.dataMinDate ?? declaredObservedFrom,
+    observedThrough: trust.dataMaxDate ?? declaredObservedThrough,
+    datasetGeneratedAt: validDateTimeOrNull(data.generated_at)
+      ?? validDateTimeOrNull(declared?.datasetGeneratedAt)
+      ?? validDateTimeOrNull(legacyDeclared?.generatedAt)
+      ?? data.generated_at,
+    enrichmentGeneratedAt: validDateTimeOrNull(declared?.enrichmentGeneratedAt),
+    recentPulseSyncedAt,
+    liveConnection: false,
   };
 }
 

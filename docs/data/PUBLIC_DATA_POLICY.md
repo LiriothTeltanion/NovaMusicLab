@@ -9,12 +9,27 @@ Everything committed to this repository or deployed to GitHub Pages is public. T
 - schema version;
 - dataset kind and privacy tier;
 - analysis timezone;
+- an explicit freshness contract separating observed dates, build time,
+  enrichment evidence and the dated Pulse from any live connection;
+- exact archive-name catalog grain and the reviewed count of preserved
+  normalized name-variant groups;
 - allowed top-level sections;
 - prohibited exact/raw sections;
 - review status for sessions, obsessions, daily plays, platform breakdown and Recent Pulse;
 - human-readable review notes.
 
 The manifest is a review contract, not a privacy claim by itself. CI verifies it against the bundled files and scans repository text for account identifiers, personalized export filenames and email-like values.
+
+The freshness object uses the explicit public fields `observedFrom`,
+`observedThrough`, `datasetGeneratedAt`, `enrichmentGeneratedAt`,
+`recentPulseSyncedAt` and `liveConnection`. The older top-level `generated_at`
+field remains for archive compatibility; it is not a substitute name inside
+the freshness contract.
+
+`6,413` is the current number of exact artist-name **catalog entries**, not a
+claim that the archive contains 6,413 verified people. The public catalog has
+181 known normalized name-variant groups. They remain separate so historical
+names and aliases are not silently deleted or merged without identity evidence.
 
 ## Allowed public content
 

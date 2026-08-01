@@ -1,11 +1,26 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "datasetKind": "flagship",
   "privacyTier": "curated-public",
   "analysisTimezone": "Asia/Jerusalem",
+  "snapshotFreshness": {
+    "observedFrom": "2015-03-01",
+    "observedThrough": "2026-07-03",
+    "datasetGeneratedAt": "2026-07-14T01:13:06.127Z",
+    "enrichmentGeneratedAt": "2026-07-29T00:00:00.000Z",
+    "recentPulseSyncedAt": "2026-07-02",
+    "liveConnection": false
+  },
+  "catalogIdentity": {
+    "grain": "exact-archive-name-entry",
+    "catalogEntryCount": 6413,
+    "knownNormalizedVariantGroups": 181,
+    "mergePolicy": "preserve-until-evidence-reviewed"
+  },
   "allowedSections": [
     "project",
     "generated_at",
+    "snapshot_freshness",
     "narrative_scope",
     "core_metrics",
     "top_artists",
@@ -39,11 +54,14 @@
     "obsessions": "published-curated",
     "daily_plays": "published-curated",
     "platform_breakdown": "redacted",
+    "snapshot_freshness": "published-curated",
     "recent_pulse": "published-curated"
   },
   "notes": [
     "The flagship dataset intentionally publishes reviewed listening aggregates; it does not contain raw export rows.",
     "Platform telemetry is reduced to broad device families; raw models, versions, user-agent strings and device identifiers are omitted.",
+    "Snapshot freshness separates the listening-event period, build time, enrichment evidence and dated Pulse; liveConnection is false.",
+    "The 6,413 value counts exact archive-name catalog entries, not 6,413 verified people. 181 normalized name-variant groups remain preserved until an evidence-reviewed identity migration.",
     "Every exact-granularity section must be reviewed again before a refreshed public dataset is committed.",
     "Visitor imports remain browser-local and are not covered by this public-bundle manifest."
   ]

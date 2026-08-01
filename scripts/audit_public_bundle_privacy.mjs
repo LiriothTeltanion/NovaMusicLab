@@ -5,6 +5,7 @@ const ROOT = process.cwd();
 const DATASET_PATH = resolve(ROOT, 'src', 'data', 'music_dna_compiled.json');
 const MANIFEST_PATH = resolve(ROOT, 'src', 'data', 'public_dataset_manifest.json');
 const RECENT_PULSE_PATH = resolve(ROOT, 'src', 'data', 'recent_pulse.json');
+const GENRE_CATALOG_PATH = resolve(ROOT, 'src', 'data', 'music_dna_genre_catalog.json');
 const PUBLIC_DATA_DIR = resolve(ROOT, 'src', 'data');
 // Every entry here is gitignored and machine-local, so nothing inside can
 // reach a commit or the published bundle. `.cache` joined the list when the
@@ -21,7 +22,14 @@ const REPOSITORY_TEXT_EXTENSIONS = new Set([
   '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.svg', '.ts', '.tsx', '.txt', '.yaml', '.yml',
 ]);
 
-const EXACT_SECTIONS = ['sessions', 'obsessions', 'daily_plays', 'platform_breakdown', 'recent_pulse'];
+const EXACT_SECTIONS = [
+  'sessions',
+  'obsessions',
+  'daily_plays',
+  'platform_breakdown',
+  'snapshot_freshness',
+  'recent_pulse',
+];
 const EXACT_STATUSES = new Set(['published-curated', 'redacted', 'omitted']);
 const FORBIDDEN_RAW_KEYS = new Set([
   'account_id',
@@ -94,6 +102,93 @@ function isPlainObject(value) {
 
 function normalizedKey(key) {
   return key.trim().toLowerCase().replace(/[\s-]+/g, '_');
+}
+
+function normalizedArtistIdentity(value) {
+  return String(value ?? '').normalize('NFC').trim().toLowerCase();
+}
+
+function isDateKey(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [year, month, day] = value.split('-').map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year
+    && date.getUTCMonth() === month - 1
+    && date.getUTCDate() === day;
+}
+
+function auditSnapshotFreshness(dataset, manifest, recentPulse) {
+  const freshness = dataset.snapshot_freshness;
+  const reviewed = manifest.snapshotFreshness;
+  if (!isPlainObject(freshness) || !isPlainObject(reviewed)) {
+    errors.push('Snapshot freshness must exist in both the dataset and public manifest');
+    return;
+  }
+
+  const dailyDates = Object.keys(dataset.daily_plays ?? {}).filter(isDateKey).sort();
+  const expected = {
+    observedFrom: dailyDates[0] ?? null,
+    observedThrough: dailyDates.at(-1) ?? null,
+    datasetGeneratedAt: dataset.generated_at,
+    enrichmentGeneratedAt: freshness.enrichmentGeneratedAt ?? null,
+    recentPulseSyncedAt: recentPulse?.synced_at ?? null,
+    liveConnection: false,
+  };
+  for (const [field, value] of Object.entries(expected)) {
+    if (freshness[field] !== value) {
+      errors.push(`Dataset snapshot freshness ${field} is ${freshness[field] ?? 'null'}; expected ${value ?? 'null'}`);
+    }
+    if (reviewed[field] !== value) {
+      errors.push(`Manifest snapshot freshness ${field} is ${reviewed[field] ?? 'null'}; expected ${value ?? 'null'}`);
+    }
+  }
+  if (!isDateKey(freshness.observedFrom) || !isDateKey(freshness.observedThrough)) {
+    errors.push('Snapshot freshness observed bounds must be valid YYYY-MM-DD dates');
+  }
+  if ('generatedAt' in freshness || 'pulseSyncedAt' in freshness
+    || 'generatedAt' in reviewed || 'pulseSyncedAt' in reviewed) {
+    errors.push('Public snapshot freshness must use datasetGeneratedAt and recentPulseSyncedAt');
+  }
+  if (!Number.isFinite(Date.parse(freshness.datasetGeneratedAt))) {
+    errors.push('Snapshot freshness datasetGeneratedAt must be a valid timestamp');
+  }
+  if (freshness.enrichmentGeneratedAt !== null
+    && !Number.isFinite(Date.parse(freshness.enrichmentGeneratedAt))) {
+    errors.push('Snapshot freshness enrichmentGeneratedAt must be null or a valid timestamp');
+  }
+  if (freshness.recentPulseSyncedAt !== null && !isDateKey(freshness.recentPulseSyncedAt)) {
+    errors.push('Snapshot freshness recentPulseSyncedAt must be null or a valid YYYY-MM-DD date');
+  }
+}
+
+function auditCatalogIdentity(manifest, genreCatalog, dataset) {
+  const identity = manifest.catalogIdentity;
+  if (!isPlainObject(identity)) {
+    errors.push('Manifest catalogIdentity review contract is missing');
+    return;
+  }
+  const rows = Array.isArray(genreCatalog) ? genreCatalog : [];
+  const groups = new Map();
+  for (const row of rows) {
+    const key = normalizedArtistIdentity(row?.name);
+    const group = groups.get(key) ?? [];
+    group.push(row);
+    groups.set(key, group);
+  }
+  const knownVariantGroups = [...groups.values()].filter(group => group.length > 1).length;
+  if (identity.grain !== 'exact-archive-name-entry') {
+    errors.push('Manifest catalogIdentity grain must remain exact-archive-name-entry');
+  }
+  if (identity.mergePolicy !== 'preserve-until-evidence-reviewed') {
+    errors.push('Manifest catalogIdentity mergePolicy must preserve aliases until evidence review');
+  }
+  if (identity.catalogEntryCount !== rows.length
+    || identity.catalogEntryCount !== dataset.core_metrics?.unique_artists) {
+    errors.push(`Manifest catalog entry count diverges: ${identity.catalogEntryCount}/${rows.length}/${dataset.core_metrics?.unique_artists}`);
+  }
+  if (identity.knownNormalizedVariantGroups !== knownVariantGroups) {
+    errors.push(`Manifest known variant groups diverge: ${identity.knownNormalizedVariantGroups}/${knownVariantGroups}`);
+  }
 }
 
 function auditRawFields(value, path = '$') {
@@ -216,6 +311,7 @@ const manifest = readJson(MANIFEST_PATH, 'Public dataset manifest');
 const recentPulse = existsSync(RECENT_PULSE_PATH)
   ? readJson(RECENT_PULSE_PATH, 'Recent Pulse snapshot')
   : null;
+const genreCatalog = readJson(GENRE_CATALOG_PATH, 'Artist genre catalog');
 
 // Every JSON module in src/data can be bundled into the public Pages app. Scan
 // the complete directory rather than a hand-picked subset so new artist,
@@ -226,7 +322,7 @@ for (const name of readdirSync(PUBLIC_DATA_DIR).filter(name => name.endsWith('.j
 auditRepositoryText();
 
 if (dataset && manifest) {
-  if (manifest.schemaVersion !== 1) errors.push('Manifest schemaVersion must be 1');
+  if (manifest.schemaVersion !== 2) errors.push('Manifest schemaVersion must be 2');
   if (manifest.datasetKind !== 'flagship') errors.push('Manifest datasetKind must be flagship');
   if (manifest.privacyTier !== 'curated-public') errors.push('Manifest privacyTier must be curated-public');
   if (manifest.analysisTimezone !== 'Asia/Jerusalem') {
@@ -282,6 +378,8 @@ if (dataset && manifest) {
   }
 
   auditRedactedPlatformBreakdown(dataset, manifest);
+  auditSnapshotFreshness(dataset, manifest, recentPulse);
+  auditCatalogIdentity(manifest, genreCatalog, dataset);
 
   auditRawFields(dataset, '$.music_dna_compiled');
   auditStringSecrets(dataset, '$.music_dna_compiled');

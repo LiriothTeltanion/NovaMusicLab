@@ -31,7 +31,7 @@ import SectionNarrative from './SectionNarrative';
 import { localizeProjectLabel, localizeSourceNote } from '../utils/localizedDatasetText';
 import MediaCoverageAudit from './MediaCoverageAudit';
 import { buildOfflineArtistKnowledgeSummary } from '../utils/offlineArtistKnowledge';
-import { deriveDatasetTemporalTrust } from '../utils/dataTrust';
+import { deriveDatasetTemporalTrust, resolveSnapshotFreshness } from '../utils/dataTrust';
 import { localeFor, pickLanguage } from '../utils/i18n';
 import GenreTaggingStudio from './GenreTaggingStudio';
 
@@ -125,6 +125,7 @@ export default function DataQualityCenter({
   // (and potentially stale) import-time snapshot.
   const knowledgeSummary = buildOfflineArtistKnowledgeSummary(data.top_artists);
   const temporalTrust = deriveDatasetTemporalTrust(data);
+  const snapshotFreshness = resolveSnapshotFreshness(data);
   const peakYear = getPeakYear(data);
   const night = getNightRatio(data);
   const confidence = overallConfidence(data);
@@ -135,8 +136,8 @@ export default function DataQualityCenter({
     ? Math.round((topArtist.plays / top10ArtistPlays) * 100)
     : 0;
   const explorationScore = Math.round((data.core_metrics.unique_artists / Math.max(1, data.core_metrics.total_plays)) * 1000);
-  const generatedAt = data.generated_at
-    ? new Date(data.generated_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
+  const generatedAt = snapshotFreshness.datasetGeneratedAt
+    ? new Date(snapshotFreshness.datasetGeneratedAt).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
     : 'N/A';
   const formatDataDate = (dateKey: string) => new Date(`${dateKey}T12:00:00Z`)
     .toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
@@ -217,6 +218,64 @@ export default function DataQualityCenter({
       heuristicBody: 'נוסחה פנימית: בסיס 52 ותוספות עבור מקורות, שיאים, פלטפורמות, חודשים, רשימות מובילות וחפיפה; עד 96. זו אינה הסתברות לדיוק.',
     },
   });
+  const freshnessCopy = pickLanguage(lang, {
+    en: {
+      title: 'Snapshot freshness',
+      body: 'Nova combines dated local artifacts. These dates show what each layer actually covers; they are not a claim of live synchronization.',
+      observed: 'Listening observed',
+      generated: 'Archive generated',
+      enrichment: 'Artist enrichment',
+      pulse: 'Recent Pulse synced',
+      connection: 'Connection',
+      dated: 'Dated snapshots · no live connection',
+      unavailable: 'Not available in this archive',
+      identity: '6,413 exact artist-name catalog entries are preserved. 181 known normalized name-variant groups remain separate until their evidence is reviewed.',
+    },
+    es: {
+      title: 'Vigencia de los snapshots',
+      body: 'Nova combina artefactos locales con fecha. Estas fechas muestran qué cubre realmente cada capa; no afirman una sincronización en vivo.',
+      observed: 'Escuchas observadas',
+      generated: 'Archivo generado',
+      enrichment: 'Enriquecimiento de artistas',
+      pulse: 'Recent Pulse sincronizado',
+      connection: 'Conexión',
+      dated: 'Snapshots con fecha · sin conexión en vivo',
+      unavailable: 'No disponible en este archivo',
+      identity: 'Se conservan 6.413 entradas exactas de nombres de artistas. Los 181 grupos conocidos de variantes normalizadas permanecen separados hasta revisar su evidencia.',
+    },
+    he: {
+      title: 'עדכניות תמונות המצב',
+      body: 'Nova משלבת קבצים מקומיים מתוארכים. התאריכים מראים מה כל שכבה מכסה בפועל; הם אינם טענה לסנכרון חי.',
+      observed: 'האזנות שנצפו',
+      generated: 'הארכיון נוצר',
+      enrichment: 'העשרת אמנים',
+      pulse: 'Recent Pulse סונכרן',
+      connection: 'חיבור',
+      dated: 'תמונות מצב מתוארכות · ללא חיבור חי',
+      unavailable: 'לא זמין בארכיון הזה',
+      identity: 'נשמרות 6,413 רשומות מדויקות של שמות אמנים. 181 קבוצות מוכרות של וריאציות שם מנורמלות נשארות נפרדות עד לבדיקת הראיות שלהן.',
+    },
+  });
+  const freshnessObserved = snapshotFreshness.observedFrom && snapshotFreshness.observedThrough
+    ? `${formatDataDate(snapshotFreshness.observedFrom)} → ${formatDataDate(snapshotFreshness.observedThrough)}`
+    : freshnessCopy.unavailable;
+  const formatSnapshotTimestamp = (value: string | null) => value
+    ? new Date(value).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
+    : freshnessCopy.unavailable;
+  const formatSnapshotDate = (value: string | null) => value
+    ? formatDataDate(value.slice(0, 10))
+    : freshnessCopy.unavailable;
+  const freshnessDetails = [
+    { label: freshnessCopy.observed, value: freshnessObserved },
+    { label: freshnessCopy.generated, value: formatSnapshotTimestamp(snapshotFreshness.datasetGeneratedAt) },
+    ...(snapshotFreshness.enrichmentGeneratedAt
+      ? [{ label: freshnessCopy.enrichment, value: formatSnapshotTimestamp(snapshotFreshness.enrichmentGeneratedAt) }]
+      : []),
+    ...(snapshotFreshness.recentPulseSyncedAt
+      ? [{ label: freshnessCopy.pulse, value: formatSnapshotDate(snapshotFreshness.recentPulseSyncedAt) }]
+      : []),
+    { label: freshnessCopy.connection, value: freshnessCopy.dated },
+  ];
   const simpleStatus = data.core_metrics.total_plays <= 0
     ? friendlyCopy.noData
     : temporalTrust.dataMinDate && temporalTrust.dataMaxDate
@@ -282,9 +341,9 @@ export default function DataQualityCenter({
       label: t.dataQuality.eventCountLabel,
       value: formatNumber(source.merged_plays || data.core_metrics.total_plays, locale),
       sub: pickLanguage(lang, {
-        en: `${formatNumber(data.core_metrics.unique_artists, locale)} artists · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`,
-        es: `${formatNumber(data.core_metrics.unique_artists, locale)} artistas · ${formatNumber(data.core_metrics.unique_tracks, locale)} canciones`,
-        he: `${formatNumber(data.core_metrics.unique_artists, locale)} אמנים · ${formatNumber(data.core_metrics.unique_tracks, locale)} שירים`,
+        en: `${formatNumber(data.core_metrics.unique_artists, locale)} artist-name catalog entries · ${formatNumber(data.core_metrics.unique_tracks, locale)} tracks`,
+        es: `${formatNumber(data.core_metrics.unique_artists, locale)} entradas de nombres del catálogo · ${formatNumber(data.core_metrics.unique_tracks, locale)} canciones`,
+        he: `${formatNumber(data.core_metrics.unique_artists, locale)} רשומות שמות בקטלוג · ${formatNumber(data.core_metrics.unique_tracks, locale)} שירים`,
       }),
       color: tc.c2,
     },
@@ -383,6 +442,34 @@ export default function DataQualityCenter({
   return (
     <div className="space-y-10 animate-fade-in">
       <SectionNarrative content={t.deepNarratives.dataQuality} accent="c1" />
+
+      <section
+        data-testid="snapshot-freshness"
+        className="nova-surface nova-surface--utility rounded-3xl p-5"
+      >
+        <div className="flex items-start gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+            <FileJson className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <div className="min-w-0">
+            <h3 className="type-section type-strong">{freshnessCopy.title}</h3>
+            <p className="type-caption type-muted mt-1 max-w-4xl">{freshnessCopy.body}</p>
+          </div>
+        </div>
+        <dl className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          {freshnessDetails.map(detail => (
+            <div key={detail.label} className="rounded-2xl border border-white/8 bg-black/20 p-3">
+              <dt className="text-[9px] font-mono font-black uppercase tracking-wider text-gray-500">{detail.label}</dt>
+              <dd className="mt-1 text-xs font-bold leading-relaxed text-gray-200"><bdi dir="auto">{detail.value}</bdi></dd>
+            </div>
+          ))}
+        </dl>
+        {useBundledGenreCatalog && (
+          <p className="mt-3 rounded-xl border border-violet-300/15 bg-violet-300/[0.04] px-3 py-2 text-[10px] leading-relaxed text-violet-100/80">
+            {freshnessCopy.identity}
+          </p>
+        )}
+      </section>
 
       {isDeepDive && onGenreAssignmentsChange && (
         <GenreTaggingStudio
