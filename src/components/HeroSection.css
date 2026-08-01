@@ -85,44 +85,18 @@
   padding-bottom: 0.8rem;
 }
 
-.nova-hero__brand-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  direction: ltr;
-  unicode-bidi: isolate;
-}
-
-.nova-hero__brand-mark {
-  display: grid;
+/* The masthead uses the shared NovaWordmark; only the hero's own glow and
+   slightly smaller mark are set here. Everything else - the stack, the display
+   face, the tracking - now lives in one place instead of being re-typed. */
+.nova-hero__brand-lockup .nova-wordmark__mark {
   width: 2.25rem;
   height: 2.25rem;
-  place-items: center;
-  overflow: hidden;
   border-radius: 0.72rem;
   box-shadow: 0 0 24px color-mix(in srgb, var(--hero-cyan) 18%, transparent);
 }
 
-.nova-hero__brand-lockup > span:last-child {
-  display: grid;
-  line-height: 1;
-}
-
-.nova-hero__brand-lockup strong {
-  color: var(--fg);
-  font-family: var(--font-display);
-  font-size: 0.94rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.nova-hero__brand-lockup small {
-  margin-top: 0.28rem;
-  color: color-mix(in srgb, var(--hero-cyan) 74%, var(--fg));
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
+.nova-hero__brand-lockup .nova-wordmark__lab {
+  color: color-mix(in srgb, var(--hero-cyan) 78%, var(--fg));
 }
 
 .nova-hero__source,
@@ -261,8 +235,13 @@
   letter-spacing: 0.19em;
 }
 
+/* A horizontal lockup: the app mark, then the two stacked words. The block is
+   forced to LTR, so the mark sits on the left in Hebrew too - the wordmark
+   itself never reverses, and a mirrored logo would read as a different mark. */
 .nova-hero__title {
-  display: grid;
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
   width: fit-content;
   margin: 0;
   color: var(--fg);
@@ -276,7 +255,28 @@
   unicode-bidi: isolate;
 }
 
-.nova-hero__title > span {
+/* Sized in em against the title, deliberately not stretched. align-self:
+   stretch with aspect-ratio: 1 looks like the self-maintaining answer and is a
+   trap in a flex row with content-driven height: the square takes its width
+   from its stretched height, that width feeds back into the row, and the mark
+   settled at 300px next to a 237px wordmark - wider than the words it belongs
+   to. 1.04em sits just under the two-line block, because a filled tile carries
+   more optical weight than type of the same height. */
+.nova-hero__title-mark {
+  display: grid;
+  flex: 0 0 auto;
+  width: 1.04em;
+  height: 1.04em;
+  place-items: center;
+  filter: drop-shadow(0 10px 26px color-mix(in srgb, #020617 52%, transparent));
+}
+
+.nova-hero__title-words {
+  display: grid;
+  min-width: 0;
+}
+
+.nova-hero__title-words > span {
   display: block;
 }
 
@@ -313,32 +313,64 @@
   -webkit-text-stroke: 1px color-mix(in srgb, var(--hero-pink) 52%, transparent);
 }
 
-.nova-hero__title > .nova-hero__title-accent {
-  display: flex;
+/* The second half of the wordmark, not a caption under it.
+   It used to be set in var(--font-mono), which resolves to whatever monospace
+   the operating system happens to ship - so the logo's own name rendered in an
+   unchosen typeface that differed on every machine, next to NOVA's Space
+   Grotesk. Same family now, so the mark speaks with one voice, and the two
+   halves are separated by material rather than by typeface: NOVA is lit and
+   floating, MUSIC LAB is the cooler, denser face of the same object.
+   The flanking hairlines are gone; they framed the line as a divider, which is
+   precisely what made it read as a subtitle. The lockup holds its width
+   through tracking instead - see .nova-hero__title-accent below. */
+.nova-hero__title-words > .nova-hero__title-accent {
+  position: relative;
+  isolation: isolate;
+  display: block;
   width: 100%;
-  align-items: center;
-  gap: 0.42em;
-  margin-top: 0.64em;
-  color: color-mix(in srgb, var(--hero-cyan) 86%, var(--fg));
-  font-family: var(--font-mono);
-  font-size: 0.28em;
-  font-weight: 800;
-  letter-spacing: 0.42em;
+  margin-top: 0.2em;
+  font-family: var(--font-display);
+  font-size: 0.335em;
+  font-weight: 700;
+  letter-spacing: 0.203em;
+  /* letter-spacing also applies after the final B, so the ink stops one track
+     short of NOVA's right edge. Pulling that track back closes the lockup. */
+  margin-inline-end: -0.203em;
   line-height: 1;
-  text-indent: 0.42em;
-  text-shadow: 0 0 18px color-mix(in srgb, var(--hero-cyan) 30%, transparent);
+  /* Saturation carries this line, where NOVA is carried by luminance. An
+     earlier pass ran the midpoint through 88% --fg and the word came out
+     washed at any size above a thumbnail: paler than NOVA without being
+     quieter, which is the worst of both. Keeping the ends saturated and the
+     highlight narrow gives it density while NOVA still reads first. */
+  background:
+    linear-gradient(
+      112deg,
+      color-mix(in srgb, var(--hero-cyan) 92%, var(--fg)) 0 24%,
+      color-mix(in srgb, var(--fg) 58%, var(--hero-cyan)) 52%,
+      color-mix(in srgb, var(--hero-pink) 82%, var(--fg)) 100%
+    );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter:
+    drop-shadow(0 0 18px color-mix(in srgb, var(--hero-cyan) 22%, transparent))
+    drop-shadow(0 6px 14px color-mix(in srgb, #020617 42%, transparent));
+  -webkit-text-stroke: 0.6px color-mix(in srgb, var(--fg) 22%, transparent);
 }
 
-.nova-hero__title-accent::before,
+/* NOVA carries a displaced pink echo clipped to its lower third. This is the
+   same gesture at a quarter of the strength, so the two halves read as one
+   printed object instead of two effects that happen to sit together. */
 .nova-hero__title-accent::after {
-  height: 1px;
-  flex: 1 1 auto;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--hero-cyan) 62%, transparent));
-  content: '';
-}
-
-.nova-hero__title-accent::after {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--hero-pink) 62%, transparent), transparent);
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  clip-path: inset(62% 0 4% 0);
+  color: color-mix(in srgb, var(--hero-pink) 46%, transparent);
+  content: attr(data-word);
+  letter-spacing: inherit;
+  opacity: 0.26;
+  transform: translate(0.02em, 0.022em);
 }
 
 .nova-hero__question {
@@ -1501,10 +1533,14 @@
     letter-spacing: -0.062em;
   }
 
-  .nova-hero__title > .nova-hero__title-accent {
-    gap: 0.3em;
-    letter-spacing: 0.32em;
-    text-indent: 0.32em;
+  /* NOVA loosens from -0.075em to -0.062em here, so it grows wider relative to
+     its own size and MUSIC LAB has to grow with it or the lockup breaks. The
+     old 0.32em was harmless when flanking rules absorbed the slack; now the
+     two lines are measured against each other, so this value is tuned, not
+     inherited. gap and text-indent went with the rules that used them. */
+  .nova-hero__title-words > .nova-hero__title-accent {
+    letter-spacing: 0.219em;
+    margin-inline-end: -0.219em;
   }
 
   .nova-hero__question {

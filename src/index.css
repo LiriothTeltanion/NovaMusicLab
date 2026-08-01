@@ -148,8 +148,66 @@
   min-block-size: var(--nova-app-header-height);
 }
 
-.nova-app-brand__wordmark {
+/* The shared compact lockup rendered by NovaWordmark. Mark on the left, NOVA
+   stacked over MUSIC LAB, matching the hero. Forced LTR: the wordmark reads
+   the same in Hebrew, and mirroring a logo makes it a different logo. */
+.nova-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.66rem;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.nova-wordmark__mark {
+  display: grid;
+  overflow: hidden;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.78rem;
+}
+
+.nova-wordmark__words {
+  display: grid;
+  line-height: 1;
+}
+
+.nova-wordmark__nova {
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* No gradient here on purpose: below roughly 20px a clipped gradient reads as
+   a flat mid-tone and only costs contrast, so the two halves are held together
+   by the typeface and the tracking rhythm instead of by material. nowrap
+   because at this tracking the line was wide enough to break inside the hero
+   masthead and print the mark as NOVA / MUSIC / LAB on three lines. */
+.nova-wordmark__lab {
+  margin-top: 0.26rem;
+  font-family: var(--font-display);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.nova-app-brand .nova-wordmark__words {
   display: none;
+}
+
+/* The header frames the mark against the navbar's own glass. The tint comes
+   from --nova-wordmark-accent, which NovaWordmark publishes from the same
+   value it paints MUSIC LAB with, so the frame can never drift from the words
+   when the visitor switches theme. */
+.nova-app-brand__lockup .nova-wordmark__mark {
+  border: 1px solid color-mix(in srgb, var(--nova-wordmark-accent, var(--fg)) 27%, transparent);
+  background: rgb(0 0 0 / 0.35);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--nova-wordmark-accent, var(--fg)) 14%, transparent);
 }
 
 .museum-room-progress {
@@ -194,8 +252,8 @@
 }
 
 @media (min-width: 1180px) {
-  .nova-app-brand__wordmark {
-    display: block;
+  .nova-app-brand .nova-wordmark__words {
+    display: grid;
   }
 }
 

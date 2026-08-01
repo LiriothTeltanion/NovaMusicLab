@@ -22,6 +22,7 @@ import ArtistAvatar, { getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
 import CoverArt from './CoverArt';
 import CreatorCvLink from './CreatorCvLink';
 import NovaMark from './NovaMark';
+import NovaWordmark from './NovaWordmark';
 import { paintMoodArt } from './MoodArtCanvas';
 import { buildCoreEmotionalMapProfile } from '../engines/moodCore';
 import { buildArchetypes } from '../utils/identityEngine';
@@ -602,15 +603,7 @@ export default function HeroSection({
           transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
           className="nova-hero__masthead"
         >
-          <div className="nova-hero__brand-lockup" aria-label="Nova Music Lab">
-            <span className="nova-hero__brand-mark" aria-hidden="true">
-              <NovaMark size={32} />
-            </span>
-            <span>
-              <strong>NOVA</strong>
-              <small>MUSIC LAB</small>
-            </span>
-          </div>
+          <NovaWordmark className="nova-hero__brand-lockup" />
 
           <div className="nova-hero__masthead-meta">
             <button
@@ -667,8 +660,15 @@ export default function HeroSection({
             </p>
 
             <h1 id="nova-hero-title" className="nova-hero__title">
-              <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
-              <span className="nova-hero__title-accent">MUSIC LAB</span>
+              {/* No title prop, so NovaMark renders aria-hidden and contributes
+                  no text: the heading's accessible name stays "NOVA MUSIC LAB". */}
+              <span className="nova-hero__title-mark">
+                <NovaMark size="100%" />
+              </span>
+              <span className="nova-hero__title-words">
+                <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
+                <span className="nova-hero__title-accent" data-word="MUSIC LAB">MUSIC LAB</span>
+              </span>
             </h1>
 
             <p

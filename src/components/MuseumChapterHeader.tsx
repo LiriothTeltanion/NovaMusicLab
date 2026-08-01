@@ -532,7 +532,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang, density = '
       </div>
 
       <div className="museum-chapter__footer" aria-hidden="true">
-        <span>NOVA MUSIC LAB</span>
+        <span className="museum-chapter__footer-wordmark">NOVA MUSIC LAB</span>
         <span className="museum-chapter__footer-line" />
         <span>{displayChapter} / {displayTotal}</span>
       </div>

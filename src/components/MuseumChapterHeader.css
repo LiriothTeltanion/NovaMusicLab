@@ -367,6 +367,15 @@
   white-space: nowrap;
 }
 
+/* The footer carries two different kinds of text in one mono block: the
+   chapter counter, where monospace earns its place by keeping the digits from
+   shifting, and the wordmark, where it does not - that one is the logo and
+   belongs to the display face everywhere in the app. */
+.museum-chapter__footer-wordmark {
+  font-family: var(--font-display);
+  letter-spacing: 0.13em;
+}
+
 .museum-chapter__footer-line {
   flex: 1 1 auto;
   min-width: 1.5rem;

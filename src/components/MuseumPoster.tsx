@@ -101,7 +101,10 @@ export default function MuseumPoster({ data, isPersonalArchive = false }: Museum
 
           <div className="relative z-10 flex h-full flex-col justify-between p-6">
             <div>
-              <p className="text-[9px] font-mono font-black uppercase tracking-[0.3em]" style={{ color: dominant.color }}>
+              {/* font-display, not font-mono: the wordmark is the one string in
+                  the app that must not change typeface with the machine it is
+                  exported from. */}
+              <p className="text-[9px] font-display font-black uppercase tracking-[0.26em]" style={{ color: dominant.color }}>
                 <bdi dir="ltr">NOVA MUSIC LAB</bdi>
               </p>
               <h4 className="mt-1 text-3xl font-black leading-none tracking-tight text-white" style={{ textShadow: `0 0 24px ${dominant.color}66` }}>

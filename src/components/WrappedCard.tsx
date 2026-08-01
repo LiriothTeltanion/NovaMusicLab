@@ -207,7 +207,7 @@ export default function WrappedCard({ data }: WrappedCardProps) {
               {/* Eyebrow */}
               <motion.div variants={item} className="flex items-center justify-between">
                 <span
-                  className="font-mono text-[10px] font-black tracking-[0.35em] uppercase"
+                  className="font-display text-[10px] font-black tracking-[0.3em] uppercase"
                   style={{ color: tc.c1 }}
                 >
                   NOVA MUSIC LAB

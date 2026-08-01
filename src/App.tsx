@@ -48,6 +48,7 @@ import DynamicMuseumBackground from './components/DynamicMuseumBackground';
 import ErrorBoundary from './components/ErrorBoundary';
 import CreatorCvLink from './components/CreatorCvLink';
 import NovaMark from './components/NovaMark';
+import NovaWordmark from './components/NovaWordmark';
 import SectionNarrative from './components/SectionNarrative';
 import LocalVisitorProfileCard from './components/visitor/LocalVisitorProfileCard';
 import type {
@@ -1326,13 +1327,11 @@ function AppInner({ boot }: { boot: AppBoot }) {
           onClick={() => goToTab('hero')}
           aria-label={t.homeAria}
         >
-          <div className="relative h-10 w-10 overflow-hidden rounded-2xl border bg-black/35 shadow-cyber"
-            style={{ borderColor: `${tc.c1}45`, boxShadow: `0 0 20px ${tc.c1}24` }}>
-            <NovaMark className="h-full w-full" size="100%" />
-          </div>
-          <span className="nova-app-brand__wordmark font-display text-base font-bold uppercase tracking-[0.14em] text-white">
-            NOVA <span style={{ color: tc.c1 }}>MUSIC LAB</span>
-          </span>
+          <NovaWordmark
+            accentColor={tc.c1}
+            className="nova-app-brand__lockup"
+            wordsClassName="uppercase"
+          />
         </button>
 
         <HubNavigation activeHub={activeHub} lang={lang} onSelect={selectHub} />
