@@ -3,11 +3,11 @@
   "release": {
     "status": "private-candidate",
     "version": "1.5.0",
-    "source_commit": "3a70fa0e3613ceb7e089aba0ad09c908f7cafa49",
-    "source_head_commit": "3a70fa0e3613ceb7e089aba0ad09c908f7cafa49",
+    "source_commit": "41d2f0b7a6cf9b39702df9a6d69bd869e77ba588",
+    "source_head_commit": "41d2f0b7a6cf9b39702df9a6d69bd869e77ba588",
     "source_state": "committed-product-source",
     "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
-    "source_fingerprint": "8162cb521facb95c45eb7d95359d2e3002a304fe8e74a6e26a3a1ac3aedb8855",
+    "source_fingerprint": "c25acad7f72b515e29f2981386b65e176d7733d056a97201adc1e6f9ac48e7fa",
     "source_file_count": 467,
     "captured_on": "2026-08-01",
     "deployed_on": null
@@ -66,10 +66,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.5.0/home-desktop-en-cyber.jpg",
-      "sha256": "5c956f61cf932be0b53f4158cf6a8739762b22f01d5c579f09fef9518da4861f",
+      "sha256": "7b8486bfb92d377b4c5bdc1a259568bd3961d3b8b00988d9e13a70b36a045994",
       "width": 1440,
       "height": 900,
-      "bytes": 161133,
+      "bytes": 162221,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -150,10 +150,10 @@
     {
       "id": "profile-tour-static",
       "path": "assets/releases/v1.5.0/product-tour-static-en-cyber.jpg",
-      "sha256": "01cec2fd6759791101cd990e087785164405b96eebcb0c94bcda848af89c83aa",
+      "sha256": "1ab582b8918d30aa2333b741617e1c05ee221f75d8173468824485505457886c",
       "width": 960,
       "height": 600,
-      "bytes": 103024,
+      "bytes": 107219,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -164,7 +164,7 @@
     {
       "id": "profile-tour",
       "path": "assets/releases/v1.5.0/product-tour-animated-en-cyber.gif",
-      "sha256": "fa2762fc42bea6023b840c9e0593fe2fdd48c90334fa4dbb401b0569d9913c90",
+      "sha256": "bbba603fc3440e08e4b2ca758c247ba30343894ffd74985e2dab487e45027053",
       "width": 560,
       "height": 350,
       "bytes": 668283,
