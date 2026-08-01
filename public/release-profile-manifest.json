@@ -14,10 +14,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.5.0/home-desktop-en-cyber.jpg",
-      "sha256": "02eb52e9a0fbb276724ee12e75856619730359da8ee455dd708e1efbaa38e01a",
+      "sha256": "bfe7c7de2a387dbaf7974a4e252eaeb39b63b793464b54f5c72fd5eab7aa77e7",
       "width": 1440,
       "height": 900,
-      "bytes": 162196,
+      "bytes": 162214,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -56,10 +56,10 @@
     {
       "id": "artist-atlas-desktop",
       "path": "assets/releases/v1.5.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "9167384f23833cfe71b99bc8a19f8aed077ad25c11c696ed281ae5e2fff57c07",
+      "sha256": "a8b1a2c353616ec57470fa865dec4afb98b5880e2eae41d74f1121af5b209efa",
       "width": 1440,
       "height": 900,
-      "bytes": 169620,
+      "bytes": 168979,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -98,10 +98,10 @@
     {
       "id": "profile-tour-static",
       "path": "assets/releases/v1.5.0/product-tour-static-en-cyber.jpg",
-      "sha256": "0a234728b1d6f0b392d8f168f5a9a266ad1197da29401770dc2fa118d56bb227",
+      "sha256": "ef5f2be064cee7ea7969effe5f6ca2eadb537365a8d1be1c2450d5cfda613403",
       "width": 960,
       "height": 600,
-      "bytes": 103018,
+      "bytes": 102783,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -112,7 +112,7 @@
     {
       "id": "profile-tour",
       "path": "assets/releases/v1.5.0/product-tour-animated-en-cyber.gif",
-      "sha256": "c0b5c96a3ed973db837f12bb2d15b27c80c1d64d4b84f910fb58d9282b9b5727",
+      "sha256": "488278bcbf5f3aa5ace2d5bbbf589d0395e9261e953838b5a3993288c18f490a",
       "width": 560,
       "height": 350,
       "bytes": 668283,
