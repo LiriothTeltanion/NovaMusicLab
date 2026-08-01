@@ -58,6 +58,8 @@ Title: **The Living Archive Gets a Face · El archivo vivo cobra rostro**.
   expedition copy and visible clipping in key mobile paths.
 - Prevented Share & Feedback from generating a localhost invitation URL.
 - Removed the conflicting iframe fullscreen permission declaration.
+- Stabilized the 365-cell heatmap keyboard regression without weakening its
+  semantics or increasing the test timeout.
 
 ### Verification status
 
@@ -70,8 +72,12 @@ Title: **The Living Archive Gets a Face · El archivo vivo cobra rostro**.
   public-bundle privacy audit passes across 27 public JSON payloads and 445
   repository text files; `npm audit` reports zero known vulnerabilities and
   `git diff --check` passes.
-- Final source-fingerprinted release media remains the last local gate before
-  the private candidate can be handed to CI and Kevin for review.
+- The post-capture `npm run verify:release` gate passes in one complete run,
+  including 9/9 source-fingerprinted release assets. A second post-capture
+  Playwright pass is green at 18/18.
+- The local candidate is ready for pull-request review. CI, CodeQL, Dependency
+  Review, Kevin's explicit merge approval and exact live Pages verification
+  remain deliberately pending.
 - `v1.4.0` — deployed 2026-07-29 — remains the public Pages version until CI,
   explicit approval, merge and live commit/version verification succeed.
 

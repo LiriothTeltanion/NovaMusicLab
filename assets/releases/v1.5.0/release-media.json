@@ -1,15 +1,67 @@
 {
-  "schema": "nova-music-profile-release-v1",
+  "schema": "nova-music-release-media-v1",
   "release": {
     "status": "private-candidate",
     "version": "1.5.0",
-    "commit": null,
+    "source_commit": "547bbbaf8359ea10dd0ebd9fcb89176a73f03c6e",
+    "source_head_commit": "547bbbaf8359ea10dd0ebd9fcb89176a73f03c6e",
+    "source_state": "committed-product-source",
+    "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
+    "source_fingerprint": "23455a85124902f2192858acbc81ee78bd4c8eb152a0abf58f8418fc1efdbd5f",
+    "source_file_count": 467,
     "captured_on": "2026-08-01",
     "deployed_on": null
   },
-  "repository": "LiriothTeltanion/NovaMusicLab",
-  "default_branch": "main",
-  "live_url": "https://liriothteltanion.github.io/NovaMusicLab/",
+  "repository": {
+    "slug": "LiriothTeltanion/NovaMusicLab",
+    "default_branch": "main",
+    "live_url": "https://liriothteltanion.github.io/NovaMusicLab/"
+  },
+  "required_media_ids": [
+    "profile-hero-desktop",
+    "profile-hero-mobile",
+    "genres-mobile",
+    "artist-atlas-desktop",
+    "guest-museum-desktop",
+    "hebrew-mobile",
+    "profile-tour-static",
+    "profile-tour",
+    "social-preview"
+  ],
+  "fallbacks": [
+    {
+      "media_id": "profile-tour",
+      "fallback_media_id": "profile-tour-static"
+    }
+  ],
+  "animation": {
+    "media_id": "profile-tour",
+    "frames": 3,
+    "frame_delay_ms": 1800,
+    "reduced_motion_fallback_media_id": "profile-tour-static"
+  },
+  "legacy_aliases": [
+    {
+      "media_id": "profile-hero-desktop",
+      "path": "assets/screenshots/nova-home-desktop.jpg"
+    },
+    {
+      "media_id": "artist-atlas-desktop",
+      "path": "assets/screenshots/living-artist-atlas-desktop.jpg"
+    },
+    {
+      "media_id": "guest-museum-desktop",
+      "path": "assets/screenshots/guest-museum-desktop.jpg"
+    },
+    {
+      "media_id": "hebrew-mobile",
+      "path": "assets/screenshots/share-hebrew-light-mobile.jpg"
+    },
+    {
+      "media_id": "social-preview",
+      "path": "public/social-preview-v2.png"
+    }
+  ],
   "media": [
     {
       "id": "profile-hero-desktop",

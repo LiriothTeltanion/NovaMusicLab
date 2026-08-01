@@ -46,15 +46,16 @@ candidate.
 
 ## Release gate
 
-Status: **local source gate passed; release media in progress**. The candidate
-is eligible for publication only after:
+Status: **local candidate gate passed; ready for review**. The candidate is
+eligible for publication only after:
 
 1. ~~`npm ci`, `npm run verify`, `npm run test:e2e`, `npm audit` and
    `git diff --check` pass.~~ Verified locally on Node `22.13.0`: 710 tests
    passed with 1 intentional private-fixture skip; Playwright passed 18/18;
    privacy and bundle gates passed; npm reported zero known vulnerabilities.
-2. Final release visuals are generated from the frozen product source and pass
-   `npm run audit:release-media`.
+2. ~~Final release visuals are generated from the frozen product source and
+   pass `npm run audit:release-media`.~~ Verified: 9/9 assets pass, and the
+   complete post-capture `npm run verify:release` plus Playwright 18/18 pass.
 3. CI, CodeQL and dependency review pass on a pull request.
 4. Kevin explicitly approves the merge.
 5. GitHub Pages serves matching `build-meta.json` and release-profile evidence

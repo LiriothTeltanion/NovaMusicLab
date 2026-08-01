@@ -157,7 +157,7 @@ live Spotify or Last.fm connection.
   budgets and `git diff --check` pass locally from the frozen product source on
   Node `22.13.0`: 710 tests plus Playwright 18/18 are green, with one
   intentional private-fixture skip and zero known dependency vulnerabilities.
-- [ ] Final source-fingerprinted visuals pass `npm run audit:release-media` and
+- [x] Final source-fingerprinted visuals pass `npm run audit:release-media` and
   the complete post-capture `npm run verify:release` gate.
 - [ ] CI, CodeQL and Dependency Review pass on the pull request.
 - [ ] Kevin explicitly approves the merge to `main`.
