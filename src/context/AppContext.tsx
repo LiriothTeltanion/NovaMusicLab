@@ -11,6 +11,7 @@ import {
   type TopSubTab,
 } from '../utils/deepLinks';
 import { DOCUMENT_METADATA, directionFor, isLang, type Lang } from '../utils/i18n';
+import { safeStorageRead, safeStorageWrite } from '../utils/safeStorage';
 
 export type { Lang } from '../utils/i18n';
 
@@ -78,7 +79,7 @@ export const STRINGS = {
     kpi: {
       totalPlays:    'Plays Totales',
       hours:         'Horas Escuchadas',
-      artists:       'Artistas Únicos',
+      artists:       'Entradas del catálogo',
       activeDays:    'Días Activos',
       bestYear:      'Mejor Año',
       avgPerDay:     'Promedio / Día',
@@ -276,7 +277,7 @@ export const STRINGS = {
         body: 'Esta sección profundiza en consistencia, exploración, repetición, meses, días de semana, géneros y evolución anual. Es el lugar para descubrir estructura, no solo rankings.',
         insights: [
           { title: 'Consistencia', body: 'Los días activos muestran si la música funciona como hábito estable o aparece en picos intensos.' },
-          { title: 'Exploración', body: 'La relación entre artistas únicos y plays indica si el archivo está dominado por descubrimiento o por lealtad.' },
+          { title: 'Exploración', body: 'La relación entre entradas de nombres de artista y plays indica si el archivo está dominado por descubrimiento o por lealtad, sin asumir que cada variante sea una persona distinta.' },
           { title: 'Calendario', body: 'El mapa mensual ayuda a ver temporadas: meses de crecimiento, pausas, regresos y años que concentran más movimiento.' },
         ],
         dataNote: 'Cuando no hay actividad mensual real, la app puede construir una distribución estimada a partir de los conteos anuales.',
@@ -380,7 +381,7 @@ export const STRINGS = {
       enter:     'ENTRAR AL MUSEO SONORO',
       scrobbles: 'Reproducciones',
       hours:     'Horas',
-      artists:   'Artistas',
+      artists:   'Entradas del catálogo',
       tracks:    'Canciones',
       days:      'Días de Música (24 h)',
     },
@@ -434,8 +435,8 @@ export const STRINGS = {
       kpiTotalPlaysSub: 'Registros únicos en Last.fm + Spotify',
       kpiHoursListened: 'Horas Escuchadas',
       kpiHoursListenedSub: (days: string | number) => `Aprox. ${days} días de música continua`,
-      kpiUniqueArtists: 'Artistas Únicos',
-      kpiUniqueArtistsSub: 'Artistas en 11 años de historial',
+      kpiUniqueArtists: 'Entradas del catálogo',
+      kpiUniqueArtistsSub: 'Nombres de artista; 181 grupos de variantes preservados',
       kpiActiveDays: 'Días Activos',
       kpiActiveDaysSub: 'Días con al menos 1 reproducción',
       kpiBestYear: 'Mejor Año',
@@ -465,7 +466,7 @@ export const STRINGS = {
       heatmapFooter: 'Horizontal: 24 horas · Vertical: días de la semana',
       hourlyRhythmTitle: 'Ritmo de Escucha por Hora del Día',
       evolutionTitle: 'Evolución Musical 2015–2026',
-      uniqueArtistsLegend: 'Artistas únicos',
+      uniqueArtistsLegend: 'Nombres de artista distintos',
     },
     innerWorld: {
       pageTitle: 'Tu Universo Interior',
@@ -509,8 +510,8 @@ export const STRINGS = {
       title: 'Estadísticas Profundas',
       kpiConsistency: 'Consistencia',
       kpiConsistencyDesc: 'Días activos / días totales',
-      kpiExploration: 'Exploración',
-      kpiExplorationDesc: 'Artistas por 1000 plays',
+      kpiExploration: 'Amplitud del catálogo',
+      kpiExplorationDesc: 'Entradas de nombres de artista por 1000 plays',
       kpiObsession: 'Obsesión',
       kpiObsessionDesc: 'Tasa de repetición',
       kpiPeakYear: 'Año Cumbre',
@@ -528,7 +529,7 @@ export const STRINGS = {
       weekdayPatternTitle: 'Patrón por Día de la Semana',
       genreTreemapTitle: 'Treemap de Géneros (por plays)',
       genreEvolutionTitle: 'Evolución de Plays & Descubrimiento 2015–2026',
-      uniqueArtists: 'Artistas únicos',
+      uniqueArtists: 'Nombres de artista distintos',
       diversityPct: 'Diversidad %',
       erasTableTitle: 'Tabla de Eras Anuales',
       erasTableHint: 'Ordena por cualquier columna y haz clic en un año para cargarlo en el desglose mensual.',
@@ -763,7 +764,7 @@ export const STRINGS = {
         { title: 'Normalización', tag: 'Unificación', body: 'Artista y canción se recortan, se comparan en minúsculas y se usan claves normalizadas para detectar overlap entre fuentes.' },
         { title: 'Sesiones', tag: 'Ritmo de escucha', body: 'Una sesión continúa mientras las canciones estén separadas por 60 minutos o menos. Si el hueco supera ese límite, empieza una nueva sesión.' },
         { title: 'Obsesiones', tag: 'Loops diarios', body: 'Una obsesión aparece cuando una misma canción supera el umbral de repeticiones en un día. Sirve para detectar loops intensos o canciones refugio.' },
-        { title: 'Eras', tag: 'Capítulos anuales', body: 'Cada año se resume con total de plays, artistas únicos, canciones únicas, diversidad, top artist, top track y franja horaria dominante.' },
+        { title: 'Eras', tag: 'Capítulos anuales', body: 'Cada año se resume con total de plays, nombres de artista distintos, canciones distintas, diversidad, top artist, top track y franja horaria dominante.' },
         { title: 'Metadatos', tag: 'Inferencia local', body: 'Géneros, países y algunas lecturas estéticas dependen de una tabla local de artistas. Cuando un artista no existe en la tabla, se marca como desconocido o alternativo.' },
         { title: 'Privacidad', tag: 'Local first', body: 'Los archivos se procesan en el navegador. El parser evita campos sensibles como IP y no necesita backend para calcular el museo.' },
       ],
@@ -825,7 +826,7 @@ export const STRINGS = {
       genreBreakdown: 'Desglose por Géneros',
       playsByYear: 'Reproducciones por Año (2015–2026)',
       playsLegend: 'Reproducciones',
-      uniqueArtistsLegend: 'Artistas únicos',
+      uniqueArtistsLegend: 'Nombres de artista distintos',
       resultsCount: (count: number) => `${count} resultados`,
       eraDiversityLine: (diversityIndex: number, uniqueArtists: number) =>
         `Diversidad ${diversityIndex}% · ${uniqueArtists} artistas`,
@@ -1126,25 +1127,6 @@ export const STRINGS = {
       transitionsLine: (changes: number) => `Tu archivo cambió de clima emocional ${changes} veces entre años consecutivos.`,
       spanLine: (from: number, to: number) => `De ${from} a ${to}, tu música no se quedó quieta: cada era encontró su propia temperatura.`,
     },
-    museumPoster: {
-      eyebrow: '🖼 Póster de museo',
-      title: 'Póster del Museo Sonoro',
-      intro: 'Una pieza de colección generada desde tu archivo: arte determinista de tu mood dominante, tus cifras clave y tu colección permanente. Exportable como PNG para imprimir o compartir.',
-      posterHeading: 'MUSEO SONORO',
-      curatedBy: (alias: string) => `Curaduría: ${alias}`,
-      statPlays: 'Reproducciones',
-      statArtists: 'Artistas',
-      statHours: 'Horas',
-      statYears: 'Años',
-      topArtistsLabel: 'Colección permanente',
-      moodMixLabel: 'Clima dominante',
-      genresLabel: 'Salas del museo',
-      downloadButton: 'Descargar PNG',
-      downloading: 'Generando póster...',
-      downloadError: 'No se pudo exportar el póster. Intenta de nuevo.',
-      variationButton: 'Variar arte',
-      footer: (date: string) => `Edición generativa · ${date}`,
-    },
     obsessionDetector: {
       title:                'Obsesiones Musicales & Loops',
       hyperfixationsTitle:  'Hiperfijaciones Musicales',
@@ -1186,7 +1168,7 @@ export const STRINGS = {
       coverSubtitlePre: 'Un ensayo para ',
       statScrobbles: 'Reproducciones',
       statHours: 'Horas',
-      statArtists: 'Artistas',
+      statArtists: 'Entradas del catálogo',
       statTracks: 'Canciones',
       s1Roman: 'I',
       s1Title: 'El Valor de una Huella Sonora',
@@ -1207,7 +1189,7 @@ export const STRINGS = {
       s3Roman: 'III',
       s3Title: 'El ADN: Quién Eres según tu Música',
       s3Pre: 'Con',
-      s3ArtistsLabel: 'artistas únicos',
+      s3ArtistsLabel: 'entradas de nombres del catálogo',
       s3Mid: 'y',
       s3TracksLabel: 'canciones únicas',
       s3ArchetypeIntro: 'eres',
@@ -1272,7 +1254,7 @@ export const STRINGS = {
         confidenceValue: 'Alta en conteo, interpretativa en significado',
       },
       methodPoints: [
-        { title: 'Fuente', tag: 'Exacto', body: 'Los plays, artistas únicos, canciones únicas y año dominante vienen de yearly_eras del dataset activo.' },
+        { title: 'Fuente', tag: 'Exacto', body: 'Los plays, nombres de artista distintos, canciones distintas y año dominante vienen de yearly_eras del dataset activo.' },
         { title: 'Comparación', tag: 'Regla local', body: 'Un artista sigue vivo si el top artist de esa era aparece también dentro del top 10 histórico actual de artistas.' },
         { title: 'Exclusión', tag: 'Recencia', body: 'La app aparta los dos años más recientes para evitar que una era todavía abierta sea tratada como nostalgia.' },
         { title: 'Lectura', tag: 'Curada', body: '“Se desvaneció” significa que bajó de la rotación principal, no que dejó de importar emocionalmente.' },
@@ -1379,32 +1361,6 @@ export const STRINGS = {
         },
       ],
     },
-    museumCompare: {
-      title: 'Comparador de Museos',
-      intro: 'Sube un segundo historial de escucha (tuyo o de otra persona) y enfrenta ambos museos: overlap de artistas, moods dominantes y métricas lado a lado. Todo se compara localmente; el segundo archivo nunca reemplaza tu museo activo.',
-      primaryMuseumLabel: 'Museo A · Tu museo activo',
-      secondaryMuseumLabel: 'Museo B',
-      secondaryPlaceholderTitle: 'Sube un segundo museo',
-      secondaryPlaceholderBody: 'Arrastra un backup de Nova, un CSV de Last.fm/Apple Music o un JSON de Spotify/YouTube/ListenBrainz para comparar contra tu museo activo.',
-      browseButton: 'Examinar archivos',
-      changeSecondaryButton: 'Cambiar museo B',
-      clearSecondaryButton: 'Quitar museo B',
-      processing: 'Procesando el segundo museo...',
-      topArtistLabel: 'Artista ancla',
-      totalPlaysLabel: 'Plays totales',
-      overlapTitle: 'Overlap de Artistas',
-      overlapBody: (pct: number, shared: number) => `${pct}% de overlap: ${shared} artistas aparecen en ambos museos.`,
-      sharedArtistsLabel: 'Artistas compartidos',
-      onlyInA: (label: string, count: number) => `Solo en ${label}: ${count} artistas`,
-      onlyInB: (label: string, count: number) => `Solo en ${label}: ${count} artistas`,
-      noOverlapArtists: 'Ningún artista se repite entre ambos museos todavía.',
-      metricsTitle: 'Métricas Lado a Lado',
-      metricsHint: 'El porcentaje muestra cuánto cambia el Museo B respecto al Museo A en cada métrica.',
-      moodTitle: 'Moods Enfrentados',
-      moodSameNarrative: (mood: string) => `Ambos museos comparten el mismo clima emocional dominante: ${mood}.`,
-      moodDiffNarrative: (moodA: string, moodB: string) => `Los museos divergen: el A vibra en ${moodA}, mientras el B vibra en ${moodB}.`,
-      dominantMoodLabel: 'Mood dominante',
-    },
   },
   en: {
     appTitle: 'NOVA MUSIC LAB',
@@ -1458,7 +1414,7 @@ export const STRINGS = {
     kpi: {
       totalPlays:    'Total Plays',
       hours:         'Hours Listened',
-      artists:       'Unique Artists',
+      artists:       'Catalog entries',
       activeDays:    'Active Days',
       bestYear:      'Best Year',
       avgPerDay:     'Avg / Day',
@@ -1656,7 +1612,7 @@ export const STRINGS = {
         body: 'This section goes deeper into consistency, exploration, repetition, months, weekdays, genres and yearly evolution. It is the place to discover structure, not only rankings.',
         insights: [
           { title: 'Consistency', body: 'Active days show whether music behaves like a stable habit or appears in intense spikes.' },
-          { title: 'Exploration', body: 'The relationship between unique artists and plays indicates whether the archive is led by discovery or loyalty.' },
+          { title: 'Exploration', body: 'The relationship between artist-name entries and plays indicates whether the archive is led by discovery or loyalty, without assuming every variant is a different person.' },
           { title: 'Calendar', body: 'The monthly map helps reveal seasons: growth months, pauses, returns and years that concentrate more movement.' },
         ],
         dataNote: 'When real monthly activity is missing, the app can build an estimated distribution from yearly counts.',
@@ -1762,7 +1718,7 @@ export const STRINGS = {
       // Lab still explains it where the distinction actually matters.
       scrobbles: 'Plays',
       hours:     'Hours',
-      artists:   'Artists',
+      artists:   'Catalog entries',
       tracks:    'Tracks',
       days:      '24h Music Days',
     },
@@ -1816,8 +1772,8 @@ export const STRINGS = {
       kpiTotalPlaysSub: 'Unique records in Last.fm + Spotify',
       kpiHoursListened: 'Hours Listened',
       kpiHoursListenedSub: (days: string | number) => `Approx. ${days} days of continuous music`,
-      kpiUniqueArtists: 'Unique Artists',
-      kpiUniqueArtistsSub: 'Artists across 11 years of history',
+      kpiUniqueArtists: 'Catalog entries',
+      kpiUniqueArtistsSub: 'Artist names; 181 variant groups preserved',
       kpiActiveDays: 'Active Days',
       kpiActiveDaysSub: 'Days with at least 1 registered play',
       kpiBestYear: 'Best Year',
@@ -1847,7 +1803,7 @@ export const STRINGS = {
       heatmapFooter: 'Horizontal: 24 hours · Vertical: days of the week',
       hourlyRhythmTitle: 'Listening Rhythm by Hour',
       evolutionTitle: 'Musical Evolution 2015–2026',
-      uniqueArtistsLegend: 'Unique Artists',
+      uniqueArtistsLegend: 'Distinct artist names',
     },
     innerWorld: {
       pageTitle: 'Your Inner Universe',
@@ -1891,8 +1847,8 @@ export const STRINGS = {
       title: 'Pro Statistics',
       kpiConsistency: 'Consistency',
       kpiConsistencyDesc: 'Active days / total days',
-      kpiExploration: 'Exploration',
-      kpiExplorationDesc: 'Artists per 1000 plays',
+      kpiExploration: 'Catalog breadth',
+      kpiExplorationDesc: 'Artist-name entries per 1,000 plays',
       kpiObsession: 'Obsession',
       kpiObsessionDesc: 'Repetition rate',
       kpiPeakYear: 'Peak Year',
@@ -1910,7 +1866,7 @@ export const STRINGS = {
       weekdayPatternTitle: 'Day-of-Week Pattern',
       genreTreemapTitle: 'Genre Treemap (by plays)',
       genreEvolutionTitle: 'Plays & Artist Discovery 2015–2026',
-      uniqueArtists: 'Unique Artists',
+      uniqueArtists: 'Distinct artist names',
       diversityPct: 'Diversity %',
       erasTableTitle: 'Yearly Eras Table',
       erasTableHint: 'Sort by any column and click a year to load it into the monthly breakdown.',
@@ -2145,7 +2101,7 @@ export const STRINGS = {
         { title: 'Normalization', tag: 'Unification', body: 'Artist and track names are trimmed, compared lowercase and stored as normalized keys to detect overlap across sources.' },
         { title: 'Sessions', tag: 'Listening rhythm', body: 'A session continues while tracks are separated by 60 minutes or less. If the gap exceeds that threshold, a new session begins.' },
         { title: 'Obsessions', tag: 'Daily loops', body: 'An obsession appears when the same track crosses the same-day repetition threshold. It helps detect intense loops or refuge songs.' },
-        { title: 'Eras', tag: 'Yearly chapters', body: 'Each year is summarized with total plays, unique artists, unique tracks, diversity, top artist, top track and dominant listening window.' },
+        { title: 'Eras', tag: 'Yearly chapters', body: 'Each year is summarized with total plays, distinct artist names, distinct tracks, diversity, top artist, top track and dominant listening window.' },
         { title: 'Metadata', tag: 'Local inference', body: 'Genres, countries and some aesthetic readings depend on a local artist table. If an artist is missing, it is marked as unknown or alternative.' },
         { title: 'Privacy', tag: 'Local first', body: 'Files are processed in the browser. The parser avoids sensitive fields such as IP and does not require a backend to calculate the museum.' },
       ],
@@ -2207,7 +2163,7 @@ export const STRINGS = {
       genreBreakdown: 'Genre Breakdown Bar',
       playsByYear: 'Plays by Year (2015–2026)',
       playsLegend: 'Plays',
-      uniqueArtistsLegend: 'Unique Artists',
+      uniqueArtistsLegend: 'Distinct artist names',
       resultsCount: (count: number) => `${count} results`,
       eraDiversityLine: (diversityIndex: number, uniqueArtists: number) =>
         `Diversity ${diversityIndex}% · ${uniqueArtists} artists`,
@@ -2508,25 +2464,6 @@ export const STRINGS = {
       transitionsLine: (changes: number) => `Your archive shifted emotional climate ${changes} times between consecutive years.`,
       spanLine: (from: number, to: number) => `From ${from} to ${to}, your music never stood still: every era found its own temperature.`,
     },
-    museumPoster: {
-      eyebrow: '🖼 Museum poster',
-      title: 'Sound Museum Poster',
-      intro: 'A collection piece generated from your archive: deterministic art from your dominant mood, your key numbers and your permanent collection. Exportable as a PNG to print or share.',
-      posterHeading: 'SOUND MUSEUM',
-      curatedBy: (alias: string) => `Curated by: ${alias}`,
-      statPlays: 'Plays',
-      statArtists: 'Artists',
-      statHours: 'Hours',
-      statYears: 'Years',
-      topArtistsLabel: 'Permanent collection',
-      moodMixLabel: 'Dominant climate',
-      genresLabel: 'Museum halls',
-      downloadButton: 'Download PNG',
-      downloading: 'Generating poster...',
-      downloadError: 'The poster could not be exported. Please try again.',
-      variationButton: 'Vary art',
-      footer: (date: string) => `Generative edition · ${date}`,
-    },
     obsessionDetector: {
       title:                'Musical Obsessions & Loops',
       hyperfixationsTitle:  'Music Hyperfixations',
@@ -2568,7 +2505,7 @@ export const STRINGS = {
       coverSubtitlePre: 'An essay for ',
       statScrobbles: 'Plays',
       statHours: 'Hours',
-      statArtists: 'Artists',
+      statArtists: 'Catalog entries',
       statTracks: 'Tracks',
       s1Roman: 'I',
       s1Title: 'The Value of a Sonic Footprint',
@@ -2589,7 +2526,7 @@ export const STRINGS = {
       s3Roman: 'III',
       s3Title: 'The DNA: Who You Are According to Your Music',
       s3Pre: 'With',
-      s3ArtistsLabel: 'unique artists',
+      s3ArtistsLabel: 'artist-name catalog entries',
       s3Mid: 'and',
       s3TracksLabel: 'unique tracks',
       s3ArchetypeIntro: 'you are',
@@ -2654,7 +2591,7 @@ export const STRINGS = {
         confidenceValue: 'High for counts, interpretive for meaning',
       },
       methodPoints: [
-        { title: 'Source', tag: 'Exact', body: 'Plays, unique artists, unique tracks and dominant year values come from yearly_eras in the active dataset.' },
+        { title: 'Source', tag: 'Exact', body: 'Plays, distinct artist names, distinct tracks and dominant year values come from yearly_eras in the active dataset.' },
         { title: 'Comparison', tag: 'Local rule', body: 'An artist is still alive if that era’s top artist also appears inside the current all-time top 10 artists.' },
         { title: 'Exclusion', tag: 'Recency', body: 'The app sets aside the two most recent years so an era still in motion is not treated as nostalgia.' },
         { title: 'Reading', tag: 'Curated', body: '“Faded” means the artist left the main rotation, not that they stopped mattering emotionally.' },
@@ -2760,32 +2697,6 @@ export const STRINGS = {
           body: 'Your dataset saves itself automatically on this device. Export a portable backup or clear it anytime from the upload section.',
         },
       ],
-    },
-    museumCompare: {
-      title: 'Museum Comparator',
-      intro: 'Upload a second listening history (yours or someone else\'s) and put both museums face to face: artist overlap, dominant moods and side-by-side metrics. Everything compares locally; the second file never replaces your active museum.',
-      primaryMuseumLabel: 'Museum A · Your active museum',
-      secondaryMuseumLabel: 'Museum B',
-      secondaryPlaceholderTitle: 'Upload a second museum',
-      secondaryPlaceholderBody: 'Drop a Nova backup, a Last.fm/Apple Music CSV, or a Spotify/YouTube/ListenBrainz JSON to compare against your active museum.',
-      browseButton: 'Browse files',
-      changeSecondaryButton: 'Change museum B',
-      clearSecondaryButton: 'Remove museum B',
-      processing: 'Processing the second museum...',
-      topArtistLabel: 'Anchor artist',
-      totalPlaysLabel: 'Total plays',
-      overlapTitle: 'Artist Overlap',
-      overlapBody: (pct: number, shared: number) => `${pct}% overlap: ${shared} artists appear in both museums.`,
-      sharedArtistsLabel: 'Shared artists',
-      onlyInA: (label: string, count: number) => `Only in ${label}: ${count} artists`,
-      onlyInB: (label: string, count: number) => `Only in ${label}: ${count} artists`,
-      noOverlapArtists: 'No artist appears in both museums yet.',
-      metricsTitle: 'Side-by-Side Metrics',
-      metricsHint: 'The percentage shows how much Museum B changes relative to Museum A for each metric.',
-      moodTitle: 'Moods Face to Face',
-      moodSameNarrative: (mood: string) => `Both museums share the same dominant emotional climate: ${mood}.`,
-      moodDiffNarrative: (moodA: string, moodB: string) => `The museums diverge: A vibrates in ${moodA}, while B vibrates in ${moodB}.`,
-      dominantMoodLabel: 'Dominant mood',
     },
   },
 } as const;
@@ -2942,11 +2853,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       : parseDeepLink(window.location.hash)
   ));
   const [lang, setLangState] = useState<Lang>(() => {
-    const stored = localStorage.getItem('nml_lang');
+    const stored = safeStorageRead('nml_lang');
     return isLang(stored) ? stored : 'en';
   });
   const [theme, setThemeState] = useState<Theme>(() => {
-    const stored = localStorage.getItem('nml_theme');
+    const stored = safeStorageRead('nml_theme');
     return isTheme(stored) ? stored : 'cyber';
   });
 
@@ -2962,12 +2873,12 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const setLang = useCallback((l: Lang) => {
     setLangState(l);
-    localStorage.setItem('nml_lang', l);
+    safeStorageWrite('nml_lang', l);
   }, []);
 
   const setTheme = useCallback((th: Theme) => {
     setThemeState(th);
-    localStorage.setItem('nml_theme', th);
+    safeStorageWrite('nml_theme', th);
   }, []);
 
   useEffect(() => {

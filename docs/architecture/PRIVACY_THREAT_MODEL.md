@@ -15,13 +15,24 @@
 
 Selected files enter source parsers in the browser. Risks include maliciously large files, malformed formats, formula injection in exports, main-thread denial of service and accidentally retained raw fields.
 
-Controls include format validation, size limits, bounded parsing, formula-safe CSV output, minimal fixtures and explicit error states.
+Controls include format validation, formula-safe CSV output, minimal fixtures
+and explicit error states. `v1.5.0` — private candidate 2026-08-01 — also
+inspects ZIP directories before approved inflation and enforces 100 MiB
+compressed, 128 entries, 64 MiB per entry, 128 MiB total expanded and a 100:1
+compression-ratio ceiling. Unsupported and sensitive provider files are
+filtered before inflation, flattened duplicate names are rejected, text reads
+use at most two concurrent readers and one abort signal cancels the ZIP,
+FileReader and MusicBee paths.
 
 ### Browser storage boundary
 
 IndexedDB belongs to the current browser profile and origin. It is accessible to scripts running on that origin, can be unavailable or evicted, and is not encrypted by Nova Music Lab.
 
-Controls include no bundled secrets, a strict Content Security Policy roadmap, explicit save state, portable backups and user-controlled clear behavior.
+Controls include no bundled secrets, a strict Content Security Policy roadmap,
+explicit save state, portable backups and user-controlled clear behavior.
+Language and theme use a safe preference adapter with a volatile in-memory
+fallback when `localStorage` access throws; this fallback does not turn browser
+preferences into durable account data.
 
 ### Public repository and Pages boundary
 

@@ -1,7 +1,10 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { strToU8, zipSync } from 'fflate';
 import DataUploader, {
+  IMPORT_TEXT_READ_CONCURRENCY,
+  readFilesAsTextBounded,
   type DatasetOperationCoordinator,
   type DatasetOperationToken,
 } from './DataUploader';
@@ -189,6 +192,67 @@ describe('DataUploader', () => {
       screen.getByRole('region', { name: STRINGS.es.uploader.dropZoneAriaLabel })
     ).toBeInTheDocument();
     expect(within(screen.getByTestId('upload-primary-action')).getByText(STRINGS.es.uploader.formatsLabel)).toBeInTheDocument();
+  });
+
+  it('bounds text ingestion to two concurrent readers and preserves file order', async () => {
+    const controller = new AbortController();
+    const files = [
+      new File(['first'], 'first.json'),
+      new File(['second'], 'second.json'),
+      new File(['third'], 'third.json'),
+    ];
+
+    expect(IMPORT_TEXT_READ_CONCURRENCY).toBe(2);
+    await expect(readFilesAsTextBounded(files, {
+      signal: controller.signal,
+      errorMessage: 'read failed',
+    })).resolves.toEqual(['first', 'second', 'third']);
+  });
+
+  it('cancels bounded text ingestion without returning partial data', async () => {
+    const controller = new AbortController();
+    controller.abort();
+
+    await expect(readFilesAsTextBounded(
+      [new File(['never read'], 'history.json')],
+      { signal: controller.signal, errorMessage: 'read failed' },
+    )).rejects.toMatchObject({ name: 'AbortError' });
+  });
+
+  it.each([
+    {
+      lang: 'en' as Lang,
+      expected: /larger than Nova's 100 MB compressed-archive limit.*desktop browser.*smaller batches/i,
+    },
+    {
+      lang: 'es' as Lang,
+      expected: /supera el límite de 100 MB.*navegador de escritorio.*lotes más pequeños/i,
+    },
+    {
+      lang: 'he' as Lang,
+      expected: /100MB.*בדפדפן במחשב.*לקבוצות קטנות יותר/i,
+    },
+  ])('shows a recoverable oversized-archive error in $lang', async ({ lang, expected }) => {
+    window.localStorage.setItem('nml_lang', lang);
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    render(
+      <AppProvider>
+        <DataUploader onDataLoaded={onDataLoaded} {...baseProps} />
+      </AppProvider>
+    );
+    await screen.findByRole('button', { name: STRINGS[lang].uploader.browseButton });
+    const archive = new File([], 'oversized-spotify.zip', { type: 'application/zip' });
+    Object.defineProperty(archive, 'size', {
+      configurable: true,
+      value: 104_857_601,
+    });
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+
+    await user.upload(input, archive);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(expected);
+    expect(onDataLoaded).not.toHaveBeenCalled();
   });
 
   it('puts the upload action before a collapsed, accessible source guide', async () => {
@@ -594,6 +658,61 @@ describe('DataUploader', () => {
     await waitFor(() => expect(TestMusicBeeWorker.instances[0].terminated).toBe(true));
     await waitFor(() => expect(operationCoordinator.active).toBeNull());
     expect(onDataLoaded).not.toHaveBeenCalled();
+  });
+
+  it('cancels an in-flight ZIP read on unmount and ignores its late completion', async () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+    const onDataLoaded = vi.fn();
+    const operationCoordinator = createOperationCoordinator();
+    const packed = zipSync({
+      'history/endsong_0.json': strToU8(JSON.stringify([{
+        ts: '2026-07-20T18:00:00Z',
+        master_metadata_album_artist_name: 'Archive Artist',
+        master_metadata_track_name: 'Archive Track',
+        ms_played: 200_000,
+      }])),
+    });
+    const archive = new File([packed as BlobPart], 'spotify.zip', { type: 'application/zip' });
+    let finishRead: ((value: ArrayBuffer) => void) | undefined;
+    let markReadStarted: (() => void) | undefined;
+    const readStarted = new Promise<void>(resolve => {
+      markReadStarted = resolve;
+    });
+    Object.defineProperty(archive, 'arrayBuffer', {
+      configurable: true,
+      value: () => {
+        markReadStarted?.();
+        return new Promise<ArrayBuffer>(resolve => {
+          finishRead = resolve;
+        });
+      },
+    });
+    const rendered = render(
+      <AppProvider>
+        <DataUploader
+          onDataLoaded={onDataLoaded}
+          {...baseProps}
+          operationCoordinator={operationCoordinator}
+        />
+      </AppProvider>
+    );
+
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, archive);
+    await readStarted;
+    expect(operationCoordinator.active?.kind).toBe('import');
+
+    rendered.unmount();
+
+    await waitFor(() => expect(operationCoordinator.active).toBeNull());
+    await act(async () => {
+      finishRead?.(packed.slice().buffer);
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(onDataLoaded).not.toHaveBeenCalled();
+    expect(operationCoordinator.active).toBeNull();
   });
 
   it('does not silently carry a previous MusicBee library into a new timeline import', async () => {
