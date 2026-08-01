@@ -101,7 +101,14 @@ export default function CommandPalette({
 
   useLayoutEffect(() => {
     if (!isOpen) return;
+    const keepFocusInDialog = (event: FocusEvent) => {
+      if (dialogRef.current?.contains(event.target as Node)) return;
+      inputRef.current?.focus({ preventScroll: true });
+    };
+
+    document.addEventListener('focusin', keepFocusInDialog);
     inputRef.current?.focus({ preventScroll: true });
+    return () => document.removeEventListener('focusin', keepFocusInDialog);
   }, [isOpen]);
 
   useEffect(() => {
