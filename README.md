@@ -14,9 +14,9 @@
 
 Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
 
-**Release candidate:** `1.5.0` — **private candidate 2026-08-01**, not yet deployed or tagged. **The Living Archive Gets a Face** removes invalid artist-image placeholders, clarifies genre and snapshot provenance, bounds archive imports and polishes mobile, keyboard and Hebrew RTL journeys.
+**Current public version:** `1.5.0` — **deployed 2026-08-01**. **The Living Archive Gets a Face** removes invalid artist-image placeholders, clarifies genre and snapshot provenance, bounds archive imports and polishes mobile, keyboard and Hebrew RTL journeys.
 
-**Current public version:** `1.4.0` — deployed **2026-07-29**. GitHub Pages remains on this version until the candidate passes local gates, pull-request CI, Kevin's explicit approval and exact live commit verification. IndexedDB **schema revision 4** is a storage contract, not the product version.
+**Engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · 710 passing Vitest tests with 1 intentional private-fixture skip · 18/18 Playwright journeys · EN/ES/HE RTL · protected GitHub Pages CI. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -34,18 +34,19 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 4. Switch to **Deep Dive** when you want methodology and provenance.
 5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
 6. In `1.4.0` — deployed **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
-7. In `1.5.0` — private candidate **2026-08-01** — portrait fallbacks, genre evidence, snapshot dates and bounded local imports become easier to trust; this line does not claim a public deployment.
+7. In `1.5.0` — deployed **2026-08-01** — portrait fallbacks, genre evidence, snapshot dates and bounded local imports become easier to trust.
 
 No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ v1.5.0 candidate gallery
+## 🖼️ v1.5.0 release gallery
 
-These captures document `1.5.0` — **private candidate 2026-08-01**. They are
-generated from the frozen production build, tied to its canonical Git source
-fingerprint and reviewed before any pull request can promote the candidate.
-They are evidence of the candidate, not a claim that `1.5.0` is already live.
+These captures document the frozen source that became `1.5.0` — **deployed
+2026-08-01**. They were generated and source-fingerprinted while that source was
+still a private candidate, then reviewed before promotion. The live
+[`build-meta.json`](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json)
+is the authoritative deployment identity.
 
 <table>
   <tr>
@@ -254,7 +255,7 @@ The generated artist manifest currently contains **100 artist records** and **29
 
 The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
 
-`1.5.0` — private candidate **2026-08-01** — explains three different coverage
+`1.5.0` — deployed **2026-08-01** — explains three different coverage
 layers instead of collapsing them into one number. Analytical genre families
 cover **94.1% of 80,550 plays**; detailed evidence exists for **453 of 6,413
 catalog rows**; and **1,662 rows** remain unclassified. The evidence bundle
@@ -420,7 +421,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 
 | Guide | Purpose |
 |---|---|
-| [Current status](./CURRENT_STATUS.md) | Verified public/candidate boundary, snapshot dates and release gate |
+| [Current status](./CURRENT_STATUS.md) | Verified public status, snapshot dates and release evidence |
 | [Architecture overview](./docs/architecture/OVERVIEW.md) | System boundaries and data flow |
 | [Guest Museum](./docs/product/GUEST_MUSEUM.md) | Account-free visitor import, comparison and optional future identity |
 | [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
@@ -447,7 +448,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`1.4.0` — deployed **2026-07-29** — remains the version served by the protected GitHub Pages deployment while `1.5.0` — private candidate **2026-08-01** — is reviewed. Pull request [#22](https://github.com/LiriothTeltanion/NovaMusicLab/pull/22) made the initial v1.4.0 promotion, and workflow run [`30459224429`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30459224429) verified, deployed and smoke-tested its commit `0e6c1e3cbd667dddd78053c7e824b14c030e821b`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative identity after later documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
+`1.5.0` — deployed **2026-08-01** — is served by the protected GitHub Pages workflow. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) promoted the reviewed source, and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) verified, deployed and smoke-tested initial release commit `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 

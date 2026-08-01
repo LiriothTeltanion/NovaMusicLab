@@ -4,14 +4,12 @@ Last reviewed: **2026-08-01**.
 
 ## Product versions
 
-- **v1.5.0 — private candidate 2026-08-01.** Working title: **The Living
-  Archive Gets a Face · El archivo vivo cobra rostro**. This branch is not a
-  public deployment and must not be tagged until all local, CI and live gates
-  pass.
-- **v1.4.0 — initially deployed 2026-07-29.** This remains the current public
-  product version. The latest verified documentation-only Pages artifact was
-  deployed **2026-07-31**; that later artifact date does not create a new
-  product version.
+- **v1.5.0 — deployed 2026-08-01.** **The Living Archive Gets a Face · El
+  archivo vivo cobra rostro** passed local, pull-request, protected Pages and
+  exact live-artifact gates. Initial release commit:
+  `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`.
+- **v1.4.0 — initially deployed 2026-07-29; superseded 2026-08-01.** Its final
+  documentation-only Pages artifact was deployed 2026-07-31.
 - IndexedDB **schema revision 4** remains the storage contract. It is not the
   product version.
 
@@ -27,11 +25,11 @@ Last reviewed: **2026-08-01**.
 
 The catalog-row count is not a claim of 6,413 unique people or canonical artist
 identities. The identity audit currently documents **181 known normalized-name
-variant groups**; no rows are merged or deleted in this candidate.
+variant groups**; no rows were merged or deleted in this release.
 
-## Candidate scope
+## Release scope
 
-The v1.5.0 candidate is limited to:
+The deployed v1.5.0 release includes:
 
 - trustworthy portrait fallbacks and invalid-provider-placeholder rejection;
 - clearer genre-family, reviewed-evidence and unclassified coverage language;
@@ -42,12 +40,11 @@ The v1.5.0 candidate is limited to:
 
 DAW, FL Studio, MIDI, Tauri, desktop packaging, backend, accounts, OAuth and
 automatic Spotify/Last.fm synchronization are deliberately outside this
-candidate.
+release.
 
 ## Release gate
 
-Status: **local candidate gate passed; ready for review**. The candidate is
-eligible for publication only after:
+Status: **deployment accepted and independently verified 2026-08-01**.
 
 1. ~~`npm ci`, `npm run verify`, `npm run test:e2e`, `npm audit` and
    `git diff --check` pass.~~ Verified locally on Node `22.13.0`: 710 tests
@@ -56,10 +53,17 @@ eligible for publication only after:
 2. ~~Final release visuals are generated from the frozen product source and
    pass `npm run audit:release-media`.~~ Verified: 9/9 assets pass, and the
    complete post-capture `npm run verify:release` plus Playwright 18/18 pass.
-3. CI, CodeQL and dependency review pass on a pull request.
-4. Kevin explicitly approves the merge.
-5. GitHub Pages serves matching `build-meta.json` and release-profile evidence
-   for the exact merge commit.
+3. ~~CI, CodeQL and dependency review pass on a pull request.~~ Pull request
+   [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) passed every
+   required check.
+4. ~~Kevin explicitly approves the merge.~~ Approved 2026-08-01.
+5. ~~GitHub Pages serves matching `build-meta.json` and release-profile
+   evidence for the exact merge commit.~~ Workflow
+   [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107)
+   deployed and smoke-tested `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`;
+   both live identity files reported version `1.5.0`, status `deployed` and date
+   2026-08-01.
 
-Until step 5 succeeds, every v1.5.0 reference must retain the status
-**private candidate 2026-08-01**.
+The tracked source manifest remains a neutral private-candidate handoff by
+design. CI stamps the exact commit and deployment date only inside the verified
+Pages artifact; the live manifests are the authoritative deployment evidence.

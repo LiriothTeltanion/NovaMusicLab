@@ -8,7 +8,7 @@ assets/releases/v<version>/
 ```
 
 `v1.4.0` — deployed 2026-07-29 — is the first release using this contract.
-`v1.5.0` — private candidate 2026-08-01 — extends it with an evidence image
+`v1.5.0` — deployed 2026-08-01 — extends it with an evidence image
 for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
@@ -60,13 +60,13 @@ The tracked source handoff deliberately retains:
 }
 ```
 
-This does not mean the public product is undeployed. `v1.4.0` remains deployed
-as of 2026-07-29 while `v1.5.0` is a private candidate dated 2026-08-01. The
-tracked manifest remains neutral so it never predicts the SHA of a commit that
-does not exist yet. CI copies that manifest into `dist`, stamps the exact
-deployment identity there and publishes only the stamped artifact. The live
-`build-meta.json` and live release-profile manifest are therefore the
-authoritative deployment evidence.
+This does not mean the public product is undeployed. `v1.5.0` was deployed on
+2026-08-01 from initial release commit
+`0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The tracked manifest remains
+neutral so it never predicts the SHA of a commit that does not exist yet. CI
+copies that manifest into `dist`, stamps the exact deployment identity there
+and publishes only the stamped artifact. The live `build-meta.json` and live
+release-profile manifest are therefore the authoritative deployment evidence.
 
 The tracked candidate always keeps `commit` and `deployed_on` null. The
 versioned `release-media.json` records the product-source state, file count and

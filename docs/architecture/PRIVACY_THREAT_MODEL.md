@@ -16,7 +16,7 @@
 Selected files enter source parsers in the browser. Risks include maliciously large files, malformed formats, formula injection in exports, main-thread denial of service and accidentally retained raw fields.
 
 Controls include format validation, formula-safe CSV output, minimal fixtures
-and explicit error states. `v1.5.0` — private candidate 2026-08-01 — also
+and explicit error states. `v1.5.0` — deployed 2026-08-01 — also
 inspects ZIP directories before approved inflation and enforces 100 MiB
 compressed, 128 entries, 64 MiB per entry, 128 MiB total expanded and a 100:1
 compression-ratio ceiling. Unsupported and sensitive provider files are

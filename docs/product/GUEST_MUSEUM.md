@@ -61,7 +61,7 @@ name or opened a comparison.
 ## Optional account future
 
 A later release — **planned, date not verified** — may add an optional Supabase
-control plane. It is explicitly outside `1.5.0` — private candidate
+control plane. It is explicitly outside `1.5.0` — deployed
 **2026-08-01**. The intended future account flow is:
 
 1. continue locally with no account;

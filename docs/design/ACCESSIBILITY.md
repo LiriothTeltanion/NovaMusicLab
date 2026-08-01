@@ -16,7 +16,7 @@ Nova Music Lab treats accessibility as part of analytical trust. A chart or muse
 - No essential state communicated by color or emoji alone.
 - Correct `lang`, `dir`, locale formatting and bidirectional isolation.
 
-For `v1.5.0` — private candidate 2026-08-01 — the release boundary additionally
+For `v1.5.0` — deployed 2026-08-01 — the release boundary additionally
 requires one exact `NOVA MUSIC LAB` accessible Hero heading, a trilingual skip
 link, one `h1` per routed room, focus return when Escape closes overlays, LTR
 isolation for counters inside Hebrew RTL, decorative artist avatars with empty
