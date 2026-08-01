@@ -14,7 +14,7 @@ function isArtistGenreCatalogEntry(value: unknown): value is ArtistGenreCatalogE
     || !isNonEmptyString(row.automaticGenre)
     || !isNonEmptyString(row.automaticFamily)
     || !isNonEmptyString(row.country)
-    || (row.source !== 'catalog' && row.source !== 'unclassified')) return false;
+    || (row.source !== 'catalog' && row.source !== 'observed' && row.source !== 'unclassified')) return false;
 
   const exactName = row.name.normalize('NFC').trim();
   if (row.artistKey !== exactName) return false;

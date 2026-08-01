@@ -694,7 +694,7 @@ function isArtistGenreCatalogEntry(value: unknown): value is ArtistGenreCatalogE
     && Boolean(value.automaticFamily.trim())
     && isString(value.country)
     && Boolean(value.country.trim())
-    && (value.source === 'catalog' || value.source === 'unclassified');
+    && (value.source === 'catalog' || value.source === 'observed' || value.source === 'unclassified');
 }
 
 function hasValidOptionalArtistGenreCatalog(value: UnknownRecord): boolean {

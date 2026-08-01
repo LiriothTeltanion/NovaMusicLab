@@ -13,6 +13,7 @@ import {
 } from '../types';
 import { countryCodeToName, normalizeGenre } from './analytics';
 import artistMetaJson from '../data/artist_meta.json';
+import artistGenreFallbackJson from '../data/artist_genre_fallback.json';
 import { buildOfflineArtistKnowledgeSummary } from './offlineArtistKnowledge';
 import { canonicalArtistName } from './artistIdentity';
 import { platformFamily } from './chartIntegrity';
@@ -85,15 +86,31 @@ function artistCatalogKey(artist: string): string {
   return artist.normalize('NFC').trim();
 }
 
-function metaForArtist(artist: string): ArtistMeta {
+/**
+ * Genres read from MusicBrainz for artists the curated file does not cover,
+ * joined onto the app's ontology by MusicBrainz genre id rather than by name.
+ * These fill silence only: metaForArtist consults the curated file first, so an
+ * observation can never overwrite a hand-written genre.
+ */
+const OBSERVED_ARTIST_GENRES = artistGenreFallbackJson as Record<string, string>;
+
+type GenreProvenance = 'catalog' | 'observed' | 'unclassified';
+
+function metaForArtist(artist: string): ArtistMeta & { provenance: GenreProvenance } {
   // normalize('NFC') matters: macOS/some exporters emit decomposed (NFD)
   // Unicode, and "Sigur Rós" in NFD is a different string than the NFC key
   // stored in artist_meta.json - without this, every accented/non-Latin
   // artist from such an export silently falls back to Unclassified.
-  return KNOWN_ARTIST_META[artistMetadataKey(artist)] ?? {
-    genre: 'Unclassified',
-    country: 'Unknown',
-  };
+  const key = artistMetadataKey(artist);
+  const curated = KNOWN_ARTIST_META[key];
+  if (curated) return { ...curated, provenance: 'catalog' };
+
+  const observed = OBSERVED_ARTIST_GENRES[key];
+  // Country stays Unknown: a genre reading says nothing about origin, and
+  // guessing one here would put an unsourced flag on the cultural map.
+  if (observed) return { genre: observed, country: 'Unknown', provenance: 'observed' };
+
+  return { genre: 'Unclassified', country: 'Unknown', provenance: 'unclassified' };
 }
 
 const SOURCE_LABELS: Record<RawSource, string> = {
@@ -774,7 +791,7 @@ export function aggregateData(
     Object.keys(artistCounts).length,
   ).map(([name, plays]) => {
     const meta = metaForArtist(name);
-    const source = KNOWN_ARTIST_META[artistMetadataKey(name)] ? 'catalog' : 'unclassified';
+    const source = meta.provenance;
     return {
       artistKey: artistCatalogKey(name),
       name,

@@ -17,7 +17,11 @@ describe('genre knowledge artifacts', () => {
 
     expect(bundle.ontology.terms.length).toBeGreaterThan(2_000);
     expect(bundle.knowledge.stats.catalogArtistCount).toBe(6_413);
-    expect(bundle.knowledge.stats.unclassifiedArtistCount).toBe(5_960);
+    // 5,960 before the MusicBrainz observation layer. 610 catalogue rows were
+    // classified from genres joined onto this same ontology by MBID, which is
+    // exactly the difference. The archive did not change; what is known about
+    // it did.
+    expect(bundle.knowledge.stats.unclassifiedArtistCount).toBe(5_350);
     expect(bundle.knowledge.stats.rejectedAssertionCount).toBeGreaterThan(0);
     expect(bundle.knowledge.assertions.every(assertion => (
       bundle.termsById.has(assertion.termId)

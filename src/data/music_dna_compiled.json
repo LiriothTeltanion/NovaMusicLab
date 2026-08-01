@@ -1723,83 +1723,139 @@
   "top_genres": [
     {
       "name": "Unclassified",
-      "plays": 27221
+      "plays": 16229
     },
     {
       "name": "Post-Hardcore",
-      "plays": 8086
-    },
-    {
-      "name": "Alternative",
-      "plays": 7642
+      "plays": 8285
     },
     {
       "name": "Metalcore",
-      "plays": 5495
-    },
-    {
-      "name": "Progressive Metal",
-      "plays": 3647
-    },
-    {
-      "name": "Synthwave / Darksynth",
-      "plays": 3579
+      "plays": 6175
     },
     {
       "name": "Hard Rock",
-      "plays": 3568
+      "plays": 4391
+    },
+    {
+      "name": "Alternative",
+      "plays": 4163
+    },
+    {
+      "name": "Synthwave / Darksynth",
+      "plays": 3985
     },
     {
       "name": "Post-Metal / Blackgaze",
-      "plays": 3410
+      "plays": 3769
+    },
+    {
+      "name": "Pop / Indie",
+      "plays": 2844
+    },
+    {
+      "name": "Progressive Metal",
+      "plays": 2843
+    },
+    {
+      "name": "Power / Speed Metal",
+      "plays": 2825
     },
     {
       "name": "Pop Punk / Emo",
-      "plays": 2304
+      "plays": 2783
+    },
+    {
+      "name": "Hip-Hop / Rap",
+      "plays": 2649
+    },
+    {
+      "name": "Alternative Rock",
+      "plays": 2269
     },
     {
       "name": "Israeli Rock",
       "plays": 1982
     },
     {
-      "name": "Power / Speed Metal",
-      "plays": 1953
-    },
-    {
-      "name": "Pop / Indie",
-      "plays": 1819
-    },
-    {
-      "name": "Alternative Rock",
-      "plays": 1512
-    },
-    {
       "name": "Ambient / Lo-Fi",
-      "plays": 1493
-    },
-    {
-      "name": "Alt-Metal",
-      "plays": 1449
-    },
-    {
-      "name": "Emo Rap / Trap",
-      "plays": 1425
+      "plays": 1977
     },
     {
       "name": "Death Metal",
-      "plays": 1373
+      "plays": 1839
     },
     {
-      "name": "Hip-Hop / Rap",
-      "plays": 1345
+      "name": "Progressive Rock",
+      "plays": 1692
+    },
+    {
+      "name": "Alt-Metal",
+      "plays": 1646
+    },
+    {
+      "name": "Emo Rap / Trap",
+      "plays": 1514
+    },
+    {
+      "name": "Symphonic / Gothic Metal",
+      "plays": 1151
+    },
+    {
+      "name": "Electronic / EDM",
+      "plays": 964
     },
     {
       "name": "Heavy Metal",
-      "plays": 760
+      "plays": 888
     },
     {
       "name": "Folk Metal",
-      "plays": 487
+      "plays": 777
+    },
+    {
+      "name": "Black Metal",
+      "plays": 692
+    },
+    {
+      "name": "Gothic / Industrial",
+      "plays": 549
+    },
+    {
+      "name": "Punk / New Wave",
+      "plays": 293
+    },
+    {
+      "name": "Latin",
+      "plays": 290
+    },
+    {
+      "name": "Classical / Orchestral",
+      "plays": 242
+    },
+    {
+      "name": "K-Pop / J-Pop",
+      "plays": 201
+    },
+    {
+      "name": "Post-Rock",
+      "plays": 178
+    },
+    {
+      "name": "Folk / Country",
+      "plays": 175
+    },
+    {
+      "name": "R&B / Soul",
+      "plays": 142
+    },
+    {
+      "name": "Rock",
+      "plays": 131
+    },
+    {
+      "name": "Jazz",
+      "plays": 17
     }
   ],
   "yearly_eras": [

@@ -239,9 +239,15 @@ const invalidGenreCatalogRows = genreCatalogRows.filter(row => (
   || !row.automaticFamily.trim()
   || typeof row.country !== 'string'
   || !row.country.trim()
-  || !['catalog', 'unclassified'].includes(row.source)
+  || !['catalog', 'observed', 'unclassified'].includes(row.source)
   || (row.source === 'unclassified'
     && (row.automaticGenre !== 'Unclassified' || row.automaticFamily !== 'Unclassified'))
+  // The mirror invariant. An observed row exists precisely because a genre was
+  // found, so one still labelled Unclassified means the fallback map and the
+  // source tag disagree - the exact way a machine reading could quietly pass
+  // itself off as an honest gap, or the reverse.
+  || (row.source === 'observed'
+    && (row.automaticGenre === 'Unclassified' || row.automaticFamily === 'Unclassified'))
 ));
 const genreCatalogKeys = new Set(genreCatalogRows.map(row => row.artistKey));
 const genreCatalogPlays = sumRows(genreCatalogRows, row => Number(row.plays) || 0);

@@ -152,7 +152,14 @@ export interface ArtistGenreCatalogEntry {
   automaticGenre: string;
   automaticFamily: string;
   country: string;
-  source: 'catalog' | 'unclassified';
+  /**
+   * Where the genre came from, kept distinct so the museum never presents a
+   * machine reading as curated fact:
+   * - `catalog`      hand-curated in artist_meta.json
+   * - `observed`     read from MusicBrainz and joined onto the ontology by MBID
+   * - `unclassified` nothing known; genre and family are both 'Unclassified'
+   */
+  source: 'catalog' | 'observed' | 'unclassified';
 }
 
 /** A user-authored genre correction, kept separate from automatic metadata. */
