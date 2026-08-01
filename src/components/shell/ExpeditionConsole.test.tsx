@@ -168,6 +168,11 @@ describe('ExpeditionConsole', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     const input = await screen.findByRole('textbox', { name: /search rooms and tools/i });
     await waitFor(() => expect(input).toHaveFocus());
+
+    const backgroundControl = document.createElement('button');
+    document.body.append(backgroundControl);
+    backgroundControl.focus();
+    expect(input).toHaveFocus();
   });
 
   it('places the all-room navigator in the console and exposes its grouped map', async () => {
