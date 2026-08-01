@@ -60,8 +60,9 @@ name or opened a comparison.
 
 ## Optional account future
 
-`1.5.0` — **planned, date not verified** — may add an optional Supabase control
-plane. The intended account flow is:
+A later release — **planned, date not verified** — may add an optional Supabase
+control plane. It is explicitly outside `1.5.0` — private candidate
+**2026-08-01**. The intended future account flow is:
 
 1. continue locally with no account;
 2. create an internal anonymous identity only when a cloud action is requested;

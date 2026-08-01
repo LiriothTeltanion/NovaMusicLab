@@ -257,9 +257,9 @@ export default function ShareFeedbackHub({
           <Music2 className="h-4 w-4" aria-hidden="true" />
           {copy.eyebrow}
         </p>
-        <h2 id="share-feedback-title" className="nova-tool-room__title text-2xl font-black tracking-tight">
+        <h1 id="share-feedback-title" className="nova-tool-room__title text-2xl font-black tracking-tight">
           {copy.title}
-        </h2>
+        </h1>
         <p className="nova-tool-room__copy max-w-3xl text-sm leading-relaxed">{copy.intro}</p>
       </header>
 

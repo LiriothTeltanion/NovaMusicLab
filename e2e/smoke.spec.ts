@@ -65,6 +65,8 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await welcome.getByRole('button', { name: /skip/i }).click();
 
   await expect(page.getByTestId('hero-first-viewport')).toBeVisible();
+  await expect(page.locator('h1')).toHaveCount(1);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('NOVA MUSIC LAB');
   await expect(
     page.getByRole('button', { name: /enter the sound museum/i }),
   ).toBeVisible();
@@ -112,12 +114,37 @@ test('the hub map stays inside the title bar and the expedition console remains 
   expect(positions.dockBottom).toBeLessThanOrEqual(positions.headerBottom + 1);
   expect(Math.abs(positions.consoleTop - positions.headerBottom)).toBeLessThanOrEqual(4);
   expect(positions.consoleBottom).toBeGreaterThan(positions.consoleTop);
+
+  const brandWords = page.locator('.nova-app-brand .nova-wordmark__words');
+  if ((page.viewportSize()?.width ?? 0) >= 1_180) {
+    await expect(brandWords).toBeVisible();
+    await expect(brandWords).toContainText('NOVA');
+    await expect(brandWords).toContainText('MUSIC LAB');
+
+    const headerRegions = await page.evaluate(() => {
+      const brand = document.querySelector('.nova-app-brand')?.getBoundingClientRect();
+      const dock = document.querySelector('[data-testid="museum-map-dock"]')?.getBoundingClientRect();
+      const controls = document.querySelector('.nova-app-header__controls')?.getBoundingClientRect();
+      if (!brand || !dock || !controls) throw new Error('Header regions are incomplete.');
+      return { brandRight: brand.right, dockLeft: dock.left, dockRight: dock.right, controlsLeft: controls.left };
+    });
+    expect(headerRegions.brandRight).toBeLessThanOrEqual(headerRegions.dockLeft + 1);
+    expect(headerRegions.dockRight).toBeLessThanOrEqual(headerRegions.controlsLeft + 1);
+  } else {
+    await expect(brandWords).toBeHidden();
+  }
 });
 
 test('the compact shell stays usable without horizontal overflow at 360px', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 360, height: 800 });
+  const consoleIssues: string[] = [];
+  page.on('console', message => {
+    if (message.type() === 'warning' || message.type() === 'error') {
+      consoleIssues.push(message.text());
+    }
+  });
   await page.addInitScript(() => {
     window.localStorage.setItem('nml_lang', 'en');
     window.localStorage.setItem('nml_tour_seen', 'true');
@@ -148,7 +175,38 @@ test('the compact shell stays usable without horizontal overflow at 360px', asyn
   await page.keyboard.press('Escape');
   await expect(searchTrigger).toBeFocused();
 
+  const initialHash = await page.evaluate(() => window.location.hash);
+  await page.evaluate(() => {
+    document.body.tabIndex = -1;
+    document.body.focus();
+  });
+  await page.keyboard.press('Tab');
+  const skipLink = page.getByRole('link', { name: 'Skip to museum content' });
+  await expect(skipLink).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main-content')).toBeFocused();
+  expect(await page.evaluate(() => window.location.hash)).toBe(initialHash);
+
+  await page.goto('/#/top?view=genres');
+  const tabList = page.getByTestId('top-tab-list');
+  const activeTab = tabList.locator('[data-top-tab="generos"]');
+  await expect(activeTab).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(async () => {
+    const [list, button] = await Promise.all([tabList.boundingBox(), activeTab.boundingBox()]);
+    if (!list || !button) return false;
+    return button.x >= list.x - 1 && button.x + button.width <= list.x + list.width + 1;
+  }).toBe(true);
+
+  const charts = page.locator('.nova-chart-canvas');
+  await expect(charts).toHaveCount(2);
+  for (let index = 0; index < await charts.count(); index += 1) {
+    const box = await charts.nth(index).boundingBox();
+    expect(box?.width ?? 0).toBeGreaterThan(0);
+    expect(box?.height ?? 0).toBeGreaterThan(0);
+  }
+
   await expectNoHorizontalPageOverflow(page);
+  expect(consoleIssues.filter(message => /width\(-?1\)|height\(-?1\)|allowFullScreen/i.test(message))).toEqual([]);
 });
 
 test('a guest can name, import, restore and compare a local museum without an account', async ({
@@ -161,6 +219,7 @@ test('a guest can name, import, restore and compare a local museum without an ac
   });
 
   await page.goto('/#/upload');
+  await expect(page.locator('h1')).toHaveCount(1);
 
   await page.getByRole('textbox', { name: 'Museum name' }).fill('Danny Muse');
   await page.locator('input[type="file"][accept*=".csv"]').first().setInputFiles({
@@ -254,6 +313,25 @@ test('a hero constellation portrait opens the matching Living Artist Atlas terri
       exact: true,
     }),
   ).toBeVisible();
+
+  if ((page.viewportSize()?.width ?? 0) >= 1_280) {
+    await page.getByRole('button', { name: 'Switch language to Hebrew' }).click();
+  } else {
+    await page.getByRole('combobox', { name: 'Select interface language' }).selectOption('he');
+  }
+  await expect(page.locator('.artist-atlas__masthead .artist-atlas__eyebrow'))
+    .toHaveText('מסע בין אמנים · חדר חי');
+  const rail = page.locator('.artist-atlas__rail');
+  const firstArtist = rail.locator('.artist-atlas__rail-item').first();
+  await expect(firstArtist).toBeVisible();
+  const firstArtistName = (await firstArtist.locator('strong').innerText()).trim();
+  const accessibleName = await firstArtist.evaluate(element => element.textContent ?? '');
+  expect(accessibleName.split(firstArtistName).length - 1).toBe(1);
+  await expect(firstArtist.locator('img[alt]:not([alt=""])')).toHaveCount(0);
+  await expect(firstArtist.locator('[role="img"][aria-label]')).toHaveCount(0);
+  const [railBox, itemBox] = await Promise.all([rail.boundingBox(), firstArtist.boundingBox()]);
+  expect(itemBox!.x).toBeGreaterThanOrEqual(railBox!.x - 1);
+  expect(itemBox!.x + itemBox!.width).toBeLessThanOrEqual(railBox!.x + railBox!.width + 1);
 });
 
 test('a direct Atlas link keeps its hash while experience depth changes', async ({
@@ -299,6 +377,15 @@ test('a direct Atlas link keeps its hash while experience depth changes', async 
   ).toHaveAttribute('aria-pressed', 'true');
   expect(await page.evaluate(() => window.location.hash)).toBe(initialHash);
 
+  await page.goto('/#/assistant');
+  await expect(page.getByTestId('assistant-connection-status'))
+    .toHaveText('Local analysis · no external AI');
+  await expect(page.getByLabel('Gemini API key')).toBeVisible();
+  await page.getByTestId('experience-switcher').getByRole('button', { name: 'Explore' }).click();
+  await expect(page.getByLabel('Gemini API key')).toHaveCount(0);
+  await expect(page.getByTestId('assistant-connection-status'))
+    .toHaveText('Local analysis · no external AI');
+
   await expectNoHorizontalPageOverflow(page);
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
@@ -312,16 +399,26 @@ test('the share room works in Hebrew RTL and a light theme', async ({
     window.localStorage.setItem('nml_tour_seen', 'true');
   });
 
+  await page.goto('/#/recent-pulse');
+  await expect(page.locator('time[datetime="2026-07-02"]')).toHaveText('2026-07-02');
+  await page.getByTestId('recent-pulse-refresh').click();
+  await expect(page).toHaveURL(/#\/upload$/);
+
   await page.goto('/#/share-feedback');
 
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('html')).toHaveAttribute('data-mode', 'light');
+  await expect(page.locator('h1')).toHaveCount(1);
   await expect(
     page.getByRole('heading', { name: 'הזמנה למוזיאון' }),
   ).toBeVisible();
   await expect(
     page.getByRole('link', { name: /WhatsApp/ }).first(),
   ).toHaveAttribute('href', /^https:\/\/wa\.me\/\?text=/);
+  const whatsappHref = await page.getByRole('link', { name: /WhatsApp/ }).first().getAttribute('href');
+  const sharedText = new URL(whatsappHref!).searchParams.get('text');
+  expect(sharedText).toContain('https://liriothteltanion.github.io/NovaMusicLab/#/');
+  expect(sharedText).not.toMatch(/localhost|127\.0\.0\.1|0\.0\.0\.0/i);
 
   await expectNoHorizontalPageOverflow(page);
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
@@ -336,6 +433,7 @@ test('the Audio Lab is explicit about its local-only foundation', async ({
   });
 
   await page.goto('/#/audio-lab');
+  await expect(page.locator('h1')).toHaveCount(1);
 
   await expect(
     page.getByRole('heading', { name: 'Inspect a local audio file' }),

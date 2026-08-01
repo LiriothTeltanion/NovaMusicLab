@@ -577,7 +577,9 @@ export default function HeroSection({
   };
 
   return (
-    <section
+    <main
+      id="main-content"
+      tabIndex={-1}
       className="nova-hero relative min-h-screen overflow-hidden text-[var(--fg)]"
       data-motion={motionMode}
       aria-labelledby="nova-hero-title"
@@ -659,13 +661,17 @@ export default function HeroSection({
               {introCopy.badge}
             </p>
 
-            <h1 id="nova-hero-title" className="nova-hero__title">
-              {/* No title prop, so NovaMark renders aria-hidden and contributes
-                  no text: the heading's accessible name stays "NOVA MUSIC LAB". */}
+            <h1
+              id="nova-hero-title"
+              className="nova-hero__title"
+              aria-label="NOVA MUSIC LAB"
+            >
+              {/* The visible lockup and its CSS-generated echoes are decorative
+                  descendants. The h1 owns one stable, exact accessible name. */}
               <span className="nova-hero__title-mark">
                 <NovaMark size="100%" />
               </span>
-              <span className="nova-hero__title-words">
+              <span className="nova-hero__title-words" aria-hidden="true">
                 <span className="nova-hero__title-nova" data-word="NOVA">NOVA</span>
                 <span className="nova-hero__title-accent" data-word="MUSIC LAB">MUSIC LAB</span>
               </span>
@@ -989,6 +995,6 @@ export default function HeroSection({
           </div>
         </motion.div>
       )}
-    </section>
+    </main>
   );
 }

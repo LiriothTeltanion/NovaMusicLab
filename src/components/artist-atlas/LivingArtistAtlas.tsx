@@ -305,7 +305,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                   type="button"
                   onClick={() => selectArtist(artist.name)}
                 >
-                  <ArtistAvatar name={artist.name} size={28} tooltip={false} />
+                  <ArtistAvatar name={artist.name} size={28} tooltip={false} decorative />
                   <span><bdi dir="auto">{artist.name}</bdi></span>
                   <small className="nova-number-ltr" dir="ltr">#{data.top_artists.indexOf(artist) + 1}</small>
                 </button>
@@ -330,7 +330,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                   className="artist-atlas__rail-item"
                   style={active ? { borderColor: `${tc.c1}80`, backgroundColor: `${tc.c1}16` } : undefined}
                 >
-                  <ArtistAvatar name={artist.name} size={38} tooltip={false} priority={index < 3} />
+                  <ArtistAvatar name={artist.name} size={38} tooltip={false} priority={index < 3} decorative />
                   <span>
                     <strong><bdi dir="auto">{artist.name}</bdi></strong>
                     <small className="nova-number-ltr" dir="ltr">#{index + 1} · {artist.plays.toLocaleString(locale)}</small>
@@ -515,7 +515,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                         type="button"
                         onClick={() => selectArtist(connection.artist.name)}
                       >
-                        <ArtistAvatar name={connection.artist.name} size={44} tooltip={false} />
+                        <ArtistAvatar name={connection.artist.name} size={44} tooltip={false} decorative />
                         <span>
                           <strong><bdi dir="auto">{connection.artist.name}</bdi></strong>
                           <small>{reason}</small>
@@ -543,7 +543,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
                         type="button"
                         onClick={() => selectArtist(neighbor.artist.name)}
                       >
-                        <ArtistAvatar name={neighbor.artist.name} size={44} tooltip={false} />
+                        <ArtistAvatar name={neighbor.artist.name} size={44} tooltip={false} decorative />
                         <span>
                           <strong><bdi dir="auto">{neighbor.artist.name}</bdi></strong>
                           <small>{reason}</small>

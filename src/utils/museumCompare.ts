@@ -32,15 +32,15 @@ function buildArtistMap(data: MusicDnaData): Map<string, TopArtist> {
 
 function comparisonScope(
   data: MusicDnaData,
-  normalizedIdentityCount: number,
+  normalizedArtistNameCount: number,
 ): ArtistComparisonScope {
   const sourceArtistCount = comparisonArtists(data).length;
   return {
-    comparedArtists: normalizedIdentityCount,
+    comparedArtists: normalizedArtistNameCount,
     archiveArtists: data.core_metrics.unique_artists,
     // Normalization can deliberately merge spelling, case and accent variants.
     // Completeness therefore describes source-catalog coverage, not whether the
-    // normalized identity count still equals the raw unique-artist metric.
+    // normalized artist-name count still equals the raw catalog-row metric.
     complete: sourceArtistCount >= data.core_metrics.unique_artists,
   };
 }
@@ -56,7 +56,7 @@ export interface ArtistOverlapResult {
   sharedCount: number;
   onlyA: TopArtist[];
   onlyB: TopArtist[];
-  /** shared / (unique artists in A ∪ B) * 100, rounded to 1 decimal. */
+  /** shared / (normalized artist-name keys in A ∪ B) * 100, rounded to 1 decimal. */
   overlapPct: number;
   scopeA: ArtistComparisonScope;
   scopeB: ArtistComparisonScope;

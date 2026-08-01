@@ -22,6 +22,7 @@ type MetricKind =
   | 'albums'
   | 'hours'
   | 'activeDays'
+  | 'lifetimeActiveDays'
   | 'years'
   | 'peakYear'
   | 'topArtist'
@@ -32,6 +33,7 @@ type MetricKind =
   | 'obsessions'
   | 'streak'
   | 'maxDay'
+  | 'allTimeMaxDay'
   | 'matchRate'
   | 'sessions'
   | 'sources'
@@ -150,10 +152,10 @@ const CHAPTERS: Record<MuseumChapterTab, ChapterDefinition> = {
     description: { es: 'Una síntesis brillante de lo que más definió tu recorrido.', en: 'A vivid synthesis of what defined your journey most.', he: 'סינתזה זוהרת של הדברים שהגדירו יותר מכול את המסע שלך.' },
   },
   pulse: {
-    number: '15', emoji: '📡', metrics: ['maxDay', 'activeDays'],
-    eyebrow: { es: 'Señal en presente', en: 'Present-tense signal', he: 'אות בזמן הווה' },
+    number: '15', emoji: '📡', metrics: ['allTimeMaxDay', 'lifetimeActiveDays'],
+    eyebrow: { es: 'Señal de escucha fechada', en: 'Dated listening signal', he: 'אות האזנה מתוארך' },
     title: { es: 'Pulso Reciente', en: 'The Recent Pulse', he: 'הדופק האחרון' },
-    description: { es: 'La actividad más cercana revela hacia dónde se mueve tu gusto.', en: 'Your nearest activity reveals where your taste is moving.', he: 'הפעילות העדכנית ביותר חושפת לאן הטעם שלך מתקדם.' },
+    description: { es: 'Una instantánea reciente muestra qué estaba activo, sin presentarse como una conexión en vivo.', en: 'A recent snapshot shows what was active without presenting itself as a live connection.', he: 'תמונת מצב עדכנית מראה מה היה פעיל, בלי להציג זאת כחיבור חי.' },
   },
   compare: {
     number: '16', emoji: '⚖️', metrics: ['sources', 'plays'],
@@ -219,11 +221,15 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
 
   switch (kind) {
     case 'plays': return { label: label({ es: 'reproducciones', en: 'total plays', he: 'סך ההשמעות' }), value: numeric(core.total_plays) };
-    case 'artists': return { label: label({ es: 'artistas únicos', en: 'unique artists', he: 'אמנים ייחודיים' }), value: numeric(core.unique_artists) };
+    case 'artists': return { label: label({ es: 'entradas del catálogo', en: 'catalog entries', he: 'רשומות קטלוג' }), value: numeric(core.unique_artists) };
     case 'tracks': return { label: label({ es: 'canciones únicas', en: 'unique tracks', he: 'שירים ייחודיים' }), value: numeric(core.unique_tracks) };
     case 'albums': return { label: label({ es: 'álbumes únicos', en: 'unique albums', he: 'אלבומים ייחודיים' }), value: numeric(core.unique_albums) };
     case 'hours': return { label: label({ es: 'horas de escucha', en: 'listening hours', he: 'שעות האזנה' }), value: numeric(core.listening_hours) };
     case 'activeDays': return { label: label({ es: 'días activos', en: 'active days', he: 'ימי פעילות' }), value: numeric(core.active_days) };
+    case 'lifetimeActiveDays': return {
+      label: label({ es: 'días activos históricos', en: 'lifetime active days', he: 'ימי פעילות בכל הארכיון' }),
+      value: numeric(core.active_days),
+    };
     case 'years': return {
       label: label({ es: 'arco temporal', en: 'time span', he: 'טווח הזמן' }),
       value: minYear === null || maxYear === null
@@ -270,6 +276,10 @@ function getMetric(kind: MetricKind, data: MusicDnaData, lang: Lang): ChapterMet
     case 'obsessions': return { label: label({ es: 'obsesiones detectadas', en: 'detected obsessions', he: 'אובססיות שזוהו' }), value: numeric(data.obsessions?.length ?? 0) };
     case 'streak': return { label: label({ es: 'días de racha máxima', en: 'longest streak days', he: 'ימים ברצף הארוך ביותר' }), value: numeric(data.records?.longest_streak_days ?? 0) };
     case 'maxDay': return { label: label({ es: 'plays en el día récord', en: 'plays on the record day', he: 'השמעות ביום השיא' }), value: numeric(data.records?.max_day_plays ?? 0) };
+    case 'allTimeMaxDay': return {
+      label: label({ es: 'récord diario histórico', en: 'all-time daily record', he: 'שיא יומי בכל הארכיון' }),
+      value: numeric(data.records?.max_day_plays ?? 0),
+    };
     case 'matchRate': return {
       label: label({ es: 'cobertura de coincidencias', en: 'match coverage', he: 'כיסוי ההתאמות' }),
       value: `${core.match_rate_pct.toLocaleString(localeFor(lang), { maximumFractionDigits: 1 })}%`,
@@ -534,7 +544,7 @@ export default function MuseumChapterHeader({ activeTab, data, lang, density = '
       <div className="museum-chapter__footer" aria-hidden="true">
         <span className="museum-chapter__footer-wordmark">NOVA MUSIC LAB</span>
         <span className="museum-chapter__footer-line" />
-        <span>{displayChapter} / {displayTotal}</span>
+        <bdi dir="ltr">{displayChapter} / {displayTotal}</bdi>
       </div>
     </section>
   );

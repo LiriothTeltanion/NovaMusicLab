@@ -2,6 +2,24 @@ import { defineConfig } from '@playwright/test';
 
 const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:4173';
 
+function resolveWorkerCount(): number {
+  const constrainedMax = process.env.CI || process.platform === 'win32' ? 1 : 2;
+  const rawOverride = process.env.PLAYWRIGHT_WORKERS;
+  if (rawOverride === undefined) return constrainedMax;
+
+  const normalized = rawOverride.trim();
+  if (!/^[1-9]\d*$/.test(normalized)) {
+    throw new Error('PLAYWRIGHT_WORKERS must be a positive integer.');
+  }
+  const requested = Number(normalized);
+  if (!Number.isSafeInteger(requested) || requested > constrainedMax) {
+    throw new Error(
+      `PLAYWRIGHT_WORKERS=${normalized} exceeds this environment's safe maximum of ${constrainedMax}.`,
+    );
+  }
+  return requested;
+}
+
 export default defineConfig({
   testDir: './e2e',
   outputDir: 'test-results/playwright',
@@ -9,10 +27,9 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   failOnFlakyTests: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  // The flagship dataset and Atlas are intentionally rich. Bounding local
-  // parallelism keeps browser QA stable on developer machines while CI stays
-  // fully deterministic with one worker.
-  workers: process.env.CI ? 1 : 2,
+  // CI and Windows stay deterministic with one worker; other local hosts may
+  // use at most two. A validated override can tighten, never loosen, that cap.
+  workers: resolveWorkerCount(),
   timeout: 45_000,
   expect: {
     timeout: 10_000,

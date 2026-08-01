@@ -33,6 +33,8 @@ interface ArtistAvatarProps {
   priority?: boolean;
   /** Keeps an explicitly selected primary image from falling through to gallery providers. */
   fallbackToGallery?: boolean;
+  /** Hides the portrait from assistive tech when adjacent text already names the artist. */
+  decorative?: boolean;
 }
 
 
@@ -86,6 +88,7 @@ export default function ArtistAvatar({
   overrideSrc,
   priority = false,
   fallbackToGallery = true,
+  decorative = false,
 }: ArtistAvatarProps) {
   const { tc } = useApp();
   // NFC-normalize: bundled JSON keys are NFC, but names arriving from an
@@ -211,7 +214,7 @@ export default function ArtistAvatar({
           </span>
           <img
             src={src}
-            alt={name}
+            alt={decorative ? '' : name}
             loading={priority ? 'eager' : 'lazy'}
             fetchPriority={priority ? 'high' : 'auto'}
             decoding="async"
@@ -242,8 +245,9 @@ export default function ArtistAvatar({
 
     return (
       <div
-        role="img"
-        aria-label={name}
+        role={decorative ? undefined : 'img'}
+        aria-label={decorative ? undefined : name}
+        aria-hidden={decorative || undefined}
         className={`rounded-full overflow-hidden relative flex items-center justify-center font-mono font-black shrink-0 ${className}`}
         style={{
           width: size,
@@ -299,6 +303,7 @@ export default function ArtistAvatar({
     <span className="relative inline-flex shrink-0 group/avatar" style={{ width: size, height: size }}>
       {avatar}
       <span
+        aria-hidden={decorative || undefined}
         className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/avatar:flex flex-col items-center gap-1 px-3 py-2 rounded-xl pointer-events-none z-50 whitespace-nowrap shadow-xl"
         style={{
           backgroundColor: 'rgba(7, 14, 28, 0.96)',

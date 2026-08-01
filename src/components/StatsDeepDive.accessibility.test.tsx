@@ -82,4 +82,16 @@ describe('StatsDeepDive monthly matrix accessibility', () => {
     expect(screen.getAllByRole('button', { name: /Ver desglose mensual de \d{4}/i }))
       .toHaveLength(data.yearly_eras.length);
   });
+
+  it('describes the full-catalog ratio as artist-name entries while preserving annual artist counts', () => {
+    render(
+      <AppProvider>
+        <StatsDeepDive data={data} />
+      </AppProvider>,
+    );
+
+    expect(screen.getByText('Artist-name entries per 1,000 plays')).toBeInTheDocument();
+    expect(screen.getByText('Distinct artist names')).toBeInTheDocument();
+    expect(screen.queryByText('Artists per 1000 plays')).not.toBeInTheDocument();
+  });
 });

@@ -557,7 +557,7 @@ export default function Dashboard({ data }: DashboardProps) {
   }));
   const yearMetricConfig = {
     plays: { label: t.dashboard.playsLegend, color: tc.c1, unit: pickLanguage(lang, { en: 'counted listens', es: 'escuchas contadas', he: 'השמעות שנספרו' }) },
-    artistas: { label: t.dashboard.uniqueArtistsLegend, color: tc.c3, unit: pickLanguage(lang, { en: 'unique artists', es: 'artistas únicos', he: 'אמנים ייחודיים' }) },
+    artistas: { label: t.dashboard.uniqueArtistsLegend, color: tc.c3, unit: pickLanguage(lang, { en: 'distinct artist names', es: 'nombres de artista distintos', he: 'שמות אמנים מובחנים' }) },
     diversidad: { label: pickLanguage(lang, { en: 'Diversity', es: 'Diversidad', he: 'גיוון' }), color: tc.c4, unit: '%' },
   } as const;
   const activeYearMetric = yearMetricConfig[yearMetric];

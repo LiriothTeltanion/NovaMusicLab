@@ -124,7 +124,7 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
     artistas: {
       label: t.statsDeepDive.uniqueArtists,
       color: tc.c3,
-      unit: pickLanguage(lang, { en: 'unique artists', es: 'artistas únicos', he: 'אמנים ייחודיים' }),
+      unit: pickLanguage(lang, { en: 'distinct artist names', es: 'nombres de artista distintos', he: 'שמות אמנים מובחנים' }),
     },
     diversidad: {
       label: t.statsDeepDive.diversityPct,

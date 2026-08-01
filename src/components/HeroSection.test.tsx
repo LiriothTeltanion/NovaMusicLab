@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import { CURRENT_NOVA_VERSION } from '../releases/currentRelease';
 import HeroSection from './HeroSection';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
@@ -61,7 +62,8 @@ describe('HeroSection intro rebalance', () => {
     );
 
     expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
+    expect(screen.getByRole('heading', { level: 1, name: 'NOVA MUSIC LAB' }))
+      .toBeInTheDocument();
     expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
     expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
@@ -75,6 +77,8 @@ describe('HeroSection intro rebalance', () => {
     expect(document.body).toHaveTextContent(/nothing to cross-check against, no overlap is claimed/i);
     expect(document.body).not.toHaveTextContent(/data sync integrity/i);
     expect(screen.getByText('24h Music Days')).toBeInTheDocument();
+    expect(screen.getByText('Catalog entries')).toBeInTheDocument();
+    expect(screen.queryByText('Unique Artists')).not.toBeInTheDocument();
 
     const anchorPortraits = screen.getAllByAltText(/Bring Me the Horizon/i);
     expect(anchorPortraits.some(image => (
@@ -291,7 +295,7 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByText('v1.4.0', { selector: '.nova-hero__release-jump-label--compact' }))
+    expect(screen.getByText(`v${CURRENT_NOVA_VERSION}`, { selector: '.nova-hero__release-jump-label--compact' }))
       .toBeInTheDocument();
     expect(mobileRules).toMatch(
       /\.nova-hero__release-jump-label--compact\s*\{[^}]*display:\s*inline/s,

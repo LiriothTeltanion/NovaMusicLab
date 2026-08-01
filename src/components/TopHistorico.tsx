@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell,
@@ -108,6 +108,33 @@ interface TopHistoricoProps {
 
 type TopTab = 'canciones' | 'artistas' | 'albums' | 'generos' | 'anos';
 type MobileDossierKind = 'artist' | 'track' | 'album';
+
+function tabFromDeepLink(value: string | null | undefined): TopTab {
+  if (value === 'albums') return 'albums';
+  if (value === 'tracks') return 'canciones';
+  if (value === 'genres') return 'generos';
+  if (value === 'years') return 'anos';
+  return 'artistas';
+}
+
+function useViewportMatch(query: string) {
+  const [matches, setMatches] = useState(() => (
+    typeof window === 'undefined' || !window.matchMedia
+      ? true
+      : window.matchMedia(query).matches
+  ));
+
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const media = window.matchMedia(query);
+    const sync = () => setMatches(media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, [query]);
+
+  return matches;
+}
 
 // Sub-tab swaps ride the app-wide shared chart/panel transition (chartKit).
 const tabTransition = SWAP_TRANSITION;
@@ -604,7 +631,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     topSubTab, setTopSubTab
   } = useApp();
 
-  const [tab, setTabState] = useState<TopTab>('artistas');
+  const [tab, setTabState] = useState<TopTab>(() => tabFromDeepLink(topSubTab));
   const [yearMetric, setYearMetric] = useState<'plays' | 'artistas'>('plays');
   const [search, setSearch] = useState('');
   const [selectedMood, setSelectedMood] = useState<EmotionalMoodKey | 'all'>('all');
@@ -615,6 +642,8 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
   const [mobileDossier, setMobileDossier] = useState<MobileDossierKind | null>(null);
   const mobileDossierTriggerRef = useRef<HTMLElement | null>(null);
   const tabListRef = useRef<HTMLDivElement>(null);
+  const showArtistDesktopDossier = useViewportMatch('(min-width: 1024px)');
+  const showTrackDesktopDossier = useViewportMatch('(min-width: 1280px)');
 
   const closeMobileDossier = useCallback(() => setMobileDossier(null), []);
   const openMobileDossier = useCallback((kind: MobileDossierKind, trigger?: HTMLElement) => {
@@ -632,17 +661,25 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
 
   // Sync local tab state from global topSubTab
   useEffect(() => {
-    if (topSubTab === 'artists') setTabState('artistas');
-    else if (topSubTab === 'albums') setTabState('albums');
-    else if (topSubTab === 'tracks') setTabState('canciones');
-    else if (topSubTab === 'genres') setTabState('generos');
-    else if (topSubTab === 'years') setTabState('anos');
+    setTabState(tabFromDeepLink(topSubTab));
   }, [topSubTab]);
 
-  useEffect(() => {
-    const activeButton = tabListRef.current?.querySelector<HTMLElement>(`[data-top-tab="${tab}"]`);
-    activeButton?.scrollIntoView?.({ block: 'nearest', inline: 'center', behavior: 'auto' });
-  }, [tab]);
+  useLayoutEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const tabList = tabListRef.current;
+      const activeButton = tabList?.querySelector<HTMLElement>(`[data-top-tab="${tab}"]`);
+      if (!tabList || !activeButton) return;
+
+      const listRect = tabList.getBoundingClientRect();
+      const buttonRect = activeButton.getBoundingClientRect();
+      const delta = buttonRect.left + buttonRect.width / 2
+        - (listRect.left + listRect.width / 2);
+
+      if (Math.abs(delta) > 1) tabList.scrollBy({ left: delta, behavior: 'auto' });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [lang, tab]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !window.matchMedia) return;
@@ -2805,7 +2842,11 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
       {/* The museum chapter header owns the page title and narrative. This compact
           control deck lets the ranking itself enter the viewport sooner. */}
       <div className="nova-surface nova-surface--utility flex flex-col gap-2 rounded-2xl p-2 lg:flex-row lg:items-center">
-        <div ref={tabListRef} className="flex min-w-0 flex-1 overflow-x-auto gap-1.5 pb-1 lg:pb-0" role="group"
+        <div
+          ref={tabListRef}
+          className="flex min-w-0 flex-1 gap-1.5 overflow-x-auto overscroll-x-contain scroll-px-4 pb-1 lg:pb-0"
+          role="group"
+          data-testid="top-tab-list"
           aria-label={t.topHistorico.title}>
           {tabs.map(tabItem => {
             const Icon = tabItem.icon;
@@ -2896,7 +2937,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </motion.div>
               </div>
 
-              <div className="hidden space-y-6 lg:block">
+              {showArtistDesktopDossier ? <div className="hidden space-y-6 lg:block">
                 <ArtistDossier />
 
                 <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
@@ -2928,7 +2969,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     </ResponsiveContainer>
                   </ChartCanvas>
                 </details>
-              </div>
+              </div> : null}
             </div>
           )}
 
@@ -2972,7 +3013,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </motion.div>
               </div>
 
-              <div className="hidden space-y-6 xl:block">
+              {showTrackDesktopDossier ? <div className="hidden space-y-6 xl:block">
                 <TrackDossier />
 
                 <details className="nova-surface nova-surface--analysis group overflow-hidden rounded-3xl">
@@ -3011,7 +3052,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                     </ResponsiveContainer>
                   </ChartCanvas>
                 </details>
-              </div>
+              </div> : null}
             </div>
           )}
 

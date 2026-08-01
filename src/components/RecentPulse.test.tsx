@@ -73,6 +73,16 @@ describe('RecentPulse weekly summary', () => {
     expect(summary.querySelector('img')).toBeNull();
   });
 
+  it('dates the snapshot visibly and explains how to refresh it without claiming live sync', () => {
+    renderPulse('explore');
+
+    const snapshotDate = screen.getByText('2026-04-14');
+    expect(snapshotDate.tagName).toBe('TIME');
+    expect(snapshotDate).toHaveAttribute('datetime', '2026-04-14');
+    expect(screen.getByText(/No live sync is active/i)).toBeInTheDocument();
+    expect(screen.getByTestId('recent-pulse-refresh')).toHaveAccessibleName('Refresh Pulse');
+  });
+
   it('keeps the existing pulse unchanged when no weekly summary is supplied', () => {
     const { weekly_summary: _weeklySummary, ...snapshotWithoutWeek } = fictionalWeeklyPulse;
 

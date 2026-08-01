@@ -102,7 +102,7 @@ export default function ArtistLeaderboard({
                   )}
                 </span>
 
-                <ArtistAvatar name={artist.name} size={44} tooltip={false} />
+                <ArtistAvatar name={artist.name} size={44} tooltip={false} decorative />
 
                 <span className="min-w-0">
                   <span className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">

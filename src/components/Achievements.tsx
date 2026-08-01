@@ -106,9 +106,9 @@ export default function Achievements({ data }: AchievementsProps) {
         id: 'explorer', icon: Globe, tier: 'gold',
         value: fmtNum(m.unique_artists), numericVal: m.unique_artists,
         copy: {
-          es: { label: 'Gran Explorador', unit: 'artistas únicos descubiertos', description: `Con ${fmtNum(m.unique_artists)} artistas únicos, tu mapa musical ya funciona como una ciudad completa de escenas y microclimas.` },
-          en: { label: 'Grand Explorer', unit: 'unique artists discovered', description: `With ${fmtNum(m.unique_artists)} unique artists, your music map behaves like a full city of scenes and microclimates.` },
-          he: { label: 'החוקר הגדול', unit: 'אמנים ייחודיים שגילית', description: `עם ${bidiIsolate(fmtNum(m.unique_artists))} אמנים ייחודיים, המפה המוזיקלית שלך כבר מתפקדת כעיר שלמה של סצנות ומיקרו־אקלים.` },
+          es: { label: 'Gran Explorador', unit: 'entradas de nombres de artista', description: `Con ${fmtNum(m.unique_artists)} entradas de nombres de artista, tu mapa musical ya funciona como una ciudad completa de escenas y microclimas. Las variantes conocidas permanecen separadas hasta una migración reversible.` },
+          en: { label: 'Grand Explorer', unit: 'artist-name entries', description: `With ${fmtNum(m.unique_artists)} artist-name entries, your music map behaves like a full city of scenes and microclimates. Known variants remain separate until a reversible migration.` },
+          he: { label: 'החוקר הגדול', unit: 'רשומות שמות אמנים', description: `עם ${bidiIsolate(fmtNum(m.unique_artists))} רשומות שמות אמנים, המפה המוזיקלית שלך כבר מתפקדת כעיר שלמה של סצנות ומיקרו־אקלים. וריאנטים מוכרים נשארים נפרדים עד למיזוג הפיך.` },
         },
       },
       {

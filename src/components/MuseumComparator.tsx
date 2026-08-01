@@ -46,9 +46,81 @@ export default function MuseumComparator({
   primaryLabel,
 }: MuseumComparatorProps) {
   const { t, tc, lang } = useApp();
-  const copy = t.museumCompare;
   const locale = localeFor(lang);
   const fmtNum = (n: number) => Math.round(n).toLocaleString(locale);
+  // Keep this room-specific copy with the lazy-loaded comparator instead of
+  // charging every first visit for text that is only needed in this room.
+  const copy = useMemo(() => pickLanguage(lang, {
+    en: {
+      intro: 'Upload a second listening history (yours or someone else\'s) and put both museums face to face: artist-name overlap, dominant moods and side-by-side metrics. Everything compares locally; the second file never replaces your active museum.',
+      primaryMuseumLabel: 'Museum A · Your active museum',
+      secondaryMuseumLabel: 'Museum B',
+      secondaryPlaceholderTitle: 'Upload a second museum',
+      secondaryPlaceholderBody: 'Drop a Nova backup, a Last.fm/Apple Music CSV, or a Spotify/YouTube/ListenBrainz JSON to compare against your active museum.',
+      browseButton: 'Browse files',
+      clearSecondaryButton: 'Remove museum B',
+      processing: 'Processing the second museum...',
+      topArtistLabel: 'Anchor artist',
+      totalPlaysLabel: 'Total plays',
+      overlapTitle: 'Artist-name overlap',
+      overlapBody: (pct: number, shared: number) => `${pct}% overlap: ${shared} normalized keys appear in both museums.`,
+      sharedArtistsLabel: 'Shared artist names',
+      onlyInA: (label: string, count: number) => `Only in ${label}: ${count} names`,
+      onlyInB: (label: string, count: number) => `Only in ${label}: ${count} names`,
+      noOverlapArtists: 'No artist name appears in both museums yet.',
+      metricsTitle: 'Side-by-Side Metrics',
+      metricsHint: 'The percentage shows how much Museum B changes relative to Museum A for each metric.',
+      moodTitle: 'Moods Face to Face',
+      moodSameNarrative: (mood: string) => `Both museums share the same dominant emotional climate: ${mood}.`,
+      moodDiffNarrative: (moodA: string, moodB: string) => `The museums diverge: A vibrates in ${moodA}, while B vibrates in ${moodB}.`,
+    },
+    es: {
+      intro: 'Sube un segundo historial de escucha (tuyo o de otra persona) y enfrenta ambos museos: coincidencia de nombres de artista, moods dominantes y métricas lado a lado. Todo se compara localmente; el segundo archivo nunca reemplaza tu museo activo.',
+      primaryMuseumLabel: 'Museo A · Tu museo activo',
+      secondaryMuseumLabel: 'Museo B',
+      secondaryPlaceholderTitle: 'Sube un segundo museo',
+      secondaryPlaceholderBody: 'Arrastra un backup de Nova, un CSV de Last.fm/Apple Music o un JSON de Spotify/YouTube/ListenBrainz para comparar contra tu museo activo.',
+      browseButton: 'Examinar archivos',
+      clearSecondaryButton: 'Quitar museo B',
+      processing: 'Procesando el segundo museo...',
+      topArtistLabel: 'Artista ancla',
+      totalPlaysLabel: 'Plays totales',
+      overlapTitle: 'Coincidencia de nombres de artista',
+      overlapBody: (pct: number, shared: number) => `${pct}% de coincidencia: ${shared} claves normalizadas aparecen en ambos museos.`,
+      sharedArtistsLabel: 'Nombres compartidos',
+      onlyInA: (label: string, count: number) => `Solo en ${label}: ${count} nombres`,
+      onlyInB: (label: string, count: number) => `Solo en ${label}: ${count} nombres`,
+      noOverlapArtists: 'Ningún nombre de artista se repite entre ambos museos todavía.',
+      metricsTitle: 'Métricas Lado a Lado',
+      metricsHint: 'El porcentaje muestra cuánto cambia el Museo B respecto al Museo A en cada métrica.',
+      moodTitle: 'Moods Enfrentados',
+      moodSameNarrative: (mood: string) => `Ambos museos comparten el mismo clima emocional dominante: ${mood}.`,
+      moodDiffNarrative: (moodA: string, moodB: string) => `Los museos divergen: el A vibra en ${moodA}, mientras el B vibra en ${moodB}.`,
+    },
+    he: {
+      intro: 'העלה היסטוריית האזנה שנייה — שלך או של אדם אחר — והשווה בין שני המוזיאונים: חפיפת שמות אמנים, מצבי רוח דומיננטיים ומדדים זה לצד זה. ההשוואה כולה מקומית; הקובץ השני לעולם אינו מחליף את המוזיאון הפעיל שלך.',
+      primaryMuseumLabel: 'מוזיאון א׳ · המוזיאון הפעיל שלך',
+      secondaryMuseumLabel: 'מוזיאון ב׳',
+      secondaryPlaceholderTitle: 'העלה מוזיאון שני',
+      secondaryPlaceholderBody: 'שחרר גיבוי של Nova, קובץ CSV של Last.fm או Apple Music, או קובץ JSON של Spotify, YouTube או ListenBrainz כדי להשוות מול המוזיאון הפעיל שלך.',
+      browseButton: 'עיין בקבצים',
+      clearSecondaryButton: 'הסר את מוזיאון ב׳',
+      processing: 'מעבד את המוזיאון השני...',
+      topArtistLabel: 'אמן עוגן',
+      totalPlaysLabel: 'סך ההשמעות',
+      overlapTitle: 'חפיפת שמות אמנים',
+      overlapBody: (pct: number, shared: number) => `${pct}% חפיפה: ${shared} מפתחות מנורמלים מופיעים בשני המוזיאונים.`,
+      sharedArtistsLabel: 'שמות אמנים משותפים',
+      onlyInA: (label: string, count: number) => `רק אצל ${label}: ${count} שמות`,
+      onlyInB: (label: string, count: number) => `רק אצל ${label}: ${count} שמות`,
+      noOverlapArtists: 'עדיין אין שם אמן שמופיע בשני המוזיאונים.',
+      metricsTitle: 'מדדים זה לצד זה',
+      metricsHint: 'האחוז מראה עד כמה מוזיאון ב׳ שונה ממוזיאון א׳ בכל מדד.',
+      moodTitle: 'השוואת מצבי רוח',
+      moodSameNarrative: (mood: string) => `שני המוזיאונים חולקים את אותו אקלים רגשי דומיננטי: ${mood}.`,
+      moodDiffNarrative: (moodA: string, moodB: string) => `המוזיאונים מתפצלים: האקלים של מוזיאון א׳ הוא ${moodA}, ואילו האקלים של מוזיאון ב׳ הוא ${moodB}.`,
+    },
+  }), [lang]);
   const visitorCopy = useMemo(() => pickLanguage(lang, {
     en: {
       flagshipLabel: "Kevin's public flagship",
@@ -57,9 +129,9 @@ export default function MuseumComparator({
       flagshipReady: 'Public reference',
       flagshipError: "Kevin's public museum could not be loaded. Your private archive is unchanged.",
       fullScope: (artistsA: string, artistsB: string) =>
-        `Complete catalog coverage · ${artistsA} vs ${artistsB} artist identities after name cleanup`,
+        `Complete catalog coverage · ${artistsA} vs ${artistsB} normalized artist-name keys`,
       partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
-        `Visible scope only · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} artists. The percentage does not describe the complete archives.`,
+        `Visible scope only · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} artist-name entries. The percentage does not describe the complete archives.`,
     },
     es: {
       flagshipLabel: 'Museo público de Kevin',
@@ -68,9 +140,9 @@ export default function MuseumComparator({
       flagshipReady: 'Referencia pública',
       flagshipError: 'No se pudo cargar el museo público de Kevin. Tu archivo privado no cambió.',
       fullScope: (artistsA: string, artistsB: string) =>
-        `Cobertura completa · ${artistsA} vs ${artistsB} identidades de artista tras limpiar variantes del nombre`,
+        `Cobertura completa · ${artistsA} vs ${artistsB} claves normalizadas de nombres de artista`,
       partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
-        `Alcance visible solamente · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} artistas. El porcentaje no describe los archivos completos.`,
+        `Alcance visible solamente · ${comparedA}/${archiveA} vs ${comparedB}/${archiveB} entradas de nombres de artista. El porcentaje no describe los archivos completos.`,
     },
     he: {
       flagshipLabel: 'המוזיאון הציבורי של Kevin',
@@ -79,9 +151,9 @@ export default function MuseumComparator({
       flagshipReady: 'נקודת ייחוס ציבורית',
       flagshipError: 'לא ניתן היה לטעון את המוזיאון הציבורי של Kevin. הארכיון הפרטי שלך לא השתנה.',
       fullScope: (artistsA: string, artistsB: string) =>
-        `כיסוי קטלוג מלא · ${artistsA} מול ${artistsB} זהויות אמן לאחר ניקוי וריאציות בשם`,
+        `כיסוי קטלוג מלא · ${artistsA} מול ${artistsB} מפתחות מנורמלים של שמות אמנים`,
       partialScope: (comparedA: string, archiveA: string, comparedB: string, archiveB: string) =>
-        `טווח גלוי בלבד · ${comparedA}/${archiveA} מול ${comparedB}/${archiveB} אמנים. האחוז אינו מתאר את הארכיונים המלאים.`,
+        `טווח גלוי בלבד · ${comparedA}/${archiveA} מול ${comparedB}/${archiveB} רשומות שמות אמנים. האחוז אינו מתאר את הארכיונים המלאים.`,
     },
   }), [lang]);
 

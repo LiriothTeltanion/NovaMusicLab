@@ -362,7 +362,8 @@
 /* The two labels are short and must stay on one line; the rule between them
  * absorbs whatever is left. Without this the line's flex basis claimed the
  * whole row and both labels wrapped ("NOVA MUSIC / LAB", "01 / 9"). */
-.museum-chapter__footer > span:not(.museum-chapter__footer-line) {
+.museum-chapter__footer > span:not(.museum-chapter__footer-line),
+.museum-chapter__footer > bdi {
   flex: 0 0 auto;
   white-space: nowrap;
 }
@@ -588,11 +589,14 @@
   }
 
   .museum-chapter__metric dt {
-    min-height: 1.18em;
+    min-height: 2.3em;
     margin-top: 0.14rem;
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     line-height: 1.15;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
   }
 
   .museum-chapter__metric dd {

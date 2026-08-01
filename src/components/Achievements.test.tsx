@@ -25,6 +25,8 @@ describe('Achievements', () => {
     expect(screen.queryByText('2,021')).toBeNull();
     expect(screen.queryByText('2.021')).toBeNull();
     expect(screen.getAllByText('2021').length).toBeGreaterThan(0);
+    expect(screen.getByText('artist-name entries')).toBeInTheDocument();
+    expect(screen.queryByText('unique artists discovered')).not.toBeInTheDocument();
   });
 
   it('gives legendary achievements the animated shine treatment', () => {

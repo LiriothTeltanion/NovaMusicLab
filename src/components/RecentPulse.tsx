@@ -1,6 +1,6 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { CalendarDays, Crown, Fingerprint, Sparkles, Repeat, History, Zap, Music } from 'lucide-react';
+import { CalendarDays, Crown, Fingerprint, Sparkles, Repeat, History, Zap, Music, RefreshCw } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { useExperienceDepth } from '../context/ExperienceContext';
@@ -26,6 +26,24 @@ interface RecentPulseProps {
 }
 
 const flagshipPulse = pulseData as PulseSnapshot;
+
+const REFRESH_PULSE_COPY = {
+  en: {
+    snapshot: 'Snapshot saved',
+    refresh: 'Refresh Pulse',
+    boundary: 'No live sync is active. Import a newer listening export to refresh this Pulse.',
+  },
+  es: {
+    snapshot: 'Instantánea guardada',
+    refresh: 'Actualizar Pulso',
+    boundary: 'No hay sincronización en vivo. Importa un export de escucha más reciente para actualizar este Pulso.',
+  },
+  he: {
+    snapshot: 'תמונת מצב שמורה',
+    refresh: 'רענון הדופק',
+    boundary: 'אין סנכרון חי. כדי לרענן את הדופק, יש לייבא ייצוא האזנה חדש יותר.',
+  },
+} as const;
 
 const VISITOR_PULSE_COPY = {
   en: {
@@ -510,6 +528,7 @@ export default function RecentPulse({
   const fmtNum = (n: number) => Math.round(n).toLocaleString(localeFor(lang));
   const pulse = snapshot;
   const weeklySummary = resolveWeeklyPulseSummary(pulse);
+  const refreshCopy = REFRESH_PULSE_COPY[lang];
   const sourceSignals = pickLanguage(lang, {
     en: {
       label: 'Listening sources represented here',
@@ -544,6 +563,15 @@ export default function RecentPulse({
         <p className="type-label" style={{ color: tc.c3 }}>📡 {copy.title}</p>
         <p className="max-w-3xl text-sm leading-relaxed text-gray-300">{copy.body}</p>
         <p className="max-w-3xl text-xs leading-relaxed text-gray-500">{copy.next}</p>
+        <button
+          type="button"
+          onClick={() => setActiveTab('upload')}
+          className="inline-flex min-h-11 w-fit items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-black"
+          style={{ borderColor: `${tc.c1}50`, color: tc.c1, backgroundColor: `${tc.c1}10` }}
+        >
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          {refreshCopy.refresh}
+        </button>
       </section>
     );
   }
@@ -579,13 +607,27 @@ export default function RecentPulse({
 
   return (
     <div className="space-y-10 animate-fade-in">
-      <div className="flex justify-end">
-        <span
-          className="px-3 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider border"
-          style={{ color: tc.c1, borderColor: `${tc.c1}40`, backgroundColor: `${tc.c1}10` }}
+      <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+        <div className="space-y-1">
+          <span
+            className="inline-flex flex-wrap items-center gap-x-2 rounded-full border px-3 py-1 font-mono text-[10px] font-black uppercase tracking-wider"
+            style={{ color: tc.c1, borderColor: `${tc.c1}40`, backgroundColor: `${tc.c1}10` }}
+          >
+            <span>{refreshCopy.snapshot}</span>
+            <time dateTime={pulse.synced_at} dir="ltr">{pulse.synced_at}</time>
+          </span>
+          <p className="max-w-2xl text-xs leading-relaxed text-gray-500">{refreshCopy.boundary}</p>
+        </div>
+        <button
+          type="button"
+          data-testid="recent-pulse-refresh"
+          onClick={() => setActiveTab('upload')}
+          className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-black"
+          style={{ borderColor: `${tc.c1}50`, color: tc.c1, backgroundColor: `${tc.c1}10` }}
         >
-          {t.pulse.syncedAt(formatDate(pulse.synced_at))}
-        </span>
+          <RefreshCw className="h-4 w-4" aria-hidden="true" />
+          {refreshCopy.refresh}
+        </button>
       </div>
       <p className="text-sm text-gray-400 leading-relaxed font-sans max-w-2xl">
         {t.pulse.subtitle}

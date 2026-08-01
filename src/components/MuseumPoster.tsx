@@ -7,7 +7,7 @@ import { buildEmotionalMapEngineProfile } from '../engines/emotionalEngine';
 import { buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MoodArtCanvas from './MoodArtCanvas';
 import { MOOD_ICONS } from './MoodBadge';
-import { directionFor, localeFor } from '../utils/i18n';
+import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
 import { localizeGenreName } from '../utils/localizedDatasetText';
 
 interface MuseumPosterProps {
@@ -22,8 +22,41 @@ interface MuseumPosterProps {
  * same-origin (generated canvas + text), so the PNG export never taints.
  */
 export default function MuseumPoster({ data, isPersonalArchive = false }: MuseumPosterProps) {
-  const { tc, t, lang } = useApp();
-  const copy = t.museumPoster;
+  const { tc, lang } = useApp();
+  // Poster-only copy stays in this lazy room so the entry bundle does not pay
+  // for export UI before a visitor opens the final report.
+  const copy = useMemo(() => pickLanguage(lang, {
+    en: {
+      eyebrow: '🖼 Museum poster', title: 'Sound Museum Poster',
+      intro: 'A collection piece generated from your archive: deterministic art, key numbers and your permanent collection. Export it as a PNG to print or share.',
+      posterHeading: 'SOUND MUSEUM', curatedBy: (alias: string) => `Curated by: ${alias}`,
+      statPlays: 'Plays', statArtists: 'Artist names', statHours: 'Hours', statYears: 'Years',
+      topArtistsLabel: 'Permanent collection', moodMixLabel: 'Dominant climate',
+      downloadButton: 'Download PNG', downloading: 'Generating poster...',
+      downloadError: 'The poster could not be exported. Please try again.',
+      variationButton: 'Vary art', footer: (date: string) => `Generative edition · ${date}`,
+    },
+    es: {
+      eyebrow: '🖼 Póster de museo', title: 'Póster del Museo Sonoro',
+      intro: 'Una pieza de colección generada desde tu archivo: arte determinista, cifras clave y tu colección permanente. Expórtala como PNG para imprimir o compartir.',
+      posterHeading: 'MUSEO SONORO', curatedBy: (alias: string) => `Curaduría: ${alias}`,
+      statPlays: 'Reproducciones', statArtists: 'Nombres de artista', statHours: 'Horas', statYears: 'Años',
+      topArtistsLabel: 'Colección permanente', moodMixLabel: 'Clima dominante',
+      downloadButton: 'Descargar PNG', downloading: 'Generando póster...',
+      downloadError: 'No se pudo exportar el póster. Intenta de nuevo.',
+      variationButton: 'Variar arte', footer: (date: string) => `Edición generativa · ${date}`,
+    },
+    he: {
+      eyebrow: '🖼 כרזת מוזיאון', title: 'פוסטר של מוזיאון הסאונד',
+      intro: 'פריט אספנות שנוצר מהארכיון שלך: אמנות דטרמיניסטית, נתוני מפתח והאוסף הקבוע שלך. אפשר לייצא אותו כ־PNG להדפסה או לשיתוף.',
+      posterHeading: 'מוזיאון הסאונד', curatedBy: (alias: string) => `באוצרות ${alias}`,
+      statPlays: 'השמעות', statArtists: 'שמות אמנים', statHours: 'שעות', statYears: 'שנים',
+      topArtistsLabel: 'האוסף הקבוע', moodMixLabel: 'אקלים דומיננטי',
+      downloadButton: 'הורד PNG', downloading: 'יוצר פוסטר...',
+      downloadError: 'לא ניתן לייצא את הפוסטר. אנא נסה שוב.',
+      variationButton: 'וריאציה אמנותית חדשה', footer: (date: string) => `מהדורה גנרטיבית · ${date}`,
+    },
+  }), [lang]);
   const posterRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState(false);

@@ -1149,6 +1149,35 @@ a:focus-visible,
   outline-offset: 3px;
 }
 
+.nova-skip-link {
+  position: fixed;
+  z-index: 80;
+  inset-block-start: 0.75rem;
+  inset-inline-start: 0.75rem;
+  max-inline-size: calc(100vw - 1.5rem);
+  min-block-size: 2.75rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--c1);
+  border-radius: 0.85rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.25;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--c1) 28%, transparent);
+  transform: translateY(calc(-100% - 1.5rem));
+  transition: transform 140ms ease-out;
+}
+
+.nova-skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nova-skip-link { transition: none; }
+}
+
 /* Neon Glows */
 .text-neon-glow {
   text-shadow: 0 0 10px rgba(0, 242, 254, 0.6), 0 0 20px rgba(114, 9, 183, 0.4);
