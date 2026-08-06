@@ -104,6 +104,18 @@
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Aviv_Geffen"
   },
   {
+    "artist": "Bad Omens",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/3Ri4H12KFyu98LMjSoij5V",
+    "checkedAt": "2026-08-06",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 24 videos titled 'Uploads from BAD OMENS'.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCre_5futd_kGkrSlL83n3pw",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUre_5futd_kGkrSlL83n3pw",
+    "officialSiteUrl": "http://www.badomensofficial.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Bad_Omens",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Bad_Omens"
+  },
+  {
     "artist": "Being as an Ocean",
     "mediaConfidence": "partial",
     "checkedAt": "2026-07-07",
@@ -321,12 +333,13 @@
   {
     "artist": "Enforcer",
     "spotifyArtistUrl": "https://open.spotify.com/artist/6nQ7NZbr43lnKpLYBvLf7A",
-    "checkedAt": "2026-07-10",
+    "checkedAt": "2026-08-06",
     "mediaConfidence": "verified",
     "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.",
     "officialSiteUrl": "https://www.enforcerofficial.com",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Enforcer_(band)",
-    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Enforcer"
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Enforcer",
+    "youtubeChannelUrl": "https://www.youtube.com/user/enforcermetal"
   },
   {
     "artist": "Entwine",
@@ -511,6 +524,18 @@
     "checkedAt": "2026-07-07",
     "officialAudioUrl": "https://www.youtube.com/watch?v=KB6VFfejC6U",
     "sourceNote": "YouTube Topic official audio for Some Way."
+  },
+  {
+    "artist": "Juice WRLD",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/4MCBfE4596Uoi2O4DtmEMz",
+    "checkedAt": "2026-08-06",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 100 videos titled 'Uploads from Juice WRLD'.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UC0BletW9phE4xHFM44q4qKA",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UU0BletW9phE4xHFM44q4qKA",
+    "officialSiteUrl": "https://juicewrld999.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Juice_Wrld",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Juice_Wrld"
   },
   {
     "artist": "Katatonia",
@@ -738,6 +763,18 @@
     "sourceNote": "Official Odeon channel and loop official lyric video."
   },
   {
+    "artist": "Oliver Tree",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/6TLwD7HPWuiOzvXEa3oCNe",
+    "checkedAt": "2026-08-06",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 100 videos titled 'Uploads from Oliver Tree'.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCHcb3FQivl6xCRcHC2zjdkQ",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUHcb3FQivl6xCRcHC2zjdkQ",
+    "officialSiteUrl": "https://www.olivertreemusic.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Oliver_Tree",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Oliver_Tree"
+  },
+  {
     "artist": "Omnium Gatherum",
     "spotifyArtistUrl": "https://open.spotify.com/artist/52xuvlUvnxqH0xzxGPKXSu",
     "youtubeChannelUrl": "https://www.youtube.com/user/omniumgatherumband",
@@ -781,6 +818,18 @@
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=NkuOJNBICyQ"
   },
   {
+    "artist": "Post Malone",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/246dkjvS1zLTtiykXe5h60",
+    "checkedAt": "2026-08-06",
+    "mediaConfidence": "verified",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 100 videos titled 'Uploads from Post Malone'.",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UCeLHszkByNZtPKcaVXOCOQQ",
+    "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UUeLHszkByNZtPKcaVXOCOQQ",
+    "officialSiteUrl": "http://www.postmalone.com/",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Post_Malone",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Post_Malone"
+  },
+  {
     "artist": "Primal Fear",
     "mediaConfidence": "partial",
     "checkedAt": "2026-07-07",
@@ -806,9 +855,11 @@
   {
     "artist": "Rami Kleinstein",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-07-07",
+    "checkedAt": "2026-08-06",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=L2i03hBb2Kw",
-    "sourceNote": "Official Rami Kleinstein channel video for אהביני."
+    "sourceNote": "Official Rami Kleinstein channel video for אהביני.",
+    "officialSiteUrl": "http://www.ramikleinstein.co.il",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Rami_Kleinstein"
   },
   {
     "artist": "Roosevelt",
@@ -876,18 +927,6 @@
     "officialSiteUrl": "http://sebastiangampl.com/"
   },
   {
-    "artist": "Silverstein",
-    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug",
-    "mediaConfidence": "partial",
-    "youtubeChannelUrl": "https://www.youtube.com/channel/UChQidgcBzCuN2IOQ6s1wRFw",
-    "checkedAt": "2026-07-07",
-    "sourceNote": "oEmbed-verified official audio \"Silverstein - November (Official Audio)\" via Victory Records (was: Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.)",
-    "officialSiteUrl": "http://silversteinmusic.com",
-    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Silverstein_(band)",
-    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Silverstein",
-    "officialAudioUrl": "https://www.youtube.com/watch?v=caUEmhq6itU"
-  },
-  {
     "artist": "Sigur Rós",
     "mediaConfidence": "verified",
     "checkedAt": "2026-07-13",
@@ -898,6 +937,18 @@
     "officialSiteUrl": "https://sigurros.com",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Sigur_R%C3%B3s",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Sigur_R%C3%B3s"
+  },
+  {
+    "artist": "Silverstein",
+    "spotifyArtistUrl": "https://open.spotify.com/artist/1Tsag5J854qxeOo2apszug",
+    "mediaConfidence": "partial",
+    "youtubeChannelUrl": "https://www.youtube.com/channel/UChQidgcBzCuN2IOQ6s1wRFw",
+    "checkedAt": "2026-07-07",
+    "sourceNote": "oEmbed-verified official audio \"Silverstein - November (Official Audio)\" via Victory Records (was: Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity.)",
+    "officialSiteUrl": "http://silversteinmusic.com",
+    "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Silverstein_(band)",
+    "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Silverstein",
+    "officialAudioUrl": "https://www.youtube.com/watch?v=caUEmhq6itU"
   },
   {
     "artist": "Skid Row",

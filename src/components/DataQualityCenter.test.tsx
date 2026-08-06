@@ -70,7 +70,11 @@ describe('DataQualityCenter trust sources', () => {
     const recognizedLabel = screen.getByText('Artists recognized');
     expect(within(recognizedLabel.parentElement as HTMLElement).getByText('100/100'))
       .toBeInTheDocument();
-    expect(screen.getByText('78 Wikidata profiles')).toBeInTheDocument();
+    // 79 after the 2026-08 refresh, up from 78. The negative assertion is the
+    // point of this test and stays: 80 is the figure frozen into the dataset's
+    // legacy embedded summary, so seeing it would mean the room had gone back
+    // to reading the stale copy instead of the live offline archive.
+    expect(screen.getByText('79 Wikidata profiles')).toBeInTheDocument();
     expect(screen.queryByText('80 Wikidata profiles')).not.toBeInTheDocument();
   });
 
