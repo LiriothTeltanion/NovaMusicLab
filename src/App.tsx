@@ -70,6 +70,9 @@ import {
   MuseumRoomTransition,
   type MuseumRoomItem,
 } from './components/MuseumRoomNavigator';
+// Never rendered on the hero and never above the md breakpoint, so it has no
+// business in the chunk a visitor downloads before the first paint.
+const MobileRoomDock = React.lazy(() => import('./components/MobileRoomDock'));
 import ExpeditionConsole from './components/shell/ExpeditionConsole';
 import {
   MUSEUM_HUB_ENTRY_ROOMS,
@@ -1861,6 +1864,23 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </main>
 
         </div>
+      )}
+
+      {/* Room-to-room navigation on a phone. The dock was written, styled and
+          tested, the room shell reserved 7rem at the bottom for it and the
+          restore toast positioned itself above it - but nothing ever rendered
+          it, so a phone visitor had 24 rooms, no sidebar (hidden under 768px),
+          no prev/next (hidden under 900px) and no dock. Mounted after <main>
+          so keyboard order reaches it once the room content is done. */}
+      {activeTab !== 'hero' && (
+        <Suspense fallback={null}>
+          <MobileRoomDock
+            items={allRoomNavigationItems}
+            activeId={activeTab}
+            lang={lang}
+            onNavigate={navigateFromCommand}
+          />
+        </Suspense>
       )}
 
       {/* ── Restore toast ── */}

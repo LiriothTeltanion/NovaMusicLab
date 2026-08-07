@@ -1,9 +1,9 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import MobileMuseumRoomDock from './MobileRoomDock';
 import {
   getMuseumRoomProgress,
-  MobileMuseumRoomDock,
   MuseumRoomProgressRail,
   type MuseumRoomItem,
 } from './MuseumRoomNavigator';
