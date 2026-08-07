@@ -35,6 +35,7 @@ import { localizeGenreName } from '../utils/localizedDatasetText';
 import { externalUrlProvider, isBandcampSearchUrl, toSafeExternalUrl } from '../utils/externalUrl';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
+import ArtistStoryPanel from './ArtistStoryPanel';
 import memberEnrichment from '../data/member_enrichment.json';
 
 const MEMBER_ENRICHMENT = memberEnrichment as Record<string, { name: string; photo?: string; birthDate?: string; age?: number | null; links?: Record<string, string> }>;
@@ -2232,6 +2233,11 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
               <p className="text-xs text-gray-300 leading-relaxed">{selectedProfile?.status[lang] ?? artistCopy.noProfileTitle}</p>
             </div>
           </div>
+
+          {/* The narrative comes before the fact chips on purpose: a reader
+              wants to know where a band is from and who is in it before they
+              want a list of tags. */}
+          <ArtistStoryPanel knowledge={selectedKnowledge} />
 
           {selectedKnowledgeSummary && (
             <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-4 md:p-5">
