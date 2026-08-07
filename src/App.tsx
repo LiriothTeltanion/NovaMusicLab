@@ -862,9 +862,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
     isChapter: !['upload', 'share', 'audio'].includes(item.id),
   })), [menuItems, navGroups]);
 
+  // Numbered against every room, not the active hub's slice. Hub-scoped
+  // numbering made the Dashboard - where the hero's primary button lands - read
+  // "Chapter 01" over a footer saying "01 / 1", because the Home hub holds only
+  // dashboard and share and share is not a chapter. The console rail beside it
+  // was already numbering the same room out of the global list, so the landing
+  // screen showed two different answers to "where am I". One list decides.
   const activeRoomProgress = React.useMemo(
-    () => getMuseumRoomProgress(roomNavigationItems, activeTab),
-    [activeTab, roomNavigationItems],
+    () => getMuseumRoomProgress(allRoomNavigationItems, activeTab),
+    [activeTab, allRoomNavigationItems],
   );
 
   const commandRoomItems = React.useMemo(() => menuItems.map(item => ({

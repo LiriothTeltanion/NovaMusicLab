@@ -1349,7 +1349,7 @@ export const STRINGS = {
         },
         {
           title: 'Un museo con muchas salas',
-          body: 'La barra lateral organiza el archivo en Vista General, Archivo, Identidad, Escucha, Datos y Exportar: eras musicales, tops históricos, mapa emocional, logros, comparativas y más.',
+          body: 'Cinco secciones organizan el archivo: Inicio, Pulso, Atlas, Historias y Lab de Datos. Dentro están las eras musicales, los tops históricos, el mapa emocional, los logros, las comparativas y más. Cambia de sección desde la barra superior, o abre el mapa de salas para saltar a cualquiera.',
         },
         {
           title: 'Arte que respira',
@@ -2686,7 +2686,7 @@ export const STRINGS = {
         },
         {
           title: 'A museum with many rooms',
-          body: 'The sidebar organizes the archive into Overview, Archive, Identity, Listening, Data and Export: musical eras, all-time tops, emotional map, achievements, comparisons and more.',
+          body: 'Five hubs hold the archive: Home, Pulse, Atlas, Stories and Data Lab. Inside them are musical eras, all-time tops, the emotional map, achievements, comparisons and more. Switch hubs from the top bar, or open the room map to jump straight to any room.',
         },
         {
           title: 'Art that breathes',
