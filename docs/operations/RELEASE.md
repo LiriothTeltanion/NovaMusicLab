@@ -10,6 +10,8 @@ Current version states:
   superseded by `v1.4.0`.
 - `v1.4.0` — deployed 2026-07-29; superseded 2026-08-01.
 - `v1.5.0` — deployed 2026-08-01; current public GitHub Pages version.
+- `v1.6.0` — private candidate 2026-08-09; current source version, not yet
+  tagged, released or deployed.
 
 ## Branch model
 
@@ -171,6 +173,48 @@ Known release boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
 backend, accounts, OAuth or automatic connector is added. No catalog aliases
 are destructively merged. The release costs 0 ILS in new services.
 
+## `v1.6.0` candidate gate — private candidate 2026-08-09
+
+Release title:
+
+> Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
+
+The candidate refreshes the historical archive through 2026-08-06 to 82,661
+plays, 20,908 tracks and 6,593 exact artist-name catalog entries. It was
+generated on 2026-08-07 in `Asia/Jerusalem`; enrichment remains dated
+2026-07-29 and Recent Pulse remains dated 2026-07-02. It is not a live account
+connection.
+
+This release candidate also makes the product contract understandable before a
+visitor reaches the technical detail:
+
+- Overview names Kevin Cusnir / Lirioth Teltanion's real public exhibition and
+  offers a separate local **Build my museum** path for supported history
+  exports, not MP3 uploads.
+- The Atlas navigates all 6,593 exact-name catalog entries by listens, A–Z,
+  letter or search; readable introductions precede detailed evidence.
+- Genre charts preserve Unclassified as its own row and describe grouped
+  smaller classified families instead of presenting `Other` as a genre.
+- Obsessions uses a cover-led spotlight and visual loop grid. Its 50 bundled
+  moments all have exact track-art mappings, while remote failures retain a
+  deterministic visual fallback.
+- Emotional and personality results are explicitly interpretive and
+  non-clinical; they are not diagnoses.
+
+- [x] The exact integrated source passes the complete local verification,
+  privacy and dependency gates on Node `22.13.0`, including all expected
+  Vitest tests (803 pass plus 1 intentional private-fixture skip) and 18/18
+  Playwright journeys.
+- [x] Final v1.6.0 release media is recaptured from the frozen integrated
+  source, contains nine source-fingerprinted assets, passes the release-media
+  audit and is reviewed visually in desktop/mobile and EN/ES/HE.
+- [ ] Pull-request CI, CodeQL and Dependency Review pass.
+- [ ] Kevin approves the exact merge candidate.
+- [ ] Pages serves matching v1.6.0 build metadata, real deployment date and
+  merge commit before a tag or GitHub Release is created.
+
+Until every item passes, v1.5.0 remains the authoritative public version.
+
 ## Release metadata
 
 ### `v1.0.0` metadata — published 2026-07-16; superseded
@@ -231,6 +275,21 @@ Release summary:
 > bounded local imports, and polished mobile, keyboard and Hebrew RTL journeys.
 > The flagship remains an honest historical snapshot; no account or live sync
 > is implied.
+
+### `v1.6.0` metadata — private candidate 2026-08-09
+
+Release title:
+
+> Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
+
+Candidate summary:
+
+> A refreshed living archive whose evidence speaks more clearly: the complete
+> Spotify, Last.fm and YouTube history through August 6, a first screen that
+> explains Kevin / Lirioth's exhibition and the private build-your-own path, a
+> complete A–Z/listening Atlas, human-first artist stories, transparent genre
+> long-tail grouping, visual Obsessions and clearly non-clinical interpretive
+> readings. Public facts remain synchronized with the reviewed data contract.
 
 ## Rollback
 

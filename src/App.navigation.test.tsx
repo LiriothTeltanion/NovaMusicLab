@@ -106,7 +106,7 @@ describe('room navigation focus', () => {
     expect(quickControls).toHaveClass('nova-anchor-end');
     expect(quickControls).not.toHaveClass('right-0');
 
-    await user.click(await screen.findByRole('button', { name: /enter the sound museum/i }, { timeout: 8000 }));
+    await user.click(await screen.findByRole('button', { name: /explore Kevin’s museum/i }, { timeout: 8000 }));
     await waitFor(
       () => expect(document.getElementById('sidebar-group-trigger-home')).toBeInTheDocument(),
       { timeout: 5000 },
@@ -161,7 +161,7 @@ describe('room navigation focus', () => {
 
     const dashboardButtons = await screen.findAllByRole(
       'button',
-      { name: /dashboard - home/i },
+      { name: /dashboard - overview/i },
       { timeout: 8000 },
     );
     await waitFor(() => expect(
@@ -178,7 +178,7 @@ describe('room navigation focus', () => {
     );
     window.dispatchEvent(new HashChangeEvent('hashchange'));
 
-    const topRooms = await screen.findAllByRole('button', { name: /top.*atlas/i });
+    const topRooms = await screen.findAllByRole('button', { name: /top.*artists/i });
     await waitFor(() => expect(
       topRooms.some(button => button.getAttribute('aria-current') === 'page'),
     ).toBe(true));
@@ -218,7 +218,7 @@ describe('room navigation focus', () => {
     await waitFor(() => expect(window.location.hash).toBe('#/artist-identity'));
     expect(deepDive).toHaveAttribute('aria-pressed', 'true');
     expect(window.localStorage.getItem('nml_experience_depth')).toBe('deep-dive');
-    expect(screen.getAllByRole('button', { name: /living artist atlas - atlas/i }).length).toBeGreaterThan(0);
-    expect(screen.queryByRole('button', { name: /ai assistant - data lab/i })).not.toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /living artist atlas - artists/i }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole('button', { name: /ai assistant - create/i })).not.toBeInTheDocument();
   }, 15_000);
 });

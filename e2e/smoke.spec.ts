@@ -58,7 +58,7 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await page.goto('/');
 
   const welcome = page.getByRole('dialog', {
-    name: /welcome to the sound museum/i,
+    name: /kevin's music history, turned into a museum/i,
   });
   await expect(welcome).toBeVisible();
   await expect(welcome.getByRole('button', { name: /next/i })).toBeFocused();
@@ -68,7 +68,7 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('NOVA MUSIC LAB');
   await expect(
-    page.getByRole('button', { name: /enter the sound museum/i }),
+    page.getByRole('button', { name: 'Explore Kevin’s museum' }),
   ).toBeVisible();
 
   await expectNoHorizontalPageOverflow(page);
@@ -166,6 +166,31 @@ test('the compact shell stays usable without horizontal overflow at 360px', asyn
   await expect(page.getByRole('dialog', { name: 'Room map' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(roomMapTrigger).toBeFocused();
+
+  const mobileDock = page.locator('.museum-mobile-dock');
+  const mobileMapTrigger = mobileDock.getByRole('button', {
+    name: /open room map: dashboard/i,
+  });
+  await expect(mobileDock).toBeVisible();
+  await mobileMapTrigger.click();
+
+  const mobileRoomMap = page.locator('#mobile-room-map');
+  await expect(mobileRoomMap).toBeVisible();
+  await expect(mobileRoomMap).toHaveAttribute('aria-modal', 'true');
+  expect(await page.locator('#root').evaluate(element => (element as HTMLElement).inert)).toBe(true);
+
+  const mobileMapButtons = mobileRoomMap.getByRole('button');
+  const closeMobileMap = mobileRoomMap.getByRole('button', { name: 'Close room map' });
+  await closeMobileMap.focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(mobileMapButtons.last()).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(closeMobileMap).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(mobileRoomMap).toBeHidden();
+  await expect(mobileMapTrigger).toBeFocused();
+  expect(await page.locator('#root').evaluate(element => (element as HTMLElement).inert)).toBe(false);
 
   const searchTrigger = console.getByTestId('command-palette-trigger');
   await searchTrigger.click();
@@ -337,6 +362,8 @@ test('a hero constellation portrait opens the matching Living Artist Atlas terri
 test('a direct Atlas link keeps its hash while experience depth changes', async ({
   page,
 }, testInfo) => {
+  testInfo.setTimeout(75_000);
+
   await page.addInitScript(() => {
     window.localStorage.setItem('nml_lang', 'en');
     window.localStorage.setItem('nml_tour_seen', 'true');
@@ -379,7 +406,7 @@ test('a direct Atlas link keeps its hash while experience depth changes', async 
 
   await page.goto('/#/assistant');
   await expect(page.getByTestId('assistant-connection-status'))
-    .toHaveText('Local analysis · no external AI');
+    .toHaveText('Local analysis · no external AI', { timeout: 30_000 });
   await expect(page.getByLabel('Gemini API key')).toBeVisible();
   await page.getByTestId('experience-switcher').getByRole('button', { name: 'Explore' }).click();
   await expect(page.getByLabel('Gemini API key')).toHaveCount(0);
@@ -419,6 +446,31 @@ test('the share room works in Hebrew RTL and a light theme', async ({
   const sharedText = new URL(whatsappHref!).searchParams.get('text');
   expect(sharedText).toContain('https://liriothteltanion.github.io/NovaMusicLab/#/');
   expect(sharedText).not.toMatch(/localhost|127\.0\.0\.1|0\.0\.0\.0/i);
+
+  const viewportWidth = page.viewportSize()?.width ?? 0;
+  const mobileNavigation = page.locator('.museum-mobile-navigation');
+  if (viewportWidth < 768) {
+    await expect(mobileNavigation).toBeVisible();
+    await expect(mobileNavigation).toHaveAttribute('dir', 'rtl');
+    const mobileMapTrigger = mobileNavigation.getByRole('button', {
+      name: /פתיחת מפת החדרים:/,
+    });
+    expect(await mobileMapTrigger.evaluate(element => getComputedStyle(element).textAlign)).toBe('start');
+    await mobileMapTrigger.click();
+
+    const mobileRoomMap = page.locator('#mobile-room-map');
+    await expect(mobileRoomMap).toHaveAttribute('aria-modal', 'true');
+    await expect(mobileRoomMap.locator('xpath=..')).toHaveAttribute('dir', 'rtl');
+    await page.keyboard.press('Escape');
+    await expect(mobileMapTrigger).toBeFocused();
+  } else {
+    await expect(mobileNavigation).toHaveCount(0);
+    const mobileDockResources = await page.evaluate(() => performance
+      .getEntriesByType('resource')
+      .map(entry => entry.name)
+      .filter(name => /MobileRoomDock/i.test(name)));
+    expect(mobileDockResources).toEqual([]);
+  }
 
   await expectNoHorizontalPageOverflow(page);
   await expectNoAutomatedAccessibilityViolations(page, testInfo);

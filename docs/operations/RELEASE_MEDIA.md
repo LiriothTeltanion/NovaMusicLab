@@ -13,14 +13,27 @@ for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
 
+`v1.6.0` — private candidate 2026-08-09 — owns a fresh nine-asset media
+directory generated from committed product source. Its hashes, dimensions,
+aliases and source fingerprint pass the release-media audit, and the package
+has been reviewed on desktop/mobile in EN/ES/HE. It is current candidate
+evidence, not public deployment evidence; v1.5.0 remains the latest verified
+version served by Pages.
+
 ## What each candidate must contain
 
 - English cyber-theme Hero at 1440×900.
 - Spanish cyber-theme Hero at 390×844.
 - English cyber-theme Genres at 390×844 and Living Artist Atlas at 1440×900.
+- The Atlas capture must visibly include its all-artist navigator and the
+  Genres capture must keep Unclassified separate from the labelled classified
+  long tail.
 - English cyber-theme Guest Museum entry at 1440×900.
+- At least one reviewed capture or tour frame must show the clearer Kevin /
+  Lirioth purpose and the local **Build my museum** path. Obsessions should be
+  visually reviewed even though it is not an additional required profile ID.
 - Hebrew RTL Share & Feedback at 390×844 in the daylight theme.
-- A three-room English Home → Atlas → Genres tour as a static three-panel JPEG
+- A three-room English Overview → Artists → Genres tour as a static three-panel JPEG
   contact sheet and a short animated GIF.
 - The 1280×640 social preview.
 - `release-media.json` with SHA-256, byte size, actual dimensions, language,
@@ -60,7 +73,8 @@ The tracked source handoff deliberately retains:
 }
 ```
 
-This does not mean the public product is undeployed. `v1.5.0` was deployed on
+This does not mean the public product is undeployed. `v1.5.0` remains the
+latest verified public release and was deployed on
 2026-08-01 from initial release commit
 `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The tracked manifest remains
 neutral so it never predicts the SHA of a commit that does not exist yet. CI

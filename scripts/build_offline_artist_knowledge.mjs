@@ -3,6 +3,11 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
+import {
+  findTopLevelEnrichmentRegressions,
+  preserveBandMembersForStableIdentity,
+} from './lib/offlineKnowledgePipeline.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dataPath = path.join(root, 'src', 'data', 'music_dna_compiled.json');
@@ -148,6 +153,16 @@ function log(message) {
   process.stdout.write(`${message}\n`);
 }
 
+// MusicBrainz answers 503 when a client exceeds one request per second, and
+// Wikidata answers 429. Both are "come back shortly", not "this artist has no
+// data" - but the original code threw on any non-OK response, so a single
+// throttled second permanently cost that artist its identifiers for the whole
+// run. That is how a rebuild silently dropped MusicBrainz coverage from 98
+// artists to 6 and still exited zero.
+const RETRYABLE_STATUS = new Set([429, 502, 503, 504]);
+const MAX_ATTEMPTS = 5;
+const BACKOFF_BASE_MS = 4000;
+
 async function fetchJson(url) {
   fs.mkdirSync(cacheDir, { recursive: true });
   const cachePath = path.join(cacheDir, cacheName(url));
@@ -156,21 +171,37 @@ async function fetchJson(url) {
     return JSON.parse(fs.readFileSync(cachePath, 'utf8'));
   }
 
-  const response = await fetch(url, {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': USER_AGENT,
-    },
-  });
+  let lastStatus = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    const response = await fetch(url, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': USER_AGENT,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`${response.status} ${response.statusText}`);
+    if (response.ok) {
+      const json = await response.json();
+      fs.writeFileSync(cachePath, JSON.stringify(json, null, 2));
+      await sleep(REQUEST_DELAY_MS);
+      return json;
+    }
+
+    lastStatus = `${response.status} ${response.statusText}`;
+    if (!RETRYABLE_STATUS.has(response.status) || attempt === MAX_ATTEMPTS) break;
+
+    // Honour Retry-After when the service names a delay; otherwise back off
+    // exponentially from four seconds, which clears a rate limit comfortably
+    // without turning a hundred artists into a very long wait.
+    const retryAfter = Number(response.headers.get('retry-after'));
+    const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? retryAfter * 1000
+      : BACKOFF_BASE_MS * (2 ** (attempt - 1));
+    log(`    ${response.status} on attempt ${attempt}/${MAX_ATTEMPTS}, waiting ${Math.round(waitMs / 1000)}s`);
+    await sleep(waitMs);
   }
 
-  const json = await response.json();
-  fs.writeFileSync(cachePath, JSON.stringify(json, null, 2));
-  await sleep(REQUEST_DELAY_MS);
-  return json;
+  throw new Error(lastStatus ?? 'request failed');
 }
 
 async function fetchCachedJson(cacheKey, request) {
@@ -621,8 +652,12 @@ async function main() {
     artists,
   };
 
-  if (mergeIntoExisting && fs.existsSync(outputPath)) {
-    const existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+  const previousDatabase = fs.existsSync(outputPath)
+    ? JSON.parse(fs.readFileSync(outputPath, 'utf8'))
+    : null;
+
+  if (mergeIntoExisting && previousDatabase) {
+    const existing = previousDatabase;
     const exactName = value => String(value ?? '').normalize('NFC').trim();
     const topArtistKeys = new Set(data.top_artists.map(artist => exactName(artist.name)));
     const replacements = new Map(artists.map(artist => [exactName(artist.name), artist]));
@@ -644,8 +679,75 @@ async function main() {
     };
   }
 
+  if (previousDatabase) {
+    const preservedLineups = preserveBandMembersForStableIdentity(database, previousDatabase);
+    if (preservedLineups) {
+      log(`Preserved reviewed band-member enrichment for ${preservedLineups} stable artist identity/identities.`);
+    }
+  }
+
+  assertEnrichmentDidNotCollapse(database, previousDatabase);
+
   fs.writeFileSync(outputPath, `${JSON.stringify(database, null, 2)}\n`);
   log(`Wrote ${path.relative(root, outputPath)} with ${database.artists.length} artist(s).`);
+}
+
+/**
+ * Refuses to overwrite a rich archive with a thin one.
+ *
+ * Every lookup here is a live MusicBrainz or Wikidata call, and a rate-limited
+ * run still produces a perfectly well-formed file - just one where artists lost
+ * their identifiers. That happened twice during the 2026-08 refresh: a genre
+ * harvest had spent 400 requests on MusicBrainz, this script ran straight
+ * afterwards, and it wrote a file with MusicBrainz coverage down from 98 to 6.
+ * It exited zero and said "Wrote ... with 100 artist(s)", which is true and
+ * useless.
+ *
+ * The check is per artist rather than per count, and that distinction earned
+ * its place: a first attempt at this guard compared totals with a tolerance of
+ * ten, and a later run slipped through at 98 -> 89 while quietly stripping
+ * Asking Alexandria and Crown The Empire - artists that plainly have MusicBrainz
+ * entries. Aggregate counts hide that, because the top 100 turns over and the
+ * arithmetic looks plausible.
+ *
+ * The invariant is simple and cannot be fooled by churn: an artist who was
+ * enriched, and is still in the top 100, may not come back empty. Losing an
+ * identifier is always a refused lookup, never a smaller archive.
+ */
+function assertEnrichmentDidNotCollapse(next, previous) {
+  if (!previous) return;
+
+  const regressions = findTopLevelEnrichmentRegressions(next, previous)
+    .map(regression => `${regression.artist} (${regression.field})`);
+
+  if (!regressions.length) return;
+
+  // Group by field so the message says what kind of damage this is, not just
+  // how much: "70 artists lost bandMembers" reads very differently from
+  // "3 artists lost wikidata".
+  const byField = new Map();
+  for (const entry of regressions) {
+    const field = entry.slice(entry.lastIndexOf('(') + 1, -1);
+    byField.set(field, (byField.get(field) ?? 0) + 1);
+  }
+  const summary = [...byField.entries()]
+    .sort((left, right) => right[1] - left[1])
+    .map(([field, count]) => `${field} x${count}`)
+    .join(', ');
+
+  throw new Error(
+    `Refusing to write: ${regressions.length} artist row(s) or field(s) disappeared from existing knowledge - ${summary}.\n`
+    + `  ${regressions.slice(0, 12).join('\n  ')}${regressions.length > 12 ? `\n  ...and ${regressions.length - 12} more` : ''}\n`
+    + 'Three causes are likely. A partial --artist/--limit run without --merge: '
+    + 'rerun it with --merge so untouched artist rows remain in the database. '
+    + 'A throttled lookup: MusicBrainz allows one request '
+    + 'per second and this script has no cache for a name it has not seen answer '
+    + 'before - wait a few minutes and run again, since each attempt caches what '
+    + 'did succeed. Or an identity changed: reviewed bandMembers are preserved '
+    + 'only when the exact artist name and MusicBrainz ID remain stable, so a '
+    + 'new match requires an explicit lineup review.\n'
+    + 'Nothing was written.',
+  );
 }
 
 main().catch(error => {

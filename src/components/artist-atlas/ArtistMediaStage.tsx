@@ -5,6 +5,8 @@ import { useImageLoadTimeout } from '../../hooks/useImageLoadTimeout';
 import type { GalleryPhoto } from '../../utils/artistGallery';
 import { getDailyPhotoIndex } from '../../utils/artistGallery';
 import { optimizeRemoteImageUrl } from '../../utils/remoteImage';
+import { getArtistPrimaryImageCandidate } from '../ArtistAvatar';
+import { useArtistPhotoMap } from '../artistPhotoMap';
 import MoodArtCanvas from '../MoodArtCanvas';
 import type { ArtistAtlasCopy } from './atlasCopy';
 
@@ -29,11 +31,34 @@ export default function ArtistMediaStage({
   accent,
 }: ArtistMediaStageProps) {
   const [failedUrls, setFailedUrls] = useState<Set<string>>(() => new Set());
+  // The wide portrait index is already a lazy, shared app asset. Subscribing
+  // here lets a long-tail catalog artist replace the generated canvas as soon
+  // as that index arrives, without adding a runtime provider request.
+  useArtistPhotoMap();
+  const needsPrimaryFallback = photos.length === 0
+    || photos.every(photo => failedUrls.has(photo.url));
+  const primaryCandidate = needsPrimaryFallback
+    ? getArtistPrimaryImageCandidate(artistName)
+    : null;
+  const primaryCandidateUrl = primaryCandidate?.url ?? '';
+  const primaryCandidateSource = primaryCandidate?.source ?? '';
+  const stagePhotos = useMemo(() => {
+    const candidates = primaryCandidateUrl
+      ? [...photos, { url: primaryCandidateUrl, source: primaryCandidateSource }]
+      : photos;
+    const seen = new Set<string>();
+    return candidates.filter(photo => {
+      if (!photo.url || seen.has(photo.url)) return false;
+      seen.add(photo.url);
+      return true;
+    });
+  }, [photos, primaryCandidateSource, primaryCandidateUrl]);
+  const galleryPhotoKey = photos.map(photo => photo.url).join('\u001f');
   const availablePhotos = useMemo(
-    () => photos.filter(photo => !failedUrls.has(photo.url)),
-    [failedUrls, photos],
+    () => stagePhotos.filter(photo => !failedUrls.has(photo.url)),
+    [failedUrls, stagePhotos],
   );
-  const [activeIndex, setActiveIndex] = useState(() => getDailyPhotoIndex(artistName, photos.length));
+  const [activeIndex, setActiveIndex] = useState(() => getDailyPhotoIndex(artistName, stagePhotos.length));
   const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const [useOriginal, setUseOriginal] = useState(false);
 
@@ -42,7 +67,7 @@ export default function ArtistMediaStage({
     setActiveIndex(getDailyPhotoIndex(artistName, photos.length));
     setLoadedUrl(null);
     setUseOriginal(false);
-  }, [artistName, photos.length]);
+  }, [artistName, galleryPhotoKey, photos.length]);
 
   useEffect(() => {
     if (availablePhotos.length && activeIndex >= availablePhotos.length) {

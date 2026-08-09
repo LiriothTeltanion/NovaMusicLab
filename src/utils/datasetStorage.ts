@@ -154,7 +154,7 @@ function isSnapshotFreshness(value: unknown): boolean {
     'liveConnection',
   ]);
   // A short-lived local candidate used shorter field names. Keep those
-  // archives readable, while all new v1.5 artifacts emit the public contract.
+  // archives readable, while all current artifacts emit the public contract.
   const legacyContract = hasOnlyKeys(value, [
     'observedFrom',
     'observedThrough',

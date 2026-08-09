@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+// Usage: node scripts/seed_media_search_profiles.mjs [--limit=100]
+//        [--checked-at=YYYY-MM-DD]
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,7 +9,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dataPath = path.join(root, 'src', 'data', 'music_dna_compiled.json');
 const linksPath = path.join(root, 'src', 'data', 'artist_media_links.json');
-const checkedAt = '2026-07-03';
+const checkedAtArg = process.argv.find(arg => arg.startsWith('--checked-at='));
+const checkedAt = checkedAtArg
+  ? checkedAtArg.slice('--checked-at='.length)
+  : new Date().toISOString().slice(0, 10);
+const checkedAtDate = new Date(`${checkedAt}T00:00:00.000Z`);
+if (Number.isNaN(checkedAtDate.getTime()) || checkedAtDate.toISOString().slice(0, 10) !== checkedAt) {
+  throw new Error('--checked-at must be a real calendar date in YYYY-MM-DD format');
+}
 
 const searchOnlyAliases = {
   '30 Seconds to Mars': ['Thirty Seconds to Mars'],

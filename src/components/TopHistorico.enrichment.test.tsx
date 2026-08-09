@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import { getArtistEnrichment } from '../utils/artistEnrichment';
+import { buildGenreDistribution } from '../utils/chartIntegrity';
 import type { MusicDnaData } from '../types';
 import TopHistorico from './TopHistorico';
 
@@ -107,6 +108,37 @@ describe('TopHistorico enrichment surfaces', () => {
 
     // The album rows draw their release year from the curated catalog.
     expect(await screen.findByText(profile!.key_albums[0].title)).toBeInTheDocument();
+  }, 20_000);
+
+  it('shows every genre row in the detailed bar while naming the treemap long tail honestly', async () => {
+    const user = userEvent.setup();
+    renderRoom();
+    await screen.findByText(/Artist Dossier/i);
+
+    await user.click(screen.getByRole('button', { name: /^genres$/i }));
+
+    const fullDistribution = buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      Math.max(1, data.top_genres.length),
+    );
+    const treemapDistribution = buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      20,
+    );
+    const completeBreakdown = await screen.findByTestId('genre-complete-breakdown');
+    expect(completeBreakdown).toHaveAttribute('data-family-count', String(fullDistribution.rows.length));
+    expect(completeBreakdown).toHaveAttribute('data-grouped-family-count', '0');
+
+    const treemap = screen.getByTestId('top-genres-treemap');
+    expect(treemap).toHaveAttribute('data-grouped-family-count', String(treemapDistribution.groupedFamilyCount));
+    expect(treemap).toHaveAttribute('data-grouped-plays', String(treemapDistribution.groupedPlays));
+    expect(screen.getByTestId('top-genres-treemap-summary')).toHaveTextContent(
+      `${treemapDistribution.groupedFamilyCount} smaller classified families are grouped only in this map`,
+    );
+    expect(screen.getByText(new RegExp(`all ${fullDistribution.rows.length} genre rows shown without grouping`, 'i')))
+      .toBeInTheDocument();
   }, 20_000);
 
   it('still renders the room for an archive whose artists have no curated profile', async () => {

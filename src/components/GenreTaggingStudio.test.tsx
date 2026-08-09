@@ -92,6 +92,15 @@ afterEach(() => {
 });
 
 describe('GenreTaggingStudio', () => {
+  it('derives the loading count from the active archive instead of frozen release copy', () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    renderBundledStudio();
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      `Loading all ${(compiledData as unknown as MusicDnaData).core_metrics.unique_artists.toLocaleString('en-US')} artist-name catalog entries`,
+    );
+  });
+
   it('shows the impact-ranked review queue and saves a primary family with secondary tags', async () => {
     window.localStorage.setItem('nml_lang', 'en');
     const user = userEvent.setup();
@@ -182,12 +191,16 @@ describe('GenreTaggingStudio', () => {
     renderBundledStudio();
 
     const summary = await screen.findByTestId('genre-provenance-summary', {}, { timeout: 10_000 });
-    expect(summary).toHaveTextContent('Catalog: 453 · Observed automatically: 4,298 · Unclassified: 1,662');
-    expect(summary).toHaveTextContent('Knowledge records: 453/6,413 entries');
+    // Refreshed for the 2026-08 archive rebuild. Reviewed facts staying at 85
+    // is the meaningful part: the archive grew and thousands of genres were
+    // observed, but the number of claims a human has actually signed off did
+    // not move, and the studio still says so.
+    expect(summary).toHaveTextContent('Catalog: 457 · Observed automatically: 4,488 · Unclassified: 1,648');
+    expect(summary).toHaveTextContent('Knowledge records: 457/6,593 entries');
     expect(summary).toHaveTextContent('Reviewed facts: 85');
-    expect(summary).toHaveTextContent('Candidate evidence: 1,170');
+    expect(summary).toHaveTextContent('Candidate evidence: 1,203');
     expect(summary).toHaveTextContent('Rejected and hidden: 2');
-    expect(screen.getByText('Classified listens').parentElement).toHaveTextContent('94.1%');
+    expect(screen.getByText('Classified listens').parentElement).toHaveTextContent('94.2%');
   });
 
   it('renders complete Hebrew controls without leaking the English unclassified label', async () => {

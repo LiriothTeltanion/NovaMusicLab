@@ -3,7 +3,7 @@
   "provider": "musicbrainz",
   "sourceUrl": "https://musicbrainz.org/doc/MusicBrainz_API",
   "note": "Machine observations, not curated truth. artist_meta.json always wins.",
-  "artistCount": 937,
+  "artistCount": 1011,
   "artists": {
     "1nonly": {
       "name": "1nonly",
@@ -22,6 +22,32 @@
         {
           "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
           "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
+    "2hollis": {
+      "name": "2hollis",
+      "musicbrainzArtistId": "8bd5a8fb-4c25-401d-a597-2c24affdd5c5",
+      "genres": [
+        {
+          "id": "2346fb3e-8546-4119-a929-601db8e0a733",
+          "name": "cloud rap",
+          "votes": 1
+        },
+        {
+          "id": "b48ff5e2-b1da-4938-ad94-8411171d5170",
+          "name": "digicore",
+          "votes": 1
+        },
+        {
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "name": "edm",
+          "votes": 1
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "name": "electropop",
           "votes": 1
         }
       ]
@@ -137,6 +163,27 @@
         {
           "id": "19565d07-8460-4773-8d54-149208a61bb4",
           "name": "synthwave",
+          "votes": 1
+        }
+      ]
+    },
+    "aaron smith": {
+      "name": "Aaron Smith",
+      "musicbrainzArtistId": "4caea77b-cfcf-4eba-8c97-6ca137474d98",
+      "genres": [
+        {
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+          "name": "electro house",
+          "votes": 1
+        },
+        {
+          "id": "593ac826-8e72-4544-abc1-53192b683751",
+          "name": "future house",
+          "votes": 1
+        },
+        {
+          "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+          "name": "house",
           "votes": 1
         }
       ]
@@ -757,6 +804,32 @@
         }
       ]
     },
+    "american authors": {
+      "name": "American Authors",
+      "musicbrainzArtistId": "9ce0515d-cc88-4df6-8a2e-d231c13cb2c2",
+      "genres": [
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 2
+        },
+        {
+          "id": "f0843e91-c025-4dd7-8aef-6fe3d35470d9",
+          "name": "chamber pop",
+          "votes": 1
+        },
+        {
+          "id": "445dc48f-5233-4b4f-987f-867ff9ade836",
+          "name": "folk rock",
+          "votes": 1
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 1
+        }
+      ]
+    },
     "amesoeurs": {
       "name": "Amesoeurs",
       "musicbrainzArtistId": "1b396d40-a35a-4558-b292-0b2685f7ea8f",
@@ -786,6 +859,32 @@
           "id": "a4012b2e-5c27-4f81-8781-9ae5998d882c",
           "name": "shoegaze",
           "votes": 1
+        }
+      ]
+    },
+    "anamanaguchi": {
+      "name": "Anamanaguchi",
+      "musicbrainzArtistId": "e4d7cfe5-0bed-46cf-acad-ab9a4dcb7aa6",
+      "genres": [
+        {
+          "id": "103a65bb-35d9-4d27-9c9b-f35a458621ba",
+          "name": "chiptune",
+          "votes": 8
+        },
+        {
+          "id": "c4a69842-f891-4569-9506-1882aa5db433",
+          "name": "electronic rock",
+          "votes": 5
+        },
+        {
+          "id": "c4c55689-2b92-430e-811c-1e8c0ff5c6fb",
+          "name": "bitpop",
+          "votes": 4
+        },
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 4
         }
       ]
     },
@@ -1734,6 +1833,32 @@
         }
       ]
     },
+    "bbno$": {
+      "name": "bbno$",
+      "musicbrainzArtistId": "27638856-79a1-4495-b7da-1912899560c7",
+      "genres": [
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 4
+        },
+        {
+          "id": "da2fc3b4-b97d-491a-ac0f-8a731bee7237",
+          "name": "pop rap",
+          "votes": 3
+        },
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 3
+        },
+        {
+          "id": "4bb4043a-0ee5-4b84-93fa-6ba4567a6ba0",
+          "name": "contemporary r&b",
+          "votes": 2
+        }
+      ]
+    },
     "be'lakor": {
       "name": "Be'lakor",
       "musicbrainzArtistId": "bc9ffd36-64be-4d41-8034-473f4b524159",
@@ -1910,6 +2035,17 @@
           "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
           "name": "indie rock",
           "votes": 1
+        }
+      ]
+    },
+    "benny blanco": {
+      "name": "benny blanco",
+      "musicbrainzArtistId": "5a6131f9-f8db-4722-b4d7-6a0c7183c590",
+      "genres": [
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 3
         }
       ]
     },
@@ -2201,6 +2337,17 @@
         }
       ]
     },
+    "black messiah": {
+      "name": "Black Messiah",
+      "musicbrainzArtistId": "97cc1631-8822-464d-88eb-a6d97c23e678",
+      "genres": [
+        {
+          "id": "fc736acd-9413-4b86-b8d4-47e9ce61d561",
+          "name": "viking metal",
+          "votes": 2
+        }
+      ]
+    },
     "black orchid empire": {
       "name": "Black Orchid Empire",
       "musicbrainzArtistId": "47e64758-16e2-4a99-80dc-d778c5d1c680",
@@ -2418,6 +2565,32 @@
           "id": "cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
           "name": "metal",
           "votes": 4
+        }
+      ]
+    },
+    "blotted science": {
+      "name": "Blotted Science",
+      "musicbrainzArtistId": "ce4c6e95-35a1-452f-bf4e-5a6a88a8b258",
+      "genres": [
+        {
+          "id": "4ae63770-68af-4fae-b0f1-5e53f372c743",
+          "name": "instrumental",
+          "votes": 1
+        },
+        {
+          "id": "cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
+          "name": "metal",
+          "votes": 1
+        },
+        {
+          "id": "5c7785e6-a0b4-4441-a1e6-4fd4c0066a5f",
+          "name": "progressive metal",
+          "votes": 1
+        },
+        {
+          "id": "db37c56d-e6a7-4809-b549-6f1cb559b559",
+          "name": "technical death metal",
+          "votes": 1
         }
       ]
     },
@@ -2647,6 +2820,32 @@
         {
           "id": "2228bcbf-78ca-424a-bf37-9cfa1566d82e",
           "name": "neon pop punk",
+          "votes": 1
+        }
+      ]
+    },
+    "boywithuke": {
+      "name": "BoyWithUke",
+      "musicbrainzArtistId": "a148ffde-581c-4c39-a8f1-bc49dec7fe68",
+      "genres": [
+        {
+          "id": "d3ebe947-7c03-43f5-b333-09379881b0f6",
+          "name": "alternative pop",
+          "votes": 1
+        },
+        {
+          "id": "f52f5fc5-3b75-4757-9d1f-4cabe6808856",
+          "name": "emo rap",
+          "votes": 1
+        },
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 1
+        },
+        {
+          "id": "da2fc3b4-b97d-491a-ac0f-8a731bee7237",
+          "name": "pop rap",
           "votes": 1
         }
       ]
@@ -3724,6 +3923,27 @@
         }
       ]
     },
+    "coheed and cambria": {
+      "name": "Coheed and Cambria",
+      "musicbrainzArtistId": "ae1b47d5-5128-431c-9d30-e08fd90e0767",
+      "genres": [
+        {
+          "id": "ae9b8279-3959-48d8-8a88-741a7f6d4a48",
+          "name": "progressive rock",
+          "votes": 6
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 3
+        },
+        {
+          "id": "5c7785e6-a0b4-4441-a1e6-4fd4c0066a5f",
+          "name": "progressive metal",
+          "votes": 3
+        }
+      ]
+    },
     "coldworld": {
       "name": "ColdWorld",
       "musicbrainzArtistId": "2f253ad2-e391-48c3-a79c-f44b9a8a0981",
@@ -4097,6 +4317,32 @@
         {
           "id": "b7864789-29e6-4965-84e4-463baaa869df",
           "name": "chanson française",
+          "votes": 1
+        }
+      ]
+    },
+    "d4vd": {
+      "name": "d4vd",
+      "musicbrainzArtistId": "d8e07579-ff5a-41f2-b7a7-c71880b8287a",
+      "genres": [
+        {
+          "id": "4e03fb35-d571-4111-824d-88c9f8a3d0c9",
+          "name": "alternative r&b",
+          "votes": 1
+        },
+        {
+          "id": "4bb4043a-0ee5-4b84-93fa-6ba4567a6ba0",
+          "name": "contemporary r&b",
+          "votes": 1
+        },
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 1
+        },
+        {
+          "id": "65e2f3ad-e0bd-4627-bd83-cba7c8b6d011",
+          "name": "lo-fi",
           "votes": 1
         }
       ]
@@ -5364,6 +5610,32 @@
         }
       ]
     },
+    "drop nineteens": {
+      "name": "Drop Nineteens",
+      "musicbrainzArtistId": "266f5184-d8ab-40c3-9af2-b0c615b37b53",
+      "genres": [
+        {
+          "id": "a4012b2e-5c27-4f81-8781-9ae5998d882c",
+          "name": "shoegaze",
+          "votes": 4
+        },
+        {
+          "id": "6242615b-5620-465b-b6fb-2e593e90cbad",
+          "name": "dream pop",
+          "votes": 3
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 2
+        },
+        {
+          "id": "1208a8e7-e5bd-4891-9f81-9a9fdfceeb39",
+          "name": "noise pop",
+          "votes": 2
+        }
+      ]
+    },
     "drug church": {
       "name": "Drug Church",
       "musicbrainzArtistId": "32d2897c-4c91-46db-8161-f51d3f4f0d93",
@@ -5659,6 +5931,27 @@
         {
           "id": "0bfffa19-4e4a-4bf7-bf53-6ec44f0a2f8e",
           "name": "post-rock",
+          "votes": 1
+        }
+      ]
+    },
+    "ekkstacy": {
+      "name": "EKKSTACY",
+      "musicbrainzArtistId": "e897ca8f-03ff-4405-9cf2-c71ab2950ddb",
+      "genres": [
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 1
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 1
+        },
+        {
+          "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+          "name": "new wave",
           "votes": 1
         }
       ]
@@ -6340,6 +6633,48 @@
         }
       ]
     },
+    "family of the year": {
+      "name": "Family of the Year",
+      "musicbrainzArtistId": "1a4931bc-5c9a-4ddc-88d9-948566c5e370",
+      "genres": [
+        {
+          "id": "abb2374f-30e5-4d3e-b417-2caf78ef1f6c",
+          "name": "folk pop",
+          "votes": 1
+        },
+        {
+          "id": "445dc48f-5233-4b4f-987f-867ff9ade836",
+          "name": "folk rock",
+          "votes": 1
+        },
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 1
+        },
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 1
+        }
+      ]
+    },
+    "fast boy": {
+      "name": "FAST BOY",
+      "musicbrainzArtistId": "c6488b75-835d-417c-b7e6-efb7ec050029",
+      "genres": [
+        {
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "name": "edm",
+          "votes": 1
+        },
+        {
+          "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+          "name": "house",
+          "votes": 1
+        }
+      ]
+    },
     "fazerdaze": {
       "name": "Fazerdaze",
       "musicbrainzArtistId": "d51ce0e4-027e-4ecf-a87e-c02a08149f42",
@@ -6950,6 +7285,17 @@
         }
       ]
     },
+    "fun.": {
+      "name": "fun.",
+      "musicbrainzArtistId": "136c4166-85b3-4994-aa04-59857c434199",
+      "genres": [
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 1
+        }
+      ]
+    },
     "futurecop!": {
       "name": "Futurecop!",
       "musicbrainzArtistId": "24f7a6d4-c9bf-4f1e-ba90-0f36cb51964c",
@@ -7130,6 +7476,32 @@
         {
           "id": "a91eed3a-fdd0-494e-ade0-95ea4117f6eb",
           "name": "folk",
+          "votes": 1
+        }
+      ]
+    },
+    "getter": {
+      "name": "Getter",
+      "musicbrainzArtistId": "8a05c7bb-7413-4ae0-a30e-b75e17c9e6da",
+      "genres": [
+        {
+          "id": "1b50083b-1afa-4778-82c8-548b309af783",
+          "name": "dubstep",
+          "votes": 2
+        },
+        {
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+          "name": "electro house",
+          "votes": 2
+        },
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 2
+        },
+        {
+          "id": "f3818817-6235-48d5-82f7-b223eb0261d9",
+          "name": "ebm",
           "votes": 1
         }
       ]
@@ -8233,6 +8605,17 @@
         }
       ]
     },
+    "honestav": {
+      "name": "honestav",
+      "musicbrainzArtistId": "147abc9b-8604-4613-b8d3-09f84644bea4",
+      "genres": [
+        {
+          "id": "36917620-240a-4fed-abcb-7be611ac3834",
+          "name": "indie folk",
+          "votes": 1
+        }
+      ]
+    },
     "honey revenge": {
       "name": "Honey Revenge",
       "musicbrainzArtistId": "29f8b31a-4890-4ecf-bdbb-e993ac8157b4",
@@ -8340,6 +8723,17 @@
           "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
           "name": "indie rock",
           "votes": 3
+        }
+      ]
+    },
+    "huntr/x": {
+      "name": "HUNTR/X",
+      "musicbrainzArtistId": "dc7fd424-6ba4-45cc-b407-7716c7bb3605",
+      "genres": [
+        {
+          "id": "b74b3b6c-0700-46b1-aa55-1f2869a3bd1a",
+          "name": "k-pop",
+          "votes": 2
         }
       ]
     },
@@ -8658,6 +9052,80 @@
         }
       ]
     },
+    "in:aviate": {
+      "name": "In:Aviate",
+      "musicbrainzArtistId": "9bf8dc02-fff8-4e9b-a8c6-b10286e178ea",
+      "genres": [
+        {
+          "id": "aec382b7-b635-470c-9051-2f84e0b5ea1e",
+          "name": "post-hardcore",
+          "votes": 1
+        },
+        {
+          "id": "ae9b8279-3959-48d8-8a88-741a7f6d4a48",
+          "name": "progressive rock",
+          "votes": 1
+        },
+        {
+          "id": "6ef693da-15a7-4a41-8d07-ae566516ef10",
+          "name": "swancore",
+          "votes": 1
+        }
+      ]
+    },
+    "incase we crash": {
+      "name": "Incase We Crash",
+      "musicbrainzArtistId": "f4e5ad05-267c-4c3e-8f1b-e2c558cfba28",
+      "genres": [
+        {
+          "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+          "name": "pop punk",
+          "votes": 2
+        }
+      ]
+    },
+    "incubus": {
+      "name": "Incubus",
+      "musicbrainzArtistId": "e3e0abcd-7671-4482-a9d8-462f5acc9be5",
+      "genres": [
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 10
+        },
+        {
+          "id": "0caaa092-27c4-413e-841c-7c4deeec57a7",
+          "name": "funk metal",
+          "votes": 10
+        },
+        {
+          "id": "bbad9cda-bde2-448e-821c-7ebf85a54020",
+          "name": "nu metal",
+          "votes": 8
+        },
+        {
+          "id": "eca476ac-d63b-431f-9347-c45f530dc15d",
+          "name": "funk rock",
+          "votes": 6
+        }
+      ]
+    },
+    "indukti": {
+      "name": "Indukti",
+      "musicbrainzArtistId": "216de703-21b9-4396-a01f-7927a754c4a7",
+      "genres": [
+        {
+          "id": "e214700e-dae1-4b69-81e9-276e4e88fa32",
+          "name": "post-metal",
+          "votes": 1
+        },
+        {
+          "id": "ae9b8279-3959-48d8-8a88-741a7f6d4a48",
+          "name": "progressive rock",
+          "votes": 1
+        }
+      ]
+    },
     "inquisition": {
       "name": "Inquisition",
       "musicbrainzArtistId": "8e996c1a-c3bc-4ab1-83a8-a7fa07511685",
@@ -8948,6 +9416,32 @@
           "id": "cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
           "name": "metal",
           "votes": 2
+        }
+      ]
+    },
+    "jennie": {
+      "name": "JENNIE",
+      "musicbrainzArtistId": "779351de-0da5-4943-928b-495a3c40e8c0",
+      "genres": [
+        {
+          "id": "b74b3b6c-0700-46b1-aa55-1f2869a3bd1a",
+          "name": "k-pop",
+          "votes": 4
+        },
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 2
+        },
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 2
+        },
+        {
+          "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+          "name": "dance",
+          "votes": 1
         }
       ]
     },
@@ -9496,6 +9990,32 @@
         }
       ]
     },
+    "kainbeats": {
+      "name": "Kainbeats",
+      "musicbrainzArtistId": "7d286353-e2a2-436a-86ca-50a850801229",
+      "genres": [
+        {
+          "id": "65e2f3ad-e0bd-4627-bd83-cba7c8b6d011",
+          "name": "lo-fi",
+          "votes": 3
+        },
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 2
+        },
+        {
+          "id": "d92aaf30-5941-4a65-b741-d9d48c80772a",
+          "name": "lo-fi hip hop",
+          "votes": 2
+        },
+        {
+          "id": "608b0471-7531-4854-a348-e698c69cb699",
+          "name": "ambient",
+          "votes": 1
+        }
+      ]
+    },
     "kamelot": {
       "name": "Kamelot",
       "musicbrainzArtistId": "2449300a-6ca7-45da-8102-22789d256475",
@@ -9597,6 +10117,32 @@
           "id": "16103855-c0f1-4221-81d8-eafc53b1b41c",
           "name": "dark folk",
           "votes": 1
+        }
+      ]
+    },
+    "kayo dot": {
+      "name": "Kayo Dot",
+      "musicbrainzArtistId": "3979eee5-c72a-4b0a-9191-a0243881250a",
+      "genres": [
+        {
+          "id": "e214700e-dae1-4b69-81e9-276e4e88fa32",
+          "name": "post-metal",
+          "votes": 4
+        },
+        {
+          "id": "b7ef058e-6d83-4ca4-8123-9724bff4648b",
+          "name": "art rock",
+          "votes": 2
+        },
+        {
+          "id": "77c0160b-8090-4493-b229-890addfee1df",
+          "name": "avant-garde metal",
+          "votes": 2
+        },
+        {
+          "id": "e5abef91-49eb-491c-b0ce-c6dd4e1f2d19",
+          "name": "avant-prog",
+          "votes": 2
         }
       ]
     },
@@ -9991,6 +10537,22 @@
         }
       ]
     },
+    "lange": {
+      "name": "Lange",
+      "musicbrainzArtistId": "f11c95b2-532a-4b4b-8550-07c6977082c4",
+      "genres": [
+        {
+          "id": "2afc2320-384f-43a4-a71e-1b763c485045",
+          "name": "trance",
+          "votes": 3
+        },
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 1
+        }
+      ]
+    },
     "las pelotas": {
       "name": "Las Pelotas",
       "musicbrainzArtistId": "4e8b94a4-081c-4093-b906-35f4bc0c0148",
@@ -9998,6 +10560,17 @@
         {
           "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
           "name": "rock",
+          "votes": 1
+        }
+      ]
+    },
+    "last night saved my life": {
+      "name": "Last Night Saved My Life",
+      "musicbrainzArtistId": "c95324ae-ae30-49b0-8c64-5f5e4791177b",
+      "genres": [
+        {
+          "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+          "name": "pop punk",
           "votes": 1
         }
       ]
@@ -10302,6 +10875,38 @@
         }
       ]
     },
+    "lil mabu": {
+      "name": "Lil Mabu",
+      "musicbrainzArtistId": "680e190e-c4dd-43ea-98f0-685556e77f02",
+      "genres": [
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
+    "lil nas x": {
+      "name": "Lil Nas X",
+      "musicbrainzArtistId": "0b30341b-b59d-4979-8130-b66c0e475321",
+      "genres": [
+        {
+          "id": "da2fc3b4-b97d-491a-ac0f-8a731bee7237",
+          "name": "pop rap",
+          "votes": 4
+        },
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 1
+        },
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
     "lil skies": {
       "name": "Lil Skies",
       "musicbrainzArtistId": "8328b279-1863-487b-976a-58a62b85220a",
@@ -10324,6 +10929,74 @@
         {
           "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
           "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
+    "lil tecca": {
+      "name": "Lil Tecca",
+      "musicbrainzArtistId": "e6fdf3f9-8077-4126-b0cf-94da9a8b627e",
+      "genres": [
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 2
+        },
+        {
+          "id": "1bafab01-c092-47bc-84ee-a6b503b3cb86",
+          "name": "east coast hip hop",
+          "votes": 1
+        },
+        {
+          "id": "da2fc3b4-b97d-491a-ac0f-8a731bee7237",
+          "name": "pop rap",
+          "votes": 1
+        },
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
+    "lilly wood & the prick": {
+      "name": "Lilly Wood & The Prick",
+      "musicbrainzArtistId": "1b72331b-3a97-4981-a81c-eeee9c275d28",
+      "genres": [
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 2
+        },
+        {
+          "id": "a91eed3a-fdd0-494e-ade0-95ea4117f6eb",
+          "name": "folk",
+          "votes": 2
+        },
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 1
+        }
+      ]
+    },
+    "lilly wood and the prick": {
+      "name": "Lilly Wood and The Prick",
+      "musicbrainzArtistId": "1b72331b-3a97-4981-a81c-eeee9c275d28",
+      "genres": [
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 2
+        },
+        {
+          "id": "a91eed3a-fdd0-494e-ade0-95ea4117f6eb",
+          "name": "folk",
+          "votes": 2
+        },
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
           "votes": 1
         }
       ]
@@ -10887,6 +11560,17 @@
         }
       ]
     },
+    "mandala dreams": {
+      "name": "Mandala Dreams",
+      "musicbrainzArtistId": "9f347ca3-15f7-482d-8407-aec08c012332",
+      "genres": [
+        {
+          "id": "6c76d9ec-0924-4fc9-bb22-91a695ca09d6",
+          "name": "new age",
+          "votes": 1
+        }
+      ]
+    },
     "manic street preachers": {
       "name": "Manic Street Preachers",
       "musicbrainzArtistId": "32efea44-6cb5-4b4f-bdaa-c8b8f6cef981",
@@ -11000,6 +11684,58 @@
           "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
           "name": "alternative rock",
           "votes": 4
+        }
+      ]
+    },
+    "marko penn": {
+      "name": "Marko Penn",
+      "musicbrainzArtistId": "1339ecf3-ea72-428c-8c67-984710df7b54",
+      "genres": [
+        {
+          "id": "924943cd-73c8-45c0-96eb-74f2a15e5d6e",
+          "name": "alternative hip hop",
+          "votes": 1
+        },
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 1
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 1
+        },
+        {
+          "id": "7d0c6a6b-5d56-4b1e-a8c7-e32194f246b9",
+          "name": "soft rock",
+          "votes": 1
+        }
+      ]
+    },
+    "maserati": {
+      "name": "Maserati",
+      "musicbrainzArtistId": "964399c3-a4cd-4604-86d5-8051322705b9",
+      "genres": [
+        {
+          "id": "0bfffa19-4e4a-4bf7-bf53-6ec44f0a2f8e",
+          "name": "post-rock",
+          "votes": 4
+        },
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 1
+        },
+        {
+          "id": "65c97e89-b42b-45c2-a70e-0eca1b8f0ff7",
+          "name": "experimental rock",
+          "votes": 1
+        },
+        {
+          "id": "4ae63770-68af-4fae-b0f1-5e53f372c743",
+          "name": "instrumental",
+          "votes": 1
         }
       ]
     },
@@ -11365,6 +12101,32 @@
         }
       ]
     },
+    "mew": {
+      "name": "Mew",
+      "musicbrainzArtistId": "fa927f59-d443-418a-b741-e557208aaf09",
+      "genres": [
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 2
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 1
+        },
+        {
+          "id": "eee90717-3eee-41bd-b463-003c180544bd",
+          "name": "crossover prog",
+          "votes": 1
+        },
+        {
+          "id": "6242615b-5620-465b-b6fb-2e593e90cbad",
+          "name": "dream pop",
+          "votes": 1
+        }
+      ]
+    },
     "miami nights 1984": {
       "name": "Miami Nights 1984",
       "musicbrainzArtistId": "f7162d10-a087-46db-b6c8-6021d9c2bf4d",
@@ -11514,6 +12276,27 @@
           "id": "5fc86669-d9ba-4716-8090-eff39081090e",
           "name": "cool jazz",
           "votes": 9
+        }
+      ]
+    },
+    "minmi": {
+      "name": "MINMI",
+      "musicbrainzArtistId": "0a2d8d95-9cb1-48da-927c-613b4e12ae72",
+      "genres": [
+        {
+          "id": "eba7715e-ee26-4989-8d49-9db382955419",
+          "name": "j-pop",
+          "votes": 1
+        },
+        {
+          "id": "02b2f720-d06e-42ce-85c2-1ecd4191ffcb",
+          "name": "reggae",
+          "votes": 1
+        },
+        {
+          "id": "125f8214-a25d-4047-a96e-0fee46d30716",
+          "name": "reggae-pop",
+          "votes": 1
         }
       ]
     },
@@ -11968,6 +12751,17 @@
         {
           "id": "19565d07-8460-4773-8d54-149208a61bb4",
           "name": "synthwave",
+          "votes": 1
+        }
+      ]
+    },
+    "morray": {
+      "name": "Morray",
+      "musicbrainzArtistId": "9c8ab6af-c34b-435a-8dd5-0889d3f4f4d9",
+      "genres": [
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
           "votes": 1
         }
       ]
@@ -12470,6 +13264,22 @@
         }
       ]
     },
+    "nicky youre": {
+      "name": "Nicky Youre",
+      "musicbrainzArtistId": "ace8e5aa-28ed-4139-ad04-ff84b04c53b9",
+      "genres": [
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 1
+        },
+        {
+          "id": "4b7c8e31-462b-4e06-acfd-fa508ad26e0c",
+          "name": "teen pop",
+          "votes": 1
+        }
+      ]
+    },
     "nightrage": {
       "name": "Nightrage",
       "musicbrainzArtistId": "0e5a05a5-28b9-4504-9eba-f552dc02ce73",
@@ -12520,6 +13330,27 @@
           "id": "62f88295-0605-4ce8-958b-2e0063ece47e",
           "name": "metalcore",
           "votes": 1
+        }
+      ]
+    },
+    "nipsey hussle": {
+      "name": "Nipsey Hussle",
+      "musicbrainzArtistId": "410bbb19-8309-4a0b-9f87-3d65bde4a826",
+      "genres": [
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 4
+        },
+        {
+          "id": "bc8c2f79-dcea-43f3-962b-f0663868d42c",
+          "name": "gangsta rap",
+          "votes": 3
+        },
+        {
+          "id": "149a3524-0fd3-4bdc-9876-0361dfee8908",
+          "name": "west coast hip hop",
+          "votes": 3
         }
       ]
     },
@@ -12631,6 +13462,17 @@
           "id": "cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
           "name": "metal",
           "votes": 3
+        }
+      ]
+    },
+    "northland": {
+      "name": "Northland",
+      "musicbrainzArtistId": "38f8d135-35b4-4e6c-a83b-ba838bb7bd92",
+      "genres": [
+        {
+          "id": "eacfa027-2fad-413f-a2f1-80fa43674f0b",
+          "name": "death metal",
+          "votes": 1
         }
       ]
     },
@@ -12760,6 +13602,17 @@
         }
       ]
     },
+    "now, now": {
+      "name": "Now, Now",
+      "musicbrainzArtistId": "e3c24e1c-1e43-403b-8407-90c8c4107098",
+      "genres": [
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 1
+        }
+      ]
+    },
     "nujabes": {
       "name": "Nujabes",
       "musicbrainzArtistId": "1595addf-f76b-450a-a097-af852ff35f27",
@@ -12881,6 +13734,32 @@
         }
       ]
     },
+    "old man gloom": {
+      "name": "Old Man Gloom",
+      "musicbrainzArtistId": "75a97901-0051-4b67-a79b-9ebf2400d1d9",
+      "genres": [
+        {
+          "id": "cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
+          "name": "metal",
+          "votes": 3
+        },
+        {
+          "id": "db815815-60fe-44a3-9859-2232df479dc9",
+          "name": "doom metal",
+          "votes": 2
+        },
+        {
+          "id": "aec382b7-b635-470c-9051-2f84e0b5ea1e",
+          "name": "post-hardcore",
+          "votes": 2
+        },
+        {
+          "id": "e214700e-dae1-4b69-81e9-276e4e88fa32",
+          "name": "post-metal",
+          "votes": 2
+        }
+      ]
+    },
     "oliver heldens": {
       "name": "Oliver Heldens",
       "musicbrainzArtistId": "df679f1d-2bab-442b-bc67-02a44f9b2adf",
@@ -12919,6 +13798,27 @@
         {
           "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
           "name": "hip hop",
+          "votes": 1
+        }
+      ]
+    },
+    "ollie wride": {
+      "name": "Ollie Wride",
+      "musicbrainzArtistId": "7f36c662-11e4-4ab6-bb8a-6dcedbbf64f2",
+      "genres": [
+        {
+          "id": "19565d07-8460-4773-8d54-149208a61bb4",
+          "name": "synthwave",
+          "votes": 2
+        },
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 1
+        },
+        {
+          "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+          "name": "synth-pop",
           "votes": 1
         }
       ]
@@ -13474,6 +14374,32 @@
         }
       ]
     },
+    "pianos become the teeth": {
+      "name": "Pianos Become The Teeth",
+      "musicbrainzArtistId": "7436d471-fdce-42e8-a3cf-c0dc542c8524",
+      "genres": [
+        {
+          "id": "aec382b7-b635-470c-9051-2f84e0b5ea1e",
+          "name": "post-hardcore",
+          "votes": 3
+        },
+        {
+          "id": "0bfffa19-4e4a-4bf7-bf53-6ec44f0a2f8e",
+          "name": "post-rock",
+          "votes": 2
+        },
+        {
+          "id": "ef0c2769-9c8f-49fc-b66e-27b8242b004a",
+          "name": "emo",
+          "votes": 1
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 1
+        }
+      ]
+    },
     "picturesque": {
       "name": "Picturesque",
       "musicbrainzArtistId": "7208784f-73b2-47ce-85fc-fb1bd40c4b50",
@@ -13685,6 +14611,32 @@
         }
       ]
     },
+    "primus": {
+      "name": "Primus",
+      "musicbrainzArtistId": "84dc4f23-c0b8-4fe1-bbca-a3993ddc8fc2",
+      "genres": [
+        {
+          "id": "0caaa092-27c4-413e-841c-7c4deeec57a7",
+          "name": "funk metal",
+          "votes": 8
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 7
+        },
+        {
+          "id": "eca476ac-d63b-431f-9347-c45f530dc15d",
+          "name": "funk rock",
+          "votes": 2
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 2
+        }
+      ]
+    },
     "puddle of mudd": {
       "name": "Puddle Of Mudd",
       "musicbrainzArtistId": "ff460a70-fdf4-4aa2-b021-8a04da76d88e",
@@ -13869,6 +14821,32 @@
         }
       ]
     },
+    "quentyn": {
+      "name": "Quentyn",
+      "musicbrainzArtistId": "503802df-f732-4fce-803d-6bfa07752707",
+      "genres": [
+        {
+          "id": "8301f73c-9166-4108-bfeb-4fd22dc19083",
+          "name": "alternative dance",
+          "votes": 1
+        },
+        {
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "name": "dance-pop",
+          "votes": 1
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "name": "electropop",
+          "votes": 1
+        },
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 1
+        }
+      ]
+    },
     "quiet riot": {
       "name": "Quiet Riot",
       "musicbrainzArtistId": "5c6acb91-4b9b-4245-b92f-e817295c4ed0",
@@ -13895,6 +14873,27 @@
         }
       ]
     },
+    "ra ra riot": {
+      "name": "Ra Ra Riot",
+      "musicbrainzArtistId": "d8f63b51-73e0-4f65-8bd3-bcfe6892fb0e",
+      "genres": [
+        {
+          "id": "150eb95a-7739-4fde-a5fe-b62ca576a928",
+          "name": "baroque pop",
+          "votes": 1
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 1
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 1
+        }
+      ]
+    },
     "rage against the machine": {
       "name": "Rage Against The Machine",
       "musicbrainzArtistId": "3798b104-01cb-484c-a3b0-56adc6399b80",
@@ -13918,6 +14917,27 @@
           "id": "b4b184b7-6224-478e-a273-f9da9ee30136",
           "name": "rap rock",
           "votes": 5
+        }
+      ]
+    },
+    "rainbow kitten surprise": {
+      "name": "Rainbow Kitten Surprise",
+      "musicbrainzArtistId": "ab4e7869-86f5-455e-b52c-c89d7664c07b",
+      "genres": [
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 2
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 1
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 1
         }
       ]
     },
@@ -14072,6 +15092,32 @@
         }
       ]
     },
+    "rec.x": {
+      "name": "rec.X",
+      "musicbrainzArtistId": "0e414491-c578-4910-9e98-e6724e71d93c",
+      "genres": [
+        {
+          "id": "d8048b43-9edb-4e1a-aa88-bb91fa847d4a",
+          "name": "boom bap",
+          "votes": 1
+        },
+        {
+          "id": "18d52a87-bbbf-42f0-8338-189c8c314523",
+          "name": "chillwave",
+          "votes": 1
+        },
+        {
+          "id": "cc38aba3-48ed-439a-83b9-f81a34a66598",
+          "name": "downtempo",
+          "votes": 1
+        },
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 1
+        }
+      ]
+    },
     "redzed": {
       "name": "REDZED",
       "musicbrainzArtistId": "e0224068-455b-478c-b83b-b447ca924bbc",
@@ -14085,6 +15131,27 @@
           "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
           "name": "hip hop",
           "votes": 3
+        }
+      ]
+    },
+    "relient k": {
+      "name": "Relient K",
+      "musicbrainzArtistId": "a49b5d41-7399-49ef-bcb8-a5779a30d2e9",
+      "genres": [
+        {
+          "id": "c02cd2c5-9316-4046-a241-f74b773fee06",
+          "name": "christian rock",
+          "votes": 4
+        },
+        {
+          "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+          "name": "pop punk",
+          "votes": 3
+        },
+        {
+          "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+          "name": "rock",
+          "votes": 2
         }
       ]
     },
@@ -14482,6 +15549,22 @@
         }
       ]
     },
+    "ruston kelly": {
+      "name": "Ruston Kelly",
+      "musicbrainzArtistId": "b7647973-5b26-413a-b2be-8c4d6889f279",
+      "genres": [
+        {
+          "id": "5f9cba3d-1a9f-46cd-8c49-7ed78d1f3354",
+          "name": "alternative country",
+          "votes": 1
+        },
+        {
+          "id": "2c765e49-a12e-45eb-b628-f8b9cc0a0250",
+          "name": "americana",
+          "votes": 1
+        }
+      ]
+    },
     "röyksopp": {
       "name": "Röyksopp",
       "musicbrainzArtistId": "1c70a3fc-fa3c-4be1-8b55-c3192db8a884",
@@ -14688,6 +15771,27 @@
         {
           "id": "64e0bd76-822f-4549-a6fe-9858561282d1",
           "name": "pop soul",
+          "votes": 1
+        }
+      ]
+    },
+    "samuel barber": {
+      "name": "Samuel Barber",
+      "musicbrainzArtistId": "74ed34ce-ee95-44e9-a87d-4d2d5056c24a",
+      "genres": [
+        {
+          "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+          "name": "classical",
+          "votes": 3
+        },
+        {
+          "id": "a190bb32-e0a7-4c56-b142-5cf9cfcfa713",
+          "name": "contemporary classical",
+          "votes": 1
+        },
+        {
+          "id": "e328c306-8e35-46d2-93c3-623412ec7c13",
+          "name": "modern classical",
           "votes": 1
         }
       ]
@@ -15442,6 +16546,17 @@
         }
       ]
     },
+    "sleeptherapy": {
+      "name": "SleepTherapy",
+      "musicbrainzArtistId": "8f7e6ae6-1292-406c-b75a-4d3437ec6187",
+      "genres": [
+        {
+          "id": "6c76d9ec-0924-4fc9-bb22-91a695ca09d6",
+          "name": "new age",
+          "votes": 1
+        }
+      ]
+    },
     "slow crush": {
       "name": "Slow Crush",
       "musicbrainzArtistId": "7196f17e-a84b-4805-b623-7fc899f96334",
@@ -15632,6 +16747,22 @@
         {
           "id": "5c7785e6-a0b4-4441-a1e6-4fd4c0066a5f",
           "name": "progressive metal",
+          "votes": 1
+        }
+      ]
+    },
+    "sombr": {
+      "name": "sombr",
+      "musicbrainzArtistId": "502cf908-9921-48bc-bf0e-265c881c0156",
+      "genres": [
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 1
+        },
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
           "votes": 1
         }
       ]
@@ -16082,6 +17213,32 @@
         }
       ]
     },
+    "suicidal tendencies": {
+      "name": "Suicidal Tendencies",
+      "musicbrainzArtistId": "e9e2a634-984f-4c10-bf7b-7970179e1ef1",
+      "genres": [
+        {
+          "id": "9f7c0c5a-9a5e-4bbc-bf98-036d2d98bbe3",
+          "name": "crossover thrash",
+          "votes": 9
+        },
+        {
+          "id": "cc4cf136-5690-4ee3-a62b-b172febfe322",
+          "name": "thrash metal",
+          "votes": 9
+        },
+        {
+          "id": "055a6e4d-d929-42ac-ba7a-9d063b254ea5",
+          "name": "hardcore punk",
+          "votes": 8
+        },
+        {
+          "id": "7983ff25-ddf9-411e-a7f9-6cca238bff79",
+          "name": "alternative metal",
+          "votes": 5
+        }
+      ]
+    },
     "suicide silence": {
       "name": "Suicide Silence",
       "musicbrainzArtistId": "4fd53e84-ffa1-4434-9146-3fab25ece7e0",
@@ -16177,6 +17334,17 @@
         }
       ]
     },
+    "sycamour": {
+      "name": "SYCAMOUR",
+      "musicbrainzArtistId": "a42527d8-30ab-406f-b46b-26e663da8573",
+      "genres": [
+        {
+          "id": "aec382b7-b635-470c-9051-2f84e0b5ea1e",
+          "name": "post-hardcore",
+          "votes": 1
+        }
+      ]
+    },
     "syml": {
       "name": "SYML",
       "musicbrainzArtistId": "913b4704-05bf-4e53-b30a-f3bd244ea2ea",
@@ -16263,6 +17431,32 @@
           "id": "0bfffa19-4e4a-4bf7-bf53-6ec44f0a2f8e",
           "name": "post-rock",
           "votes": 2
+        }
+      ]
+    },
+    "t.i.": {
+      "name": "T.I.",
+      "musicbrainzArtistId": "f7ba7fbe-c6bd-4ac0-bee9-c25c558d7d62",
+      "genres": [
+        {
+          "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+          "name": "hip hop",
+          "votes": 7
+        },
+        {
+          "id": "7abbbbea-21ea-4167-bcea-48147bf642b8",
+          "name": "southern hip hop",
+          "votes": 5
+        },
+        {
+          "id": "4f9a1d5e-ee21-474a-b9a2-720ace91a641",
+          "name": "dirty south",
+          "votes": 4
+        },
+        {
+          "id": "bc8c2f79-dcea-43f3-962b-f0663868d42c",
+          "name": "gangsta rap",
+          "votes": 3
         }
       ]
     },
@@ -16395,6 +17589,32 @@
           "id": "818134e3-9392-4624-a13c-c4b19c54bccd",
           "name": "glam metal",
           "votes": 1
+        }
+      ]
+    },
+    "teddy swims": {
+      "name": "Teddy Swims",
+      "musicbrainzArtistId": "35feae82-8b2c-4f8f-ae7a-af5662848947",
+      "genres": [
+        {
+          "id": "1b5e7b16-336b-473e-a364-5120413a9827",
+          "name": "soul",
+          "votes": 5
+        },
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "name": "pop",
+          "votes": 4
+        },
+        {
+          "id": "64e0bd76-822f-4549-a6fe-9858561282d1",
+          "name": "pop soul",
+          "votes": 3
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 2
         }
       ]
     },
@@ -17243,6 +18463,48 @@
         }
       ]
     },
+    "the psychedelic furs": {
+      "name": "The Psychedelic Furs",
+      "musicbrainzArtistId": "9f930ddf-be2f-4de5-a39f-7ae47305752e",
+      "genres": [
+        {
+          "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+          "name": "new wave",
+          "votes": 5
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 4
+        },
+        {
+          "id": "f6d8cadd-6a5e-4ec9-9c2b-996b5332a639",
+          "name": "post-punk",
+          "votes": 3
+        },
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 2
+        }
+      ]
+    },
+    "the rare occasions": {
+      "name": "The Rare Occasions",
+      "musicbrainzArtistId": "37177491-dc86-4536-8ac2-51887ccfa0bb",
+      "genres": [
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 1
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 1
+        }
+      ]
+    },
     "the raveonettes": {
       "name": "The Raveonettes",
       "musicbrainzArtistId": "79255a50-40df-447f-9612-2cf669080196",
@@ -17265,6 +18527,22 @@
         {
           "id": "b8495241-e3c7-445b-82db-cea5ebe9ea7a",
           "name": "post-punk revival",
+          "votes": 1
+        }
+      ]
+    },
+    "the score": {
+      "name": "The Score",
+      "musicbrainzArtistId": "171b6355-3602-4c00-9a17-01ca20077318",
+      "genres": [
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 2
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "name": "electropop",
           "votes": 1
         }
       ]
@@ -17390,6 +18668,32 @@
         {
           "id": "aa5f0254-403e-496a-a388-c01abf62f39a",
           "name": "stoner rock",
+          "votes": 3
+        }
+      ]
+    },
+    "the telescopes": {
+      "name": "The Telescopes",
+      "musicbrainzArtistId": "e304fa8b-8de2-4089-b43b-bd24ca40800f",
+      "genres": [
+        {
+          "id": "a4012b2e-5c27-4f81-8781-9ae5998d882c",
+          "name": "shoegaze",
+          "votes": 5
+        },
+        {
+          "id": "6242615b-5620-465b-b6fb-2e593e90cbad",
+          "name": "dream pop",
+          "votes": 3
+        },
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 3
+        },
+        {
+          "id": "1208a8e7-e5bd-4891-9f81-9a9fdfceeb39",
+          "name": "noise pop",
           "votes": 3
         }
       ]
@@ -18244,6 +19548,22 @@
         }
       ]
     },
+    "two friends": {
+      "name": "Two Friends",
+      "musicbrainzArtistId": "c394e9ff-888f-4c03-a494-147d5aa53ccb",
+      "genres": [
+        {
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "name": "dance-pop",
+          "votes": 2
+        },
+        {
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "name": "edm",
+          "votes": 1
+        }
+      ]
+    },
     "tygers of pan tang": {
       "name": "Tygers Of Pan Tang",
       "musicbrainzArtistId": "fe179f28-3cab-4337-9575-c13f8d077b13",
@@ -18365,6 +19685,27 @@
         }
       ]
     },
+    "unlike pluto": {
+      "name": "Unlike Pluto",
+      "musicbrainzArtistId": "6a310a97-aff0-47ce-a581-edac22897d2d",
+      "genres": [
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 5
+        },
+        {
+          "id": "c4a69842-f891-4569-9506-1882aa5db433",
+          "name": "electronic rock",
+          "votes": 4
+        },
+        {
+          "id": "9a339aa8-a0e5-450c-95a7-b11517bb508f",
+          "name": "trap",
+          "votes": 1
+        }
+      ]
+    },
     "until i wake": {
       "name": "Until i Wake",
       "musicbrainzArtistId": "e1fed417-1350-4c74-a05b-6f2a58bb68fa",
@@ -18454,6 +19795,22 @@
         }
       ]
     },
+    "useless id": {
+      "name": "Useless ID",
+      "musicbrainzArtistId": "3bb24e11-821a-4e4e-bd89-e0a2452474cf",
+      "genres": [
+        {
+          "id": "3984bfdc-007e-4e78-8854-75377aa97946",
+          "name": "christian hardcore",
+          "votes": 1
+        },
+        {
+          "id": "8cc9b280-230b-4a3a-b1e2-8acab0744dd3",
+          "name": "punk",
+          "votes": 1
+        }
+      ]
+    },
     "vader": {
       "name": "Vader",
       "musicbrainzArtistId": "db859a53-b7ca-4892-bcda-5ef78d2c891f",
@@ -18517,6 +19874,32 @@
         }
       ]
     },
+    "vance joy": {
+      "name": "Vance Joy",
+      "musicbrainzArtistId": "df36f6db-5987-46ed-9d02-0cf36ed4e060",
+      "genres": [
+        {
+          "id": "36917620-240a-4fed-abcb-7be611ac3834",
+          "name": "indie folk",
+          "votes": 4
+        },
+        {
+          "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+          "name": "indie pop",
+          "votes": 4
+        },
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 2
+        },
+        {
+          "id": "abb2374f-30e5-4d3e-b417-2caf78ef1f6c",
+          "name": "folk pop",
+          "votes": 2
+        }
+      ]
+    },
     "vanden plas": {
       "name": "Vanden Plas",
       "musicbrainzArtistId": "59b858bb-e13a-4608-b30d-8a4b7f282e26",
@@ -18550,6 +19933,43 @@
         {
           "id": "cc38aba3-48ed-439a-83b9-f81a34a66598",
           "name": "downtempo",
+          "votes": 1
+        }
+      ]
+    },
+    "vanish": {
+      "name": "Vanish",
+      "musicbrainzArtistId": "7878996c-d42f-41f2-9a8d-b57eb2695e77",
+      "genres": [
+        {
+          "id": "f0b0aa5f-ed81-456b-85ab-492002a29eeb",
+          "name": "power metal",
+          "votes": 1
+        }
+      ]
+    },
+    "vavo": {
+      "name": "VAVO",
+      "musicbrainzArtistId": "251f4bd9-56d8-4a7a-9cd6-2d681cfae441",
+      "genres": [
+        {
+          "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+          "name": "dance",
+          "votes": 1
+        },
+        {
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "name": "dance-pop",
+          "votes": 1
+        },
+        {
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "name": "edm",
+          "votes": 1
+        },
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
           "votes": 1
         }
       ]
@@ -18816,6 +20236,32 @@
         }
       ]
     },
+    "walk the moon": {
+      "name": "WALK THE MOON",
+      "musicbrainzArtistId": "d4aad415-9cd0-4845-9b05-0416fdcc9fc4",
+      "genres": [
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 3
+        },
+        {
+          "id": "2c473395-9cd5-465d-8d85-c308de067c04",
+          "name": "dance-rock",
+          "votes": 2
+        },
+        {
+          "id": "ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+          "name": "indie rock",
+          "votes": 2
+        },
+        {
+          "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+          "name": "synth-pop",
+          "votes": 2
+        }
+      ]
+    },
     "warbringer": {
       "name": "Warbringer",
       "musicbrainzArtistId": "089708ec-2c4a-4159-a3da-2fbb8119736e",
@@ -18954,6 +20400,32 @@
         {
           "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
           "name": "grime",
+          "votes": 1
+        }
+      ]
+    },
+    "whethan": {
+      "name": "Whethan",
+      "musicbrainzArtistId": "9dbb9d00-e2d3-484d-8049-10e5e125913c",
+      "genres": [
+        {
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "name": "electronic",
+          "votes": 1
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "name": "electropop",
+          "votes": 1
+        },
+        {
+          "id": "e254f865-58ea-4483-9b2f-1bc65febcd71",
+          "name": "future bass",
+          "votes": 1
+        },
+        {
+          "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+          "name": "hyperpop",
           "votes": 1
         }
       ]
@@ -19206,6 +20678,27 @@
         }
       ]
     },
+    "x ambassadors": {
+      "name": "X Ambassadors",
+      "musicbrainzArtistId": "298f4089-1948-44b5-b5e8-d5381f42362f",
+      "genres": [
+        {
+          "id": "ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+          "name": "alternative rock",
+          "votes": 3
+        },
+        {
+          "id": "797e2e85-5ffd-495c-a757-8b4079052f0e",
+          "name": "pop rock",
+          "votes": 2
+        },
+        {
+          "id": "abb2374f-30e5-4d3e-b417-2caf78ef1f6c",
+          "name": "folk pop",
+          "votes": 1
+        }
+      ]
+    },
     "xandria": {
       "name": "Xandria",
       "musicbrainzArtistId": "656a0800-3a2b-47ed-a3ff-1e2908fdd2ff",
@@ -19412,6 +20905,17 @@
         {
           "id": "cd99451c-f6d5-47c7-8d49-6c08b51e61aa",
           "name": "neo-psychedelia",
+          "votes": 1
+        }
+      ]
+    },
+    "zxkai": {
+      "name": "ZXKAI",
+      "musicbrainzArtistId": "51a47eb2-19e5-4d6e-9495-db32864a7af9",
+      "genres": [
+        {
+          "id": "4519564f-98ae-4c33-af8d-e9968ea41ab3",
+          "name": "brazilian phonk",
           "votes": 1
         }
       ]

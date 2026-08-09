@@ -35,6 +35,7 @@ import { localizeGenreName } from '../utils/localizedDatasetText';
 import { externalUrlProvider, isBandcampSearchUrl, toSafeExternalUrl } from '../utils/externalUrl';
 import { buildArtistMediaProfile, getCuratedArtistMedia } from '../utils/mediaLinks';
 import { getArtistBandMembers, getOfflineArtistKnowledge } from '../utils/offlineArtistKnowledge';
+import ArtistBiography from './ArtistBiography';
 import memberEnrichment from '../data/member_enrichment.json';
 
 const MEMBER_ENRICHMENT = memberEnrichment as Record<string, { name: string; photo?: string; birthDate?: string; age?: number | null; links?: Record<string, string> }>;
@@ -307,7 +308,9 @@ const ARTIST_ATLAS_COPY = {
     statusLabel: 'Estado',
     clearSearch: 'Limpiar búsqueda',
     wholeArchive: 'Archivo completo',
-    countedListensOther: 'escuchas contadas · categoría Otros explícita',
+    countedListensAllGenres: (count: number) => `escuchas contadas · ${count} filas de género completas, sin agrupar`,
+    groupedGenreFamilies: (count: number) => `${count} ${count === 1 ? 'familia clasificada más pequeña' : 'familias clasificadas más pequeñas'}`,
+    treemapLongTail: (count: number, plays: string) => `${count} ${count === 1 ? 'familia clasificada se agrupa' : 'familias clasificadas se agrupan'} solo en este mapa para facilitar la lectura (${plays} escuchas). “Sin clasificar” permanece separado.`,
     yearlySubtitle: (maxDate?: string | null) => `Una métrica por vez, con su propia escala${maxDate ? ` · observado hasta ${maxDate}` : ''}.`,
     yearlySummary: (label: string) => `${label} se muestra por separado para que el volumen de escuchas no aplaste el conteo de artistas.`,
     yearLabel: 'Año',
@@ -460,7 +463,9 @@ const ARTIST_ATLAS_COPY = {
     statusLabel: 'Status',
     clearSearch: 'Clear search',
     wholeArchive: 'Whole archive',
-    countedListensOther: 'counted listens · explicit Other category',
+    countedListensAllGenres: (count: number) => `counted listens · all ${count} genre rows shown without grouping`,
+    groupedGenreFamilies: (count: number) => `${count} smaller classified ${count === 1 ? 'family' : 'families'}`,
+    treemapLongTail: (count: number, plays: string) => `${count} smaller classified ${count === 1 ? 'family is' : 'families are'} grouped only in this map for readability (${plays} listens). Unclassified remains separate.`,
     yearlySubtitle: (maxDate?: string | null) => `One metric at a time, with its own scale${maxDate ? ` · observed through ${maxDate}` : ''}.`,
     yearlySummary: (label: string) => `${label} is shown independently so listen volume never flattens the artist count.`,
     yearLabel: 'Year',
@@ -613,7 +618,11 @@ const ARTIST_ATLAS_COPY = {
     statusLabel: 'סטטוס',
     clearSearch: 'ניקוי החיפוש',
     wholeArchive: 'כל הארכיון',
-    countedListensOther: 'השמעות שנספרו · כולל קטגוריית ״אחר״ מפורשת',
+    countedListensAllGenres: (count: number) => `השמעות שנספרו · כל ${count} שורות הז׳אנר מוצגות ללא קיבוץ`,
+    groupedGenreFamilies: (count: number) => count === 1
+      ? 'משפחת ז׳אנר מסווגת קטנה יותר'
+      : `${count} משפחות ז׳אנר מסווגות קטנות יותר`,
+    treemapLongTail: (count: number, plays: string) => `${count} משפחות ז׳אנר מסווגות קטנות יותר מקובצות רק במפה הזאת לשיפור הקריאות (${plays} השמעות). ״לא מסווג״ נשאר נפרד.`,
     yearlySubtitle: (maxDate?: string | null) => `מדד אחד בכל פעם, בסולם עצמאי${maxDate ? ` · הנתונים נצפו עד ${maxDate}` : ''}.`,
     yearlySummary: (label: string) => `${label} מוצג בנפרד, כדי שנפח ההאזנה לא ישטח את מספר האמנים.`,
     yearLabel: 'שנה',
@@ -1226,44 +1235,60 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
     ? { label: t.topHistorico.playsLegend, color: tc.c1 }
     : { label: t.topHistorico.uniqueArtistsLegend, color: tc.c3 };
 
-  const genreDistribution = useMemo(
-    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 15),
+  const fullGenreDistribution = useMemo(
+    () => buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      Math.max(1, data.top_genres.length),
+    ),
     [data.core_metrics.total_plays, data.top_genres],
   );
   const genreData = useMemo(
-    () => genreDistribution.rows.map(row => ({
+    () => fullGenreDistribution.rows.map(row => ({
       ...row,
       genre: row.name,
       name: localizeGenreName(row.name, lang),
     })),
-    [genreDistribution.rows, lang],
+    [fullGenreDistribution.rows, lang],
   );
 
   /* ── Treemap ── */
+  const treemapDistribution = useMemo(
+    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 20),
+    [data.core_metrics.total_plays, data.top_genres],
+  );
+  const groupedGenreLabel = artistCopy.groupedGenreFamilies(treemapDistribution.groupedFamilyCount);
   const treemapChildren = useMemo(
-    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 10).rows
-      .map(row => ({
+    () => treemapDistribution.rows.map(row => ({
         ...row,
         genre: row.name,
-        name: localizeGenreName(row.name, lang),
+        name: row.kind === 'grouped'
+          ? groupedGenreLabel
+          : localizeGenreName(row.name, lang),
         size: row.plays,
       })),
-    [data.core_metrics.total_plays, data.top_genres, lang],
+    [groupedGenreLabel, lang, treemapDistribution.rows],
   );
   const TREEMAP_COLORS = COLORS;
 
   const CustomTreemapContent = ({ x, y, width, height, index, name, plays }: any) => {
     if (!plays || width < 40 || height < 25) return null;
     const color = TREEMAP_COLORS[index % TREEMAP_COLORS.length];
+    const availableLabelWidth = Math.max(0, width - 16);
+    const maxLabelCharacters = Math.floor(availableLabelWidth / 6.2);
+    const canShowLabel = width >= 76 && height >= 28 && maxLabelCharacters >= 5;
+    const visibleName = String(name).length > maxLabelCharacters
+      ? `${String(name).slice(0, Math.max(1, maxLabelCharacters - 1))}…`
+      : String(name);
     return (
       <g>
         <rect x={x} y={y} width={width} height={height} rx={8} ry={8}
           style={{ fill: `${color}22`, stroke: `${color}55`, strokeWidth: 1 }} />
-        {width > 55 && (
+        {canShowLabel && (
           <text x={x + 8} y={y + 18} fontSize={10} fontFamily="monospace" fontWeight="bold"
-            fill={color}>{name}</text>
+            fill={color}>{visibleName}</text>
         )}
-        {width > 55 && height > 38 && (
+        {canShowLabel && height > 38 && (
           <text x={x + 8} y={y + 32} fontSize={9} fontFamily="monospace"
             fill="#9ca3af">{plays.toLocaleString(locale)}</text>
         )}
@@ -2199,9 +2224,17 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             )}
           </div>
 
-          <p className="text-sm md:text-[15px] text-gray-300 leading-relaxed">
-            {selectedProfile?.bio[lang] ?? artistCopy.noProfileBody}
-          </p>
+          {/* One biography, not a curated paragraph here and a panel of facts
+              three blocks further down. The documented sentences open it and
+              the museum's own reading closes it, under a divider that keeps the
+              two registers from being mistaken for each other. */}
+          <ArtistBiography
+            knowledge={selectedKnowledge}
+            editorial={selectedProfile?.bio[lang]}
+            displayName={selectedArtist.name}
+            country={selectedProfile?.country[lang]}
+            fallback={artistCopy.noProfileBody}
+          />
 
           <EmotionalEnginePanel
             reading={selectedArtistReading}
@@ -3112,7 +3145,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                   {t.topHistorico.tabGenres}
                 </h3>
                 <p className="type-caption type-muted -mt-3 mb-5">
-                  🧭 {artistCopy.wholeArchive} · {genreDistribution.totalPlays.toLocaleString(locale)} {artistCopy.countedListensOther}
+                  🧭 {artistCopy.wholeArchive} · {fullGenreDistribution.totalPlays.toLocaleString(locale)} {artistCopy.countedListensAllGenres(genreData.length)}
                 </p>
                 <div className="flex flex-wrap gap-5">
                   {genreData.slice(0, 10).map(g => (
@@ -3125,7 +3158,21 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 <h3 className="type-kicker mb-5" style={{ color: tc.c1 }}>
                   {t.topHistorico.genreTreemap}
                 </h3>
-                <ChartCanvas label={t.topHistorico.genreTreemap} className="h-72">
+                {treemapDistribution.groupedFamilyCount > 0 && (
+                  <p data-testid="top-genres-treemap-summary" className="type-caption type-muted -mt-3 mb-4">
+                    {artistCopy.treemapLongTail(
+                      treemapDistribution.groupedFamilyCount,
+                      treemapDistribution.groupedPlays.toLocaleString(locale),
+                    )}
+                  </p>
+                )}
+                <ChartCanvas
+                  label={t.topHistorico.genreTreemap}
+                  data-testid="top-genres-treemap"
+                  data-grouped-family-count={treemapDistribution.groupedFamilyCount}
+                  data-grouped-plays={treemapDistribution.groupedPlays}
+                  className="h-72"
+                >
                   <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                     <Treemap data={treemapChildren} dataKey="size"
                       content={<CustomTreemapContent />} {...chartAnimation} />
@@ -3139,6 +3186,9 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
                 </h3>
                 <ChartCanvas
                   label={t.topHistorico.genreBreakdown}
+                  data-testid="genre-complete-breakdown"
+                  data-family-count={genreData.length}
+                  data-grouped-family-count={fullGenreDistribution.groupedFamilyCount}
                   className="min-h-[420px] min-w-0"
                   style={{ height: Math.max(420, genreData.length * 32 + 48) }}
                 >

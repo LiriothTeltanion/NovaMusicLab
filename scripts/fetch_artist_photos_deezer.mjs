@@ -1,6 +1,6 @@
 // Dev-side artist portrait harvest from the public Deezer API (no key, no auth).
 //
-// Why this pass exists: the archive holds 6,413 artist-name catalog entries,
+// Why this pass exists: the archive holds thousands of exact artist-name catalog entries,
 // and only ~113 had a portrait, so 98% of the museum rendered a generated avatar. Wikimedia and
 // Wikidata cover the curated top only - they simply have no entry for most of
 // the long tail - while Deezer returned a result for every artist sampled,

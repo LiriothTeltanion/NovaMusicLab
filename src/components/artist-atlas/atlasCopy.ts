@@ -10,6 +10,19 @@ export interface ArtistAtlasCopy {
   featuredArtists: string;
   browseAll: string;
   chooseArtist: string;
+  directoryEyebrow: string;
+  directoryTitle: string;
+  directoryBody: string;
+  sortArtists: string;
+  sortByListens: string;
+  sortAZ: string;
+  filterByLetter: string;
+  allArtists: string;
+  showingArtists: (visible: number, total: number) => string;
+  catalogLoading: string;
+  catalogUnavailable: string;
+  noArtistResults: string;
+  showMoreArtists: string;
   rank: (value: number) => string;
   archiveSignal: string;
   archivePlays: string;
@@ -137,6 +150,19 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     featuredArtists: 'Señales destacadas',
     browseAll: 'Explorar todo el archivo',
     chooseArtist: 'Elegir artista',
+    directoryEyebrow: 'Navegador del archivo',
+    directoryTitle: 'Todos los artistas, a tu manera',
+    directoryBody: 'Recorre el catálogo por peso en la historia o por nombre. Cada puesto pertenece a este archivo; no es popularidad mundial.',
+    sortArtists: 'Ordenar artistas',
+    sortByListens: 'Más escuchados',
+    sortAZ: 'A–Z',
+    filterByLetter: 'Filtrar artistas por letra inicial',
+    allArtists: 'Todos',
+    showingArtists: (visible, total) => `Mostrando ${bidiIsolate(visible)} de ${bidiIsolate(total)} artistas`,
+    catalogLoading: 'Abriendo el catálogo completo…',
+    catalogUnavailable: 'El catálogo completo no pudo abrirse; los artistas destacados siguen disponibles.',
+    noArtistResults: 'No encontramos artistas con estos filtros. Prueba otra letra o búsqueda.',
+    showMoreArtists: 'Mostrar más artistas',
     rank: value => `Rango #${value}`,
     archiveSignal: 'Señal del archivo',
     archivePlays: 'Reproducciones',
@@ -157,7 +183,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'Perfil documentado',
     editorialStory: 'Conoce al artista',
     editorialStoryNote: 'Lectura editorial de Nova basada en el historial activo; no sustituye una biografía externa.',
-    artistIntro: (artist, genre, rank, plays, place) => `${artist} ocupa el puesto #${rank} de tu historial, con ${plays} reproducciones. Para organizar el archivo, Nova lo agrupa provisionalmente en la familia analítica ${genre}${place ? ` y registra una conexión de catálogo con ${place}` : ''}; los géneros documentados y sugeridos aparecen más abajo.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} es uno de los puntos de referencia de este archivo. Con ${plays} reproducciones, ocupa el puesto #${rank} de esta historia personal. En el museo aparece cerca de ${genre}${place ? ` y está vinculado con ${place}` : ''}. Sus canciones, géneros documentados y fuentes aparecen más abajo.`,
     whyItMatters: 'Por qué importa en este mapa',
     biographySource: source => `Descripción de ${source}`,
     noBiography: 'Todavía no existe una biografía editorial verificada para esta identidad. Conservamos únicamente los datos confirmados del archivo.',
@@ -262,6 +288,19 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     featuredArtists: 'Featured signals',
     browseAll: 'Explore the full archive',
     chooseArtist: 'Choose artist',
+    directoryEyebrow: 'Archive navigator',
+    directoryTitle: 'Every artist, your way',
+    directoryBody: 'Browse the catalog by its weight in this history or by name. Every rank belongs to this archive; it is not global popularity.',
+    sortArtists: 'Sort artists',
+    sortByListens: 'Most listened',
+    sortAZ: 'A–Z',
+    filterByLetter: 'Filter artists by first letter',
+    allArtists: 'All',
+    showingArtists: (visible, total) => `Showing ${bidiIsolate(visible)} of ${bidiIsolate(total)} artists`,
+    catalogLoading: 'Opening the complete catalog…',
+    catalogUnavailable: 'The complete catalog could not open; featured artists remain available.',
+    noArtistResults: 'No artists match these filters. Try another letter or search.',
+    showMoreArtists: 'Show more artists',
     rank: value => `Rank #${value}`,
     archiveSignal: 'Archive signal',
     archivePlays: 'Archive plays',
@@ -282,7 +321,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'Documented profile',
     editorialStory: 'Meet the artist',
     editorialStoryNote: 'A Nova editorial reading based on the active listening history; it does not replace an external biography.',
-    artistIntro: (artist, genre, rank, plays, place) => `${artist} ranks #${rank} in your listening history with ${plays} plays. To organize the archive, Nova provisionally groups this artist in the ${genre} analytical family${place ? ` and records a catalog connection to ${place}` : ''}; documented genres and suggestions appear below.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${artist} is one of this archive's landmarks. With ${plays} plays, the artist sits at #${rank} in this personal history. In the museum, the territory appears near ${genre}${place ? ` and is connected with ${place}` : ''}. Tracks, documented genres and sources follow below.`,
     whyItMatters: 'Why this artist matters here',
     biographySource: source => `Description from ${source}`,
     noBiography: 'No verified editorial biography exists for this identity yet. Only confirmed archive facts are retained.',
@@ -387,6 +426,19 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     featuredArtists: 'אותות נבחרים',
     browseAll: 'עיון בכל הארכיון',
     chooseArtist: 'בחירת אמן',
+    directoryEyebrow: 'נווט הארכיון',
+    directoryTitle: 'כל האמנים, בדרך שלך',
+    directoryBody: 'אפשר לעיין בקטלוג לפי המשקל בהיסטוריה הזאת או לפי שם. כל דירוג שייך לארכיון הזה ואינו דירוג פופולריות עולמי.',
+    sortArtists: 'מיון אמנים',
+    sortByListens: 'המושמעים ביותר',
+    sortAZ: 'A–Z',
+    filterByLetter: 'סינון אמנים לפי אות ראשונה',
+    allArtists: 'הכול',
+    showingArtists: (visible, total) => `מוצגים ${bidiIsolate(visible)} מתוך ${bidiIsolate(total)} אמנים`,
+    catalogLoading: 'פותחים את הקטלוג המלא…',
+    catalogUnavailable: 'לא ניתן לפתוח את הקטלוג המלא; האמנים הנבחרים עדיין זמינים.',
+    noArtistResults: 'לא נמצאו אמנים לפי הסינון הזה. אפשר לנסות אות או חיפוש אחר.',
+    showMoreArtists: 'הצגת אמנים נוספים',
     rank: value => `דירוג #${bidiIsolate(value)}`,
     archiveSignal: 'אות הארכיון',
     archivePlays: 'השמעות בארכיון',
@@ -407,7 +459,7 @@ export const ARTIST_ATLAS_COPY: Record<Lang, ArtistAtlasCopy> = {
     archiveBiography: 'פרופיל מתועד',
     editorialStory: 'היכרות עם האמן',
     editorialStoryNote: 'קריאה מערכתית של Nova המבוססת על היסטוריית ההאזנה הפעילה; היא אינה מחליפה ביוגרפיה חיצונית.',
-    artistIntro: (artist, genre, rank, plays, place) => `${bidiIsolate(artist)} מדורג במקום #${bidiIsolate(rank)} בהיסטוריית ההאזנה שלך, עם ${bidiIsolate(plays)} השמעות. לצורך ארגון הארכיון, Nova משייכת את האמן באופן זמני למשפחה האנליטית ${bidiIsolate(genre)}${place ? ` ומתעדת קשר קטלוגי אל ${bidiIsolate(place)}` : ''}; ז׳אנרים מתועדים והצעות מופיעים בהמשך.`,
+    artistIntro: (artist, genre, rank, plays, place) => `${bidiIsolate(artist)} הוא אחד מציוני הדרך בארכיון הזה. עם ${bidiIsolate(plays)} השמעות, האמן נמצא במקום #${bidiIsolate(rank)} בהיסטוריה האישית הזאת. במוזיאון המרחב מופיע ליד ${bidiIsolate(genre)}${place ? ` ומקושר אל ${bidiIsolate(place)}` : ''}. שירים, ז׳אנרים מתועדים ומקורות מופיעים בהמשך.`,
     whyItMatters: 'למה האמן חשוב במפה הזאת',
     biographySource: source => `תיאור מתוך ${bidiIsolate(source)}`,
     noBiography: 'עדיין אין ביוגרפיה ערוכה ומאומתת לזהות הזאת. נשמרים רק פרטים מאושרים מן הארכיון.',

@@ -9,21 +9,32 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 import { chromium } from '@playwright/test';
+import gifenc from 'gifenc';
 import { buildMediaRecord } from './lib/releaseMedia.mjs';
 import { inspectReleaseSourceEvidence } from './lib/releaseSourceEvidence.mjs';
+import { buildSocialPreviewFacts } from './lib/socialPreviewFacts.mjs';
+
+const { applyPalette, GIFEncoder, quantize } = gifenc;
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = path.join(projectRoot, 'scripts', 'release-media.config.json');
 const packagePath = path.join(projectRoot, 'package.json');
+const shareMetricsPath = path.join(projectRoot, 'src', 'data', 'share_metrics.json');
+const publicManifestPath = path.join(projectRoot, 'src', 'data', 'public_dataset_manifest.json');
 const config = JSON.parse(await readFile(configPath, 'utf8'));
 const packageJson = JSON.parse(await readFile(packagePath, 'utf8'));
+const shareMetrics = JSON.parse(await readFile(shareMetricsPath, 'utf8'));
+const publicManifest = JSON.parse(await readFile(publicManifestPath, 'utf8'));
 if (config.version !== packageJson.version) {
   throw new Error(
     `Release-media config ${config.version} does not match package ${packageJson.version}`,
   );
 }
-
 const versionLabel = `v${config.version}`;
+const { catalogEntryLabel, observedThroughLabel } = buildSocialPreviewFacts(
+  shareMetrics,
+  publicManifest,
+);
 const sourceEvidence = inspectReleaseSourceEvidence(projectRoot, config.version);
 const outputDir = path.join(projectRoot, 'assets', 'releases', versionLabel);
 const tourFrameDir = path.join(outputDir, 'tour-frames');
@@ -149,6 +160,8 @@ async function capture(browser, {
   storage,
   waitFor,
   waitForImage,
+  scrollTo,
+  scrollOffset = 0,
   colorScheme = 'dark',
   legacyFileName,
 }) {
@@ -178,6 +191,16 @@ async function capture(browser, {
       await page.waitForTimeout(150);
     } else {
       await page.waitForTimeout(500);
+    }
+    if (scrollTo) {
+      await page.locator(scrollTo).waitFor({ state: 'visible' });
+      await page.evaluate(({ selector, offset }) => {
+        const element = document.querySelector(selector);
+        if (!element) throw new Error(`Could not find capture target ${selector}`);
+        const top = element.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo(0, Math.max(0, top));
+      }, { selector: scrollTo, offset: scrollOffset });
+      await page.waitForTimeout(150);
     }
     await page.screenshot({
       path: path.join(outputDir, definition.fileName),
@@ -402,12 +425,12 @@ async function captureSocialPreview(browser) {
             <span class="version">${versionLabel}</span>
           </header>
           <main>
-            <p class="eyebrow">The Living Archive Gets a Face</p>
+            <p class="eyebrow">The Living Archive Finds Its Voice</p>
             <h1>Your music becomes a <span>living atlas.</span></h1>
             <p class="subtitle">Explore an honest historical snapshot through artist portraits, genre evidence and stories. Private imports stay in your browser.</p>
             <div class="chips">
-              <span class="chip">6,413 CATALOG ENTRIES</span>
-              <span class="chip">94.1% OF PLAYS MAPPED</span>
+              <span class="chip">${catalogEntryLabel} CATALOG ENTRIES</span>
+              <span class="chip">DATA THROUGH ${observedThroughLabel}</span>
               <span class="chip">EN · ES · HE</span>
             </div>
           </main>
@@ -593,45 +616,9 @@ async function encodeTourGif(browser, jpegFrames) {
     const frameDataUrls = jpegFrames.map(
       frame => `data:image/jpeg;base64,${frame.toString('base64')}`,
     );
-    const encoded = await page.evaluate(async ({ frameDataUrls: urls }) => {
+    const rgbaFrames = await page.evaluate(async ({ frameDataUrls: urls }) => {
       const width = 560;
       const height = 350;
-      const delayCentiseconds = 180;
-      const palette = [];
-      const eightLevelChannel = [0, 12, 28, 52, 88, 136, 196, 255];
-      const fourLevelChannel = [0, 32, 112, 255];
-      const closestLevel = (value, levels) => {
-        let bestIndex = 0;
-        let bestDistance = Number.POSITIVE_INFINITY;
-        for (let index = 0; index < levels.length; index += 1) {
-          const distance = Math.abs(levels[index] - value);
-          if (distance < bestDistance) {
-            bestDistance = distance;
-            bestIndex = index;
-          }
-        }
-        return bestIndex;
-      };
-      const eightLevelLookup = Array.from(
-        { length: 256 },
-        (_, value) => closestLevel(value, eightLevelChannel),
-      );
-      const fourLevelLookup = Array.from(
-        { length: 256 },
-        (_, value) => closestLevel(value, fourLevelChannel),
-      );
-
-      for (let index = 0; index < 256; index += 1) {
-        const red = (index >> 5) & 0x07;
-        const green = (index >> 2) & 0x07;
-        const blue = index & 0x03;
-        palette.push(
-          eightLevelChannel[red],
-          eightLevelChannel[green],
-          fourLevelChannel[blue],
-        );
-      }
-
       const loadImage = source => new Promise((resolve, reject) => {
         const image = new Image();
         image.onload = () => resolve(image);
@@ -645,104 +632,38 @@ async function encodeTourGif(browser, jpegFrames) {
       const context2d = canvas.getContext('2d', { willReadFrequently: true });
       if (!context2d) throw new Error('Canvas 2D is unavailable');
 
-      const indexedFrames = images.map(image => {
+      return images.map(image => {
         context2d.clearRect(0, 0, width, height);
         context2d.drawImage(image, 0, 0, width, height);
-        const rgba = context2d.getImageData(0, 0, width, height).data;
-        const indexed = new Uint8Array(width * height);
-        for (let pixel = 0, offset = 0; pixel < indexed.length; pixel += 1, offset += 4) {
-          indexed[pixel] = (eightLevelLookup[rgba[offset]] << 5)
-            | (eightLevelLookup[rgba[offset + 1]] << 2)
-            | fourLevelLookup[rgba[offset + 2]];
-        }
-        return indexed;
+        return Array.from(context2d.getImageData(0, 0, width, height).data);
       });
-
-      const output = [];
-      const writeAscii = value => {
-        for (let index = 0; index < value.length; index += 1) {
-          output.push(value.charCodeAt(index));
-        }
-      };
-      const writeUint16 = value => output.push(value & 0xff, (value >> 8) & 0xff);
-      const writeCodeStream = indices => {
-        const clearCode = 256;
-        const endCode = 257;
-        let currentByte = 0;
-        let bitOffset = 0;
-        const compressed = [];
-        const emit = code => {
-          currentByte |= code << bitOffset;
-          bitOffset += 9;
-          while (bitOffset >= 8) {
-            compressed.push(currentByte & 0xff);
-            currentByte >>= 8;
-            bitOffset -= 8;
-          }
-        };
-
-        // Literal runs with frequent clear codes trade a modest amount of
-        // compression for a tiny, dependency-free encoder. Keeping each run
-        // below 254 symbols means the GIF decoder never has to grow beyond
-        // the 9-bit code width, avoiding encoder/decoder dictionary drift.
-        for (let offset = 0; offset < indices.length; offset += 200) {
-          emit(clearCode);
-          const end = Math.min(offset + 200, indices.length);
-          for (let index = offset; index < end; index += 1) {
-            emit(indices[index]);
-          }
-        }
-        emit(endCode);
-        if (bitOffset > 0) compressed.push(currentByte & 0xff);
-
-        for (let offset = 0; offset < compressed.length; offset += 255) {
-          const block = compressed.slice(offset, offset + 255);
-          output.push(block.length, ...block);
-        }
-        output.push(0);
-      };
-
-      writeAscii('GIF89a');
-      writeUint16(width);
-      writeUint16(height);
-      output.push(0xf7, 0, 0, ...palette);
-      output.push(
-        0x21, 0xff, 0x0b,
-        0x4e, 0x45, 0x54, 0x53, 0x43, 0x41, 0x50, 0x45, 0x32, 0x2e, 0x30,
-        0x03, 0x01, 0x00, 0x00, 0x00,
-      );
-
-      for (const frame of indexedFrames) {
-        output.push(
-          0x21, 0xf9, 0x04, 0x04,
-          delayCentiseconds & 0xff,
-          (delayCentiseconds >> 8) & 0xff,
-          0x00, 0x00,
-        );
-        output.push(0x2c, 0, 0, 0, 0);
-        writeUint16(width);
-        writeUint16(height);
-        output.push(0x00, 0x08);
-        writeCodeStream(frame);
-      }
-      output.push(0x3b);
-
-      const chunks = [];
-      for (let offset = 0; offset < output.length; offset += 16_384) {
-        chunks.push(String.fromCharCode(...output.slice(offset, offset + 16_384)));
-      }
-      return btoa(chunks.join(''));
     }, { frameDataUrls });
 
-    const gif = Buffer.from(encoded, 'base64');
-    await verifyAnimatedGif(browser, gif);
+    const width = 560;
+    const height = 350;
+    const gifEncoder = GIFEncoder();
+    for (const frame of rgbaFrames) {
+      const rgba = Uint8Array.from(frame);
+      const palette = quantize(rgba, 256, { format: 'rgb565' });
+      const indexed = applyPalette(rgba, palette, 'rgb565');
+      gifEncoder.writeFrame(indexed, width, height, {
+        palette,
+        delay: 1_800,
+        repeat: 0,
+        dispose: 1,
+      });
+    }
+    gifEncoder.finish();
+
+    const gif = Buffer.from(gifEncoder.bytes());
+    await verifyAnimatedGif(browser, gif, frameDataUrls);
     return gif;
   } finally {
     await context.close();
   }
 }
 
-async function verifyAnimatedGif(browser, gif) {
+async function verifyAnimatedGif(browser, gif, referenceFrameDataUrls) {
   const context = await browser.newContext({
     viewport: { width: 560, height: 350 },
     reducedMotion: 'no-preference',
@@ -751,10 +672,17 @@ async function verifyAnimatedGif(browser, gif) {
 
   try {
     const page = await context.newPage();
+    const referenceImages = referenceFrameDataUrls
+      .map((source, index) => `<img class="reference" data-index="${index}" alt="" src="${source}">`)
+      .join('');
     await page.setContent(
-      `<img id="tour" width="560" height="350" alt="" src="data:image/gif;base64,${gif.toString('base64')}">`,
+      `<style>html,body{margin:0;width:560px;height:350px;overflow:hidden;background:#050b14}.reference{display:none}</style>
+       <img id="tour" width="560" height="350" alt="" src="data:image/gif;base64,${gif.toString('base64')}">
+       ${referenceImages}`,
     );
     await page.locator('#tour').waitFor({ state: 'visible' });
+    await page.locator('#tour').evaluate(image => image.decode());
+    await page.locator('.reference').evaluateAll(images => Promise.all(images.map(image => image.decode())));
     const dimensions = await page.locator('#tour').evaluate(image => ({
       width: image.naturalWidth,
       height: image.naturalHeight,
@@ -763,13 +691,94 @@ async function verifyAnimatedGif(browser, gif) {
       throw new Error(`Generated product-tour GIF did not decode at 560x350`);
     }
 
-    await page.waitForTimeout(150);
-    const firstFrame = await page.screenshot();
-    await page.waitForTimeout(2_350);
-    const secondFrame = await page.screenshot();
-    if (firstFrame.equals(secondFrame)) {
-      throw new Error('Generated product-tour GIF did not advance to its second frame');
+    const paintedFrameDataUrls = [];
+    await page.waitForTimeout(120);
+    for (let frameIndex = 0; frameIndex < referenceFrameDataUrls.length; frameIndex += 1) {
+      // A screenshot forces Chromium to paint the current animated-image
+      // frame. Drawing the <img> directly to canvas can return its stale first
+      // decoded frame in headless mode even while the compositor has advanced.
+      const paintedFrame = await page.screenshot({ type: 'png' });
+      paintedFrameDataUrls.push(`data:image/png;base64,${paintedFrame.toString('base64')}`);
+      if (frameIndex < referenceFrameDataUrls.length - 1) {
+        // Capture the timeline first, before pixel comparison time can move the
+        // animation into its next loop.
+        await page.waitForTimeout(2_000);
+      }
     }
+
+    const comparisons = [];
+    for (let frameIndex = 0; frameIndex < referenceFrameDataUrls.length; frameIndex += 1) {
+      const paintedFrameDataUrl = paintedFrameDataUrls[frameIndex];
+      const comparisonsToReferences = await page.evaluate(async actualSource => {
+        const references = [...document.querySelectorAll('.reference')];
+        if (references.length === 0) {
+          throw new Error('Missing GIF comparison images');
+        }
+        const actualImage = await new Promise((resolve, reject) => {
+          const image = new Image();
+          image.onload = () => resolve(image);
+          image.onerror = () => reject(new Error('Could not decode painted GIF frame'));
+          image.src = actualSource;
+        });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 560;
+        canvas.height = 350;
+        const context2d = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context2d) throw new Error('Canvas 2D is unavailable during GIF verification');
+
+        context2d.drawImage(actualImage, 0, 0, 560, 350);
+        const actual = context2d.getImageData(0, 0, 560, 350).data;
+        return references.map(reference => {
+          if (!(reference instanceof HTMLImageElement)) {
+            throw new Error('Invalid GIF reference image');
+          }
+          context2d.clearRect(0, 0, 560, 350);
+          context2d.drawImage(reference, 0, 0, 560, 350);
+          const expected = context2d.getImageData(0, 0, 560, 350).data;
+
+          let absoluteError = 0;
+          let severePixels = 0;
+          for (let offset = 0; offset < actual.length; offset += 4) {
+            const red = Math.abs(actual[offset] - expected[offset]);
+            const green = Math.abs(actual[offset + 1] - expected[offset + 1]);
+            const blue = Math.abs(actual[offset + 2] - expected[offset + 2]);
+            absoluteError += red + green + blue;
+            if (Math.max(red, green, blue) > 96) severePixels += 1;
+          }
+
+          const pixels = 560 * 350;
+          return {
+            meanAbsoluteError: absoluteError / (pixels * 3),
+            severePixelRatio: severePixels / pixels,
+          };
+        });
+      }, paintedFrameDataUrl);
+      const comparison = comparisonsToReferences[frameIndex];
+      const bestReferenceIndex = comparisonsToReferences.reduce(
+        (best, candidate, index, list) => (
+          candidate.meanAbsoluteError < list[best].meanAbsoluteError ? index : best
+        ),
+        0,
+      );
+      comparisons.push(comparison);
+
+      if (comparison.meanAbsoluteError > 28 || comparison.severePixelRatio > 0.06) {
+        throw new Error(
+          `Generated GIF frame ${frameIndex + 1} drifted from its source `
+          + `(mean error ${comparison.meanAbsoluteError.toFixed(2)}, `
+          + `${(comparison.severePixelRatio * 100).toFixed(2)}% severe pixels; `
+          + `best match was source frame ${bestReferenceIndex + 1})`,
+        );
+      }
+    }
+
+    process.stdout.write(
+      `Verified GIF fidelity: ${comparisons.map((comparison, index) => (
+        `frame ${index + 1} mean ${comparison.meanAbsoluteError.toFixed(2)} / severe `
+        + `${(comparison.severePixelRatio * 100).toFixed(2)}%`
+      )).join('; ')}.\n`,
+    );
   } finally {
     await context.close();
   }
@@ -920,6 +929,8 @@ try {
         nml_experience_depth: 'explore',
       },
       waitFor: '[data-top-tab="generos"][aria-pressed="true"]',
+      scrollTo: '[data-testid="top-genres-treemap-summary"]',
+      scrollOffset: 220,
     });
     await capture(browser, {
       id: 'artist-atlas-desktop',
@@ -933,6 +944,8 @@ try {
       },
       waitFor: '#artist-atlas-title',
       waitForImage: '.artist-atlas__stage-image',
+      scrollTo: '.artist-atlas__directory',
+      scrollOffset: 170,
       legacyFileName: 'living-artist-atlas-desktop.jpg',
     });
     await capture(browser, {

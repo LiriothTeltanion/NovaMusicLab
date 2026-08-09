@@ -6,7 +6,79 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No product work beyond the deployed `v1.5.0` scope is recorded here.
+No product work beyond the `v1.6.0` private candidate scope is recorded here.
+
+## [1.6.0] - 2026-08-09
+
+Status: **private candidate — not tagged, released or deployed**.
+
+Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz**.
+
+### Added
+
+- Replayed the complete reviewed Spotify, Last.fm and YouTube archive through
+  2026-08-06, preserving an explicit local-snapshot boundary instead of
+  presenting the refresh as a live account connection.
+- Added a complete lazy Atlas navigator for all **6,593 exact-name catalog
+  entries**, with search, A–Z, archive listening rank, letter filters and
+  incremental 24-card loading.
+- Added a cover-led Obsessions spotlight, a visual loop grid and direct routes
+  to the matching track or artist territory.
+- Added a shared interpretive boundary for emotional and personality rooms:
+  readings describe creative patterns in listening evidence and are never
+  presented as clinical assessments or diagnoses.
+
+### Changed
+
+- Refreshed the candidate archive to **82,661 plays**, **20,908 tracks** and
+  **6,593 exact artist-name catalog entries**. Dataset generation occurred at
+  `2026-08-06T21:44:39.498Z`, or 2026-08-07 in the declared
+  `Asia/Jerusalem` analysis timezone.
+- Updated the reversible identity count to **182 known normalized-name variant
+  groups** without deleting or silently merging historical entries.
+- Updated genre coverage to **94.2%** of plays, detailed evidence for **457 / 6,593**
+  entries and **1,648** unclassified entries. Assertions remain distinct:
+  **85 accepted**, **1,203 candidate** and **2 rejected and hidden**.
+- Made Data Quality and Genre Lab derive catalog counts from the reviewed
+  manifest or active archive rather than release-specific UI literals.
+- Kept **Unclassified** as its own visible genre row and changed the former
+  generic `Other` label into a localized count of smaller known families. The
+  complete genre view shows all 36 rows without a synthetic `Other` genre.
+- Reframed the first visit around two clear paths: explore Kevin Cusnir /
+  Lirioth Teltanion's real public archive or build a private local museum from
+  supported listening-history exports rather than MP3 files.
+- Rewrote artist introductions to lead with a readable human story before
+  identifiers, provenance and detailed genre evidence.
+- Expanded the exact track-art map to **170 entries**, covering **50 / 50**
+  bundled obsession moments. The Atlas media stage now consults the lazy
+  primary-portrait index before its deterministic generated fallback; **5,691
+  / 6,593** catalog rows currently match that index by normalized exact name.
+- Connected social-preview metrics to the same share-metrics and public-manifest
+  contracts used by the application, with a drift check for the editable SVG.
+- Kept enrichment dated **2026-07-29** and Recent Pulse dated **2026-07-02**;
+  neither date is overstated as part of the August listening refresh.
+
+### Verification status
+
+- A clean Node `22.13.0` `npm ci` installed 255 packages with zero known
+  vulnerabilities. Strict data, genre, identity, media-link, knowledge,
+  privacy, PWA, share and bundle-budget checks pass on the integrated candidate.
+- One uninterrupted `npm run verify:release` run passes: 132 test files pass
+  with 1 intentional private-fixture skip, 803 tests pass with 1 intentional
+  skip, and all strict data/privacy/build-budget gates are green. Playwright
+  passes 18/18 desktop/mobile journeys with one worker.
+- All nine candidate assets were regenerated from committed product source,
+  passed the release-media audit and received desktop/mobile EN/ES/HE visual
+  review. Pull-request CI, Kevin's publication approval and live Pages checks
+  remain separate acceptance gates. This entry is not evidence of publication.
+
+### Known limitations
+
+- This is still a historical, browser-local snapshot with no backend, account,
+  OAuth or automatic Spotify/Last.fm synchronization.
+- Candidate screenshots, animated tour and raster social preview remain local
+  evidence until the exact reviewed commit is accepted and deployed.
+- DAW, FL Studio, MIDI, Tauri and desktop packaging remain outside this release.
 
 ## [1.5.0] - 2026-08-01
 

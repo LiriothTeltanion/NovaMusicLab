@@ -851,7 +851,17 @@ export function aggregateData(
     top_artists: topArtists,
     top_tracks: topTracks,
     top_albums: topAlbums,
-    top_genres: entriesByCount(genreCounts, 20).map(([name, plays]) => ({ name, plays })),
+    // Every family, not a top 20. The taxonomy has grown to 36 families, and a
+    // truncated list silently disagrees with the catalogue it was derived from -
+    // which is what compiled_data.artifact.test.mjs and audit_data_quality both
+    // check. It used to be reconciled afterwards by apply_observed_genres.mjs,
+    // an unregistered script, so a plain recompile left the repo broken.
+    // genreAssignments.ts already rebuilds this untruncated at runtime with the
+    // same tiebreak, so emitting the full list makes the artefact match what the
+    // app computes. Every consumer slices to its own top-N anyway.
+    top_genres: Object.entries(genreCounts)
+      .map(([name, plays]) => ({ name, plays }))
+      .sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name, 'en')),
     artist_genre_catalog: artistGenreCatalog,
     yearly_eras: yearlyEras,
     sessions: sessions.slice(0, 50),

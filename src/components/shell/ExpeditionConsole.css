@@ -45,7 +45,7 @@
   border: 1px solid transparent;
   border-radius: 0.78rem;
   padding: 0.5rem 0.58rem;
-  color: color-mix(in srgb, var(--fg) 62%, transparent);
+  color: var(--type-ink-muted);
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.75rem;
   font-weight: 850;
@@ -76,7 +76,7 @@
   margin: 0;
   padding: 0.2rem 0.45rem 0.12rem;
   overflow: hidden;
-  color: color-mix(in srgb, var(--fg) 58%, transparent);
+  color: var(--type-ink-muted);
   font-size: 0.68rem;
   line-height: 1.3;
   text-align: start;
@@ -165,7 +165,7 @@
 
 .archive-capsule__compact-status small {
   margin-top: 0.18rem;
-  color: color-mix(in srgb, var(--fg) 58%, transparent);
+  color: var(--type-ink-muted);
   font-size: 0.62rem;
   font-weight: 760;
   text-transform: uppercase;
@@ -173,7 +173,7 @@
 
 .archive-capsule__chevron {
   flex: none;
-  color: color-mix(in srgb, var(--fg) 48%, transparent);
+  color: var(--type-ink-muted);
   transition: rotate 160ms ease, color 160ms ease;
 }
 
@@ -221,7 +221,7 @@
   gap: 0.25rem;
   margin-bottom: 0.14rem;
   overflow: hidden;
-  color: color-mix(in srgb, var(--fg) 48%, transparent);
+  color: var(--type-ink-muted);
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.75rem;
   font-weight: 800;
@@ -306,7 +306,7 @@
   border: 1px solid color-mix(in srgb, var(--fg) 15%, transparent);
   border-radius: 0.45rem;
   padding: 0.16rem 0.34rem;
-  color: color-mix(in srgb, var(--fg) 52%, transparent);
+  color: var(--type-ink-muted);
   background: color-mix(in srgb, var(--fg) 5%, transparent);
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.75rem;
@@ -373,7 +373,7 @@
 
 .nova-command__header small {
   margin-top: 0.15rem;
-  color: color-mix(in srgb, var(--fg) 54%, transparent);
+  color: var(--type-ink-muted);
   font-size: 0.75rem;
 }
 
@@ -407,7 +407,7 @@
 }
 
 .nova-command__search input::placeholder {
-  color: color-mix(in srgb, var(--fg) 42%, transparent);
+  color: var(--type-ink-muted);
 }
 
 .nova-command__journeys,
@@ -422,7 +422,7 @@
 .nova-command__journeys h2,
 .nova-command__rooms h2 {
   margin: 0 0 0.45rem;
-  color: color-mix(in srgb, var(--fg) 45%, transparent);
+  color: var(--type-ink-muted);
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: 0.75rem;
   font-weight: 900;
@@ -506,7 +506,7 @@
 
 .nova-command__rooms small {
   margin-top: 0.1rem;
-  color: color-mix(in srgb, var(--fg) 44%, transparent);
+  color: var(--type-ink-muted);
   font-size: 0.75rem;
 }
 
@@ -521,7 +521,7 @@
 .nova-command__empty {
   margin: 0;
   padding: 1.5rem 0.75rem;
-  color: color-mix(in srgb, var(--fg) 55%, transparent);
+  color: var(--type-ink-muted);
   text-align: center;
 }
 

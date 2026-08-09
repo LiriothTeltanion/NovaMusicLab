@@ -7,7 +7,7 @@ npm ci
 npm run verify
 node scripts/audit_public_bundle_privacy.mjs
 npm run test:e2e
-npm audit
+npm run audit:dependencies
 git diff --check
 git status --short
 ```
@@ -48,12 +48,16 @@ npm run audit:identity
 1. Checks out the exact revision with no persisted credentials.
 2. Uses the Node version in `.nvmrc`.
 3. Installs `package-lock.json` with `npm ci`.
-4. Runs the complete verification gate.
-5. Repeats the public-bundle privacy audit as an explicit release boundary.
-6. Stamps the artifact with its exact source commit and package version.
-7. Uploads `dist` only for a successful `main` run.
-8. Deploys that verified artifact to Pages.
-9. Polls the deployed URL and accepts it only when the shell and exact commit/version marker are live.
+4. Fails on any known npm dependency vulnerability.
+5. Runs the complete verification gate.
+6. Repeats the public-bundle privacy audit as an explicit release boundary.
+7. Audits immutable release media on `main`, manual runs and every pull request
+   that changes the package version. Ordinary same-version pull requests reuse
+   the already reviewed release media.
+8. Stamps the artifact with its exact source commit and package version.
+9. Uploads `dist` only for a successful `main` run.
+10. Deploys that verified artifact to Pages.
+11. Polls the deployed URL and accepts it only when the shell and exact commit/version marker are live.
 
 Pull requests additionally receive dependency review and CodeQL analysis.
 

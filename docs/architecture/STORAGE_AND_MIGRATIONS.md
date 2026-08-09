@@ -2,7 +2,7 @@
 
 Nova Music Lab stores visitor museum state in browser IndexedDB. This is a local browser database, not a cloud account or synchronization service.
 
-The current stable product line is **v1.5.0 — deployed 2026-08-01**. The number **4** below is the IndexedDB schema version only; it is not the application's product version.
+The current source line is **v1.6.0 — private candidate 2026-08-09**; the latest verified public deployment remains **v1.5.0 — deployed 2026-08-01**. The number **4** below is the IndexedDB schema version only; it is not the application's product version.
 
 ## Product guarantees
 

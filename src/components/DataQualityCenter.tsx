@@ -34,6 +34,7 @@ import { buildOfflineArtistKnowledgeSummary } from '../utils/offlineArtistKnowle
 import { deriveDatasetTemporalTrust, resolveSnapshotFreshness } from '../utils/dataTrust';
 import { localeFor, pickLanguage } from '../utils/i18n';
 import GenreTaggingStudio from './GenreTaggingStudio';
+import publicDatasetManifest from '../data/public_dataset_manifest.json';
 
 type ConfidenceKind = 'exact' | 'mixed' | 'estimated' | 'inferred' | 'curated' | 'unavailable';
 
@@ -126,6 +127,9 @@ export default function DataQualityCenter({
   const knowledgeSummary = buildOfflineArtistKnowledgeSummary(data.top_artists);
   const temporalTrust = deriveDatasetTemporalTrust(data);
   const snapshotFreshness = resolveSnapshotFreshness(data);
+  const catalogIdentity = publicDatasetManifest.catalogIdentity;
+  const catalogEntryCount = catalogIdentity.catalogEntryCount.toLocaleString(locale);
+  const variantGroupCount = catalogIdentity.knownNormalizedVariantGroups.toLocaleString(locale);
   const peakYear = getPeakYear(data);
   const night = getNightRatio(data);
   const confidence = overallConfidence(data);
@@ -137,7 +141,11 @@ export default function DataQualityCenter({
     : 0;
   const explorationScore = Math.round((data.core_metrics.unique_artists / Math.max(1, data.core_metrics.total_plays)) * 1000);
   const generatedAt = snapshotFreshness.datasetGeneratedAt
-    ? new Date(snapshotFreshness.datasetGeneratedAt).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
+    ? new Date(snapshotFreshness.datasetGeneratedAt).toLocaleString(locale, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+      timeZone: temporalTrust.analysisTimeZone,
+    })
     : 'N/A';
   const formatDataDate = (dateKey: string) => new Date(`${dateKey}T12:00:00Z`)
     .toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
@@ -229,7 +237,7 @@ export default function DataQualityCenter({
       connection: 'Connection',
       dated: 'Dated snapshots · no live connection',
       unavailable: 'Not available in this archive',
-      identity: '6,413 exact artist-name catalog entries are preserved. 181 known normalized name-variant groups remain separate until their evidence is reviewed.',
+      identity: `${catalogEntryCount} exact artist-name catalog entries are preserved. ${variantGroupCount} known normalized name-variant groups remain separate until their evidence is reviewed.`,
     },
     es: {
       title: 'Vigencia de los snapshots',
@@ -241,7 +249,7 @@ export default function DataQualityCenter({
       connection: 'Conexión',
       dated: 'Snapshots con fecha · sin conexión en vivo',
       unavailable: 'No disponible en este archivo',
-      identity: 'Se conservan 6.413 entradas exactas de nombres de artistas. Los 181 grupos conocidos de variantes normalizadas permanecen separados hasta revisar su evidencia.',
+      identity: `Se conservan ${catalogEntryCount} entradas exactas de nombres de artistas. Los ${variantGroupCount} grupos conocidos de variantes normalizadas permanecen separados hasta revisar su evidencia.`,
     },
     he: {
       title: 'עדכניות תמונות המצב',
@@ -253,14 +261,18 @@ export default function DataQualityCenter({
       connection: 'חיבור',
       dated: 'תמונות מצב מתוארכות · ללא חיבור חי',
       unavailable: 'לא זמין בארכיון הזה',
-      identity: 'נשמרות 6,413 רשומות מדויקות של שמות אמנים. 181 קבוצות מוכרות של וריאציות שם מנורמלות נשארות נפרדות עד לבדיקת הראיות שלהן.',
+      identity: `נשמרות ${catalogEntryCount} רשומות מדויקות של שמות אמנים. ${variantGroupCount} קבוצות מוכרות של וריאציות שם מנורמלות נשארות נפרדות עד לבדיקת הראיות שלהן.`,
     },
   });
   const freshnessObserved = snapshotFreshness.observedFrom && snapshotFreshness.observedThrough
     ? `${formatDataDate(snapshotFreshness.observedFrom)} → ${formatDataDate(snapshotFreshness.observedThrough)}`
     : freshnessCopy.unavailable;
   const formatSnapshotTimestamp = (value: string | null) => value
-    ? new Date(value).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' })
+    ? new Date(value).toLocaleString(locale, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+      timeZone: temporalTrust.analysisTimeZone,
+    })
     : freshnessCopy.unavailable;
   const formatSnapshotDate = (value: string | null) => value
     ? formatDataDate(value.slice(0, 10))

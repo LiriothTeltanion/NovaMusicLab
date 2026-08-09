@@ -10,13 +10,17 @@
 [![Local first](https://img.shields.io/badge/ARCHIVE-Local--first-22c55e?style=for-the-badge&logo=shield&logoColor=white)](#-privacy-and-network-boundary)
 [![Languages](https://img.shields.io/badge/LANGUAGES-EN_·_ES_·_HE-8b5cf6?style=for-the-badge)](#-language-themes-and-accessibility)
 
-### Your listening history, transformed into a living personal museum 🎧
+### Kevin / Lirioth's listening history — and a private museum you can build from yours 🎧
 
-Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected files in the browser and turns evidence into timelines, obsessions, emotional maps, cultural journeys, generative identity and shareable reports.
+Explore Kevin Cusnir / Lirioth Teltanion's real public listening archive, or import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube history and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected exports in the browser and turns supported evidence into timelines, artists, genres, obsessions, cultural journeys and transparent interpretive readings. Those emotional and personality readings are creative reflection tools, not clinical assessments or diagnoses.
 
 **Current public version:** `1.5.0` — **deployed 2026-08-01**. **The Living Archive Gets a Face** removes invalid artist-image placeholders, clarifies genre and snapshot provenance, bounds archive imports and polishes mobile, keyboard and Hebrew RTL journeys.
 
-**Engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · 710 passing Vitest tests with 1 intentional private-fixture skip · 18/18 Playwright journeys · EN/ES/HE RTL · protected GitHub Pages CI. IndexedDB **schema revision 4** is a storage contract, not the product version.
+**Current source candidate:** `1.6.0` — **private candidate 2026-08-09**. **The Living Archive Finds Its Voice** refreshes the complete archive through 2026-08-06, clearly separates Kevin / Lirioth's exhibition from the local build-your-own path, opens the full artist catalog through A–Z/listening navigation and makes genres, obsessions and interpretive boundaries easier to understand. It is not yet tagged, released or deployed.
+
+**Verified public engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · 710 passing Vitest tests with 1 intentional private-fixture skip · 18/18 Playwright journeys · EN/ES/HE RTL · protected GitHub Pages CI. These figures describe the accepted v1.5.0 gate; v1.6.0 must pass its own frozen-source gate before publication. IndexedDB **schema revision 4** is a storage contract, not the product version.
+
+**v1.6.0 verification state (2026-08-09):** the exact local candidate passes one uninterrupted Node 22.13.0 `npm run verify:release` run: 132 test files pass with 1 intentional private-fixture skip, **803 tests pass with 1 intentional skip**, every strict data/privacy/build budget passes and all nine source-fingerprinted visuals pass audit and visual review. Playwright also passes **18/18** desktop/mobile journeys with one worker. Pull-request security checks, Kevin's publication approval and live Pages verification remain pending.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -29,34 +33,37 @@ Import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube archive, and opt
 ## ⚡ Try it in 30 seconds
 
 1. Open the [live flagship](https://liriothteltanion.github.io/NovaMusicLab/) and enter the museum.
-2. Start in **Explore**, the visual default; switch to **Guided** whenever you want plain-language context.
-3. Open **Atlas** to explore artists, media and archive evidence.
+2. Start in **Explore**, the visual default; switch to **Guided** whenever you want simpler language and essential context.
+3. Open **Artists** to browse the complete Atlas by listens, A–Z, letter or search.
 4. Switch to **Deep Dive** when you want methodology and provenance.
 5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
 6. In `1.4.0` — deployed **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
 7. In `1.5.0` — deployed **2026-08-01** — portrait fallbacks, genre evidence, snapshot dates and bounded local imports become easier to trust.
+8. In the `1.6.0` private candidate — dated **2026-08-09** — the archive grows through August 6, the first screen explains whose museum this is, **Create** opens the private visitor path, the full Atlas becomes navigable and genre/obsession stories become easier to read. This step is visible in source only until the release gate passes.
 
 No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ v1.5.0 release gallery
+## 🖼️ v1.6.0 candidate visuals — source-fingerprinted
 
-These captures document the frozen source that became `1.5.0` — **deployed
-2026-08-01**. They were generated and source-fingerprinted while that source was
-still a private candidate, then reviewed before promotion. The live
+These nine captures were regenerated from the frozen `1.6.0` product candidate
+on **2026-08-09**, passed the release-media hash/dimension audit and received a
+desktop/mobile EN/ES/HE visual review. The manifest binds them to the committed
+product source; they are candidate evidence, not deployment evidence. The live
 [`build-meta.json`](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json)
-is the authoritative deployment identity.
+remains the authoritative deployment identity, so public v1.5.0 stays current
+until the complete promotion gate passes.
 
 <table>
   <tr>
     <td width="50%">
-      <img src="./assets/releases/v1.5.0/home-desktop-en-cyber.jpg" alt="Nova Music Lab v1.5.0 candidate home on desktop with the unified wordmark and living artist constellation">
+      <img src="./assets/releases/v1.6.0/home-desktop-en-cyber.jpg" alt="Nova Music Lab v1.6.0 candidate home on desktop with the unified wordmark and living artist constellation">
       <br><strong>One stronger identity</strong> — the refined wordmark, release story and living portraits invite exploration without duplicating the title.
     </td>
     <td width="50%">
-      <img src="./assets/releases/v1.5.0/artist-atlas-desktop-en-cyber.jpg" alt="Living Artist Atlas in the v1.5.0 candidate with artist portrait, evidence and media">
-      <br><strong>The archive gets a face</strong> — reviewed portraits, deterministic fallbacks, listening evidence and media share one navigable room.
+      <img src="./assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg" alt="Living Artist Atlas in the v1.6.0 candidate with artist portrait, sourced biography, evidence and media">
+      <br><strong>The archive finds its voice</strong> — sourced artist stories, reviewed portraits, deterministic fallbacks and listening evidence share one navigable room.
     </td>
   </tr>
 </table>
@@ -64,31 +71,31 @@ is the authoritative deployment identity.
 <table>
   <tr>
     <td width="50%" align="center">
-      <img src="./assets/releases/v1.5.0/home-mobile-es-cyber.jpg" width="390" alt="Inicio móvil en español de Nova Music Lab v1.5.0">
-      <br><strong>A welcoming mobile entrance</strong> — Spanish copy and controls remain readable at 390 px.
+      <img src="./assets/releases/v1.6.0/home-mobile-es-cyber.jpg" width="390" alt="Inicio móvil en español de la candidata Nova Music Lab v1.6.0">
+      <br><strong>A welcoming mobile entrance</strong> — Spanish copy and the responsive room navigation remain readable at 390 px.
     </td>
     <td width="50%" align="center">
-      <img src="./assets/releases/v1.5.0/genres-mobile-en-cyber.jpg" width="390" alt="Mobile Genres room showing the v1.5.0 provenance-aware genre view">
+      <img src="./assets/releases/v1.6.0/genres-mobile-en-cyber.jpg" width="390" alt="Mobile Genres room showing the v1.6.0 provenance-aware genre view">
       <br><strong>Genres without clipping</strong> — the deep link, tabs and evidence chart fit the mobile viewport.
     </td>
   </tr>
 </table>
 
 <p align="center">
-  <img src="./assets/releases/v1.5.0/guest-museum-desktop-en-cyber.jpg" width="100%" alt="Guest Museum entry with an optional local name and bounded private listening-history importer">
+  <img src="./assets/releases/v1.6.0/guest-museum-desktop-en-cyber.jpg" width="100%" alt="Guest Museum entry with an optional local name and bounded private listening-history importer">
   <br><strong>A museum your friends can make their own</strong> — no account is required to name a local museum, import compatible files and begin a private comparison.
 </p>
 
 <p align="center">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/releases/v1.5.0/product-tour-static-en-cyber.jpg">
-    <img src="./assets/releases/v1.5.0/product-tour-animated-en-cyber.gif" width="560" alt="Short Nova Music Lab tour moving from Home to the Living Artist Atlas and Genres">
+    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/releases/v1.6.0/product-tour-static-en-cyber.jpg">
+    <img src="./assets/releases/v1.6.0/product-tour-animated-en-cyber.gif" width="560" alt="Short Nova Music Lab v1.6.0 tour moving from Home to the Living Artist Atlas and Genres">
   </picture>
-  <br><strong>Three rooms, one story</strong> — Home → Atlas → Genres shows how the invitation becomes evidence; reduced-motion readers receive a static frame.
+  <br><strong>Three rooms, one story</strong> — Overview → Artists → Genres shows how the invitation becomes evidence; reduced-motion readers receive a static frame.
 </p>
 
 <p align="center">
-  <img src="./assets/releases/v1.5.0/share-he-mobile-daylight.jpg" width="390" alt="Share and Feedback room in Hebrew RTL and daylight theme on mobile">
+  <img src="./assets/releases/v1.6.0/share-he-mobile-daylight.jpg" width="390" alt="Nova Music Lab v1.6.0 Share and Feedback room in Hebrew RTL and daylight theme on mobile">
   <br><strong>One system across contexts</strong> — mobile, Hebrew RTL and a light theme use the same information architecture.
 </p>
 
@@ -96,14 +103,15 @@ is the authoritative deployment identity.
 
 ## 🌌 Why Nova Music Lab exists
 
-Streaming platforms usually reduce years of listening to a short recap. Nova Music Lab treats an archive as a personal cultural artifact: something to investigate, revisit and interpret without surrendering the raw history to another analytics backend.
+Streaming platforms usually reduce years of listening to a short recap. Nova Music Lab begins with Kevin / Lirioth's published personal archive and treats it as a cultural artifact: something to investigate, revisit and interpret. The same browser experience lets another listener choose supported exports and build a private local museum without surrendering the raw history to a Nova analytics backend.
 
-The project is built around four commitments:
+The project is built around five commitments:
 
 1. **Evidence before spectacle.** Unknown information remains unknown; estimates and interpretations must be distinguishable from observed facts.
 2. **Local-first ownership.** Visitor-selected archives are parsed and stored in the browser.
 3. **Source awareness.** Each provider exposes different fields, so rooms only claim capabilities their active archive can support.
 4. **A museum, not a spreadsheet.** Motion, sound-inspired art, narrative and exploration make the evidence emotionally legible.
+5. **Reflection, not diagnosis.** Emotional and personality language is an evidence-aware creative interpretation; it does not assess mental health or replace professional care.
 
 ---
 
@@ -111,8 +119,8 @@ The project is built around four commitments:
 
 | Mode | Purpose | Data boundary |
 |---|---|---|
-| **Flagship Exhibition** | A curated demonstration of Kevin's personal music museum and Nova's full visual language. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
-| **My Museum** | A visitor imports supported exports and rebuilds the quantitative museum from the active archive. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. |
+| **Kevin / Lirioth Exhibition** | Kevin Cusnir / Lirioth Teltanion's real personal listening history, presented as the public museum and Nova's complete visual demonstration. | A reviewed aggregate dataset is intentionally published with the static site and governed by [`public_dataset_manifest.json`](./src/data/public_dataset_manifest.json). |
+| **My Museum** | A visitor imports supported listening-history exports and rebuilds every view the source can honestly support, including derived and clearly labelled interpretive rooms. | Raw files stay in the browser; the app does not upload them to a Nova Music Lab server. Missing source capabilities remain unavailable rather than being invented. |
 
 `1.4.0` — deployed **2026-07-29** — makes **My Museum** a clear
 Guest Museum journey. A visitor may add an optional browser-local display name,
@@ -140,6 +148,12 @@ The evidence-first milestone, completed in `1.0.0` — published **2026-07-16** 
 
 Imports can be mixed. Source-specific fields remain source-specific: for example, Last.fm alone cannot prove Spotify device or skip behavior.
 
+Repository operators can create a complete private Last.fm CSV with the
+[local Last.fm export guide](./docs/product/LASTFM_LOCAL_EXPORT.md). The tool
+prompts for the key locally and stores the raw result outside Git and OneDrive;
+it is a manual snapshot, not a live connection and does not alter the public
+flagship exhibition.
+
 MusicBee is intentionally different: it shows what is in a local library, but
 its cumulative play counts are not added to Spotify, Last.fm or the historical
 timeline. Read the [MusicBee import guide](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md)
@@ -152,14 +166,16 @@ connection:
 
 | Evidence date | Verified value |
 |---|---|
-| Observed listening period | 2015-03-01 through 2026-07-03 |
-| Dataset generated | 2026-07-14 |
+| Observed listening period | 2015-03-01 through 2026-08-06 |
+| Dataset generated | 2026-08-07 in Asia/Jerusalem (`2026-08-06T21:44:39.498Z`) |
+| Artist enrichment generated | 2026-07-29 |
 | Recent Pulse synchronized | 2026-07-02 |
 | Automatic synchronization | No |
 
-The app never labels this archive “updated 2026-08-01.” A future Spotify,
-Last.fm or MusicBee refresh must be compiled privately, reconciled and pass the
-public-bundle privacy audit before it can replace these dates.
+The app never labels this archive “updated 2026-08-09.” These dates describe
+different evidence layers, not a live Spotify, Last.fm or MusicBee connection.
+Any future refresh must be compiled privately, reconciled and pass the
+public-bundle privacy audit before it can replace them.
 
 ---
 
@@ -167,17 +183,18 @@ public-bundle privacy audit before it can replace these dates.
 
 <img src="./assets/readme/museum-journey.svg" width="100%" alt="Nova Music Lab journey from private archive to evidence-linked report">
 
-The museum is organized into five stable hubs:
+The museum is organized into five stable hubs. Their visible names prioritize
+plain purpose; internal routes remain stable for old links:
 
-- **Home** — orientation, archive overview, sharing and feedback.
+- **Overview** — orientation, archive purpose, sharing and feedback.
 - **Pulse** — recent movement, loops, achievements and yearly summaries.
-- **Atlas** — Living Artist Atlas, rankings and cultural geography.
+- **Artists** — Living Artist Atlas, rankings and cultural geography.
 - **Stories** — eras, identity, emotion and the final narrative.
-- **Data Lab** — import, local audio, comparisons, quality and advanced statistics.
+- **Create** — import a private museum, local audio, comparisons, quality and advanced statistics.
 
 Three persistent depths change how information is presented without hiding rooms or changing the URL:
 
-- **Guided** — opens friendly introductions and gives a clear next step.
+- **Guided** — uses simpler language and keeps essential context visible.
 - **Explore** — the balanced default: a calm, visual, self-directed museum visit.
 - **Deep Dive** — opens methodology and prioritizes evidence, limits and advanced controls.
 
@@ -190,10 +207,10 @@ Representative rooms include:
 | **Dashboard** | Archive identity, coverage and high-level signals |
 | **Era Explorer** | How listening identity changes across years |
 | **Top Histórico** | Artist, track and album dossiers with evidence-linked context |
-| **Obsession Detector** | Repetition, streaks and concentrated listening periods |
+| **Obsession Detector** | A cover-led spotlight, visual replay loops, streaks and concentrated listening periods |
 | **Emotional Map** | Interpretive mood stations grounded in available signals |
 | **Cultural Map** | Artist origins and listening geography |
-| **Living Artist Atlas** | Searchable artist territories with archive weight, galleries, tracks, albums, offline profiles, provenance and opt-in official media |
+| **Living Artist Atlas** | The complete exact-name catalog by listens or A–Z, with search, letter filters, human-first artist stories, galleries, tracks, albums, provenance and opt-in official media |
 | **Share & Feedback** | Browser sharing, WhatsApp invitation and structured local feedback without requiring an account |
 | **Audio Lab** | Private local preview and file evidence boundary; advanced acoustic analysis is explicitly not run yet |
 | **Source Observatory** | Last.fm, Spotify, YouTube, Apple Music and ListenBrainz coverage, field capabilities and honest missing-source states |
@@ -253,21 +270,38 @@ The project deliberately rejects plausible-looking fabricated numbers. Data reco
 
 The generated artist manifest currently contains **100 artist records** and **295 provenance-aware visual assets**. Artist aliases, MusicBrainz/Wikidata identifiers, countries, genres, releases, members and official links remain separate from private play counts. Each image record carries its source, license-review state, attribution, focal point and cache/privacy policy; after the reviewed Wikimedia Commons metadata pass, **6 assets remain visibly queued for license review** rather than being mislabeled as reusable.
 
-The Living Artist Atlas turns those records into explorable territories: progressive galleries with deterministic local fallbacks, archive-ranked tracks and albums, documented discography, official links and an on-demand evidence panel. Spotify and YouTube players stay behind an explicit privacy gate. Remote gallery images disclose their provider and network boundary instead of being described as local assets.
+The Living Artist Atlas turns those records into explorable territories. Its
+lazy navigator opens all **6,593 exact-name catalog entries** by listening rank,
+A–Z, letter or search without placing the complete catalog in the entry bundle.
+Artist copy starts with a readable introduction before technical evidence.
+Progressive galleries, archive-ranked tracks and albums, documented
+discography, official links and an on-demand evidence panel remain available.
+The primary portrait index matches **5,691 / 6,593** catalog rows by normalized
+exact name; unavailable or failed remote images use deterministic generated art
+rather than a wrong face. Spotify and YouTube players stay behind an explicit
+privacy gate, and remote gallery images disclose their provider and network
+boundary instead of being described as local assets.
 
-`1.5.0` — deployed **2026-08-01** — explains three different coverage
+The `1.6.0` private candidate dated **2026-08-09** explains three different coverage
 layers instead of collapsing them into one number. Analytical genre families
-cover **94.1% of 80,550 plays**; detailed evidence exists for **453 of 6,413
-catalog rows**; and **1,662 rows** remain unclassified. The evidence bundle
-contains **1,257 assertions**: **85 accepted**, **1,170 candidate** and **2
+cover **94.2% of 82,661 plays**; detailed evidence exists for **457 of 6,593
+catalog entries**; and **1,648 entries** remain unclassified. The evidence bundle
+contains **1,290 assertions**: **85 accepted**, **1,203 candidate** and **2
 rejected**. Accepted assertions appear as documented facts, candidates remain
 visible suggestions, rejected relationships stay hidden and unresolved entries
 say “To research.” `Observed` means an automatic classification derived from
-listening evidence, while `Other` groups smaller known families. Emotional
-readings remain a separate heuristic layer rather than masquerading as genres.
+listening evidence. **Unclassified always stays separate**; compact charts name
+the number of smaller classified families they group, while the complete view
+shows all 36 rows without inventing an `Other` genre. Emotional readings remain
+a separate, non-clinical interpretive layer rather than masquerading as genres.
 
-The 6,413-row catalog is not a claim of 6,413 unique people or canonical artist
-identities. The current reversible identity registry documents **181 known
+The track-art index contains **170 exact artist/title mappings** and covers all
+**50 / 50** bundled Obsessions moments. This describes exact metadata matches,
+not guaranteed network availability; deterministic generated covers remain the
+honest runtime fallback.
+
+The 6,593-entry catalog is not a claim of 6,593 unique people or canonical artist
+identities. The current reversible identity registry documents **182 known
 normalized-name variant groups**; this candidate does not delete or merge the
 historical rows.
 
@@ -427,6 +461,7 @@ Only `https:` URLs are accepted; anything else is ignored and the link stays hid
 | [Storage and migrations](./docs/architecture/STORAGE_AND_MIGRATIONS.md) | IndexedDB, dataset envelopes and recovery |
 | [Privacy threat model](./docs/architecture/PRIVACY_THREAT_MODEL.md) | Assets, imports, network and public-data risks |
 | [Data sources](./docs/product/DATA_SOURCES.md) | Source capabilities and honest limitations |
+| [Private Last.fm export](./docs/product/LASTFM_LOCAL_EXPORT.md) | Hidden-key local download, validation and private import workflow |
 | [MusicBee library snapshot](./docs/product/MUSICBEE_LIBRARY_SNAPSHOT.md) | MusicBee XML export, retained fields, privacy and non-timeline limits |
 | [Public data policy](./docs/data/PUBLIC_DATA_POLICY.md) | Rules for the published flagship bundle |
 | [Artwork schema](./docs/data/ARTWORK_SCHEMA.md) | Artist, album, track and gallery asset contracts |
@@ -449,6 +484,8 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
 `1.5.0` — deployed **2026-08-01** — is served by the protected GitHub Pages workflow. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) promoted the reviewed source, and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) verified, deployed and smoke-tested initial release commit `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
+
+`1.6.0` — **private candidate 2026-08-09** — integrates the clearer purpose, navigation, Atlas, Genres, Obsessions, media fallback and interpretive boundary described above. The complete local release gate passes with 803 tests plus 1 intentional skip, Playwright 18/18, strict data/privacy checks, build budgets and refreshed source-fingerprinted media. Pull-request security checks, approval and live Pages acceptance remain pending. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
 
 ---
 
