@@ -3,11 +3,11 @@
   "release": {
     "status": "private-candidate",
     "version": "1.6.0",
-    "source_commit": "3a5752784c4d76139c68037d4f412d67d9330414",
-    "source_head_commit": "3a5752784c4d76139c68037d4f412d67d9330414",
+    "source_commit": "e439d053ed52c8e825b676fb4c004fa39a63c14f",
+    "source_head_commit": "e439d053ed52c8e825b676fb4c004fa39a63c14f",
     "source_state": "committed-product-source",
     "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
-    "source_fingerprint": "67e380d50ce02ad0f3499677e3b212d9aa1b71c533be0befe86ee24b8f8c4530",
+    "source_fingerprint": "5e8a5aeb0f89795fae379be87fd095fa6eee1e5f3063441dad82c6906e2a4d3d",
     "source_file_count": 504,
     "captured_on": "2026-08-09",
     "deployed_on": null
@@ -108,10 +108,10 @@
     {
       "id": "artist-atlas-desktop",
       "path": "assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "ef7406d5beac9740a540200379dd9f5c55c9db8a39a52729a161d36680e767e7",
+      "sha256": "72fca9d5c5ffd423d800429b3c4a1ad498f4cbff759b34a7e2a37e593a45656c",
       "width": 1440,
       "height": 900,
-      "bytes": 170815,
+      "bytes": 170043,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -150,10 +150,10 @@
     {
       "id": "profile-tour-static",
       "path": "assets/releases/v1.6.0/product-tour-static-en-cyber.jpg",
-      "sha256": "74da67d311a962ba70c2d2a9f8ac5a074ea15c5f8892515160bf957f483960d4",
+      "sha256": "eb36d4ad4f548797f779e4f54a1c71b243ba33b9bb75701c8698c2baa2237a5a",
       "width": 960,
       "height": 600,
-      "bytes": 103369,
+      "bytes": 107456,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -164,10 +164,10 @@
     {
       "id": "profile-tour",
       "path": "assets/releases/v1.6.0/product-tour-animated-en-cyber.gif",
-      "sha256": "804904989e33fe95bb34f8d83d297291f6648fe7715cd644a45878b8b2b9811b",
+      "sha256": "d83995176aa93dea3f24dae18f576fd0cbfdbada673ce326d5ffc76ec2cbe220",
       "width": 560,
       "height": 350,
-      "bytes": 153305,
+      "bytes": 154970,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
