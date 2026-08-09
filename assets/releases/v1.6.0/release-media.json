@@ -3,12 +3,12 @@
   "release": {
     "status": "private-candidate",
     "version": "1.6.0",
-    "source_commit": "e439d053ed52c8e825b676fb4c004fa39a63c14f",
-    "source_head_commit": "e439d053ed52c8e825b676fb4c004fa39a63c14f",
+    "source_commit": "cd252fe7c6193a7f108bae57907873f581fa59dc",
+    "source_head_commit": "cd252fe7c6193a7f108bae57907873f581fa59dc",
     "source_state": "committed-product-source",
     "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
-    "source_fingerprint": "5e8a5aeb0f89795fae379be87fd095fa6eee1e5f3063441dad82c6906e2a4d3d",
-    "source_file_count": 504,
+    "source_fingerprint": "846de60d87204dcb752ae7059bbfa0be842521f42cad0ff1b9f087084d18cee8",
+    "source_file_count": 512,
     "captured_on": "2026-08-09",
     "deployed_on": null
   },
@@ -66,10 +66,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.6.0/home-desktop-en-cyber.jpg",
-      "sha256": "7fdd77eff58640dc9ad161f88266a3252d721c4f3cad5137c25afb451b94fda8",
+      "sha256": "936b12fad11d5658e9e6b50d71ff720af0cf69af2e40a5ac5a8cf404353e8f77",
       "width": 1440,
       "height": 900,
-      "bytes": 162926,
+      "bytes": 182392,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -80,10 +80,10 @@
     {
       "id": "profile-hero-mobile",
       "path": "assets/releases/v1.6.0/home-mobile-es-cyber.jpg",
-      "sha256": "cdcdc3c9fc93e2e09219c8d313cf1a62a2e9a8efb49ee6407c6e38f01800cbf7",
+      "sha256": "e43c1586e8d0d6c389b2f16d05979fbd648cb073ca0bc439837545eb905614fe",
       "width": 390,
       "height": 844,
-      "bytes": 53412,
+      "bytes": 67254,
       "lang": "es",
       "theme": "cyber",
       "viewport": {
@@ -94,10 +94,10 @@
     {
       "id": "genres-mobile",
       "path": "assets/releases/v1.6.0/genres-mobile-en-cyber.jpg",
-      "sha256": "5bc6ed829e1e5b56f9d69b4a26d103bf1bde540341c1584a8cfb6ed596b968ca",
+      "sha256": "c8912c04b69396a3f77208fa99ad8a97b67424b7a6b93db9d5556ff17f472b81",
       "width": 390,
       "height": 844,
-      "bytes": 64486,
+      "bytes": 52302,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -108,10 +108,10 @@
     {
       "id": "artist-atlas-desktop",
       "path": "assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "72fca9d5c5ffd423d800429b3c4a1ad498f4cbff759b34a7e2a37e593a45656c",
+      "sha256": "ec9809c501e34ef5b62c44184d8b1756c033a707d61a9ee66a320aa51c3c2878",
       "width": 1440,
       "height": 900,
-      "bytes": 170043,
+      "bytes": 161860,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -122,10 +122,10 @@
     {
       "id": "guest-museum-desktop",
       "path": "assets/releases/v1.6.0/guest-museum-desktop-en-cyber.jpg",
-      "sha256": "490e30c1e08200816e27f158d000ead40346cf752f39301e1d36023c34b5ede9",
+      "sha256": "2e0274c83194a863f5134e6b575d962e081d65bdf4c4135f6fdb66aaa9c3e247",
       "width": 1440,
       "height": 900,
-      "bytes": 149922,
+      "bytes": 150297,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -136,10 +136,10 @@
     {
       "id": "hebrew-mobile",
       "path": "assets/releases/v1.6.0/share-he-mobile-daylight.jpg",
-      "sha256": "44059f048e77eb5aa9d92192f87da9be429cab736e91e86f46651ef37e2c47db",
+      "sha256": "70c562ff1bbe48656fba2422f58d4dc3d32177d35be3ea144aef761a80b5ce1a",
       "width": 390,
       "height": 844,
-      "bytes": 51245,
+      "bytes": 51537,
       "lang": "he",
       "theme": "daylight",
       "viewport": {
@@ -150,10 +150,10 @@
     {
       "id": "profile-tour-static",
       "path": "assets/releases/v1.6.0/product-tour-static-en-cyber.jpg",
-      "sha256": "eb36d4ad4f548797f779e4f54a1c71b243ba33b9bb75701c8698c2baa2237a5a",
+      "sha256": "f2fa99afb3a8302e23d6647abdb83f1119401d611ce5fb54895f133b7261f799",
       "width": 960,
       "height": 600,
-      "bytes": 107456,
+      "bytes": 110011,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -164,10 +164,10 @@
     {
       "id": "profile-tour",
       "path": "assets/releases/v1.6.0/product-tour-animated-en-cyber.gif",
-      "sha256": "d83995176aa93dea3f24dae18f576fd0cbfdbada673ce326d5ffc76ec2cbe220",
+      "sha256": "831d1609262a0b54f54b329ed78a9522185a1b1004125c00881e421d6622c16c",
       "width": 560,
       "height": 350,
-      "bytes": 154970,
+      "bytes": 152566,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
