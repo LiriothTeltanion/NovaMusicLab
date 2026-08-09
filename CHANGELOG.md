@@ -63,13 +63,14 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
 - A clean Node `22.13.0` `npm ci` installed 255 packages with zero known
   vulnerabilities. Strict data, genre, identity, media-link, knowledge,
   privacy, PWA, share and bundle-budget checks pass on the integrated candidate.
-- Targeted Vitest coverage and the four repaired desktop/mobile Playwright
-  cases pass. The uninterrupted complete Vitest and 18-journey Playwright runs
-  remain mandatory before promotion.
+- One uninterrupted `npm run verify:release` run passes: 132 test files pass
+  with 1 intentional private-fixture skip, 803 tests pass with 1 intentional
+  skip, and all strict data/privacy/build-budget gates are green. Playwright
+  passes 18/18 desktop/mobile journeys with one worker.
 - All nine candidate assets were regenerated from committed product source,
   passed the release-media audit and received desktop/mobile EN/ES/HE visual
-  review. Pull-request CI and live Pages checks remain separate acceptance
-  gates. This entry is not evidence of publication.
+  review. Pull-request CI, Kevin's publication approval and live Pages checks
+  remain separate acceptance gates. This entry is not evidence of publication.
 
 ### Known limitations
 

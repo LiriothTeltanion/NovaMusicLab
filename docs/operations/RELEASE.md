@@ -201,9 +201,10 @@ visitor reaches the technical detail:
 - Emotional and personality results are explicitly interpretive and
   non-clinical; they are not diagnoses.
 
-- [ ] The exact integrated source passes the complete local verification,
+- [x] The exact integrated source passes the complete local verification,
   privacy and dependency gates on Node `22.13.0`, including all expected
-  Vitest tests and 18/18 Playwright journeys.
+  Vitest tests (803 pass plus 1 intentional private-fixture skip) and 18/18
+  Playwright journeys.
 - [x] Final v1.6.0 release media is recaptured from the frozen integrated
   source, contains nine source-fingerprinted assets, passes the release-media
   audit and is reviewed visually in desktop/mobile and EN/ES/HE.
