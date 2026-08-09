@@ -2,7 +2,8 @@
 
 Nova Music Lab normalizes multiple export formats into one analytical model while preserving source capabilities and limitations.
 
-Status: reflects Nova Music Lab `1.5.0` — deployed **2026-08-01**.
+Status: reflects Nova Music Lab `1.6.0` — **private candidate 2026-08-09**;
+`1.5.0` — deployed 2026-08-01 — remains the latest public release.
 
 ## Timeline capability matrix
 

@@ -92,6 +92,15 @@ afterEach(() => {
 });
 
 describe('GenreTaggingStudio', () => {
+  it('derives the loading count from the active archive instead of frozen release copy', () => {
+    window.localStorage.setItem('nml_lang', 'en');
+    renderBundledStudio();
+
+    expect(screen.getByRole('status')).toHaveTextContent(
+      `Loading all ${(compiledData as unknown as MusicDnaData).core_metrics.unique_artists.toLocaleString('en-US')} artist-name catalog entries`,
+    );
+  });
+
   it('shows the impact-ranked review queue and saves a primary family with secondary tags', async () => {
     window.localStorage.setItem('nml_lang', 'en');
     const user = userEvent.setup();

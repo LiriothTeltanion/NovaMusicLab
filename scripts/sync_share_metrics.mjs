@@ -10,20 +10,24 @@
 // while the hero counted up to 82,661 two seconds later.
 //
 // So they are generated now. src/data/share_metrics.json is the single source
-// both surfaces read; the sentences in index.html are written from the
-// templates below. --check re-renders everything and fails if the working tree
-// disagrees, which is what CI runs.
+// both runtime surfaces read; the sentences in index.html and metrics in the
+// editable social SVG are written from the reviewed data contracts below.
+// --check re-renders everything and fails if the working tree disagrees, which
+// is what CI runs.
 //
 //   node scripts/sync_share_metrics.mjs          rewrite
 //   node scripts/sync_share_metrics.mjs --check  verify, exit 1 on drift
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildSocialPreviewFacts } from './lib/socialPreviewFacts.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPILED = path.join(ROOT, 'src', 'data', 'music_dna_compiled.json');
 const METRICS = path.join(ROOT, 'src', 'data', 'share_metrics.json');
+const PUBLIC_MANIFEST = path.join(ROOT, 'src', 'data', 'public_dataset_manifest.json');
 const INDEX_HTML = path.join(ROOT, 'index.html');
+const SOCIAL_PREVIEW_SVG = path.join(ROOT, 'assets', 'social', 'nova-music-lab-social-preview.svg');
 
 const CHECK = process.argv.includes('--check');
 
@@ -84,18 +88,35 @@ function replaceMeta(html, key, value) {
   return html.replace(pattern, `$1${attr(value)}$2`);
 }
 
+function replaceSvgText(svg, id, value) {
+  const pattern = new RegExp(`(<text\\b[^>]*\\bid="${id}"[^>]*>)[^<]*(</text>)`);
+  if (!pattern.test(svg)) {
+    throw new Error(`social preview SVG has no <text id="${id}"> to update.`);
+  }
+  const escaped = value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return svg.replace(pattern, `$1${escaped}$2`);
+}
+
 const metrics = readMetrics();
+const publicManifest = JSON.parse(fs.readFileSync(PUBLIC_MANIFEST, 'utf8'));
+const socialFacts = buildSocialPreviewFacts(metrics, publicManifest);
 
 const metricsJson = `${JSON.stringify(metrics, null, 2)}\n`;
 let html = fs.readFileSync(INDEX_HTML, 'utf8');
 for (const [key, template] of Object.entries(HTML_TEMPLATES)) {
   html = replaceMeta(html, key, render(template, metrics));
 }
+const socialSvgOnDisk = fs.readFileSync(SOCIAL_PREVIEW_SVG, 'utf8');
+const socialSvg = replaceSvgText(socialSvgOnDisk, 'archive-metrics', socialFacts.metricsLabel);
 
 const drift = [];
 const onDisk = fs.existsSync(METRICS) ? fs.readFileSync(METRICS, 'utf8') : null;
 if (onDisk !== metricsJson) drift.push('src/data/share_metrics.json');
 if (fs.readFileSync(INDEX_HTML, 'utf8') !== html) drift.push('index.html');
+if (socialSvgOnDisk !== socialSvg) drift.push('assets/social/nova-music-lab-social-preview.svg');
 
 console.log(`[share-metrics] ${metrics.plays.toLocaleString('en-US')} plays · ${metrics.tracks.toLocaleString('en-US')} tracks · ${metrics.artists.toLocaleString('en-US')} artist entries`);
 
@@ -116,4 +137,5 @@ if (!drift.length) {
 
 fs.writeFileSync(METRICS, metricsJson);
 fs.writeFileSync(INDEX_HTML, html);
+fs.writeFileSync(SOCIAL_PREVIEW_SVG, socialSvg);
 console.log(`[share-metrics] updated ${drift.join(', ')}`);

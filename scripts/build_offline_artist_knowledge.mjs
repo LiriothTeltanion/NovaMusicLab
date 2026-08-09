@@ -3,6 +3,11 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
+import {
+  findTopLevelEnrichmentRegressions,
+  preserveBandMembersForStableIdentity,
+} from './lib/offlineKnowledgePipeline.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dataPath = path.join(root, 'src', 'data', 'music_dna_compiled.json');
@@ -647,8 +652,12 @@ async function main() {
     artists,
   };
 
-  if (mergeIntoExisting && fs.existsSync(outputPath)) {
-    const existing = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
+  const previousDatabase = fs.existsSync(outputPath)
+    ? JSON.parse(fs.readFileSync(outputPath, 'utf8'))
+    : null;
+
+  if (mergeIntoExisting && previousDatabase) {
+    const existing = previousDatabase;
     const exactName = value => String(value ?? '').normalize('NFC').trim();
     const topArtistKeys = new Set(data.top_artists.map(artist => exactName(artist.name)));
     const replacements = new Map(artists.map(artist => [exactName(artist.name), artist]));
@@ -670,7 +679,14 @@ async function main() {
     };
   }
 
-  assertEnrichmentDidNotCollapse(database, outputPath);
+  if (previousDatabase) {
+    const preservedLineups = preserveBandMembersForStableIdentity(database, previousDatabase);
+    if (preservedLineups) {
+      log(`Preserved reviewed band-member enrichment for ${preservedLineups} stable artist identity/identities.`);
+    }
+  }
+
+  assertEnrichmentDidNotCollapse(database, previousDatabase);
 
   fs.writeFileSync(outputPath, `${JSON.stringify(database, null, 2)}\n`);
   log(`Wrote ${path.relative(root, outputPath)} with ${database.artists.length} artist(s).`);
@@ -698,23 +714,11 @@ async function main() {
  * enriched, and is still in the top 100, may not come back empty. Losing an
  * identifier is always a refused lookup, never a smaller archive.
  */
-function assertEnrichmentDidNotCollapse(next, outputPath) {
-  if (!fs.existsSync(outputPath)) return;
+function assertEnrichmentDidNotCollapse(next, previous) {
+  if (!previous) return;
 
-  const previous = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-  const before = new Map(previous.artists.map(artist => [artist.name, artist]));
-
-  const regressions = [];
-  for (const artist of next.artists) {
-    const old = before.get(artist.name);
-    if (!old) continue; // A new entrant with nothing yet is a gap, not a loss.
-
-    for (const [field, oldValue] of Object.entries(old)) {
-      if (isEmptyValue(oldValue)) continue;
-      if (!isEmptyValue(artist[field])) continue;
-      regressions.push(`${artist.name} (${field})`);
-    }
-  }
+  const regressions = findTopLevelEnrichmentRegressions(next, previous)
+    .map(regression => `${regression.artist} (${regression.field})`);
 
   if (!regressions.length) return;
 
@@ -732,29 +736,18 @@ function assertEnrichmentDidNotCollapse(next, outputPath) {
     .join(', ');
 
   throw new Error(
-    `Refusing to write: ${regressions.length} field(s) came back empty on artists that already had them - ${summary}.\n`
+    `Refusing to write: ${regressions.length} artist row(s) or field(s) disappeared from existing knowledge - ${summary}.\n`
     + `  ${regressions.slice(0, 12).join('\n  ')}${regressions.length > 12 ? `\n  ...and ${regressions.length - 12} more` : ''}\n`
-    + 'Two causes are likely. A throttled lookup: MusicBrainz allows one request '
+    + 'Three causes are likely. A partial --artist/--limit run without --merge: '
+    + 'rerun it with --merge so untouched artist rows remain in the database. '
+    + 'A throttled lookup: MusicBrainz allows one request '
     + 'per second and this script has no cache for a name it has not seen answer '
     + 'before - wait a few minutes and run again, since each attempt caches what '
-    + 'did succeed. Or a later enrichment step being overwritten: bandMembers, '
-    + 'for one, is written by enrich_artist_members.mjs on top of this file, so '
-    + 'rebuilding the base drops it until that script runs again.\n'
+    + 'did succeed. Or an identity changed: reviewed bandMembers are preserved '
+    + 'only when the exact artist name and MusicBrainz ID remain stable, so a '
+    + 'new match requires an explicit lineup review.\n'
     + 'Nothing was written.',
   );
-}
-
-/**
- * Treats null, undefined, empty strings, empty arrays and empty objects alike.
- * The comparison has to be field-agnostic: an earlier version of this guard
- * named the two fields it cared about, and a rebuild then quietly removed
- * bandMembers from 70 artists - 479 people - because nobody had listed it.
- */
-function isEmptyValue(value) {
-  if (value === null || value === undefined || value === '') return true;
-  if (Array.isArray(value)) return value.length === 0;
-  if (typeof value === 'object') return Object.keys(value).length === 0;
-  return false;
 }
 
 main().catch(error => {

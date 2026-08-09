@@ -6,7 +6,59 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No product work beyond the deployed `v1.5.0` scope is recorded here.
+No product work beyond the `v1.6.0` private candidate scope is recorded here.
+
+## [1.6.0] - 2026-08-09
+
+Status: **private candidate — not tagged, released or deployed**.
+
+Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz**.
+
+### Added
+
+- Replayed the complete reviewed Spotify, Last.fm and YouTube archive through
+  2026-08-06, preserving an explicit local-snapshot boundary instead of
+  presenting the refresh as a live account connection.
+- Expanded source-labelled artist dossiers and album/portrait evidence while
+  keeping unavailable biography fields honest.
+- Added a mobile room dock and calmer supporting text so core navigation
+  remains legible without removing deep-dive evidence.
+
+### Changed
+
+- Refreshed the candidate archive to **82,661 plays**, **20,908 tracks** and
+  **6,593 exact artist-name catalog entries**. Dataset generation occurred at
+  `2026-08-06T21:44:39.498Z`, or 2026-08-07 in the declared
+  `Asia/Jerusalem` analysis timezone.
+- Updated the reversible identity count to **182 known normalized-name variant
+  groups** without deleting or silently merging historical entries.
+- Updated genre coverage to **94.2%** of plays, detailed evidence for **457 / 6,593**
+  entries and **1,648** unclassified entries. Assertions remain distinct:
+  **85 accepted**, **1,203 candidate** and **2 rejected and hidden**.
+- Made Data Quality and Genre Lab derive catalog counts from the reviewed
+  manifest or active archive rather than release-specific UI literals.
+- Connected social-preview metrics to the same share-metrics and public-manifest
+  contracts used by the application, with a drift check for the editable SVG.
+- Kept enrichment dated **2026-07-29** and Recent Pulse dated **2026-07-02**;
+  neither date is overstated as part of the August listening refresh.
+
+### Verification status
+
+- The local source gate passed on Node `22.13.0`: clean `npm ci`, zero known npm
+  vulnerabilities, every data/privacy/PWA/share audit, **770 passing Vitest
+  tests with 1 intentional private-fixture skip**, **18/18 Playwright journeys**
+  and every bundle budget without widening a limit.
+- Final v1.6.0 media, the post-capture `verify:release` repetition, pull-request
+  CI review and live Pages checks remain pending. This entry is not evidence of
+  publication.
+
+### Known limitations
+
+- This is still a historical, browser-local snapshot with no backend, account,
+  OAuth or automatic Spotify/Last.fm synchronization.
+- Final v1.6.0 screenshots, animated tour and raster social preview must be
+  generated only after product freeze and must pass the release-media audit.
+- DAW, FL Studio, MIDI, Tauri and desktop packaging remain outside this release.
 
 ## [1.5.0] - 2026-08-01
 

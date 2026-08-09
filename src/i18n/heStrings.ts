@@ -412,7 +412,7 @@ export const HE_STRINGS = {
       kpiHoursListened: "שעות האזנה",
       kpiHoursListenedSub: (days: string | number) => `כ־${days} ימים של מוזיקה רציפה`,
       kpiUniqueArtists: "רשומות קטלוג",
-      kpiUniqueArtistsSub: "שמות אמנים; 181 קבוצות וריאנטים נשמרו",
+      kpiUniqueArtistsSub: "שמות אמנים מדויקים; וריאציות זהות נשמרות",
       kpiActiveDays: "ימי פעילות",
       kpiActiveDaysSub: "ימים עם לפחות השמעה רשומה אחת",
       kpiBestYear: "השנה המובילה",

@@ -13,6 +13,11 @@ for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
 
+`v1.6.0` — private candidate 2026-08-09 — must receive a new immutable media
+directory only after product freeze. Until those files are generated and pass
+the audit, the v1.5.0 directory and raster social preview remain the latest
+reviewed visual evidence.
+
 ## What each candidate must contain
 
 - English cyber-theme Hero at 1440×900.
@@ -60,7 +65,8 @@ The tracked source handoff deliberately retains:
 }
 ```
 
-This does not mean the public product is undeployed. `v1.5.0` was deployed on
+This does not mean the public product is undeployed. `v1.5.0` remains the
+latest verified public release and was deployed on
 2026-08-01 from initial release commit
 `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The tracked manifest remains
 neutral so it never predicts the SHA of a commit that does not exist yet. CI

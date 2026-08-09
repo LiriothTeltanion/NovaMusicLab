@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Map as MapIcon, X } from "lucide-react";
 import { directionFor } from "../utils/i18n";
@@ -11,6 +12,60 @@ import {
   useRoomMapFocus,
   type RoomNavigatorProps,
 } from "./MuseumRoomNavigator";
+
+const FOCUSABLE = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function useMobileRoomMapModal(open: boolean, mapRef: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const appRoot = document.getElementById('root');
+    const previousInert = appRoot?.inert ?? false;
+    document.body.style.overflow = 'hidden';
+    if (appRoot) appRoot.inert = true;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || !mapRef.current) return;
+
+      const focusable = Array.from(mapRef.current.querySelectorAll<HTMLElement>(FOCUSABLE))
+        .filter(element => !element.hasAttribute('disabled') && element.tabIndex !== -1);
+      if (!focusable.length) {
+        event.preventDefault();
+        mapRef.current.focus({ preventScroll: true });
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const activeElement = document.activeElement;
+      if (!mapRef.current.contains(activeElement)) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      } else if (event.shiftKey && activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (appRoot) appRoot.inert = previousInert;
+    };
+  }, [mapRef, open]);
+}
 
 /**
  * Room-to-room navigation on a phone, in its own module so the landing shell
@@ -48,6 +103,7 @@ export default function MobileRoomDock({ items, activeId, lang, onNavigate }: Ro
   }, [onNavigate]);
 
   useRoomMapFocus(mapOpen, closeMap, mapTriggerRef, mapRef);
+  useMobileRoomMapModal(mapOpen, mapRef);
 
   useEffect(() => {
     const changed = previousActiveIdRef.current !== activeId;
@@ -62,91 +118,113 @@ export default function MobileRoomDock({ items, activeId, lang, onNavigate }: Ro
   const nextItem = activeIndex < items.length - 1 ? items[activeIndex + 1] : null;
   const PreviousIcon = lang === 'he' ? ChevronRight : ChevronLeft;
   const NextIcon = lang === 'he' ? ChevronLeft : ChevronRight;
+  const roomStyle = {
+    '--room-color': activeItem.color,
+    '--room-secondary': activeItem.secondary,
+    '--room-progress': `${progress.ratio * 100}%`,
+  } as React.CSSProperties;
 
   return (
-    <div
-      className="museum-mobile-navigation md:hidden"
-      style={{
-        '--room-color': activeItem.color,
-        '--room-secondary': activeItem.secondary,
-        '--room-progress': `${progress.ratio * 100}%`,
-      } as React.CSSProperties}
-      dir={directionFor(lang)}
-    >
-      <AnimatePresence
-        onExitComplete={() => {
-          if (!mapOpen) mapTriggerRef.current?.focus({ preventScroll: true });
-        }}
+    <>
+      <div
+        className="museum-mobile-navigation md:hidden"
+        style={roomStyle}
+        dir={directionFor(lang)}
       >
-        {mapOpen && (
-          <motion.section
-            ref={mapRef}
-            id="mobile-room-map"
-            className="museum-mobile-map"
-            initial={reduceMotion ? false : { opacity: 0, y: 14, scale: 0.985 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10, scale: 0.99 }}
-            transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }}
-            aria-label={copy[lang].roomMap}
-            role="dialog"
+        <nav className="museum-mobile-dock" aria-label={copy[lang].roomMap}>
+          <button
+            type="button"
+            className="museum-mobile-dock__step"
+            onClick={() => previousItem && onNavigate(previousItem.id)}
+            disabled={!previousItem}
+            aria-label={previousItem ? `${copy[lang].previous}: ${previousItem.label}` : copy[lang].previous}
           >
-            <header className="museum-mobile-map__header">
-              <span>
-                <span className="museum-mobile-map__eyebrow" dir="ltr">NOVA · {progress.code}</span>
-                <strong>{copy[lang].roomMap}</strong>
-              </span>
-              <button type="button" onClick={closeMapAndRestoreFocus} aria-label={copy[lang].closeMap}>
-                <X className="h-4 w-4" />
-              </button>
-            </header>
+            <PreviousIcon className="h-5 w-5" />
+          </button>
 
-            <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={navigateFromMap} />
-          </motion.section>
-        )}
-      </AnimatePresence>
+          <button
+            ref={mapTriggerRef}
+            type="button"
+            className="museum-mobile-dock__active"
+            onClick={() => mapOpen ? closeMapAndRestoreFocus() : setMapOpen(true)}
+            aria-expanded={mapOpen}
+            aria-controls="mobile-room-map"
+            aria-haspopup="dialog"
+            aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
+          >
+            <span className="museum-mobile-dock__active-icon" aria-hidden="true">
+              <ActiveIcon className="h-4 w-4" />
+            </span>
+            <span className="museum-mobile-dock__meta">
+              <span><bdi dir="ltr">{progress.code}</bdi> · {activeItem.groupLabel}</span>
+              <strong>{activeItem.label}</strong>
+            </span>
+            <MapIcon className="museum-mobile-dock__map-icon" aria-hidden="true" />
+            <span className="museum-mobile-dock__progress" aria-hidden="true"><span /></span>
+          </button>
 
-      <nav className="museum-mobile-dock" aria-label={copy[lang].roomMap}>
-        <button
-          type="button"
-          className="museum-mobile-dock__step"
-          onClick={() => previousItem && onNavigate(previousItem.id)}
-          disabled={!previousItem}
-          aria-label={previousItem ? `${copy[lang].previous}: ${previousItem.label}` : copy[lang].previous}
+          <button
+            type="button"
+            className="museum-mobile-dock__step"
+            onClick={() => nextItem && onNavigate(nextItem.id)}
+            disabled={!nextItem}
+            aria-label={nextItem ? `${copy[lang].next}: ${nextItem.label}` : copy[lang].next}
+          >
+            <NextIcon className="h-5 w-5" />
+          </button>
+        </nav>
+      </div>
+
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence
+          onExitComplete={() => {
+            if (!mapOpen) mapTriggerRef.current?.focus({ preventScroll: true });
+          }}
         >
-          <PreviousIcon className="h-5 w-5" />
-        </button>
+          {mapOpen && (
+            <motion.div
+              className="museum-mobile-map-layer md:hidden"
+              style={roomStyle}
+              dir={directionFor(lang)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }}
+            >
+              <div
+                className="museum-mobile-map__backdrop"
+                aria-hidden="true"
+                onClick={closeMapAndRestoreFocus}
+              />
+              <motion.section
+                ref={mapRef}
+                id="mobile-room-map"
+                className="museum-mobile-map"
+                initial={reduceMotion ? false : { y: 14, scale: 0.985 }}
+                animate={{ y: 0, scale: 1 }}
+                transition={{ duration: reduceMotion ? 0 : 0.18, ease: 'easeOut' }}
+                aria-label={copy[lang].roomMap}
+                aria-modal="true"
+                role="dialog"
+                tabIndex={-1}
+              >
+                <header className="museum-mobile-map__header">
+                  <span>
+                    <span className="museum-mobile-map__eyebrow" dir="ltr">NOVA · {progress.code}</span>
+                    <strong>{copy[lang].roomMap}</strong>
+                  </span>
+                  <button type="button" onClick={closeMapAndRestoreFocus} aria-label={copy[lang].closeMap}>
+                    <X className="h-4 w-4" />
+                  </button>
+                </header>
 
-        <button
-          ref={mapTriggerRef}
-          type="button"
-          className="museum-mobile-dock__active"
-          onClick={() => mapOpen ? closeMapAndRestoreFocus() : setMapOpen(true)}
-          aria-expanded={mapOpen}
-          aria-controls="mobile-room-map"
-          aria-haspopup="dialog"
-          aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
-        >
-          <span className="museum-mobile-dock__active-icon" aria-hidden="true">
-            <ActiveIcon className="h-4 w-4" />
-          </span>
-          <span className="museum-mobile-dock__meta">
-            <span><bdi dir="ltr">{progress.code}</bdi> · {activeItem.groupLabel}</span>
-            <strong>{activeItem.label}</strong>
-          </span>
-          <MapIcon className="museum-mobile-dock__map-icon" aria-hidden="true" />
-          <span className="museum-mobile-dock__progress" aria-hidden="true"><span /></span>
-        </button>
-
-        <button
-          type="button"
-          className="museum-mobile-dock__step"
-          onClick={() => nextItem && onNavigate(nextItem.id)}
-          disabled={!nextItem}
-          aria-label={nextItem ? `${copy[lang].next}: ${nextItem.label}` : copy[lang].next}
-        >
-          <NextIcon className="h-5 w-5" />
-        </button>
-      </nav>
-    </div>
+                <RoomMapGrid groupedItems={groupedItems} items={items} activeId={activeId} onNavigate={navigateFromMap} />
+              </motion.section>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }

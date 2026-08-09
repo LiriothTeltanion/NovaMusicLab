@@ -70,9 +70,9 @@ import {
   MuseumRoomTransition,
   type MuseumRoomItem,
 } from './components/MuseumRoomNavigator';
-// Never rendered on the hero and never above the md breakpoint, so it has no
-// business in the chunk a visitor downloads before the first paint.
-const MobileRoomDock = React.lazy(() => import('./components/MobileRoomDock'));
+// The gate is absent from the hero and imports the real dock only below md, so
+// desktop visitors never download the mobile navigation implementation.
+const MobileNavigationGate = React.lazy(() => import('./components/MobileNavigationGate'));
 import ExpeditionConsole from './components/shell/ExpeditionConsole';
 import {
   MUSEUM_HUB_ENTRY_ROOMS,
@@ -1874,7 +1874,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           so keyboard order reaches it once the room content is done. */}
       {activeTab !== 'hero' && (
         <Suspense fallback={null}>
-          <MobileRoomDock
+          <MobileNavigationGate
             items={allRoomNavigationItems}
             activeId={activeTab}
             lang={lang}

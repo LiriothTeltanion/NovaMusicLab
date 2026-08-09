@@ -1,9 +1,11 @@
-// Fills remaining album covers from the Deezer responses already on disk.
+// Fills remaining album covers from versioned Deezer cache records, requesting
+// only the artists whose compatible cache is missing.
 //
 // The genre harvest fetched every artist's album list to read genre_id, and
 // those same responses carry cover_xl - 47,997 covers across 4,574 artists,
-// sitting in scripts/.cache/deezer_albums. This pass spends no network at all;
-// it only reads what a previous pass already paid for.
+// sitting in scripts/.cache/deezer_albums. Legacy responses did not record the
+// requested page size and sometimes held only 12 of 40 releases, so this pass
+// deliberately trusts only its versioned, complete cache format.
 //
 // Cover Art Archive runs first and stays preferred: it joins on the MusicBrainz
 // release-group MBID, which cannot match the wrong record. This is the fallback
@@ -20,6 +22,19 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { chooseArtistByName, exactName } from './lib/artistNameMatch.mjs';
+import {
+  albumCacheFileName,
+  albumCacheRecord,
+  artistSearchCacheFileName,
+  artistSearchCacheRecord,
+  DEEZER_ALBUM_PAGE_LIMIT,
+  DEEZER_ARTIST_SEARCH_LIMIT,
+  fetchAllDeezerAlbums,
+  persistDeezerCache,
+  readAlbumCache,
+  readArtistSearchCache,
+  requireDeezerData,
+} from './lib/deezerAlbumCache.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA = path.join(ROOT, 'src', 'data');
@@ -28,6 +43,9 @@ const ALBUM_CACHE = path.join(ROOT, 'scripts', '.cache', 'deezer_albums');
 const ALBUM_ART_PATH = path.join(DATA, 'album_images.json');
 const RESIDUE_PATH = path.join(ROOT, 'scripts', 'album_art_deezer_residue.json');
 
+// Dry-run still performs provider reads needed to report what would change. Its
+// contract is zero filesystem writes: no cache directories, cache records,
+// album map or residue file are created or changed.
 const DRY_RUN = process.argv.includes('--dry-run');
 
 /** Deezer serves the MD5 of the empty string when a release has no artwork. */
@@ -77,7 +95,7 @@ console.log(`  already covered    : ${wanted.size - missing.length}`);
 console.log(`  to resolve here    : ${missing.length}`);
 
 const artistCachePath = name => path.join(
-  ARTIST_CACHE, `${Buffer.from(name, 'utf8').toString('base64url').slice(0, 120)}.json`,
+  ARTIST_CACHE, artistSearchCacheFileName(name),
 );
 
 const UA = 'NovaMusicLab/1.0 (+https://github.com/LiriothTeltanion/NovaMusicLab)';
@@ -96,16 +114,23 @@ async function deezerArtistId(artistName) {
   let candidates = null;
 
   if (fs.existsSync(cached)) {
-    try { candidates = JSON.parse(fs.readFileSync(cached, 'utf8')); } catch { /* partial write */ }
+    try {
+      candidates = readArtistSearchCache(JSON.parse(fs.readFileSync(cached, 'utf8')));
+    } catch { /* incompatible or partial cache; refresh below */ }
   }
   if (!candidates) {
     try {
-      const url = `https://api.deezer.com/search/artist?limit=5&q=${encodeURIComponent(artistName)}`;
+      const url = `https://api.deezer.com/search/artist?limit=${DEEZER_ARTIST_SEARCH_LIMIT}&q=${encodeURIComponent(artistName)}`;
       const response = await fetch(url, { headers: { 'User-Agent': UA } });
       if (!response.ok) return null;
-      candidates = (await response.json()).data ?? [];
-      fs.mkdirSync(ARTIST_CACHE, { recursive: true });
-      fs.writeFileSync(cached, JSON.stringify(candidates));
+      candidates = requireDeezerData(await response.json(), 'artist search');
+      persistDeezerCache({
+        filePath: cached,
+        record: artistSearchCacheRecord(candidates),
+        dryRun: DRY_RUN,
+        mkdirSync: fs.mkdirSync,
+        writeFileSync: fs.writeFileSync,
+      });
       liveRequests += 1;
       await sleep(DELAY_MS);
     } catch { return null; }
@@ -129,30 +154,39 @@ async function albumsFor(artistName) {
   const artist = await deezerArtistId(artistName);
 
   if (artist) {
-    const albumFile = path.join(ALBUM_CACHE, `artist-${artist.id}-albums.json`);
-    let body = null;
+    const albumFile = path.join(ALBUM_CACHE, albumCacheFileName(artist.id));
+    let albums = null;
 
     if (fs.existsSync(albumFile)) {
-      try { body = JSON.parse(fs.readFileSync(albumFile, 'utf8')); } catch { /* partial write */ }
-    }
-    if (!body && !DRY_RUN) {
       try {
-        const response = await fetch(`https://api.deezer.com/artist/${artist.id}/albums?limit=100`, {
+        albums = readAlbumCache(JSON.parse(fs.readFileSync(albumFile, 'utf8')), artist.id);
+      } catch { /* incompatible or partial cache; refresh below */ }
+    }
+    if (!albums) {
+      try {
+        const result = await fetchAllDeezerAlbums({
+          artistId: artist.id,
+          requestLimit: DEEZER_ALBUM_PAGE_LIMIT,
           headers: { 'User-Agent': UA },
+          onRequest: async () => {
+            liveRequests += 1;
+            await sleep(DELAY_MS);
+          },
         });
-        if (response.ok) {
-          body = await response.json();
-          fs.mkdirSync(ALBUM_CACHE, { recursive: true });
-          fs.writeFileSync(albumFile, JSON.stringify(body));
-          liveRequests += 1;
-          await sleep(DELAY_MS);
-        }
+        albums = result.data;
+        persistDeezerCache({
+          filePath: albumFile,
+          record: albumCacheRecord(artist.id, result),
+          dryRun: DRY_RUN,
+          mkdirSync: fs.mkdirSync,
+          writeFileSync: fs.writeFileSync,
+        });
       } catch { /* leave unresolved */ }
     }
 
-    if (body) {
+    if (albums) {
       index = new Map();
-      for (const album of body.data ?? []) {
+      for (const album of albums) {
         const cover = album.cover_xl || album.cover_big;
         if (!cover || cover.includes(DEEZER_EMPTY_MD5)) continue;
         const key = albumKey(album.title);
@@ -171,7 +205,7 @@ let added = 0;
 const residue = [];
 for (const [key, album] of missing) {
   const index = await albumsFor(album.artist);
-  if (!index) { residue.push({ ...album, reason: 'no cached Deezer albums for this artist' }); continue; }
+  if (!index) { residue.push({ ...album, reason: 'no compatible Deezer album data for this artist' }); continue; }
 
   const cover = index.get(albumKey(album.title));
   if (!cover) { residue.push({ ...album, reason: 'no album with this exact title' }); continue; }
@@ -186,7 +220,7 @@ console.log(`  still missing      : ${residue.length}`);
 console.log(`  live requests      : ${liveRequests}`);
 
 if (DRY_RUN) {
-  console.log('  --dry-run: nothing written.');
+  console.log('  --dry-run: provider reads allowed; zero filesystem writes.');
   residue.slice(0, 10).forEach(entry => console.log(`    ${entry.artist} — ${entry.title}  (${entry.reason})`));
   process.exit(0);
 }

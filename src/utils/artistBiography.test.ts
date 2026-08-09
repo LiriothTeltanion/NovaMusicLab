@@ -48,6 +48,7 @@ describe('buildArtistBiography', () => {
       musicbrainz: { id: 'a', score: 100, name: 'Band', type: 'Group', beginArea: 'Sheffield', area: 'United Kingdom', lifeSpanBegin: '2004', aliases: [], tags: [], isnis: [] },
     }), { lang: 'en' });
     expect(paragraph(band, 'identity')?.text).toBe('Band formed in Sheffield, United Kingdom in 2004.');
+    expect(paragraph(band, 'identity')?.evidence).toEqual(['musicbrainz']);
     expect(band?.lead).toContain('2004 – present');
 
     const person = buildArtistBiography(knowledgeFixture({
@@ -55,7 +56,77 @@ describe('buildArtistBiography', () => {
       musicbrainz: { id: 'b', score: 100, name: 'Solo', type: 'Person', beginArea: 'Syracuse', area: 'United States', lifeSpanBegin: '1995-07-04', aliases: [], tags: [], isnis: [] },
     }), { lang: 'en' });
     expect(paragraph(person, 'identity')?.text).toBe('Solo was born in Syracuse, United States in 1995.');
+    expect(paragraph(person, 'identity')?.evidence).toEqual(['musicbrainz']);
     expect(person?.lead).toContain('1995');
+  });
+
+  it('never cites MusicBrainz for the nine current identities it did not supply', () => {
+    // These are the exact top-100 rows that exposed the bug: their origin came
+    // from the archive or a reviewed profile, yet every identity paragraph was
+    // stamped MusicBrainz. Keeping the real set here prevents a later generic
+    // evidence shortcut from reintroducing the same false attribution.
+    const identitiesWithoutMusicBrainzContribution = [
+      'Odeon', 'Jordyne', 'Mooki', 'Kiremi', 'Sweezy', 'Thekidszn',
+      'Diversify', 'Paloma', 'nightlife',
+    ];
+
+    for (const artist of identitiesWithoutMusicBrainzContribution) {
+      const knowledge = getOfflineArtistKnowledge(artist);
+      const biography = buildArtistBiography(knowledge, { lang: 'en' });
+      expect(paragraph(biography, 'identity')?.evidence, artist)
+        .not.toContain('musicbrainz');
+    }
+  });
+
+  it('attributes each identity field to the source that actually supplied it', () => {
+    const biography = buildArtistBiography(knowledgeFixture({
+      name: 'Mixed Band',
+      archive: { rank: 4, plays: 80, genre: 'Rock', country: 'Archiveland', topTracks: [], topAlbums: [] },
+      musicbrainz: {
+        id: 'mixed', score: 100, name: 'Mixed Band', type: 'Group', lifeSpanBegin: '2004',
+        aliases: [], tags: [], isnis: [],
+      },
+      wikidata: {
+        id: 'Q-mixed', url: 'https://www.wikidata.org/entity/Q-mixed', genres: [],
+        countries: [], formationPlaces: ['Wiki City'], recordLabels: [], members: [],
+        occupations: [], instruments: [], instanceOf: ['band'], officialWebsites: [], images: [],
+      },
+    }), { lang: 'en' });
+
+    expect(paragraph(biography, 'identity')?.text)
+      .toBe('Mixed Band formed in Wiki City, Archiveland in 2004.');
+    expect(paragraph(biography, 'identity')?.evidence)
+      .toEqual(['wikidata', 'archive', 'musicbrainz']);
+
+    const curatedOnly = buildArtistBiography(knowledgeFixture({
+      archive: { rank: 1, plays: 10, genre: 'Rock', country: 'Unknown', topTracks: [], topAlbums: [] },
+      curated: {
+        name: 'Curated Act', sourceName: 'Reviewed source', sourceUrls: [],
+        origin: 'Curated City', country: 'Curatedland', description: '', background: '',
+        tags: [], activeYears: [],
+      },
+    }), { lang: 'en' });
+    expect(paragraph(curatedOnly, 'identity')?.evidence).toEqual(['curated']);
+  });
+
+  it('credits Wikidata when its country or birth date supplies the identity', () => {
+    const biography = buildArtistBiography(knowledgeFixture({
+      name: 'Solo',
+      archive: { rank: 1, plays: 10, genre: 'Pop', country: 'Unknown', topTracks: [], topAlbums: [] },
+      musicbrainz: {
+        id: 'solo', score: 100, name: 'Solo', type: 'Person', aliases: [], tags: [], isnis: [],
+      },
+      wikidata: {
+        id: 'Q-solo', url: 'https://www.wikidata.org/entity/Q-solo', birthDate: '1995-07-04',
+        genres: [], countries: ['United States'], formationPlaces: [], recordLabels: [],
+        members: [], occupations: [], instruments: [], instanceOf: ['human'],
+        officialWebsites: [], images: [],
+      },
+    }), { lang: 'en' });
+
+    expect(paragraph(biography, 'identity')?.text)
+      .toBe('Solo was born in United States in 1995.');
+    expect(paragraph(biography, 'identity')?.evidence).toEqual(['wikidata']);
   });
 
   it('refuses year values a music database should never hold', () => {
@@ -78,6 +149,22 @@ describe('buildArtistBiography', () => {
     expect(paragraph(biography, 'lineup')).toBeUndefined();
     expect(biography?.lineup.current).toEqual([]);
     expect(biography?.lineup.former).toEqual([]);
+  });
+
+  it('does not expose an orphaned lineup without its MusicBrainz identity', () => {
+    const biography = buildArtistBiography(knowledgeFixture({
+      curated: {
+        name: 'Reviewed Band', sourceName: 'Reviewed source', sourceUrls: [],
+        origin: 'Reviewed City', country: 'Reviewed Country', description: '', background: '',
+        tags: [], activeYears: [],
+      },
+      bandMembers: [
+        { name: 'Unattributed Member', roles: ['guitar'], begin: '2020', end: null, current: true },
+      ],
+    }), { lang: 'en' });
+
+    expect(paragraph(biography, 'lineup')).toBeUndefined();
+    expect(biography?.lineup).toEqual({ current: [], former: [], ended: false });
   });
 
   it('prefers the country in the reader own language over the catalogue English', () => {
@@ -179,6 +266,31 @@ describe('buildArtistBiography', () => {
     // Wikidata repeats "blackgaze"; the sentence must not.
     expect(paragraph(biography, 'sound')?.text)
       .toBe('The sources record these styles: blackgaze, american primitive, melancholic black metal and post-metal.');
+    expect(paragraph(biography, 'sound')?.evidence).toEqual(['musicbrainz', 'wikidata']);
+  });
+
+  it('does not cite Wikidata when its style list contributed no rendered tag', () => {
+    const duplicateOnly = buildArtistBiography(knowledgeFixture({
+      musicbrainz: {
+        id: 'styles', score: 100, name: 'Band', type: 'Group', area: 'England',
+        aliases: [], isnis: [], tags: ['blackgaze'],
+      },
+      wikidata: {
+        id: 'Q-styles', url: 'https://www.wikidata.org/entity/Q-styles', genres: ['blackgaze', 'american'],
+        countries: [], formationPlaces: [], recordLabels: [], members: [], occupations: [],
+        instruments: [], instanceOf: [], officialWebsites: [], images: [],
+      },
+    }), { lang: 'en' });
+    expect(paragraph(duplicateOnly, 'sound')?.evidence).toEqual(['musicbrainz']);
+
+    const wikidataOnly = buildArtistBiography(knowledgeFixture({
+      wikidata: {
+        id: 'Q-wiki-style', url: 'https://www.wikidata.org/entity/Q-wiki-style', genres: ['post-metal'],
+        countries: [], formationPlaces: [], recordLabels: [], members: [], occupations: [],
+        instruments: [], instanceOf: [], officialWebsites: [], images: [],
+      },
+    }), { lang: 'en' });
+    expect(paragraph(wikidataOnly, 'sound')?.evidence).toEqual(['wikidata']);
   });
 
   it('names the earliest release and never the newest', () => {
@@ -198,11 +310,36 @@ describe('buildArtistBiography', () => {
     expect(catalogue).toContain('3 releases between 2006 and 2026');
     expect(catalogue).toContain('The earliest on record is Debut Record (2006).');
     expect(catalogue).not.toContain('Repented');
+    expect(paragraph(biography, 'catalogue')?.evidence).toEqual(['musicbrainz']);
     expect(biography?.lead).toContain('3 releases');
+  });
+
+  it('renders a catalogue only when its release source is known', () => {
+    const curated = buildArtistBiography(knowledgeFixture({
+      curated: {
+        name: 'Curated Act', sourceName: 'Reviewed source', sourceUrls: [],
+        origin: '', country: '', description: '', background: '', tags: [], activeYears: [],
+      },
+      releaseGroups: [
+        { id: 'curated-release', title: 'Reviewed Debut', primaryType: 'Album', firstReleaseDate: '2022' },
+      ],
+    }), { lang: 'en' });
+    expect(paragraph(curated, 'catalogue')?.evidence).toEqual(['curated']);
+
+    const unattributed = buildArtistBiography(knowledgeFixture({
+      releaseGroups: [
+        { id: 'unknown-release', title: 'Unknown Source', primaryType: 'Album', firstReleaseDate: '2022' },
+      ],
+    }), { lang: 'en' });
+    expect(paragraph(unattributed, 'catalogue')).toBeUndefined();
+    expect(unattributed).toBeNull();
   });
 
   it('does not print a label name with two full stops', () => {
     const biography = buildArtistBiography(knowledgeFixture({
+      musicbrainz: {
+        id: 'labels', score: 100, name: 'Band', type: 'Group', aliases: [], tags: [], isnis: [],
+      },
       releaseGroups: [{ id: '1', title: 'Sunbather', primaryType: 'Album', firstReleaseDate: '2013-06-11' }],
       wikidata: {
         id: 'Q1', url: 'https://www.wikidata.org/entity/Q1', genres: [], countries: [], formationPlaces: [],
@@ -213,6 +350,7 @@ describe('buildArtistBiography', () => {
     expect(paragraph(biography, 'catalogue')?.text)
       .toBe('The documented catalogue holds a single release in 2013. The earliest on record is Sunbather (2013). The label on record is Deathwish Inc.');
     expect(paragraph(biography, 'catalogue')?.text).not.toContain('Inc..');
+    expect(paragraph(biography, 'catalogue')?.evidence).toEqual(['musicbrainz', 'wikidata']);
   });
 
   it('closes with the archive, but only when it has a biography to close', () => {

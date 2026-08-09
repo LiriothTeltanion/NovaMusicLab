@@ -1,7 +1,7 @@
 {
   "name": "nova-music-lab",
   "private": true,
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Local-first React and TypeScript music museum for exploring listening histories, artist and genre discovery, private Guest Museums, and evidence-aware analytics.",
   "homepage": "https://liriothteltanion.github.io/NovaMusicLab/",
   "repository": {
@@ -38,6 +38,7 @@
     "verify": "npm run lint && npm run audit:data:strict && npm run audit:genres && npm run audit:identity && npm run audit:links && npm run audit:knowledge && npm run audit:privacy && npm run audit:pwa && npm run audit:share && npm run test && npm run build:check",
     "verify:release": "npm run verify && npm run audit:release-media",
     "lint": "oxlint",
+    "audit:dependencies": "npm audit",
     "compile:data": "node scripts/compile_kevin_music_dna.mjs",
     "lastfm:export": "node scripts/export_lastfm_history.mjs",
     "audit:data": "node scripts/audit_data_quality.mjs",

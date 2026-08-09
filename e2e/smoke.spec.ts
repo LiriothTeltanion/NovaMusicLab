@@ -167,6 +167,31 @@ test('the compact shell stays usable without horizontal overflow at 360px', asyn
   await page.keyboard.press('Escape');
   await expect(roomMapTrigger).toBeFocused();
 
+  const mobileDock = page.locator('.museum-mobile-dock');
+  const mobileMapTrigger = mobileDock.getByRole('button', {
+    name: /open room map: dashboard/i,
+  });
+  await expect(mobileDock).toBeVisible();
+  await mobileMapTrigger.click();
+
+  const mobileRoomMap = page.locator('#mobile-room-map');
+  await expect(mobileRoomMap).toBeVisible();
+  await expect(mobileRoomMap).toHaveAttribute('aria-modal', 'true');
+  expect(await page.locator('#root').evaluate(element => (element as HTMLElement).inert)).toBe(true);
+
+  const mobileMapButtons = mobileRoomMap.getByRole('button');
+  const closeMobileMap = mobileRoomMap.getByRole('button', { name: 'Close room map' });
+  await closeMobileMap.focus();
+  await page.keyboard.press('Shift+Tab');
+  await expect(mobileMapButtons.last()).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(closeMobileMap).toBeFocused();
+
+  await page.keyboard.press('Escape');
+  await expect(mobileRoomMap).toBeHidden();
+  await expect(mobileMapTrigger).toBeFocused();
+  expect(await page.locator('#root').evaluate(element => (element as HTMLElement).inert)).toBe(false);
+
   const searchTrigger = console.getByTestId('command-palette-trigger');
   await searchTrigger.click();
   await expect(
@@ -419,6 +444,31 @@ test('the share room works in Hebrew RTL and a light theme', async ({
   const sharedText = new URL(whatsappHref!).searchParams.get('text');
   expect(sharedText).toContain('https://liriothteltanion.github.io/NovaMusicLab/#/');
   expect(sharedText).not.toMatch(/localhost|127\.0\.0\.1|0\.0\.0\.0/i);
+
+  const viewportWidth = page.viewportSize()?.width ?? 0;
+  const mobileNavigation = page.locator('.museum-mobile-navigation');
+  if (viewportWidth < 768) {
+    await expect(mobileNavigation).toBeVisible();
+    await expect(mobileNavigation).toHaveAttribute('dir', 'rtl');
+    const mobileMapTrigger = mobileNavigation.getByRole('button', {
+      name: /פתיחת מפת החדרים:/,
+    });
+    expect(await mobileMapTrigger.evaluate(element => getComputedStyle(element).textAlign)).toBe('start');
+    await mobileMapTrigger.click();
+
+    const mobileRoomMap = page.locator('#mobile-room-map');
+    await expect(mobileRoomMap).toHaveAttribute('aria-modal', 'true');
+    await expect(mobileRoomMap.locator('xpath=..')).toHaveAttribute('dir', 'rtl');
+    await page.keyboard.press('Escape');
+    await expect(mobileMapTrigger).toBeFocused();
+  } else {
+    await expect(mobileNavigation).toHaveCount(0);
+    const mobileDockResources = await page.evaluate(() => performance
+      .getEntriesByType('resource')
+      .map(entry => entry.name)
+      .filter(name => /MobileRoomDock/i.test(name)));
+    expect(mobileDockResources).toEqual([]);
+  }
 
   await expectNoHorizontalPageOverflow(page);
   await expectNoAutomatedAccessibilityViolations(page, testInfo);

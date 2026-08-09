@@ -35,6 +35,41 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     current: true,
     story: {
       en: {
+        name: 'The Living Archive Finds Its Voice',
+        summary: 'Nova replays the complete archive through August 6 and turns artist evidence into readable stories, while navigation and public facts stay in step.',
+        highlights: [
+          'The Spotify, Last.fm and YouTube archive grows to 82,661 plays and 6,593 catalog entries, with every snapshot date shown honestly.',
+          'Artist dossiers become clearer, source-labelled biographies with broader portrait and album evidence.',
+          'A mobile room dock, calmer supporting text and synchronized public copy make the museum easier to navigate and trust.',
+        ],
+      },
+      es: {
+        name: 'El archivo vivo encuentra su voz',
+        summary: 'Nova recorre el archivo completo hasta el 6 de agosto y convierte la evidencia de artistas en historias legibles, mientras la navegación y los datos públicos avanzan juntos.',
+        highlights: [
+          'El archivo de Spotify, Last.fm y YouTube crece a 82.661 escuchas y 6.593 entradas de catálogo, con cada fecha del snapshot mostrada con honestidad.',
+          'Las fichas de artistas se vuelven biografías más claras, con fuentes visibles y más evidencia de retratos y álbumes.',
+          'Un dock móvil de salas, textos secundarios más tranquilos y copy público sincronizado hacen que el museo sea más fácil de recorrer y confiar.',
+        ],
+      },
+      he: {
+        name: 'הארכיון החי מוצא את קולו',
+        summary: 'Nova מציגה מחדש את הארכיון המלא עד 6 באוגוסט והופכת ראיות על אמנים לסיפורים קריאים, בזמן שהניווט והנתונים הציבוריים נשארים מסונכרנים.',
+        highlights: [
+          'ארכיון Spotify, Last.fm ו־YouTube גדל ל־82,661 השמעות ול־6,593 רשומות קטלוג, וכל תאריך בתמונת המצב מוצג בכנות.',
+          'תיקי האמנים הופכים לביוגרפיות ברורות יותר, עם מקורות גלויים וראיות רחבות יותר לדיוקנאות ולאלבומים.',
+          'סרגל חדרים למובייל, טקסט משני רגוע יותר ותוכן ציבורי מסונכרן מקלים על הניווט ועל האמון במוזיאון.',
+        ],
+      },
+    },
+  },
+  {
+    version: '1.5.0',
+    date: '2026-08-01',
+    status: 'deployed',
+    current: false,
+    story: {
+      en: {
         name: 'The Living Archive Gets a Face',
         summary: 'Nova makes its historical snapshot easier to trust and explore, with dependable artist portraits, clearer genre evidence and safer local imports.',
         highlights: [
@@ -67,6 +102,7 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     version: '1.4.0',
     date: '2026-07-29',
     status: 'deployed',
+    secondaryStatus: 'superseded',
     current: false,
     story: {
       en: {

@@ -528,12 +528,11 @@
   {
     "artist": "Juice WRLD",
     "spotifyArtistUrl": "https://open.spotify.com/artist/4MCBfE4596Uoi2O4DtmEMz",
-    "checkedAt": "2026-08-06",
+    "checkedAt": "2026-08-09",
     "mediaConfidence": "verified",
-    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 100 videos titled 'Uploads from Juice WRLD'.",
+    "sourceNote": "Links resolved from MusicBrainz url-rels / Wikidata identifiers for the matched entity. Playlist is the verified channel's own uploads feed (channel UC id with the UU prefix, YouTube's documented convention); fetched 2026-08-06 and confirmed to return 100 videos titled 'Uploads from Juice WRLD'. The former official-site candidate returned HTTP 402 on 2026-08-09 and is intentionally omitted.",
     "youtubeChannelUrl": "https://www.youtube.com/channel/UC0BletW9phE4xHFM44q4qKA",
     "youtubePlaylistUrl": "https://www.youtube.com/playlist?list=UU0BletW9phE4xHFM44q4qKA",
-    "officialSiteUrl": "https://juicewrld999.com/",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Juice_Wrld",
     "wikipediaEsUrl": "https://es.wikipedia.org/wiki/Juice_Wrld"
   },
@@ -855,10 +854,9 @@
   {
     "artist": "Rami Kleinstein",
     "mediaConfidence": "verified",
-    "checkedAt": "2026-08-06",
+    "checkedAt": "2026-08-09",
     "youtubeVideoUrl": "https://www.youtube.com/watch?v=L2i03hBb2Kw",
-    "sourceNote": "Official Rami Kleinstein channel video for אהביני.",
-    "officialSiteUrl": "http://www.ramikleinstein.co.il",
+    "sourceNote": "Official Rami Kleinstein channel video for אהביני. The former website candidate did not resolve in DNS on 2026-08-09 and is intentionally omitted.",
     "wikipediaEnUrl": "https://en.wikipedia.org/wiki/Rami_Kleinstein"
   },
   {

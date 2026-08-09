@@ -11,19 +11,27 @@ import path from 'node:path';
 import { chromium } from '@playwright/test';
 import { buildMediaRecord } from './lib/releaseMedia.mjs';
 import { inspectReleaseSourceEvidence } from './lib/releaseSourceEvidence.mjs';
+import { buildSocialPreviewFacts } from './lib/socialPreviewFacts.mjs';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = path.join(projectRoot, 'scripts', 'release-media.config.json');
 const packagePath = path.join(projectRoot, 'package.json');
+const shareMetricsPath = path.join(projectRoot, 'src', 'data', 'share_metrics.json');
+const publicManifestPath = path.join(projectRoot, 'src', 'data', 'public_dataset_manifest.json');
 const config = JSON.parse(await readFile(configPath, 'utf8'));
 const packageJson = JSON.parse(await readFile(packagePath, 'utf8'));
+const shareMetrics = JSON.parse(await readFile(shareMetricsPath, 'utf8'));
+const publicManifest = JSON.parse(await readFile(publicManifestPath, 'utf8'));
 if (config.version !== packageJson.version) {
   throw new Error(
     `Release-media config ${config.version} does not match package ${packageJson.version}`,
   );
 }
-
 const versionLabel = `v${config.version}`;
+const { catalogEntryLabel, observedThroughLabel } = buildSocialPreviewFacts(
+  shareMetrics,
+  publicManifest,
+);
 const sourceEvidence = inspectReleaseSourceEvidence(projectRoot, config.version);
 const outputDir = path.join(projectRoot, 'assets', 'releases', versionLabel);
 const tourFrameDir = path.join(outputDir, 'tour-frames');
@@ -402,12 +410,12 @@ async function captureSocialPreview(browser) {
             <span class="version">${versionLabel}</span>
           </header>
           <main>
-            <p class="eyebrow">The Living Archive Gets a Face</p>
+            <p class="eyebrow">The Living Archive Finds Its Voice</p>
             <h1>Your music becomes a <span>living atlas.</span></h1>
             <p class="subtitle">Explore an honest historical snapshot through artist portraits, genre evidence and stories. Private imports stay in your browser.</p>
             <div class="chips">
-              <span class="chip">6,413 CATALOG ENTRIES</span>
-              <span class="chip">94.1% OF PLAYS MAPPED</span>
+              <span class="chip">${catalogEntryLabel} CATALOG ENTRIES</span>
+              <span class="chip">DATA THROUGH ${observedThroughLabel}</span>
               <span class="chip">EN · ES · HE</span>
             </div>
           </main>

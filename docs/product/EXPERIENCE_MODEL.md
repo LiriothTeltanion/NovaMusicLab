@@ -1,7 +1,8 @@
 # Experience model
 
-Status: Nova Music Lab `1.5.0` — **deployed 2026-08-01**. The shell model
-below is the current public experience.
+Status: Nova Music Lab `1.6.0` — **private candidate 2026-08-09** — builds on
+the `1.5.0` public experience deployed 2026-08-01. The shell model below is the
+shared product contract; candidate-only changes are not public until release.
 
 Nova Music Lab separates **where a visitor goes** from **how much explanation they want**. This prevents a beginner setting from hiding rooms and prevents an expert setting from unexpectedly changing the URL.
 

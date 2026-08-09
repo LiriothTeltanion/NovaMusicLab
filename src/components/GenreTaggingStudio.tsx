@@ -78,7 +78,7 @@ export default function GenreTaggingStudio({
       eyebrow: 'Archive repair · local and private',
       title: '🧬 Genre Lab',
       description: 'Turn uncertainty into useful metadata. A primary family updates every chart; secondary tags add detail without double-counting listens.',
-      loading: 'Loading all 6,413 artist-name catalog entries…',
+      loading: (count: number) => `Loading all ${count.toLocaleString('en-US')} artist-name catalog entries…`,
       loadError: 'The full artist catalog is unavailable. Re-import the original exports to create a reviewable catalog for this archive.',
       search: 'Search artists',
       searchPlaceholder: 'Name, genre or tag…',
@@ -136,7 +136,7 @@ export default function GenreTaggingStudio({
       eyebrow: 'Reparación del archivo · local y privada',
       title: '🧬 Laboratorio de géneros',
       description: 'Convierte la incertidumbre en metadatos útiles. Una familia principal actualiza todos los gráficos; las etiquetas secundarias añaden detalle sin duplicar escuchas.',
-      loading: 'Cargando las 6.413 entradas de nombres del catálogo…',
+      loading: (count: number) => `Cargando las ${count.toLocaleString('es-ES')} entradas de nombres del catálogo…`,
       loadError: 'El catálogo completo no está disponible. Vuelve a importar los archivos originales para crear una cola revisable para este archivo.',
       search: 'Buscar artistas',
       searchPlaceholder: 'Nombre, género o etiqueta…',
@@ -194,7 +194,7 @@ export default function GenreTaggingStudio({
       eyebrow: 'תיקון הארכיון · מקומי ופרטי',
       title: '🧬 מעבדת ז׳אנרים',
       description: 'הופכים אי־ודאות למטא־נתונים שימושיים. משפחה ראשית אחת מעדכנת את כל התרשימים; תגים משניים מוסיפים פירוט בלי לספור השמעות פעמיים.',
-      loading: '6,413 רשומות שמות האמנים בקטלוג נטענות…',
+      loading: (count: number) => `${count.toLocaleString('he-IL')} רשומות שמות האמנים בקטלוג נטענות…`,
       loadError: 'קטלוג האמנים המלא אינו זמין. יש לייבא מחדש את קובצי המקור כדי ליצור תור שניתן לסקור.',
       search: 'חיפוש אמנים',
       searchPlaceholder: 'שם, ז׳אנר או תג…',
@@ -509,7 +509,7 @@ export default function GenreTaggingStudio({
       {loading ? (
         <div className="flex min-h-52 items-center justify-center gap-3 p-8 text-sm text-gray-300" role="status">
           <Sparkles className="h-5 w-5 animate-pulse" style={{ color: tc.c2 }} aria-hidden="true" />
-          {copy.loading}
+          {copy.loading(data.core_metrics.unique_artists)}
         </div>
       ) : loadError || !catalog ? (
         <div className="p-6">

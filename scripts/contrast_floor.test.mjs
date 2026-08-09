@@ -17,6 +17,11 @@ import { describe, expect, it } from 'vitest';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CSS = fs.readFileSync(path.join(ROOT, 'src', 'index.css'), 'utf8');
+const CONTEXT = fs.readFileSync(path.join(ROOT, 'src', 'context', 'AppContext.tsx'), 'utf8');
+const EXPEDITION_CSS = fs.readFileSync(
+  path.join(ROOT, 'src', 'components', 'shell', 'ExpeditionConsole.css'),
+  'utf8',
+);
 
 /** WCAG 2.1 AA, normal-size body text. */
 const AA_BODY = 4.5;
@@ -40,6 +45,22 @@ function contrast(foreground, background) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 }
 
+function declaredThemes() {
+  const start = CONTEXT.indexOf('export const THEMES');
+  const end = CONTEXT.indexOf('\n};', start);
+  if (start < 0 || end < 0) throw new Error('AppContext.tsx no longer exposes the theme registry.');
+
+  const source = CONTEXT.slice(start, end);
+  return Array.from(source.matchAll(/^\s{2}([a-z][a-z0-9]*):\s*\{([\s\S]*?)^\s{2}\},/gm), match => {
+    const background = /\bbg:\s*'(#[0-9a-f]{6})'/i.exec(match[2])?.[1];
+    const mode = /\bmode:\s*'(dark|light)'/.exec(match[2])?.[1];
+    if (!background || !mode) throw new Error(`Theme ${match[1]} has no parseable bg or mode.`);
+    return { name: match[1], background, mode };
+  });
+}
+
+const THEMES = declaredThemes();
+
 /**
  * Reads a declaration out of index.css so the test cannot drift from the
  * source. Anchored to the start of a line, because an unanchored `.text-gray-500`
@@ -55,44 +76,89 @@ function declaredColor(selector, property) {
 }
 
 describe('text contrast floor', () => {
-  it('keeps every muted tier readable on the dark ground', () => {
-    // --fg and --bg as :root declares them; the grays are remapped to
-    // --type-ink-subtle, which is --fg mixed down to 55%.
-    const fg = hexToRgb('#f3f4f6');
-    const bg = hexToRgb('#050816');
+  it('discovers every registered theme background', () => {
+    expect(THEMES).toHaveLength(14);
+    expect(THEMES.filter(theme => theme.mode === 'dark')).toHaveLength(7);
+    expect(THEMES.filter(theme => theme.mode === 'light')).toHaveLength(7);
+  });
 
-    const tiers = [
-      ['text-gray-300', hexToRgb('#d1d5db')],
-      ['text-gray-400', hexToRgb('#9ca3af')],
-      ['text-gray-500', flatten(fg, bg, 0.55)],
-      ['text-gray-600', flatten(fg, bg, 0.55)],
-    ];
+  it('keeps every muted tier readable on every dark theme ground', () => {
+    const fg = hexToRgb(declaredColor(':root', '--fg'));
 
-    const ratios = tiers.map(([name, color]) => [name, contrast(color, bg)]);
-    for (const [name, ratio] of ratios) {
-      expect(ratio, `${name} on the dark ground`).toBeGreaterThanOrEqual(AA_BODY);
-    }
-    // Quieter names must not render louder than the tier above them.
-    for (let index = 1; index < ratios.length; index += 1) {
-      expect(ratios[index][1], `${ratios[index][0]} vs ${ratios[index - 1][0]}`)
-        .toBeLessThanOrEqual(ratios[index - 1][1]);
+    for (const theme of THEMES.filter(candidate => candidate.mode === 'dark')) {
+      const bg = hexToRgb(theme.background);
+      const tiers = [
+        ['text-gray-300', hexToRgb('#d1d5db')],
+        ['text-gray-400', hexToRgb('#9ca3af')],
+        ['text-gray-500', flatten(fg, bg, 0.55)],
+        ['text-gray-600', flatten(fg, bg, 0.55)],
+      ];
+      const ratios = tiers.map(([name, color]) => [name, contrast(color, bg)]);
+
+      for (const [name, ratio] of ratios) {
+        expect(ratio, `${name} on ${theme.name}`).toBeGreaterThanOrEqual(AA_BODY);
+      }
+      // Quieter names must not render louder than the tier above them.
+      for (let index = 1; index < ratios.length; index += 1) {
+        expect(ratios[index][1], `${theme.name}: ${ratios[index][0]} vs ${ratios[index - 1][0]}`)
+          .toBeLessThanOrEqual(ratios[index - 1][1]);
+      }
     }
   });
 
-  it('keeps every muted tier readable on the light ground', () => {
-    const bg = hexToRgb('#f7f8fb');
-    const tiers = ['text-gray-300', 'text-gray-400', 'text-gray-500', 'text-gray-600'].map(name => {
+  it('keeps every muted tier readable on every light theme ground', () => {
+    const colors = ['text-gray-300', 'text-gray-400', 'text-gray-500', 'text-gray-600'].map(name => {
       const declared = declaredColor(`[data-mode="light"] .${name}`, 'color');
       expect(declared, `${name} should be a literal hex in the light remap`).toMatch(/^#[0-9a-f]{6}$/i);
-      return [name, contrast(hexToRgb(declared), bg)];
+      return [name, hexToRgb(declared)];
     });
 
-    for (const [name, ratio] of tiers) {
-      expect(ratio, `${name} on the light ground`).toBeGreaterThanOrEqual(AA_BODY);
+    for (const theme of THEMES.filter(candidate => candidate.mode === 'light')) {
+      const bg = hexToRgb(theme.background);
+      const ratios = colors.map(([name, color]) => [name, contrast(color, bg)]);
+      for (const [name, ratio] of ratios) {
+        expect(ratio, `${name} on ${theme.name}`).toBeGreaterThanOrEqual(AA_BODY);
+      }
+      for (let index = 1; index < ratios.length; index += 1) {
+        expect(ratios[index][1], `${theme.name}: ${ratios[index][0]} vs ${ratios[index - 1][0]}`)
+          .toBeLessThanOrEqual(ratios[index - 1][1]);
+      }
     }
-    for (let index = 1; index < tiers.length; index += 1) {
-      expect(tiers[index][1], `${tiers[index][0]} vs ${tiers[index - 1][0]}`)
-        .toBeLessThanOrEqual(tiers[index - 1][1]);
+  });
+
+  it('keeps the shared muted ink token readable across all themes', () => {
+    const darkForeground = hexToRgb(declaredColor(':root', '--fg'));
+    const lightForeground = hexToRgb(declaredColor('[data-mode="light"]', '--type-ink-muted'));
+
+    for (const theme of THEMES) {
+      const background = hexToRgb(theme.background);
+      const foreground = theme.mode === 'dark'
+        ? flatten(darkForeground, background, 0.67)
+        : lightForeground;
+      expect(contrast(foreground, background), `muted ink on ${theme.name}`)
+        .toBeGreaterThanOrEqual(AA_BODY);
+    }
+  });
+
+  it('keeps Expedition Console text at or above the shared AA floor', () => {
+    const directMixes = Array.from(
+      EXPEDITION_CSS.matchAll(/color:\s*color-mix\(in srgb,\s*var\(--fg\)\s*(\d+)%\s*,\s*transparent\)/g),
+      match => Number(match[1]),
+    );
+
+    expect(directMixes.length).toBeGreaterThan(0);
+    expect((EXPEDITION_CSS.match(/color:\s*var\(--type-ink-muted\)/g) ?? []).length)
+      .toBeGreaterThanOrEqual(11);
+    for (const percentage of directMixes) {
+      expect(percentage, `Expedition Console uses ${percentage}% foreground ink`)
+        .toBeGreaterThanOrEqual(67);
+      for (const theme of THEMES) {
+        const background = hexToRgb(theme.background);
+        const baseForeground = hexToRgb(theme.mode === 'light' ? '#1e293b' : '#f3f4f6');
+        const foreground = flatten(baseForeground, background, percentage / 100);
+        expect(contrast(foreground, background), `${percentage}% console ink on ${theme.name}`)
+          .toBeGreaterThanOrEqual(AA_BODY);
+      }
     }
   });
 

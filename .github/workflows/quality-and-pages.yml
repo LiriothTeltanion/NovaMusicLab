@@ -38,6 +38,9 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
 
+      - name: Audit installed dependencies
+        run: npm run audit:dependencies
+
       - name: Verify code, data, tests and bundle budgets
         run: npm run verify
 
@@ -45,8 +48,20 @@ jobs:
         run: node scripts/audit_public_bundle_privacy.mjs
 
       - name: Audit release media selected for deployment
-        if: (github.event_name != 'pull_request' && github.ref == 'refs/heads/main') || startsWith(github.head_ref, 'codex/release-')
-        run: npm run audit:release-media
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          EVENT_NAME: ${{ github.event_name }}
+        shell: bash
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            base_version="$(git show "origin/$BASE_REF:package.json" | node -e "let input=''; process.stdin.on('data', chunk => input += chunk); process.stdin.on('end', () => process.stdout.write(JSON.parse(input).version));")"
+            current_version="$(node -p "require('./package.json').version")"
+            if [ "$base_version" = "$current_version" ]; then
+              echo "Product version unchanged ($current_version); immutable release media remains valid."
+              exit 0
+            fi
+          fi
+          npm run audit:release-media
 
       - name: Resolve the real Jerusalem deployment date
         id: deployment_date

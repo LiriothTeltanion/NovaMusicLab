@@ -58,6 +58,11 @@ export interface ArtistBiography {
   sources: BiographyEvidence[];
 }
 
+interface SourcedValue<T> {
+  value: T;
+  evidence: BiographyEvidence[];
+}
+
 // ── Fact resolution ─────────────────────────────────────────────────────────
 
 /** Accepts "2004", "2004-05", "2004-05-03" and returns 2004. */
@@ -92,31 +97,61 @@ function uniqueStrings(values: Array<string | undefined | null>): string[] {
   return result;
 }
 
+function mergeEvidence(...groups: BiographyEvidence[][]): BiographyEvidence[] {
+  return [...new Set(groups.flat())];
+}
+
+function firstSourcedString(
+  candidates: Array<{ value?: string | null; evidence: BiographyEvidence }>,
+): SourcedValue<string> | null {
+  for (const candidate of candidates) {
+    const [value] = uniqueStrings([candidate.value]);
+    if (value) return { value, evidence: [candidate.evidence] };
+  }
+  return null;
+}
+
+function firstSourcedYear(
+  candidates: Array<{ value?: string | null; evidence: BiographyEvidence }>,
+): SourcedValue<number> | null {
+  for (const candidate of candidates) {
+    const year = yearFrom(candidate.value);
+    if (year) return { value: year, evidence: [candidate.evidence] };
+  }
+  return null;
+}
+
 /**
  * Wikidata's formation place is usually the city, MusicBrainz's begin area is
  * usually the city too, and its `area` is the country. Preferring the narrower
  * one and appending the country reads the way people actually say it -
  * "Sheffield, United Kingdom" rather than just "United Kingdom".
  */
-function resolveOrigin(knowledge: OfflineArtistKnowledge, localizedCountry?: string | null): string | null {
-  const place = uniqueStrings([
-    knowledge.wikidata?.formationPlaces?.[0],
-    knowledge.musicbrainz?.beginArea,
-    knowledge.curated?.origin,
-  ])[0];
+function resolveOrigin(
+  knowledge: OfflineArtistKnowledge,
+  localizedCountry?: string | null,
+): SourcedValue<string> | null {
+  const place = firstSourcedString([
+    { value: knowledge.wikidata?.formationPlaces?.[0], evidence: 'wikidata' },
+    { value: knowledge.musicbrainz?.beginArea, evidence: 'musicbrainz' },
+    { value: knowledge.curated?.origin, evidence: 'curated' },
+  ]);
   // MusicBrainz and Wikidata both answer in English, so a Spanish reader was
   // told a band comes from "United Kingdom". The curated profile carries the
   // translated country and the dossier already shows it, so it leads here.
-  const country = uniqueStrings([
-    localizedCountry,
-    knowledge.musicbrainz?.area,
-    knowledge.wikidata?.countries?.[0],
-    knowledge.curated?.country,
-    knowledge.archive?.country,
-  ])[0];
+  const country = firstSourcedString([
+    { value: localizedCountry, evidence: 'curated' },
+    { value: knowledge.musicbrainz?.area, evidence: 'musicbrainz' },
+    { value: knowledge.wikidata?.countries?.[0], evidence: 'wikidata' },
+    { value: knowledge.curated?.country, evidence: 'curated' },
+    { value: knowledge.archive?.country, evidence: 'archive' },
+  ]);
 
-  if (place && country && place.toLowerCase() !== country.toLowerCase()) {
-    return `${place}, ${country}`;
+  if (place && country && place.value.toLowerCase() !== country.value.toLowerCase()) {
+    return {
+      value: `${place.value}, ${country.value}`,
+      evidence: mergeEvidence(place.evidence, country.evidence),
+    };
   }
   return place ?? country ?? null;
 }
@@ -229,19 +264,28 @@ function normalizeTag(tag: string): string {
  * they lead. Wikidata genres are an unordered set and fill in behind, which is
  * why no sentence here claims the list is ranked.
  */
-function resolveStyles(knowledge: OfflineArtistKnowledge): string[] {
+function resolveStyles(knowledge: OfflineArtistKnowledge): SourcedValue<string[]> {
   const seen = new Set<string>();
   const styles: string[] = [];
+  const evidence: BiographyEvidence[] = [];
 
-  for (const tag of [...(knowledge.musicbrainz?.tags ?? []), ...(knowledge.wikidata?.genres ?? [])]) {
-    const normalized = normalizeTag(tag);
-    if (!normalized || seen.has(normalized)) continue;
-    if (NON_STYLE_TAGS.has(normalized) || DECADE_TAG.test(normalized)) continue;
-    seen.add(normalized);
-    styles.push(tag.trim());
+  for (const source of [
+    { tags: knowledge.musicbrainz?.tags ?? [], evidence: 'musicbrainz' as const },
+    { tags: knowledge.wikidata?.genres ?? [], evidence: 'wikidata' as const },
+  ]) {
+    let contributed = false;
+    for (const tag of source.tags) {
+      const normalized = normalizeTag(tag);
+      if (!normalized || seen.has(normalized)) continue;
+      if (NON_STYLE_TAGS.has(normalized) || DECADE_TAG.test(normalized)) continue;
+      seen.add(normalized);
+      styles.push(tag.trim());
+      contributed = true;
+    }
+    if (contributed) evidence.push(source.evidence);
   }
 
-  return styles;
+  return { value: styles, evidence };
 }
 
 // ── Composition ─────────────────────────────────────────────────────────────
@@ -285,25 +329,39 @@ function documentedBiography(
   const name = displayName?.trim() || knowledge.name;
   const formatNumber = (value: number) => value.toLocaleString(localeFor(lang));
 
-  const origin = resolveOrigin(knowledge, country);
+  const originFact = resolveOrigin(knowledge, country);
+  const origin = originFact?.value ?? null;
   const isGroup = isGroupAct(knowledge);
   // Only a group has a formation year. For a person the same fields hold a
   // birth date, which is a different fact and gets a different sentence.
-  const formedYear = isGroup
-    ? yearFrom(knowledge.wikidata?.inception)
-      ?? yearFrom(knowledge.musicbrainz?.lifeSpanBegin)
-      ?? yearFrom(knowledge.curated?.activeYears?.[0])
+  const formedFact = isGroup
+    ? firstSourcedYear([
+      { value: knowledge.wikidata?.inception, evidence: 'wikidata' },
+      { value: knowledge.musicbrainz?.lifeSpanBegin, evidence: 'musicbrainz' },
+      { value: knowledge.curated?.activeYears?.[0], evidence: 'curated' },
+    ])
     : null;
-  const bornYear = isGroup
+  const bornFact = isGroup
     ? null
-    : yearFrom(knowledge.wikidata?.birthDate) ?? yearFrom(knowledge.musicbrainz?.lifeSpanBegin);
+    : firstSourcedYear([
+      { value: knowledge.wikidata?.birthDate, evidence: 'wikidata' },
+      { value: knowledge.musicbrainz?.lifeSpanBegin, evidence: 'musicbrainz' },
+    ]);
+  const formedYear = formedFact?.value ?? null;
+  const bornYear = bornFact?.value ?? null;
   const ended = Boolean(knowledge.musicbrainz?.ended);
   const endedYear = ended ? yearFrom(knowledge.musicbrainz?.lifeSpanEnd) : null;
 
   const labels = uniqueStrings(knowledge.wikidata?.recordLabels ?? []);
-  const styles = resolveStyles(knowledge);
+  const styleFacts = resolveStyles(knowledge);
+  const styles = styleFacts.value;
 
-  const allMembers = (knowledge.bandMembers ?? []).map(member => toLineupEntry(member, lang));
+  // `bandMembers` is produced by the MusicBrainz relationship enrichment. A
+  // detached/stale array without the matching artist identity has no source we
+  // can disclose, so it must not escape through either prose or lineup columns.
+  const allMembers = knowledge.musicbrainz?.id
+    ? (knowledge.bandMembers ?? []).map(member => toLineupEntry(member, lang))
+    : [];
   // A solo act credited as its own single "member" is not a lineup, and the
   // relation is often junk besides - Post Malone's one entry is a backing band
   // called The Fools For You, with no instrument attached. Dropping it here
@@ -384,9 +442,12 @@ function documentedBiography(
     paragraphs.push({
       id: 'identity',
       text: sentences.join(' '),
-      evidence: knowledge.wikidata?.inception || knowledge.wikidata?.formationPlaces?.length
-        ? ['wikidata', 'musicbrainz']
-        : ['musicbrainz'],
+      evidence: mergeEvidence(
+        originFact?.evidence ?? [],
+        formedFact?.evidence ?? [],
+        bornFact?.evidence ?? [],
+        ended ? ['musicbrainz'] : [],
+      ),
       voice: 'documented',
     });
   }
@@ -412,13 +473,18 @@ function documentedBiography(
           en: `The sources record these styles: ${named}.`,
           he: `המקורות מתעדים את הסגנונות האלה: ${named}.`,
         }),
-      evidence: knowledge.musicbrainz?.tags?.length ? ['musicbrainz', 'wikidata'] : ['wikidata'],
+      evidence: styleFacts.evidence,
       voice: 'documented',
     });
   }
 
   // ── Catalogue ─────────────────────────────────────────────────────────────
-  if (releaseCount) {
+  const releaseEvidence: BiographyEvidence[] = knowledge.musicbrainz?.id
+    ? ['musicbrainz']
+    : knowledge.curated
+      ? ['curated']
+      : [];
+  if (releaseCount && releaseEvidence.length) {
     const sentences: string[] = [];
     const span = earliest && latestYear && earliest.year !== latestYear
       ? pickLanguage(lang, {
@@ -477,7 +543,7 @@ function documentedBiography(
     paragraphs.push({
       id: 'catalogue',
       text: sentences.join(' '),
-      evidence: labels.length ? ['musicbrainz', 'wikidata'] : ['musicbrainz'],
+      evidence: mergeEvidence(releaseEvidence, labels.length ? ['wikidata'] : []),
       voice: 'documented',
     });
   }
@@ -571,7 +637,7 @@ function documentedBiography(
   } else if (bornYear) {
     lead.push(String(bornYear));
   }
-  if (releaseCount) {
+  if (releaseCount && releaseEvidence.length) {
     lead.push(releaseCount === 1
       ? pickLanguage(lang, { es: '1 lanzamiento', en: '1 release', he: 'יציאה אחת' })
       : pickLanguage(lang, {
