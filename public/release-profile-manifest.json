@@ -14,10 +14,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.6.0/home-desktop-en-cyber.jpg",
-      "sha256": "936b12fad11d5658e9e6b50d71ff720af0cf69af2e40a5ac5a8cf404353e8f77",
+      "sha256": "c6bbfd98aaaa335a8c48f862659c5be472b7a846331a189adb8659cfa5f4452d",
       "width": 1440,
       "height": 900,
-      "bytes": 182392,
+      "bytes": 182411,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -56,10 +56,10 @@
     {
       "id": "artist-atlas-desktop",
       "path": "assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "ec9809c501e34ef5b62c44184d8b1756c033a707d61a9ee66a320aa51c3c2878",
+      "sha256": "19603df4d2362550c8660fe50d20e4b2f7136d467274b436ac44ba1b72234b0a",
       "width": 1440,
       "height": 900,
-      "bytes": 161860,
+      "bytes": 162615,
       "lang": "en",
       "theme": "cyber",
       "viewport": {

@@ -3,11 +3,11 @@
   "release": {
     "status": "private-candidate",
     "version": "1.6.0",
-    "source_commit": "cd252fe7c6193a7f108bae57907873f581fa59dc",
-    "source_head_commit": "cd252fe7c6193a7f108bae57907873f581fa59dc",
+    "source_commit": "660f4299a4a9af0ae8b3a077fc46c5e15d334cc4",
+    "source_head_commit": "660f4299a4a9af0ae8b3a077fc46c5e15d334cc4",
     "source_state": "committed-product-source",
     "source_fingerprint_algorithm": "nova-release-source-sha256-v2",
-    "source_fingerprint": "846de60d87204dcb752ae7059bbfa0be842521f42cad0ff1b9f087084d18cee8",
+    "source_fingerprint": "9c831e848f674e0ad2f29abafa82e5d9891ed2bea8ab06516befb7b5399bf2a0",
     "source_file_count": 512,
     "captured_on": "2026-08-09",
     "deployed_on": null
@@ -66,10 +66,10 @@
     {
       "id": "profile-hero-desktop",
       "path": "assets/releases/v1.6.0/home-desktop-en-cyber.jpg",
-      "sha256": "936b12fad11d5658e9e6b50d71ff720af0cf69af2e40a5ac5a8cf404353e8f77",
+      "sha256": "c6bbfd98aaaa335a8c48f862659c5be472b7a846331a189adb8659cfa5f4452d",
       "width": 1440,
       "height": 900,
-      "bytes": 182392,
+      "bytes": 182411,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
@@ -108,10 +108,10 @@
     {
       "id": "artist-atlas-desktop",
       "path": "assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg",
-      "sha256": "ec9809c501e34ef5b62c44184d8b1756c033a707d61a9ee66a320aa51c3c2878",
+      "sha256": "19603df4d2362550c8660fe50d20e4b2f7136d467274b436ac44ba1b72234b0a",
       "width": 1440,
       "height": 900,
-      "bytes": 161860,
+      "bytes": 162615,
       "lang": "en",
       "theme": "cyber",
       "viewport": {
