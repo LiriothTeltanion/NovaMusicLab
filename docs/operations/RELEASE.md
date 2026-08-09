@@ -188,8 +188,9 @@ connection.
 - [x] The exact source passes the complete local verification and privacy gates
   on Node `22.13.0`: 770 Vitest tests pass with 1 intentional private-fixture
   skip, Playwright passes 18/18 and npm reports zero known vulnerabilities.
-- [ ] Final v1.6.0 release media is captured from that source and passes the
-  release-media audit.
+- [x] Final v1.6.0 release media contains nine source-fingerprinted assets,
+  passes the release-media audit and has been reviewed visually; the animated
+  tour also verifies every encoded frame against its source capture.
 - [ ] Pull-request CI, CodeQL and Dependency Review pass.
 - [ ] Kevin approves the exact merge candidate.
 - [ ] Pages serves matching v1.6.0 build metadata, real deployment date and

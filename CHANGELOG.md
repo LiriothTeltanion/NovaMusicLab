@@ -48,16 +48,19 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
   vulnerabilities, every data/privacy/PWA/share audit, **770 passing Vitest
   tests with 1 intentional private-fixture skip**, **18/18 Playwright journeys**
   and every bundle budget without widening a limit.
-- Final v1.6.0 media, the post-capture `verify:release` repetition, pull-request
-  CI review and live Pages checks remain pending. This entry is not evidence of
+- Nine v1.6.0 media assets pass their source-fingerprint audit and human visual
+  review. The animated three-room tour additionally compares all three encoded
+  frames with their source captures and reports zero severe-pixel drift.
+- The post-capture `verify:release` repetition, pull-request CI review and live
+  Pages checks remain release-acceptance gates. This entry is not evidence of
   publication.
 
 ### Known limitations
 
 - This is still a historical, browser-local snapshot with no backend, account,
   OAuth or automatic Spotify/Last.fm synchronization.
-- Final v1.6.0 screenshots, animated tour and raster social preview must be
-  generated only after product freeze and must pass the release-media audit.
+- Candidate screenshots, animated tour and raster social preview remain local
+  evidence until the exact reviewed commit is accepted and deployed.
 - DAW, FL Studio, MIDI, Tauri and desktop packaging remain outside this release.
 
 ## [1.5.0] - 2026-08-01

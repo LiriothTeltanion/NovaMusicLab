@@ -13,10 +13,11 @@ for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
 
-`v1.6.0` — private candidate 2026-08-09 — must receive a new immutable media
-directory only after product freeze. Until those files are generated and pass
-the audit, the v1.5.0 directory and raster social preview remain the latest
-reviewed visual evidence.
+`v1.6.0` — private candidate 2026-08-09 — now owns a nine-asset immutable media
+directory captured after the local product freeze. The screenshots, static
+tour, animated tour and raster social preview pass the source-fingerprint audit
+and human review. They remain candidate evidence rather than public deployment
+evidence; v1.5.0 remains the latest verified version served by Pages.
 
 ## What each candidate must contain
 

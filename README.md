@@ -465,7 +465,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `1.5.0` — deployed **2026-08-01** — is served by the protected GitHub Pages workflow. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) promoted the reviewed source, and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) verified, deployed and smoke-tested initial release commit `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
 
-`1.6.0` — **private candidate 2026-08-09** — exists only in the working source until its complete verification, visual-evidence and pull-request gates pass. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
+`1.6.0` — **private candidate 2026-08-09** — has passed its local source and visual-evidence checks, including nine reviewed release assets. Pull-request, remote security and live Pages acceptance remain pending. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
 
 ---
 

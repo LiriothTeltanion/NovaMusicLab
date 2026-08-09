@@ -48,7 +48,8 @@ candidate.
 
 ## Release gate
 
-Status: **private candidate — full release gate and final v1.6.0 media pending**.
+Status: **private candidate — local source and visual-evidence checks pass;
+pull-request and live-deployment checks remain pending**.
 
 Before publication, the exact frozen source must pass:
 
@@ -57,8 +58,11 @@ Before publication, the exact frozen source must pass:
    `22.13.0`: 770 Vitest tests passed with 1 intentional private-fixture skip,
    Playwright passed 18/18, dependency/privacy/data/bundle gates passed and npm
    reported zero known vulnerabilities.
-2. Final source-fingerprinted v1.6.0 screenshots, tour and social preview plus
-   `npm run audit:release-media` and `npm run verify:release`.
+2. ~~Final source-fingerprinted v1.6.0 screenshots, tour and social preview plus
+   `npm run audit:release-media`.~~ Nine assets passed the automated audit and
+   human review on 2026-08-09; the three GIF frames also pass a pixel-fidelity
+   check against their source captures. `npm run verify:release` remains the
+   canonical repetition after the committed capture and in release acceptance.
 3. Pull-request CI, CodeQL and dependency review.
 4. Kevin's explicit approval for the exact merge candidate.
 5. Live Pages verification showing version `1.6.0`, status `deployed`, the real
