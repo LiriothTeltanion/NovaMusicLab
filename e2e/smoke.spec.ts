@@ -58,7 +58,7 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await page.goto('/');
 
   const welcome = page.getByRole('dialog', {
-    name: /welcome to the sound museum/i,
+    name: /kevin's music history, turned into a museum/i,
   });
   await expect(welcome).toBeVisible();
   await expect(welcome.getByRole('button', { name: /next/i })).toBeFocused();
@@ -68,7 +68,7 @@ test('a first-time visitor can reach the flagship landing experience', async ({
   await expect(page.locator('h1')).toHaveCount(1);
   await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName('NOVA MUSIC LAB');
   await expect(
-    page.getByRole('button', { name: /enter the sound museum/i }),
+    page.getByRole('button', { name: 'Explore Kevin’s museum' }),
   ).toBeVisible();
 
   await expectNoHorizontalPageOverflow(page);
@@ -362,6 +362,8 @@ test('a hero constellation portrait opens the matching Living Artist Atlas terri
 test('a direct Atlas link keeps its hash while experience depth changes', async ({
   page,
 }, testInfo) => {
+  testInfo.setTimeout(75_000);
+
   await page.addInitScript(() => {
     window.localStorage.setItem('nml_lang', 'en');
     window.localStorage.setItem('nml_tour_seen', 'true');
@@ -404,7 +406,7 @@ test('a direct Atlas link keeps its hash while experience depth changes', async 
 
   await page.goto('/#/assistant');
   await expect(page.getByTestId('assistant-connection-status'))
-    .toHaveText('Local analysis · no external AI');
+    .toHaveText('Local analysis · no external AI', { timeout: 30_000 });
   await expect(page.getByLabel('Gemini API key')).toBeVisible();
   await page.getByTestId('experience-switcher').getByRole('button', { name: 'Explore' }).click();
   await expect(page.getByLabel('Gemini API key')).toHaveCount(0);

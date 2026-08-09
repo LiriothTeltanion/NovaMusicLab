@@ -90,11 +90,11 @@ describe('ExpeditionConsole', () => {
     expect(capsule).toHaveAttribute('data-archive-mode', 'flagship');
     const trigger = screen.getByTestId('archive-capsule-trigger');
     expect(trigger).toHaveAccessibleName(/Privacy: Reviewed public bundle\. Local state: Bundled\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0Public archive');
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0Kevin / Lirioth');
 
     await user.click(trigger);
     const panel = screen.getByTestId('archive-capsule-panel');
-    expect(panel).toHaveTextContent('Flagship exhibition');
+    expect(panel).toHaveTextContent('Kevin / Lirioth exhibition');
     expect(panel).toHaveTextContent('Reviewed public bundle');
     expect(panel).toHaveTextContent('Bundled');
     expect(panel).toHaveTextContent('Archive generated');

@@ -62,7 +62,7 @@
     "Platform telemetry is reduced to broad device families; raw models, versions, user-agent strings and device identifiers are omitted.",
     "Snapshot freshness separates the listening-event period, build time, enrichment evidence and dated Pulse; liveConnection is false.",
     "The 6,593 value counts exact archive-name catalog entries, not 6,593 verified people. 182 normalized name-variant groups remain preserved until an evidence-reviewed identity migration.",
-    "The 2026-08 refresh replayed the complete Spotify extended history, a fresh Last.fm export and a new YouTube Takeout, extending the archive from 2026-07-03 to 2026-08-06 and adding 180 artists.",
+    "The 2026-08 refresh replayed the complete Spotify extended history, a fresh Last.fm export and a new YouTube Takeout, extending the archive from 2026-07-03 to 2026-08-06 and adding 180 exact artist-name catalog entries.",
     "Every exact-granularity section must be reviewed again before a refreshed public dataset is committed.",
     "Visitor imports remain browser-local and are not covered by this public-bundle manifest."
   ]

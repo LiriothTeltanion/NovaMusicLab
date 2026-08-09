@@ -86,11 +86,45 @@ describe('chart integrity helpers', () => {
       totalPlays: 100,
       sourcePlays: 80,
       sourceCoveragePct: 80,
+      groupedFamilyCount: 1,
+      groupedPlays: 20,
       rows: [
-        { name: 'Rock', plays: 60, share: 60 },
-        { name: 'Other', plays: 40, share: 40 },
+        { name: 'Rock', plays: 60, share: 60, kind: 'family' },
+        { name: 'Unclassified', plays: 20, share: 20, kind: 'unclassified' },
+        { name: 'Other', plays: 20, share: 20, kind: 'grouped' },
       ],
     });
     expect(distribution.rows.reduce((sum, row) => sum + row.plays, 0)).toBe(100);
+  });
+
+  it('never hides an explicit unclassified row inside the grouped long tail', () => {
+    const distribution = buildGenreDistribution([
+      { name: 'Rock', plays: 60 },
+      { name: 'Pop', plays: 20 },
+      { name: 'Jazz', plays: 10 },
+      { name: 'Unclassified', plays: 10 },
+    ], 100, 1);
+
+    expect(distribution.rows).toEqual([
+      { name: 'Rock', plays: 60, share: 60, kind: 'family' },
+      { name: 'Unclassified', plays: 10, share: 10, kind: 'unclassified' },
+      { name: 'Other', plays: 30, share: 30, kind: 'grouped' },
+    ]);
+    expect(distribution.groupedFamilyCount).toBe(2);
+    expect(distribution.groupedPlays).toBe(30);
+  });
+
+  it('omits the presentation-only grouped row when every family is visible', () => {
+    const distribution = buildGenreDistribution([
+      { name: 'Rock', plays: 60 },
+      { name: 'Unclassified', plays: 10 },
+    ], 70, 10);
+
+    expect(distribution.groupedFamilyCount).toBe(0);
+    expect(distribution.groupedPlays).toBe(0);
+    expect(distribution.rows).toEqual([
+      { name: 'Rock', plays: 60, share: 85.7, kind: 'family' },
+      { name: 'Unclassified', plays: 10, share: 14.3, kind: 'unclassified' },
+    ]);
   });
 });

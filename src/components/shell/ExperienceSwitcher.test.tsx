@@ -28,11 +28,11 @@ describe('ExperienceSwitcher', () => {
     renderSwitcher('en');
 
     const guided = screen.getByRole('button', { name: 'Guided' });
-    expect(screen.getByRole('group', { name: 'Choose experience depth' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Choose reading depth' })).toBeInTheDocument();
     expect(guided).toHaveAttribute('aria-pressed', 'false');
     expect(screen.getByRole('button', { name: 'Explore' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: 'Deep Dive' })).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByText('Browse every room with brief, clear context.')).toBeVisible();
+    expect(screen.getByText('Balanced explanations while every room stays available.')).toBeVisible();
   });
 
   it('changes the active depth and persists it', async () => {
@@ -50,14 +50,14 @@ describe('ExperienceSwitcher', () => {
   it('renders complete Spanish labels and descriptions', () => {
     renderSwitcher('es');
 
-    expect(screen.getByRole('group', { name: 'Elegir nivel de experiencia' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Elegir profundidad de lectura' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Guiado' })).toHaveAttribute(
       'title',
-      'Te acompaña paso a paso con explicaciones simples.',
+      'Lenguaje más simple y el contexto esencial en cada sala.',
     );
     expect(screen.getByRole('button', { name: 'Explorar' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'A fondo' })).toBeInTheDocument();
-    expect(screen.getByText('Recorre todas las salas con contexto breve y claro.')).toBeVisible();
+    expect(screen.getByText('Explicaciones equilibradas con todas las salas disponibles.')).toBeVisible();
   });
 
   it('renders Hebrew in RTL with localized accessible labels', () => {
@@ -65,10 +65,10 @@ describe('ExperienceSwitcher', () => {
 
     const switcher = screen.getByTestId('experience-switcher');
     expect(switcher).toHaveAttribute('dir', 'rtl');
-    expect(switcher).toHaveAccessibleName('בחירת עומק החוויה');
+    expect(switcher).toHaveAccessibleName('בחירת עומק הקריאה');
     expect(screen.getByRole('button', { name: 'מודרך' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'חקירה' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'צלילה לעומק' })).toBeInTheDocument();
-    expect(screen.getByText('מעבר חופשי בין כל החדרים, עם הקשר קצר וברור.')).toBeVisible();
+    expect(screen.getByText('הסברים מאוזנים כאשר כל החדרים נשארים זמינים.')).toBeVisible();
   });
 });

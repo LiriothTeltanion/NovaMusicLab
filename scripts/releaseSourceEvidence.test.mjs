@@ -18,7 +18,9 @@ import {
 } from './lib/releaseSourceEvidence.mjs';
 
 const VERSION = '1.5.0';
-const GIT_TEST_TIMEOUT_MS = 15_000;
+// Windows Defender and OneDrive can make temporary Git fixtures unusually
+// slow even though the assertions are deterministic and synchronous.
+const GIT_TEST_TIMEOUT_MS = 45_000;
 const temporaryRoots = [];
 
 function git(root, args) {

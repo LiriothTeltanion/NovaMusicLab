@@ -4,6 +4,7 @@ import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getRecords } from '../utils/analytics';
 import ArtistAvatar from './ArtistAvatar';
+import InterpretiveBoundaryNotice from './InterpretiveBoundaryNotice';
 import SectionNarrative from './SectionNarrative';
 import { localizeSourceNote } from '../utils/localizedDatasetText';
 import { localeFor } from '../utils/i18n';
@@ -31,6 +32,7 @@ export default function HiddenInsights({ data }: HiddenInsightsProps) {
   return (
     <div className="space-y-8 animate-fade-in">
       <SectionNarrative content={t.deepNarratives.insights} accent="c1" />
+      <InterpretiveBoundaryNotice lang={lang} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Insight 1: Silent Dominance */}

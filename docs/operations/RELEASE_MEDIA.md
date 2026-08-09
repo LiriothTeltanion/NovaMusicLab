@@ -13,10 +13,12 @@ for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
 
-`v1.6.0` — private candidate 2026-08-09 — now owns a nine-asset immutable media
-directory captured after the local product freeze. The screenshots, static
-tour, animated tour and raster social preview pass the source-fingerprint audit
-and human review. They remain candidate evidence rather than public deployment
+`v1.6.0` — private candidate 2026-08-09 — owns a nine-asset media directory from
+an earlier candidate baseline. Subsequent purpose, navigation, Atlas, Genres,
+Obsessions and media-fallback changes intentionally make that source
+fingerprint stale. The directory remains a review reference until every asset
+is regenerated from the frozen integrated source, visually reviewed and
+audited again. It is not current release evidence or public deployment
 evidence; v1.5.0 remains the latest verified version served by Pages.
 
 ## What each candidate must contain
@@ -24,9 +26,15 @@ evidence; v1.5.0 remains the latest verified version served by Pages.
 - English cyber-theme Hero at 1440×900.
 - Spanish cyber-theme Hero at 390×844.
 - English cyber-theme Genres at 390×844 and Living Artist Atlas at 1440×900.
+- The Atlas capture must visibly include its all-artist navigator and the
+  Genres capture must keep Unclassified separate from the labelled classified
+  long tail.
 - English cyber-theme Guest Museum entry at 1440×900.
+- At least one reviewed capture or tour frame must show the clearer Kevin /
+  Lirioth purpose and the local **Build my museum** path. Obsessions should be
+  visually reviewed even though it is not an additional required profile ID.
 - Hebrew RTL Share & Feedback at 390×844 in the daylight theme.
-- A three-room English Home → Atlas → Genres tour as a static three-panel JPEG
+- A three-room English Overview → Artists → Genres tour as a static three-panel JPEG
   contact sheet and a short animated GIF.
 - The 1280×640 social preview.
 - `release-media.json` with SHA-256, byte size, actual dimensions, language,

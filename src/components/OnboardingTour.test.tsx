@@ -32,7 +32,7 @@ describe('OnboardingTour', () => {
       </AppProvider>
     );
     expect(screen.getByText('Paso 1 de 5')).toBeInTheDocument();
-    expect(screen.getByText('Bienvenido al Museo Sonoro')).toBeInTheDocument();
+    expect(screen.getByText('La historia musical de Kevin, convertida en museo')).toBeInTheDocument();
   });
 
   it('advances through every step and finishes on the last one', async () => {
@@ -151,6 +151,6 @@ describe('OnboardingTour', () => {
       </AppProvider>
     );
     expect(screen.getByText('Step 1 of 5')).toBeInTheDocument();
-    expect(screen.getByText('Welcome to the Sound Museum')).toBeInTheDocument();
+    expect(screen.getByText("Kevin's music history, turned into a museum")).toBeInTheDocument();
   });
 });

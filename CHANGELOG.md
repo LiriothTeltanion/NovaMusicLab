@@ -19,10 +19,14 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
 - Replayed the complete reviewed Spotify, Last.fm and YouTube archive through
   2026-08-06, preserving an explicit local-snapshot boundary instead of
   presenting the refresh as a live account connection.
-- Expanded source-labelled artist dossiers and album/portrait evidence while
-  keeping unavailable biography fields honest.
-- Added a mobile room dock and calmer supporting text so core navigation
-  remains legible without removing deep-dive evidence.
+- Added a complete lazy Atlas navigator for all **6,593 exact-name catalog
+  entries**, with search, A–Z, archive listening rank, letter filters and
+  incremental 24-card loading.
+- Added a cover-led Obsessions spotlight, a visual loop grid and direct routes
+  to the matching track or artist territory.
+- Added a shared interpretive boundary for emotional and personality rooms:
+  readings describe creative patterns in listening evidence and are never
+  presented as clinical assessments or diagnoses.
 
 ### Changed
 
@@ -37,6 +41,18 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
   **85 accepted**, **1,203 candidate** and **2 rejected and hidden**.
 - Made Data Quality and Genre Lab derive catalog counts from the reviewed
   manifest or active archive rather than release-specific UI literals.
+- Kept **Unclassified** as its own visible genre row and changed the former
+  generic `Other` label into a localized count of smaller known families. The
+  complete genre view shows all 36 rows without a synthetic `Other` genre.
+- Reframed the first visit around two clear paths: explore Kevin Cusnir /
+  Lirioth Teltanion's real public archive or build a private local museum from
+  supported listening-history exports rather than MP3 files.
+- Rewrote artist introductions to lead with a readable human story before
+  identifiers, provenance and detailed genre evidence.
+- Expanded the exact track-art map to **170 entries**, covering **50 / 50**
+  bundled obsession moments. The Atlas media stage now consults the lazy
+  primary-portrait index before its deterministic generated fallback; **5,691
+  / 6,593** catalog rows currently match that index by normalized exact name.
 - Connected social-preview metrics to the same share-metrics and public-manifest
   contracts used by the application, with a drift check for the editable SVG.
 - Kept enrichment dated **2026-07-29** and Recent Pulse dated **2026-07-02**;
@@ -44,16 +60,17 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
 
 ### Verification status
 
-- The local source gate passed on Node `22.13.0`: clean `npm ci`, zero known npm
-  vulnerabilities, every data/privacy/PWA/share audit, **770 passing Vitest
-  tests with 1 intentional private-fixture skip**, **18/18 Playwright journeys**
-  and every bundle budget without widening a limit.
-- Nine v1.6.0 media assets pass their source-fingerprint audit and human visual
-  review. The animated three-room tour additionally compares all three encoded
-  frames with their source captures and reports zero severe-pixel drift.
-- The post-capture `verify:release` repetition, pull-request CI review and live
-  Pages checks remain release-acceptance gates. This entry is not evidence of
-  publication.
+- A previous v1.6.0 product baseline passed Node `22.13.0`, **770 Vitest tests**
+  with 1 intentional private-fixture skip, **18/18 Playwright journeys**, the
+  data/privacy/bundle gates and the nine-asset media audit. That evidence was
+  valid for the earlier source only and is not reused as proof for this clarity
+  integration.
+- The exact integrated source must rerun `npm ci`, `npm run verify`,
+  `npm run test:e2e`, dependency/privacy checks and the complete visual matrix.
+- The existing nine candidate assets are retained as a visual baseline, but
+  must be recaptured and source-fingerprinted after the product source freezes.
+  Pull-request CI and live Pages checks remain separate release-acceptance
+  gates. This entry is not evidence of publication.
 
 ### Known limitations
 

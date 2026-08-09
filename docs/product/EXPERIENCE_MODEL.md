@@ -10,13 +10,16 @@ Nova Music Lab separates **where a visitor goes** from **how much explanation th
 
 | Hub | Purpose | Entry route |
 |---|---|---|
-| Home | Orientation, archive overview, sharing and feedback | `#/dashboard` |
+| Overview | Orientation, archive purpose, sharing and feedback | `#/dashboard` |
 | Pulse | Recent movement, loops, achievements and yearly summaries | `#/recent-pulse` |
-| Atlas | Living Artist Atlas, rankings and cultural geography | `#/artist-identity` |
+| Artists | Living Artist Atlas, rankings and cultural geography | `#/artist-identity` |
 | Stories | Eras, identity, emotion and the final narrative | `#/eras` |
-| Data Lab | Import, local audio, comparison, quality and advanced statistics | `#/upload` |
+| Create | Private museum import, local audio, comparison, quality and advanced statistics | `#/upload` |
 
-Every room belongs to exactly one hub. The active hub is derived from the current hash route and is never saved as duplicate state. Existing room URLs remain canonical and shareable.
+These are clearer visible labels for the existing stable hub identifiers. Every
+room belongs to exactly one hub. The active hub is derived from the current hash
+route and is never saved as duplicate state. Existing room URLs remain
+canonical and shareable.
 
 ## Three experience depths
 
@@ -68,6 +71,12 @@ Depth is separate from the Expressive, Calm and Static motion setting. System re
 - Guest Museum requires no account. A visitor may choose an optional local
   display name, import files and compare with the public flagship; the name is
   not authentication.
+- The first screen names the flagship as Kevin Cusnir / Lirioth Teltanion's real
+  archive and separates **Explore Kevin's museum** from **Build my museum**.
+  Upload copy means supported listening-history exports, never MP3 files.
+- Emotional and personality rooms retain an interpretive, non-clinical notice
+  at every depth. Simplifying the language never turns a reflection into a
+  diagnosis.
 
 ## Verification contract
 

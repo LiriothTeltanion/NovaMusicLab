@@ -19,9 +19,9 @@ type Localized<T> = Record<Lang, T>;
  * the "fabricated data" pattern this project treats as a hard bug (see
  * HANDOFF.md: "never fabricate data" / the Discrepancy Auditor incident).
  * Every score/evidence/artist/track below is derived from the real top_*
- * arrays; only the interpretive prose (positive/shadow/tip, archetype
- * descriptions) is fixed per-category, the same way a horoscope's houses are
- * fixed but which one applies to you is not.
+ * arrays. The fixed prose describes musical patterns and creative prompts;
+ * it must never be presented as a personality, wellbeing or mental-health
+ * assessment.
  */
 
 /**
@@ -55,49 +55,49 @@ const GENRE_WEIGHTS: Record<string, Partial<Record<keyof PersonalityMatrix, numb
 
 const TRAIT_TEXT: Record<keyof PersonalityMatrix, Localized<{ positive: string; shadow: string; tip: string }>> = {
   sensibilidad_emocional: {
-    es: { positive: 'Empatía y lectura emocional profunda.', shadow: 'Tendencia a quedarse demasiado tiempo en estados intensos.', tip: 'Alterna canciones catárticas con cierres luminosos.' },
-    en: { positive: 'Empathy and deep emotional reading.', shadow: 'A tendency to linger too long in intense states.', tip: 'Alternate cathartic songs with brighter closers.' },
-    he: { positive: 'אמפתיה וקריאה רגשית עמוקה.', shadow: 'נטייה להישאר זמן רב מדי במצבים עוצמתיים.', tip: 'שלב בין שירים קתרזיים לסיומות מוארות יותר.' },
+    es: { positive: 'Contraste rico entre texturas delicadas e intensas.', shadow: 'Las texturas densas ocupan más espacio y dejan menos contraste ligero.', tip: 'Compara una canción densa con un cierre más luminoso y observa la diferencia sonora.' },
+    en: { positive: 'Rich contrast between delicate and intense textures.', shadow: 'Dense textures occupy more space and leave less room for lighter contrast.', tip: 'Compare one dense track with a brighter closer and notice the sonic difference.' },
+    he: { positive: 'ניגוד עשיר בין מרקמים עדינים לעוצמתיים.', shadow: 'מרקמים צפופים תופסים יותר מקום ומשאירים פחות ניגוד קליל.', tip: 'השווה שיר צפוף לסיום מואר יותר ובחן את ההבדל הצלילי.' },
   },
   nostalgia: {
-    es: { positive: 'Memoria afectiva poderosa.', shadow: 'Idealizar etapas pasadas.', tip: 'Crea playlists por era y cierra cada una con una canción nueva.' },
-    en: { positive: 'Powerful emotional memory.', shadow: 'Idealizing past eras.', tip: 'Build playlists per era and close each with a brand-new song.' },
-    he: { positive: 'זיכרון רגשי עוצמתי.', shadow: 'נטייה לייפות תקופות מן העבר.', tip: 'צור פלייליסט לכל תקופה וסיים כל אחד בשיר חדש לגמרי.' },
+    es: { positive: 'Continuidad clara entre épocas y sonidos recurrentes.', shadow: 'La paleta retro puede ocupar más espacio que los descubrimientos recientes.', tip: 'Crea una playlist por era y añade una canción nueva como punto de contraste.' },
+    en: { positive: 'Clear continuity across eras and recurring sounds.', shadow: 'The retro palette may occupy more space than recent discoveries.', tip: 'Build a playlist per era and add one new track as a point of contrast.' },
+    he: { positive: 'רצף ברור בין תקופות וצלילים שחוזרים.', shadow: 'הפלטה הרטרואית עשויה לתפוס יותר מקום מתגליות חדשות.', tip: 'צור פלייליסט לכל תקופה והוסף שיר חדש אחד כנקודת ניגוד.' },
   },
   energia: {
-    es: { positive: 'Impulso y resiliencia.', shadow: 'Sobreestimulación si todo el día se vuelve intensidad.', tip: 'Usa la energía alta como ritual de acción.' },
-    en: { positive: 'Drive and resilience.', shadow: 'Overstimulation if every hour stays high-intensity.', tip: 'Use high-energy tracks as an action ritual.' },
-    he: { positive: 'דרייב וחוסן.', shadow: 'עומס יתר כשהיום כולו נשאר בעוצמה גבוהה.', tip: 'הפוך מוזיקה עתירת אנרגיה לטקס שמניע לפעולה.' },
+    es: { positive: 'Pulso alto y movimiento rítmico claramente representados.', shadow: 'Los bloques intensos dejan menos espacio para texturas de bajo pulso.', tip: 'Alterna un bloque de alta energía con una pieza de menor densidad.' },
+    en: { positive: 'High pulse and rhythmic movement are clearly represented.', shadow: 'Intense blocks leave less space for low-pulse textures.', tip: 'Alternate a high-energy block with one lower-density piece.' },
+    he: { positive: 'דופק גבוה ותנועה קצבית מיוצגים בבירור.', shadow: 'מקטעים עוצמתיים משאירים פחות מקום למרקמים בדופק נמוך.', tip: 'שלב מקטע עתיר אנרגיה עם יצירה אחת בצפיפות נמוכה יותר.' },
   },
   oscuridad_estetica: {
-    es: { positive: 'Imaginación visual fuerte.', shadow: 'Aislamiento estetizado.', tip: 'Convierte esa oscuridad en diseño, escritura o sonido.' },
-    en: { positive: 'Strong visual imagination.', shadow: 'Aestheticized isolation.', tip: 'Turn that darkness into design, writing or sound.' },
-    he: { positive: 'דמיון חזותי מפותח.', shadow: 'בידוד שהופך לאסתטיקה.', tip: 'הפוך את החושך הזה לעיצוב, כתיבה או סאונד.' },
+    es: { positive: 'Paleta oscura y atmosférica con identidad visual coherente.', shadow: 'Una paleta muy uniforme puede reducir el contraste tonal.', tip: 'Combina una textura oscura con una producción acústica o brillante.' },
+    en: { positive: 'A coherent dark and atmospheric visual palette.', shadow: 'A very uniform palette can reduce tonal contrast.', tip: 'Pair one dark texture with an acoustic or brighter production.' },
+    he: { positive: 'פלטה אפלה ואטמוספרית בעלת שפה חזותית עקבית.', shadow: 'פלטה אחידה מאוד עשויה לצמצם את הניגוד הטונאלי.', tip: 'שלב מרקם אפל אחד עם הפקה אקוסטית או מוארת יותר.' },
   },
   creatividad: {
-    es: { positive: 'Exploración y apertura.', shadow: 'Saltar demasiado rápido entre ideas.', tip: 'Elige una micro-era creativa por semana.' },
-    en: { positive: 'Exploration and openness.', shadow: 'Jumping too fast between ideas.', tip: 'Pick one creative micro-era per week.' },
-    he: { positive: 'סקרנות ופתיחות לחקירה.', shadow: 'נטייה לדלג מהר מדי בין רעיונות.', tip: 'בחר מיקרו־תקופה יצירתית אחת בכל שבוע.' },
+    es: { positive: 'Variedad amplia de artistas y rutas de exploración.', shadow: 'Una amplitud muy grande puede hacer menos visibles los patrones centrales.', tip: 'Elige una micro-ruta de tres artistas y compárala con el resto del archivo.' },
+    en: { positive: 'A broad variety of artists and exploratory paths.', shadow: 'Very broad coverage can make central patterns less visible.', tip: 'Choose a three-artist micro-route and compare it with the rest of the archive.' },
+    he: { positive: 'מגוון רחב של אמנים ונתיבי חקירה.', shadow: 'כיסוי רחב מאוד עשוי להסתיר את הדפוסים המרכזיים.', tip: 'בחר מסלול קטן של שלושה אמנים והשווה אותו לשאר הארכיון.' },
   },
   rebeldia: {
-    es: { positive: 'Autodefensa emocional.', shadow: 'Tensión acumulada.', tip: 'Cierra los loops intensos con movimiento físico.' },
-    en: { positive: 'Emotional self-defense.', shadow: 'Accumulated tension.', tip: 'Close intense loops with physical movement.' },
-    he: { positive: 'הגנה עצמית רגשית.', shadow: 'מתח שממשיך להצטבר.', tip: 'סגור מעגלים אינטנסיביים בעזרת תנועה גופנית.' },
+    es: { positive: 'Contraste fuerte, ruptura y producción de alto impacto.', shadow: 'Texturas de impacto similares pueden agruparse y reducir la variedad dinámica.', tip: 'Coloca una canción de baja intensidad entre dos bloques de alto impacto.' },
+    en: { positive: 'Strong contrast, rupture and high-impact production.', shadow: 'Similar high-impact textures can cluster and reduce dynamic variety.', tip: 'Place one low-intensity track between two high-impact blocks.' },
+    he: { positive: 'ניגוד חזק, שבירה והפקה בעלת השפעה גבוהה.', shadow: 'מרקמים עוצמתיים דומים עשויים להצטבר ולצמצם את המגוון הדינמי.', tip: 'מקם שיר אחד בעצימות נמוכה בין שני מקטעים עוצמתיים.' },
   },
   futurismo: {
-    es: { positive: 'Visión de futuro.', shadow: 'Desconexión del presente.', tip: 'Usa la música futurista para programar, diseñar o planear.' },
-    en: { positive: 'Vision of the future.', shadow: 'Disconnection from the present.', tip: 'Use futuristic music to code, design or plan.' },
-    he: { positive: 'ראייה עתידית.', shadow: 'ניתוק מן ההווה.', tip: 'השתמש במוזיקה עתידנית כדי לתכנת, לעצב או לתכנן.' },
+    es: { positive: 'Producción sintética y estética digital consistentes.', shadow: 'Una paleta muy sintética puede ocultar el contraste acústico.', tip: 'Compara una pieza sintética con otra basada en instrumentos orgánicos.' },
+    en: { positive: 'Consistent synthetic production and digital aesthetics.', shadow: 'A strongly synthetic palette can obscure acoustic contrast.', tip: 'Compare one synthetic piece with another built from organic instruments.' },
+    he: { positive: 'הפקה סינתטית ואסתטיקה דיגיטלית עקביות.', shadow: 'פלטה סינתטית חזקה עשויה להסתיר ניגוד אקוסטי.', tip: 'השווה יצירה סינתטית אחת ליצירה המבוססת על כלים אורגניים.' },
   },
 };
 
 const TRAIT_EVIDENCE_LABEL: Record<keyof PersonalityMatrix, Localized<string>> = {
-  sensibilidad_emocional: { es: 'texturas emocionales densas', en: 'dense emotional textures', he: 'מרקמים רגשיים צפופים' },
-  nostalgia: { es: 'sonidos retro y recurrencias de época', en: 'retro sounds and era-recurring artists', he: 'צלילי רטרו ואמנים שחוזרים לאורך תקופות' },
+  sensibilidad_emocional: { es: 'texturas expresivas densas', en: 'dense expressive textures', he: 'מרקמים אקספרסיביים צפופים' },
+  nostalgia: { es: 'producción retro y sonidos recurrentes de época', en: 'retro production and recurring era sounds', he: 'הפקה רטרואית וצלילים שחוזרים בין תקופות' },
   energia: { es: 'bloques de alto pulso', en: 'high-pulse blocks', he: 'מקטעים עם דופק גבוה' },
   oscuridad_estetica: { es: 'texturas oscuras y atmosféricas', en: 'dark, atmospheric textures', he: 'מרקמים אפלים ואטמוספריים' },
   creatividad: { es: 'variedad amplia de artistas', en: 'a wide variety of artists', he: 'מגוון רחב של אמנים' },
-  rebeldia: { es: 'catarsis, ruptura y reconstrucción', en: 'catharsis, rupture and reconstruction', he: 'קתרזיס, שבר ובנייה מחדש' },
+  rebeldia: { es: 'contraste abrasivo, ruptura y producción de impacto', en: 'abrasive contrast, rupture and high-impact production', he: 'ניגוד מחוספס, שבירה והפקה עוצמתית' },
   futurismo: { es: 'producción sintética y estética digital', en: 'synthetic production and digital aesthetics', he: 'הפקה סינתטית ואסתטיקה דיגיטלית' },
 };
 
@@ -146,10 +146,7 @@ export function buildPersonalityMatrix(topArtists: TopArtist[], lang: Lang = 'es
 
   traits.forEach(trait => {
     const { pct, topArtist } = scores[trait];
-    // Floor at 30 (everyone has some baseline of every trait) so a 0%-share
-    // trait doesn't read as a hard zero, but the ceiling stays proportional
-    // to how much of the real archive actually supports it.
-    const score = Math.round(30 + pct * 68);
+    const score = Math.round(pct * 100);
     const label = TRAIT_EVIDENCE_LABEL[trait][lang];
     const evidence = topArtist
       ? pickLanguage(lang, {
@@ -157,11 +154,17 @@ export function buildPersonalityMatrix(topArtists: TopArtist[], lang: Lang = 'es
         en: `Recurring listening of ${label}, led by ${topArtist.name} (${topArtist.plays.toLocaleString(localeFor(lang))} plays).`,
         he: `האזנה חוזרת ל${label}, בהובלת ${topArtist.name} (${topArtist.plays.toLocaleString(localeFor(lang))} השמעות).`,
       })
-      : pickLanguage(lang, {
-        es: `Un hilo modesto pero presente de ${label} en el archivo.`,
-        en: `A modest but present thread of ${label} across the archive.`,
-        he: `נוכחות צנועה אך ברורה של ${label} ברחבי הארכיון.`,
-      });
+      : pct > 0
+        ? pickLanguage(lang, {
+          es: `La variedad de artistas aporta una señal normalizada de ${score}/100 para ${label}.`,
+          en: `Artist variety contributes a normalized ${score}/100 archive signal for ${label}.`,
+          he: `מגוון האמנים תורם אות ארכיוני מנורמל של ${score}/100 עבור ${label}.`,
+        })
+        : pickLanguage(lang, {
+          es: `No hay evidencia de género mapeada para ${label} en el archivo activo.`,
+          en: `No mapped genre evidence for ${label} is present in the active archive.`,
+          he: `בארכיון הפעיל אין עדות ז׳אנר ממופה עבור ${label}.`,
+        });
     const text = TRAIT_TEXT[trait][lang];
     matrix[trait] = {
       score,
@@ -188,44 +191,44 @@ const ARCHETYPE_BANK: ArchetypeTemplate[] = [
   {
     id: 'melancolico',
     genres: ['Post-Metal / Blackgaze', 'Ambient / Lo-Fi'],
-    es: { name: 'El Explorador Melancólico', desc: 'Buscador de belleza en la tristeza', color: 'cyan', aesthetic: 'Luna de neón', strength: 'Introspección', wound: 'Soledad', advice: 'Transforma la melancolía en obra.' },
-    en: { name: 'The Melancholic Explorer', desc: 'A seeker of beauty inside sadness', color: 'cyan', aesthetic: 'Neon moon', strength: 'Introspection', wound: 'Loneliness', advice: 'Turn melancholy into a body of work.' },
-    he: { name: 'החוקר המלנכולי', desc: 'מחפש יופי בתוך העצב', color: 'cyan', aesthetic: 'ירח ניאון', strength: 'התבוננות פנימית', wound: 'בדידות', advice: 'הפוך את המלנכוליה ליצירה.' },
+    es: { name: 'El Explorador Atmosférico', desc: 'Prompt creativo basado en texturas amplias y de bajo brillo', color: 'cyan', aesthetic: 'Luna de neón', strength: 'Profundidad textural', wound: 'Contraste luminoso limitado', advice: 'Combina la atmósfera con una textura más brillante.' },
+    en: { name: 'The Atmospheric Explorer', desc: 'A creative prompt built from spacious, low-brightness textures', color: 'cyan', aesthetic: 'Neon moon', strength: 'Textural depth', wound: 'Limited brightness contrast', advice: 'Pair the atmosphere with one brighter texture.' },
+    he: { name: 'החוקר האטמוספרי', desc: 'הצעה יצירתית שנבנתה ממרקמים רחבים ובעלי בהירות נמוכה', color: 'cyan', aesthetic: 'ירח ניאון', strength: 'עומק מרקמי', wound: 'ניגוד בהירות מוגבל', advice: 'שלב את האווירה עם מרקם מואר יותר.' },
   },
   {
     id: 'guerrero',
     genres: ['Metalcore', 'Post-Hardcore'],
-    es: { name: 'El Guerrero Emocional', desc: 'Usa la intensidad como escudo creativo', color: 'pink', aesthetic: 'Lluvia rosa', strength: 'Resiliencia', wound: 'Ansiedad', advice: 'Convierte la fuerza en acción concreta.' },
-    en: { name: 'The Emotional Warrior', desc: 'Uses intensity as a creative shield', color: 'pink', aesthetic: 'Pink rain', strength: 'Resilience', wound: 'Anxiety', advice: 'Turn strength into concrete action.' },
-    he: { name: 'הלוחם הרגשי', desc: 'משתמש בעוצמה כמגן יצירתי', color: 'pink', aesthetic: 'גשם ורוד', strength: 'חוסן', wound: 'חרדה', advice: 'תרגם את הכוח לפעולה ממשית.' },
+    es: { name: 'El Motor de Alto Pulso', desc: 'Prompt creativo basado en guitarras rápidas y producción de impacto', color: 'pink', aesthetic: 'Lluvia rosa', strength: 'Impulso rítmico', wound: 'Poco contraste de baja energía', advice: 'Abre espacio entre bloques intensos con una pieza más lenta.' },
+    en: { name: 'The High-Pulse Engine', desc: 'A creative prompt built from fast guitars and high-impact production', color: 'pink', aesthetic: 'Pink rain', strength: 'Rhythmic momentum', wound: 'Limited low-energy contrast', advice: 'Open space between intense blocks with one slower piece.' },
+    he: { name: 'מנוע הדופק הגבוה', desc: 'הצעה יצירתית שנבנתה מגיטרות מהירות והפקה עוצמתית', color: 'pink', aesthetic: 'גשם ורוד', strength: 'תנופה קצבית', wound: 'ניגוד מוגבל באנרגיה נמוכה', advice: 'פתח מרווח בין מקטעים עוצמתיים בעזרת יצירה איטית יותר.' },
   },
   {
     id: 'arquitecto',
     genres: ['Synthwave / Darksynth', 'Progressive Metal'],
-    es: { name: 'El Arquitecto Nocturno', desc: 'Construye mundos digitales desde la nostalgia', color: 'purple', aesthetic: 'Rejilla cian sobre asfalto mojado', strength: 'Visión', wound: 'Desconexión del presente', advice: 'Aterriza un plano futurista en un paso de hoy.' },
-    en: { name: 'The Night Architect', desc: 'Builds digital worlds out of nostalgia', color: 'purple', aesthetic: 'Cyan grid over wet asphalt', strength: 'Vision', wound: 'Disconnection from the present', advice: 'Ground one futuristic blueprint in a step you take today.' },
-    he: { name: 'אדריכל הלילה', desc: 'בונה עולמות דיגיטליים מתוך נוסטלגיה', color: 'purple', aesthetic: 'רשת ציאן מעל אספלט רטוב', strength: 'חזון', wound: 'ניתוק מן ההווה', advice: 'עגן תוכנית עתידנית אחת בצעד שאתה עושה היום.' },
+    es: { name: 'El Arquitecto Nocturno', desc: 'Prompt creativo basado en síntesis, precisión y atmósferas retro', color: 'purple', aesthetic: 'Rejilla cian sobre asfalto mojado', strength: 'Construcción digital de mundos', wound: 'Paleta sintética estrecha', advice: 'Añade una textura orgánica al plano futurista.' },
+    en: { name: 'The Night Architect', desc: 'A creative prompt built from synthesis, precision and retro atmosphere', color: 'purple', aesthetic: 'Cyan grid over wet asphalt', strength: 'Digital worldbuilding', wound: 'Narrow synthetic palette', advice: 'Add one organic texture to the futuristic blueprint.' },
+    he: { name: 'אדריכל הלילה', desc: 'הצעה יצירתית שנבנתה מסינתזה, דיוק ואווירה רטרואית', color: 'purple', aesthetic: 'רשת ציאן מעל אספלט רטוב', strength: 'בניית עולמות דיגיטלית', wound: 'פלטה סינתטית צרה', advice: 'הוסף מרקם אורגני אחד לתוכנית העתידנית.' },
   },
   {
     id: 'nomada',
     genres: [],
-    es: { name: 'El Nómada Sonoro', desc: 'Nunca se queda demasiado tiempo en un solo género', color: 'green', aesthetic: 'Mapa desplegado', strength: 'Curiosidad', wound: 'Dispersión', advice: 'Elige un territorio y quédate una temporada más.' },
-    en: { name: 'The Sonic Nomad', desc: 'Never stays in one genre for too long', color: 'green', aesthetic: 'An unfolded map', strength: 'Curiosity', wound: 'Scattered focus', advice: 'Pick one territory and stay a season longer.' },
-    he: { name: 'הנווד הצלילי', desc: 'לעולם אינו נשאר זמן רב מדי בז׳אנר אחד', color: 'green', aesthetic: 'מפה פרושה', strength: 'סקרנות', wound: 'פיזור', advice: 'בחר טריטוריה אחת והישאר בה עוד עונה.' },
+    es: { name: 'El Nómada Sonoro', desc: 'Prompt creativo basado en variedad y cruces de género', color: 'green', aesthetic: 'Mapa desplegado', strength: 'Amplitud de catálogo', wound: 'Foco de género disperso', advice: 'Elige un territorio y compáralo con el mapa completo.' },
+    en: { name: 'The Sonic Nomad', desc: 'A creative prompt built from variety and genre-crossing', color: 'green', aesthetic: 'An unfolded map', strength: 'Catalog breadth', wound: 'Scattered genre focus', advice: 'Pick one territory and compare it with the complete map.' },
+    he: { name: 'הנווד הצלילי', desc: 'הצעה יצירתית שנבנתה ממגוון ומחיבורים בין ז׳אנרים', color: 'green', aesthetic: 'מפה פרושה', strength: 'רוחב קטלוג', wound: 'מיקוד ז׳אנרי מפוזר', advice: 'בחר טריטוריה אחת והשווה אותה למפה המלאה.' },
   },
   {
     id: 'ritual',
     genres: ['Death Metal', 'Heavy Metal', 'Power / Speed Metal', 'Folk Metal'],
-    es: { name: 'El Guardián del Ritual', desc: 'Encuentra orden y pertenencia en lo pesado', color: 'red', aesthetic: 'Vitral roto y forja', strength: 'Disciplina', wound: 'Rigidez', advice: 'Deja que un sonido ligero entre sin traicionar el ritual.' },
-    en: { name: 'The Ritual Keeper', desc: 'Finds order and belonging in heaviness', color: 'red', aesthetic: 'Shattered stained glass and forge-light', strength: 'Discipline', wound: 'Rigidity', advice: 'Let one lighter sound in without betraying the ritual.' },
-    he: { name: 'שומר הטקס', desc: 'מוצא סדר ושייכות בתוך הכובד', color: 'red', aesthetic: 'ויטראז׳ מנופץ ואור כבשן', strength: 'משמעת', wound: 'נוקשות', advice: 'אפשר לצליל קליל אחד להיכנס בלי לבגוד בטקס.' },
+    es: { name: 'El Guardián del Ritual', desc: 'Prompt creativo basado en continuidad pesada y formas recurrentes', color: 'red', aesthetic: 'Vitral roto y forja', strength: 'Continuidad estilística', wound: 'Contraste de género limitado', advice: 'Deja entrar una textura ligera para ampliar el ritual.' },
+    en: { name: 'The Ritual Keeper', desc: 'A creative prompt built from heavy continuity and recurring forms', color: 'red', aesthetic: 'Shattered stained glass and forge-light', strength: 'Stylistic continuity', wound: 'Limited genre contrast', advice: 'Let one lighter texture in to widen the ritual.' },
+    he: { name: 'שומר הטקס', desc: 'הצעה יצירתית שנבנתה מהמשכיות כבדה ומצורות חוזרות', color: 'red', aesthetic: 'ויטראז׳ מנופץ ואור כבשן', strength: 'המשכיות סגנונית', wound: 'ניגוד ז׳אנרי מוגבל', advice: 'אפשר למרקם קליל אחד להרחיב את הטקס.' },
   },
   {
     id: 'romantico',
     genres: ['Pop Punk / Emo', 'Emo Rap / Trap'],
-    es: { name: 'El Romántico Digital', desc: 'Convierte cada obsesión en una carta de amor', color: 'orange', aesthetic: 'Polaroid con glitch', strength: 'Ternura', wound: 'Apego', advice: 'Escribe el final antes de vivir el loop otra vez.' },
-    en: { name: 'The Digital Romantic', desc: 'Turns every fixation into a love letter', color: 'orange', aesthetic: 'A glitched-out polaroid', strength: 'Tenderness', wound: 'Attachment', advice: 'Write the ending before living the loop again.' },
-    he: { name: 'הרומנטיקן הדיגיטלי', desc: 'הופך כל אובססיה למכתב אהבה', color: 'orange', aesthetic: 'Polaroid עם גליץ׳', strength: 'רוך', wound: 'היקשרות', advice: 'כתוב את הסוף לפני שאתה נכנס שוב ללופ.' },
+    es: { name: 'El Melodista Digital', desc: 'Prompt creativo basado en melodía, brillo y recurrencia nostálgica', color: 'orange', aesthetic: 'Polaroid con glitch', strength: 'Continuidad melódica', wound: 'Paleta nostálgica repetida', advice: 'Añade una canción nueva al loop melódico.' },
+    en: { name: 'The Digital Melodist', desc: 'A creative prompt built from melody, brightness and nostalgic recurrence', color: 'orange', aesthetic: 'A glitched-out polaroid', strength: 'Melodic continuity', wound: 'Repeated nostalgic palette', advice: 'Add one new track to the melodic loop.' },
+    he: { name: 'המלודיסט הדיגיטלי', desc: 'הצעה יצירתית שנבנתה ממלודיה, בהירות וחזרתיות נוסטלגית', color: 'orange', aesthetic: 'Polaroid עם גליץ׳', strength: 'המשכיות מלודית', wound: 'פלטה נוסטלגית חוזרת', advice: 'הוסף שיר חדש אחד ללופ המלודי.' },
   },
 ];
 
@@ -259,7 +262,7 @@ export function buildArchetypes(topArtists: TopArtist[], lang: Lang = 'es'): Arc
     return { tpl, score: totalPlays > 0 ? plays / totalPlays : 0, plays };
   }).sort((a, b) => b.score - a.score);
 
-  return scored.slice(0, 2).map(({ tpl }) => {
+  return scored.filter(({ score }) => score > 0).slice(0, 2).map(({ tpl }) => {
     const copy = tpl[lang];
     const genre = tpl.genres[0];
     const first = genre ? genreTopPick[genre] : undefined;

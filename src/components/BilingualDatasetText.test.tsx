@@ -98,8 +98,8 @@ describe('bilingual dataset text', () => {
 
     cleanup();
     renderInLang(<PersonalityRadar data={data} />, 'en');
-    expect(screen.getByText('Sensitivity (41)')).toBeInTheDocument();
-    expect(screen.getByText(/Recurring listening of dense emotional textures, led by Deafheaven/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Texture (16)' })).toBeInTheDocument();
+    expect(screen.getByText(/Recurring listening of dense expressive textures, led by Deafheaven/i)).toBeInTheDocument();
     expect(screen.queryByText(/Escucha recurrente de texturas emocionales densas/i)).not.toBeInTheDocument();
 
     cleanup();
@@ -189,7 +189,7 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Artistas conectados en tu archivo')).toBeInTheDocument();
     expect(screen.getByText('Sheffield, Inglaterra')).toBeInTheDocument();
     expect(screen.queryByText('Artist Dossier')).not.toBeInTheDocument();
-  }, 15_000);
+  }, 45_000);
 
   it('renders the album dossier in Top Historico in both languages', async () => {
     const english = renderInLang(<TopHistorico data={data} />, 'en');
@@ -221,7 +221,7 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Contexto del álbum')).toBeInTheDocument();
     expect(screen.getByText('Canciones del artista en tu archivo')).toBeInTheDocument();
     expect(screen.getByText('Abrir dossier de artista')).toBeInTheDocument();
-  }, 15_000);
+  }, 45_000);
 
   it('renders the track dossier in Top Historico in both languages', async () => {
     const english = renderInLang(<TopHistorico data={data} />, 'en');
@@ -255,7 +255,7 @@ describe('bilingual dataset text', () => {
     expect(screen.getByText('Rol de repetición')).toBeInTheDocument();
     expect(screen.getByText('Más canciones de este artista')).toBeInTheDocument();
     expect(screen.getByText('Álbumes del artista en tu archivo')).toBeInTheDocument();
-  }, 15_000);
+  }, 60_000);
 
   it('localizes Cultural DNA labels and scene chips in both languages', () => {
     renderInLang(<CulturalMap data={data} />, 'en');

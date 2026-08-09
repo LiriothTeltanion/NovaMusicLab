@@ -1,12 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Dashboard from './Dashboard';
-import { AppProvider } from '../context/AppContext';
+import { AppProvider, useApp } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
 import { buildGenreDistribution } from '../utils/chartIntegrity';
 
 const data = musicData as unknown as MusicDnaData;
+
+function NavigationProbe() {
+  const { activeTab, topSubTab } = useApp();
+  return <output data-testid="dashboard-navigation-probe">{activeTab}:{topSubTab}</output>;
+}
 
 describe('Dashboard', () => {
   beforeEach(() => {
@@ -86,9 +92,12 @@ describe('Dashboard', () => {
     const layout = await screen.findByTestId('dashboard-layout');
 
     expect(layout).toHaveTextContent('לא מסווג');
-    expect(layout).toHaveTextContent('אחר');
+    expect(layout).toHaveTextContent('משפחת ז׳אנר מסווגת קטנה יותר');
     expect(screen.queryByText('Unclassified')).not.toBeInTheDocument();
+    expect(screen.getByTestId('dashboard-grouped-genres')).toHaveAttribute('data-genre-kind', 'grouped');
     expect(screen.getByRole('button', { name: /פתיחת מעבדת הז׳אנרים לסיווג/ }))
+      .toHaveClass('min-h-11');
+    expect(screen.getByRole('button', { name: /פתיחת הפירוט המלא של 10 שורות ז׳אנר/ }))
       .toHaveClass('min-h-11');
     expect(screen.getByTestId('dashboard-mobile-heatmap').querySelector('[title]'))
       .toHaveAttribute('title', expect.stringContaining('השמעות'));
@@ -124,6 +133,21 @@ describe('Dashboard', () => {
     ).toBeTruthy();
   });
 
+  it('opens the complete genre breakdown from the compact chart', async () => {
+    localStorage.setItem('nml_lang', 'en');
+    const user = userEvent.setup();
+
+    render(
+      <AppProvider>
+        <Dashboard data={data} />
+        <NavigationProbe />
+      </AppProvider>,
+    );
+
+    await user.click(screen.getByTestId('dashboard-open-genre-breakdown'));
+    expect(screen.getByTestId('dashboard-navigation-probe')).toHaveTextContent('top:genres');
+  });
+
   it('provides purpose-built responsive ranking, heatmap and metric layouts', () => {
     localStorage.setItem('nml_lang', 'en');
 
@@ -148,14 +172,31 @@ describe('Dashboard', () => {
     rankingButtons.forEach(button => expect(button).toHaveClass('min-h-[68px]'));
 
     const genreLegend = screen.getByTestId('dashboard-genre-legend');
-    const expectedGenreRows = buildGenreDistribution(
+    const expectedGenreDistribution = buildGenreDistribution(
       data.top_genres,
       data.core_metrics.total_plays,
       8,
-    ).rows;
+    );
+    const expectedGenreRows = expectedGenreDistribution.rows;
+    const sourceGenrePlays = data.top_genres.reduce((sum, row) => sum + Math.max(0, row.plays), 0);
+    const expectedUnclassifiedPlays = (data.top_genres
+      .find(row => row.name === 'Unclassified')?.plays ?? 0)
+      + Math.max(0, data.core_metrics.total_plays - sourceGenrePlays);
+    const expectedCompleteRowCount = data.top_genres.filter(row => row.plays > 0).length;
     expect(genreLegend).not.toHaveClass('max-h-40', 'overflow-y-auto');
     expect(genreLegend.children).toHaveLength(expectedGenreRows.length);
-    expect(expectedGenreRows).toHaveLength(9);
+    expect(expectedGenreRows.find(row => row.kind === 'unclassified')?.plays)
+      .toBe(expectedUnclassifiedPlays);
+    expect(expectedGenreRows.find(row => row.kind === 'grouped')).toMatchObject({
+      plays: expectedGenreDistribution.groupedPlays,
+      kind: 'grouped',
+    });
+    expect(screen.getByTestId('dashboard-grouped-genres'))
+      .toHaveTextContent(`${expectedGenreDistribution.groupedFamilyCount} smaller classified families`);
+    expect(screen.getByTestId('dashboard-grouped-genres-note'))
+      .toHaveTextContent('not unclassified');
+    expect(screen.getByTestId('dashboard-open-genre-breakdown'))
+      .toHaveAccessibleName(`Open the complete ${expectedCompleteRowCount}-row genre breakdown`);
 
     const mobileHeatmap = screen.getByTestId('dashboard-mobile-heatmap');
     expect(mobileHeatmap).toHaveClass('sm:hidden', 'min-w-0');

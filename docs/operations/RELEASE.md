@@ -185,12 +185,30 @@ generated on 2026-08-07 in `Asia/Jerusalem`; enrichment remains dated
 2026-07-29 and Recent Pulse remains dated 2026-07-02. It is not a live account
 connection.
 
-- [x] The exact source passes the complete local verification and privacy gates
-  on Node `22.13.0`: 770 Vitest tests pass with 1 intentional private-fixture
-  skip, Playwright passes 18/18 and npm reports zero known vulnerabilities.
-- [x] Final v1.6.0 release media contains nine source-fingerprinted assets,
-  passes the release-media audit and has been reviewed visually; the animated
-  tour also verifies every encoded frame against its source capture.
+This release candidate also makes the product contract understandable before a
+visitor reaches the technical detail:
+
+- Overview names Kevin Cusnir / Lirioth Teltanion's real public exhibition and
+  offers a separate local **Build my museum** path for supported history
+  exports, not MP3 uploads.
+- The Atlas navigates all 6,593 exact-name catalog entries by listens, A–Z,
+  letter or search; readable introductions precede detailed evidence.
+- Genre charts preserve Unclassified as its own row and describe grouped
+  smaller classified families instead of presenting `Other` as a genre.
+- Obsessions uses a cover-led spotlight and visual loop grid. Its 50 bundled
+  moments all have exact track-art mappings, while remote failures retain a
+  deterministic visual fallback.
+- Emotional and personality results are explicitly interpretive and
+  non-clinical; they are not diagnoses.
+
+- [ ] The exact integrated source passes the complete local verification,
+  privacy and dependency gates on Node `22.13.0`, including all expected
+  Vitest tests and 18/18 Playwright journeys.
+- [ ] Final v1.6.0 release media is recaptured from the frozen integrated
+  source, contains nine source-fingerprinted assets, passes the release-media
+  audit and is reviewed visually in desktop/mobile and EN/ES/HE. The existing
+  package documents an earlier v1.6.0 baseline and cannot prove the changed
+  source.
 - [ ] Pull-request CI, CodeQL and Dependency Review pass.
 - [ ] Kevin approves the exact merge candidate.
 - [ ] Pages serves matching v1.6.0 build metadata, real deployment date and
@@ -268,9 +286,11 @@ Release title:
 Candidate summary:
 
 > A refreshed living archive whose evidence speaks more clearly: the complete
-> Spotify, Last.fm and YouTube history through August 6, source-labelled artist
-> stories, broader media context, a more useful mobile room dock and public
-> facts that remain synchronized with the reviewed data contract.
+> Spotify, Last.fm and YouTube history through August 6, a first screen that
+> explains Kevin / Lirioth's exhibition and the private build-your-own path, a
+> complete A–Z/listening Atlas, human-first artist stories, transparent genre
+> long-tail grouping, visual Obsessions and clearly non-clinical interpretive
+> readings. Public facts remain synchronized with the reviewed data contract.
 
 ## Rollback
 

@@ -91,19 +91,36 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
   );
 
   /* ── Genre Treemap ── */
+  const treemapDistribution = useMemo(
+    () => buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 20),
+    [data.core_metrics.total_plays, data.top_genres],
+  );
+  const groupedGenreLabel = pickLanguage(lang, {
+    en: `${treemapDistribution.groupedFamilyCount} smaller classified ${treemapDistribution.groupedFamilyCount === 1 ? 'family' : 'families'}`,
+    es: `${treemapDistribution.groupedFamilyCount} ${treemapDistribution.groupedFamilyCount === 1 ? 'familia clasificada más pequeña' : 'familias clasificadas más pequeñas'}`,
+    he: treemapDistribution.groupedFamilyCount === 1
+      ? 'משפחת ז׳אנר מסווגת קטנה יותר'
+      : `${treemapDistribution.groupedFamilyCount} משפחות ז׳אנר מסווגות קטנות יותר`,
+  });
+  const treemapLongTailSummary = pickLanguage(lang, {
+    en: `${groupedGenreLabel} grouped only in this map for readability (${treemapDistribution.groupedPlays.toLocaleString(locale)} listens). Unclassified remains separate.`,
+    es: `${groupedGenreLabel} agrupadas solo en este mapa para facilitar la lectura (${treemapDistribution.groupedPlays.toLocaleString(locale)} escuchas). “Sin clasificar” permanece separado.`,
+    he: `${groupedGenreLabel} מקובצות רק במפה הזאת לשיפור הקריאות (${treemapDistribution.groupedPlays.toLocaleString(locale)} השמעות). ״לא מסווג״ נשאר נפרד.`,
+  });
   const treemapData = useMemo(() => {
-    const distribution = buildGenreDistribution(data.top_genres, data.core_metrics.total_plays, 10);
     return {
       name: 'root',
-      totalPlays: distribution.totalPlays,
-      children: distribution.rows.map(row => ({
+      totalPlays: treemapDistribution.totalPlays,
+      children: treemapDistribution.rows.map(row => ({
         ...row,
         genre: row.name,
-        name: localizeGenreName(row.name, lang),
+        name: row.kind === 'grouped'
+          ? groupedGenreLabel
+          : localizeGenreName(row.name, lang),
         size: row.plays,
       })),
     };
-  }, [data.core_metrics.total_plays, data.top_genres, lang]);
+  }, [groupedGenreLabel, lang, treemapDistribution.rows, treemapDistribution.totalPlays]);
 
   /* ── Genre evolution area data ── */
   const genreEvolution = useMemo(
@@ -391,15 +408,21 @@ export default function StatsDeepDive({ data }: StatsDeepDiveProps) {
             {t.statsDeepDive.genreTreemapTitle}
           </h3>
         </div>
-        <p className="type-caption type-muted -mt-3 mb-5">
-          🧭 {pickLanguage(lang, { en: 'Whole archive', es: 'Archivo completo', he: 'כל הארכיון' })} · {treemapData.totalPlays.toLocaleString(locale)} {pickLanguage(lang, { en: 'counted listens · includes Other', es: 'escuchas contadas · incluye Otros', he: 'השמעות שנספרו · כולל אחר' })}
+        <p data-testid="stats-genre-treemap-summary" className="type-caption type-muted -mt-3 mb-5">
+          🧭 {pickLanguage(lang, { en: 'Whole archive', es: 'Archivo completo', he: 'כל הארכיון' })} · {treemapData.totalPlays.toLocaleString(locale)} {pickLanguage(lang, { en: 'counted listens', es: 'escuchas contadas', he: 'השמעות שנספרו' })}
+          {treemapDistribution.groupedFamilyCount > 0 && <> · {treemapLongTailSummary}</>}
         </p>
         <div className="flex flex-wrap gap-4 mb-6">
           {treemapData.children.slice(0, 8).map(g => (
             <GenreArt key={g.genre} genre={g.genre} label={g.name} size={52} showLabel />
           ))}
         </div>
-        <div className="h-72">
+        <div
+          data-testid="stats-genre-treemap"
+          data-grouped-family-count={treemapDistribution.groupedFamilyCount}
+          data-grouped-plays={treemapDistribution.groupedPlays}
+          className="h-72"
+        >
           <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <Treemap data={treemapData.children} dataKey="size"
               content={<CustomTreemapContent />} {...chartAnimation} />

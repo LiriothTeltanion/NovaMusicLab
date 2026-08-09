@@ -77,6 +77,20 @@ album title are identical. Personal obsession and annual-summary lookups in
 `--include-personal-rooms` flag because those developer-side requests disclose
 the selected artist/track pairs to Deezer or iTunes.
 
+### v1.6.0 candidate coverage — 2026-08-09
+
+- `track_images.json` contains **170 exact artist/title mappings**.
+- All **50 / 50** bundled Obsessions records have an exact track-art mapping.
+- `album_images.json` contains **1,024 exact artist/album mappings**.
+- The lazy primary-portrait index matches **5,691 / 6,593** catalog rows by
+  normalized exact artist name (**86.3%**). Atlas tries this index when no
+  reviewed gallery image is available, then retains deterministic generated art
+  if the remote image is missing or fails.
+
+These are metadata-key coverage figures, not a promise that every third-party
+image host is always reachable. A failed network image must remain readable and
+must never be replaced with a plausible but incorrect cover or face.
+
 ## Media profiles
 
 File: `src/data/artist_media_links.json`
@@ -131,11 +145,13 @@ npm run audit:pwa
 npm run test
 ```
 
-Coverage numbers deliberately do not live in this document. `npm run audit:data` is the current source of truth.
+The dated candidate figures above are a release snapshot, not a permanent
+source of truth. Regenerate and review them whenever the public bundle changes;
+`npm run audit:data` remains the authoritative current check.
 
 ## Product identity artwork
 
 - `src/components/NovaMark.tsx` is the application mark.
 - `scripts/generate_nova_icons.mjs` generates favicon, Apple touch, PWA and maskable artifacts; `public/icon-monochrome.svg` supports monochrome surfaces.
-- `scripts/capture_readme_visuals.mjs` is the canonical generator for the 1280×640 Open Graph/Twitter PNG. `assets/social/nova-music-lab-social-preview.svg` is an editable design reference whose copy should remain aligned, but it is not rasterized by the release pipeline. `public/social-preview.png` is preserved as the legacy fallback. The reviewed `public/social-preview-v2.png` now mirrors the `v1.6.0` private-candidate artifact generated from the public manifest and share metrics; it is candidate evidence, not a claim that Pages has moved beyond deployed v1.5.0.
+- `scripts/capture_readme_visuals.mjs` is the canonical generator for the 1280×640 Open Graph/Twitter PNG. `assets/social/nova-music-lab-social-preview.svg` is an editable design reference whose copy should remain aligned, but it is not rasterized by the release pipeline. `public/social-preview.png` is preserved as the legacy fallback. `public/social-preview-v2.png` becomes reviewed `v1.6.0` candidate evidence only when its release-media fingerprint passes `npm run audit:release-media`; during active source changes, treat the existing raster as the previous baseline. It never claims that Pages has moved beyond deployed v1.5.0.
 - `assets/readme/nova-music-lab-banner.svg` is static by design so repository visitors never receive an unavoidable animation.

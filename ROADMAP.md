@@ -95,8 +95,11 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
   archive imports and mobile/RTL/accessibility release fixes.
 - [ ] Promote the verified `v1.6.0` private candidate dated **2026-08-09** only
   after its frozen-source, dependency, privacy, browser and visual-media gates
-  pass. It refreshes the archive through 2026-08-06 and improves sourced artist
-  stories, mobile navigation and public-fact synchronization.
+  pass. It refreshes the archive through 2026-08-06, clearly separates Kevin /
+  Lirioth's public exhibition from the local build-your-own path, opens all
+  6,593 exact-name catalog entries through A–Z/listening navigation, clarifies
+  the genre long tail, strengthens Obsessions/media fallbacks and labels
+  emotional/personality readings as interpretive and non-clinical.
 - The separate GitHub profile repository consumes only the verified live
   deployment manifest and immutable release media. It therefore remains on
   `v1.5.0` until a deployed v1.6.0 artifact passes live verification; it is

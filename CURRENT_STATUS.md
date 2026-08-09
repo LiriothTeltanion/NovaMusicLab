@@ -38,9 +38,28 @@ Genre layers remain explicit:
 ## Candidate scope
 
 The v1.6.0 candidate adds the refreshed Spotify, Last.fm and YouTube archive,
-clearer source-labelled artist biographies, broader media evidence, improved
-mobile room navigation and synchronized public facts. It preserves the
-local-first visitor import and the evidence boundaries established in v1.5.0.
+then makes its purpose explicit: this is Kevin Cusnir / Lirioth Teltanion's real
+public listening museum and also a local-first tool where visitors can import
+supported listening-history exports to build their own private museum.
+
+The integrated clarity slice adds:
+
+- clearer visible hubs — **Overview, Pulse, Artists, Stories and Create** — plus
+  truthful Guided, Explore and Deep Dive reading-depth descriptions;
+- a complete lazy Atlas navigator across **6,593 exact-name catalog entries**,
+  sortable A–Z or by listens, with search, letter filters and human-first artist
+  introductions before technical evidence;
+- genre views that keep **Unclassified** separate and label the number of
+  smaller classified families instead of presenting a large unexplained
+  `Other` category;
+- a cover-led Obsessions spotlight and visual loop grid; all **50 / 50** bundled
+  obsession moments have an exact track-art mapping in the **170-entry** track
+  artwork index;
+- a stronger Atlas portrait fallback: **5,691 / 6,593** catalog rows match the
+  lazy primary-image index by normalized exact name, while missing or failed
+  remote images remain usable through deterministic generated art; and
+- visible non-clinical boundaries around emotional and personality readings.
+  They are evidence-aware creative interpretations, not diagnoses.
 
 DAW, FL Studio, MIDI, Tauri, desktop packaging, backend, accounts, OAuth and
 automatic Spotify/Last.fm synchronization remain deliberately outside this
@@ -48,21 +67,20 @@ candidate.
 
 ## Release gate
 
-Status: **private candidate — local source and visual-evidence checks pass;
-pull-request and live-deployment checks remain pending**.
+Status: **private candidate — integrated product changes are not yet frozen or
+fully verified; the previous source and visual evidence no longer proves the
+current worktree**.
 
 Before publication, the exact frozen source must pass:
 
-1. ~~`npm ci`, `npm run verify`, `npm run test:e2e`,
-   `npm run audit:dependencies` and `git diff --check`.~~ Passed locally on Node
-   `22.13.0`: 770 Vitest tests passed with 1 intentional private-fixture skip,
-   Playwright passed 18/18, dependency/privacy/data/bundle gates passed and npm
-   reported zero known vulnerabilities.
-2. ~~Final source-fingerprinted v1.6.0 screenshots, tour and social preview plus
-   `npm run audit:release-media`.~~ Nine assets passed the automated audit and
-   human review on 2026-08-09; the three GIF frames also pass a pixel-fidelity
-   check against their source captures. `npm run verify:release` remains the
-   canonical repetition after the committed capture and in release acceptance.
+1. Freeze the integrated source, then rerun `npm ci`, `npm run verify`,
+   `npm run test:e2e`, `npm run audit:dependencies` and `git diff --check` on
+   Node `22.13.0`. Final counts must be recorded only after that exact run.
+2. Recapture the nine v1.6.0 screenshots, tour and social preview from the
+   frozen integrated source, review them in desktop/mobile and EN/ES/HE, then
+   run `npm run audit:release-media` and `npm run verify:release`. The current
+   assets document an earlier v1.6.0 baseline and are not release evidence for
+   this changed source.
 3. Pull-request CI, CodeQL and dependency review.
 4. Kevin's explicit approval for the exact merge candidate.
 5. Live Pages verification showing version `1.6.0`, status `deployed`, the real

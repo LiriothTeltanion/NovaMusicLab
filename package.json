@@ -2,7 +2,7 @@
   "name": "nova-music-lab",
   "private": true,
   "version": "1.6.0",
-  "description": "Local-first React and TypeScript music museum for exploring listening histories, artist and genre discovery, private Guest Museums, and evidence-aware analytics.",
+  "description": "Local-first React and TypeScript music museum presenting Kevin Cusnir / Lirioth Teltanion's listening history and letting visitors privately explore their own archives through evidence-aware, non-clinical interpretations.",
   "homepage": "https://liriothteltanion.github.io/NovaMusicLab/",
   "repository": {
     "type": "git",
@@ -62,7 +62,7 @@
     "i18n:hebrew:data": "node scripts/generate_hebrew_ui.mjs --json-only",
     "icons:generate": "node scripts/generate_nova_icons.mjs",
     "screenshots:capture": "node scripts/capture_readme_visuals.mjs",
-    "test": "vitest run",
+    "test": "vitest run --maxWorkers 1 --no-file-parallelism",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install chromium",
     "preview": "vite preview"

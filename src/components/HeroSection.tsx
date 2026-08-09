@@ -90,10 +90,19 @@ interface HeroProfileReportInput {
 
 interface HeroLocalCopy {
   sourceOverlap: string;
+  flagshipBadge: string;
+  flagshipSubtitle: string;
+  flagshipSupport: string;
   personalBadge: (years: number) => string;
   personalTimelineUnavailable: string;
   personalSubtitle: string;
   personalSupport: string;
+  flagshipQuestion: string;
+  personalQuestion: string;
+  exploreFlagship: string;
+  explorePersonal: string;
+  buildMuseum: string;
+  uploadClarifier: string;
   personalOwner: string;
   fallbackArchetype: string;
   mergedSource: (matchRate: number) => string;
@@ -128,111 +137,138 @@ const bidiIsolate = (value: string | number) => `\u2068${value}\u2069`;
 const HERO_LOCAL_COPY: Record<Lang, HeroLocalCopy> = {
   es: {
     sourceOverlap: 'de las canciones aparecen en más de una fuente',
+    flagshipBadge: 'KEVIN CUSNIR / LIRIOTH TELTANION · ARCHIVO REAL',
+    flagshipSubtitle: '✧ Una historia musical personal convertida en museo ✧',
+    flagshipSupport: 'Explora artistas, épocas, géneros, obsesiones y patrones emocionales creativos dentro del historial real de Kevin. Después puedes cargar tus propios archivos exportados y crear un museo privado en este navegador. Las lecturas son interpretativas, transparentes y no clínicas.',
     personalBadge: years => `✨ ${years} ${years === 1 ? 'Año' : 'Años'} en Tu Archivo`,
     personalTimelineUnavailable: '✨ Cronología del archivo no disponible',
     personalSubtitle: '✧ Tu Universo Musical ✧',
-    personalSupport: 'Tu archivo está listo para explorar. Añade más datos cuando quieras; todo permanece privado y local en este navegador.',
+    personalSupport: 'Tu archivo está listo. Explora artistas, épocas, géneros y patrones emocionales creativos; añade otras exportaciones cuando quieras. Todo permanece privado y local en este navegador, y ninguna lectura es un diagnóstico.',
+    flagshipQuestion: '¿Qué puede contar una vida de escucha sobre la persona detrás de la música?',
+    personalQuestion: '¿Qué historia aparece cuando miras toda tu escucha como un mapa?',
+    exploreFlagship: 'Explorar el museo de Kevin',
+    explorePersonal: 'Explorar mi museo',
+    buildMuseum: 'Crear mi museo',
+    uploadClarifier: 'Usa exportaciones de Spotify, Last.fm, YouTube o MusicBee XML · no archivos MP3',
     personalOwner: 'TU ARCHIVO',
     fallbackArchetype: 'Explorador Sónico',
     mergedSource: matchRate => `Hecho con varias exportaciones a la vez. El ${matchRate}% de las canciones aparece en más de una, y así se emparejaron entre sí.`,
     singleSource: source => `Hecho con una sola fuente: ${source}. Al no haber con qué contrastar, aquí no se afirma ningún cruce.`,
-    profileTitle: (owner, genre) => `EXPEDIENTE DE MÚSICA IA: ${owner} [CLASE ${genre.toUpperCase()}]`,
-    profileReport: input => `La auditoría neural de tu biblioteca revela una firma sonora altamente estructurada. A lo largo de ${input.scrobbles} reproducciones y ${input.hours} horas, tu perfil resuena bajo el arquetipo "${input.archetype}". Tu espectro emocional está dominado por la resonancia "${input.mood}" (intensidad ${input.moodPercentage}%). En el núcleo de tu biblioteca destaca ${input.topArtist}, representando tu obsesión principal con ${input.topArtistPlays} reproducciones. ${input.peakSentence} ${input.sourceSentence}`,
+    profileTitle: (owner, genre) => `LECTURA LOCAL: ${owner} [FAMILIA ${genre.toUpperCase()}]`,
+    profileReport: input => `Este archivo reúne ${input.scrobbles} reproducciones y ${input.hours} horas de escucha. Nova organiza esos datos como una lectura creativa: “${input.archetype}” es un nombre narrativo para patrones visibles, no una etiqueta psicológica. La capa emocional más presente es “${input.mood}” (${input.moodPercentage}% dentro de este modelo), y ${input.topArtist} encabeza el historial con ${input.topArtistPlays} reproducciones. ${input.peakSentence} ${input.sourceSentence}`,
     genreUnavailable: 'Género no disponible',
     peakYearSentence: year => `La era pico se centra en ${year}.`,
     peakYearUnavailableSentence: 'No hay datos anuales suficientes para identificar una era pico.',
     archiveHighlights: 'Destacados del archivo',
-    assistantLink: 'Pregúntale a la IA sobre tu música',
+    assistantLink: 'Preguntar al guía local sobre la música',
     playSignature: artist => `Reproducir la firma sonora de ${artist}`,
     scrollNote: 'El archivo continúa',
-    archiveIntelligence: 'Inteligencia del archivo',
-    offlineReading: 'Lectura IA offline',
-    launchConsole: 'Iniciar Consola de Chat',
+    archiveIntelligence: 'Lectura del archivo',
+    offlineReading: 'Análisis local · sin IA externa',
+    launchConsole: 'Abrir guía local',
     curiosityQuestion: '¿Qué artista dio forma al mundo que escuchas hoy?',
     constellationLabel: 'Constelación de artistas de hoy',
     constellationSource: 'Retratos revisados de Wikimedia Commons · abre uno para ver su fuente y atribución en el Atlas',
     openArtist: artist => `Abrir el perfil de ${artist}`,
-    initializing: 'INICIALIZANDO INTERFAZ NEURAL',
+    initializing: 'ABRIENDO EL ARCHIVO VIVO',
     decryptingAtlas: years => years === null
       ? 'CRONOLOGÍA NO DISPONIBLE · ABRIENDO SEÑALES VERIFICADAS…'
       : `DESCIFRANDO ATLAS DE ${years} ${years === 1 ? 'AÑO' : 'AÑOS'}…`,
     personalArchiveState: 'Archivo personal',
     personalArchiveDetail: 'Privado · guardado localmente',
     personalArchiveTabOnlyDetail: 'Privado · activo solo en esta pestaña',
-    flagshipArchiveState: 'Museo de ejemplo',
-    flagshipArchiveDetail: 'Un archivo real de 11 años, para que puedas mirar',
+    flagshipArchiveState: 'Museo de Kevin',
+    flagshipArchiveDetail: 'Archivo real de Kevin Cusnir / Lirioth Teltanion',
   },
   en: {
     sourceOverlap: 'of songs show up in more than one source',
+    flagshipBadge: 'KEVIN CUSNIR / LIRIOTH TELTANION · REAL ARCHIVE',
+    flagshipSubtitle: '✧ One personal music history, transformed into a museum ✧',
+    flagshipSupport: 'Explore artists, eras, genres, obsessions and creative emotional patterns in Kevin’s real listening history. Then upload your own exports to build a private museum in this browser. Readings are interpretive, transparent and non-clinical.',
     personalBadge: years => `✨ ${years} ${years === 1 ? 'Year' : 'Years'} in Your Archive`,
     personalTimelineUnavailable: '✨ Archive timeline unavailable',
     personalSubtitle: '✧ Your Musical Universe ✧',
-    personalSupport: 'Your archive is ready to explore. Add more files whenever you want; everything stays private and local in this browser.',
+    personalSupport: 'Your archive is ready. Explore artists, eras, genres and creative emotional patterns; add other exports whenever you want. Everything stays private and local in this browser, and no reading is a diagnosis.',
+    flagshipQuestion: 'What can a lifetime of listening reveal about the person behind the music?',
+    personalQuestion: 'What story appears when you see your whole listening history as a map?',
+    exploreFlagship: 'Explore Kevin’s museum',
+    explorePersonal: 'Explore my museum',
+    buildMuseum: 'Build my museum',
+    uploadClarifier: 'Use Spotify, Last.fm, YouTube or MusicBee XML exports · not MP3 files',
     personalOwner: 'YOUR ARCHIVE',
     fallbackArchetype: 'Sonic Explorer',
     mergedSource: matchRate => `Built from several exports at once. ${matchRate}% of songs show up in more than one of them, which is how they were matched together.`,
     singleSource: source => `Built from one source: ${source}. With nothing to cross-check against, no overlap is claimed here.`,
-    profileTitle: (owner, genre) => `AI MUSIC PROFILE: ${owner} [${genre.toUpperCase()} CLASS]`,
-    profileReport: input => `Neural audit of your library reveals a highly structured sonic signature. Across ${input.scrobbles} plays and ${input.hours} hours, your profile resonates with the "${input.archetype}" archetype. Your emotional spectrum is dominated by "${input.mood}" resonance (intensity ${input.moodPercentage}%). At the core of your listening stands ${input.topArtist}, representing your primary obsession with ${input.topArtistPlays} plays. ${input.peakSentence} ${input.sourceSentence}`,
+    profileTitle: (owner, genre) => `LOCAL MUSIC READING: ${owner} [${genre.toUpperCase()} FAMILY]`,
+    profileReport: input => `This archive contains ${input.scrobbles} plays across ${input.hours} listening hours. Nova organizes those records as a creative reading: “${input.archetype}” is a narrative name for visible patterns, not a psychological label. The most present emotional layer is “${input.mood}” (${input.moodPercentage}% inside this model), while ${input.topArtist} leads the history with ${input.topArtistPlays} plays. ${input.peakSentence} ${input.sourceSentence}`,
     genreUnavailable: 'Genre unavailable',
     peakYearSentence: year => `The peak era centers on ${year}.`,
     peakYearUnavailableSentence: 'Annual evidence is unavailable, so no peak era is claimed.',
     archiveHighlights: 'Archive highlights',
-    assistantLink: 'Ask AI about your music',
+    assistantLink: 'Ask the local guide about the music',
     playSignature: artist => `Play the sonic signature of ${artist}`,
     scrollNote: 'The archive continues',
-    archiveIntelligence: 'Archive intelligence',
-    offlineReading: 'Offline AI reading',
-    launchConsole: 'Launch Chat Console',
+    archiveIntelligence: 'Archive reading',
+    offlineReading: 'Local analysis · no external AI',
+    launchConsole: 'Open local guide',
     curiosityQuestion: 'Which artist shaped the world you hear today?',
     constellationLabel: 'Today’s artist constellation',
     constellationSource: 'Reviewed Wikimedia Commons portraits · open one for its source and attribution in the Atlas',
     openArtist: artist => `Open ${artist} artist profile`,
-    initializing: 'INITIALIZING NEURAL INTERFACE',
+    initializing: 'OPENING THE LIVING ARCHIVE',
     decryptingAtlas: years => years === null
       ? 'TIMELINE UNAVAILABLE · OPENING VERIFIED SIGNALS…'
       : `DECRYPTING ${years}-YEAR ATLAS…`,
     personalArchiveState: 'Personal archive',
     personalArchiveDetail: 'Private · saved locally',
     personalArchiveTabOnlyDetail: 'Private · active in this tab only',
-    flagshipArchiveState: 'Example museum',
-    flagshipArchiveDetail: 'One real 11-year archive, shown so you can look around',
+    flagshipArchiveState: 'Kevin’s museum',
+    flagshipArchiveDetail: 'A real archive by Kevin Cusnir / Lirioth Teltanion',
   },
   he: {
     sourceOverlap: 'מהשירים מופיעים ביותר ממקור אחד',
+    flagshipBadge: 'KEVIN CUSNIR / LIRIOTH TELTANION · ארכיון אמיתי',
+    flagshipSubtitle: '✧ היסטוריה מוזיקלית אישית שהפכה למוזיאון ✧',
+    flagshipSupport: 'אפשר לחקור אמנים, תקופות, ז׳אנרים, אובססיות ודפוסים רגשיים יצירתיים בהיסטוריית ההאזנה האמיתית של Kevin. אחר כך אפשר להעלות ייצואים אישיים ולבנות מוזיאון פרטי בדפדפן הזה. הקריאות פרשניות, שקופות ואינן קליניות.',
     personalBadge: years => years === 1 ? '✨ שנה אחת בארכיון שלך' : `✨ ${years} שנים בארכיון שלך`,
     personalTimelineUnavailable: '✨ ציר הזמן של הארכיון אינו זמין',
     personalSubtitle: '✧ היקום המוזיקלי שלך ✧',
-    personalSupport: 'הארכיון שלך מוכן לחקירה. תוכל להוסיף קבצים נוספים מתי שתרצה; הכול נשאר פרטי ומקומי בדפדפן הזה.',
+    personalSupport: 'הארכיון שלך מוכן. אפשר לחקור אמנים, תקופות, ז׳אנרים ודפוסים רגשיים יצירתיים ולהוסיף ייצואים נוספים בכל זמן. הכול נשאר פרטי ומקומי בדפדפן הזה, ואף קריאה אינה אבחנה.',
+    flagshipQuestion: 'מה יכולה היסטוריית האזנה שלמה לספר על האדם שמאחורי המוזיקה?',
+    personalQuestion: 'איזה סיפור מופיע כשמביטים בכל היסטוריית ההאזנה כמפה?',
+    exploreFlagship: 'סיור במוזיאון של Kevin',
+    explorePersonal: 'סיור במוזיאון שלי',
+    buildMuseum: 'בניית המוזיאון שלי',
+    uploadClarifier: 'משתמשים בייצואים של Spotify, Last.fm, YouTube או MusicBee XML · לא בקובצי MP3',
     personalOwner: 'הארכיון שלך',
     fallbackArchetype: 'החוקר הצלילי',
     mergedSource: matchRate => `בנוי מכמה ייצואים יחד. ${bidiIsolate(`${matchRate}%`)} מהשירים מופיעים ביותר מאחד מהם, וכך הם הותאמו זה לזה.`,
     singleSource: source => `בנוי ממקור אחד: ${bidiIsolate(source)}. אין מול מה להצליב, ולכן לא נטענת כאן שום חפיפה.`,
-    profileTitle: (owner, genre) => `פרופיל מוזיקלי מבוסס בינה מלאכותית: ${bidiIsolate(owner)} [סיווג ${bidiIsolate(genre)}]`,
-    profileReport: input => `הניתוח העצבי של הספרייה שלך חושף חתימה צלילית מובנית ומובהקת. לאורך ${bidiIsolate(input.scrobbles)} השמעות ו־${bidiIsolate(input.hours)} שעות, הפרופיל שלך מהדהד עם הארכיטיפ „${bidiIsolate(input.archetype)}”. בספקטרום הרגשי שלך שולטת התהודה „${bidiIsolate(input.mood)}” בעוצמה של ${bidiIsolate(`${input.moodPercentage}%`)}. בלב ההאזנה שלך ניצב ${bidiIsolate(input.topArtist)}, האובססיה המרכזית שלך עם ${bidiIsolate(input.topArtistPlays)} השמעות. ${input.peakSentence} ${input.sourceSentence}`,
+    profileTitle: (owner, genre) => `קריאה מוזיקלית מקומית: ${bidiIsolate(owner)} [משפחת ${bidiIsolate(genre)}]`,
+    profileReport: input => `הארכיון כולל ${bidiIsolate(input.scrobbles)} השמעות לאורך ${bidiIsolate(input.hours)} שעות האזנה. Nova מארגנת את הרשומות כקריאה יצירתית: „${bidiIsolate(input.archetype)}” הוא שם סיפורי לדפוסים נראים, לא תווית פסיכולוגית. השכבה הרגשית הבולטת היא „${bidiIsolate(input.mood)}” (${bidiIsolate(`${input.moodPercentage}%`)} בתוך המודל), ו־${bidiIsolate(input.topArtist)} מוביל את ההיסטוריה עם ${bidiIsolate(input.topArtistPlays)} השמעות. ${input.peakSentence} ${input.sourceSentence}`,
     genreUnavailable: 'הז׳אנר אינו זמין',
     peakYearSentence: year => `תקופת השיא מתמקדת בשנת ${bidiIsolate(year)}.`,
     peakYearUnavailableSentence: 'אין נתונים שנתיים מספיקים, ולכן לא נטענת תקופת שיא.',
     archiveHighlights: 'נקודות השיא של הארכיון',
-    assistantLink: 'שאלו את הבינה המלאכותית על המוזיקה שלכם',
+    assistantLink: 'שאלו את המדריך המקומי על המוזיקה',
     playSignature: artist => `נגן את החתימה הצלילית של ${bidiIsolate(artist)}`,
     scrollNote: 'הארכיון ממשיך',
-    archiveIntelligence: 'המודיעין של הארכיון',
-    offlineReading: 'ניתוח בינה מלאכותית מקומי',
-    launchConsole: 'פתח את מסוף הצ׳אט',
+    archiveIntelligence: 'קריאת הארכיון',
+    offlineReading: 'ניתוח מקומי · ללא בינה חיצונית',
+    launchConsole: 'פתיחת המדריך המקומי',
     curiosityQuestion: 'איזה אמן עיצב את העולם שאתה שומע היום?',
     constellationLabel: 'קבוצת האמנים של היום',
     constellationSource: `דיוקנאות שנבדקו מתוך ${bidiIsolate('Wikimedia Commons')} · פתח דיוקן כדי לראות מקור וייחוס באטלס`,
     openArtist: artist => `פתח את פרופיל האמן של ${bidiIsolate(artist)}`,
-    initializing: 'אתחול הממשק העצבי',
+    initializing: 'פתיחת הארכיון החי',
     decryptingAtlas: years => years === null
       ? 'ציר הזמן אינו זמין · פותח אותות מאומתים…'
       : years === 1 ? 'מפענח אטלס של שנה אחת…' : `מפענח אטלס של ${years} שנים…`,
     personalArchiveState: 'ארכיון אישי',
     personalArchiveDetail: 'פרטי · שמור מקומית',
     personalArchiveTabOnlyDetail: 'פרטי · פעיל רק בכרטיסייה הזאת',
-    flagshipArchiveState: 'מוזיאון לדוגמה',
-    flagshipArchiveDetail: 'ארכיון אמיתי של 11 שנים, פתוח כדי שתוכלו להסתובב בו',
+    flagshipArchiveState: 'המוזיאון של Kevin',
+    flagshipArchiveDetail: 'ארכיון אמיתי של Kevin Cusnir / Lirioth Teltanion',
   },
 };
 
@@ -330,9 +366,9 @@ export default function HeroSection({
         support: copy.personalSupport,
       }
     : {
-        badge: t.heroSection.badge,
-        subtitle: t.heroSection.subtitle,
-        support: t.heroSection.ctaSupport,
+        badge: copy.flagshipBadge,
+        subtitle: copy.flagshipSubtitle,
+        support: copy.flagshipSupport,
       };
 
   const constellationDayKey = useMemo(() => getLocalDayKey(), []);
@@ -682,7 +718,7 @@ export default function HeroSection({
               dir={lang === 'he' ? 'rtl' : 'ltr'}
               lang={lang}
             >
-              {copy.curiosityQuestion}
+              {isPersonalArchive ? copy.personalQuestion : copy.flagshipQuestion}
             </p>
             <p className="nova-hero__subtitle">{introCopy.subtitle}</p>
             <p className="nova-hero__lede">{introCopy.support}</p>
@@ -711,14 +747,22 @@ export default function HeroSection({
             <div className="nova-hero__actions">
               <button type="button" onClick={handleEnter} className="nova-hero__cta nova-hero__cta--primary">
                 <LibraryBig className="h-5 w-5" aria-hidden="true" />
-                <span>{t.hero.enter}</span>
+                <span>{isPersonalArchive ? copy.explorePersonal : copy.exploreFlagship}</span>
                 <Play className="h-4 w-4 fill-current" aria-hidden="true" />
               </button>
-              <button type="button" onClick={onUpload} className="nova-hero__cta nova-hero__cta--secondary">
+              <button
+                type="button"
+                onClick={onUpload}
+                className="nova-hero__cta nova-hero__cta--secondary"
+                aria-describedby="nova-hero-upload-help"
+              >
                 <FileUp className="h-5 w-5" aria-hidden="true" />
-                <span>{t.heroSection.paths.uploadButton}</span>
+                <span>{copy.buildMuseum}</span>
               </button>
             </div>
+            <p id="nova-hero-upload-help" className="nova-hero__upload-help">
+              {copy.uploadClarifier}
+            </p>
 
             <div className="nova-hero__utility-links">
               <button type="button" onClick={handleLaunchAssistant} className="nova-hero__assistant-link">
