@@ -14,13 +14,13 @@
 
 Explore Kevin Cusnir / Lirioth Teltanion's real public listening archive, or import a Spotify, Last.fm, Apple Music, ListenBrainz or YouTube history and optionally attach a private MusicBee library snapshot. Nova Music Lab processes selected exports in the browser and turns supported evidence into timelines, artists, genres, obsessions, cultural journeys and transparent interpretive readings. Those emotional and personality readings are creative reflection tools, not clinical assessments or diagnoses.
 
-**Current public version:** `1.5.0` — **deployed 2026-08-01**. **The Living Archive Gets a Face** removes invalid artist-image placeholders, clarifies genre and snapshot provenance, bounds archive imports and polishes mobile, keyboard and Hebrew RTL journeys.
+**Current public version:** `1.6.0` — **deployed 2026-08-09**. **The Living Archive Finds Its Voice** refreshes the complete archive through 2026-08-06, clearly separates Kevin / Lirioth's exhibition from the local build-your-own path, opens the full artist catalog through A–Z/listening navigation and makes genres, obsessions and interpretive boundaries easier to understand.
 
-**Current source candidate:** `1.6.0` — **private candidate 2026-08-09**. **The Living Archive Finds Its Voice** refreshes the complete archive through 2026-08-06, clearly separates Kevin / Lirioth's exhibition from the local build-your-own path, opens the full artist catalog through A–Z/listening navigation and makes genres, obsessions and interpretive boundaries easier to understand. It is not yet tagged, released or deployed.
+**Verified release identity:** pull request [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38) merged the reviewed source; workflow [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024) verified, deployed and smoke-tested commit `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae`; annotated tag `v1.6.0` and the [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0) resolve to that same product commit.
 
-**Verified public engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · 710 passing Vitest tests with 1 intentional private-fixture skip · 18/18 Playwright journeys · EN/ES/HE RTL · protected GitHub Pages CI. These figures describe the accepted v1.5.0 gate; v1.6.0 must pass its own frozen-source gate before publication. IndexedDB **schema revision 4** is a storage contract, not the product version.
+**Verified public engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · **803 passing Vitest tests with 1 intentional private-fixture skip** · **18/18 Playwright journeys** · EN/ES/HE RTL · protected GitHub Pages CI. These figures describe the accepted v1.6.0 release gate. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
-**v1.6.0 verification state (2026-08-09):** the exact local candidate passes one uninterrupted Node 22.13.0 `npm run verify:release` run: 132 test files pass with 1 intentional private-fixture skip, **803 tests pass with 1 intentional skip**, every strict data/privacy/build budget passes and all nine source-fingerprinted visuals pass audit and visual review. Playwright also passes **18/18** desktop/mobile journeys with one worker. Pull-request security checks, Kevin's publication approval and live Pages verification remain pending.
+**v1.6.0 verification state (2026-08-09):** the exact released source passed one uninterrupted Node 22.13.0 `npm run verify:release` run: 132 test files passed with 1 intentional private-fixture skip, **803 tests passed with 1 intentional skip**, every strict data/privacy/build budget passed and all nine source-fingerprinted visuals passed audit and visual review. Playwright passed **18/18** desktop/mobile journeys with one worker, and the protected Pages workflow completed its live identity smoke test.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -39,30 +39,31 @@ Explore Kevin Cusnir / Lirioth Teltanion's real public listening archive, or imp
 5. In `1.2.0` — deployed **2026-07-29** — **Share & Feedback** prepares a WhatsApp invitation and **Audio Lab** previews a permitted local audio file without uploading it.
 6. In `1.4.0` — deployed **2026-07-29** — a guest can add an optional local museum name, import compatible files and compare the resulting private museum directly with Kevin's public exhibition.
 7. In `1.5.0` — deployed **2026-08-01** — portrait fallbacks, genre evidence, snapshot dates and bounded local imports become easier to trust.
-8. In the `1.6.0` private candidate — dated **2026-08-09** — the archive grows through August 6, the first screen explains whose museum this is, **Create** opens the private visitor path, the full Atlas becomes navigable and genre/obsession stories become easier to read. This step is visible in source only until the release gate passes.
+8. In `1.6.0` — deployed **2026-08-09** — the archive grows through August 6, the first screen explains whose museum this is, **Create** opens the private visitor path, the full Atlas becomes navigable and genre/obsession stories become easier to read.
 
 No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ v1.6.0 candidate visuals — source-fingerprinted
+## 🖼️ v1.6.0 release visuals — source-fingerprinted
 
-These nine captures were regenerated from the frozen `1.6.0` product candidate
+These nine captures were regenerated from the frozen `1.6.0` product source
 on **2026-08-09**, passed the release-media hash/dimension audit and received a
 desktop/mobile EN/ES/HE visual review. The manifest binds them to the committed
-product source; they are candidate evidence, not deployment evidence. The live
+product source; they are immutable visual evidence for the deployed release. The live
 [`build-meta.json`](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json)
-remains the authoritative deployment identity, so public v1.5.0 stays current
-until the complete promotion gate passes.
+remains the authoritative identity for the currently served artifact. The annotated
+tag stays anchored to the reviewed product commit even when a later
+documentation-only deployment receives its own commit SHA.
 
 <table>
   <tr>
     <td width="50%">
-      <img src="./assets/releases/v1.6.0/home-desktop-en-cyber.jpg" alt="Nova Music Lab v1.6.0 candidate home on desktop with the unified wordmark and living artist constellation">
+      <img src="./assets/releases/v1.6.0/home-desktop-en-cyber.jpg" alt="Nova Music Lab v1.6.0 release home on desktop with the unified wordmark and living artist constellation">
       <br><strong>One stronger identity</strong> — the refined wordmark, release story and living portraits invite exploration without duplicating the title.
     </td>
     <td width="50%">
-      <img src="./assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg" alt="Living Artist Atlas in the v1.6.0 candidate with artist portrait, sourced biography, evidence and media">
+      <img src="./assets/releases/v1.6.0/artist-atlas-desktop-en-cyber.jpg" alt="Living Artist Atlas in the v1.6.0 release with artist portrait, sourced biography, evidence and media">
       <br><strong>The archive finds its voice</strong> — sourced artist stories, reviewed portraits, deterministic fallbacks and listening evidence share one navigable room.
     </td>
   </tr>
@@ -71,7 +72,7 @@ until the complete promotion gate passes.
 <table>
   <tr>
     <td width="50%" align="center">
-      <img src="./assets/releases/v1.6.0/home-mobile-es-cyber.jpg" width="390" alt="Inicio móvil en español de la candidata Nova Music Lab v1.6.0">
+      <img src="./assets/releases/v1.6.0/home-mobile-es-cyber.jpg" width="390" alt="Inicio móvil en español de Nova Music Lab v1.6.0">
       <br><strong>A welcoming mobile entrance</strong> — Spanish copy and the responsive room navigation remain readable at 390 px.
     </td>
     <td width="50%" align="center">
@@ -282,7 +283,7 @@ rather than a wrong face. Spotify and YouTube players stay behind an explicit
 privacy gate, and remote gallery images disclose their provider and network
 boundary instead of being described as local assets.
 
-The `1.6.0` private candidate dated **2026-08-09** explains three different coverage
+The `1.6.0` release deployed **2026-08-09** explains three different coverage
 layers instead of collapsing them into one number. Analytical genre families
 cover **94.2% of 82,661 plays**; detailed evidence exists for **457 of 6,593
 catalog entries**; and **1,648 entries** remain unclassified. The evidence bundle
@@ -302,7 +303,7 @@ honest runtime fallback.
 
 The 6,593-entry catalog is not a claim of 6,593 unique people or canonical artist
 identities. The current reversible identity registry documents **182 known
-normalized-name variant groups**; this candidate does not delete or merge the
+normalized-name variant groups**; this release does not delete or merge the
 historical rows.
 
 External identity relationships and rejected matches are governed by [`artist_external_identity_policy.json`](./src/data/artist_external_identity_policy.json). The identity audit detects duplicate external IDs unless an exact transliteration or historical-rename relationship is declared; it also prevents known bad matches, including the rejected `nightlife` MusicBrainz identity, from returning silently.
@@ -483,9 +484,9 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `main` is intended to remain deployable. Product work should use focused branches and pull requests; the release process is documented in [`docs/operations/RELEASE.md`](./docs/operations/RELEASE.md).
 
-`1.5.0` — deployed **2026-08-01** — is served by the protected GitHub Pages workflow. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) promoted the reviewed source, and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) verified, deployed and smoke-tested initial release commit `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
+`1.5.0` — deployed **2026-08-01** — was superseded by `1.6.0` on 2026-08-09. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) preserve its historical release evidence.
 
-`1.6.0` — **private candidate 2026-08-09** — integrates the clearer purpose, navigation, Atlas, Genres, Obsessions, media fallback and interpretive boundary described above. The complete local release gate passes with 803 tests plus 1 intentional skip, Playwright 18/18, strict data/privacy checks, build budgets and refreshed source-fingerprinted media. Pull-request security checks, approval and live Pages acceptance remain pending. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
+`1.6.0` — **deployed 2026-08-09** — integrates the clearer purpose, navigation, Atlas, Genres, Obsessions, media fallback and interpretive boundary described above. Pull request [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38) promoted the reviewed source, and workflow run [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024) verified, deployed and smoke-tested release commit `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae`. The annotated tag and [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0) target that commit. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
 
 ---
 

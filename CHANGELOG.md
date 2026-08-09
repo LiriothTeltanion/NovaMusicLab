@@ -6,11 +6,17 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No product work beyond the `v1.6.0` private candidate scope is recorded here.
+No product feature work after the deployed `v1.6.0` release is recorded here.
+
+### Fixed
+
+- Preserved audited release media across same-version documentation-only
+  deployments while keeping the full media audit mandatory whenever the
+  product version changes.
 
 ## [1.6.0] - 2026-08-09
 
-Status: **private candidate — not tagged, released or deployed**.
+Status: **deployed 2026-08-09**.
 
 Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz**.
 
@@ -30,7 +36,7 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
 
 ### Changed
 
-- Refreshed the candidate archive to **82,661 plays**, **20,908 tracks** and
+- Refreshed the released archive to **82,661 plays**, **20,908 tracks** and
   **6,593 exact artist-name catalog entries**. Dataset generation occurred at
   `2026-08-06T21:44:39.498Z`, or 2026-08-07 in the declared
   `Asia/Jerusalem` analysis timezone.
@@ -62,22 +68,29 @@ Title: **The Living Archive Finds Its Voice · El archivo vivo encuentra su voz*
 
 - A clean Node `22.13.0` `npm ci` installed 255 packages with zero known
   vulnerabilities. Strict data, genre, identity, media-link, knowledge,
-  privacy, PWA, share and bundle-budget checks pass on the integrated candidate.
+  privacy, PWA, share and bundle-budget checks passed on the integrated release source.
 - One uninterrupted `npm run verify:release` run passes: 132 test files pass
   with 1 intentional private-fixture skip, 803 tests pass with 1 intentional
   skip, and all strict data/privacy/build-budget gates are green. Playwright
   passes 18/18 desktop/mobile journeys with one worker.
-- All nine candidate assets were regenerated from committed product source,
+- All nine release assets were regenerated from committed product source,
   passed the release-media audit and received desktop/mobile EN/ES/HE visual
-  review. Pull-request CI, Kevin's publication approval and live Pages checks
-  remain separate acceptance gates. This entry is not evidence of publication.
+  review.
+- Pull request [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38)
+  passed the protected checks and merged the reviewed source. Workflow run
+  [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024)
+  verified, deployed and smoke-tested commit
+  `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae`.
+- Annotated tag `v1.6.0` and the
+  [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0)
+  resolve to that same product commit.
 
 ### Known limitations
 
 - This is still a historical, browser-local snapshot with no backend, account,
   OAuth or automatic Spotify/Last.fm synchronization.
-- Candidate screenshots, animated tour and raster social preview remain local
-  evidence until the exact reviewed commit is accepted and deployed.
+- Screenshots, animated tour and raster social preview are immutable,
+  source-fingerprinted evidence for the deployed release.
 - DAW, FL Studio, MIDI, Tauri and desktop packaging remain outside this release.
 
 ## [1.5.0] - 2026-08-01
