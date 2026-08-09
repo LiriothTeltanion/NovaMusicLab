@@ -1,3 +1,4 @@
+import type { PropsWithChildren } from 'react';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { AppProvider } from '../context/AppContext';
@@ -20,6 +21,31 @@ import TopHistorico from './TopHistorico';
 
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 vi.mock('html-to-image', () => ({ toPng: vi.fn() }));
+vi.mock('recharts', () => {
+  const Container = ({ children }: PropsWithChildren) => <div>{children}</div>;
+  const Empty = () => null;
+
+  return {
+    ResponsiveContainer: Container,
+    BarChart: Container,
+    RadarChart: Container,
+    ScatterChart: Container,
+    AreaChart: Container,
+    Bar: Empty,
+    XAxis: Empty,
+    YAxis: Empty,
+    Tooltip: Empty,
+    Cell: Empty,
+    Area: Empty,
+    CartesianGrid: Empty,
+    Treemap: Empty,
+    PolarGrid: Empty,
+    PolarAngleAxis: Empty,
+    Radar: Empty,
+    Scatter: Empty,
+    ZAxis: Empty,
+  };
+});
 
 const data = musicData as unknown as MusicDnaData;
 
