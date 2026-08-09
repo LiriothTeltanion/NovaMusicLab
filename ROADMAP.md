@@ -93,17 +93,19 @@ The v1 roadmap follows one order: **truth → privacy → reliability → archit
 - [x] Verify and publish `v1.5.0` — deployed **2026-08-01** — with
   corrected portrait fallbacks, explicit snapshot/genre provenance, bounded
   archive imports and mobile/RTL/accessibility release fixes.
-- [ ] Promote the verified `v1.6.0` private candidate dated **2026-08-09** only
-  after its frozen-source, dependency, privacy, browser and visual-media gates
-  pass. It refreshes the archive through 2026-08-06, clearly separates Kevin /
+- [x] Publish `v1.6.0` — deployed **2026-08-09** — after its frozen-source,
+  dependency, privacy, browser and visual-media gates passed. It refreshes the
+  archive through 2026-08-06, clearly separates Kevin /
   Lirioth's public exhibition from the local build-your-own path, opens all
   6,593 exact-name catalog entries through A–Z/listening navigation, clarifies
   the genre long tail, strengthens Obsessions/media fallbacks and labels
   emotional/personality readings as interpretive and non-clinical.
 - The separate GitHub profile repository consumes only the verified live
-  deployment manifest and immutable release media. It therefore remains on
-  `v1.5.0` until a deployed v1.6.0 artifact passes live verification; it is
-  never promoted from a tracked private-candidate handoff.
+  deployment manifest and immutable release media. The verified v1.6.0 Pages
+  artifact now provides that handoff; the release lineage is anchored by tag
+  `v1.6.0` at `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae`, while the live manifest
+  identifies the currently served artifact. The tracked source manifest remains
+  `private-candidate` and is never used as deployment evidence.
 - [ ] Plan a later version — date not verified — for optional anonymous/Google
   identity, revocable safe snapshots and policy-approved live connectors.
 

@@ -9,9 +9,8 @@ Current version states:
 - `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
   superseded by `v1.4.0`.
 - `v1.4.0` — deployed 2026-07-29; superseded 2026-08-01.
-- `v1.5.0` — deployed 2026-08-01; current public GitHub Pages version.
-- `v1.6.0` — private candidate 2026-08-09; current source version, not yet
-  tagged, released or deployed.
+- `v1.5.0` — deployed 2026-08-01; superseded 2026-08-09.
+- `v1.6.0` — deployed 2026-08-09; current public GitHub Pages version.
 
 ## Branch model
 
@@ -173,19 +172,19 @@ Known release boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
 backend, accounts, OAuth or automatic connector is added. No catalog aliases
 are destructively merged. The release costs 0 ILS in new services.
 
-## `v1.6.0` candidate gate — private candidate 2026-08-09
+## `v1.6.0` acceptance record — deployed 2026-08-09
 
 Release title:
 
 > Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
 
-The candidate refreshes the historical archive through 2026-08-06 to 82,661
+The release refreshes the historical archive through 2026-08-06 to 82,661
 plays, 20,908 tracks and 6,593 exact artist-name catalog entries. It was
 generated on 2026-08-07 in `Asia/Jerusalem`; enrichment remains dated
 2026-07-29 and Recent Pulse remains dated 2026-07-02. It is not a live account
 connection.
 
-This release candidate also makes the product contract understandable before a
+This release also makes the product contract understandable before a
 visitor reaches the technical detail:
 
 - Overview names Kevin Cusnir / Lirioth Teltanion's real public exhibition and
@@ -208,12 +207,18 @@ visitor reaches the technical detail:
 - [x] Final v1.6.0 release media is recaptured from the frozen integrated
   source, contains nine source-fingerprinted assets, passes the release-media
   audit and is reviewed visually in desktop/mobile and EN/ES/HE.
-- [ ] Pull-request CI, CodeQL and Dependency Review pass.
-- [ ] Kevin approves the exact merge candidate.
-- [ ] Pages serves matching v1.6.0 build metadata, real deployment date and
-  merge commit before a tag or GitHub Release is created.
-
-Until every item passes, v1.5.0 remains the authoritative public version.
+- [x] Pull request
+  [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38) passes the
+  protected CI, CodeQL and Dependency Review gates and merges the reviewed
+  source.
+- [x] Kevin approves the exact merge candidate.
+- [x] GitHub Pages workflow
+  [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024)
+  serves matching v1.6.0 build metadata, deployed status, date and release
+  commit `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae` in both live identity files.
+- [x] Annotated tag `v1.6.0` resolves to that commit and the
+  [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0)
+  is published.
 
 ## Release metadata
 
@@ -276,13 +281,13 @@ Release summary:
 > The flagship remains an honest historical snapshot; no account or live sync
 > is implied.
 
-### `v1.6.0` metadata — private candidate 2026-08-09
+### `v1.6.0` metadata — deployed 2026-08-09
 
 Release title:
 
 > Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
 
-Candidate summary:
+Release summary:
 
 > A refreshed living archive whose evidence speaks more clearly: the complete
 > Spotify, Last.fm and YouTube history through August 6, a first screen that

@@ -4,16 +4,16 @@ Last reviewed: **2026-08-09**.
 
 ## Product versions
 
-- **v1.6.0 — private candidate 2026-08-09.** **The Living Archive Finds Its
-  Voice · El archivo vivo encuentra su voz** is the current source candidate.
-  It has not been tagged, released, merged to `main` or deployed.
-- **v1.5.0 — deployed 2026-08-01.** This remains the latest verified public
-  version. Its initial release commit is
-  `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`.
+- **v1.6.0 — deployed 2026-08-09.** **The Living Archive Finds Its Voice · El
+  archivo vivo encuentra su voz** is the latest verified public version. Its
+  release commit, which is also the annotated-tag target, is
+  `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae`.
+- **v1.5.0 — deployed 2026-08-01; superseded 2026-08-09.** Its initial release
+  commit remains `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`.
 - IndexedDB **schema revision 4** remains the storage contract. It is not the
   product version.
 
-## Candidate flagship snapshot
+## Public flagship snapshot
 
 - Observed listening period: **2015-03-01 through 2026-08-06**.
 - Dataset generated: **2026-08-07 in Asia/Jerusalem**
@@ -35,9 +35,9 @@ Genre layers remain explicit:
 - **1,648** entries remain unclassified.
 - Assertions: **85 accepted**, **1,203 candidate**, **2 rejected and hidden**.
 
-## Candidate scope
+## v1.6.0 release scope
 
-The v1.6.0 candidate adds the refreshed Spotify, Last.fm and YouTube archive,
+The v1.6.0 release adds the refreshed Spotify, Last.fm and YouTube archive,
 then makes its purpose explicit: this is Kevin Cusnir / Lirioth Teltanion's real
 public listening museum and also a local-first tool where visitors can import
 supported listening-history exports to build their own private museum.
@@ -63,28 +63,30 @@ The integrated clarity slice adds:
 
 DAW, FL Studio, MIDI, Tauri, desktop packaging, backend, accounts, OAuth and
 automatic Spotify/Last.fm synchronization remain deliberately outside this
-candidate.
+release.
 
 ## Release gate
 
-Status: **private candidate — product source is frozen in local commits and the
-complete local release gate passes. Remote security, explicit approval and live
-deployment verification remain open**.
+Status: **verified and deployed 2026-08-09**.
 
-Before publication, the exact frozen source must pass:
+The exact released source completed every publication gate:
 
-1. **Complete locally:** Node `22.13.0` clean `npm ci` (255 packages), zero
+1. Node `22.13.0` clean `npm ci` (255 packages), zero
    known vulnerabilities, strict data/privacy checks, build and bundle budgets;
    132 test files and 803 tests pass with 1 intentional private-fixture skip.
-2. **Complete locally:** nine source-fingerprinted v1.6.0 media assets,
+2. Nine source-fingerprinted v1.6.0 media assets,
    release-media audit and desktop/mobile EN/ES/HE visual review.
-3. **Complete locally:** one uninterrupted `npm run verify:release` passes and
+3. One uninterrupted `npm run verify:release` passes and
    Playwright passes 18/18 desktop/mobile journeys with one worker.
-4. Pull-request CI, CodeQL and dependency review.
-5. Kevin's explicit approval for the exact merge candidate.
-6. Live Pages verification showing version `1.6.0`, status `deployed`, the real
-   deployment date and the approved merge commit.
-
-Until all six steps pass, the public site and v1.5.0 release evidence remain
-the authoritative deployed state. A future deployment date must be the real
-date; the candidate must never be presented as already public.
+4. Pull request [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38)
+   passed the protected checks and merged the reviewed source.
+5. Workflow run
+   [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024)
+   verified, deployed and smoke-tested commit
+   `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae` on Pages.
+6. Annotated tag `v1.6.0` and the
+   [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0)
+   resolve to that same product commit. Live `build-meta.json` and the deployed
+   profile manifest remain authoritative for the currently served artifact;
+   documentation-only deployments keep version `1.6.0` and the deployment date
+   while correctly receiving their own commit SHA.
