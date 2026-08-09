@@ -61,6 +61,10 @@ function declaredThemes() {
 
 const THEMES = declaredThemes();
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 /**
  * Reads a declaration out of index.css so the test cannot drift from the
  * source. Anchored to the start of a line, because an unanchored `.text-gray-500`
@@ -68,8 +72,12 @@ const THEMES = declaredThemes();
  * assert the light rule while claiming to check the dark one.
  */
 function declaredColor(selector, property) {
-  const escaped = selector.replace(/[.[\]"=-]/g, '\\$&');
-  const block = new RegExp(`^${escaped}\\s*\\{[^}]*?${property}\\s*:\\s*([^;]+);`, 'm');
+  const escapedSelector = escapeRegExp(selector);
+  const escapedProperty = escapeRegExp(property);
+  const block = new RegExp(
+    `^${escapedSelector}\\s*\\{[^}]*?${escapedProperty}\\s*:\\s*([^;]+);`,
+    'm',
+  );
   const match = block.exec(CSS);
   if (!match) throw new Error(`index.css no longer declares ${property} for ${selector}.`);
   return match[1].trim();
@@ -77,6 +85,8 @@ function declaredColor(selector, property) {
 
 describe('text contrast floor', () => {
   it('discovers every registered theme background', () => {
+    const literalSelector = String.raw`[data-path="C:\Nova"]`;
+    expect(new RegExp(`^${escapeRegExp(literalSelector)}$`).test(literalSelector)).toBe(true);
     expect(THEMES).toHaveLength(14);
     expect(THEMES.filter(theme => theme.mode === 'dark')).toHaveLength(7);
     expect(THEMES.filter(theme => theme.mode === 'light')).toHaveLength(7);
