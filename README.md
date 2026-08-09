@@ -20,7 +20,7 @@ Explore Kevin Cusnir / Lirioth Teltanion's real public listening archive, or imp
 
 **Verified public engineering evidence:** React 19 · TypeScript · Vite · Dexie/IndexedDB · Web Workers · 710 passing Vitest tests with 1 intentional private-fixture skip · 18/18 Playwright journeys · EN/ES/HE RTL · protected GitHub Pages CI. These figures describe the accepted v1.5.0 gate; v1.6.0 must pass its own frozen-source gate before publication. IndexedDB **schema revision 4** is a storage contract, not the product version.
 
-**v1.6.0 verification state (2026-08-09):** an earlier candidate baseline passed Node 22.13.0, 770 Vitest tests with 1 intentional private-fixture skip, 18/18 Playwright journeys and the complete local release-media gate. The current clarity integration changes product source, so those figures are historical baseline evidence only. Fresh source, browser, dependency, privacy, accessibility, visual-media, pull-request and live Pages gates are required before publication.
+**v1.6.0 verification state (2026-08-09):** a clean Node 22.13.0 `npm ci` installed 255 packages with zero known vulnerabilities; strict data, genre, identity, media-link, knowledge, privacy, PWA, share and bundle-budget checks pass. Targeted Vitest and repaired desktop/mobile Playwright cases pass, and the nine candidate visuals are freshly source-fingerprinted, audited and visually reviewed. The uninterrupted full Vitest run, complete 18-journey rerun, pull-request security checks and live Pages verification remain pending.
 
 [Explore the live flagship](https://liriothteltanion.github.io/NovaMusicLab/) ·
 [Read the architecture](./docs/architecture/OVERVIEW.md) ·
@@ -45,13 +45,12 @@ No account is required for the public exhibition or local archive import.
 
 ---
 
-## 🖼️ v1.6.0 visual baseline — recapture required
+## 🖼️ v1.6.0 candidate visuals — source-fingerprinted
 
-These captures document an earlier `1.6.0` private-candidate baseline from
-**2026-08-09**. They remain useful design references, but the newer purpose,
-Atlas, Genres and Obsessions work changes product source and requires a complete
-recapture before promotion. They do not claim current-source verification or a
-deployment. The live
+These nine captures were regenerated from the frozen `1.6.0` product candidate
+on **2026-08-09**, passed the release-media hash/dimension audit and received a
+desktop/mobile EN/ES/HE visual review. The manifest binds them to the committed
+product source; they are candidate evidence, not deployment evidence. The live
 [`build-meta.json`](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json)
 remains the authoritative deployment identity, so public v1.5.0 stays current
 until the complete promotion gate passes.
@@ -486,7 +485,7 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 `1.5.0` — deployed **2026-08-01** — is served by the protected GitHub Pages workflow. Pull request [#27](https://github.com/LiriothTeltanion/NovaMusicLab/pull/27) promoted the reviewed source, and workflow run [`30693829107`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/30693829107) verified, deployed and smoke-tested initial release commit `0e00227cb03d3bb2cbc1c3eead4ed3a5e6603b7d`. The [live build metadata](https://liriothteltanion.github.io/NovaMusicLab/build-meta.json) remains the authoritative artifact identity after documentation-only deployments. Product versions and IndexedDB schema versions remain deliberately independent.
 
-`1.6.0` — **private candidate 2026-08-09** — is integrating the clearer purpose, navigation, Atlas, Genres, Obsessions, media fallback and interpretive boundary described above. The previous local/source-media baseline is superseded by these product changes; fresh complete gates and recaptured assets are pending. Pull-request, remote security and live Pages acceptance also remain pending. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
+`1.6.0` — **private candidate 2026-08-09** — integrates the clearer purpose, navigation, Atlas, Genres, Obsessions, media fallback and interpretive boundary described above. Clean install, strict data/privacy checks, build budgets and refreshed source-fingerprinted media pass locally; the uninterrupted full unit/E2E gate, pull-request security checks, approval and live Pages acceptance remain pending. The public URL, v1.5.0 tag and live build metadata remain authoritative; this README does not claim that the candidate is deployed.
 
 ---
 

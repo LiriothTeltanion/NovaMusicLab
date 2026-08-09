@@ -204,11 +204,9 @@ visitor reaches the technical detail:
 - [ ] The exact integrated source passes the complete local verification,
   privacy and dependency gates on Node `22.13.0`, including all expected
   Vitest tests and 18/18 Playwright journeys.
-- [ ] Final v1.6.0 release media is recaptured from the frozen integrated
+- [x] Final v1.6.0 release media is recaptured from the frozen integrated
   source, contains nine source-fingerprinted assets, passes the release-media
-  audit and is reviewed visually in desktop/mobile and EN/ES/HE. The existing
-  package documents an earlier v1.6.0 baseline and cannot prove the changed
-  source.
+  audit and is reviewed visually in desktop/mobile and EN/ES/HE.
 - [ ] Pull-request CI, CodeQL and Dependency Review pass.
 - [ ] Kevin approves the exact merge candidate.
 - [ ] Pages serves matching v1.6.0 build metadata, real deployment date and

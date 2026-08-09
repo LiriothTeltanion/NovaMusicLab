@@ -13,13 +13,12 @@ for the repaired mobile Genres journey and a shorter room-to-room tour. The
 unpublished `v1.3.0` private checkpoint from 2026-07-29 was superseded before
 it adopted this package.
 
-`v1.6.0` — private candidate 2026-08-09 — owns a nine-asset media directory from
-an earlier candidate baseline. Subsequent purpose, navigation, Atlas, Genres,
-Obsessions and media-fallback changes intentionally make that source
-fingerprint stale. The directory remains a review reference until every asset
-is regenerated from the frozen integrated source, visually reviewed and
-audited again. It is not current release evidence or public deployment
-evidence; v1.5.0 remains the latest verified version served by Pages.
+`v1.6.0` — private candidate 2026-08-09 — owns a fresh nine-asset media
+directory generated from committed product source. Its hashes, dimensions,
+aliases and source fingerprint pass the release-media audit, and the package
+has been reviewed on desktop/mobile in EN/ES/HE. It is current candidate
+evidence, not public deployment evidence; v1.5.0 remains the latest verified
+version served by Pages.
 
 ## What each candidate must contain
 

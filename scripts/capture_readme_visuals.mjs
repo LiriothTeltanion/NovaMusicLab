@@ -929,6 +929,8 @@ try {
         nml_experience_depth: 'explore',
       },
       waitFor: '[data-top-tab="generos"][aria-pressed="true"]',
+      scrollTo: '[data-testid="top-genres-treemap-summary"]',
+      scrollOffset: 220,
     });
     await capture(browser, {
       id: 'artist-atlas-desktop',
@@ -942,7 +944,7 @@ try {
       },
       waitFor: '#artist-atlas-title',
       waitForImage: '.artist-atlas__stage-image',
-      scrollTo: '.artist-atlas__hero',
+      scrollTo: '.artist-atlas__directory',
       scrollOffset: 170,
       legacyFileName: 'living-artist-atlas-desktop.jpg',
     });

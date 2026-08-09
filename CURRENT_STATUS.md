@@ -67,25 +67,24 @@ candidate.
 
 ## Release gate
 
-Status: **private candidate — integrated product changes are not yet frozen or
-fully verified; the previous source and visual evidence no longer proves the
-current worktree**.
+Status: **private candidate — product source is frozen in local commits; clean
+install, strict audits, build budgets, targeted tests and candidate media pass.
+The uninterrupted full unit/E2E, remote-security and live gates remain open**.
 
 Before publication, the exact frozen source must pass:
 
-1. Freeze the integrated source, then rerun `npm ci`, `npm run verify`,
-   `npm run test:e2e`, `npm run audit:dependencies` and `git diff --check` on
-   Node `22.13.0`. Final counts must be recorded only after that exact run.
-2. Recapture the nine v1.6.0 screenshots, tour and social preview from the
-   frozen integrated source, review them in desktop/mobile and EN/ES/HE, then
-   run `npm run audit:release-media` and `npm run verify:release`. The current
-   assets document an earlier v1.6.0 baseline and are not release evidence for
-   this changed source.
-3. Pull-request CI, CodeQL and dependency review.
-4. Kevin's explicit approval for the exact merge candidate.
-5. Live Pages verification showing version `1.6.0`, status `deployed`, the real
+1. **Complete locally:** Node `22.13.0` clean `npm ci` (255 packages), zero
+   known vulnerabilities, strict data/privacy checks, build and bundle budgets.
+2. **Complete locally:** nine source-fingerprinted v1.6.0 media assets,
+   release-media audit and desktop/mobile EN/ES/HE visual review.
+3. Run one uninterrupted `npm run verify` and `npm run test:e2e` on the exact
+   candidate. Targeted Vitest and repaired Playwright cases already pass, but
+   they do not replace the complete runs.
+4. Pull-request CI, CodeQL and dependency review.
+5. Kevin's explicit approval for the exact merge candidate.
+6. Live Pages verification showing version `1.6.0`, status `deployed`, the real
    deployment date and the approved merge commit.
 
-Until all five steps pass, the public site and v1.5.0 release evidence remain
+Until all six steps pass, the public site and v1.5.0 release evidence remain
 the authoritative deployed state. A future deployment date must be the real
 date; the candidate must never be presented as already public.
