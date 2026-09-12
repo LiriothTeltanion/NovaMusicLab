@@ -3,6 +3,8 @@
 This document describes the genre foundation introduced in Nova Music Lab
 `v1.4.0` — deployed 2026-07-29 — and its clearer provenance and coverage
 language in `v1.5.0` — deployed 2026-08-01.
+The current `v1.6.0` private candidate dated 2026-08-09 refreshes the archive
+and the measured coverage below; `v1.5.0` remains the latest public release.
 
 ## Product rule
 
@@ -69,14 +71,20 @@ Atlas. They do not enter the initial museum bundle. They contain public artist
 metadata and stable provider identifiers, not listening-export rows, account
 identifiers or credentials.
 
-The existing 6,413-entry artist-name catalog remains the complete denominator. The new
+The existing 6,593-entry artist-name catalog remains the complete denominator. The new
 knowledge artifact adds evidence to classified artists without rewriting the
 original catalog or guessing labels for unresolved long-tail artists.
 
-Those 6,413 rows are exact archive-name entries, not a verified people count.
-The current snapshot contains 181 known normalized name-variant groups. They
+Those 6,593 rows are exact archive-name entries, not a verified people count.
+The current candidate snapshot contains 182 known normalized name-variant groups. They
 remain intentionally unmerged until an evidence-reviewed identity migration can
 preserve aliases and historical names without deleting listening evidence.
+
+The candidate audit currently reconciles **82,661 plays**: **94.2%** map to an
+analytical family, **457 / 6,593** catalog entries have detailed evidence and
+**1,648** remain unclassified. The assertion artifact contains **85 accepted**,
+**1,203 candidate** and **2 rejected** assertions. Candidate evidence remains a
+suggestion; rejected evidence is hidden and retained only as a regression guard.
 
 Local visitor corrections continue to live in the versioned local dataset
 envelope. This first slice deliberately avoids a Dexie schema migration. A

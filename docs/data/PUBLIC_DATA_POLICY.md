@@ -26,10 +26,30 @@ The freshness object uses the explicit public fields `observedFrom`,
 field remains for archive compatibility; it is not a substitute name inside
 the freshness contract.
 
-`6,413` is the current number of exact artist-name **catalog entries**, not a
-claim that the archive contains 6,413 verified people. The public catalog has
-181 known normalized name-variant groups. They remain separate so historical
+`6,593` is the current candidate number of exact artist-name **catalog entries**, not a
+claim that the archive contains 6,593 verified people. The candidate catalog has
+182 known normalized name-variant groups. They remain separate so historical
 names and aliases are not silently deleted or merged without identity evidence.
+
+## Current source candidate
+
+The `v1.6.0` source candidate dated 2026-08-09 is not yet deployed. Its reviewed
+public-data contract currently reports:
+
+- 82,661 plays, 20,908 tracks and 6,593 exact artist-name catalog entries;
+- listening observed from 2015-03-01 through 2026-08-06;
+- dataset generation at `2026-08-06T21:44:39.498Z`, which is 2026-08-07 in
+  the declared `Asia/Jerusalem` analysis timezone;
+- artist enrichment generated 2026-07-29 and Recent Pulse synchronized
+  2026-07-02;
+- no live connection or automatic synchronization;
+- 94.2% of plays assigned to an analytical genre family, detailed evidence for
+  457 of 6,593 entries and 1,648 entries still unclassified;
+- 85 accepted, 1,203 candidate and 2 rejected genre assertions. Rejected
+  assertions remain stored as guards and are never displayed as facts.
+
+The latest verified public deployment remains `v1.5.0` until the complete
+release gate promotes the candidate.
 
 ## Allowed public content
 

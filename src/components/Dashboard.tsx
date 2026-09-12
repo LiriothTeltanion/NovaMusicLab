@@ -308,6 +308,10 @@ export default function Dashboard({ data }: DashboardProps) {
         leaderboardSummary: (shown: number, total: number, shownPlays: string, totalPlays: string, share: string) =>
           `Top ${shown} of ${total} · ${shownPlays} / ${totalPlays} listens · ${share}% of the archive`,
         noArtists: 'Your archive does not contain enough artist data to build this ranking yet.',
+        groupedGenreFamilies: (count: number) => `${count} smaller classified ${count === 1 ? 'family' : 'families'}`,
+        groupedGenreNote: 'Grouped for readability · not unclassified.',
+        openGenreBreakdown: 'Explore every genre family',
+        openGenreBreakdownAria: (count: number) => `Open the complete ${count}-row genre breakdown`,
         tasteChapter: 'Taste architecture',
         tasteNote: 'The artists and genres that hold the center of gravity.',
         rhythmChapter: 'Time signature',
@@ -335,6 +339,10 @@ export default function Dashboard({ data }: DashboardProps) {
         leaderboardSummary: (shown: number, total: number, shownPlays: string, totalPlays: string, share: string) =>
           `Top ${shown} de ${total} · ${shownPlays} / ${totalPlays} escuchas · ${share}% del archivo`,
         noArtists: 'Tu archivo todavía no contiene suficientes datos de artistas para construir este ranking.',
+        groupedGenreFamilies: (count: number) => `${count} ${count === 1 ? 'familia clasificada más pequeña' : 'familias clasificadas más pequeñas'}`,
+        groupedGenreNote: 'Agrupadas para facilitar la lectura · no son contenido sin clasificar.',
+        openGenreBreakdown: 'Explorar todas las familias de género',
+        openGenreBreakdownAria: (count: number) => `Abrir el desglose completo de ${count} filas de género`,
         tasteChapter: 'Arquitectura del gusto',
         tasteNote: 'Los artistas y géneros que sostienen tu centro de gravedad.',
         rhythmChapter: 'Compás del tiempo',
@@ -362,6 +370,12 @@ export default function Dashboard({ data }: DashboardProps) {
         leaderboardSummary: (shown: number, total: number, shownPlays: string, totalPlays: string, share: string) =>
           `${shown} מתוך ${total} · ${shownPlays} מתוך ${totalPlays} השמעות · ${share}% מהארכיון`,
         noArtists: 'עדיין אין בארכיון מספיק נתוני אמנים כדי לבנות את הדירוג.',
+        groupedGenreFamilies: (count: number) => count === 1
+          ? 'משפחת ז׳אנר מסווגת קטנה יותר'
+          : `${count} משפחות ז׳אנר מסווגות קטנות יותר`,
+        groupedGenreNote: 'מקובצות לשיפור הקריאות · אינן תוכן לא מסווג.',
+        openGenreBreakdown: 'לכל משפחות הז׳אנר',
+        openGenreBreakdownAria: (count: number) => `פתיחת הפירוט המלא של ${count} שורות ז׳אנר`,
         tasteChapter: 'הארכיטקטורה של הטעם',
         tasteNote: 'האמנים והז׳אנרים שמחזיקים את מרכז הכובד שלך.',
         rhythmChapter: 'חתימת הזמן',
@@ -525,12 +539,16 @@ export default function Dashboard({ data }: DashboardProps) {
     () => buildGenreDistribution(data.top_genres, metrics.total_plays, 8),
     [data.top_genres, metrics.total_plays],
   );
+  const groupedGenreLabel = editorialCopy.groupedGenreFamilies(genreDistribution.groupedFamilyCount);
+  const completeGenreRowCount = data.top_genres.filter(genre => genre.plays > 0).length;
   const richGenreData = useMemo(
     () => genreDistribution.rows.map(genre => ({
       ...genre,
-      name: localizeGenreName(genre.name, lang),
+      name: genre.kind === 'grouped'
+        ? groupedGenreLabel
+        : localizeGenreName(genre.name, lang),
     })),
-    [genreDistribution.rows, lang],
+    [genreDistribution.rows, groupedGenreLabel, lang],
   );
   const unclassifiedPlays = data.top_genres.find(genre => genre.name === 'Unclassified')?.plays ?? 0;
 
@@ -580,6 +598,12 @@ export default function Dashboard({ data }: DashboardProps) {
     playMuseumSound('open');
     setSelectedArtistName(name);
     setTopSubTab('artists');
+    setActiveTab('top');
+  };
+
+  const openGenreBreakdown = () => {
+    playMuseumSound('open');
+    setTopSubTab('genres');
     setActiveTab('top');
   };
 
@@ -807,7 +831,12 @@ export default function Dashboard({ data }: DashboardProps) {
           </div>
           <div data-testid="dashboard-genre-legend" className="mt-3 grid gap-2.5">
             {richGenreData.map((genre, idx) => (
-              <div key={genre.name} className="flex min-h-8 items-center justify-between gap-3 text-xs">
+              <div
+                key={`${genre.kind}-${genre.name}`}
+                data-testid={genre.kind === 'grouped' ? 'dashboard-grouped-genres' : undefined}
+                data-genre-kind={genre.kind}
+                className="flex min-h-8 items-center justify-between gap-3 text-xs"
+              >
                 <div className="flex min-w-0 items-center gap-2">
                   <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
                   <span className="min-w-0 break-words text-gray-300"><bdi dir="auto">{genre.name}</bdi></span>
@@ -818,6 +847,21 @@ export default function Dashboard({ data }: DashboardProps) {
               </div>
             ))}
           </div>
+          {genreDistribution.groupedFamilyCount > 0 && (
+            <p data-testid="dashboard-grouped-genres-note" className="mt-3 text-[10px] leading-relaxed text-gray-500">
+              {editorialCopy.groupedGenreNote}
+            </p>
+          )}
+          <button
+            type="button"
+            data-testid="dashboard-open-genre-breakdown"
+            onClick={openGenreBreakdown}
+            aria-label={editorialCopy.openGenreBreakdownAria(completeGenreRowCount)}
+            className="mt-4 flex min-h-11 w-full items-center justify-between gap-3 rounded-2xl border border-cyan-300/20 bg-cyan-300/[0.06] px-3 py-2.5 text-start text-xs font-black text-cyan-100 transition-colors hover:border-cyan-200/40 hover:bg-cyan-300/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+          >
+            <span>{editorialCopy.openGenreBreakdown}</span>
+            <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+          </button>
           {unclassifiedPlays > 0 && (
             <button
               type="button"

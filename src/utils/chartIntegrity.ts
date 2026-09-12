@@ -109,12 +109,16 @@ export function normalizePlatformBreakdown(
 
 export interface GenreDistributionRow extends TopGenre {
   share: number;
+  /** A grouped row is presentation-only and must never be described as a genre. */
+  kind: 'family' | 'unclassified' | 'grouped';
 }
 
 /**
  * Builds one archive-wide genre distribution with an explicit denominator.
- * Missing classified plays become `Unclassified`; categories outside top-N
- * remain visible as `Other` instead of silently disappearing from the chart.
+ * Missing classified plays become `Unclassified`. The top-N limit applies only
+ * to classified families: `Unclassified` always remains its own semantic row,
+ * while smaller classified families remain attributable through one grouped
+ * presentation row instead of silently disappearing from the chart.
  */
 export function buildGenreDistribution(
   rows: readonly TopGenre[],
@@ -125,6 +129,8 @@ export function buildGenreDistribution(
   totalPlays: number;
   sourcePlays: number;
   sourceCoveragePct: number;
+  groupedFamilyCount: number;
+  groupedPlays: number;
 } {
   const totals = new Map<string, number>();
   rows.forEach(({ name, plays }) => {
@@ -144,9 +150,24 @@ export function buildGenreDistribution(
   const sorted = [...totals.entries()]
     .map(([name, plays]) => ({ name, plays }))
     .sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name));
-  const visible = sorted.slice(0, Math.max(1, topN));
-  const hiddenPlays = sorted.slice(Math.max(1, topN)).reduce((sum, row) => sum + row.plays, 0);
-  if (hiddenPlays) visible.push({ name: 'Other', plays: hiddenPlays });
+  const unclassifiedPlays = totals.get('Unclassified') ?? 0;
+  const classified = sorted.filter(row => row.name !== 'Unclassified');
+  const classifiedLimit = Math.max(1, Math.floor(topN));
+  const visibleFamilies = classified.slice(0, classifiedLimit);
+  const groupedFamilies = classified.slice(classifiedLimit);
+  const groupedPlays = groupedFamilies.reduce((sum, row) => sum + row.plays, 0);
+  const visible: Array<TopGenre & Pick<GenreDistributionRow, 'kind'>> = visibleFamilies
+    .map(row => ({ ...row, kind: 'family' }));
+
+  if (unclassifiedPlays) {
+    visible.push({ name: 'Unclassified', plays: unclassifiedPlays, kind: 'unclassified' });
+  }
+  visible.sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name));
+  if (groupedPlays) {
+    // `Other` remains the backwards-compatible machine key. Consumers must use
+    // `kind` + `groupedFamilyCount` to render a descriptive localized label.
+    visible.push({ name: 'Other', plays: groupedPlays, kind: 'grouped' });
+  }
 
   return {
     totalPlays,
@@ -154,6 +175,8 @@ export function buildGenreDistribution(
     sourceCoveragePct: requestedTotal
       ? Math.round((sourcePlays / requestedTotal) * 1000) / 10
       : sourcePlays ? 100 : 0,
+    groupedFamilyCount: groupedFamilies.length,
+    groupedPlays,
     rows: visible.map(row => ({
       ...row,
       share: totalPlays ? Math.round((row.plays / totalPlays) * 1000) / 10 : 0,

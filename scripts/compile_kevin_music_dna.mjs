@@ -15,12 +15,25 @@ function writeLine(message = '') {
 function printUsage() {
   writeLine(`
 Usage:
-  npm run compile:data -- --source-dir <export-directory> [--lastfm-file <csv-path>] [--output <dataset-path>] [--catalog-output <catalog-path>]
+  npm run compile:data -- --source-dir <export-directory> [options]
+
+Options:
+  --lastfm-file <csv>        Last.fm export outside the source directory
+  --youtube-file <html|json> YouTube watch history outside the source directory
+  --require-sources a,b,c    Abort unless every named source resolved to data
+                             (lastfm | spotify | youtube)
+  --flagship                 Stamp this dataset as the museum's own archive
+  --enrichment-generated-at <iso>  Override the carried-forward enrichment date
+  --output <path>            Dataset path (default src/data/music_dna_compiled.json)
+  --catalog-output <path>    Genre catalogue path; derived from --output if omitted
 
 The export directory can contain any combination of:
   one Last.fm CSV at the export root (or an explicit --lastfm-file)
   my_spotify_data/Spotify Extended Streaming History/Streaming_History_Audio_*.json
-  historial de videos/historial de reproducciones.html
+  historial de videos/historial de reproducciones.html (or an explicit --youtube-file)
+
+A missing source is only a warning, so a two-source archive compiles cleanly and
+looks correct. Use --require-sources to make that impossible.
 `);
 }
 
@@ -39,6 +52,10 @@ function parseArguments(args) {
 
   let sourceDir = '';
   let lastfmFilePath = null;
+  let youtubeFilePath = null;
+  let requiredSources = [];
+  let flagship = false;
+  let enrichmentGeneratedAt = null;
   let outputPath = defaultOutputPath;
   let genreCatalogOutputPath = defaultGenreCatalogOutputPath;
   let outputWasCustomized = false;
@@ -52,6 +69,20 @@ function parseArguments(args) {
       index += 1;
     } else if (argument === '--lastfm-file') {
       lastfmFilePath = path.resolve(process.cwd(), optionValue(args, index, argument));
+      index += 1;
+    } else if (argument === '--youtube-file') {
+      youtubeFilePath = path.resolve(process.cwd(), optionValue(args, index, argument));
+      index += 1;
+    } else if (argument === '--require-sources') {
+      requiredSources = optionValue(args, index, argument)
+        .split(',')
+        .map(name => name.trim().toLowerCase())
+        .filter(Boolean);
+      index += 1;
+    } else if (argument === '--flagship') {
+      flagship = true;
+    } else if (argument === '--enrichment-generated-at') {
+      enrichmentGeneratedAt = optionValue(args, index, argument);
       index += 1;
     } else if (argument === '--output') {
       outputPath = path.resolve(process.cwd(), optionValue(args, index, argument));
@@ -76,6 +107,15 @@ function parseArguments(args) {
   if (lastfmFilePath && (!fs.existsSync(lastfmFilePath) || !fs.statSync(lastfmFilePath).isFile())) {
     throw new Error(`Last.fm CSV does not exist or is not a file: ${lastfmFilePath}`);
   }
+  if (youtubeFilePath && (!fs.existsSync(youtubeFilePath) || !fs.statSync(youtubeFilePath).isFile())) {
+    throw new Error(`YouTube history does not exist or is not a file: ${youtubeFilePath}`);
+  }
+
+  const KNOWN_SOURCES = new Set(['lastfm', 'spotify', 'youtube']);
+  const unknownRequired = requiredSources.filter(name => !KNOWN_SOURCES.has(name));
+  if (unknownRequired.length) {
+    throw new Error(`--require-sources accepts lastfm, spotify, youtube. Unknown: ${unknownRequired.join(', ')}`);
+  }
 
   if (outputWasCustomized && !catalogOutputWasCustomized) {
     const extension = path.extname(outputPath);
@@ -83,7 +123,17 @@ function parseArguments(args) {
     genreCatalogOutputPath = path.join(path.dirname(outputPath), `${basename}_genre_catalog${extension || '.json'}`);
   }
 
-  return { help: false, sourceDir, lastfmFilePath, outputPath, genreCatalogOutputPath };
+  return {
+    help: false,
+    sourceDir,
+    lastfmFilePath,
+    youtubeFilePath,
+    requiredSources,
+    flagship,
+    enrichmentGeneratedAt,
+    outputPath,
+    genreCatalogOutputPath,
+  };
 }
 
 function readOptionalFile(filePath, label) {
@@ -129,6 +179,50 @@ function findLastfmFile(sourceDir, explicitPath) {
   return candidates[0] ?? null;
 }
 
+/**
+ * Stamps the three fields the parser deliberately cannot know.
+ *
+ * `narrative_scope`, `enrichmentGeneratedAt` and `recentPulseSyncedAt` are not
+ * properties of a parsed upload - they are properties of THIS dataset being the
+ * museum's own archive. The parser must never emit them: a visitor's upload
+ * that declared itself "flagship" would inherit Kevin's editorial profile,
+ * which LivingArtistAtlas gates on exactly that field.
+ *
+ * So they are applied here, behind --flagship, rather than left to a second
+ * command someone can forget. Forgetting produces a dataset that looks correct
+ * and fails three audits later, which is the knowledge:manifest trap again.
+ */
+function applyFlagshipStamps(compiledData, options) {
+  if (!options.flagship) return;
+
+  compiledData.narrative_scope = 'flagship';
+
+  const freshness = compiledData.snapshot_freshness ?? {};
+
+  // Read from the same file audit_public_bundle_privacy.mjs compares against,
+  // so the two cannot drift apart.
+  const pulsePath = path.join(repoRoot, 'src', 'data', 'recent_pulse.json');
+  if (fs.existsSync(pulsePath)) {
+    const pulse = JSON.parse(fs.readFileSync(pulsePath, 'utf8'));
+    if (pulse.synced_at) freshness.recentPulseSyncedAt = pulse.synced_at;
+  }
+
+  // Describes when artist_enrichment.json was authored, which recompiling does
+  // not change - so it is carried forward rather than reset to null.
+  if (options.enrichmentGeneratedAt) {
+    freshness.enrichmentGeneratedAt = options.enrichmentGeneratedAt;
+  } else if (fs.existsSync(defaultOutputPath)) {
+    const previous = JSON.parse(fs.readFileSync(defaultOutputPath, 'utf8'));
+    const carried = previous.snapshot_freshness?.enrichmentGeneratedAt;
+    if (carried) freshness.enrichmentGeneratedAt = carried;
+  }
+
+  compiledData.snapshot_freshness = freshness;
+  writeLine(
+    `[FLAGSHIP] narrative_scope=flagship · enrichment=${freshness.enrichmentGeneratedAt ?? 'null'} · recentPulse=${freshness.recentPulseSyncedAt ?? 'null'}`,
+  );
+}
+
 async function loadParser() {
   const vite = await createServer({
     root: repoRoot,
@@ -152,16 +246,38 @@ async function compileData(options) {
     : null;
   if (!lastfmFilePath) console.warn('[LAST.FM] No root-level CSV was found; continuing with other sources.');
   const spotifyJsonTexts = readSpotifyExports(options.sourceDir);
-  const youtubeText = readOptionalFile(
-    path.join(options.sourceDir, 'historial de videos', 'historial de reproducciones.html'),
-    'YOUTUBE',
-  );
+  // A Takeout does not unpack into the legacy layout - it lands under
+  // "Takeout/YouTube y YouTube Music/historial de videos/" - so --youtube-file
+  // exists for the same reason --lastfm-file does.
+  const youtubePath = options.youtubeFilePath
+    ?? path.join(options.sourceDir, 'historial de videos', 'historial de reproducciones.html');
+  const youtubeText = readOptionalFile(youtubePath, 'YOUTUBE');
+  const youtubeIsJson = Boolean(youtubeText) && path.extname(youtubePath).toLowerCase() === '.json';
 
   const csvTexts = lastfmText ? [lastfmText] : [];
-  const youtubeHtmlTexts = youtubeText ? [youtubeText] : [];
+  // Takeout offers watch-history as HTML or JSON. parseStreamingJsonRows
+  // dispatches Spotify then ListenBrainz then YouTube per row, so the JSON form
+  // rides the same channel as the Spotify exports.
+  const youtubeHtmlTexts = youtubeText && !youtubeIsJson ? [youtubeText] : [];
+  const streamingJsonTexts = youtubeIsJson ? [...spotifyJsonTexts, youtubeText] : spotifyJsonTexts;
 
-  if (!csvTexts.length && !spotifyJsonTexts.length && !youtubeHtmlTexts.length) {
+  if (!csvTexts.length && !streamingJsonTexts.length && !youtubeHtmlTexts.length) {
     throw new Error('No supported export files were found in the selected source directory.');
+  }
+
+  // Missing sources are only warnings above, so a two-source archive compiles
+  // cleanly and the rebuilt `project` string is the only visible tell. This
+  // makes that failure loud instead.
+  const resolved = {
+    lastfm: csvTexts.length > 0,
+    spotify: spotifyJsonTexts.length > 0,
+    youtube: Boolean(youtubeText),
+  };
+  const missing = options.requiredSources.filter(name => !resolved[name]);
+  if (missing.length) {
+    throw new Error(
+      `--require-sources demanded ${options.requiredSources.join(', ')} but these resolved to nothing: ${missing.join(', ')}.`,
+    );
   }
 
   writeLine('\n[COMPILING] Loading the shared parser through Vite...');
@@ -170,7 +286,12 @@ async function compileData(options) {
     throw new Error('The shared parser could not be loaded.');
   }
 
-  const compiledData = parseMusicSources({ csvTexts, spotifyJsonTexts, youtubeHtmlTexts });
+  const compiledData = parseMusicSources({
+    csvTexts,
+    spotifyJsonTexts: streamingJsonTexts,
+    youtubeHtmlTexts,
+  });
+  applyFlagshipStamps(compiledData, options);
   const metrics = compiledData.core_metrics;
   const genreCatalog = compiledData.artist_genre_catalog;
   if (!Array.isArray(genreCatalog)) {

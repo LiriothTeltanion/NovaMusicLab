@@ -1,9 +1,9 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import MobileMuseumRoomDock from './MobileRoomDock';
 import {
   getMuseumRoomProgress,
-  MobileMuseumRoomDock,
   MuseumRoomProgressRail,
   type MuseumRoomItem,
 } from './MuseumRoomNavigator';
@@ -95,16 +95,32 @@ describe('MuseumRoomNavigator', () => {
     await waitFor(() => expect(trigger).toHaveFocus());
   });
 
-  it('closes the mobile map on Escape and restores focus to its trigger', async () => {
-    render(<MobileMuseumRoomDock items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
+  it('treats the mobile map as a modal, traps focus and restores its trigger', async () => {
+    const view = render(<MobileMuseumRoomDock items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
+    view.container.id = 'root';
     const trigger = screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' });
 
     fireEvent.click(trigger);
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
+    const dialog = screen.getByRole('dialog', { name: 'Mapa de salas' });
+    expect(dialog).toHaveAttribute('aria-modal', 'true');
+    expect(view.container.inert).toBe(true);
+    expect(document.body.style.overflow).toBe('hidden');
+    await waitFor(() => expect(within(dialog).getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
+
+    const dialogButtons = within(dialog).getAllByRole('button');
+    dialogButtons[0].focus();
+    fireEvent.keyDown(document, { key: 'Tab', shiftKey: true });
+    expect(dialogButtons.at(-1)).toHaveFocus();
+    dialogButtons.at(-1)?.focus();
+    fireEvent.keyDown(document, { key: 'Tab' });
+    expect(dialogButtons[0]).toHaveFocus();
+
     fireEvent.keyDown(document, { key: 'Escape' });
 
     await waitFor(() => expect(screen.queryByRole('dialog', { name: 'Mapa de salas' })).not.toBeInTheDocument());
     await waitFor(() => expect(trigger).toHaveFocus());
+    expect(view.container.inert).toBe(false);
+    expect(document.body.style.overflow).toBe('');
   });
 
   it('renders idiomatic Hebrew navigation with RTL direction', () => {
@@ -116,6 +132,20 @@ describe('MuseumRoomNavigator', () => {
     expect(progress).toHaveTextContent('פרק 2 / 3');
     expect(screen.getByRole('button', { name: 'החדר הבא: Top Histórico' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'פתיחת מפת החדרים: Eras Musicales' })).toBeInTheDocument();
+  });
+
+  it('keeps the mobile dock and modal map in Hebrew RTL', () => {
+    const { container } = render(
+      <MobileMuseumRoomDock items={rooms} activeId="eras" lang="he" onNavigate={vi.fn()} />,
+    );
+
+    expect(container.querySelector('.museum-mobile-navigation')).toHaveAttribute('dir', 'rtl');
+    const trigger = screen.getByRole('button', { name: 'פתיחת מפת החדרים: Eras Musicales' });
+    fireEvent.click(trigger);
+
+    const dialog = screen.getByRole('dialog', { name: 'מפת החדרים' });
+    expect(dialog.closest('.museum-mobile-map-layer')).toHaveAttribute('dir', 'rtl');
+    expect(screen.getByRole('button', { name: 'החדר הבא: Top Histórico' })).toBeInTheDocument();
   });
 
 });

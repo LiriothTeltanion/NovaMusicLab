@@ -40,7 +40,7 @@ Each stage should remain independently testable. Missing source capabilities mus
 
 ### Persistence
 
-`src/utils/datasetStorage.ts` remains the compatibility path for the active aggregate and now exposes explicit save/load/clear outcomes. `src/db/` defines the wider Dexie **schema v4** model for evidence, imports, profiles, capabilities, insights and artist knowledge while retaining the legacy `datasets` store. Portable exports remain the recovery path. Schema v4 is the database contract used by `1.5.0` — deployed 2026-08-01 — and does not mean “Nova Music Lab v4.” See [Storage and migrations](./STORAGE_AND_MIGRATIONS.md).
+`src/utils/datasetStorage.ts` remains the compatibility path for the active aggregate and now exposes explicit save/load/clear outcomes. `src/db/` defines the wider Dexie **schema v4** model for evidence, imports, profiles, capabilities, insights and artist knowledge while retaining the legacy `datasets` store. Portable exports remain the recovery path. Schema v4 is the database contract used by the `1.6.0` private candidate and by public `1.5.0`; it does not mean “Nova Music Lab v4.” See [Storage and migrations](./STORAGE_AND_MIGRATIONS.md).
 
 ### Curated public data
 

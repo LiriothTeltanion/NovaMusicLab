@@ -35,6 +35,47 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     current: true,
     story: {
       en: {
+        name: 'The Living Archive Finds Its Voice',
+        summary: 'Nova presents Kevin / Lirioth’s listening history more clearly, invites visitors to build a private local museum, and makes artists, genres and obsessions easier to explore without presenting interpretations as diagnoses.',
+        highlights: [
+          'The Spotify, Last.fm and YouTube archive grows to 82,661 plays and 6,593 catalog entries, with every snapshot date shown honestly.',
+          'The Atlas opens all 6,593 exact-name catalog entries through search, A–Z and most-listened views, while human introductions appear before technical evidence.',
+          'Genre views keep Unclassified visible and say how many smaller known families are grouped instead of letting a large “Other” hide the long tail.',
+          'Obsessions gain a cover-led spotlight and visual grid; all 50 bundled obsession moments have exact track-art matches, with a stable generated fallback if remote art cannot load.',
+          'Overview now distinguishes Kevin / Lirioth’s public exhibition from the local “Build my museum” path, and emotional or personality readings are clearly interpretive and non-clinical.',
+        ],
+      },
+      es: {
+        name: 'El archivo vivo encuentra su voz',
+        summary: 'Nova presenta con más claridad la historia musical de Kevin / Lirioth, invita a cada visitante a crear un museo privado local y hace más fácil explorar artistas, géneros y obsesiones sin presentar interpretaciones como diagnósticos.',
+        highlights: [
+          'El archivo de Spotify, Last.fm y YouTube crece a 82.661 escuchas y 6.593 entradas de catálogo, con cada fecha del snapshot mostrada con honestidad.',
+          'El Atlas abre las 6.593 entradas de nombre exacto mediante búsqueda, A–Z y más escuchados, con una introducción humana antes de la evidencia técnica.',
+          'Las vistas de géneros mantienen Sin clasificar visible e indican cuántas familias conocidas menores se agrupan, en vez de esconder la cola larga bajo un “Otros” enorme.',
+          'Obsesiones gana un gran momento visual y una cuadrícula de portadas; sus 50 momentos incluidos tienen coincidencia exacta de arte, con fallback generado si una imagen remota falla.',
+          'Resumen diferencia la exposición pública de Kevin / Lirioth del camino local “Crear mi museo”, y las lecturas emocionales o de personalidad se presentan como interpretativas y no clínicas.',
+        ],
+      },
+      he: {
+        name: 'הארכיון החי מוצא את קולו',
+        summary: 'Nova מציגה בצורה ברורה יותר את היסטוריית ההאזנה של Kevin / Lirioth, מזמינה כל מבקר לבנות מוזיאון פרטי מקומי והופכת אמנים, ז׳אנרים ואובססיות לקלים יותר לחקירה בלי להציג פרשנות כאבחון.',
+        highlights: [
+          'ארכיון Spotify, Last.fm ו־YouTube גדל ל־82,661 השמעות ול־6,593 רשומות קטלוג, וכל תאריך בתמונת המצב מוצג בכנות.',
+          'האטלס פותח את כל 6,593 רשומות השמות המדויקים באמצעות חיפוש, A–Z ולפי מספר השמעות, עם מבוא אנושי לפני הראיות הטכניות.',
+          'תצוגות הז׳אנרים משאירות את הקטגוריה ללא סיווג גלויה ומציינות כמה משפחות מוכרות קטנות קובצו, במקום להסתיר את הזנב הארוך תחת “אחר” גדול.',
+          'חדר האובססיות מקבל רגע חזותי מרכזי ורשת עטיפות; לכל 50 הרגעים הכלולים יש התאמת עטיפה מדויקת, עם גיבוי חזותי יציב אם תמונה מרוחקת נכשלת.',
+          'מסך הסקירה מבדיל בין התערוכה הציבורית של Kevin / Lirioth לבין המסלול המקומי “בניית המוזיאון שלי”, ומציג קריאות רגשיות או אישיות כפרשניות ולא קליניות.',
+        ],
+      },
+    },
+  },
+  {
+    version: '1.5.0',
+    date: '2026-08-01',
+    status: 'deployed',
+    current: false,
+    story: {
+      en: {
         name: 'The Living Archive Gets a Face',
         summary: 'Nova makes its historical snapshot easier to trust and explore, with dependable artist portraits, clearer genre evidence and safer local imports.',
         highlights: [
@@ -67,6 +108,7 @@ export const NOVA_RELEASE_HISTORY: readonly NovaReleaseStory[] = [
     version: '1.4.0',
     date: '2026-07-29',
     status: 'deployed',
+    secondaryStatus: 'superseded',
     current: false,
     story: {
       en: {

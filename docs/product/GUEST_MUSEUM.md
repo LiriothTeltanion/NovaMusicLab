@@ -38,6 +38,14 @@ public artist catalog lazily and compares it with the visitor's archive-wide
 catalog. Older datasets without a complete catalog are clearly marked as a
 partial comparison.
 
+The resulting museum reuses the same room structure wherever the imported
+source can support it: artists, eras, genres, repetition, cultural context and
+derived summaries. A provider-specific field is never invented merely to make
+the visitor museum look as complete as Kevin's flagship. Emotional and
+personality language is presented as transparent creative interpretation of
+available listening patterns, not as a psychological diagnosis or clinical
+assessment.
+
 ## Privacy boundary
 
 Always local:

@@ -12,7 +12,8 @@ export default defineConfig({
     // The full museum suite is memory-heavy (large multilingual/data fixtures).
     // Bounding parallel forks prevents intermittent worker exits on Windows and
     // CI while preserving file isolation and running the complete test set.
-    maxWorkers: 4,
+    maxWorkers: 1,
+    fileParallelism: false,
   },
   server: {
     port: process.env.PORT ? Number(process.env.PORT) : 5173,

@@ -70,6 +70,9 @@ import {
   MuseumRoomTransition,
   type MuseumRoomItem,
 } from './components/MuseumRoomNavigator';
+// The gate is absent from the hero and imports the real dock only below md, so
+// desktop visitors never download the mobile navigation implementation.
+const MobileNavigationGate = React.lazy(() => import('./components/MobileNavigationGate'));
 import ExpeditionConsole from './components/shell/ExpeditionConsole';
 import {
   MUSEUM_HUB_ENTRY_ROOMS,
@@ -862,9 +865,15 @@ function AppInner({ boot }: { boot: AppBoot }) {
     isChapter: !['upload', 'share', 'audio'].includes(item.id),
   })), [menuItems, navGroups]);
 
+  // Numbered against every room, not the active hub's slice. Hub-scoped
+  // numbering made the Dashboard - where the hero's primary button lands - read
+  // "Chapter 01" over a footer saying "01 / 1", because the Home hub holds only
+  // dashboard and share and share is not a chapter. The console rail beside it
+  // was already numbering the same room out of the global list, so the landing
+  // screen showed two different answers to "where am I". One list decides.
   const activeRoomProgress = React.useMemo(
-    () => getMuseumRoomProgress(roomNavigationItems, activeTab),
-    [activeTab, roomNavigationItems],
+    () => getMuseumRoomProgress(allRoomNavigationItems, activeTab),
+    [activeTab, allRoomNavigationItems],
   );
 
   const commandRoomItems = React.useMemo(() => menuItems.map(item => ({
@@ -1855,6 +1864,23 @@ function AppInner({ boot }: { boot: AppBoot }) {
           </main>
 
         </div>
+      )}
+
+      {/* Room-to-room navigation on a phone. The dock was written, styled and
+          tested, the room shell reserved 7rem at the bottom for it and the
+          restore toast positioned itself above it - but nothing ever rendered
+          it, so a phone visitor had 24 rooms, no sidebar (hidden under 768px),
+          no prev/next (hidden under 900px) and no dock. Mounted after <main>
+          so keyboard order reaches it once the room content is done. */}
+      {activeTab !== 'hero' && (
+        <Suspense fallback={null}>
+          <MobileNavigationGate
+            items={allRoomNavigationItems}
+            activeId={activeTab}
+            lang={lang}
+            onNavigate={navigateFromCommand}
+          />
+        </Suspense>
       )}
 
       {/* ── Restore toast ── */}

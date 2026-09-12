@@ -14,6 +14,7 @@ Current high-value references:
 - [Experience model](./product/EXPERIENCE_MODEL.md)
 - [Guest Museum](./product/GUEST_MUSEUM.md)
 - [Supported data sources](./product/DATA_SOURCES.md)
+- [Private Last.fm history export](./product/LASTFM_LOCAL_EXPORT.md)
 - [MusicBee library snapshot](./product/MUSICBEE_LIBRARY_SNAPSHOT.md)
 - [Architecture overview](./architecture/OVERVIEW.md)
 - [Social, connectors and Audio Lab](./architecture/SOCIAL_CONNECTORS_AND_AUDIO.md)

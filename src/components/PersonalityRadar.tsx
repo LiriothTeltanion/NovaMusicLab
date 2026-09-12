@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from 'recharts';
-import { AlertTriangle, ShieldCheck, Heart } from 'lucide-react';
+import { Compass, ScanSearch, Sparkles } from 'lucide-react';
 import { MusicDnaData } from '../types';
 import { useApp } from '../context/AppContext';
+import InterpretiveBoundaryNotice from './InterpretiveBoundaryNotice';
 import SectionNarrative from './SectionNarrative';
 import { useChartAnimation } from './chartKit';
-import { localizeTraitAxis } from '../utils/localizedDatasetText';
 import { buildArchetypes, buildPersonalityMatrix } from '../utils/identityEngine';
 import { directionFor } from '../utils/i18n';
 
@@ -21,25 +21,26 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
   const matrix = useMemo(() => buildPersonalityMatrix(data.top_artists, lang), [data.top_artists, lang]);
   type PersonalityKey = keyof typeof matrix;
   const [selectedKey, setSelectedKey] = useState<PersonalityKey>('sensibilidad_emocional');
+  const traitLabels = t.personalityRadar.traitLabels;
+  const axisLabels = t.personalityRadar.axisLabels;
 
   const chartData: Array<{ subject: string; value: number; key: PersonalityKey }> = [
-    { subject: localizeTraitAxis('sensibilidad_emocional', lang), value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
-    { subject: localizeTraitAxis('nostalgia', lang), value: matrix.nostalgia.score, key: 'nostalgia' },
-    { subject: localizeTraitAxis('energia', lang), value: matrix.energia.score, key: 'energia' },
-    { subject: localizeTraitAxis('oscuridad_estetica', lang), value: matrix.oscuridad_estetica.score, key: 'oscuridad_estetica' },
-    { subject: localizeTraitAxis('creatividad', lang), value: matrix.creatividad.score, key: 'creatividad' },
-    { subject: localizeTraitAxis('rebeldia', lang), value: matrix.rebeldia.score, key: 'rebeldia' },
-    { subject: localizeTraitAxis('futurismo', lang), value: matrix.futurismo.score, key: 'futurismo' }
+    { subject: axisLabels.sensibilidad_emocional, value: matrix.sensibilidad_emocional.score, key: 'sensibilidad_emocional' },
+    { subject: axisLabels.nostalgia, value: matrix.nostalgia.score, key: 'nostalgia' },
+    { subject: axisLabels.energia, value: matrix.energia.score, key: 'energia' },
+    { subject: axisLabels.oscuridad_estetica, value: matrix.oscuridad_estetica.score, key: 'oscuridad_estetica' },
+    { subject: axisLabels.creatividad, value: matrix.creatividad.score, key: 'creatividad' },
+    { subject: axisLabels.rebeldia, value: matrix.rebeldia.score, key: 'rebeldia' },
+    { subject: axisLabels.futurismo, value: matrix.futurismo.score, key: 'futurismo' }
   ];
 
   const currentTrait = matrix[selectedKey];
   const archetypes = useMemo(() => buildArchetypes(data.top_artists, lang), [data.top_artists, lang]);
 
-  const traitLabels = t.personalityRadar.traitLabels;
-
   return (
     <div className="animate-fade-in space-y-8" dir={directionFor(lang)}>
       <SectionNarrative content={t.deepNarratives.personality} accent="c3" />
+      <InterpretiveBoundaryNotice lang={lang} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Side: Radar Chart */}
@@ -68,6 +69,9 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
               </RadarChart>
             </ResponsiveContainer>
           </div>
+          <p className="type-caption type-muted mt-3 max-w-md text-center">
+            {t.personalityRadar.scaleNote}
+          </p>
 
           {/* Quick buttons to select axis */}
           <div className="flex flex-wrap justify-center gap-2 mt-4">
@@ -128,7 +132,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
                 style={{ borderColor: 'color-mix(in srgb, #22c55e 26%, transparent)', backgroundColor: 'color-mix(in srgb, #22c55e 5%, transparent)' }}>
                 <div className="type-label flex items-center gap-2"
                   style={{ color: 'color-mix(in srgb, #22c55e 58%, var(--fg))' }}>
-                  <ShieldCheck className="w-4 h-4" />
+                  <Sparkles className="w-4 h-4" />
                   <span>{t.personalityRadar.strengthLabel}</span>
                 </div>
                 <p className="type-caption type-muted">{currentTrait.positive}</p>
@@ -138,7 +142,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
                 style={{ borderColor: 'color-mix(in srgb, #ef4444 26%, transparent)', backgroundColor: 'color-mix(in srgb, #ef4444 5%, transparent)' }}>
                 <div className="type-label flex items-center gap-2"
                   style={{ color: 'color-mix(in srgb, #ef4444 58%, var(--fg))' }}>
-                  <AlertTriangle className="w-4 h-4 animate-pulse" />
+                  <ScanSearch className="w-4 h-4" />
                   <span>{t.personalityRadar.challengeLabel}</span>
                 </div>
                 <p className="type-caption type-muted">{currentTrait.shadow}</p>
@@ -148,7 +152,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
             {/* Growth Tip */}
             <div className="flex items-start gap-3 rounded-2xl border p-4"
               style={{ borderColor: `${tc.c1}30`, backgroundColor: `${tc.c1}0d` }}>
-              <Heart className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c1 }} />
+              <Compass className="w-5 h-5 shrink-0 mt-0.5" style={{ color: tc.c1 }} />
               <div className="space-y-1">
                 <span className="type-label type-strong">
                 {t.personalityRadar.tipLabel}</span>

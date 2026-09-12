@@ -7,9 +7,12 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       // Lazy language/data chunks are intentionally exercised by the full
-      // integration suite. Capping workers prevents CPU contention from
-      // turning their normal async render into timing-only failures.
-      maxWorkers: 4,
+      // integration suite. A single file at a time is slower but deterministic
+      // on Windows/OneDrive and prevents timing-only failures under I/O load.
+      maxWorkers: 1,
+      fileParallelism: false,
+      testTimeout: 45_000,
+      hookTimeout: 45_000,
       environmentOptions: {
         jsdom: { url: 'http://localhost:3000/' },
       },

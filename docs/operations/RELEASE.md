@@ -9,7 +9,8 @@ Current version states:
 - `v1.3.0` — private checkpoint 2026-07-29; never published or deployed;
   superseded by `v1.4.0`.
 - `v1.4.0` — deployed 2026-07-29; superseded 2026-08-01.
-- `v1.5.0` — deployed 2026-08-01; current public GitHub Pages version.
+- `v1.5.0` — deployed 2026-08-01; superseded 2026-08-09.
+- `v1.6.0` — deployed 2026-08-09; current public GitHub Pages version.
 
 ## Branch model
 
@@ -171,6 +172,54 @@ Known release boundaries: no DAW, FL Studio, MIDI, Tauri, desktop package,
 backend, accounts, OAuth or automatic connector is added. No catalog aliases
 are destructively merged. The release costs 0 ILS in new services.
 
+## `v1.6.0` acceptance record — deployed 2026-08-09
+
+Release title:
+
+> Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
+
+The release refreshes the historical archive through 2026-08-06 to 82,661
+plays, 20,908 tracks and 6,593 exact artist-name catalog entries. It was
+generated on 2026-08-07 in `Asia/Jerusalem`; enrichment remains dated
+2026-07-29 and Recent Pulse remains dated 2026-07-02. It is not a live account
+connection.
+
+This release also makes the product contract understandable before a
+visitor reaches the technical detail:
+
+- Overview names Kevin Cusnir / Lirioth Teltanion's real public exhibition and
+  offers a separate local **Build my museum** path for supported history
+  exports, not MP3 uploads.
+- The Atlas navigates all 6,593 exact-name catalog entries by listens, A–Z,
+  letter or search; readable introductions precede detailed evidence.
+- Genre charts preserve Unclassified as its own row and describe grouped
+  smaller classified families instead of presenting `Other` as a genre.
+- Obsessions uses a cover-led spotlight and visual loop grid. Its 50 bundled
+  moments all have exact track-art mappings, while remote failures retain a
+  deterministic visual fallback.
+- Emotional and personality results are explicitly interpretive and
+  non-clinical; they are not diagnoses.
+
+- [x] The exact integrated source passes the complete local verification,
+  privacy and dependency gates on Node `22.13.0`, including all expected
+  Vitest tests (803 pass plus 1 intentional private-fixture skip) and 18/18
+  Playwright journeys.
+- [x] Final v1.6.0 release media is recaptured from the frozen integrated
+  source, contains nine source-fingerprinted assets, passes the release-media
+  audit and is reviewed visually in desktop/mobile and EN/ES/HE.
+- [x] Pull request
+  [#38](https://github.com/LiriothTeltanion/NovaMusicLab/pull/38) passes the
+  protected CI, CodeQL and Dependency Review gates and merges the reviewed
+  source.
+- [x] Kevin approves the exact merge candidate.
+- [x] GitHub Pages workflow
+  [`31319814024`](https://github.com/LiriothTeltanion/NovaMusicLab/actions/runs/31319814024)
+  serves matching v1.6.0 build metadata, deployed status, date and release
+  commit `e0d49d2940343fe2ebd7cfb4eee4cbd4d8d39cae` in both live identity files.
+- [x] Annotated tag `v1.6.0` resolves to that commit and the
+  [GitHub Release](https://github.com/LiriothTeltanion/NovaMusicLab/releases/tag/v1.6.0)
+  is published.
+
 ## Release metadata
 
 ### `v1.0.0` metadata — published 2026-07-16; superseded
@@ -231,6 +280,21 @@ Release summary:
 > bounded local imports, and polished mobile, keyboard and Hebrew RTL journeys.
 > The flagship remains an honest historical snapshot; no account or live sync
 > is implied.
+
+### `v1.6.0` metadata — deployed 2026-08-09
+
+Release title:
+
+> Nova Music Lab v1.6.0 — The Living Archive Finds Its Voice
+
+Release summary:
+
+> A refreshed living archive whose evidence speaks more clearly: the complete
+> Spotify, Last.fm and YouTube history through August 6, a first screen that
+> explains Kevin / Lirioth's exhibition and the private build-your-own path, a
+> complete A–Z/listening Atlas, human-first artist stories, transparent genre
+> long-tail grouping, visual Obsessions and clearly non-clinical interpretive
+> readings. Public facts remain synchronized with the reviewed data contract.
 
 ## Rollback
 

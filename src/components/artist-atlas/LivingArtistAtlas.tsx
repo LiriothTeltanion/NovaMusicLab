@@ -24,8 +24,15 @@ import {
   buildEmotionalMapEngineProfile,
   EMOTIONAL_MOOD_TAXONOMY,
 } from '../../engines/emotionalEngine';
+import { loadDefaultGenreCatalog } from '../../data/defaultGenreCatalog';
 import { useExperienceDepth } from '../../context/ExperienceContext';
-import type { MusicDnaData, TopAlbum, TopTrack } from '../../types';
+import type {
+  ArtistGenreCatalogEntry,
+  MusicDnaData,
+  TopAlbum,
+  TopArtist,
+  TopTrack,
+} from '../../types';
 import { normalizeGenre } from '../../utils/analytics';
 import {
   getArchiveNeighbors,
@@ -69,10 +76,36 @@ function loadFlagshipArtistEnrichment() {
 
 interface LivingArtistAtlasProps {
   data: MusicDnaData;
+  loadCatalog?: () => Promise<ArtistGenreCatalogEntry[]>;
 }
 
 function sameArtist(left: string, right: string) {
   return normalizeCatalogName(canonicalArtistName(left)) === normalizeCatalogName(canonicalArtistName(right));
+}
+
+function sameArchiveArtist(left: string, right: string) {
+  return normalizeCatalogName(left) === normalizeCatalogName(right);
+}
+
+interface AtlasArtist extends TopArtist {
+  artistKey: string;
+  archiveRank: number;
+}
+
+type ArtistSort = 'listens' | 'alphabetical';
+
+const DIRECTORY_INITIAL_SIZE = 12;
+const DIRECTORY_PAGE_SIZE = 24;
+const LATIN_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function artistInitial(name: string) {
+  const initial = name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .charAt(0)
+    .toUpperCase();
+  return /^[A-Z]$/.test(initial) ? initial : '#';
 }
 
 function releaseYear(date?: string) {
@@ -112,7 +145,10 @@ function AlbumCard({ album, rank, playsLabel, locale }: { album: TopAlbum; rank:
   );
 }
 
-export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
+export default function LivingArtistAtlas({
+  data,
+  loadCatalog = loadDefaultGenreCatalog,
+}: LivingArtistAtlasProps) {
   const {
     lang,
     tc,
@@ -128,6 +164,15 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
   ));
   const [mediaOpenForArtist, setMediaOpenForArtist] = useState<string | null>(null);
   const [artistQuery, setArtistQuery] = useState('');
+  const [artistSort, setArtistSort] = useState<ArtistSort>('listens');
+  const [activeInitial, setActiveInitial] = useState('all');
+  const [visibleArtistCount, setVisibleArtistCount] = useState(DIRECTORY_INITIAL_SIZE);
+  const [loadedCatalog, setLoadedCatalog] = useState<ArtistGenreCatalogEntry[]>(
+    () => data.artist_genre_catalog ?? [],
+  );
+  const [catalogState, setCatalogState] = useState<'idle' | 'loading' | 'ready' | 'error'>(
+    data.artist_genre_catalog?.length ? 'ready' : 'idle',
+  );
   const [editorialResult, setEditorialResult] = useState<{
     artistName: string;
     profile: ArtistEnrichment | undefined;
@@ -138,18 +183,86 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
   const locale = localeFor(lang);
 
   useEffect(() => {
-    if (!data.top_artists.some(artist => sameArtist(artist.name, selectedName))) {
-      const fallbackName = data.top_artists[0]?.name ?? '';
+    const embeddedCatalog = data.artist_genre_catalog;
+    if (embeddedCatalog?.length) {
+      setLoadedCatalog(embeddedCatalog);
+      setCatalogState('ready');
+      return undefined;
+    }
+
+    if (data.narrative_scope !== 'flagship') {
+      setLoadedCatalog([]);
+      setCatalogState('ready');
+      return undefined;
+    }
+
+    let active = true;
+    setCatalogState('loading');
+    void loadCatalog()
+      .then(catalog => {
+        if (!active) return;
+        setLoadedCatalog(catalog);
+        setCatalogState('ready');
+      })
+      .catch(() => {
+        if (!active) return;
+        setLoadedCatalog([]);
+        setCatalogState('error');
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [data.artist_genre_catalog, data.narrative_scope, loadCatalog]);
+
+  const archiveArtists = useMemo<AtlasArtist[]>(() => {
+    const catalog = data.artist_genre_catalog?.length
+      ? data.artist_genre_catalog
+      : loadedCatalog;
+
+    if (!catalog.length) {
+      return [...data.top_artists]
+        .sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name, locale))
+        .map((artist, index) => ({
+          ...artist,
+          artistKey: artist.name,
+          archiveRank: index + 1,
+        }));
+    }
+
+    const topArtistsByExactName = new Map(
+      data.top_artists.map(artist => [normalizeCatalogName(artist.name), artist] as const),
+    );
+
+    return [...catalog]
+      .sort((left, right) => right.plays - left.plays || left.name.localeCompare(right.name, locale))
+      .map((entry, index) => {
+        const featuredArtist = topArtistsByExactName.get(normalizeCatalogName(entry.name));
+        return {
+          name: entry.name,
+          plays: entry.plays,
+          genre: featuredArtist?.genre ?? entry.automaticFamily,
+          country: featuredArtist?.country ?? entry.country,
+          artistKey: entry.artistKey,
+          archiveRank: index + 1,
+        };
+      });
+  }, [data.artist_genre_catalog, data.top_artists, loadedCatalog, locale]);
+
+  useEffect(() => {
+    if (catalogState === 'loading') return;
+    if (!archiveArtists.some(artist => sameArchiveArtist(artist.name, selectedName))) {
+      const fallbackName = archiveArtists[0]?.name ?? '';
       setSelectedName(fallbackName);
       setSelectedArtistName(fallbackName);
     }
-  }, [data.top_artists, selectedName, setSelectedArtistName]);
+  }, [archiveArtists, catalogState, selectedName, setSelectedArtistName]);
 
   useEffect(() => {
-    if (!selectedArtistName || sameArtist(selectedArtistName, selectedName)) return;
-    const requestedArtist = data.top_artists.find(artist => sameArtist(artist.name, selectedArtistName));
+    if (!selectedArtistName || sameArchiveArtist(selectedArtistName, selectedName)) return;
+    const requestedArtist = archiveArtists.find(artist => sameArchiveArtist(artist.name, selectedArtistName));
     if (requestedArtist) setSelectedName(requestedArtist.name);
-  }, [data.top_artists, selectedArtistName, selectedName]);
+  }, [archiveArtists, selectedArtistName, selectedName]);
 
   const selectArtist = useCallback((artistName: string) => {
     setSelectedName(artistName);
@@ -160,15 +273,29 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
     setArtistQuery('');
   }, [selectedName]);
 
-  const selectedIndex = Math.max(0, data.top_artists.findIndex(artist => sameArtist(artist.name, selectedName)));
-  const selectedArtist = data.top_artists[selectedIndex];
-  const featuredArtists = data.top_artists.slice(0, 10);
+  useEffect(() => {
+    setVisibleArtistCount(DIRECTORY_INITIAL_SIZE);
+  }, [activeInitial, artistQuery, artistSort]);
+
+  const selectedIndex = Math.max(0, archiveArtists.findIndex(artist => sameArchiveArtist(artist.name, selectedName)));
+  const selectedArtist = archiveArtists[selectedIndex];
+  const featuredArtists = archiveArtists.slice(0, 10);
+  const availableInitials = useMemo(
+    () => new Set(archiveArtists.map(artist => artistInitial(artist.name))),
+    [archiveArtists],
+  );
   const matchingArtists = useMemo(() => {
     const query = normalizeCatalogName(artistQuery);
-    return query
-      ? data.top_artists.filter(artist => normalizeCatalogName(artist.name).includes(query))
-      : data.top_artists;
-  }, [artistQuery, data.top_artists]);
+    const filtered = archiveArtists.filter(artist => (
+      (!query || normalizeCatalogName(artist.name).includes(query))
+      && (activeInitial === 'all' || artistInitial(artist.name) === activeInitial)
+    ));
+
+    return artistSort === 'alphabetical'
+      ? [...filtered].sort((left, right) => left.name.localeCompare(right.name, locale, { sensitivity: 'base' }))
+      : filtered;
+  }, [activeInitial, archiveArtists, artistQuery, artistSort, locale]);
+  const visibleArtists = matchingArtists.slice(0, visibleArtistCount);
 
   const fallbackMood = useMemo(
     () => buildEmotionalMapEngineProfile(data.top_artists, 24).dominantMood.key,
@@ -292,27 +419,15 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
               id="artist-atlas-search"
               type="search"
               value={artistQuery}
-              onChange={event => setArtistQuery(event.target.value)}
+              onChange={event => {
+                setArtistQuery(event.target.value);
+                setActiveInitial('all');
+              }}
               placeholder={copy.chooseArtist}
               autoComplete="off"
+              aria-controls="artist-atlas-directory"
             />
           </span>
-          {artistQuery ? (
-            <div className="artist-atlas__search-results">
-              {matchingArtists.slice(0, 8).map(artist => (
-                <button
-                  key={artist.name}
-                  type="button"
-                  onClick={() => selectArtist(artist.name)}
-                >
-                  <ArtistAvatar name={artist.name} size={28} tooltip={false} decorative />
-                  <span><bdi dir="auto">{artist.name}</bdi></span>
-                  <small className="nova-number-ltr" dir="ltr">#{data.top_artists.indexOf(artist) + 1}</small>
-                </button>
-              ))}
-              {matchingArtists.length === 0 ? <p>{copy.unavailable}</p> : null}
-            </div>
-          ) : null}
         </div>
       </div>
 
@@ -342,12 +457,109 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
         </ul>
       </div>
 
+      <section id="artist-atlas-directory" className="artist-atlas__directory" aria-labelledby="artist-atlas-directory-title">
+        <div className="artist-atlas__directory-heading">
+          <div>
+            <p className="artist-atlas__eyebrow" style={{ color: tc.c2 }}>{copy.directoryEyebrow}</p>
+            <h3 id="artist-atlas-directory-title">{copy.directoryTitle}</h3>
+            <p>{copy.directoryBody}</p>
+          </div>
+          <div className="artist-atlas__directory-sort" role="group" aria-label={copy.sortArtists}>
+            <button
+              type="button"
+              aria-pressed={artistSort === 'listens'}
+              onClick={() => setArtistSort('listens')}
+            >
+              {copy.sortByListens}
+            </button>
+            <button
+              type="button"
+              aria-pressed={artistSort === 'alphabetical'}
+              onClick={() => setArtistSort('alphabetical')}
+            >
+              {copy.sortAZ}
+            </button>
+          </div>
+        </div>
+
+        <div className="artist-atlas__alphabet" aria-label={copy.filterByLetter}>
+          <button
+            type="button"
+            aria-pressed={activeInitial === 'all'}
+            onClick={() => setActiveInitial('all')}
+          >
+            {copy.allArtists}
+          </button>
+          {[...LATIN_ALPHABET, '#'].map(initial => (
+            <button
+              key={initial}
+              type="button"
+              aria-pressed={activeInitial === initial}
+              disabled={!availableInitials.has(initial)}
+              onClick={() => setActiveInitial(initial)}
+            >
+              <bdi dir="ltr">{initial}</bdi>
+            </button>
+          ))}
+        </div>
+
+        <div className="artist-atlas__directory-meta" data-testid="artist-directory-meta" aria-live="polite">
+          <span>{copy.showingArtists(visibleArtists.length, matchingArtists.length)}</span>
+          {catalogState === 'loading' ? <small>{copy.catalogLoading}</small> : null}
+          {catalogState === 'error' ? <small>{copy.catalogUnavailable}</small> : null}
+        </div>
+
+        {visibleArtists.length ? (
+          <div className="artist-atlas__directory-grid" data-testid="artist-directory">
+            {visibleArtists.map((artist, index) => {
+              const active = sameArchiveArtist(artist.name, selectedArtist.name);
+              return (
+                <button
+                  key={artist.artistKey}
+                  type="button"
+                  data-testid="artist-directory-item"
+                  aria-pressed={active}
+                  onClick={() => selectArtist(artist.name)}
+                >
+                  <ArtistAvatar
+                    name={artist.name}
+                    size={42}
+                    tooltip={false}
+                    priority={index < 6}
+                    decorative
+                  />
+                  <span>
+                    <strong><bdi dir="auto">{artist.name}</bdi></strong>
+                    <small className="nova-number-ltr" dir="ltr">
+                      #{artist.archiveRank} · {artist.plays.toLocaleString(locale)}
+                    </small>
+                  </span>
+                  <ChevronRight className="nova-mirror-rtl h-4 w-4" aria-hidden="true" />
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          <p className="artist-atlas__directory-empty">{copy.noArtistResults}</p>
+        )}
+
+        {visibleArtists.length < matchingArtists.length ? (
+          <button
+            type="button"
+            className="artist-atlas__directory-more"
+            onClick={() => setVisibleArtistCount(current => current + DIRECTORY_PAGE_SIZE)}
+          >
+            {copy.showMoreArtists}
+          </button>
+        ) : null}
+      </section>
+
       <article className="artist-atlas__hero nova-on-dark">
         <div className="artist-atlas__hero-copy">
           <div className="artist-atlas__hero-badges">
             <span style={{ color: tc.c1, borderColor: `${tc.c1}45`, backgroundColor: `${tc.c1}15` }}>
               <Radio className="h-3.5 w-3.5" aria-hidden="true" />
-              {copy.rank(selectedIndex + 1)}
+              {copy.rank(selectedArtist.archiveRank)}
             </span>
             <span>
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
@@ -380,7 +592,7 @@ export default function LivingArtistAtlas({ data }: LivingArtistAtlasProps) {
               {copy.artistIntro(
                 selectedArtist.name,
                 localizedGenre,
-                selectedIndex + 1,
+                selectedArtist.archiveRank,
                 selectedArtist.plays.toLocaleString(locale),
                 knownPlace,
               )}

@@ -3,7 +3,7 @@
   "provider": "deezer",
   "sourceUrl": "https://developers.deezer.com/api",
   "note": "Coarse second-source readings. MusicBrainz and artist_meta.json both win over this.",
-  "artistCount": 3519,
+  "artistCount": 3665,
   "artists": {
     "30": {
       "name": "30",
@@ -181,6 +181,17 @@
         }
       ]
     },
+    "12\" ninjazz": {
+      "name": "12\" Ninjazz",
+      "deezerArtistId": 69931972,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 4
+        }
+      ]
+    },
     "1hxsx": {
       "name": "1HXSX",
       "deezerArtistId": 204133707,
@@ -211,6 +222,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 4
+        }
+      ]
+    },
+    "2hollis": {
+      "name": "2hollis",
+      "deezerArtistId": 110333102,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 9
         }
       ]
     },
@@ -365,6 +387,28 @@
           "id": 106,
           "name": "Electro",
           "albums": 9
+        }
+      ]
+    },
+    "808 beezy": {
+      "name": "808 BEEZY",
+      "deezerArtistId": 13885735,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 1
+        }
+      ]
+    },
+    "808dash!": {
+      "name": "808dash!",
+      "deezerArtistId": 117238502,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -588,6 +632,17 @@
         }
       ]
     },
+    "aaron hibell": {
+      "name": "Aaron Hibell",
+      "deezerArtistId": 14383113,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 9
+        }
+      ]
+    },
     "aaron martin": {
       "name": "Aaron Martin",
       "deezerArtistId": 1026813,
@@ -618,6 +673,17 @@
           "id": 165,
           "name": "R&B",
           "albums": 9
+        }
+      ]
+    },
+    "aaron smith": {
+      "name": "Aaron Smith",
+      "deezerArtistId": 7887,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 7
         }
       ]
     },
@@ -706,6 +772,17 @@
           "id": 173,
           "name": "Films/Games",
           "albums": 8
+        }
+      ]
+    },
+    "able heart": {
+      "name": "Able Heart",
+      "deezerArtistId": 13944511,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 5
         }
       ]
     },
@@ -874,6 +951,17 @@
         }
       ]
     },
+    "addison inniss": {
+      "name": "Addison Inniss",
+      "deezerArtistId": 155891122,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 11
+        }
+      ]
+    },
     "adelitas way": {
       "name": "Adelitas Way",
       "deezerArtistId": 214919,
@@ -904,6 +992,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 11
+        }
+      ]
+    },
+    "adi goldstein": {
+      "name": "Adi Goldstein",
+      "deezerArtistId": 3271061,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 3
         }
       ]
     },
@@ -1237,6 +1336,17 @@
         }
       ]
     },
+    "aj mcqueen": {
+      "name": "AJ McQueen",
+      "deezerArtistId": 5432520,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "aj vitanza": {
       "name": "AJ Vitanza",
       "deezerArtistId": 175633437,
@@ -1245,6 +1355,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 11
+        }
+      ]
+    },
+    "akassia": {
+      "name": "Akassia",
+      "deezerArtistId": 81824882,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 8
         }
       ]
     },
@@ -1897,6 +2018,17 @@
         }
       ]
     },
+    "amelie": {
+      "name": "Amelie",
+      "deezerArtistId": 10301448,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 3
+        }
+      ]
+    },
     "american avenue": {
       "name": "American Avenue",
       "deezerArtistId": 98983,
@@ -1992,6 +2124,17 @@
         {
           "id": 152,
           "name": "Rock",
+          "albums": 11
+        }
+      ]
+    },
+    "amit trivedi": {
+      "name": "Amit Trivedi",
+      "deezerArtistId": 450023,
+      "genres": [
+        {
+          "id": 173,
+          "name": "Films/Games",
           "albums": 11
         }
       ]
@@ -2114,6 +2257,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 3
+        }
+      ]
+    },
+    "andrea bocelli": {
+      "name": "Andrea Bocelli",
+      "deezerArtistId": 3201,
+      "genres": [
+        {
+          "id": 98,
+          "name": "Classical",
+          "albums": 8
         }
       ]
     },
@@ -2411,6 +2565,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 12
+        }
+      ]
+    },
+    "anton belov": {
+      "name": "Anton Belov",
+      "deezerArtistId": 5352710,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 9
         }
       ]
     },
@@ -3525,6 +3690,17 @@
         }
       ]
     },
+    "azteck": {
+      "name": "Azteck",
+      "deezerArtistId": 85582122,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 7
+        }
+      ]
+    },
     "azul violeta": {
       "name": "Azul Violeta",
       "deezerArtistId": 242560,
@@ -3899,6 +4075,17 @@
         }
       ]
     },
+    "bbno$": {
+      "name": "bbno$",
+      "deezerArtistId": 11136812,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 10
+        }
+      ]
+    },
     "bccf": {
       "name": "BCCF",
       "deezerArtistId": 15166393,
@@ -3918,6 +4105,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 5
+        }
+      ]
+    },
+    "bearytunes": {
+      "name": "BearyTunes",
+      "deezerArtistId": 391286171,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 11
         }
       ]
     },
@@ -4196,6 +4394,17 @@
         }
       ]
     },
+    "benny blanco": {
+      "name": "benny blanco",
+      "deezerArtistId": 1547598,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 7
+        }
+      ]
+    },
     "benny mayne": {
       "name": "Benny Mayne",
       "deezerArtistId": 13950783,
@@ -4416,6 +4625,17 @@
         }
       ]
     },
+    "bia": {
+      "name": "BIA",
+      "deezerArtistId": 67613892,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "bicep": {
       "name": "BICEP",
       "deezerArtistId": 369056,
@@ -4592,6 +4812,17 @@
         }
       ]
     },
+    "bizarrap": {
+      "name": "Bizarrap",
+      "deezerArtistId": 12487862,
+      "genres": [
+        {
+          "id": 197,
+          "name": "Latin Music",
+          "albums": 8
+        }
+      ]
+    },
     "black": {
       "name": "Black",
       "deezerArtistId": 67825992,
@@ -4724,6 +4955,17 @@
         }
       ]
     },
+    "blank b": {
+      "name": "Blank B",
+      "deezerArtistId": 50585622,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 2
+        }
+      ]
+    },
     "blasfemia": {
       "name": "Blasfemia",
       "deezerArtistId": 5922199,
@@ -4820,6 +5062,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 3
+        }
+      ]
+    },
+    "bll4x": {
+      "name": "BLL4X",
+      "deezerArtistId": 9079500,
+      "genres": [
+        {
+          "id": 75,
+          "name": "Brazilian Music",
+          "albums": 8
         }
       ]
     },
@@ -5516,6 +5769,17 @@
         }
       ]
     },
+    "brockhampton": {
+      "name": "BROCKHAMPTON",
+      "deezerArtistId": 7406332,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
+        }
+      ]
+    },
     "brodinski": {
       "name": "Brodinski",
       "deezerArtistId": 166717,
@@ -5637,6 +5901,17 @@
         }
       ]
     },
+    "bryan v": {
+      "name": "Bryan V",
+      "deezerArtistId": 5248481,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 10
+        }
+      ]
+    },
     "bryce fox": {
       "name": "Bryce Fox",
       "deezerArtistId": 10044286,
@@ -5700,6 +5975,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 11
+        }
+      ]
+    },
+    "bulin 47": {
+      "name": "Bulin 47",
+      "deezerArtistId": 11020536,
+      "genres": [
+        {
+          "id": 197,
+          "name": "Latin Music",
+          "albums": 8
         }
       ]
     },
@@ -5865,6 +6151,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 5
+        }
+      ]
+    },
+    "c-dot 416": {
+      "name": "C-Dot 416",
+      "deezerArtistId": 13827919,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 4
         }
       ]
     },
@@ -6154,6 +6451,17 @@
         }
       ]
     },
+    "cantervice": {
+      "name": "CANTERVICE",
+      "deezerArtistId": 118320202,
+      "genres": [
+        {
+          "id": 152,
+          "name": "Rock",
+          "albums": 10
+        }
+      ]
+    },
     "cape lions": {
       "name": "Cape Lions",
       "deezerArtistId": 14705063,
@@ -6360,6 +6668,17 @@
           "id": 173,
           "name": "Films/Games",
           "albums": 2
+        }
+      ]
+    },
+    "carter cook": {
+      "name": "Carter Cook",
+      "deezerArtistId": 4197748,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
         }
       ]
     },
@@ -6591,6 +6910,17 @@
           "id": 113,
           "name": "Dance",
           "albums": 4
+        }
+      ]
+    },
+    "chaitha": {
+      "name": "Chaitha",
+      "deezerArtistId": 98445622,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 7
         }
       ]
     },
@@ -7103,6 +7433,17 @@
     "chris miles": {
       "name": "Chris Miles",
       "deezerArtistId": 5268086,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
+    "chris travis": {
+      "name": "Chris Travis",
+      "deezerArtistId": 7138333,
       "genres": [
         {
           "id": 116,
@@ -9069,6 +9410,17 @@
         }
       ]
     },
+    "dc young fly": {
+      "name": "DC Young Fly",
+      "deezerArtistId": 6853597,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 7
+        }
+      ]
+    },
     "ddg": {
       "name": "DDG",
       "deezerArtistId": 107673,
@@ -9297,6 +9649,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 5
+        }
+      ]
+    },
+    "definitely not luke": {
+      "name": "Definitely Not Luke",
+      "deezerArtistId": 120156262,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 6
         }
       ]
     },
@@ -9872,6 +10235,17 @@
         }
       ]
     },
+    "dirty vegas": {
+      "name": "Dirty Vegas",
+      "deezerArtistId": 8820,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 6
+        }
+      ]
+    },
     "dirtyphonics": {
       "name": "Dirtyphonics",
       "deezerArtistId": 407883,
@@ -10169,9 +10543,31 @@
         }
       ]
     },
+    "don michael jr": {
+      "name": "Don Michael Jr",
+      "deezerArtistId": 5895368,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "don toliver": {
       "name": "Don Toliver",
       "deezerArtistId": 13631667,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
+    "don trip": {
+      "name": "Don Trip",
+      "deezerArtistId": 1338294,
       "genres": [
         {
           "id": 116,
@@ -10631,6 +11027,17 @@
         }
       ]
     },
+    "dxvid": {
+      "name": "Dxvid",
+      "deezerArtistId": 49177112,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 4
+        }
+      ]
+    },
     "dylan reese": {
       "name": "Dylan Reese",
       "deezerArtistId": 6287296,
@@ -10760,6 +11167,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 12
+        }
+      ]
+    },
+    "ed maverick": {
+      "name": "Ed Maverick",
+      "deezerArtistId": 4458767,
+      "genres": [
+        {
+          "id": 152,
+          "name": "Rock",
+          "albums": 8
         }
       ]
     },
@@ -11346,6 +11764,17 @@
         }
       ]
     },
+    "emilio piano": {
+      "name": "Emilio Piano",
+      "deezerArtistId": 89690362,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 4
+        }
+      ]
+    },
     "emily jane white": {
       "name": "Emily Jane White",
       "deezerArtistId": 70788,
@@ -11709,6 +12138,17 @@
         }
       ]
     },
+    "eric404": {
+      "name": "eric404",
+      "deezerArtistId": 386987261,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 1
+        }
+      ]
+    },
     "erkki-sven tüür": {
       "name": "Erkki-Sven Tüür",
       "deezerArtistId": 4576298,
@@ -12017,6 +12457,17 @@
         }
       ]
     },
+    "eyes beyond tiers": {
+      "name": "Eyes Beyond Tiers",
+      "deezerArtistId": 70887812,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 9
+        }
+      ]
+    },
     "eyes set to kill": {
       "name": "Eyes Set To Kill",
       "deezerArtistId": 383459,
@@ -12036,6 +12487,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 5
+        }
+      ]
+    },
+    "f3miii": {
+      "name": "F3miii",
+      "deezerArtistId": 90496732,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 7
         }
       ]
     },
@@ -12237,6 +12699,17 @@
         }
       ]
     },
+    "fast boy": {
+      "name": "FAST BOY",
+      "deezerArtistId": 11287802,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 10
+        }
+      ]
+    },
     "fat boys": {
       "name": "Fat Boys",
       "deezerArtistId": 205324,
@@ -12343,6 +12816,17 @@
         {
           "id": 116,
           "name": "Rap/Hip Hop",
+          "albums": 10
+        }
+      ]
+    },
+    "fedde le grand": {
+      "name": "Fedde Le Grand",
+      "deezerArtistId": 6157,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
           "albums": 10
         }
       ]
@@ -12941,6 +13425,17 @@
         }
       ]
     },
+    "forrest nolan": {
+      "name": "forrest nolan",
+      "deezerArtistId": 119348892,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 11
+        }
+      ]
+    },
     "forêt de vin": {
       "name": "FORÊT DE VIN",
       "deezerArtistId": 11143272,
@@ -12993,6 +13488,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 8
+        }
+      ]
+    },
+    "fox bd": {
+      "name": "Fox BD",
+      "deezerArtistId": 208878477,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -13128,6 +13634,17 @@
         }
       ]
     },
+    "freewill": {
+      "name": "FREEWILL",
+      "deezerArtistId": 992820,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 5
+        }
+      ]
+    },
     "french 79": {
       "name": "French 79",
       "deezerArtistId": 6927617,
@@ -13213,6 +13730,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 6
+        }
+      ]
+    },
+    "fufu": {
+      "name": "FUFU",
+      "deezerArtistId": 500051,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 4
         }
       ]
     },
@@ -13323,6 +13851,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 5
+        }
+      ]
+    },
+    "fyex": {
+      "name": "Fyex",
+      "deezerArtistId": 13788917,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 7
         }
       ]
     },
@@ -13675,6 +14214,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 12
+        }
+      ]
+    },
+    "getter": {
+      "name": "Getter",
+      "deezerArtistId": 1189631,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 5
         }
       ]
     },
@@ -14118,6 +14668,17 @@
         }
       ]
     },
+    "good vibes tribe 11:11": {
+      "name": "Good Vibes Tribe 11:11",
+      "deezerArtistId": 336980121,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 5
+        }
+      ]
+    },
     "goodbye june": {
       "name": "Goodbye June",
       "deezerArtistId": 2639901,
@@ -14448,6 +15009,17 @@
         }
       ]
     },
+    "grupo sonador": {
+      "name": "Grupo Sonador",
+      "deezerArtistId": 464876,
+      "genres": [
+        {
+          "id": 197,
+          "name": "Latin Music",
+          "albums": 10
+        }
+      ]
+    },
     "grupo soñador": {
       "name": "Grupo Soñador",
       "deezerArtistId": 464876,
@@ -14753,6 +15325,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 9
+        }
+      ]
+    },
+    "hallman": {
+      "name": "Hallman",
+      "deezerArtistId": 5681382,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 7
         }
       ]
     },
@@ -15647,6 +16230,17 @@
         }
       ]
     },
+    "huntr/x": {
+      "name": "HUNTR/X",
+      "deezerArtistId": 330311461,
+      "genres": [
+        {
+          "id": 16,
+          "name": "Asian Music",
+          "albums": 7
+        }
+      ]
+    },
     "huntza": {
       "name": "Huntza",
       "deezerArtistId": 11408010,
@@ -15765,6 +16359,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 7
+        }
+      ]
+    },
+    "ian asher": {
+      "name": "Ian Asher",
+      "deezerArtistId": 107301842,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 6
         }
       ]
     },
@@ -15955,6 +16560,17 @@
         }
       ]
     },
+    "ill chris": {
+      "name": "iLL Chris",
+      "deezerArtistId": 5512857,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "ill nicky": {
       "name": "iLL Nicky",
       "deezerArtistId": 6501267,
@@ -15995,6 +16611,17 @@
         {
           "id": 132,
           "name": "Pop",
+          "albums": 4
+        }
+      ]
+    },
+    "immersed": {
+      "name": "Immersed",
+      "deezerArtistId": 371952811,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
           "albums": 4
         }
       ]
@@ -16161,6 +16788,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 7
+        }
+      ]
+    },
+    "insania": {
+      "name": "Insania",
+      "deezerArtistId": 16423,
+      "genres": [
+        {
+          "id": 464,
+          "name": "Metal",
+          "albums": 5
         }
       ]
     },
@@ -17022,6 +17660,17 @@
         }
       ]
     },
+    "jaxson free": {
+      "name": "Jaxson Free",
+      "deezerArtistId": 67006232,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 5
+        }
+      ]
+    },
     "jay kim": {
       "name": "Jay Kim",
       "deezerArtistId": 5332980,
@@ -17030,6 +17679,17 @@
           "id": 2,
           "name": "African Music",
           "albums": 5
+        }
+      ]
+    },
+    "jay rock": {
+      "name": "Jay Rock",
+      "deezerArtistId": 265914,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -17165,6 +17825,17 @@
         }
       ]
     },
+    "jeezy": {
+      "name": "Jeezy",
+      "deezerArtistId": 1338623,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "jeff beck": {
       "name": "Jeff Beck",
       "deezerArtistId": 3084,
@@ -17220,6 +17891,17 @@
         }
       ]
     },
+    "jennie": {
+      "name": "JENNIE",
+      "deezerArtistId": 1228100,
+      "genres": [
+        {
+          "id": 16,
+          "name": "Asian Music",
+          "albums": 6
+        }
+      ]
+    },
     "jensjulius tejlgaard": {
       "name": "JensJulius Tejlgaard",
       "deezerArtistId": 186526217,
@@ -17228,6 +17910,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 4
+        }
+      ]
+    },
+    "jeris johnson": {
+      "name": "Jeris Johnson",
+      "deezerArtistId": 13998193,
+      "genres": [
+        {
+          "id": 152,
+          "name": "Rock",
+          "albums": 7
         }
       ]
     },
@@ -17957,6 +18650,17 @@
         }
       ]
     },
+    "josh fawaz": {
+      "name": "Josh Fawaz",
+      "deezerArtistId": 9308376,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 6
+        }
+      ]
+    },
     "josh golden": {
       "name": "Josh Golden",
       "deezerArtistId": 413786,
@@ -18199,6 +18903,17 @@
         }
       ]
     },
+    "justin jesso": {
+      "name": "Justin Jesso",
+      "deezerArtistId": 13225825,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 6
+        }
+      ]
+    },
     "justin petti": {
       "name": "Justin Petti",
       "deezerArtistId": 12650657,
@@ -18221,6 +18936,17 @@
         }
       ]
     },
+    "justin stone": {
+      "name": "Justin Stone",
+      "deezerArtistId": 4557853,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
+        }
+      ]
+    },
     "justin timberlake": {
       "name": "Justin Timberlake",
       "deezerArtistId": 1147,
@@ -18240,6 +18966,17 @@
           "id": 165,
           "name": "R&B",
           "albums": 7
+        }
+      ]
+    },
+    "justė": {
+      "name": "Justė",
+      "deezerArtistId": 354392422,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 11
         }
       ]
     },
@@ -19266,6 +20003,17 @@
         }
       ]
     },
+    "koven wei": {
+      "name": "Koven Wei",
+      "deezerArtistId": 72187702,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 9
+        }
+      ]
+    },
     "kraken": {
       "name": "Kraken",
       "deezerArtistId": 16129,
@@ -19626,6 +20374,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 7
+        }
+      ]
+    },
+    "larry june": {
+      "name": "Larry June",
+      "deezerArtistId": 5202636,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -20168,6 +20927,17 @@
         }
       ]
     },
+    "lil mabu": {
+      "name": "Lil Mabu",
+      "deezerArtistId": 72756132,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "lil mosey": {
       "name": "Lil Mosey",
       "deezerArtistId": 13719947,
@@ -20179,9 +20949,31 @@
         }
       ]
     },
+    "lil nas x": {
+      "name": "Lil Nas X",
+      "deezerArtistId": 15166511,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 11
+        }
+      ]
+    },
     "lil revive": {
       "name": "Lil Revive",
       "deezerArtistId": 51305092,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
+    "lil tecca": {
+      "name": "Lil Tecca",
+      "deezerArtistId": 14492701,
       "genres": [
         {
           "id": 116,
@@ -20374,6 +21166,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 6
+        }
+      ]
+    },
+    "lithe": {
+      "name": "Lithe",
+      "deezerArtistId": 12293132,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
         }
       ]
     },
@@ -20572,6 +21375,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 4
+        }
+      ]
+    },
+    "loote": {
+      "name": "Loote",
+      "deezerArtistId": 11312264,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 9
         }
       ]
     },
@@ -21224,6 +22038,17 @@
         }
       ]
     },
+    "luroo": {
+      "name": "Luroo",
+      "deezerArtistId": 304489461,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 5
+        }
+      ]
+    },
     "lustra": {
       "name": "Lustra",
       "deezerArtistId": 7386,
@@ -21543,6 +22368,17 @@
         }
       ]
     },
+    "magical thinker": {
+      "name": "Magical Thinker",
+      "deezerArtistId": 11530199,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 1
+        }
+      ]
+    },
     "magnum": {
       "name": "Magnum",
       "deezerArtistId": 10303,
@@ -21727,6 +22563,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 5
+        }
+      ]
+    },
+    "mama duke": {
+      "name": "Mama Duke",
+      "deezerArtistId": 88247742,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 4
         }
       ]
     },
@@ -21917,6 +22764,17 @@
         }
       ]
     },
+    "marc rebillet": {
+      "name": "Marc Rebillet",
+      "deezerArtistId": 14548985,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 9
+        }
+      ]
+    },
     "marco cartwright": {
       "name": "Marco Cartwright",
       "deezerArtistId": 381821521,
@@ -22071,6 +22929,17 @@
         }
       ]
     },
+    "marko penn": {
+      "name": "Marko Penn",
+      "deezerArtistId": 7915984,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 5
+        }
+      ]
+    },
     "marlee gray": {
       "name": "Marlee Gray",
       "deezerArtistId": 121241542,
@@ -22167,6 +23036,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 9
+        }
+      ]
+    },
+    "mason trent": {
+      "name": "Mason Trent",
+      "deezerArtistId": 1120763,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 5
         }
       ]
     },
@@ -22467,6 +23347,17 @@
         }
       ]
     },
+    "me-mai": {
+      "name": "me-mai",
+      "deezerArtistId": 257525952,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 7
+        }
+      ]
+    },
     "mean streak": {
       "name": "Mean Streak",
       "deezerArtistId": 1025516,
@@ -22654,6 +23545,17 @@
         }
       ]
     },
+    "men at work": {
+      "name": "Men At Work",
+      "deezerArtistId": 8486,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 8
+        }
+      ]
+    },
     "mercedes band": {
       "name": "Mercedes Band",
       "deezerArtistId": 1368287,
@@ -22673,6 +23575,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 6
+        }
+      ]
+    },
+    "merk & kremont": {
+      "name": "Merk & Kremont",
+      "deezerArtistId": 4452471,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 5
         }
       ]
     },
@@ -22838,6 +23751,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 11
+        }
+      ]
+    },
+    "micah palace": {
+      "name": "Micah Palace",
+      "deezerArtistId": 105315832,
+      "genres": [
+        {
+          "id": 197,
+          "name": "Latin Music",
+          "albums": 6
         }
       ]
     },
@@ -23094,6 +24018,17 @@
         }
       ]
     },
+    "mike mana": {
+      "name": "Mike Mana",
+      "deezerArtistId": 215117695,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 12
+        }
+      ]
+    },
     "mike terrana": {
       "name": "Mike Terrana",
       "deezerArtistId": 532837,
@@ -23146,6 +24081,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 4
+        }
+      ]
+    },
+    "milky": {
+      "name": "Milky",
+      "deezerArtistId": 3853,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 8
         }
       ]
     },
@@ -23820,6 +24766,17 @@
         }
       ]
     },
+    "morray": {
+      "name": "Morray",
+      "deezerArtistId": 90577842,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "mors principium est": {
       "name": "Mors Principium Est",
       "deezerArtistId": 16195,
@@ -24183,6 +25140,17 @@
         }
       ]
     },
+    "myles lloyd": {
+      "name": "Myles Lloyd",
+      "deezerArtistId": 12350962,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 10
+        }
+      ]
+    },
     "mynoise": {
       "name": "myNoise",
       "deezerArtistId": 6009998,
@@ -24315,6 +25283,17 @@
         }
       ]
     },
+    "nadia ali": {
+      "name": "Nadia Ali",
+      "deezerArtistId": 382905,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 10
+        }
+      ]
+    },
     "naglfar": {
       "name": "Naglfar",
       "deezerArtistId": 3795,
@@ -24389,6 +25368,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 10
+        }
+      ]
+    },
+    "nasty c": {
+      "name": "Nasty C",
+      "deezerArtistId": 8907066,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 8
         }
       ]
     },
@@ -24656,6 +25646,17 @@
         }
       ]
     },
+    "nemzzz": {
+      "name": "Nemzzz",
+      "deezerArtistId": 50619722,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
+        }
+      ]
+    },
     "nena daconte": {
       "name": "Nena Daconte",
       "deezerArtistId": 8346,
@@ -24788,6 +25789,17 @@
         }
       ]
     },
+    "newport": {
+      "name": "Newport",
+      "deezerArtistId": 655774,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 6
+        }
+      ]
+    },
     "newshapes": {
       "name": "newshapes",
       "deezerArtistId": 162058742,
@@ -24862,6 +25874,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 11
+        }
+      ]
+    },
+    "nicky youre": {
+      "name": "Nicky Youre",
+      "deezerArtistId": 95585462,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 12
         }
       ]
     },
@@ -25074,6 +26097,17 @@
         }
       ]
     },
+    "nipsey hussle": {
+      "name": "Nipsey Hussle",
+      "deezerArtistId": 257128,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "niterain": {
       "name": "NiteRain",
       "deezerArtistId": 4029399,
@@ -25104,6 +26138,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 5
+        }
+      ]
+    },
+    "nnx lxsy": {
+      "name": "NNX LXSY",
+      "deezerArtistId": 259847611,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 10
         }
       ]
     },
@@ -25412,6 +26457,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 10
+        }
+      ]
+    },
+    "nyck caution": {
+      "name": "Nyck Caution",
+      "deezerArtistId": 6183590,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -25756,6 +26812,17 @@
         }
       ]
     },
+    "ollie hunt": {
+      "name": "OLLIE HUNT",
+      "deezerArtistId": 88765532,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 7
+        }
+      ]
+    },
     "olly alexander (years & years)": {
       "name": "Olly Alexander (Years & Years)",
       "deezerArtistId": 4023815,
@@ -25841,6 +26908,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 8
+        }
+      ]
+    },
+    "onefour": {
+      "name": "ONEFOUR",
+      "deezerArtistId": 67968632,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -25961,6 +27039,17 @@
         {
           "id": 129,
           "name": "Jazz",
+          "albums": 12
+        }
+      ]
+    },
+    "osher cohen": {
+      "name": "Osher Cohen",
+      "deezerArtistId": 9058096,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
           "albums": 12
         }
       ]
@@ -26237,6 +27326,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 7
+        }
+      ]
+    },
+    "painlikeshadows": {
+      "name": "PAINLIKESHADOWS",
+      "deezerArtistId": 221583455,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -26566,6 +27666,17 @@
         {
           "id": 132,
           "name": "Pop",
+          "albums": 9
+        }
+      ]
+    },
+    "peachman": {
+      "name": "Peachman",
+      "deezerArtistId": 133637012,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
           "albums": 9
         }
       ]
@@ -27098,6 +28209,17 @@
         }
       ]
     },
+    "pinkpantheress": {
+      "name": "PinkPantheress",
+      "deezerArtistId": 122602052,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 10
+        }
+      ]
+    },
     "pinn hateberry": {
       "name": "Pinn HateBerry",
       "deezerArtistId": 279990981,
@@ -27194,6 +28316,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 6
+        }
+      ]
+    },
+    "poodee": {
+      "name": "POODEE",
+      "deezerArtistId": 193269927,
+      "genres": [
+        {
+          "id": 2,
+          "name": "African Music",
+          "albums": 3
         }
       ]
     },
@@ -27681,6 +28814,17 @@
         }
       ]
     },
+    "quentyn": {
+      "name": "Quentyn",
+      "deezerArtistId": 12722431,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 8
+        }
+      ]
+    },
     "quiet riot": {
       "name": "Quiet Riot",
       "deezerArtistId": 5732,
@@ -27722,6 +28866,17 @@
           "id": 165,
           "name": "R&B",
           "albums": 6
+        }
+      ]
+    },
+    "quinn xcii": {
+      "name": "Quinn XCII",
+      "deezerArtistId": 9036740,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 10
         }
       ]
     },
@@ -27857,6 +29012,17 @@
         }
       ]
     },
+    "rakhim": {
+      "name": "Rakhim",
+      "deezerArtistId": 1359318,
+      "genres": [
+        {
+          "id": 75,
+          "name": "Brazilian Music",
+          "albums": 4
+        }
+      ]
+    },
     "raku-nu": {
       "name": "Raku-Nu",
       "deezerArtistId": 73702642,
@@ -27989,6 +29155,17 @@
         }
       ]
     },
+    "razeonx": {
+      "name": "Razeonx",
+      "deezerArtistId": 269525082,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 9
+        }
+      ]
+    },
     "re-con": {
       "name": "Re-Con",
       "deezerArtistId": 336668,
@@ -28095,6 +29272,17 @@
         {
           "id": 106,
           "name": "Electro",
+          "albums": 7
+        }
+      ]
+    },
+    "redbone": {
+      "name": "Redbone",
+      "deezerArtistId": 71398,
+      "genres": [
+        {
+          "id": 152,
+          "name": "Rock",
           "albums": 7
         }
       ]
@@ -28572,6 +29760,17 @@
         }
       ]
     },
+    "robb bank$": {
+      "name": "Robb Bank$",
+      "deezerArtistId": 4602321,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "robbie williams": {
       "name": "Robbie Williams",
       "deezerArtistId": 212,
@@ -28718,6 +29917,17 @@
     "rohff": {
       "name": "Rohff",
       "deezerArtistId": 750,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
+    "roland jones": {
+      "name": "Roland Jones",
+      "deezerArtistId": 7867098,
       "genres": [
         {
           "id": 116,
@@ -29045,6 +30255,17 @@
         }
       ]
     },
+    "ryan james": {
+      "name": "Ryan James",
+      "deezerArtistId": 1098841,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 3
+        }
+      ]
+    },
     "ryan mcnulty": {
       "name": "Ryan McNulty",
       "deezerArtistId": 12654461,
@@ -29075,6 +30296,17 @@
           "id": 16,
           "name": "Asian Music",
           "albums": 8
+        }
+      ]
+    },
+    "ryutqc": {
+      "name": "Ryutqc",
+      "deezerArtistId": 226322095,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 10
         }
       ]
     },
@@ -29185,6 +30417,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 6
+        }
+      ]
+    },
+    "saam sultan": {
+      "name": "Saam Sultan",
+      "deezerArtistId": 250880522,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 9
         }
       ]
     },
@@ -29647,6 +30890,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 8
+        }
+      ]
+    },
+    "sarah, the illstrumentalist": {
+      "name": "Sarah, the Illstrumentalist",
+      "deezerArtistId": 14357329,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 10
         }
       ]
     },
@@ -31410,6 +32664,17 @@
         }
       ]
     },
+    "soobin": {
+      "name": "SOOBIN",
+      "deezerArtistId": 8621616,
+      "genres": [
+        {
+          "id": 16,
+          "name": "Asian Music",
+          "albums": 4
+        }
+      ]
+    },
     "sophie hutchings": {
       "name": "Sophie Hutchings",
       "deezerArtistId": 652864,
@@ -31729,6 +32994,17 @@
         }
       ]
     },
+    "spuddy": {
+      "name": "Spuddy",
+      "deezerArtistId": 83274452,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 5
+        }
+      ]
+    },
     "spunkshine": {
       "name": "Spunkshine",
       "deezerArtistId": 113722,
@@ -31891,6 +33167,17 @@
           "id": 98,
           "name": "Classical",
           "albums": 12
+        }
+      ]
+    },
+    "stevie daniels": {
+      "name": "Stevie Daniels",
+      "deezerArtistId": 105176582,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 7
         }
       ]
     },
@@ -32521,6 +33808,17 @@
         }
       ]
     },
+    "t-sean": {
+      "name": "T-sean",
+      "deezerArtistId": 4943383,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 9
+        }
+      ]
+    },
     "t. matthias": {
       "name": "T. Matthias",
       "deezerArtistId": 4427538,
@@ -32529,6 +33827,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 10
+        }
+      ]
+    },
+    "t.i.": {
+      "name": "T.I.",
+      "deezerArtistId": 2527,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -32741,6 +34050,17 @@
         }
       ]
     },
+    "taska black": {
+      "name": "Taska Black",
+      "deezerArtistId": 9017572,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 6
+        }
+      ]
+    },
     "taves": {
       "name": "taves",
       "deezerArtistId": 69613712,
@@ -32770,6 +34090,17 @@
         {
           "id": 152,
           "name": "Rock",
+          "albums": 5
+        }
+      ]
+    },
+    "taylor barber": {
+      "name": "Taylor Barber",
+      "deezerArtistId": 11947087,
+      "genres": [
+        {
+          "id": 464,
+          "name": "Metal",
           "albums": 5
         }
       ]
@@ -32836,6 +34167,17 @@
         {
           "id": 152,
           "name": "Rock",
+          "albums": 11
+        }
+      ]
+    },
+    "teddy swims": {
+      "name": "Teddy Swims",
+      "deezerArtistId": 64927672,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
           "albums": 11
         }
       ]
@@ -33244,6 +34586,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 4
+        }
+      ]
+    },
+    "the chemical brothers": {
+      "name": "The Chemical Brothers",
+      "deezerArtistId": 81,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 8
         }
       ]
     },
@@ -33728,6 +35081,17 @@
           "id": 173,
           "name": "Films/Games",
           "albums": 6
+        }
+      ]
+    },
+    "the lox": {
+      "name": "The LOX",
+      "deezerArtistId": 11984,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -34809,6 +36173,17 @@
         }
       ]
     },
+    "tiphaine wary": {
+      "name": "Tiphaine Wary",
+      "deezerArtistId": 7195192,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 5
+        }
+      ]
+    },
     "tired violence": {
       "name": "Tired Violence",
       "deezerArtistId": 96344082,
@@ -34850,6 +36225,17 @@
           "id": 113,
           "name": "Dance",
           "albums": 12
+        }
+      ]
+    },
+    "tj hickey": {
+      "name": "TJ Hickey",
+      "deezerArtistId": 5990000,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 8
         }
       ]
     },
@@ -35535,6 +36921,17 @@
         }
       ]
     },
+    "trucky": {
+      "name": "trucky",
+      "deezerArtistId": 61408312,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 3
+        }
+      ]
+    },
     "tryggve malmberg": {
       "name": "Tryggve Malmberg",
       "deezerArtistId": 121201172,
@@ -35645,6 +37042,17 @@
         }
       ]
     },
+    "two friends": {
+      "name": "Two Friends",
+      "deezerArtistId": 583674,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 11
+        }
+      ]
+    },
     "twoyearoldbear": {
       "name": "TwoYearOldBear",
       "deezerArtistId": 116101142,
@@ -35696,6 +37104,17 @@
         {
           "id": 152,
           "name": "Rock",
+          "albums": 11
+        }
+      ]
+    },
+    "tyla": {
+      "name": "Tyla",
+      "deezerArtistId": 1220981,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
           "albums": 11
         }
       ]
@@ -35763,6 +37182,17 @@
           "id": 106,
           "name": "Electro",
           "albums": 9
+        }
+      ]
+    },
+    "tøsaki": {
+      "name": "Tøsaki",
+      "deezerArtistId": 232870011,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 6
         }
       ]
     },
@@ -36008,6 +37438,17 @@
         }
       ]
     },
+    "vance verity": {
+      "name": "Vance Verity",
+      "deezerArtistId": 390267871,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 1
+        }
+      ]
+    },
     "vandal": {
       "name": "Vandal",
       "deezerArtistId": 215273,
@@ -36115,6 +37556,17 @@
           "id": 132,
           "name": "Pop",
           "albums": 2
+        }
+      ]
+    },
+    "vavo": {
+      "name": "Vavo",
+      "deezerArtistId": 9752838,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 6
         }
       ]
     },
@@ -36283,6 +37735,17 @@
         }
       ]
     },
+    "vic mensa": {
+      "name": "VIC MENSA",
+      "deezerArtistId": 1044777,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 11
+        }
+      ]
+    },
     "vice": {
       "name": "Vice",
       "deezerArtistId": 336226,
@@ -36313,6 +37776,17 @@
           "id": 98,
           "name": "Classical",
           "albums": 2
+        }
+      ]
+    },
+    "victor ray": {
+      "name": "Victor Ray",
+      "deezerArtistId": 9762184,
+      "genres": [
+        {
+          "id": 132,
+          "name": "Pop",
+          "albums": 11
         }
       ]
     },
@@ -36602,6 +38076,17 @@
         }
       ]
     },
+    "void": {
+      "name": "void",
+      "deezerArtistId": 2935,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 4
+        }
+      ]
+    },
     "void of vision": {
       "name": "Void Of Vision",
       "deezerArtistId": 6965333,
@@ -36741,6 +38226,17 @@
         {
           "id": 152,
           "name": "Rock",
+          "albums": 12
+        }
+      ]
+    },
+    "wacotron": {
+      "name": "Wacotron",
+      "deezerArtistId": 51067592,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
           "albums": 12
         }
       ]
@@ -36910,6 +38406,17 @@
         }
       ]
     },
+    "westside gunn": {
+      "name": "Westside Gunn",
+      "deezerArtistId": 8323782,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
+        }
+      ]
+    },
     "wfangsm": {
       "name": "WFANGSM",
       "deezerArtistId": 119977212,
@@ -36984,6 +38491,17 @@
           "id": 464,
           "name": "Metal",
           "albums": 10
+        }
+      ]
+    },
+    "whethan": {
+      "name": "Whethan",
+      "deezerArtistId": 10668247,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 8
         }
       ]
     },
@@ -37603,6 +39121,17 @@
         }
       ]
     },
+    "xzibit": {
+      "name": "Xzibit",
+      "deezerArtistId": 2541,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 8
+        }
+      ]
+    },
     "yandel": {
       "name": "Yandel",
       "deezerArtistId": 517429,
@@ -37823,6 +39352,17 @@
         }
       ]
     },
+    "yolanda adams": {
+      "name": "Yolanda Adams",
+      "deezerArtistId": 8270,
+      "genres": [
+        {
+          "id": 165,
+          "name": "R&B",
+          "albums": 7
+        }
+      ]
+    },
     "yonder dale": {
       "name": "Yonder Dale",
       "deezerArtistId": 60233082,
@@ -37875,6 +39415,28 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 11
+        }
+      ]
+    },
+    "young money": {
+      "name": "Young Money",
+      "deezerArtistId": 292217,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 7
+        }
+      ]
+    },
+    "young nudy": {
+      "name": "Young Nudy",
+      "deezerArtistId": 8000730,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -37963,6 +39525,17 @@
           "id": 116,
           "name": "Rap/Hip Hop",
           "albums": 6
+        }
+      ]
+    },
+    "yung pinch": {
+      "name": "Yung Pinch",
+      "deezerArtistId": 11485026,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 12
         }
       ]
     },
@@ -38175,6 +39748,17 @@
         }
       ]
     },
+    "zerb": {
+      "name": "Zerb",
+      "deezerArtistId": 8119595,
+      "genres": [
+        {
+          "id": 113,
+          "name": "Dance",
+          "albums": 9
+        }
+      ]
+    },
     "zerno": {
       "name": "ZERNO",
       "deezerArtistId": 10501119,
@@ -38337,6 +39921,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 1
+        }
+      ]
+    },
+    "zxkai": {
+      "name": "ZXKAI",
+      "deezerArtistId": 290724431,
+      "genres": [
+        {
+          "id": 106,
+          "name": "Electro",
+          "albums": 7
         }
       ]
     },
@@ -38612,6 +40207,17 @@
           "id": 152,
           "name": "Rock",
           "albums": 2
+        }
+      ]
+    },
+    "ליעד מאיר": {
+      "name": "ליעד מאיר",
+      "deezerArtistId": 61254152,
+      "genres": [
+        {
+          "id": 116,
+          "name": "Rap/Hip Hop",
+          "albums": 10
         }
       ]
     },

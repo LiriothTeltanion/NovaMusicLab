@@ -109,6 +109,10 @@ describe('artist_gallery.json stability', () => {
       'indighxst', 'louta', 'atzmus', 'smbdy else', 'corbin karasu', 'acres',
       'knox', 'the damned', 'volumes', 'hurtwave', 'the cult', 'thornhill',
       'היהודים', 'machine gun kelly', 'nothingnowhere.',
+      // Left the top 100 in the 2026-08 refresh, when the complete Spotify
+      // export, a fresh Last.fm pull and a new YouTube Takeout were replayed.
+      // Three verified photos each, kept for the same reason as the rest.
+      'amr diab', 'sigur rós', 'aviv geffen',
     ]);
     for (const key of Object.keys(entries)) {
       expect(key, `key not lowercase: ${key}`).toBe(key.toLowerCase());

@@ -70,6 +70,11 @@
   --type-tracking-display: -0.06em;
   --type-ink-strong: color-mix(in srgb, var(--fg) 96%, transparent);
   --type-ink-muted: color-mix(in srgb, var(--fg) 67%, transparent);
+  /* The dimmest text the museum is allowed to print. Over the dark ground this
+     composites to rgb(136,138,145) - 5.79:1, clear of the 4.5:1 floor, where
+     Tailwind's own gray-500 lands at 4.13 and gray-600 at 2.64. Anything
+     quieter than this is decoration, not text. */
+  --type-ink-subtle: color-mix(in srgb, var(--fg) 55%, transparent);
   --motion-feedback: 140ms;
   --motion-navigation: 280ms;
   --motion-narrative: 560ms;
@@ -515,9 +520,27 @@ p, span, button, a, svg {
 [data-mode="light"] .text-gray-100  { color: #1e293b; }
 [data-mode="light"] .text-gray-200  { color: #334155; }
 [data-mode="light"] .text-gray-300  { color: #475569; }
-[data-mode="light"] .text-gray-400  { color: #64748b; }
-[data-mode="light"] .text-gray-500  { color: #64748b; }
-[data-mode="light"] .text-gray-600  { color: #94a3b8; }
+/* Measured against this theme's real ground, rgb(247,248,251): #64748b is
+   4.48:1 and #94a3b8 is 2.63:1, both under the 4.5 floor. These three keep the
+   quiet-to-quieter order the class names promise and all clear it. */
+[data-mode="light"] .text-gray-400  { color: #556478; }  /* 5.68:1 */
+[data-mode="light"] .text-gray-500  { color: #5b6b80; }  /* 5.12:1 */
+[data-mode="light"] .text-gray-600  { color: #606e84; }  /* 4.87:1 */
+
+/*
+ * Contrast floor for the two grays that never cleared it.
+ *
+ * The remap above exists because ~200 call sites hardcode dark-mode Tailwind
+ * utilities; the same reasoning applies to a different problem. Measured over
+ * this theme's own ground, text-gray-500 is 4.13:1 and text-gray-600 is 2.64:1,
+ * against a WCAG AA floor of 4.5:1 for body text - 247 call sites of caption,
+ * hint and source text that a phone in daylight loses. Rewriting every
+ * className would churn thirty components and change nothing about the design
+ * system; pointing both at the subtle ink token raises them to 5.79:1 and
+ * leaves text-gray-400 (7.86:1) as the tier above, so the hierarchy survives.
+ */
+.text-gray-500 { color: var(--type-ink-subtle); }
+.text-gray-600 { color: var(--type-ink-subtle); }
 [data-mode="light"] .border-white\/5  { border-color: rgba(30, 41, 59, 0.10); }
 [data-mode="light"] .border-white\/10 { border-color: rgba(30, 41, 59, 0.14); }
 [data-mode="light"] .bg-white\/2  { background-color: rgba(30, 41, 59, 0.02); }

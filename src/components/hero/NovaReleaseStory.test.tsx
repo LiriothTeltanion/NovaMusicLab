@@ -11,9 +11,9 @@ describe('NovaReleaseStory', () => {
     render(<NovaReleaseStory lang="es" />);
 
     expect(screen.getByRole('heading', { name: 'La historia de Nova' })).toBeInTheDocument();
-    expect(screen.getByText('v1.5.0')).toBeInTheDocument();
-    expect(screen.getByText('El archivo vivo cobra rostro')).toBeInTheDocument();
-    expect(screen.getByText(/placeholders rotos/)).toBeInTheDocument();
+    expect(screen.getByText('v1.6.0')).toBeInTheDocument();
+    expect(screen.getByText('El archivo vivo encuentra su voz')).toBeInTheDocument();
+    expect(screen.getByText(/archivo de Spotify, Last.fm y YouTube/)).toBeInTheDocument();
   });
 
   it('reveals earlier releases without creating another route', async () => {

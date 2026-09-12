@@ -16,12 +16,12 @@ describe('genre knowledge artifacts', () => {
     const bundle = await loadGenreKnowledge();
 
     expect(bundle.ontology.terms.length).toBeGreaterThan(2_000);
-    expect(bundle.knowledge.stats.catalogArtistCount).toBe(6_413);
+    expect(bundle.knowledge.stats.catalogArtistCount).toBe(6_593);
     // 5,960 before any observation layer, 5,350 after the first MusicBrainz
     // pass, 1,662 once Deezer covered the artists MusicBrainz carries no genre
     // tag for. 3,688 catalogue rows in total, which is exactly the difference.
     // The archive did not change; what is known about it did.
-    expect(bundle.knowledge.stats.unclassifiedArtistCount).toBe(1_662);
+    expect(bundle.knowledge.stats.unclassifiedArtistCount).toBe(1_648);
     expect(bundle.knowledge.stats.rejectedAssertionCount).toBeGreaterThan(0);
     expect(bundle.knowledge.assertions.every(assertion => (
       bundle.termsById.has(assertion.termId)

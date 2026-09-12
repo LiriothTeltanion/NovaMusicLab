@@ -1,3 +1,5 @@
+import shareMetrics from '../data/share_metrics.json';
+
 export type Lang = 'es' | 'en' | 'he';
 
 export type TextDirection = 'ltr' | 'rtl';
@@ -21,21 +23,37 @@ export const LANGUAGE_OPTIONS: readonly LanguageOption[] = [
  * Written for someone who just tapped a link a friend sent them, not for a
  * technical reader. "local-first", "evidence-linked", "trilingual" and
  * "ListenBrainz" carry no meaning in a chat preview or a browser tab; the
- * concrete numbers do the work instead. Keep in step with the og:/twitter:
- * tags in index.html, which is what link scrapers actually read.
+ * concrete numbers do the work instead.
+ *
+ * The numbers are no longer typed here. They were, in three languages, next to
+ * a comment asking whoever came next to keep them in step with index.html - and
+ * after the archive refresh the preview card advertised 80,550 plays while the
+ * hero counted up to 82,661. share_metrics.json is generated from the same
+ * core_metrics fields HeroSection animates, by scripts/sync_share_metrics.mjs,
+ * whose --check mode fails the build if any share surface drifts again. The
+ * file is three integers, so importing it costs the landing shell nothing.
  */
+// localeFor is a hoisted function declaration further down this file, so it is
+// callable while these module-level constants are being built.
+//
+// useGrouping 'always' because Spanish drops the separator on four-digit
+// numbers, and "82.661 reproducciones. 20.908 canciones. 6593 entradas" reads
+// like a typo sitting between two grouped figures.
+const shareCount = (value: number, lang: Lang) =>
+  value.toLocaleString(localeFor(lang), { useGrouping: 'always' });
+
 export const DOCUMENT_METADATA: Record<Lang, { title: string; description: string }> = {
   es: {
     title: '11 años de música, convertidos en museo',
-    description: '80.550 reproducciones. 20.551 canciones. 6.413 entradas de nombres de artistas. Explora 11 años de escucha como un museo vivo y crea el tuyo en privado.',
+    description: `${shareCount(shareMetrics.plays, 'es')} reproducciones. ${shareCount(shareMetrics.tracks, 'es')} canciones. ${shareCount(shareMetrics.artists, 'es')} entradas de nombres de artistas. Explora 11 años de escucha como un museo vivo y crea el tuyo en privado.`,
   },
   en: {
     title: '11 years of music, turned into a living museum',
-    description: '80,550 plays. 20,551 tracks. 6,413 artist-name catalog entries. Explore 11 years of listening as a living museum, then build yours from files processed on your device.',
+    description: `${shareCount(shareMetrics.plays, 'en')} plays. ${shareCount(shareMetrics.tracks, 'en')} tracks. ${shareCount(shareMetrics.artists, 'en')} artist-name catalog entries. Explore 11 years of listening as a living museum, then build yours from files processed on your device.`,
   },
   he: {
     title: '11 שנים של מוזיקה, שהפכו למוזיאון',
-    description: '80,550 השמעות. 20,551 שירים. 6,413 רשומות שמות אמנים בקטלוג. חקרו 11 שנות האזנה כמוזיאון חי, ואז בנו אחד משלכם באופן פרטי.',
+    description: `${shareCount(shareMetrics.plays, 'he')} השמעות. ${shareCount(shareMetrics.tracks, 'he')} שירים. ${shareCount(shareMetrics.artists, 'he')} רשומות שמות אמנים בקטלוג. חקרו 11 שנות האזנה כמוזיאון חי, ואז בנו אחד משלכם באופן פרטי.`,
   },
 };
 

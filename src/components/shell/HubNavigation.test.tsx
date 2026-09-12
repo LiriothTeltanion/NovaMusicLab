@@ -20,9 +20,9 @@ describe('HubNavigation', () => {
     expect(screen.getByText('Quick route')).toBeInTheDocument();
     expect(screen.getByText('Current hub')).toBeInTheDocument();
     expect(screen.getAllByRole('listitem')).toHaveLength(5);
-    expect(screen.getByRole('button', { name: 'Home' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('button', { name: 'Overview' })).toHaveAttribute('aria-current', 'page');
 
-    await user.click(screen.getByRole('button', { name: 'Atlas' }));
+    await user.click(screen.getByRole('button', { name: 'Artists' }));
     expect(onSelect).toHaveBeenCalledWith('atlas');
 
     await user.selectOptions(screen.getByRole('combobox', { name: 'Choose a museum hub' }), 'lab');

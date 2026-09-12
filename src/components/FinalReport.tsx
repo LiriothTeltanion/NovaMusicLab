@@ -7,6 +7,7 @@ import { useApp } from '../context/AppContext';
 import { deriveSourceSummary, getNightRatio, getPeakYear, getRecords, getTwoYearPeak } from '../utils/analytics';
 import { buildArchetypes, buildArtistProfile, DEMO_ARCHIVE_ALIAS } from '../utils/identityEngine';
 import MuseumPoster from './MuseumPoster';
+import InterpretiveBoundaryNotice from './InterpretiveBoundaryNotice';
 import SectionNarrative from './SectionNarrative';
 import { directionFor, localeFor, pickLanguage } from '../utils/i18n';
 
@@ -75,6 +76,14 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
     [data.yearly_eras]
   );
   const originYear = earliestEra?.year ?? pickLanguage(lang, { en: 'the start', es: 'el inicio', he: 'ההתחלה' });
+  const archiveYearSpan = useMemo(() => {
+    const years = data.yearly_eras
+      .filter(era => era.plays > 0 && Number.isFinite(era.year))
+      .map(era => era.year);
+    if (years.length === 0) return null;
+    if (years.length === 1) return 1;
+    return Math.max(1, Math.max(...years) - Math.min(...years));
+  }, [data.yearly_eras]);
   const originArtist = earliestEra?.top_artist ?? topArtist;
   const heroArchetype = useMemo(
     () => buildArchetypes(data.top_artists, lang)[0]?.name ?? tr.s3Archetype,
@@ -110,6 +119,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
       </div>
 
       <SectionNarrative content={t.deepNarratives.report} accent="c1" />
+      <InterpretiveBoundaryNotice lang={lang} />
 
       {/* Magazine cover */}
       <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
@@ -126,7 +136,7 @@ export default function FinalReport({ data, isPersonalArchive = false }: FinalRe
             {/* h3, not h1: the page opens with an h2 title, so a lone h1 down
                 here + h4 sections made screen-reader heading order skip. */}
             <h3 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
-              {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight}</span>{' '}<br/>{tr.coverHeadlinePost}
+              {tr.coverHeadlinePre}<span className="bg-gradient-to-r from-cyberCyan to-cyberPink bg-clip-text text-transparent">{tr.coverHeadlineHighlight(archiveYearSpan)}</span>{' '}<br/>{tr.coverHeadlinePost(archiveYearSpan)}
             </h3>
             <p className="text-sm text-gray-300 font-light">{tr.coverSubtitlePre}<bdi dir="auto" className="text-cyberCyan font-semibold">{profile.alias}</bdi></p>
           </div>

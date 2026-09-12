@@ -6,6 +6,7 @@ import StatsDeepDive from './StatsDeepDive';
 import { AppProvider } from '../context/AppContext';
 import defaultMusicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import { buildGenreDistribution } from '../utils/chartIntegrity';
 
 vi.mock('recharts', () => {
   const Container = ({ children }: PropsWithChildren) => <div>{children}</div>;
@@ -93,5 +94,29 @@ describe('StatsDeepDive monthly matrix accessibility', () => {
     expect(screen.getByText('Artist-name entries per 1,000 plays')).toBeInTheDocument();
     expect(screen.getByText('Distinct artist names')).toBeInTheDocument();
     expect(screen.queryByText('Artists per 1000 plays')).not.toBeInTheDocument();
+  });
+
+  it('keeps Unclassified separate and names the grouped genre tail in Spanish', () => {
+    window.localStorage.setItem('nml_lang', 'es');
+    render(
+      <AppProvider>
+        <StatsDeepDive data={data} />
+      </AppProvider>,
+    );
+
+    const distribution = buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      20,
+    );
+    expect(screen.getByTestId('stats-genre-treemap'))
+      .toHaveAttribute('data-grouped-family-count', String(distribution.groupedFamilyCount));
+    expect(screen.getByTestId('stats-genre-treemap'))
+      .toHaveAttribute('data-grouped-plays', String(distribution.groupedPlays));
+    expect(screen.getByTestId('stats-genre-treemap-summary'))
+      .toHaveTextContent(`${distribution.groupedFamilyCount} familias clasificadas más pequeñas`);
+    expect(screen.getByTestId('stats-genre-treemap-summary'))
+      .toHaveTextContent('“Sin clasificar” permanece separado');
+    expect(screen.getByTestId('stats-genre-treemap-summary')).not.toHaveTextContent('incluye Otros');
   });
 });

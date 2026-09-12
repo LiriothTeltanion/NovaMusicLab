@@ -37,6 +37,11 @@ interface ArtistAvatarProps {
   decorative?: boolean;
 }
 
+export interface ArtistPrimaryImageCandidate {
+  url: string;
+  source: string;
+}
+
 
 
 function initialsFor(name: string): string {
@@ -46,18 +51,27 @@ function initialsFor(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
+/**
+ * Returns the stable primary portrait with its real provider label. Atlas uses
+ * the unmodified URL so its own optimized -> original fallback remains intact.
+ */
+export function getArtistPrimaryImageCandidate(name: string): ArtistPrimaryImageCandidate | null {
   const key = name.normalize('NFC').trim().toLowerCase();
   // Curated first, matching what ArtistAvatar puts on screen, so an exported
   // poster shows the same face the visitor was looking at.
   const curated = OPEN_PRIMARY_IMAGES[key];
-  if (curated) return optimizeRemoteImageUrl(curated, size);
+  if (curated) return { url: curated, source: 'wikimedia' };
   // Nothing bundled answers, so the long tail is worth fetching. This read is
   // synchronous and may miss on the first call; callers inside React pair it
   // with useArtistPhotoMap() to re-render once the index lands.
   ensureArtistPhotoMap();
-  const source = peekArtistPhoto(key)?.thumb;
-  return source ? optimizeRemoteImageUrl(source, size) : null;
+  const indexed = peekArtistPhoto(key);
+  return indexed ? { url: indexed.thumb, source: indexed.source } : null;
+}
+
+export function getArtistPrimaryImageUrl(name: string, size: number): string | null {
+  const candidate = getArtistPrimaryImageCandidate(name);
+  return candidate ? optimizeRemoteImageUrl(candidate.url, size) : null;
 }
 
 /**

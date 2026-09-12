@@ -1,5 +1,11 @@
 [
   {
+    "artist": "Bring Me the Horizon",
+    "title": "Live at Wacken Open Air",
+    "mbid": "b2947bde-f35a-4e83-b70a-985460388027",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
     "artist": "Deafheaven",
     "title": "Live in Manila (07.12.2024)",
     "mbid": "699b7263-a685-44c9-a1c2-03a79813c45c",
@@ -18,21 +24,9 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
-    "artist": "Tokio Hotel",
-    "title": "Humanoid",
-    "mbid": "b5457daa-c79b-4c72-9114-275043f4de77",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
     "artist": "H.E.A.T",
     "title": "H.E.A.T. / Freedom Rock",
     "mbid": "f4a9b0ac-198b-4a3f-9aae-db2de072e781",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Bring Me the Horizon",
-    "title": "Live at Wacken Open Air",
-    "mbid": "b2947bde-f35a-4e83-b70a-985460388027",
     "reason": "no front cover in Cover Art Archive"
   },
   {
@@ -114,6 +108,12 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
+    "artist": "Kiremi",
+    "title": "LEAVING HOME",
+    "mbid": "5ceea4ce-ccd6-41f5-96b0-3cffea0b75f7",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
     "artist": "Ghost",
     "title": "13 Commandments",
     "mbid": "fd76041b-db02-4991-9b87-07b1f79cceda",
@@ -163,14 +163,14 @@
   },
   {
     "artist": "Skid Row",
-    "title": "Wild and Innocent Youth",
-    "mbid": "edad8887-8644-40db-a153-1166cf6849b4",
+    "title": "Slave To The Grind / Skid Row",
+    "mbid": "d8b81c48-f0fd-483f-b9bc-c9a339556a52",
     "reason": "no front cover in Cover Art Archive"
   },
   {
     "artist": "Skid Row",
-    "title": "Matt Who?",
-    "mbid": "4679388f-2b00-489e-b012-21c1641eee04",
+    "title": "Wild and Innocent Youth",
+    "mbid": "edad8887-8644-40db-a153-1166cf6849b4",
     "reason": "no front cover in Cover Art Archive"
   },
   {
@@ -186,12 +186,6 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
-    "artist": "Kiremi",
-    "title": "LEAVING HOME",
-    "mbid": "5ceea4ce-ccd6-41f5-96b0-3cffea0b75f7",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
     "artist": "Silverstein",
     "title": "Live in Amsterdam",
     "mbid": "18936d8e-baa1-4207-afcd-a2bdbd3f47ad",
@@ -201,6 +195,36 @@
     "artist": "Silverstein",
     "title": "Live In Ottawa",
     "mbid": "fbd6a8f9-8501-3ea3-ab5e-48ea45301cf4",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "The Killers",
+    "title": "2004-12-18: Live at Enmore Theatre, Sydney, Australia",
+    "mbid": "2e7d394c-b072-49a6-8285-f695072b0675",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "The Killers",
+    "title": "Live, B-Sides & Demos",
+    "mbid": "7ac51517-3a90-423f-92cb-cc5d13c7a5e3",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "The Killers",
+    "title": "Stereo of Lies",
+    "mbid": "fdf019cb-8476-4444-a71a-1ad12b0442af",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "The Killers",
+    "title": "The Killers Career Box",
+    "mbid": "b0163be2-64b8-4f18-9a19-62ec9686b425",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "The Killers",
+    "title": "Shavings",
+    "mbid": "f772419a-f622-4398-a079-dc1d48cb7bd8",
     "reason": "no front cover in Cover Art Archive"
   },
   {
@@ -228,42 +252,6 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
-    "artist": "The Killers",
-    "title": "2004-12-18: Live at Enmore Theatre, Sydney, Australia",
-    "mbid": "2e7d394c-b072-49a6-8285-f695072b0675",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "The Killers",
-    "title": "Live, B-Sides & Demos",
-    "mbid": "7ac51517-3a90-423f-92cb-cc5d13c7a5e3",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "The Killers",
-    "title": "2008-11-11: Live at Kesselhaus, Berlin, Germany",
-    "mbid": "793ac874-adb7-4e91-b53e-8c71d64f7f43",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "The Killers",
-    "title": "Stereo of Lies",
-    "mbid": "fdf019cb-8476-4444-a71a-1ad12b0442af",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "The Killers",
-    "title": "The Killers Career Box",
-    "mbid": "b0163be2-64b8-4f18-9a19-62ec9686b425",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "The Killers",
-    "title": "Shavings",
-    "mbid": "f772419a-f622-4398-a079-dc1d48cb7bd8",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
     "artist": "Firehouse",
     "title": "Super Hits",
     "mbid": "70147495-3b95-3ca1-80f7-033799d51802",
@@ -282,12 +270,6 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
-    "artist": "Entwine",
-    "title": "diEversity",
-    "mbid": "a68c3e53-d91a-32fc-bf08-3d90033607fe",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
     "artist": "Blackfield",
     "title": "2011-04-28: Trix Zaal, Antwerpen, Belgium",
     "mbid": "e8e357a1-4363-43e6-8535-f5090c6f1166",
@@ -300,21 +282,27 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
+    "artist": "Entwine",
+    "title": "diEversity",
+    "mbid": "a68c3e53-d91a-32fc-bf08-3d90033607fe",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
     "artist": "Neck Deep",
     "title": "SlipNeck Halloween 2020",
     "mbid": "3b86c178-2364-438d-a6bb-a8dc9b8f5eeb",
     "reason": "no front cover in Cover Art Archive"
   },
   {
-    "artist": "Lost Society",
-    "title": "Loud∞Out Fest 2016",
-    "mbid": "a732a85b-410f-4195-89c4-28d3574110d4",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
     "artist": "Paloma",
     "title": "Paloma",
     "mbid": "7d870ef9-ddff-3ce3-82dc-69b4e00eab07",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "Lost Society",
+    "title": "Loud∞Out Fest 2016",
+    "mbid": "a732a85b-410f-4195-89c4-28d3574110d4",
     "reason": "no front cover in Cover Art Archive"
   },
   {
@@ -354,6 +342,18 @@
     "reason": "no front cover in Cover Art Archive"
   },
   {
+    "artist": "Juice WRLD",
+    "title": "What Is Love?",
+    "mbid": "78d7c711-5962-49d1-9c02-1a8ca7282014",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
+    "artist": "Juice WRLD",
+    "title": "Outsiders",
+    "mbid": "200be335-ee5f-402f-b47b-6760c54670f0",
+    "reason": "no front cover in Cover Art Archive"
+  },
+  {
     "artist": "My Vitriol",
     "title": "Cast in Amber",
     "mbid": "93b1a5c8-7dad-36c6-996f-59d0a611d4a4",
@@ -363,36 +363,6 @@
     "artist": "Twin Shadow",
     "title": "Night Rally",
     "mbid": "9bbdabe1-3e6b-4b4a-9390-7b5ea7c85bb6",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Sigur Rós",
-    "title": "Rare, Unreleased & Different Versions",
-    "mbid": "2efd9b69-a05d-4c6b-9ca2-c1d3369b867d",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Aviv Geffen",
-    "title": "השלישי",
-    "mbid": "8a9a83c2-ae90-4556-8113-b5f9fa734bbd",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Aviv Geffen",
-    "title": "Live",
-    "mbid": "c40131a1-f70a-4edf-8497-ea099d15c935",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Aviv Geffen",
-    "title": "2009‐01‐21: Melkweg, Amsterdam, Netherlands",
-    "mbid": "e16b3498-bf12-456b-b563-d79c7d8e4b79",
-    "reason": "no front cover in Cover Art Archive"
-  },
-  {
-    "artist": "Aviv Geffen",
-    "title": "בהופעה אקוסטית",
-    "mbid": "9461aff6-bd8a-41de-a75d-83aad8c7b922",
     "reason": "no front cover in Cover Art Archive"
   }
 ]

@@ -2,7 +2,8 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { AppProvider } from '../context/AppContext';
-import ArtistAvatar, { getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
+import ArtistAvatar, { getArtistPrimaryImageUrl, getOpenKnowledgeArtistImageUrl } from './ArtistAvatar';
+import { ensureArtistPhotoMap } from './artistPhotoMap';
 
 function avatar(name: string) {
   return (
@@ -21,15 +22,25 @@ describe('ArtistAvatar', () => {
     expect(getOpenKnowledgeArtistImageUrl('Unknown Artist', 96)).toBeNull();
   });
 
-  it('keeps licensed portraits reachable through real punctuation and diacritics', () => {
+  it('keeps licensed portraits reachable through real punctuation and diacritics', async () => {
     expect(getOpenKnowledgeArtistImageUrl('H.E.A.T', 96))
       .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
     expect(getOpenKnowledgeArtistImageUrl('nothing,nowhere.', 96))
       .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
-    expect(getOpenKnowledgeArtistImageUrl('Sigur Rós', 96))
-      .toMatch(/^https:\/\/upload\.wikimedia\.org\//);
-    expect(getOpenKnowledgeArtistImageUrl('Sigur Ro\u0301s', 96))
-      .toBe(getOpenKnowledgeArtistImageUrl('Sigur Rós', 96));
+    // The diacritics half now checks the wide portrait index rather than the
+    // curated open-licence set. Sigur Ros proved it from that set until the
+    // 2026-08 refresh dropped them out of the top 100 - the open-licence index
+    // is derived from it, and no decomposable name survives in there. The wide
+    // index still carries 102 of them, so this is checked where the accented
+    // names actually live. Not a formality: a macOS export writes the name
+    // decomposed, and that is a different string from the composed key unless
+    // the lookup normalises first.
+    ensureArtistPhotoMap();
+    await waitFor(() => {
+      expect(getArtistPrimaryImageUrl('Sigur R\u00f3s', 96)).not.toBeNull();
+    });
+    expect(getArtistPrimaryImageUrl('Sigur Ro\u0301s', 96))
+      .toBe(getArtistPrimaryImageUrl('Sigur R\u00f3s', 96));
   });
 
   it('resets a failed media chain when the selected artist changes', async () => {

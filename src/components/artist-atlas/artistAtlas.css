@@ -190,6 +190,177 @@
 .artist-atlas__rail-item strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.76rem; }
 .artist-atlas__rail-item small { display: block; margin-top: 0.15rem; color: var(--type-ink-muted); font: 700 0.58rem ui-monospace, monospace; }
 
+.artist-atlas__directory {
+  min-width: 0;
+  padding: clamp(0.9rem, 2.4vw, 1.35rem);
+  border: 1px solid var(--atlas-border);
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--c2) 6%, transparent), transparent 44%),
+    var(--atlas-panel);
+  box-shadow: 0 18px 55px rgb(0 0 0 / 0.1);
+}
+
+.artist-atlas__directory-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem;
+}
+
+.artist-atlas__directory-heading h3 {
+  margin-top: 0.18rem;
+  color: var(--fg);
+  font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+  font-weight: 950;
+  letter-spacing: -0.035em;
+}
+
+.artist-atlas__directory-heading > div:first-child > p:last-child {
+  max-width: 48rem;
+  margin-top: 0.45rem;
+  color: var(--type-ink-muted);
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.artist-atlas__directory-sort {
+  display: inline-flex;
+  min-width: max-content;
+  gap: 0.2rem;
+  padding: 0.22rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--bg) 42%, transparent);
+}
+
+.artist-atlas__directory-sort button {
+  min-height: 2.25rem;
+  padding-inline: 0.72rem;
+  border-radius: 0.68rem;
+  color: var(--type-ink-muted);
+  font: 850 0.62rem ui-monospace, monospace;
+}
+
+.artist-atlas__directory-sort button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--c2) 13%, transparent);
+  color: color-mix(in srgb, var(--c2) 78%, var(--fg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c2) 32%, transparent);
+}
+
+.artist-atlas__alphabet {
+  display: flex;
+  min-width: 0;
+  gap: 0.25rem;
+  overflow-x: auto;
+  margin-top: 0.9rem;
+  padding: 0.1rem 0.05rem 0.35rem;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--c2) 38%, transparent) transparent;
+  scroll-snap-type: inline proximity;
+}
+
+.artist-atlas__alphabet button {
+  min-width: 2rem;
+  min-height: 2rem;
+  flex: 0 0 auto;
+  padding-inline: 0.45rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--fg) 2.5%, transparent);
+  color: var(--type-ink-muted);
+  font: 850 0.59rem ui-monospace, monospace;
+  scroll-snap-align: start;
+}
+
+.artist-atlas__alphabet button:first-child { min-width: max-content; }
+.artist-atlas__alphabet button:disabled { opacity: 0.28; cursor: not-allowed; }
+.artist-atlas__alphabet button[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--c1) 48%, transparent);
+  background: color-mix(in srgb, var(--c1) 11%, transparent);
+  color: color-mix(in srgb, var(--c1) 82%, var(--fg));
+}
+
+.artist-atlas__directory-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem 1rem;
+  min-height: 1.75rem;
+  margin-top: 0.35rem;
+  color: var(--type-ink-muted);
+  font: 750 0.6rem ui-monospace, monospace;
+}
+
+.artist-atlas__directory-meta small { color: color-mix(in srgb, var(--c2) 72%, var(--fg)); }
+
+.artist-atlas__directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+
+.artist-atlas__directory-grid > button {
+  display: grid;
+  min-width: 0;
+  min-height: 3.65rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.62rem;
+  padding: 0.48rem 0.58rem;
+  border: 1px solid var(--atlas-border);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bg) 34%, transparent);
+  color: var(--fg);
+  text-align: start;
+  transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.artist-atlas__directory-grid > button:hover,
+.artist-atlas__directory-grid > button:focus-visible {
+  border-color: color-mix(in srgb, var(--c2) 42%, transparent);
+  background: color-mix(in srgb, var(--c2) 7%, var(--bg));
+}
+
+.artist-atlas__directory-grid > button[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--c1) 52%, transparent);
+  background: color-mix(in srgb, var(--c1) 9%, var(--bg));
+}
+
+.artist-atlas__directory-grid > button:active { transform: scale(0.99); }
+.artist-atlas__directory-grid > button > span { min-width: 0; }
+.artist-atlas__directory-grid strong { display: block; min-width: 0; font-size: 0.72rem; font-weight: 900; }
+.artist-atlas__directory-grid strong bdi { display: block; min-width: 0; overflow: hidden; text-align: start; text-overflow: ellipsis; white-space: nowrap; }
+.artist-atlas__directory-grid small { display: block; margin-top: 0.18rem; color: var(--type-ink-muted); font: 750 0.57rem ui-monospace, monospace; }
+.artist-atlas__directory-grid svg { color: var(--c2); }
+
+.artist-atlas__directory-empty {
+  margin-top: 0.6rem;
+  padding: 1.2rem;
+  border: 1px dashed var(--atlas-border-strong);
+  border-radius: 1rem;
+  color: var(--type-ink-muted);
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.artist-atlas__directory-more {
+  display: flex;
+  min-height: 2.65rem;
+  align-items: center;
+  justify-content: center;
+  margin: 0.8rem auto 0;
+  padding-inline: 1rem;
+  border: 1px solid color-mix(in srgb, var(--c2) 38%, transparent);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--c2) 8%, transparent);
+  color: color-mix(in srgb, var(--c2) 82%, var(--fg));
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
 .artist-atlas__hero {
   position: relative;
   isolation: isolate;
@@ -742,6 +913,8 @@
 
 @media (max-width: 820px) {
   .artist-atlas__masthead { grid-template-columns: 1fr; align-items: start; }
+  .artist-atlas__directory-heading { grid-template-columns: 1fr; align-items: start; }
+  .artist-atlas__directory-sort { justify-self: start; }
   .artist-atlas__hero { min-height: auto; grid-template-columns: 1fr; }
   .artist-atlas__hero::before { display: none; }
   .artist-atlas__hero-copy { order: 2; }
@@ -763,6 +936,37 @@
   .artist-atlas__masthead h2 { font-size: 2.15rem; }
   .artist-atlas__rail-block { padding: 0.6rem; border-radius: 1.1rem; }
   .artist-atlas__rail-item { min-width: 10.7rem; }
+  .artist-atlas__directory { padding: 0.75rem; border-radius: 1.15rem; }
+  .artist-atlas__directory-sort {
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: stretch;
+  }
+  .artist-atlas__directory-sort button {
+    min-width: 0;
+    padding-inline: 0.4rem;
+    font-size: 0.56rem;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+  }
+  .artist-atlas__directory-grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    overflow: visible;
+    padding: 0.05rem 0 0.2rem;
+  }
+  .artist-atlas__directory-grid > button {
+    min-height: 3.35rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.42rem;
+    padding: 0.4rem;
+  }
+  .artist-atlas__directory-grid > button > svg { display: none; }
+  .artist-atlas__directory-grid strong { font-size: 0.68rem; }
   .artist-atlas__hero { border-radius: 1.35rem; }
   .artist-atlas__hero-copy { padding: 1.15rem; }
   .artist-atlas__hero-copy h3 { font-size: clamp(2.6rem, 15vw, 4.5rem); }
@@ -789,7 +993,10 @@
 @media (prefers-reduced-motion: reduce) {
   .artist-atlas__stage-image,
   .artist-atlas__rail,
+  .artist-atlas__alphabet,
+  .artist-atlas__directory-grid,
   .artist-atlas__release-shelf { scroll-behavior: auto; transition: none; }
+  .artist-atlas__directory-grid > button { transition: none; }
   .artist-atlas__stage-image { transform: none; }
 }
 

@@ -461,6 +461,16 @@
   margin-top: 1.55rem;
 }
 
+.nova-hero__upload-help {
+  max-width: 38rem;
+  margin-top: 0.55rem;
+  color: var(--type-ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
 .nova-hero__cta {
   display: inline-flex;
   min-height: 3.35rem;

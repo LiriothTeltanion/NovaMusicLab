@@ -18,6 +18,8 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { wikimediaFileKey } from './lib/wikimediaFileKey.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const KNOWLEDGE_PATH = join(ROOT, 'src', 'data', 'offline_artist_knowledge.json');
 const IMAGES_PATH = join(ROOT, 'src', 'data', 'artist_images.json');
@@ -50,6 +52,22 @@ function namesMatch(a, b) {
   return na === nb || na.replace(/\s/g, '') === nb.replace(/\s/g, '');
 }
 
+/**
+ * Deezer answers with a stand-in image for artists it has no photo for, and it
+ * has served that stand-in two different ways. The original guard here only
+ * knew the first: an empty path segment, /images/artist//. Deezer now fills
+ * that segment with the MD5 of the empty string instead, so the guard silently
+ * stopped working and five top-100 artists - Nine Inch Nails, Skid Row, Neck
+ * Deep, The Story So Far and boy pablo - picked up a blank tile as a real
+ * gallery photo. The identity audit caught it; the file's own rule is that
+ * wrong art is worse than no art.
+ */
+const DEEZER_EMPTY_MD5 = 'd41d8cd98f00b204e9800998ecf8427e';
+
+function isDeezerPlaceholder(url) {
+  return url.includes('/artist//') || url.includes(`/artist/${DEEZER_EMPTY_MD5}/`);
+}
+
 async function deezerArtistPicture(name) {
   const tryNames = [name, ARTIST_ALIASES[name.toLowerCase()]].filter(Boolean);
   for (const candidate of tryNames) {
@@ -60,9 +78,7 @@ async function deezerArtistPicture(name) {
       const json = await res.json();
       const hit = (json.data ?? []).find((d) => namesMatch(d.name, candidate));
       const pic = hit?.picture_xl ?? hit?.picture_big;
-      // Deezer serves a generic placeholder for artists without photos —
-      // its URL contains /images/artist//; skip those.
-      if (pic && !pic.includes('/artist//')) return pic;
+      if (pic && !isDeezerPlaceholder(pic)) return pic;
     } catch { /* next candidate */ }
   }
   return null;
@@ -84,16 +100,43 @@ async function checkUrl(url) {
 
 const knowledge = JSON.parse(readFileSync(KNOWLEDGE_PATH, 'utf8'));
 const primary = JSON.parse(readFileSync(IMAGES_PATH, 'utf8'));
-const gallery = {};
+
+/**
+ * Seeded from the existing file, not started empty.
+ *
+ * This loop only walks the current top 100, so a fresh object silently deleted
+ * everyone else: the 2026-08 refresh ran it and 17 artists lost their gallery
+ * outright - Machine Gun Kelly and היהודים among them - while 55 more came back
+ * with fewer photos than they had. The top 100 turns over every refresh, and
+ * ArtistAvatar reads this file for any artist, not just the ranked ones, so a
+ * gallery that was good enough to ship last month is still good enough today.
+ *
+ * Every other harvester in this repo merges rather than replaces. This one now
+ * does too: existing photos are kept, new sources are appended, and the 4-photo
+ * cap still applies.
+ */
+const gallery = JSON.parse(readFileSync(GALLERY_PATH, 'utf8'));
 let deezerHits = 0, wikimediaExtras = 0;
 
 for (const artist of knowledge.artists) {
   const key = artist.name.toLowerCase();
-  const photos = [];
-  const seen = new Set();
+  const photos = [...(gallery[key] ?? [])];
+  // Keyed canonically, not by raw URL: Commons serves one file under two very
+  // different addresses, so a string set lets the same photo in twice.
+  const seen = new Set(photos.map(photo => wikimediaFileKey(photo.url)));
+  // Drop anything the placeholder rule now rejects, so a bad tile committed by
+  // an earlier run does not survive forever just because it is already here.
+  for (let index = photos.length - 1; index >= 0; index -= 1) {
+    if (isDeezerPlaceholder(photos[index].url)) {
+      seen.delete(photos[index].url);
+      photos.splice(index, 1);
+    }
+  }
   const push = (url, source) => {
-    if (!url || seen.has(url)) return;
-    seen.add(url);
+    if (!url) return;
+    const key = wikimediaFileKey(url);
+    if (seen.has(key)) return;
+    seen.add(key);
     photos.push({ url, source });
   };
 

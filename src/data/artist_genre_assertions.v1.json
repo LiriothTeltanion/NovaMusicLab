@@ -9,15 +9,15 @@
     "scripts/artist_truth_policy.mjs"
   ],
   "stats": {
-    "catalogArtistCount": 6413,
-    "catalogPlayCount": 80550,
-    "classifiedArtistCount": 453,
-    "classifiedPlayCount": 53329,
-    "unclassifiedArtistCount": 1662,
-    "unclassifiedPlayCount": 4777,
-    "knowledgeArtistCount": 453,
+    "catalogArtistCount": 6593,
+    "catalogPlayCount": 82661,
+    "classifiedArtistCount": 457,
+    "classifiedPlayCount": 54366,
+    "unclassifiedArtistCount": 1648,
+    "unclassifiedPlayCount": 4829,
+    "knowledgeArtistCount": 457,
     "acceptedAssertionCount": 85,
-    "candidateAssertionCount": 1170,
+    "candidateAssertionCount": 1203,
     "rejectedAssertionCount": 2
   },
   "artists": [
@@ -237,9 +237,7 @@
       "chartFamilyId": "Pop / Indie",
       "assertionIds": [
         "assertion:d332f284f85e707a6e636a2b",
-        "assertion:702b13ffc99017450794471a",
-        "assertion:acf48240328c3f074ca238aa",
-        "assertion:fc05966eda7cc6739d3f36e7"
+        "assertion:acf48240328c3f074ca238aa"
       ]
     },
     {
@@ -455,10 +453,7 @@
       "chartFamilyId": "Israeli Rock",
       "assertionIds": [
         "assertion:9e2c98b201db656fd8866edb",
-        "assertion:20ff9fe7346e974599222863",
-        "assertion:73ac071ba12e2b33016a41af",
-        "assertion:1584bc44dc43bb71a5489d80",
-        "assertion:6d0b20b846ce4a9746c85e26"
+        "assertion:73ac071ba12e2b33016a41af"
       ]
     },
     {
@@ -503,7 +498,12 @@
       "chartFamilyId": "Metalcore",
       "assertionIds": [
         "assertion:d0981f29f313eddd81dea820",
-        "assertion:4a6d25510f6cd8ad1293f50e"
+        "assertion:1b098a61eb84c8ddeff7c96c",
+        "assertion:9876718b3e730b0670467442",
+        "assertion:6ed82b3624a9b4666eacbc52",
+        "assertion:e06fcb1b5428735f0f0662a0",
+        "assertion:4a6d25510f6cd8ad1293f50e",
+        "assertion:27c941025eaf64abfee37072"
       ]
     },
     {
@@ -775,6 +775,33 @@
       "assertionIds": [
         "assertion:6bd0c4c5d98dce02bc72da7e",
         "assertion:3243328562f0fc5f7dd3893e"
+      ]
+    },
+    {
+      "artistKey": "Bring me the horizon",
+      "artistName": "Bring me the horizon",
+      "chartFamilyId": "Metalcore",
+      "assertionIds": [
+        "assertion:f48bf48eb2df00339d6d2f0d",
+        "assertion:2a25225fc3da9178b55e333b",
+        "assertion:c81140fdc55980dcf4814c16",
+        "assertion:d3cd9b60d547d32dee8cb50b",
+        "assertion:3f7dded0b6ef1061e938a382",
+        "assertion:28cebb217d54b0a4e52447ff",
+        "assertion:29883b1b79e95c01ff55888b",
+        "assertion:77d8902a82f03cc3c16014e9",
+        "assertion:16e6d681192723fc0840e203",
+        "assertion:ced0a7d613959f1bb92528f8",
+        "assertion:456de3f241195734face306b",
+        "assertion:1b467edb9d9007c37e0101d8",
+        "assertion:a0ff29037fc6d835b16d4e1f",
+        "assertion:623c8d62cb450adecb1f36ac",
+        "assertion:5731b5e7be0a2e8c75bab106",
+        "assertion:bdfacce75a12da13715c18e6",
+        "assertion:41ab02f24dc795879784484c",
+        "assertion:fb028b454d1fd0c8ea1f1141",
+        "assertion:96074ab27655e66124f8c899",
+        "assertion:1f97d1ecd0eeeb9d26c5f96c"
       ]
     },
     {
@@ -1664,6 +1691,15 @@
       ]
     },
     {
+      "artistKey": "Harry Styles",
+      "artistName": "Harry Styles",
+      "chartFamilyId": "Pop / Indie",
+      "assertionIds": [
+        "assertion:53f7e4217e04cee496edb79b",
+        "assertion:8d24a2b1f405f0fbb7c99685"
+      ]
+    },
+    {
       "artistKey": "Hayehudim",
       "artistName": "Hayehudim",
       "chartFamilyId": "Israeli Rock",
@@ -1812,8 +1848,7 @@
       "artistName": "Indighxst",
       "chartFamilyId": "Alternative",
       "assertionIds": [
-        "assertion:18798dcd7733e8330e3b3dde",
-        "assertion:09c99d2032e24ce70ee6f0bd"
+        "assertion:18798dcd7733e8330e3b3dde"
       ]
     },
     {
@@ -1950,8 +1985,18 @@
       "artistName": "Juice WRLD",
       "chartFamilyId": "Emo Rap / Trap",
       "assertionIds": [
+        "assertion:22c4c1cbf09d1046a2708721",
+        "assertion:37160eebc49434bee0ad9b4a",
+        "assertion:eb45125a7f83efe902536483",
+        "assertion:959cd1d0ee2d65e79d3e73d1",
+        "assertion:275111cc69cb15d367480c94",
+        "assertion:cb880072f3cbcd518ad563e2",
         "assertion:9836baf55c9d2faf3d894ad2",
-        "assertion:1fcae5df72bbf5d0853d8e38"
+        "assertion:a96e1aa44d60e2aa6ba4310b",
+        "assertion:1fcae5df72bbf5d0853d8e38",
+        "assertion:a806ea71e5b8bb1e25932866",
+        "assertion:d7a1e4e036cbdc378ebddaf4",
+        "assertion:4a4fadd4e1c4ed96e02d3a47"
       ]
     },
     {
@@ -2731,16 +2776,19 @@
       "assertionIds": [
         "assertion:7feae3aafdefafe124f57d07",
         "assertion:dfc67ca45a8928c9f2f6d699",
-        "assertion:59b4b1db487d16da00141333",
         "assertion:44683affea3fd45027d509c6",
+        "assertion:6a9a2b64efcb082a8e1d0069",
         "assertion:b01205a1d023bd3145e4eb3d",
         "assertion:728819a22a348bd1be1c38b9",
         "assertion:f3b486300e41804e9579ad12",
         "assertion:3a1378dc1cb7efa22912210b",
-        "assertion:d4436f05dd68fa62afee4208",
+        "assertion:22dd303568b6068d33cad23b",
         "assertion:0f02e45987105386c72af6bc",
+        "assertion:724cae7b6adb0d053ecfe989",
+        "assertion:8cfab1bee8174e251794d62d",
         "assertion:8bb4fbcc783bb3097bc0ea11",
-        "assertion:bd2b7495a2ca9ac67e4cc038"
+        "assertion:bd2b7495a2ca9ac67e4cc038",
+        "assertion:9859d8ba998005e71c42a948"
       ]
     },
     {
@@ -2849,6 +2897,17 @@
       "assertionIds": [
         "assertion:30e34ab09294c96953d32843",
         "assertion:53fca834b9c843c590da0338"
+      ]
+    },
+    {
+      "artistKey": "Oliver Tree",
+      "artistName": "Oliver Tree",
+      "chartFamilyId": "Alternative Rock",
+      "assertionIds": [
+        "assertion:31498ddab131b5c42f5b1650",
+        "assertion:b87c2f4933e5e5591ce8c8e8",
+        "assertion:237caee64e0d2b56321b8b38",
+        "assertion:1b62fe90c7b5a79c1b9416d4"
       ]
     },
     {
@@ -3048,6 +3107,7 @@
         "assertion:ab7620affd0c71b15cb99439",
         "assertion:ce3f73a20da1c13cd541efab",
         "assertion:b2c4fae515f14428503b6ed2",
+        "assertion:a22f2f786a2b6f47fb3d34fd",
         "assertion:ec26fa9b9e91194ac1a27459"
       ]
     },
@@ -3074,8 +3134,15 @@
       "artistName": "Post Malone",
       "chartFamilyId": "Emo Rap / Trap",
       "assertionIds": [
+        "assertion:f9762978c6285b56b24f34c2",
+        "assertion:fe67c2dbe9fead2c18efdfdc",
+        "assertion:f1d9eb68c50139ab20f651a8",
+        "assertion:6b4165124d47a974aabb6b94",
+        "assertion:88d936130fd42bc9d27aaa70",
         "assertion:f663bdf1b7c5d8db3c7eddc9",
-        "assertion:15fda10b87b56da5f81b7927"
+        "assertion:15fda10b87b56da5f81b7927",
+        "assertion:82653cd94edf2b72c0279f65",
+        "assertion:5244443f57de40d36062d2cf"
       ]
     },
     {
@@ -3420,15 +3487,6 @@
       "chartFamilyId": "Ambient / Lo-Fi",
       "assertionIds": [
         "assertion:2ca97fc95f620815cc53fbb7",
-        "assertion:dbbfadbd773c0a69c4191a90",
-        "assertion:51c0c8c179da16903329cc7d",
-        "assertion:10458d92116a0568ed6082c8",
-        "assertion:22f3468813e6aa61e9dbeca3",
-        "assertion:6231604c65a976ab951f463a",
-        "assertion:319e79031916f579cc63c9e3",
-        "assertion:4a1f15e2002a68cceac2a012",
-        "assertion:8e4f23ef07700a4804cac14b",
-        "assertion:bab7e3b821aa87f048921d6a",
         "assertion:2a919c9a25371b44e6f9361b"
       ]
     },
@@ -3438,15 +3496,6 @@
       "chartFamilyId": "Ambient / Lo-Fi",
       "assertionIds": [
         "assertion:9a7b62b8d15a65ba8b8b3ea5",
-        "assertion:906eaca2f71b3d9cdad82495",
-        "assertion:45a5e849dc38e6d457dfa6ab",
-        "assertion:231a217d65ae37d0a6141dd0",
-        "assertion:f4a59b29453f2cde49d09e7f",
-        "assertion:c49af25b535a5884166ac93f",
-        "assertion:9bbfacd36326774f752ddf6c",
-        "assertion:9638827e5a6ea7740013d1a2",
-        "assertion:d2a2dbbbbf427c85fb0ca51c",
-        "assertion:d0546fcfb52cb7b705faeb38",
         "assertion:f44462e4406ed6032c6c551d"
       ]
     },
@@ -3463,6 +3512,7 @@
         "assertion:ffeceb7129fb322f31954aef",
         "assertion:1f93c40c204402e20ef804f8",
         "assertion:f1c11b69fb32bbb72ee981b0",
+        "assertion:0618d9fae31fb0e91560d257",
         "assertion:6d39800f332f4bd2e88cffd3",
         "assertion:73028bd3c25ff74b20489ee5",
         "assertion:971a5a42aba8f26b2aa50089"
@@ -3937,8 +3987,10 @@
       "assertionIds": [
         "assertion:e9e3197a987d424de095a73a",
         "assertion:fd2d62470615793c251886e7",
+        "assertion:bf6b830b714c3b51459eea42",
         "assertion:5999161fba4d4711434c7e4b",
-        "assertion:63570bcc6046d0cae5f69c4e"
+        "assertion:63570bcc6046d0cae5f69c4e",
+        "assertion:2e27c53103622df018333636"
       ]
     },
     {
@@ -4263,6 +4315,15 @@
         "assertion:6e77f3b41555337b92f91441",
         "assertion:d72f2c335e3c77cf32cc4739",
         "assertion:f89c808f667baf816bbf5487"
+      ]
+    },
+    {
+      "artistKey": "Two Door Cinema Club",
+      "artistName": "Two Door Cinema Club",
+      "chartFamilyId": "Pop / Indie",
+      "assertionIds": [
+        "assertion:95542cb9483794f304514d6f",
+        "assertion:b3cd1d371fa39820b7bf384d"
       ]
     },
     {
@@ -5329,40 +5390,6 @@
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Melodic Death"
-        }
-      ]
-    },
-    {
-      "id": "assertion:702b13ffc99017450794471a",
-      "artistKey": "Amr Diab",
-      "termId": "musicbrainz:2b9b7ea8-cb90-428c-adb2-d55b2faa4f1d",
-      "rawLabel": "Latin pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "wikidata",
-          "sourceId": "Q477461",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q477461",
-          "observedLabel": "Latin pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:fc05966eda7cc6739d3f36e7",
-      "artistKey": "Amr Diab",
-      "termId": "musicbrainz:911c7bbb-172d-4df8-9478-dbff4296e791",
-      "rawLabel": "pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "ba26c1ff-e5e2-42c2-b1d7-b6f82ebc37ac",
-          "sourceUrl": "https://musicbrainz.org/artist/ba26c1ff-e5e2-42c2-b1d7-b6f82ebc37ac",
-          "observedLabel": "pop"
         }
       ]
     },
@@ -6529,57 +6556,6 @@
       ]
     },
     {
-      "id": "assertion:1584bc44dc43bb71a5489d80",
-      "artistKey": "Aviv Geffen",
-      "termId": "musicbrainz:0e3fc579-2d24-4f20-9dae-736e1ec78798",
-      "rawLabel": "rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "3f1f9c33-b86e-44e1-a332-b215456d279c",
-          "sourceUrl": "https://musicbrainz.org/artist/3f1f9c33-b86e-44e1-a332-b215456d279c",
-          "observedLabel": "rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:6d0b20b846ce4a9746c85e26",
-      "artistKey": "Aviv Geffen",
-      "termId": "musicbrainz:455f264b-db00-4716-991d-fbd32dc24523",
-      "rawLabel": "singer-songwriter",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "3f1f9c33-b86e-44e1-a332-b215456d279c",
-          "sourceUrl": "https://musicbrainz.org/artist/3f1f9c33-b86e-44e1-a332-b215456d279c",
-          "observedLabel": "singer-songwriter"
-        }
-      ]
-    },
-    {
-      "id": "assertion:20ff9fe7346e974599222863",
-      "artistKey": "Aviv Geffen",
-      "termId": "musicbrainz:ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
-      "rawLabel": "alternative rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "wikidata",
-          "sourceId": "Q733103",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q733103",
-          "observedLabel": "alternative rock"
-        }
-      ]
-    },
-    {
       "id": "assertion:9e2c98b201db656fd8866edb",
       "artistKey": "Aviv Geffen",
       "termId": "nova:alternative:b59b72be37",
@@ -6750,6 +6726,23 @@
       ]
     },
     {
+      "id": "assertion:6ed82b3624a9b4666eacbc52",
+      "artistKey": "Bad Omens",
+      "termId": "musicbrainz:4f2cd717-7259-48df-8d0a-c17ccd9203b9",
+      "rawLabel": "melodic metalcore",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "melodic metalcore"
+        }
+      ]
+    },
+    {
       "id": "assertion:4a6d25510f6cd8ad1293f50e",
       "artistKey": "Bad Omens",
       "termId": "musicbrainz:62f88295-0605-4ce8-958b-2e0063ece47e",
@@ -6759,10 +6752,96 @@
       "confidence": "curated",
       "evidence": [
         {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "metalcore"
+        },
+        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Metalcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q54958373",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q54958373",
+          "observedLabel": "metalcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:1b098a61eb84c8ddeff7c96c",
+      "artistKey": "Bad Omens",
+      "termId": "musicbrainz:7983ff25-ddf9-411e-a7f9-6cca238bff79",
+      "rawLabel": "alternative metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "alternative metal"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q54958373",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q54958373",
+          "observedLabel": "alternative metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:9876718b3e730b0670467442",
+      "artistKey": "Bad Omens",
+      "termId": "musicbrainz:a6719055-99c4-47eb-beaa-71081f2376f9",
+      "rawLabel": "heavy metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "heavy metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:27c941025eaf64abfee37072",
+      "artistKey": "Bad Omens",
+      "termId": "musicbrainz:aec382b7-b635-470c-9051-2f84e0b5ea1e",
+      "rawLabel": "post-hardcore",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "post-hardcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:e06fcb1b5428735f0f0662a0",
+      "artistKey": "Bad Omens",
+      "termId": "musicbrainz:cc28f5aa-5e19-487c-88e1-e56b022f1fdd",
+      "rawLabel": "metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "sourceUrl": "https://musicbrainz.org/artist/eecada09-acfc-472d-ae55-e9e5a43f12d8",
+          "observedLabel": "metal"
         }
       ]
     },
@@ -7695,6 +7774,12 @@
           "sourceId": "blessthefall",
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/scripts/artist_truth_policy.mjs",
           "observedLabel": "Post-Hardcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q838942",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q838942",
+          "observedLabel": "post-hardcore"
         }
       ]
     },
@@ -7810,6 +7895,12 @@
           "sourceId": "blessthefall",
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/scripts/artist_truth_policy.mjs",
           "observedLabel": "Post-Hardcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q838942",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q838942",
+          "observedLabel": "post-hardcore"
         }
       ]
     },
@@ -8527,6 +8618,382 @@
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Post-Grunge"
+        }
+      ]
+    },
+    {
+      "id": "assertion:fb028b454d1fd0c8ea1f1141",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:0e3fc579-2d24-4f20-9dae-736e1ec78798",
+      "rawLabel": "rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:41ab02f24dc795879784484c",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:146ef761-5ad9-48b4-b0b3-483104f7da48",
+      "rawLabel": "psychedelic rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "psychedelic rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:1f97d1ecd0eeeb9d26c5f96c",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:41fe3260-fcc1-450b-bd5a-803886c56912",
+      "rawLabel": "techno",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "techno"
+        }
+      ]
+    },
+    {
+      "id": "assertion:3f7dded0b6ef1061e938a382",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:462f9321-6103-49c9-b6db-96219bce6f62",
+      "rawLabel": "drum and bass",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "drum and bass"
+        }
+      ]
+    },
+    {
+      "id": "assertion:456de3f241195734face306b",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:4f2cd717-7259-48df-8d0a-c17ccd9203b9",
+      "rawLabel": "melodic metalcore",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "melodic metalcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:77d8902a82f03cc3c16014e9",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:51cb9f91-e6a2-41bf-891f-e78e3f1e52ab",
+      "rawLabel": "hard rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "hard rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:1b467edb9d9007c37e0101d8",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:62f88295-0605-4ce8-958b-2e0063ece47e",
+      "rawLabel": "Metalcore",
+      "role": "primary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "metalcore"
+        },
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Metalcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "metalcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:5731b5e7be0a2e8c75bab106",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:797e2e85-5ffd-495c-a757-8b4079052f0e",
+      "rawLabel": "pop rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "pop rock"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "pop rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:2a25225fc3da9178b55e333b",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:7983ff25-ddf9-411e-a7f9-6cca238bff79",
+      "rawLabel": "alternative metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "alternative metal"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "alternative metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:28cebb217d54b0a4e52447ff",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:89255676-1f14-4dd8-bbad-fca839d6aff4",
+      "rawLabel": "electronic",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "electronic"
+        }
+      ]
+    },
+    {
+      "id": "assertion:96074ab27655e66124f8c899",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:8fea0cb0-4205-49cb-95e8-bc1122857c7d",
+      "rawLabel": "screamo",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "screamo"
+        }
+      ]
+    },
+    {
+      "id": "assertion:623c8d62cb450adecb1f36ac",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:911c7bbb-172d-4df8-9478-dbff4296e791",
+      "rawLabel": "pop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "pop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:ced0a7d613959f1bb92528f8",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+      "rawLabel": "house",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "house"
+        }
+      ]
+    },
+    {
+      "id": "assertion:16e6d681192723fc0840e203",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:a6719055-99c4-47eb-beaa-71081f2376f9",
+      "rawLabel": "heavy metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "heavy metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:bdfacce75a12da13715c18e6",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:aec382b7-b635-470c-9051-2f84e0b5ea1e",
+      "rawLabel": "post-hardcore",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "post-hardcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "post-hardcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:a0ff29037fc6d835b16d4e1f",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:bbad9cda-bde2-448e-821c-7ebf85a54020",
+      "rawLabel": "nu metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "nu metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:c81140fdc55980dcf4814c16",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+      "rawLabel": "alternative rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "alternative rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:d3cd9b60d547d32dee8cb50b",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:d39cbc30-7dc6-4194-8f99-6d35dd602451",
+      "rawLabel": "deathcore",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "deathcore"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q494784",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q494784",
+          "observedLabel": "deathcore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:29883b1b79e95c01ff55888b",
+      "artistKey": "Bring me the horizon",
+      "termId": "musicbrainz:ef0c2769-9c8f-49fc-b66e-27b8242b004a",
+      "rawLabel": "emo",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "sourceUrl": "https://musicbrainz.org/artist/074e3847-f67f-49f9-81f1-8c8cea147e8e",
+          "observedLabel": "emo"
+        }
+      ]
+    },
+    {
+      "id": "assertion:f48bf48eb2df00339d6d2f0d",
+      "artistKey": "Bring me the horizon",
+      "termId": "nova:alternative:b59b72be37",
+      "rawLabel": "Alternative",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Alternative"
         }
       ]
     },
@@ -13488,6 +13955,40 @@
       ]
     },
     {
+      "id": "assertion:53f7e4217e04cee496edb79b",
+      "artistKey": "Harry Styles",
+      "termId": "musicbrainz:797e2e85-5ffd-495c-a757-8b4079052f0e",
+      "rawLabel": "Pop Rock",
+      "role": "primary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Pop Rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:8d24a2b1f405f0fbb7c99685",
+      "artistKey": "Harry Styles",
+      "termId": "musicbrainz:7d0c6a6b-5d56-4b1e-a8c7-e32194f246b9",
+      "rawLabel": "Soft Rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Soft Rock"
+        }
+      ]
+    },
+    {
       "id": "assertion:e25e8e365ea2f7b5bade5608",
       "artistKey": "Hayehudim",
       "termId": "musicbrainz:51cb9f91-e6a2-41bf-891f-e78e3f1e52ab",
@@ -14183,23 +14684,6 @@
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Pop Punk"
-        }
-      ]
-    },
-    {
-      "id": "assertion:09c99d2032e24ce70ee6f0bd",
-      "artistKey": "Indighxst",
-      "termId": "musicbrainz:aec382b7-b635-470c-9051-2f84e0b5ea1e",
-      "rawLabel": "post-hardcore",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "a65a4af8-7fd8-424c-80a6-a830b927c184",
-          "sourceUrl": "https://musicbrainz.org/artist/a65a4af8-7fd8-424c-80a6-a830b927c184",
-          "observedLabel": "post-hardcore"
         }
       ]
     },
@@ -14927,6 +15411,171 @@
       ]
     },
     {
+      "id": "assertion:cb880072f3cbcd518ad563e2",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:1bafab01-c092-47bc-84ee-a6b503b3cb86",
+      "rawLabel": "east coast hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "east coast hip hop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:959cd1d0ee2d65e79d3e73d1",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:2346fb3e-8546-4119-a929-601db8e0a733",
+      "rawLabel": "cloud rap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "cloud rap"
+        }
+      ]
+    },
+    {
+      "id": "assertion:275111cc69cb15d367480c94",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:4bb4043a-0ee5-4b84-93fa-6ba4567a6ba0",
+      "rawLabel": "contemporary R&B",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "contemporary R&B"
+        }
+      ]
+    },
+    {
+      "id": "assertion:a96e1aa44d60e2aa6ba4310b",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+      "rawLabel": "hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "hip hop"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "hip-hop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:22c4c1cbf09d1046a2708721",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:924943cd-73c8-45c0-96eb-74f2a15e5d6e",
+      "rawLabel": "alternative hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "alternative hip hop"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "alternative hip-hop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:4a4fadd4e1c4ed96e02d3a47",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:9a339aa8-a0e5-450c-95a7-b11517bb508f",
+      "rawLabel": "trap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "trap"
+        }
+      ]
+    },
+    {
+      "id": "assertion:eb45125a7f83efe902536483",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:b11f3064-4c98-472b-8877-2c69a9ede4e8",
+      "rawLabel": "chicago drill",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "chicago drill"
+        }
+      ]
+    },
+    {
+      "id": "assertion:37160eebc49434bee0ad9b4a",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+      "rawLabel": "alternative rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "alternative rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:d7a1e4e036cbdc378ebddaf4",
+      "artistKey": "Juice WRLD",
+      "termId": "musicbrainz:da2fc3b4-b97d-491a-ac0f-8a731bee7237",
+      "rawLabel": "pop rap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "pop rap"
+        }
+      ]
+    },
+    {
       "id": "assertion:9836baf55c9d2faf3d894ad2",
       "artistKey": "Juice WRLD",
       "termId": "musicbrainz:f52f5fc5-3b75-4757-9d1f-4cabe6808856",
@@ -14936,10 +15585,22 @@
       "confidence": "curated",
       "evidence": [
         {
+          "provider": "musicbrainz",
+          "sourceId": "4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "sourceUrl": "https://musicbrainz.org/artist/4e4ebde4-0c56-4dec-844b-6c73adcdd92d",
+          "observedLabel": "emo rap"
+        },
+        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Emo Rap"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "emo rap"
         }
       ]
     },
@@ -14957,6 +15618,23 @@
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Melodic Trap"
+        }
+      ]
+    },
+    {
+      "id": "assertion:a806ea71e5b8bb1e25932866",
+      "artistKey": "Juice WRLD",
+      "termId": "nova:mumble-rap:ca337a1193",
+      "rawLabel": "mumble rap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q52151598",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q52151598",
+          "observedLabel": "mumble rap"
         }
       ]
     },
@@ -18666,6 +19344,40 @@
       ]
     },
     {
+      "id": "assertion:9859d8ba998005e71c42a948",
+      "artistKey": "Nine Inch Nails",
+      "termId": "musicbrainz:41fe3260-fcc1-450b-bd5a-803886c56912",
+      "rawLabel": "techno",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "observedLabel": "techno"
+        }
+      ]
+    },
+    {
+      "id": "assertion:22dd303568b6068d33cad23b",
+      "artistKey": "Nine Inch Nails",
+      "termId": "musicbrainz:52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+      "rawLabel": "hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "observedLabel": "hip hop"
+        }
+      ]
+    },
+    {
       "id": "assertion:8bb4fbcc783bb3097bc0ea11",
       "artistKey": "Nine Inch Nails",
       "termId": "musicbrainz:53ceafec-ced4-4bec-ac57-d00cbf3a0c29",
@@ -18679,23 +19391,6 @@
           "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
           "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
           "observedLabel": "post-industrial"
-        }
-      ]
-    },
-    {
-      "id": "assertion:d4436f05dd68fa62afee4208",
-      "artistKey": "Nine Inch Nails",
-      "termId": "musicbrainz:65c97e89-b42b-45c2-a70e-0eca1b8f0ff7",
-      "rawLabel": "experimental rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
-          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
-          "observedLabel": "experimental rock"
         }
       ]
     },
@@ -18717,23 +19412,6 @@
       ]
     },
     {
-      "id": "assertion:59b4b1db487d16da00141333",
-      "artistKey": "Nine Inch Nails",
-      "termId": "musicbrainz:7983ff25-ddf9-411e-a7f9-6cca238bff79",
-      "rawLabel": "alternative metal",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
-          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
-          "observedLabel": "alternative metal"
-        }
-      ]
-    },
-    {
       "id": "assertion:f3b486300e41804e9579ad12",
       "artistKey": "Nine Inch Nails",
       "termId": "musicbrainz:89255676-1f14-4dd8-bbad-fca839d6aff4",
@@ -18747,6 +19425,40 @@
           "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
           "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
           "observedLabel": "electronic"
+        }
+      ]
+    },
+    {
+      "id": "assertion:8cfab1bee8174e251794d62d",
+      "artistKey": "Nine Inch Nails",
+      "termId": "musicbrainz:911c7bbb-172d-4df8-9478-dbff4296e791",
+      "rawLabel": "pop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "observedLabel": "pop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:724cae7b6adb0d053ecfe989",
+      "artistKey": "Nine Inch Nails",
+      "termId": "musicbrainz:bbad9cda-bde2-448e-821c-7ebf85a54020",
+      "rawLabel": "nu metal",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "observedLabel": "nu metal"
         }
       ]
     },
@@ -18787,6 +19499,23 @@
           "sourceId": "Q11647",
           "sourceUrl": "https://www.wikidata.org/wiki/Q11647",
           "observedLabel": "alternative rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:6a9a2b64efcb082a8e1d0069",
+      "artistKey": "Nine Inch Nails",
+      "termId": "musicbrainz:e5bba957-8c91-496a-a675-c6d0c6b51c33",
+      "rawLabel": "dance",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "sourceUrl": "https://musicbrainz.org/artist/b7ffd2af-418f-4be2-bdd1-22f8b48613da",
+          "observedLabel": "dance"
         }
       ]
     },
@@ -19338,6 +20067,92 @@
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Alternative Metal"
+        }
+      ]
+    },
+    {
+      "id": "assertion:237caee64e0d2b56321b8b38",
+      "artistKey": "Oliver Tree",
+      "termId": "musicbrainz:52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+      "rawLabel": "hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "1fa3bded-908f-47be-9784-3c9ef850682b",
+          "sourceUrl": "https://musicbrainz.org/artist/1fa3bded-908f-47be-9784-3c9ef850682b",
+          "observedLabel": "hip hop"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q55956050",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q55956050",
+          "observedLabel": "hip-hop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:b87c2f4933e5e5591ce8c8e8",
+      "artistKey": "Oliver Tree",
+      "termId": "musicbrainz:ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+      "rawLabel": "Alternative Rock",
+      "role": "primary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "1fa3bded-908f-47be-9784-3c9ef850682b",
+          "sourceUrl": "https://musicbrainz.org/artist/1fa3bded-908f-47be-9784-3c9ef850682b",
+          "observedLabel": "alternative rock"
+        },
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Alternative Rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:31498ddab131b5c42f5b1650",
+      "artistKey": "Oliver Tree",
+      "termId": "musicbrainz:d3ebe947-7c03-43f5-b333-09379881b0f6",
+      "rawLabel": "Alternative Pop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "1fa3bded-908f-47be-9784-3c9ef850682b",
+          "sourceUrl": "https://musicbrainz.org/artist/1fa3bded-908f-47be-9784-3c9ef850682b",
+          "observedLabel": "alternative pop"
+        },
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Alternative Pop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:1b62fe90c7b5a79c1b9416d4",
+      "artistKey": "Oliver Tree",
+      "termId": "musicbrainz:f390be72-360b-41bb-a310-6a2e638779d2",
+      "rawLabel": "indie pop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q55956050",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q55956050",
+          "observedLabel": "indie pop"
         }
       ]
     },
@@ -20202,6 +21017,23 @@
       ]
     },
     {
+      "id": "assertion:a22f2f786a2b6f47fb3d34fd",
+      "artistKey": "Polyphia",
+      "termId": "musicbrainz:0e3fc579-2d24-4f20-9dae-736e1ec78798",
+      "rawLabel": "rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "344bfb00-27f0-4ff2-b96b-048ed1c6a968",
+          "sourceUrl": "https://musicbrainz.org/artist/344bfb00-27f0-4ff2-b96b-048ed1c6a968",
+          "observedLabel": "rock"
+        }
+      ]
+    },
+    {
       "id": "assertion:39872968f432085426d98fee",
       "artistKey": "Polyphia",
       "termId": "musicbrainz:2c63c5f4-280d-466c-bcd1-7905a4795d5b",
@@ -20395,6 +21227,131 @@
       ]
     },
     {
+      "id": "assertion:fe67c2dbe9fead2c18efdfdc",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:2346fb3e-8546-4119-a929-601db8e0a733",
+      "rawLabel": "cloud rap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "cloud rap"
+        }
+      ]
+    },
+    {
+      "id": "assertion:82653cd94edf2b72c0279f65",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:31be54b2-4d0c-42df-aa44-c496c7b4c3c3",
+      "rawLabel": "r&b",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "r&b"
+        }
+      ]
+    },
+    {
+      "id": "assertion:f1d9eb68c50139ab20f651a8",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:4bb4043a-0ee5-4b84-93fa-6ba4567a6ba0",
+      "rawLabel": "contemporary r&b",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "contemporary r&b"
+        }
+      ]
+    },
+    {
+      "id": "assertion:f9762978c6285b56b24f34c2",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:4e03fb35-d571-4111-824d-88c9f8a3d0c9",
+      "rawLabel": "alternative r&b",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "alternative r&b"
+        }
+      ]
+    },
+    {
+      "id": "assertion:88d936130fd42bc9d27aaa70",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+      "rawLabel": "hip hop",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "hip hop"
+        },
+        {
+          "provider": "wikidata",
+          "sourceId": "Q21621919",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q21621919",
+          "observedLabel": "hip-hop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:6b4165124d47a974aabb6b94",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:5f665615-7fb3-49d8-b541-62a7b239edbe",
+      "rawLabel": "country",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "country"
+        }
+      ]
+    },
+    {
+      "id": "assertion:5244443f57de40d36062d2cf",
+      "artistKey": "Post Malone",
+      "termId": "musicbrainz:9a339aa8-a0e5-450c-95a7-b11517bb508f",
+      "rawLabel": "trap",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "trap"
+        }
+      ]
+    },
+    {
       "id": "assertion:15fda10b87b56da5f81b7927",
       "artistKey": "Post Malone",
       "termId": "musicbrainz:da2fc3b4-b97d-491a-ac0f-8a731bee7237",
@@ -20403,6 +21360,12 @@
       "status": "candidate",
       "confidence": "curated",
       "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "sourceUrl": "https://musicbrainz.org/artist/b1e26560-60e5-4236-bbdb-9aa5a8d5ee19",
+          "observedLabel": "pop rap"
+        },
         {
           "provider": "nova-catalog",
           "sourceId": null,
@@ -21873,56 +22836,10 @@
       "confidence": "curated",
       "evidence": [
         {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "post-rock"
-        },
-        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Post-Rock"
-        },
-        {
-          "provider": "wikidata",
-          "sourceId": "Q483828",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q483828",
-          "observedLabel": "post-rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:dbbfadbd773c0a69c4191a90",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:2cdcecfe-3e7c-4055-ab34-78eceabe4d9b",
-      "rawLabel": "ambient pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "ambient pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:8e4f23ef07700a4804cac14b",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:4ae63770-68af-4fae-b0f1-5e53f372c743",
-      "rawLabel": "instrumental",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "instrumental"
         }
       ]
     },
@@ -21936,135 +22853,10 @@
       "confidence": "curated",
       "evidence": [
         {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "ambient"
-        },
-        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Ambient"
-        }
-      ]
-    },
-    {
-      "id": "assertion:22f3468813e6aa61e9dbeca3",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:6242615b-5620-465b-b6fb-2e593e90cbad",
-      "rawLabel": "dream pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "dream pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:4a1f15e2002a68cceac2a012",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:65c97e89-b42b-45c2-a70e-0eca1b8f0ff7",
-      "rawLabel": "experimental rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "experimental rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:319e79031916f579cc63c9e3",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:68c81274-5770-4e7b-a4bf-ab0d7d425d99",
-      "rawLabel": "experimental",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "experimental"
-        }
-      ]
-    },
-    {
-      "id": "assertion:6231604c65a976ab951f463a",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:89255676-1f14-4dd8-bbad-fca839d6aff4",
-      "rawLabel": "electronic",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "electronic"
-        }
-      ]
-    },
-    {
-      "id": "assertion:51c0c8c179da16903329cc7d",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:930ef127-3653-4677-9b95-ecc90c7c1a14",
-      "rawLabel": "art pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "art pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:10458d92116a0568ed6082c8",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:b7ef058e-6d83-4ca4-8123-9724bff4648b",
-      "rawLabel": "art rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "art rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:bab7e3b821aa87f048921d6a",
-      "artistKey": "sigur rós",
-      "termId": "musicbrainz:e214700e-dae1-4b69-81e9-276e4e88fa32",
-      "rawLabel": "post-metal",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "wikidata",
-          "sourceId": "Q483828",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q483828",
-          "observedLabel": "post-metal"
         }
       ]
     },
@@ -22078,56 +22870,10 @@
       "confidence": "curated",
       "evidence": [
         {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "post-rock"
-        },
-        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Post-Rock"
-        },
-        {
-          "provider": "wikidata",
-          "sourceId": "Q483828",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q483828",
-          "observedLabel": "post-rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:906eaca2f71b3d9cdad82495",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:2cdcecfe-3e7c-4055-ab34-78eceabe4d9b",
-      "rawLabel": "ambient pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "ambient pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:d2a2dbbbbf427c85fb0ca51c",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:4ae63770-68af-4fae-b0f1-5e53f372c743",
-      "rawLabel": "instrumental",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "instrumental"
         }
       ]
     },
@@ -22141,135 +22887,10 @@
       "confidence": "curated",
       "evidence": [
         {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "ambient"
-        },
-        {
           "provider": "nova-catalog",
           "sourceId": null,
           "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
           "observedLabel": "Ambient"
-        }
-      ]
-    },
-    {
-      "id": "assertion:f4a59b29453f2cde49d09e7f",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:6242615b-5620-465b-b6fb-2e593e90cbad",
-      "rawLabel": "dream pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "dream pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:9638827e5a6ea7740013d1a2",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:65c97e89-b42b-45c2-a70e-0eca1b8f0ff7",
-      "rawLabel": "experimental rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "experimental rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:9bbfacd36326774f752ddf6c",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:68c81274-5770-4e7b-a4bf-ab0d7d425d99",
-      "rawLabel": "experimental",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "experimental"
-        }
-      ]
-    },
-    {
-      "id": "assertion:c49af25b535a5884166ac93f",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:89255676-1f14-4dd8-bbad-fca839d6aff4",
-      "rawLabel": "electronic",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "electronic"
-        }
-      ]
-    },
-    {
-      "id": "assertion:45a5e849dc38e6d457dfa6ab",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:930ef127-3653-4677-9b95-ecc90c7c1a14",
-      "rawLabel": "art pop",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "art pop"
-        }
-      ]
-    },
-    {
-      "id": "assertion:231a217d65ae37d0a6141dd0",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:b7ef058e-6d83-4ca4-8123-9724bff4648b",
-      "rawLabel": "art rock",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "musicbrainz",
-          "sourceId": "f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "sourceUrl": "https://musicbrainz.org/artist/f6f2326f-6b25-4170-b89d-e235b25508e8",
-          "observedLabel": "art rock"
-        }
-      ]
-    },
-    {
-      "id": "assertion:d0546fcfb52cb7b705faeb38",
-      "artistKey": "Sigur Rós",
-      "termId": "musicbrainz:e214700e-dae1-4b69-81e9-276e4e88fa32",
-      "rawLabel": "post-metal",
-      "role": "secondary",
-      "status": "candidate",
-      "confidence": "matched",
-      "evidence": [
-        {
-          "provider": "wikidata",
-          "sourceId": "Q483828",
-          "sourceUrl": "https://www.wikidata.org/wiki/Q483828",
-          "observedLabel": "post-metal"
         }
       ]
     },
@@ -22391,6 +23012,23 @@
           "sourceId": "d89de379-665d-425c-b2e9-41b95d1edb36",
           "sourceUrl": "https://musicbrainz.org/artist/d89de379-665d-425c-b2e9-41b95d1edb36",
           "observedLabel": "emocore"
+        }
+      ]
+    },
+    {
+      "id": "assertion:0618d9fae31fb0e91560d257",
+      "artistKey": "Silverstein",
+      "termId": "musicbrainz:30335a76-0814-4202-b8a1-31d8b987e4d8",
+      "rawLabel": "pop screamo",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "musicbrainz",
+          "sourceId": "d89de379-665d-425c-b2e9-41b95d1edb36",
+          "sourceUrl": "https://musicbrainz.org/artist/d89de379-665d-425c-b2e9-41b95d1edb36",
+          "observedLabel": "pop screamo"
         }
       ]
     },
@@ -24949,12 +25587,40 @@
           "sourceId": "80609a00-b394-4a49-975b-2db6b543fa97",
           "sourceUrl": "https://musicbrainz.org/artist/80609a00-b394-4a49-975b-2db6b543fa97",
           "observedLabel": "hip hop"
-        },
+        }
+      ]
+    },
+    {
+      "id": "assertion:2e27c53103622df018333636",
+      "artistKey": "The Kid LAROI",
+      "termId": "musicbrainz:60e21d01-ce21-4127-86b7-aada79558dab",
+      "rawLabel": "pop-punk",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
         {
           "provider": "wikidata",
           "sourceId": "Q82890761",
           "sourceUrl": "https://www.wikidata.org/wiki/Q82890761",
-          "observedLabel": "hip-hop"
+          "observedLabel": "pop-punk"
+        }
+      ]
+    },
+    {
+      "id": "assertion:bf6b830b714c3b51459eea42",
+      "artistKey": "The Kid LAROI",
+      "termId": "musicbrainz:ceeaa283-5d7b-4202-8d1d-e25d116b2a18",
+      "rawLabel": "alternative rock",
+      "role": "secondary",
+      "status": "candidate",
+      "confidence": "matched",
+      "evidence": [
+        {
+          "provider": "wikidata",
+          "sourceId": "Q82890761",
+          "sourceUrl": "https://www.wikidata.org/wiki/Q82890761",
+          "observedLabel": "alternative rock"
         }
       ]
     },
@@ -27107,6 +27773,40 @@
       "termId": "musicbrainz:f390be72-360b-41bb-a310-6a2e638779d2",
       "rawLabel": "Indie Pop",
       "role": "primary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Indie Pop"
+        }
+      ]
+    },
+    {
+      "id": "assertion:b3cd1d371fa39820b7bf384d",
+      "artistKey": "Two Door Cinema Club",
+      "termId": "musicbrainz:ccd19ebf-052c-4afe-8ad9-fbb0a73f94a7",
+      "rawLabel": "Indie Rock",
+      "role": "primary",
+      "status": "candidate",
+      "confidence": "curated",
+      "evidence": [
+        {
+          "provider": "nova-catalog",
+          "sourceId": null,
+          "sourceUrl": "https://github.com/LiriothTeltanion/NovaMusicLab/blob/main/src/data/artist_meta.json",
+          "observedLabel": "Indie Rock"
+        }
+      ]
+    },
+    {
+      "id": "assertion:95542cb9483794f304514d6f",
+      "artistKey": "Two Door Cinema Club",
+      "termId": "musicbrainz:f390be72-360b-41bb-a310-6a2e638779d2",
+      "rawLabel": "Indie Pop",
+      "role": "secondary",
       "status": "candidate",
       "confidence": "curated",
       "evidence": [

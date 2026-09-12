@@ -113,7 +113,7 @@ describe('expanded info sections', () => {
     renderAtDepth(<FinalReport data={data} />, 'guided');
 
     expect(screen.getByText('The Living Museum: Memory, Snapshot and Trust')).toBeInTheDocument();
-    expect(screen.getByText(/newer museum layers reveal/i)).toBeInTheDocument();
-    expect(screen.getByText('reading confidence')).toBeInTheDocument();
+    expect(screen.getByText(/newer museum layers summarize/i)).toBeInTheDocument();
+    expect(screen.getByText('source coverage signal')).toBeInTheDocument();
   });
 });

@@ -17,6 +17,7 @@ The package lock is the authoritative dependency inventory. Principal packages i
 - [Lucide](https://lucide.dev/);
 - [Vitest](https://vitest.dev/) and Testing Library;
 - [Playwright](https://playwright.dev/) and [axe-core](https://github.com/dequelabs/axe-core) for browser and accessibility checks;
+- [`gifenc`](https://github.com/mattdesl/gifenc) for deterministic release-tour encoding;
 - `canvas-confetti` and `html-to-image`.
 
 Consult `package-lock.json` and the installed package license files for exact versions and license texts.

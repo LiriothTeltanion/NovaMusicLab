@@ -2,7 +2,8 @@
 
 Nova Music Lab normalizes multiple export formats into one analytical model while preserving source capabilities and limitations.
 
-Status: reflects Nova Music Lab `1.5.0` — deployed **2026-08-01**.
+Status: reflects Nova Music Lab `1.6.0` — **private candidate 2026-08-09**;
+`1.5.0` — deployed 2026-08-01 — remains the latest public release.
 
 ## Timeline capability matrix
 
@@ -18,6 +19,16 @@ Status: reflects Nova Music Lab `1.5.0` — deployed **2026-08-01**.
 | Long-term chronology | Strong | Export-window dependent | Export dependent | Strong | Export dependent |
 
 “Source-dependent” means the parser must verify the field exists; it must not assume it from the provider name.
+
+### Last.fm local export contract
+
+The optional repository CLI can request a frozen history snapshot from the
+official Last.fm `user.getRecentTracks` endpoint and convert it to
+`Artist,Album,Track,Date`, with ISO 8601 UTC timestamps. The API key remains
+process-local and the raw CSV is saved outside the repository under the user's
+local app-data directory. This is a manual private export, not a browser runtime
+request or automatic synchronization. See the
+[private Last.fm history export guide](./LASTFM_LOCAL_EXPORT.md).
 
 ## MusicBee is a separate library snapshot
 
@@ -61,6 +72,10 @@ The importer should report:
 - final date range and analysis timezone;
 - available, partial and unavailable capabilities;
 - local save outcome.
+
+For a locally downloaded Last.fm snapshot, the CLI receipt additionally reports
+the provider total, downloaded pages, explicit now-playing exclusion, UTC date
+range, byte size and SHA-256. It contains neither the account name nor API key.
 
 For MusicBee, the receipt should additionally report the sanitized track, artist
 and album counts and state that the event timeline was not changed. It must not

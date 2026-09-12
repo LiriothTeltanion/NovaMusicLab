@@ -29,9 +29,11 @@
 ## Verification
 
 - [ ] `npm run verify`
+- [ ] `npm run audit:dependencies`
 - [ ] `node scripts/audit_public_bundle_privacy.mjs`
 - [ ] Relevant targeted tests
 - [ ] Live preview smoke test when visual behavior changed
+- [ ] `npm run audit:release-media` when release visuals changed
 - [ ] Documentation and `CHANGELOG.md` updated when required
 
 ## Notes and follow-ups

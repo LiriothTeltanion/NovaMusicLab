@@ -64,14 +64,17 @@ describe('HeroSection intro rebalance', () => {
     expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1, name: 'NOVA MUSIC LAB' }))
       .toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /enter the sound museum/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /upload my data/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /explore Kevin’s museum/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /build my museum/i })).toBeInTheDocument();
+    expect(screen.getByText(/Spotify, Last\.fm, YouTube or MusicBee XML exports.*not MP3 files/i)).toBeInTheDocument();
     expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
     expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Archive Snapshot')).toBeInTheDocument();
     expect(screen.getAllByText('Anchor artist').length).toBeGreaterThan(1);
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
-    expect(screen.getByText(/AI MUSIC PROFILE/i)).toBeInTheDocument();
+    expect(screen.getByText(/LOCAL MUSIC READING/i)).toBeInTheDocument();
+    expect(document.body).toHaveTextContent(/not a psychological label/i);
+    expect(document.body).toHaveTextContent(/interpretive, transparent and non-clinical/i);
     expect(screen.getByText('Archive source')).toBeInTheDocument();
     expect(document.body).toHaveTextContent(/Built from one source: Last\.fm/i);
     expect(document.body).toHaveTextContent(/nothing to cross-check against, no overlap is claimed/i);
@@ -102,7 +105,7 @@ describe('HeroSection intro rebalance', () => {
       </AppProvider>,
     );
 
-    expect(screen.getByText('Which artist shaped the world you hear today?'))
+    expect(screen.getByText('What can a lifetime of listening reveal about the person behind the music?'))
       .toHaveAttribute('dir', 'ltr');
     expect(screen.getByText(/Reviewed Wikimedia Commons portraits/i)).toBeInTheDocument();
 
@@ -155,8 +158,8 @@ describe('HeroSection intro rebalance', () => {
   });
 
   it.each([
-    ['es', '¿Qué artista dio forma al mundo que escuchas hoy?', 'ltr'],
-    ['he', 'איזה אמן עיצב את העולם שאתה שומע היום?', 'rtl'],
+    ['es', '¿Qué puede contar una vida de escucha sobre la persona detrás de la música?', 'ltr'],
+    ['he', 'מה יכולה היסטוריית האזנה שלמה לספר על האדם שמאחורי המוזיקה?', 'rtl'],
   ] as const)('localizes the hero curiosity invitation in %s', async (lang, question, direction) => {
     localStorage.setItem('nml_lang', lang);
 
@@ -185,14 +188,15 @@ describe('HeroSection intro rebalance', () => {
 
     expect(screen.getByTestId('hero-first-viewport')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/NOVA\s*MUSIC LAB/i);
-    expect(screen.getByRole('button', { name: /entrar al museo sonoro/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /subir mis datos/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /explorar el museo de Kevin/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /crear mi museo/i })).toBeInTheDocument();
     expect(screen.queryByTestId('hero-cv-link')).not.toBeInTheDocument();
     expect(screen.getByTestId('hero-deep-archive')).toBeInTheDocument();
     expect(screen.getByText('Instantánea del Archivo')).toBeInTheDocument();
     expect(screen.getAllByText('Artista ancla').length).toBeGreaterThan(1);
     expect(screen.getAllByText('Bring Me the Horizon').length).toBeGreaterThan(0);
-    expect(screen.getByText(/EXPEDIENTE DE MÚSICA IA/i)).toBeInTheDocument();
+    expect(screen.getByText(/LECTURA LOCAL/i)).toBeInTheDocument();
+    expect(document.body).toHaveTextContent(/no una etiqueta psicológica/i);
     expect(screen.getByText('Fuente del archivo')).toBeInTheDocument();
     expect(document.body).toHaveTextContent(/Hecho con una sola fuente: Last\.fm/i);
     expect(document.body).toHaveTextContent(/no se afirma ningún cruce/i);
@@ -466,15 +470,15 @@ describe('HeroSection intro rebalance', () => {
 
     expect(await screen.findByText('✨ שנה אחת בארכיון שלך')).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute('dir', 'rtl');
-    expect(screen.getByText('המודיעין של הארכיון')).toBeInTheDocument();
-    expect(screen.getByText('ניתוח בינה מלאכותית מקומי')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: /פרופיל מוזיקלי מבוסס בינה מלאכותית/i }))
+    expect(screen.getByText('קריאת הארכיון')).toBeInTheDocument();
+    expect(screen.getByText('ניתוח מקומי · ללא בינה חיצונית')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /קריאה מוזיקלית מקומית/i }))
       .toBeInTheDocument();
     expect(screen.getAllByRole('button', { name: /נגן את החתימה הצלילית של/i }).length)
       .toBeGreaterThan(0);
 
-    fireEvent.click(screen.getByRole('button', { name: 'שאלו את הבינה המלאכותית על המוזיקה שלכם' }));
-    expect(screen.getByText('אתחול הממשק העצבי')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'שאלו את המדריך המקומי על המוזיקה' }));
+    expect(screen.getByText('פתיחת הארכיון החי')).toBeInTheDocument();
     expect(screen.getByText('מפענח אטלס של שנה אחת…')).toBeInTheDocument();
     expect(screen.queryByText('Offline AI reading')).not.toBeInTheDocument();
   });

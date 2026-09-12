@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { AppProvider } from '../context/AppContext';
 import musicData from '../data/music_dna_compiled.json';
 import type { MusicDnaData } from '../types';
+import { buildGenreDistribution } from '../utils/chartIntegrity';
 import TopHistorico from './TopHistorico';
 
 const data = musicData as unknown as MusicDnaData;
@@ -53,7 +54,23 @@ describe('TopHistorico Hebrew localization', () => {
     expect(screen.getAllByText(data.top_artists[0].name).some(node => node.getAttribute('dir') === 'auto')).toBe(true);
 
     await user.click(screen.getByRole('button', { name: 'ז׳אנרים' }));
+    const fullDistribution = buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      Math.max(1, data.top_genres.length),
+    );
+    const treemapDistribution = buildGenreDistribution(
+      data.top_genres,
+      data.core_metrics.total_plays,
+      20,
+    );
     expect(await screen.findByText(/כל הארכיון/)).toHaveTextContent('השמעות שנספרו');
+    expect(screen.getByText(new RegExp(`כל ${fullDistribution.rows.length} שורות הז׳אנר מוצגות ללא קיבוץ`)))
+      .toBeInTheDocument();
+    expect(screen.getByTestId('top-genres-treemap-summary'))
+      .toHaveTextContent(`${treemapDistribution.groupedFamilyCount} משפחות ז׳אנר מסווגות קטנות יותר`);
+    expect(screen.getByTestId('top-genres-treemap-summary'))
+      .toHaveTextContent('״לא מסווג״ נשאר נפרד');
     expect(screen.queryByText(/Whole archive/)).not.toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'שנים' }));

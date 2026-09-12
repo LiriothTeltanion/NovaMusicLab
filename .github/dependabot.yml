@@ -27,6 +27,9 @@ updates:
       time: '05:30'
       timezone: Asia/Jerusalem
     open-pull-requests-limit: 3
+    groups:
+      actions-all:
+        patterns: ['*']
     labels: [dependencies, area-infrastructure]
     commit-message:
       prefix: ci
