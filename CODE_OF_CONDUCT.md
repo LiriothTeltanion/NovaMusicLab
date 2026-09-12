@@ -59,9 +59,15 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at
-kevincusnir@gmail.com.
+reported to the community leaders responsible for enforcement by opening a
+[private security advisory](https://github.com/LiriothTeltanion/NovaMusicLab/security/advisories/new),
+which stays visible only to the maintainer, or by contacting
+[@LiriothTeltanion](https://github.com/LiriothTeltanion) directly on GitHub.
 All complaints will be reviewed and investigated promptly and fairly.
+
+No contact address is written into this repository on purpose. This bundle is
+published publicly and `npm run audit:privacy` fails the build on any e-mail-like
+value in tracked text, so the reporting channel is a GitHub one instead.
 
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
