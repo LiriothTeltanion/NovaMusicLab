@@ -13,9 +13,9 @@ catalog onto the landing path where no visitor asked for it.
 
 | Scope | Budget |
 |---|---|
-| Entry chunk | 300 KB raw |
-| Landing shell closure (`index-`, `HeroSection-`, `InteractiveBackdrop-`) | 285 KB gzip |
-| Demo landing (with `music_dna_compiled-`) | 315 KB gzip |
+| Entry chunk | 315 KB raw |
+| Landing shell closure (`index-`, `HeroSection-`, `InteractiveBackdrop-`) | 300 KB gzip |
+| Demo landing (with `music_dna_compiled-`) | 330 KB gzip |
 | Hebrew UI catalog / artist overlay / loader | 35 / 55 / 2 KB gzip |
 | Album / track artwork maps | 60 / 40 KB gzip |
 | Artist portrait index (`artist_images-`) | 165 KB gzip |

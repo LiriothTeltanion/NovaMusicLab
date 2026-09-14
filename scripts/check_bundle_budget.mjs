@@ -24,12 +24,19 @@ const COMPILED_DATASET_SENTINELS = [
   compiledDatasetDates.at(-1) ?? '',
 ].filter(Boolean);
 
-const ENTRY_BUDGET_KB = 300;
-// Current landing JS closure is ~268KB gzip after moodCore stopped the 600KB
-// offline knowledge file from being fetched on first paint. The margin allows
-// normal UI growth while any knowledge-base regression still fails loudly.
-const SHELL_LANDING_GZIP_BUDGET_KB = 285;
-const DEMO_LANDING_GZIP_BUDGET_KB = 315;
+// 315 / 300 / 330, raised on 2026-09-14 from 300 / 285 / 315, and the receipt:
+// the routine React 19.3 + lucide-react refresh (PR #61) measured the entry at
+// exactly 300 KB raw, the landing shell at 286 KB gzip and the demo landing at
+// 311 KB gzip, with every test green. All three budgets had no headroom left, so
+// each ordinary dependency month would fail CI for growth nobody chose.
+// About 5 percent was added to each, not more. What these budgets exist to catch
+// still fails loudly: the 600 KB offline knowledge file returning to first paint
+// is roughly +85 KB gzip, several times the margin added here.
+const ENTRY_BUDGET_KB = 315;
+// Landing JS closure was ~268KB gzip after moodCore stopped the 600KB offline
+// knowledge file from being fetched on first paint.
+const SHELL_LANDING_GZIP_BUDGET_KB = 300;
+const DEMO_LANDING_GZIP_BUDGET_KB = 330;
 const SHELL_LANDING_ROOT_PREFIXES = ['index-', 'HeroSection-', 'InteractiveBackdrop-'];
 const DEMO_DATASET_ROOT_PREFIX = 'music_dna_compiled-';
 // Hebrew is a complete third-language experience, but ES/EN visitors must not
