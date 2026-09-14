@@ -1,12 +1,29 @@
 version: 2
+
+# Mensual y no semanal desde el 14 sep 2026. Cada tanda semanal traia cinco o mas
+# PR, cada uno con su CI y su aviso, aunque el codigo no hubiera cambiado: lo que
+# cambia es lo que otros publican. Las alertas de seguridad no siguen este
+# calendario y siguen llegando en cuanto aparecen.
+#
+# cooldown: una version recien publicada espera unos dias antes de proponerse.
+# Las versiones rotas suelen retirarse o corregirse en ese plazo, y las mayores,
+# que son las que pueden romper, esperan un mes.
+#
+# Las menores y de parche llegan agrupadas y se fusionan solas en cuanto pasan las
+# comprobaciones (.github/workflows/dependabot-auto-merge.yml). Las mayores llegan
+# sueltas y esperan a Kevin.
+
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
       time: '05:00'
       timezone: Asia/Jerusalem
+    cooldown:
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
     open-pull-requests-limit: 5
     groups:
       production-dependencies:
@@ -22,10 +39,11 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
       time: '05:30'
       timezone: Asia/Jerusalem
+    cooldown:
+      default-days: 7
     open-pull-requests-limit: 3
     groups:
       actions-all:

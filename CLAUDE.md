@@ -302,7 +302,7 @@ Three languages, all first-class: `es`, `en`, `he` (`src/utils/i18n.ts`).
 
 `scripts/check_bundle_budget.mjs` enforces four families of ceilings:
 
-- Entry chunk **300 KB raw**; landing shell closure **285 KB gzip**; demo landing **315 KB gzip**
+- Entry chunk **315 KB raw**; landing shell closure **300 KB gzip**; demo landing **330 KB gzip** (raised about 5 percent on 2026-09-14; the receipt is in `scripts/check_bundle_budget.mjs`)
 - Hebrew chunks, artwork maps and the artist portrait index (165 KB gzip) — lazy-only
 - Genre ontology / assertions / full catalog — loaded only by Genre Lab and the Atlas
 - Per-room gzip budgets: Dashboard 325, StatsDeepDive 325, TopHistorico 375,
