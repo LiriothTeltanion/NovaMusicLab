@@ -14,8 +14,12 @@ git status --short
 
 `npm run verify` runs lint; strict data, external-identity and media-link audits; artist-knowledge, public-bundle privacy and PWA contract audits; the Vitest suite; TypeScript compilation; the production build; and bundle-budget checks.
 
-The canonical release runtime is **Node 22.13.0**. Playwright uses one worker
-in CI and on Windows, at most two on other local hosts, and accepts a bounded
+The canonical release runtime is **Node 22.23.4** (`.nvmrc`), matching local
+verification and CI. The locked jsdom dependency requires at least Node 22.22.2
+on the Node 22 line; undici requires at least 22.19.0. Keep the root Node engines
+in `package.json` and `package-lock.json` aligned with those requirements.
+Playwright uses one worker in CI and on Windows, at most two on other local
+hosts, and accepts a bounded
 `PLAYWRIGHT_WORKERS` override.
 
 After the frozen product source is committed and release media is regenerated:

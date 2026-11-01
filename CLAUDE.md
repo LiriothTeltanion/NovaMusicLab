@@ -23,7 +23,7 @@ It serves two distinct product profiles at once:
 
 - Live site: <https://liriothteltanion.github.io/NovaMusicLab/>
 - Current public version: **v1.6.0** (deployed 2026-08-09); IndexedDB **schema revision 4**
-- Runtime: **Node 22.13.0** (`.nvmrc`), Vite 8, Vitest 4, Playwright, Tailwind 3, oxlint
+- Runtime: **Node 22.23.4** (`.nvmrc`), Vite 8, Vitest 4, Playwright, Tailwind 3, oxlint
 - 133 test files across `src/`, `scripts/` and `e2e/`
 
 The product version and the IndexedDB schema version are unrelated numbers. "Schema v4"
@@ -70,7 +70,7 @@ diagnoses**. Their non-clinical boundary must stay visible in the UI.
 ### Daily loop
 
 ```bash
-npm ci          # locked install; Node 22.13.0
+npm ci          # locked install; Node 22.23.4
 npm run dev     # Vite dev server on :5173 (PORT overrides)
 npm run build   # tsc -b && vite build
 npm run preview # serve the production bundle
