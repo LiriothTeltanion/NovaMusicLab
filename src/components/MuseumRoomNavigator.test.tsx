@@ -53,7 +53,7 @@ describe('MuseumRoomNavigator', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sala siguiente: Top Histórico' }));
     expect(onNavigate).toHaveBeenCalledWith('top');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Abrir mapa de salas: .*Eras Musicales/ }));
     expect(screen.getByRole('dialog', { name: 'Mapa de salas' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Archivo' })).toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
@@ -74,7 +74,7 @@ describe('MuseumRoomNavigator', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Sala siguiente: Top Histórico' }));
     expect(onNavigate).toHaveBeenCalledWith('top');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Abrir mapa de salas: .*Eras Musicales/ }));
     expect(screen.getByRole('dialog', { name: 'Mapa de salas' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Archivo' })).toBeInTheDocument();
     await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
@@ -85,7 +85,7 @@ describe('MuseumRoomNavigator', () => {
 
   it('closes the desktop map on Escape and restores focus to its trigger', async () => {
     render(<MuseumRoomProgressRail items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
-    const trigger = screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' });
+    const trigger = screen.getByRole('button', { name: /^Abrir mapa de salas: .*Eras Musicales/ });
 
     fireEvent.click(trigger);
     await waitFor(() => expect(screen.getByRole('button', { name: 'Eras Musicales' })).toHaveFocus());
@@ -98,7 +98,7 @@ describe('MuseumRoomNavigator', () => {
   it('treats the mobile map as a modal, traps focus and restores its trigger', async () => {
     const view = render(<MobileMuseumRoomDock items={rooms} activeId="eras" lang="es" onNavigate={vi.fn()} />);
     view.container.id = 'root';
-    const trigger = screen.getByRole('button', { name: 'Abrir mapa de salas: Eras Musicales' });
+    const trigger = screen.getByRole('button', { name: /^Abrir mapa de salas: .*Eras Musicales/ });
 
     fireEvent.click(trigger);
     const dialog = screen.getByRole('dialog', { name: 'Mapa de salas' });
@@ -131,7 +131,7 @@ describe('MuseumRoomNavigator', () => {
     expect(progress).toHaveAttribute('aria-label', 'החדר הפעיל: Eras Musicales');
     expect(progress).toHaveTextContent('פרק 2 / 3');
     expect(screen.getByRole('button', { name: 'החדר הבא: Top Histórico' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'פתיחת מפת החדרים: Eras Musicales' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^פתיחת מפת החדרים: .*Eras Musicales/ })).toBeInTheDocument();
   });
 
   it('keeps the mobile dock and modal map in Hebrew RTL', () => {
@@ -140,7 +140,7 @@ describe('MuseumRoomNavigator', () => {
     );
 
     expect(container.querySelector('.museum-mobile-navigation')).toHaveAttribute('dir', 'rtl');
-    const trigger = screen.getByRole('button', { name: 'פתיחת מפת החדרים: Eras Musicales' });
+    const trigger = screen.getByRole('button', { name: /^פתיחת מפת החדרים: .*Eras Musicales/ });
     fireEvent.click(trigger);
 
     const dialog = screen.getByRole('dialog', { name: 'מפת החדרים' });

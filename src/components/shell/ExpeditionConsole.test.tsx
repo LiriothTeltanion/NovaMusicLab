@@ -67,7 +67,7 @@ describe('ExpeditionConsole', () => {
     const trigger = screen.getByTestId('archive-capsule-trigger');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(trigger).toHaveAccessibleName(/Current version: 1\.6\.0.*Privacy: Local only\. Local state: Saved\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0Local archive');
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0 Local archive');
     expect(screen.queryByTestId('archive-capsule-panel')).not.toBeInTheDocument();
 
     await user.click(trigger);
@@ -90,7 +90,7 @@ describe('ExpeditionConsole', () => {
     expect(capsule).toHaveAttribute('data-archive-mode', 'flagship');
     const trigger = screen.getByTestId('archive-capsule-trigger');
     expect(trigger).toHaveAccessibleName(/Privacy: Reviewed public bundle\. Local state: Bundled\./);
-    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0Kevin / Lirioth');
+    expect(screen.getByTestId('archive-compact-status')).toHaveTextContent('v1.6.0 Kevin / Lirioth');
 
     await user.click(trigger);
     const panel = screen.getByTestId('archive-capsule-panel');
@@ -135,7 +135,7 @@ describe('ExpeditionConsole', () => {
 
     expect(screen.getByRole('button', { name: 'Guided' })).toHaveTextContent('Guided');
     expect(screen.getByRole('button', { name: 'Explore' })).toHaveTextContent('Explore');
-    expect(screen.getByRole('button', { name: 'Deep Dive' })).toHaveTextContent('Details');
+    expect(screen.getByRole('button', { name: /^Deep Dive/ })).toHaveTextContent('Details');
   });
 
   it('opens with Ctrl+K, filters rooms and completes navigation with Enter', async () => {
@@ -182,7 +182,7 @@ describe('ExpeditionConsole', () => {
 
     const navigator = screen.getByTestId('room-progress');
     expect(screen.getByTestId('expedition-console')).toContainElement(navigator);
-    await user.click(screen.getByRole('button', { name: 'Open room map: Dashboard' }));
+    await user.click(screen.getByRole('button', { name: /^Open room map: .*Dashboard/ }));
     expect(screen.getByRole('dialog', { name: 'Room map' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Data Quality' }));
     expect(onNavigate).toHaveBeenCalledWith('quality');

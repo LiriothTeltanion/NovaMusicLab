@@ -173,6 +173,21 @@
   border-radius: 0.78rem;
 }
 
+/* Avatar monograms are a picture of the artist, not a text label: the avatar
+   already carries the artist name as role="img" or sits inside a named
+   control. Painting the letters as generated content keeps them out of the
+   text that WCAG 2.5.3 (Label in Name) compares against a button's name, so
+   "SL" no longer has to be spoken before "Open Slaves artist profile". */
+/* The sidebar's position counter is decoration (its badge is aria-hidden):
+   painted as generated content so "18" is not compared against "Audio Lab". */
+.nova-ordinal-badge::before {
+  content: attr(data-ordinal);
+}
+
+.nova-avatar-initials::before {
+  content: attr(data-initials);
+}
+
 .nova-wordmark__words {
   display: grid;
   line-height: 1;

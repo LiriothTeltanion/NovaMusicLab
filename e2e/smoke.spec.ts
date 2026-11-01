@@ -160,7 +160,7 @@ test('the compact shell stays usable without horizontal overflow at 360px', asyn
   await expect(console.getByTestId('room-progress')).toBeVisible();
 
   const roomMapTrigger = console.getByRole('button', {
-    name: /open room map: dashboard/i,
+    name: /open room map: .*dashboard/i,
   });
   await roomMapTrigger.click();
   await expect(page.getByRole('dialog', { name: 'Room map' })).toBeVisible();
@@ -169,7 +169,7 @@ test('the compact shell stays usable without horizontal overflow at 360px', asyn
 
   const mobileDock = page.locator('.museum-mobile-dock');
   const mobileMapTrigger = mobileDock.getByRole('button', {
-    name: /open room map: dashboard/i,
+    name: /open room map: .*dashboard/i,
   });
   await expect(mobileDock).toBeVisible();
   await mobileMapTrigger.click();

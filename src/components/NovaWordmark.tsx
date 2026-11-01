@@ -47,6 +47,9 @@ export default function NovaWordmark({
       </span>
       <span className={`nova-wordmark__words ${wordsClassName}`.trim()}>
         <span className="nova-wordmark__nova">NOVA</span>
+        {/* A real space: grid ignores it visually, but without it the
+            accessible text reads "NOVAMUSIC LAB" (WCAG 2.5.3 Label in Name). */}
+        {' '}
         <span className="nova-wordmark__lab" style={accentColor ? { color: accentColor } : undefined}>
           MUSIC LAB
         </span>

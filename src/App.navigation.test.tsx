@@ -210,7 +210,7 @@ describe('room navigation focus', () => {
     render(<App />);
 
     const switcher = await screen.findByTestId('experience-switcher', {}, { timeout: 8000 });
-    const deepDive = screen.getByRole('button', { name: 'Deep Dive' });
+    const deepDive = screen.getByRole('button', { name: /^Deep Dive/ });
     expect(switcher).toContainElement(deepDive);
 
     await user.click(deepDive);

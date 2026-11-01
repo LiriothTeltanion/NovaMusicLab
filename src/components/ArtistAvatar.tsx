@@ -224,7 +224,7 @@ export default function ArtistAvatar({
               textShadow: `0 0 8px hsl(${placeholderHue}, 90%, 62%)`,
             }}
           >
-            {initialsFor(name)}
+            <span className="nova-avatar-initials" data-initials={initialsFor(name)} />
           </span>
           <img
             src={src}
@@ -300,13 +300,13 @@ export default function ArtistAvatar({
 
         {/* Text Initials */}
         <span
-          className="relative z-10 font-black text-white"
+          className="nova-avatar-initials relative z-10 font-black text-white"
+          data-initials={initialsFor(name)}
+          aria-hidden="true"
           style={{
             textShadow: `0 0 8px hsl(${hue1}, 95%, 65%)`,
           }}
-        >
-          {initialsFor(name)}
-        </span>
+        />
       </div>
     );
   })();
