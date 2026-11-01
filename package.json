@@ -69,12 +69,12 @@
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
-    "dexie": "^4.4.6",
+    "dexie": "^4.4.7",
     "fflate": "^0.8.3",
-    "framer-motion": "^13.4.2",
-    "lucide-react": "^1.47.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "framer-motion": "^13.5.1",
+    "lucide-react": "^1.61.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "recharts": "^3.10.1"
   },
   "devDependencies": {
