@@ -362,6 +362,9 @@ pinned when bumping.
   `InterpretiveBoundaryNotice` already solve most layout and framing needs.
 - **Data question → `scripts/` first.** ~70 scripts already cover fetch, enrichment,
   dedupe, residue tracking and audit. Check for one before writing a new pipeline.
+- **Agents in batches of 3-4, never more at once.** The owner pays for every token. Prefer
+  inline lookups; for bigger fan-outs, run sequential batches of at most 4 subagents and say
+  the planned count first. No multi-agent workflow unless explicitly requested (`AGENTS.md`).
 - **A missing value is a feature.** When in doubt, render the unavailable state.
 - **Trace `useApp()` / `useExperience()`** to find where language, theme, depth and
   navigation state actually live before adding new state.
