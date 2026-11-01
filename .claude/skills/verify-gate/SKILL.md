@@ -36,7 +36,8 @@ re-executes the earlier steps — while iterating, run the single failing audit 
 
 ## 2. Prerequisites
 
-- Node **22.13.0** (`.nvmrc`). Other majors can pass locally and fail CI.
+- Node **22.23.4** (`.nvmrc`). Match CI locally; jsdom requires at least 22.22.2
+  on Node 22, and undici requires at least 22.19.0.
 - `npm ci`, never `npm install`, so `package-lock.json` stays authoritative.
 - Vitest runs single-worker by design (`maxWorkers: 1`, `fileParallelism: false`).
   Slowness is expected; do not raise the worker count to speed it up.
