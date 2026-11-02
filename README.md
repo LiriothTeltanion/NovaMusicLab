@@ -496,6 +496,8 @@ The production museum is deployed through GitHub Pages from the verified `main` 
 
 Nova Music Lab combines frontend engineering, data visualization, music technology, privacy-conscious personal analytics, multilingual interaction, accessibility and generative art.
 
+Built with AI-assisted tooling; I reviewed, tested and can explain every change.
+
 ## 📄 License
 
 The **software** is [MIT licensed](./LICENSE) — fork it, learn from it, build your own museum with it.
