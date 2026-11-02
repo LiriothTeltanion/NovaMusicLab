@@ -1565,7 +1565,7 @@ a:focus-visible,
   animation: ambient-glow-2 20s infinite alternate ease-in-out;
 }
 
-/* ── Fade-in (usado en todos los componentes) ── */
+/* ── Fade-in (used by every component) ── */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1574,7 +1574,7 @@ a:focus-visible,
   animation: fade-in 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-/* ── Slide-up variante más lenta ── */
+/* ── Slower slide-up variant ── */
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1594,7 +1594,7 @@ a:focus-visible,
   animation: shimmer 2.5s infinite linear;
 }
 
-/* ── Pulse lento para badges ── */
+/* ── Slow pulse for badges ── */
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.5; }

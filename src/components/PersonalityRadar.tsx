@@ -116,7 +116,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
               <p className="type-body type-muted">{currentTrait.evidence}</p>
             </div>
 
-            {/* Artistas de Apoyo */}
+            {/* Supporting artists */}
             <div className="flex flex-wrap gap-2 pt-1">
               {currentTrait.artists.map(art => (
                 <span key={art} className="type-caption rounded-full border px-2.5 py-1"
@@ -126,7 +126,7 @@ export default function PersonalityRadar({ data }: PersonalityRadarProps) {
               ))}
             </div>
 
-            {/* Tres Secciones de Análisis */}
+            {/* Three analysis sections */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-cyan-500/10">
               <div className="space-y-2 rounded-2xl border p-4"
                 style={{ borderColor: 'color-mix(in srgb, #22c55e 26%, transparent)', backgroundColor: 'color-mix(in srgb, #22c55e 5%, transparent)' }}>
