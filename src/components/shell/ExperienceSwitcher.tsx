@@ -78,7 +78,9 @@ export default function ExperienceSwitcher({ lang }: ExperienceSwitcherProps) {
             className="expedition-journey__option"
             onClick={() => setExperienceDepth(id)}
             aria-pressed={active}
-            aria-label={copy[id]}
+            aria-label={compactLabels[id] && compactLabels[id] !== copy[id]
+              ? `${copy[id]} · ${compactLabels[id]}`
+              : copy[id]}
             aria-describedby={active ? 'experience-depth-description' : undefined}
             title={copy[`${id}Description`]}
             data-experience-depth={id}

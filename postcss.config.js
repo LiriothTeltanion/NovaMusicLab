@@ -1,6 +1,6 @@
-// Tailwind 4 saco su complemento de PostCSS a un paquete aparte. Usar
-// `tailwindcss` aqui directamente falla con un error que apunta a un fichero
-// CSS cualquiera y despista: el problema no es ese fichero, es el complemento.
+// Tailwind 4 moved its PostCSS plugin into a separate package. Using
+// `tailwindcss` here directly fails with an error that points at an arbitrary
+// CSS file and misleads: the problem is not that file, it is the plugin.
 export default {
   plugins: {
     '@tailwindcss/postcss': {},

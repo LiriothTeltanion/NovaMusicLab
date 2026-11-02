@@ -150,13 +150,13 @@ export default function MobileRoomDock({ items, activeId, lang, onNavigate }: Ro
             aria-expanded={mapOpen}
             aria-controls="mobile-room-map"
             aria-haspopup="dialog"
-            aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
+            aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${progress.code} · ${activeItem.groupLabel} · ${activeItem.label}`}
           >
             <span className="museum-mobile-dock__active-icon" aria-hidden="true">
               <ActiveIcon className="h-4 w-4" />
             </span>
             <span className="museum-mobile-dock__meta">
-              <span><bdi dir="ltr">{progress.code}</bdi> · {activeItem.groupLabel}</span>
+              <span><bdi dir="ltr">{progress.code}</bdi> · {activeItem.groupLabel}</span>{' '}
               <strong>{activeItem.label}</strong>
             </span>
             <MapIcon className="museum-mobile-dock__map-icon" aria-hidden="true" />

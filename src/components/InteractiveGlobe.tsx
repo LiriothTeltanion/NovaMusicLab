@@ -179,7 +179,7 @@ export default function InteractiveGlobe({
   const containerRef = useRef<HTMLDivElement>(null);
   const continuousMotion = useContinuousMotion(containerRef);
   
-  // Ejes de rotación: Y (rotation/yaw) y X (tilt/pitch)
+  // Rotation axes: Y (rotation/yaw) and X (tilt/pitch)
   const [rotation, setRotation] = useState(0);
   const [tilt, setTilt] = useState(0.2); 
   const [isDragging, setIsDragging] = useState(false);

@@ -556,7 +556,7 @@ export default function Dashboard({ data }: DashboardProps) {
   const weekdays = getWeekdayNames(locale);
   const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`);
 
-  // Buscar el valor máximo del heatmap para normalizar los colores
+  // Find the heatmap maximum to normalize the colors
   let maxHeatmapValue = 1;
   for (let h = 0; h < 24; h++) {
     for (let w = 0; w < 7; w++) {

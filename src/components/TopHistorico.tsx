@@ -3137,7 +3137,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             </div>
           )}
 
-          {/* GÉNEROS */}
+          {/* GENRES */}
           {tab === 'generos' && (
             <div className="space-y-6">
               <div className="nova-surface nova-surface--utility p-6 rounded-3xl">
@@ -3211,7 +3211,7 @@ export default function TopHistorico({ data }: TopHistoricoProps) {
             </div>
           )}
 
-          {/* AÑOS */}
+          {/* YEARS */}
           {tab === 'anos' && (
             <div className="space-y-6">
               <div className="nova-surface nova-surface--analysis p-6 rounded-3xl">

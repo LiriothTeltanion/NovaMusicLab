@@ -335,7 +335,7 @@ function SidebarSignalIcon({ icon: Icon, color, secondary, motif, active, index 
           backgroundColor: active ? color : 'rgba(2, 6, 23, 0.72)',
           border: `1px solid ${color}55`,
         }}>
-        {index + 1}
+        <span className="nova-ordinal-badge" data-ordinal={index + 1} />
       </span>
     </span>
   );
@@ -1415,7 +1415,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
           >
             {LANGUAGE_OPTIONS.map(option => (
               <button key={option.code} onClick={() => setLang(option.code)}
-                aria-label={languageUi.switchTo[option.code]}
+                aria-label={`${option.shortLabel} · ${languageUi.switchTo[option.code]}`}
                 aria-pressed={lang === option.code}
                 className="min-h-11 min-w-11 px-2 font-mono text-xs font-bold uppercase transition-all sm:px-3"
                 style={lang === option.code

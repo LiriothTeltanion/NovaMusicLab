@@ -95,6 +95,12 @@ export function getMuseumRoomProgress(items: MuseumRoomItem[], activeId: string)
   };
 }
 
+/** The same words RoomProgressText paints, as one string for an accessible name. */
+export function roomProgressLabel(progress: MuseumRoomProgress, lang: Lang): string {
+  if (progress.chapterIndex < 0) return copy[lang].utility;
+  return `${copy[lang].chapter} ${progress.chapterIndex + 1} / ${progress.chapterTotal}`;
+}
+
 function RoomProgressText({ progress, lang }: { progress: MuseumRoomProgress; lang: Lang }) {
   if (progress.chapterIndex < 0) {
     return <>{copy[lang].utility}</>;
@@ -318,17 +324,19 @@ export function MuseumRoomProgressRail({ items, activeId, lang, onNavigate }: Ro
           aria-expanded={mapOpen}
           aria-controls="desktop-room-map"
           aria-haspopup="dialog"
-          aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${activeItem.label}`}
+          aria-label={`${mapOpen ? copy[lang].closeMap : copy[lang].openMap}: ${progress.code} · ${activeItem.groupLabel} · ${activeItem.label} · ${roomProgressLabel(progress, lang)}`}
         >
           <span className="museum-room-progress__icon" aria-hidden="true">
             <Icon className="h-3.5 w-3.5" />
           </span>
-          <span className="museum-room-progress__code" dir="ltr">{progress.code}</span>
+          {/* Flex items: these spaces never render, but they keep the code,
+              room and progress as separate words for assistive tech. */}
+          <span className="museum-room-progress__code" dir="ltr">{progress.code}</span>{' '}
           <span className="museum-room-progress__divider" aria-hidden="true" />
           <span className="min-w-0">
-            <span className="museum-room-progress__group">{activeItem.groupLabel}</span>
+            <span className="museum-room-progress__group">{activeItem.groupLabel}</span>{' '}
             <strong className="museum-room-progress__label">{activeItem.label}</strong>
-          </span>
+          </span>{' '}
           <span className="museum-room-progress__track" aria-hidden="true">
             <span />
           </span>

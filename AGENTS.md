@@ -34,6 +34,12 @@ These rules apply to every contributor or coding agent working in this repositor
 - Use stable composite keys for rendered lists and normalized artist/media identities.
 - Re-read high-churn files before editing and preserve unrelated shared-worktree changes.
 
+## Agent and token budget
+
+- Run at most 4 subagents at the same time. For larger fan-outs, work in sequential batches of 3-4 and wait for each batch before starting the next.
+- Do not start a multi-agent workflow unless the owner explicitly asks for one; prefer doing small lookups inline.
+- State the planned agent count before launching more than one batch.
+
 ## Verification
 
 ```bash

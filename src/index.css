@@ -173,6 +173,21 @@
   border-radius: 0.78rem;
 }
 
+/* Avatar monograms are a picture of the artist, not a text label: the avatar
+   already carries the artist name as role="img" or sits inside a named
+   control. Painting the letters as generated content keeps them out of the
+   text that WCAG 2.5.3 (Label in Name) compares against a button's name, so
+   "SL" no longer has to be spoken before "Open Slaves artist profile". */
+/* The sidebar's position counter is decoration (its badge is aria-hidden):
+   painted as generated content so "18" is not compared against "Audio Lab". */
+.nova-ordinal-badge::before {
+  content: attr(data-ordinal);
+}
+
+.nova-avatar-initials::before {
+  content: attr(data-initials);
+}
+
 .nova-wordmark__words {
   display: grid;
   line-height: 1;
@@ -1550,7 +1565,7 @@ a:focus-visible,
   animation: ambient-glow-2 20s infinite alternate ease-in-out;
 }
 
-/* ── Fade-in (usado en todos los componentes) ── */
+/* ── Fade-in (used by every component) ── */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1559,7 +1574,7 @@ a:focus-visible,
   animation: fade-in 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
-/* ── Slide-up variante más lenta ── */
+/* ── Slower slide-up variant ── */
 @keyframes slide-up {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -1579,7 +1594,7 @@ a:focus-visible,
   animation: shimmer 2.5s infinite linear;
 }
 
-/* ── Pulse lento para badges ── */
+/* ── Slow pulse for badges ── */
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.5; }

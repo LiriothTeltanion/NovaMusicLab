@@ -208,6 +208,10 @@ export default function ArchiveCapsule({
     };
   }, [open]);
 
+  // What the trigger shows on screen. WCAG 2.5.3 (Label in Name): a voice
+  // user says the words they can see, so the accessible name starts with them.
+  const compactStatus = `v${version} · ${isPersonalArchive ? copy.localShort : copy.publicShort}`;
+
   return (
     <div
       ref={rootRef}
@@ -224,7 +228,7 @@ export default function ArchiveCapsule({
         onClick={() => setOpen(value => !value)}
         aria-controls={panelId}
         aria-expanded={open}
-        aria-label={`${open ? copy.close : copy.open}. ${accessibleSummary}`}
+        aria-label={`${compactStatus} · ${open ? copy.close : copy.open}. ${accessibleSummary}`}
         title={accessibleSummary}
         data-testid="archive-capsule-trigger"
       >
@@ -232,7 +236,7 @@ export default function ArchiveCapsule({
           <RadioTower className="h-4 w-4" />
         </span>
         <span className="archive-capsule__compact-status" data-testid="archive-compact-status" aria-hidden="true">
-          <strong dir="ltr">v{version}</strong>
+          <strong dir="ltr">v{version}</strong>{' '}
           <small>{isPersonalArchive ? copy.localShort : copy.publicShort}</small>
         </span>
         <ChevronDown

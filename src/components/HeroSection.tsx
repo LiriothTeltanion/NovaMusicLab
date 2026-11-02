@@ -648,7 +648,7 @@ export default function HeroSection({
               type="button"
               className="nova-hero__release-jump"
               aria-controls={NOVA_RELEASE_STORY_ID}
-              aria-label={releaseJumpCopy.action}
+              aria-label={`${releaseJumpCopy.label} · ${releaseJumpCopy.action}`}
               onClick={handleOpenReleaseStory}
             >
               <History className="h-4 w-4" aria-hidden="true" />
