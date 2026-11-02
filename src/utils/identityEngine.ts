@@ -16,8 +16,8 @@ type Localized<T> = Record<Lang, T>;
  * matter whose data was loaded - citing specific real artists as "evidence"
  * of traits that may have nothing to do with the archive on screen, and a
  * fixed artist alias for every visitor. That is exactly
- * the "fabricated data" pattern this project treats as a hard bug (see
- * HANDOFF.md: "never fabricate data" / the Discrepancy Auditor incident).
+ * the "fabricated data" pattern this project treats as a hard bug (the
+ * "never fabricate data" rule / the Discrepancy Auditor incident).
  * Every score/evidence/artist/track below is derived from the real top_*
  * arrays. The fixed prose describes musical patterns and creative prompts;
  * it must never be presented as a personality, wellbeing or mental-health
