@@ -71,7 +71,7 @@
     "canvas-confetti": "^1.9.4",
     "dexie": "^4.4.7",
     "fflate": "^0.8.3",
-    "framer-motion": "^13.5.1",
+    "framer-motion": "^14.0.0",
     "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
