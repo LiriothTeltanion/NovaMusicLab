@@ -58,3 +58,11 @@ desktop.ini
 # files, not a source of truth, so it would only add churn to the history.
 scripts/media_progress.html
 scripts/media_progress.json
+
+# Local-only notes and settings for coding assistants. They stay on Kevin's
+# machines and are not published.
+/AGENTS.md
+/CLAUDE.md
+/CLAUDE_ART_HANDOFF.md
+/HANDOFF.md
+/.claude/

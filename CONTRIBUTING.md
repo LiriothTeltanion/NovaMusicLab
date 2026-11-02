@@ -4,7 +4,7 @@ Nova Music Lab is Kevin Cusnir's flagship personal music museum and a public eng
 
 ## Before you begin
 
-- Read [`AGENTS.md`](./AGENTS.md) and the [architecture overview](./docs/architecture/OVERVIEW.md).
+- Read the [architecture overview](./docs/architecture/OVERVIEW.md) and the [quality gates](./docs/operations/QUALITY_GATES.md).
 - Check `git status` and re-read any file before editing; multiple tools may share the working tree.
 - Never commit raw listening exports, API keys, private CVs, account identifiers or browser storage dumps.
 - Use minimal synthetic fixtures for parser and privacy tests.
