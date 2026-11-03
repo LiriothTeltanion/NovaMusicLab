@@ -57,6 +57,9 @@ interface ArtistMeta {
 const FALLBACK_TRACK_MS = 200000;
 const SESSION_GAP_MINUTES = 60;
 const OBSESSION_MIN_PLAYS_PER_DAY = 5;
+// Enough to give most calendar days an anniversary in a typical archive while
+// keeping the aggregate small; the long tail of one-play names is skipped.
+const FIRST_LISTEN_LIMIT = 1500;
 
 // Guard against corrupted/misparsed timestamps (epoch-zero dates, bare row
 // numbers parsed as years, etc.) without discarding genuinely old history:
@@ -706,6 +709,8 @@ export function aggregateData(
   }
 
   const artistCounts: Record<string, number> = {};
+  // Items are sorted ascending, so the first date seen per artist is earliest.
+  const artistFirstDates = new Map<string, string>();
   const trackCounts: Record<string, number> = {};
   const albumCounts: Record<string, number> = {};
   const genreCounts: Record<string, number> = {};
@@ -735,6 +740,7 @@ export function aggregateData(
 
     totalMs += msPlayed;
     artistCounts[artist] = (artistCounts[artist] || 0) + 1;
+    if (!artistFirstDates.has(artist)) artistFirstDates.set(artist, dateKey);
     trackCounts[trackKey] = (trackCounts[trackKey] || 0) + 1;
     genreCounts[normalizeGenre(artistMeta.genre)] = (genreCounts[normalizeGenre(artistMeta.genre)] || 0) + 1;
     if (artistMeta.country && artistMeta.country !== 'Unknown') {
@@ -866,6 +872,11 @@ export function aggregateData(
     yearly_eras: yearlyEras,
     sessions: sessions.slice(0, 50),
     obsessions: buildObsessions(sortedItems),
+    artist_first_listens: entriesByCount(artistCounts, FIRST_LISTEN_LIMIT).map(([name, plays]) => ({
+      name,
+      first_date: artistFirstDates.get(name) ?? '',
+      plays,
+    })).filter(entry => entry.first_date),
     artist_origin_countries: artistOriginCountries,
     countries: countries.length ? countries : [{ country: 'Unknown', plays: totalPlays }],
     heatmap,

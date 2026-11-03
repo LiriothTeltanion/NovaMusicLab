@@ -3,7 +3,7 @@ import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-
 import {
   LayoutDashboard, CalendarDays, Trophy, BrainCircuit, Heart,
   RotateCcw, Globe, Palette, Sparkles, AlertCircle, FileText, Upload, GitCompare,
-  Sun, Activity, Award, ShieldCheck, Hourglass, Gift, Radio, TabletSmartphone, Compass, Users,
+  Sun, Activity, Award, ShieldCheck, Hourglass, CalendarClock, Gift, Radio, TabletSmartphone, Compass, Users,
   ChevronDown, Bot, SlidersHorizontal, Link2, Check, Share2, AudioWaveform, Volume2, VolumeX
 } from 'lucide-react';
 
@@ -123,6 +123,7 @@ const FinalReport = lazy(() => import('./components/FinalReport'));
 const StatsDeepDive = lazy(() => import('./components/StatsDeepDive'));
 const Achievements = lazy(() => import('./components/Achievements'));
 const TimeCapsule = lazy(() => import('./components/TimeCapsule'));
+const OnThisDay = lazy(() => import('./components/OnThisDay'));
 const WrappedCard = lazy(() => import('./components/WrappedCard'));
 const RecentPulse = lazy(() => import('./components/RecentPulse'));
 const MuseumComparator = lazy(() => import('./components/MuseumComparator'));
@@ -137,7 +138,7 @@ type RoomWidth = 'reading' | 'analytics' | 'explorer';
 const EXPLORER_ROOMS = new Set<Tab>(['top', 'cultural', 'artist', 'compare', 'museums']);
 const ANALYTICS_ROOMS = new Set<Tab>([
   'dashboard', 'eras', 'statsdeep', 'achievements', 'emotions',
-  'obsessions', 'inner', 'platforms', 'quality', 'pulse',
+  'obsessions', 'inner', 'platforms', 'quality', 'pulse', 'onthisday',
 ]);
 
 function roomWidthFor(tab: Tab): RoomWidth {
@@ -805,6 +806,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
       { id: 'cultural',     group: 'atlas',   label: t.nav.cultural,     icon: Globe },
       { id: 'eras',         group: 'stories', label: t.nav.eras,         icon: CalendarDays },
       { id: 'timecapsule',  group: 'stories', label: t.nav.timeCapsule,  icon: Hourglass },
+      { id: 'onthisday',    group: 'stories', label: t.nav.onThisDay,    icon: CalendarClock },
       { id: 'personality',  group: 'stories', label: t.nav.personality,  icon: BrainCircuit },
       { id: 'emotions',     group: 'stories', label: t.nav.emotions,     icon: Heart },
       { id: 'inner',        group: 'stories', label: t.nav.inner,        icon: Palette },
@@ -1799,6 +1801,7 @@ function AppInner({ boot }: { boot: AppBoot }) {
                     {activeTab === 'artist'      && <ArtistIdentity data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'insights'    && <HiddenInsights data={filteredData} />}
                     {activeTab === 'timecapsule' && <TimeCapsule data={filteredData} />}
+                    {activeTab === 'onthisday'   && <OnThisDay data={filteredData} />}
                     {activeTab === 'wrapped'     && <WrappedCard data={filteredData} />}
                     {activeTab === 'pulse'       && <RecentPulse data={filteredData} isPersonalArchive={isPersonalArchive} />}
                     {activeTab === 'report'      && <FinalReport data={filteredData} isPersonalArchive={isPersonalArchive} />}

@@ -30,8 +30,8 @@ describe('museum navigation hubs', () => {
     const assignedRooms = MUSEUM_HUB_IDS.flatMap(hubId => MUSEUM_HUB_ROOMS[hubId]);
 
     expect(MUSEUM_HUB_IDS).toEqual(['home', 'pulse', 'atlas', 'stories', 'lab']);
-    expect(assignedRooms).toHaveLength(24);
-    expect(new Set(assignedRooms)).toHaveLength(24);
+    expect(assignedRooms).toHaveLength(25);
+    expect(new Set(assignedRooms)).toHaveLength(25);
     expect(new Set(assignedRooms)).toEqual(new Set(CURRENT_MUSEUM_ROOM_IDS));
   });
 

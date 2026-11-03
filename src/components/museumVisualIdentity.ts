@@ -14,6 +14,7 @@ export type MuseumChapterTab =
   | 'eras'
   | 'top'
   | 'timecapsule'
+  | 'onthisday'
   | 'personality'
   | 'emotions'
   | 'cultural'
@@ -39,6 +40,7 @@ export type MuseumChapterMotif =
   | 'timeline'
   | 'crown'
   | 'hourglass'
+  | 'calendar'
   | 'orbit'
   | 'wave'
   | 'globe'
@@ -97,6 +99,7 @@ export const MUSEUM_VISUAL_IDENTITY: Record<MuseumVisualId, MuseumVisualIdentity
   eras:         { family: 'archive',     palette: ['#60a5fa', '#f59e0b', '#f472b6'], chapterMotif: 'timeline',      navMotif: 'timeline', background: { density: 0.42, amplitude: 16, tempo: 48, angle: 0,   particleCount: 14, particleIntensity: 'subtle' } },
   top:          { family: 'archive',     palette: ['#facc15', '#f97316', '#ef4444'], chapterMotif: 'crown',         navMotif: 'crown',    background: { density: 0.52, amplitude: 26, tempo: 38, angle: 10,  particleCount: 18, particleIntensity: 'subtle' } },
   timecapsule:  { family: 'archive',     palette: ['#818cf8', '#f472b6', '#38bdf8'], chapterMotif: 'hourglass',     navMotif: 'timeline', background: { density: 0.40, amplitude: 18, tempo: 50, angle: -4,  particleCount: 14, particleIntensity: 'subtle' } },
+  onthisday:    { family: 'archive',     palette: ['#38bdf8', '#e879f9', '#fbbf24'], chapterMotif: 'calendar',      navMotif: 'timeline', background: { density: 0.38, amplitude: 16, tempo: 52, angle: 6,   particleCount: 12, particleIntensity: 'subtle' } },
   personality:  { family: 'identity',    palette: ['#a78bfa', '#22d3ee', '#f0abfc'], chapterMotif: 'orbit',         navMotif: 'orbit',    background: { density: 0.40, amplitude: 28, tempo: 52, angle: -16, particleCount: 16, particleIntensity: 'subtle' } },
   emotions:     { family: 'identity',    palette: ['#fb7185', '#f0abfc', '#818cf8'], chapterMotif: 'wave',          navMotif: 'pulse',    background: { density: 0.56, amplitude: 34, tempo: 42, angle: 18,  particleCount: 20, particleIntensity: 'subtle' } },
   cultural:     { family: 'identity',    palette: ['#34d399', '#38bdf8', '#fbbf24'], chapterMotif: 'globe',         navMotif: 'globe',    background: { density: 0.42, amplitude: 20, tempo: 50, angle: 8,   particleCount: 14, particleIntensity: 'subtle' } },

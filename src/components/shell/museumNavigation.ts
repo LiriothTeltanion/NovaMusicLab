@@ -22,6 +22,7 @@ export const CURRENT_MUSEUM_ROOM_IDS = [
   'cultural',
   'eras',
   'timecapsule',
+  'onthisday',
   'personality',
   'emotions',
   'inner',
@@ -48,7 +49,7 @@ export const MUSEUM_HUB_ROOMS = {
   home: ['dashboard', 'share'],
   pulse: ['pulse', 'obsessions', 'achievements', 'wrapped'],
   atlas: ['artist', 'top', 'cultural'],
-  stories: ['eras', 'timecapsule', 'personality', 'emotions', 'inner', 'insights', 'report'],
+  stories: ['eras', 'timecapsule', 'onthisday', 'personality', 'emotions', 'inner', 'insights', 'report'],
   lab: ['upload', 'audio', 'aiassistant', 'compare', 'museums', 'platforms', 'quality', 'statsdeep'],
 } as const satisfies Record<MuseumHubId, readonly MuseumRoomId[]>;
 

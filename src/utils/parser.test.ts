@@ -317,6 +317,22 @@ describe('music data parser', () => {
     expect(data.source_summary?.spotify_short_plays).toBe(1);
   });
 
+  it('derives each artist’s earliest counted play as a local calendar day', () => {
+    const csv = [
+      'Second Band,Demo,Later Song,05 Mar 2024 21:00',
+      'First Band,Demo,Opening Song,03 Nov 2019 09:30',
+      'First Band,Demo,Repeat Song,04 Nov 2019 09:30',
+      'Second Band,Demo,Early Song,01 Feb 2021 08:00',
+    ].join('\n');
+
+    const data = parseMusicSources({ csvTexts: [csv] });
+
+    expect(data.artist_first_listens).toEqual([
+      { name: 'First Band', first_date: '2019-11-03', plays: 2 },
+      { name: 'Second Band', first_date: '2021-02-01', plays: 2 },
+    ]);
+  });
+
   it('enriches uploaded plays with bundled artist metadata (genre + country)', () => {
     const csv = [
       'Metallica,Master of Puppets,Battery,01 Jan 2026 10:00',
