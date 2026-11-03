@@ -498,3 +498,48 @@ test('the Audio Lab is explicit about its local-only foundation', async ({
   await expectNoHorizontalPageOverflow(page);
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
+
+test('On This Day reads one date across years and stays honest about first listens', async ({
+  page,
+}, testInfo) => {
+  await page.clock.setFixedTime(new Date('2025-11-03T12:00:00'));
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'en');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+  });
+
+  await page.goto('/#/on-this-day');
+
+  const room = page.getByTestId('on-this-day-room');
+  await expect(room.getByRole('heading', { level: 2, name: 'November 3' })).toBeVisible();
+  await expect(room.getByTestId('on-this-day-years').locator('li').first()).toBeVisible();
+  // The public flagship does not publish first-listen dates yet.
+  await expect(room.getByText('First-listen dates are not part of this archive yet.')).toBeVisible();
+
+  await room.getByRole('button', { name: 'Next day' }).click();
+  await expect(room.getByRole('heading', { level: 2, name: 'November 4' })).toBeVisible();
+  await expect(room.getByRole('button', { name: 'Today' })).toBeEnabled();
+
+  await expectNoHorizontalPageOverflow(page);
+  await expectNoAutomatedAccessibilityViolations(page, testInfo);
+});
+
+test('On This Day works in Hebrew RTL and a light theme', async ({
+  page,
+}, testInfo) => {
+  await page.clock.setFixedTime(new Date('2025-11-03T12:00:00'));
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'he');
+    window.localStorage.setItem('nml_theme', 'daylight');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+  });
+
+  await page.goto('/#/on-this-day');
+
+  await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+  await expect(page.locator('html')).toHaveAttribute('data-mode', 'light');
+  await expect(page.getByText('התאריך הזה, שנה אחר שנה')).toBeVisible();
+
+  await expectNoHorizontalPageOverflow(page);
+  await expectNoAutomatedAccessibilityViolations(page, testInfo);
+});

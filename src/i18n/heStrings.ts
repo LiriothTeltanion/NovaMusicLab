@@ -46,6 +46,7 @@ export const HE_STRINGS = {
       statsPro:    "סטטיסטיקה מתקדמת",
       achievements:"הישגים",
       timeCapsule: "קפסולת זמן",
+      onThisDay: "ביום זה",
       wrapped:     "סיכום שנתי",
       pulse:       "הדופק הנוכחי",
       report:      "הדוח הסופי",
