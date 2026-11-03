@@ -268,6 +268,18 @@ function isCountryPlay(value: unknown): boolean {
   return isRecord(value) && isString(value.country) && isFiniteNonNegative(value.plays);
 }
 
+const ISO_DATE_KEY = /^\d{4}-\d{2}-\d{2}$/;
+
+function isArtistFirstListen(value: unknown): boolean {
+  return isRecord(value)
+    && isString(value.name)
+    && Boolean(value.name.trim())
+    && isString(value.first_date)
+    && ISO_DATE_KEY.test(value.first_date)
+    && Number.isInteger(value.plays)
+    && Number(value.plays) > 0;
+}
+
 function isDailyPlays(value: unknown): boolean {
   return isPlainRecord(value)
     && Object.values(value).every(isFiniteNonNegative);
@@ -705,6 +717,11 @@ function hasValidOptionalDataFields(value: UnknownRecord): boolean {
     'artist_origin_countries',
     candidate => isArrayOf(candidate, isCountryPlay),
   )
+    && hasValidOptionalField(
+      value,
+      'artist_first_listens',
+      candidate => isArrayOf(candidate, isArtistFirstListen),
+    )
     && hasValidOptionalField(value, 'daily_plays', isDailyPlays)
     && hasValidOptionalField(
       value,

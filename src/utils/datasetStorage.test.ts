@@ -272,6 +272,7 @@ describe('datasetStorage runtime schema', () => {
       'snapshot_freshness',
       'artist_genre_catalog',
       'artist_origin_countries',
+      'artist_first_listens',
       'daily_plays',
       'monthly_activity',
       'platform_breakdown',
@@ -285,6 +286,14 @@ describe('datasetStorage runtime schema', () => {
     ].forEach(field => delete legacyCore[field]);
 
     expect(isMusicDnaData(legacyCore)).toBe(true);
+  });
+
+  it('validates optional first-listen rows at the storage boundary', () => {
+    const row = { name: 'Synthetic Artist', first_date: '2020-05-01', plays: 3 };
+    expect(isMusicDnaData({ ...data, artist_first_listens: [row] })).toBe(true);
+    expect(isMusicDnaData({ ...data, artist_first_listens: [{ ...row, first_date: '2020-5-1' }] })).toBe(false);
+    expect(isMusicDnaData({ ...data, artist_first_listens: [{ ...row, plays: 0 }] })).toBe(false);
+    expect(isMusicDnaData({ ...data, artist_first_listens: { [row.name]: row } })).toBe(false);
   });
 
   it('reads the short-lived legacy freshness names without emitting them in new data', () => {
