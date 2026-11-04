@@ -6,6 +6,10 @@ fastest path to a correct, mergeable change. `CLAUDE.md` imports this file.
 When this file and the documents under `docs/` disagree, `docs/` wins and
 this file gets fixed.
 
+Local, private context for this repo may exist in `AGENTS.local.md` and
+`CLAUDE.local.md`. They are git-ignored, never committed, and should be read
+when present.
+
 | Fact | Value | Source |
 |---|---|---|
 | Live site | <https://liriothteltanion.github.io/NovaMusicLab/> | CONFIRMED in README |
@@ -498,8 +502,10 @@ Kevin keeps project-specific Claude Code skills in a local, unpublished `.claude
   If a section above defines a different body format for this repository,
   that one wins.
 
-  Commits written with an AI assistant add the matching `Co-Authored-By:`
-  trailer. Lirioth is never a co-author.
+  Commit authorship: every commit, PR title and PR description is authored
+  by Kevin Cusnir (Lirioth Teltanion). Do not add AI co-author trailers,
+  "Generated with/by" footers, session links or AI tool or model names to
+  Git metadata. (Policy updated 2026-11-04.)
 - **Author identity:** `Kevin Cusnir (Lirioth Teltanion)`.
 - One concern per commit and per pull request. Small vertical slices that can
   ship on their own beat big rewrites.

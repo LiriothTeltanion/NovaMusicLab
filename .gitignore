@@ -65,3 +65,9 @@ scripts/media_progress.json
 /CLAUDE_ART_HANDOFF.md
 /HANDOFF.md
 /.claude/
+
+# Local private agent context (never committed)
+AGENTS.local.md
+CLAUDE.local.md
+*.local.md
+.claude/settings.local.json
