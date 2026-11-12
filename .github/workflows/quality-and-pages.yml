@@ -71,6 +71,19 @@ jobs:
               echo "Product version unchanged ($current_version); immutable release media remains valid."
               exit 0
             fi
+          else
+            # Manual and scheduled runs have no base to compare. When the current
+            # version is already released, audit its immutable media against the
+            # exact tagged source instead of the drifting main branch.
+            current_version="$(node -p "require('./package.json').version")"
+            release_tag="v$current_version"
+            if git rev-parse --verify --quiet "refs/tags/$release_tag" >/dev/null; then
+              release_tree="$RUNNER_TEMP/release-$release_tag"
+              git worktree add --detach "$release_tree" "$release_tag"
+              (cd "$release_tree" && node scripts/audit_release_media.mjs)
+              git worktree remove --force "$release_tree"
+              exit 0
+            fi
           fi
           npm run audit:release-media
 
