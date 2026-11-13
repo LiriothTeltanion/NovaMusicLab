@@ -216,6 +216,19 @@ export interface Obsession {
   count: number;
 }
 
+/**
+ * Earliest counted play of one exact archive artist name.
+ *
+ * `first_date` is the local calendar day (YYYY-MM-DD) of the first play the
+ * loaded archive contains. It is derived, not observed: listening before the
+ * archive's first export date is invisible to it.
+ */
+export interface ArtistFirstListen {
+  name: string;
+  first_date: string;
+  plays: number;
+}
+
 export interface CountryPlay {
   country: string;
   plays: number;
@@ -357,6 +370,13 @@ export interface MusicDnaData {
   yearly_eras: YearlyEra[];
   sessions: Session[];
   obsessions: Obsession[];
+  /**
+   * Earliest counted play per exact artist name, ordered by total plays and
+   * capped (see parser.ts). Optional: datasets compiled before it existed,
+   * and the public flagship until its exact dates are reviewed, omit it, and
+   * the On This Day room then renders first listens as unavailable.
+   */
+  artist_first_listens?: ArtistFirstListen[];
   /**
    * Resolved artist home countries weighted from every counted play in the
    * archive. Plays without a known artist origin are omitted so consumers can

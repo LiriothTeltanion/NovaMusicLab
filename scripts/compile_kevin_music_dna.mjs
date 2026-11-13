@@ -23,6 +23,9 @@ Options:
   --require-sources a,b,c    Abort unless every named source resolved to data
                              (lastfm | spotify | youtube)
   --flagship                 Stamp this dataset as the museum's own archive
+  --include-first-listens    Keep artist_first_listens (exact first-play dates per
+                             artist) in the output. Off by default: declare and
+                             review the section in public_dataset_manifest.json first
   --enrichment-generated-at <iso>  Override the carried-forward enrichment date
   --output <path>            Dataset path (default src/data/music_dna_compiled.json)
   --catalog-output <path>    Genre catalogue path; derived from --output if omitted
@@ -55,6 +58,7 @@ function parseArguments(args) {
   let youtubeFilePath = null;
   let requiredSources = [];
   let flagship = false;
+  let includeFirstListens = false;
   let enrichmentGeneratedAt = null;
   let outputPath = defaultOutputPath;
   let genreCatalogOutputPath = defaultGenreCatalogOutputPath;
@@ -81,6 +85,8 @@ function parseArguments(args) {
       index += 1;
     } else if (argument === '--flagship') {
       flagship = true;
+    } else if (argument === '--include-first-listens') {
+      includeFirstListens = true;
     } else if (argument === '--enrichment-generated-at') {
       enrichmentGeneratedAt = optionValue(args, index, argument);
       index += 1;
@@ -130,6 +136,7 @@ function parseArguments(args) {
     youtubeFilePath,
     requiredSources,
     flagship,
+    includeFirstListens,
     enrichmentGeneratedAt,
     outputPath,
     genreCatalogOutputPath,
@@ -311,6 +318,10 @@ async function compileData(options) {
   // out of music_dna_compiled.json prevents every dashboard consumer from
   // parsing thousands of long-tail artist rows before the genre studio opens.
   const { artist_genre_catalog: _catalog, ...dashboardData } = compiledData;
+  // Exact first-play dates per artist are a new exact-granularity section. The
+  // privacy audit rejects any undeclared section, so the public bundle only
+  // carries it when the maintainer opts in after reviewing the manifest.
+  if (!options.includeFirstListens) delete dashboardData.artist_first_listens;
   const unclassified = genreCatalog.filter(artist => artist.source === 'unclassified');
   const unclassifiedPlays = unclassified.reduce((sum, artist) => sum + artist.plays, 0);
 

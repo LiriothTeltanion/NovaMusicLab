@@ -9,7 +9,7 @@ import {
 
 describe('Living Sonic Cartography registry', () => {
   it('defines one complete visual identity for every museum chapter', () => {
-    expect(MUSEUM_CHAPTER_TABS).toHaveLength(21);
+    expect(MUSEUM_CHAPTER_TABS).toHaveLength(22);
 
     MUSEUM_CHAPTER_TABS.forEach(id => {
       const visual = MUSEUM_VISUAL_IDENTITY[id];

@@ -97,6 +97,12 @@ const CHAPTERS: Record<MuseumChapterTab, ChapterDefinition> = {
     title: { es: 'Cámara del Tiempo', en: 'The Time Chamber', he: 'חדר הזמן' },
     description: { es: 'Momentos distantes vuelven a sonar dentro de una sola línea vital.', en: 'Distant moments sound again along one continuous life line.', he: 'רגעים רחוקים נשמעים מחדש לאורך קו חיים אחד רציף.' },
   },
+  onthisday: {
+    number: '22', emoji: '📅', metrics: ['years', 'activeDays'],
+    eyebrow: { es: 'Aniversarios sonoros', en: 'Sonic anniversaries', he: 'ימי שנה מוזיקליים' },
+    title: { es: 'En un día como hoy', en: 'On This Day', he: 'ביום זה' },
+    description: { es: 'Una misma fecha, escuchada a través de todos los años del archivo.', en: 'One date, heard again across every year of the archive.', he: 'תאריך אחד, שנשמע מחדש לאורך כל שנות הארכיון.' },
+  },
   personality: {
     number: '06', emoji: '🧠', metrics: ['topGenre', 'artists'],
     eyebrow: { es: 'Espejo conductual', en: 'Behavioral mirror', he: 'מראה התנהגותית' },
@@ -333,6 +339,17 @@ function MotifGeometry({ motif }: { motif: MuseumChapterMotif }) {
         <path className="museum-chapter__line" d="M104 34h124M104 174h124M116 36c0 48 48 54 48 68s-48 24-48 68m100-136c0 48-48 54-48 68s48 24 48 68" />
         <path className="museum-chapter__shape museum-chapter__pulse" d="M140 76h52l-26 29z" />
         <path className="museum-chapter__line museum-chapter__line--secondary museum-chapter__dash" d="M166 106v35" />
+      </>
+    );
+    case 'calendar': return (
+      <>
+        <rect className="museum-chapter__shape" x="96" y="46" width="140" height="128" rx="18" />
+        <path className="museum-chapter__line" d="M96 84h140M128 34v24m76-24v24" />
+        {[0, 1, 2].map(row => [0, 1, 2, 3].map(column => (
+          <circle key={`${row}-${column}`} className="museum-chapter__node" cx={120 + column * 30} cy={106 + row * 22} r="4" />
+        )))}
+        <circle className="museum-chapter__node museum-chapter__pulse" cx="180" cy="128" r="11" />
+        <path className="museum-chapter__line museum-chapter__line--secondary museum-chapter__dash" d="M34 150c40-24 22-70 62-86m174 86c-40-24-22-70-62-86" />
       </>
     );
     case 'orbit': return (

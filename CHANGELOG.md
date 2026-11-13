@@ -6,7 +6,19 @@ No GitHub release or version tag existed before the v1 release foundation. Earli
 
 ## [Unreleased]
 
-No product feature work after the deployed `v1.6.0` release is recorded here.
+### Added
+
+- Added the **On This Day · En un día como hoy** room to the Stories hub
+  (`#/on-this-day`). It reads one calendar date across every observed year
+  (observed plays, with years outside the archive omitted rather than shown
+  as zero), the artists whose earliest counted play falls on that date
+  (derived), and the curated repeat peaks that landed on it. Day stepping
+  works from the keyboard, and copy ships in English, Spanish and Hebrew/RTL.
+- Visitor imports now compute `artist_first_listens` (earliest local play day
+  per exact artist name, top 1,500 by plays) in the browser. The flagship
+  compiler strips the section unless `--include-first-listens` is passed, so
+  the public bundle only gains these exact dates after a manifest review;
+  until then the room renders first listens as unavailable.
 
 ### Fixed
 
