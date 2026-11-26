@@ -1032,7 +1032,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">{copy.labels.artists}</span>
                 <div className="flex flex-wrap gap-2">
                   {selectedArtistEvidence.map(({ name, plays }) => (
-                    <span key={name} className="flex items-center gap-1.5 rounded-full border border-cyan-500/10 bg-[#0a0f1d] py-1 ps-1 pe-2.5 text-xs font-semibold text-white">
+                    <span key={name} className="nova-on-dark flex items-center gap-1.5 rounded-full border border-cyan-500/10 bg-[#0a0f1d] py-1 ps-1 pe-2.5 text-xs font-semibold text-white">
                       <ArtistAvatar name={name} size={20} />
                       <bdi dir="auto">{name}</bdi>
                       {plays ? <span className="text-[9px] text-gray-500">· {formatNum(plays)}</span> : null}
@@ -1045,7 +1045,7 @@ export default function EmotionalMap({ data }: EmotionalMapProps) {
                 <span className="block text-[10px] font-mono uppercase tracking-widest text-gray-400">{copy.labels.tracks}</span>
                 <div className="space-y-1">
                   {currentEmotion.tracks.map((track, index) => (
-                    <div key={`${currentEmotion.trackArtists[index] ?? index}-${track}`} className="flex items-start gap-2.5 rounded-lg border border-cyan-500/10 bg-[#0a0f1d] px-3 py-2 text-xs">
+                    <div key={`${currentEmotion.trackArtists[index] ?? index}-${track}`} className="nova-on-dark flex items-start gap-2.5 rounded-lg border border-cyan-500/10 bg-[#0a0f1d] px-3 py-2 text-xs">
                       <CoverArt artist={currentEmotion.trackArtists[index] ?? currentEmotion.artists[0]} title={track} kind="track" size={34} />
                       <div className="min-w-0">
                         <p className="break-words font-mono text-gray-200"><bdi dir="auto">{track}</bdi></p>
