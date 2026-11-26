@@ -499,6 +499,47 @@ test('the Audio Lab is explicit about its local-only foundation', async ({
   await expectNoAutomatedAccessibilityViolations(page, testInfo);
 });
 
+test('the emotional map stays readable and keyboard-operable in a light theme', async ({
+  page,
+}, testInfo) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem('nml_lang', 'es');
+    window.localStorage.setItem('nml_theme', 'daylight');
+    window.localStorage.setItem('nml_tour_seen', 'true');
+    window.localStorage.setItem('nml_motion_mode', 'static');
+  });
+
+  await page.goto('/#/emotions');
+  const room = page.getByTestId('emotional-map');
+  await expect(room).toBeVisible();
+  await expect(room.getByTestId('emotion-evidence-model')).toBeVisible();
+
+  const modes = room.getByRole('group', { name: 'Selector de modo heurístico' }).getByRole('button');
+  await expect(modes).toHaveCount(8);
+  await modes.last().focus();
+  await page.keyboard.press('Enter');
+  await expect(modes.last()).toHaveAttribute('aria-pressed', 'true');
+  await expect(modes.last()).toBeFocused();
+  await expectNoHorizontalPageOverflow(page);
+  const artistPill = room.locator('.ps-1').filter({ has: page.locator('bdi[dir="auto"]') }).first();
+  await expect(artistPill.locator('bdi')).toBeVisible();
+  await expect(artistPill.locator('span.text-gray-500')).toBeVisible();
+  await expect(artistPill.locator('span.text-gray-500')).toContainText(/·\s*\d/);
+
+  // Theme overrides must not make text unreadable on the room's fixed dark surfaces.
+  const results = await new AxeBuilder({ page })
+    .include('[data-testid="emotional-map"]')
+    .withTags([...WCAG_AA_TAGS])
+    .analyze();
+  if (results.violations.length > 0) {
+    await testInfo.attach('emotional-map-axe-violations', {
+      body: JSON.stringify(results.violations, null, 2),
+      contentType: 'application/json',
+    });
+  }
+  expect(results.violations.map(({ id, impact }) => ({ id, impact }))).toEqual([]);
+});
+
 test('On This Day reads one date across years and stays honest about first listens', async ({
   page,
 }, testInfo) => {
